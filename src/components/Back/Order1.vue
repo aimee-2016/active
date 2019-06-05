@@ -714,6 +714,8 @@
           return '域名续费'
         } else if (this.goodType == 22) {
           return 'SSL证书购买'
+        } else if (this.goodType == 24) {
+          return '新建云主机'
         }
       },
       // 待优化

@@ -32,6 +32,9 @@
   height: 0;
 }
 /*咨询购买对话框*/
+.ivu-modal-wrap * .ivu-modal-header p, .ivu-modal-header-inner{
+  color: white !important;
+}
 .ivu-modal-header-inner{
   color: rgb(208, 208, 208);
   margin-bottom: 20px;

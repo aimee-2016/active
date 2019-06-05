@@ -77,12 +77,10 @@
                 <div class="th">
                   <i-button type="primary" @click="useBtn">立即使用</i-button>
                   <div class="agreement">
-                    <Checkbox v-model="single">
+                    <Checkbox v-model="single" style="margin-right: 0;">
                       我已阅读并同意
-                      <router-link to="">《云市场商品服务协议》</router-link>
-                      与
-                      <router-link to="">《新睿云云市场用户协议》</router-link>
                     </Checkbox>
+                    <span>《云市场商品服务协议》</span>与<span>《新睿云云市场用户协议》</span>
                   </div>
                 </div>
               </div>
@@ -645,8 +643,7 @@ export default {
     },
     // 立即使用
     useBtn () {
-      console.log(this.vpcName)
-      /*if (this.userInfos == null) {
+      if (this.userInfos == null) {
         this.$LR({type: 'login'})
         return
       } else if (this.single === false) {
@@ -665,15 +662,17 @@ export default {
             memory: this.mainFrame.memory,
             networkId: 'no',
             companyId: this.userInfo.companyid,
-            vpcId: 'no',
+            vpcId: this.vpcName,
             cost: this.price
           }
         }).then(res => {
           if (res.status === 200 && res.data.status === 1) {
             this.$router.push('/order')
+          } else if (res.status === 200 && res.data.status === 2) {
+            this.$Message.warning(res.data.message);
           }
         })
-      }*/
+      }
     },
     // 产品分类
     getClass () {
@@ -858,6 +857,17 @@ export default {
                     font-size: 14px;
                     line-height: 20px;
                     margin-top: 10px;
+                    span{
+                      padding: 0;
+                      margin: 0;
+                      border: none;
+                      color: #57a3f3;
+                      cursor: pointer;
+                      height: 0;
+                      &:hover{
+                        background: white;
+                      }
+                    }
                   }
                 }
               }
