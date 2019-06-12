@@ -48,23 +48,11 @@
                 </Radio>
               </RadioGroup>
             </TabPane>
-            <!-- <TabPane label="线下汇款" name="name2">
+            <TabPane label="个人网银" name="name2">
                 <div class="outLineContent" v-if="currentTab == 'outLine'">
-                    <div style="width:555px;height:180px;background:#F6FAFD;padding:20px 0 20px 20px;">
-                        <p class="p">公司名称：北京允睿讯通科技有限公司</p>
-                        <p class="p">开户银行：中国建设银行北京龙锦支行</p>
-                        <p class="p">开户行所在地：北京</p>
-                        <p class="p">银行账号：11001018402059000005</p>
-                    </div>
-                    <div class="out_hint">
-                        <div>
-                            <img src="../../assets/img/payresult/Shape.png" style="margin-right:7px;vertical-align:middle;">
-                            <span style="font-size:14px;color:#333333;vertical-align:middle;" >提示</span>
-                        </div>
-                        <p style="line-height: 25px;"><span style="color: #2A99F2"></span>请您在汇款摘要中注明“云服务”。汇款成功后请将汇款凭证（汇款凭证扫描件或者图片、网银付款截图）、汇款人姓名、联系电话、注册手机或邮箱地址发送到“公司邮箱”以便财务进行进行确认。财务确认到账后，会讲汇款金额充值到您的注册账户。为了避免因账户欠帐影响您的正常使用，请务必至少提前三到五个工作日进行线下汇款，以免造成不必要的损失。</p>
-                    </div>
+                   
                 </div>
-            </TabPane> -->
+            </TabPane>
           </Tabs>
         </div>
         <div style="margin-top:20px;text-align:right;" v-if="currentTab=='otherPay'">
