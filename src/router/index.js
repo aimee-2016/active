@@ -27,6 +27,7 @@ const BData = () =>import('@/components/App/buy/BData')
 const BGpu = () =>import('@/components/App/buy/BGpu')
 const BSsl = () =>import('@/components/App/buy/BSsl')
 const Ecs = () =>import('@/components/App/product/ECS')
+const BDDoS = () => import('@/components/App/buy/BHighIp')
 const Document = () =>import('@/components/App/Document')
 const Document1 = () =>import('@/components/App/Document1')
 const Record = () =>import('@/components/App/Record')
@@ -326,7 +327,8 @@ var router = new Router({
             {path: 'database', name: 'database/', component: BData},
             {path: 'objectstorage', name: 'objectstorage/', component: BObj},
             {path: 'gpu', name: 'gpu/', component: BGpu},
-            {path: 'ssl', name: 'ssl/', component: BSsl}
+            {path: 'ssl', name: 'ssl/', component: BSsl},
+            {path: 'ddos', name: 'ddos/', component: BDDoS}
           ]
         },
 
