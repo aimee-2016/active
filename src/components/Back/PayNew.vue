@@ -260,10 +260,11 @@
             }
           }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
-              let url = decodeURI(res.data.url),  // URL解码
+              let url = decodeURIComponent(res.data.url),  // URL解码
               div = document.createElement('div');
               console.log(url);
               div.innerHTML = url;
+              console.log(newWindow.document.body)
               newWindow.document.body.appendChild(div);
               newWindow.document.forms[0].submit(); // 提交表单
             }
