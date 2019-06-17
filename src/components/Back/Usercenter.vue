@@ -46,7 +46,7 @@
                     <li v-if="(!authInfo|| authInfo&&authInfo.authtype==0&&authInfo.checkstatus!=0) || (!authInfoPersion|| authInfoPersion&&authInfoPersion.authtype==0&&authInfoPersion.checkstatus!=0)"><span>认证信息</span><span style="color: #FF9339">未实名认证</span><span
                       @click="paneStatus.usercenter ='certification' ">马上认证</span></li>
                     <li v-if="authInfoPersion&&authInfoPersion.authtype==0&&authInfoPersion.checkstatus==0"><span>身份证号</span><span>{{authInfoPersion.personalnumber?authInfoPersion.personalnumber.substr(0,4) + '****' + authInfoPersion.personalnumber.substring(authInfoPersion.personalnumber.length-4,authInfoPersion.personalnumber.length): ''}}</span></li>
-                    <li v-if="authInfo&&authInfo.authtype==0"><span>认证信息</span><span style="color: #FF9339">未企业认证</span><span
+                    <li v-if="(authInfo&&authInfo.authtype==0)|| (!authInfoPersion && !authInfo)"><span>认证信息</span><span style="color: #FF9339">未企业认证</span><span
                       @click="paneStatus.usercenter ='companyInfo'">马上认证</span></li>
                        <li v-if="authInfo&&authInfo.authtype==1&& authInfo.checkstatus == 2"><span>认证信息</span><span style="color: #FF9339">企业认证中</span></li>
                     <li v-if="authInfo&&authInfo.authtype==1&& authInfo.checkstatus == 1"><span>认证信息</span><span style="color: #FF9339">企业认证失败</span><span
@@ -332,9 +332,15 @@
             </div>
             <div v-if="authInfoPersion&&authInfoPersion.authtype==0&&authInfoPersion.checkstatus==0" class="personalAuthInfo">
               <ol>
-                <li>真实姓名<span>{{ authInfoPersion.name}}</span><span>个人认证</span></li>
+                <div class="success-title">
+                <p><img src="../../assets/img/app/auth_success.png"/>恭喜您，在新睿云平台实名认证成功</p>
+                <p class="success-hint">196元优惠券已发送至您的账户，请前往 <span>费用中心</span>查看</p>
+                </div>
+                <li>真实姓名<span>{{ authInfoPersion.name}}</span></li>
+                <li>证件类型<span>中华人民共和国居民身份证</span></li>
                 <li>手机号码<span>{{ authInfoPersion.phone?authInfoPersion.phone.substr(0,3) + '****' + authInfoPersion.phone.substr(7):''}}</span></li>
                 <li>身份证号<span>{{ authInfoPersion.personalnumber?authInfoPersion.personalnumber.substr(0,4) + '****' + authInfoPersion.personalnumber.substring(authInfoPersion.personalnumber.length-4,authInfoPersion.personalnumber.length): ''}}</span></li>
+                <li>认证时间<span>{{authInfoPersion.createtime}}</span></li>
               </ol>
             </div>
             <div v-if="(authInfoPersion&&authInfoPersion.authtype==0&&authInfoPersion.checkstatus==2)||(authInfoPersion&&authInfoPersion.authtype==0&&authInfoPersion.checkstatus==1)"
@@ -572,7 +578,10 @@
             </div>
             <div v-if="authInfo&&authInfo.authtype!=0&&authInfo.checkstatus==0" class="companyAuthInfo">
               <ol>
-                <li><span>公司名称</span><span>{{authInfo.name}}</span><span>企业认证</span></li>
+                <div class="success-title">
+                <p><img src="../../assets/img/app/auth_success.png"/>恭喜您，在新睿云平台企业认证成功</p>
+                </div>
+                <li><span>公司名称</span><span>{{authInfo.name}}</span></li>
                 <li><span>所属行业</span><span>{{authInfo.belongindustry}}</span></li>
                 <li><span>企业联系电话</span><span>{{authInfo.companylinkmanphone}}</span></li>
                 <li><span>营业执照号</span><span>{{authInfo.businesslicense}}</span></li>
@@ -581,6 +590,7 @@
                 <li><span>经办人姓名</span><span>{{authInfo.agentname}}</span></li>
                 <li><span>经办人联系电话</span><span>{{authInfo.agentphone}}</span></li>
                 <li><span>经办人身份证号</span><span>{{authInfo.agentidcard}}</span></li>
+                <li><span>认证时间</span><span>{{authInfo.createtime}}</span></li>
               </ol>
             </div>
             <div v-if="(authInfo&&authInfo.authtype!=0&&authInfo.checkstatus==2) || (authInfo&&authInfo.authtype!=0&&authInfo.checkstatus==1)"
@@ -1618,8 +1628,14 @@
             quicklyAuth: 3
           },
 
-          authTypes: [{
-            title: '快速验证（推荐）',
+          authTypes: [
+            {
+            title: '扫码认证（推荐）',
+            step: ['扫描二维码', '填写个人资料', '认证完成'],
+            go: 4,
+            disc: '实时审核，无需等待'
+          },{
+            title: '快速验证',
             step: ['填写个人资料', '提交审核', '认证完成'],
             go: 3,
             disc: '实时审核，无需等待'
@@ -4421,7 +4437,24 @@
   .companyAuthInfo {
     ol {
       margin-top: 28px;
-
+      width:600px;
+      padding: 40px 0 20px 20px;
+      background:rgba(20,178,120,0.04);
+      border-radius:4px;
+      border:1px solid rgba(20,178,120,1);
+      .success-title{
+        margin-bottom: 40px;
+      >p{
+        font-size:22px;
+        font-family:MicrosoftYaHei-Bold;
+        font-weight:bold;
+        color:rgba(51,51,51,1);
+        >img{
+          vertical-align: sub;
+          margin-right: 10px;
+        }
+       }
+      }
       li {
         margin-bottom: 20px;
 
@@ -4436,6 +4469,7 @@
         span:nth-child(1) {
           width: 115px;
           text-align: right;
+          color:rgba(153,153,153,1);
         }
 
         span:nth-child(2) {
@@ -4459,7 +4493,35 @@
   .personalAuthInfo {
     ol {
       margin-top: 28px;
-
+      width:600px;
+      padding: 40px 0 20px 20px;
+      background:rgba(66,151,242,0.04);
+      border-radius:4px;
+      border:1px solid rgba(66,151,242,1);
+      .success-title{
+        margin-bottom: 40px;
+      >p{
+        font-size:22px;
+        font-family:MicrosoftYaHei-Bold;
+        font-weight:bold;
+        color:rgba(51,51,51,1);
+        >img{
+          vertical-align: sub;
+          margin-right: 10px;
+        }
+       }
+       .success-hint{
+          >span{
+          margin-top: 10px;
+          padding-left: 40px;
+          color: #2A99F2;
+          cursor: pointer;
+          font-size:18px;
+          font-family:MicrosoftYaHei;
+          color:rgba(51,51,51,1);
+        }
+       }
+      }
       li {
         font-size: 14px;
         font-family: MicrosoftYaHei;
