@@ -336,6 +336,7 @@
                         },
                         on: {
                           click: () => {
+                            window.clearInterval(this.deleteRecordTimer)
                             this.recordId = params.row.id
                             this.deleteRecordDisabled = true
                             this.deleteRecordText = '(5S)'
@@ -344,7 +345,7 @@
                             i -= 1
                             if (i == 0) {
                             window.clearInterval(this.deleteRecordTimer)
-                                 this.deleteRecordDisabled = false
+                                this.deleteRecordDisabled = false
                                 this.deleteRecordText = ''
                                  } else {
                                 this.deleteRecordText = '(0' + i + 'S)'

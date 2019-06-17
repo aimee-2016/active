@@ -334,7 +334,7 @@
               <ol>
                 <div class="success-title">
                 <p><img src="../../assets/img/app/auth_success.png"/>恭喜您，在新睿云平台实名认证成功</p>
-                <p class="success-hint">196元优惠券已发送至您的账户，请前往 <span>费用中心</span>查看</p>
+                <p v-if="successHint" class="success-hint">196元优惠券已发送至您的账户，请前往<span @click="$router.push('Expenses')">费用中心</span>查看</p>
                 </div>
                 <li>真实姓名<span>{{ authInfoPersion.name}}</span></li>
                 <li>证件类型<span>中华人民共和国居民身份证</span></li>
@@ -2624,7 +2624,8 @@
         imgSrc: 'user/getKaptchaImage.do',
         otherInfoShow: false,
         informAffirmTimer: null,
-        informAffirmText: '(10S)'
+        informAffirmText: '(10S)',
+        successHint: ''
       }
     },
     created() {
@@ -2640,6 +2641,8 @@
         this.paneStatus.usercenter = authType
       }
       sessionStorage.removeItem('pane')
+      this.successHint = sessionStorage.getItem('registerSuccessMsg') ? sessionStorage.getItem('registerSuccessMsg') : ''
+      sessionStorage.removeItem('registerSuccessMsg')
       if (this.paneStatus.usercenter == 'personalInfo' || this.paneStatus.usercenter == 'companyInfo'){
         this.showModal.selectAuthType = false
       } else {
@@ -4510,15 +4513,15 @@
           margin-right: 10px;
         }
        }
-       .success-hint{
-          >span{
+       .success-hint{          
           margin-top: 10px;
           padding-left: 40px;
-          color: #2A99F2;
-          cursor: pointer;
           font-size:18px;
           font-family:MicrosoftYaHei;
           color:rgba(51,51,51,1);
+          >span{
+            color: #2A99F2;
+            cursor: pointer;
         }
        }
       }

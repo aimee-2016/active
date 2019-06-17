@@ -635,8 +635,7 @@ export default {
         this.$Message.info("请选择需要支付的订单");
         return;
       }
-      axios
-        .get("information/zfconfirm.do", {
+      axios.get("information/zfconfirm.do", {
           params: {
             order: this.orderInfo.orderId.substring(
               0,

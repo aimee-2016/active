@@ -389,7 +389,7 @@
       </div>
       <div class="content-footer">
         <button @click="$router.go(-1)">上一步，填写网站信息</button>
-        <button style="margin-left: 20px" @click="netStep()">下一步，办理拍照/上传资料</button>
+        <button style="margin-left: 20px" @click="netStep()">下一步，核验选择</button>
       </div>
     </div>
     <div class="ImageView is-active" style="padding-bottom: 10px;" v-show="imageViewShow" @click="imageViewShow=false">
@@ -398,6 +398,22 @@
              style="width: 520px; transform: translate3d(140%, 15%, 0) scale3d(1.00003, 1.00003, 1); opacity: 1;">
       </div>
     </div>
+    <!-- 人脸识别二维码弹出框 -->
+    <Modal v-model="showModal.qrCode" width="550" :scrollable="true" :mask-closable="false" :closable="false">
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">扫码认证</span>
+      </p>
+      <div class="universal-modal-content-flex qrcode-modal">
+         <p>请<span>{{ siteListStr[0]?siteListStr[0].basicInformation.principalName : '' }}</span>使用手机扫描二维码，并根据提示完成人脸识别认证</p>
+         <div class="qr-code">
+            <vue-q-art :config="qrConfig" ></vue-q-art>
+        </div>
+        <p class="p-bottom">若二维码失效或异常，请 <span>刷新</span></p>
+      </div>
+      <div slot="footer" class="modal-footer-border">
+        <Button type="primary" @click="showModal.qrCode = false">确定</Button>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -405,6 +421,7 @@
   import step from './step.vue'
   import oStep from "./ostep.vue";
   import records from './../Records'
+  import VueQArt from 'vue-qart'
 
   export default {
     metaInfo: {
@@ -415,7 +432,7 @@
       }]
     },
     components: {
-      step, records, oStep
+      step, records, oStep,VueQArt
     },
     beforeRouteEnter(to, from, next) {
       var area = sessionStorage.getItem('zone')
@@ -430,6 +447,9 @@
     },
     data() {
       return {
+        showModal:{
+          qrCode: true
+        },
         // 主体负责人id是否显示
         mainPersonIDShow: false,
         // 用与标记正在操作的身份证件照
@@ -484,7 +504,13 @@
         percentCombine: 0,
         percentCertification: 0,
         percentOtherFile: 0,
-        percentCheckList: 0
+        percentCheckList: 0,
+        qrConfig: {
+          value: '',
+          imagePath: require('../../../assets/img/pay/payBackground.png'),
+          filter: 'black',
+          size: 500
+        },
       }
     },
     created() {
@@ -1279,5 +1305,30 @@
 
   .ImageView-img {
     cursor: zoom-out;
+  }
+  .qrcode-modal{
+    text-align: center;
+    .qr-code{
+      height: 198px;
+      width: 197px;
+      background: url('../../../assets/img/app/auth_background.png') no-repeat center;
+      margin: 0 auto;
+    }
+    >p{
+      font-size:14px;
+      font-family:MicrosoftYaHei;
+      color:rgba(51,51,51,1);
+      margin: 20px;
+      >span{
+        color: #FF624B;
+      }
+    }
+    .p-bottom{
+      margin-bottom: 0;
+      >span{
+        color: #4297F2;
+        cursor: pointer;
+      }
+    }
   }
 </style>
