@@ -63,8 +63,8 @@
         </div>
         <div style="text-align:right;margin-top:40px;">
           <Button @click="deleteOrder" style="margin-right:10px;">取消订单</Button>
-          <Button type="primary" @click="payCash" v-if="isButtonCash" :disabled='orderState == 1?true:false'>确认购买</Button>
-          <Button type="primary" @click="pay" v-else :disabled='orderState == 1?true:false'>提交订单</Button>
+          <Button type="primary" @click="payCash" v-if="isButtonCash" :disabled='orderState == 1 &&  orderState != undefined ?true:false'>确认购买</Button>
+          <Button type="primary" @click="pay" v-else :disabled='orderState == 1 && orderState != undefined?true:false'>提交订单</Button>
         </div>
 
         <div style="clear: both"></div>
@@ -352,7 +352,7 @@ export default {
       groupList: [],
       
       // 订单状态
-      orderState:'0',
+      orderState:0,
 
       canUseTicket: true,
       showModal: {
@@ -470,7 +470,7 @@ export default {
           } else {
             data.discountmessage = "";
           }
-
+        this.orderState = data["订单状态"]?data["订单状态"]:0;
           if (data["订单状态"]) {
             this.orderState = data["订单状态"];
             this.couponInfo.originCost +=
@@ -624,7 +624,7 @@ export default {
     },
     // 页面支付方法
     pay() {
-       if(orderState == 0){
+      if(this.orderState == 0 ){
       if (this.orderInfo.orderId == "") {
         this.$Message.info("请选择需要支付的订单");
         return;

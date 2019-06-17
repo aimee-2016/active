@@ -33,10 +33,10 @@
           </CheckboxGroup>
         </div>
 
-        <p style="color:#333333;font-size:14px;" v-if="orderStatus == -1">其他支付方式支付</p>
-        <div class="pay" v-if="orderStatus == -1">
+        <p style="color:#333333;font-size:14px;" >其他支付方式支付</p>
+        <div class="pay" >
           <!--包年包月第三方支付页面-->
-          <Tabs value="name1" @on-click="currentTabs">
+          <Tabs value="name1">
             <span slot="extra">其他支付方式支付：<span style="color:#FF624B;font-size:18px;">{{otherPayCount.toFixed(2)}}</span>元</span>
             <TabPane label="第三方支付" name="name1">
               <RadioGroup v-model="otherPay" @on-change="otherPayChange">
@@ -49,13 +49,26 @@
               </RadioGroup>
             </TabPane>
             <TabPane label="个人网银" name="name2">
-                <div class="outLineContent" v-if="currentTab == 'outLine'">
-                   
+                <div class="outLineContent">
+                   <RadioGroup v-model="otherPay" @on-change="otherPayChange">
+                    <Radio label="individual" style="margin-right: 40px;">
+                      <img style="vertical-align: middle;" src="../../assets/img/payresult/unionPay1.png">
+                    </Radio>
+                  </RadioGroup>
+                </div>
+            </TabPane>
+            <TabPane label="企业网银" name="name3">
+                <div class="outLineContent" >
+                   <RadioGroup v-model="otherPay" @on-change="otherPayChange">
+                    <Radio label="enterprise" style="margin-right: 40px;">
+                      <img style="vertical-align: middle;" src="../../assets/img/payresult/unionPay1.png">
+                    </Radio>
+                  </RadioGroup>
                 </div>
             </TabPane>
           </Tabs>
         </div>
-        <div style="margin-top:20px;text-align:right;" v-if="currentTab=='otherPay'">
+        <div style="margin-top:20px;text-align:right;">
           <Button @click="$router.push({path:'order'})" style="margin-right:10px;">取消支付</Button>
           <Button type="primary" @click="pay" :disabled="payText!='确认支付'">{{payText}}</Button>
         </div>
@@ -92,8 +105,7 @@
         accountPay: [],
         // 第三方支付
         otherPay: '',
-        // 默认显示第三方支付
-        currentTab: 'otherPay',
+  
         // 余额与现金券支付金额
         accountPayCount: 0,
 
@@ -230,12 +242,54 @@
             sessionStorage.setItem('total_fee', this.otherPayCount.toFixed(2))
           }
           this.$router.push('wxpay')
+        } else if(this.otherPay == 'individual'){
+          this.individualUnionPay();
+        } else if(this.otherPay == 'enterprise'){
+          this.enterpriseUnionPay();
         }
       },
-      // 充值其他可选金额
-      resetRecharge(item) {
-        this.rechargeValue = item
+
+      // 个人网银支付
+      individualUnionPay(){
+        const newWindow = window.open(); // 创建一个新窗口
+          axios.get('yl/ylb2cPay.do',{
+            params:{
+              total_fee:this.otherPayCount.toFixed(2),
+              orders: this.orderInfo.order,
+              ticket: this.orderInfo.ticket
+            }
+          }).then(res =>{
+            if(res.status == 200 && res.data.status == 1){
+              let url = decodeURI(res.data.url),  // URL解码
+              div = document.createElement('div');
+              console.log(url);
+              div.innerHTML = url;
+              newWindow.document.body.appendChild(div);
+              newWindow.document.forms[0].submit(); // 提交表单
+            }
+          })
       },
+
+      // 企业网银支付
+      enterpriseUnionPay(){
+        axios.get('yl/ylb2bPay.do',{
+            params:{
+              total_fee:this.otherPayCount.toFixed(2),
+              orders: this.orderInfo.order,
+              ticket: this.orderInfo.ticket
+            }
+          }).then(res =>{
+            if(res.status == 200 && res.data.status == 1){
+             let url = decodeURIComponent(res.data.url).replace(/\+/g,' '),
+              div = document.createElement('div');
+              div.innerHTML = url;
+              newWindow.document.body.appendChild(div);
+              newWindow.document.forms[0].submit();
+            }
+          })
+      },
+
+
       // 支付宝支付 获取支付宝流水号再跳转
       getzfbNum() {
         window.open("about:blank","alipay")
@@ -326,13 +380,6 @@
         }
         return i;
       },
-      currentTabs(name) {
-        if (name == 'name2') {
-          this.currentTab = 'outLine'
-        } else {
-          this.currentTab = 'otherPay'
-        }
-      }
     },
     computed: {
       // 是否允许第三方支付
