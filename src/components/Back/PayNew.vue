@@ -251,7 +251,7 @@
 
       // 个人网银支付
       individualUnionPay(){
-        const newWindow = window.open(); // 创建一个新窗口
+        
           axios.get('yl/ylb2cPay.do',{
             params:{
               total_fee:this.otherPayCount.toFixed(2),
@@ -260,12 +260,12 @@
             }
           }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
+              const newWindow = window.open(); // 创建一个新窗口
               let url = decodeURIComponent(res.data.url),  // URL解码
               div = document.createElement('div');
-              console.log(url);
               div.innerHTML = url;
-              console.log(newWindow.document.body)
               newWindow.document.body.appendChild(div);
+              newWindow.document.forms[0].acceptCharset ="utf-8";
               newWindow.document.forms[0].submit(); // 提交表单
             }
           })
@@ -273,6 +273,7 @@
 
       // 企业网银支付
       enterpriseUnionPay(){
+       
         axios.get('yl/ylb2bPay.do',{
             params:{
               total_fee:this.otherPayCount.toFixed(2),
@@ -281,10 +282,12 @@
             }
           }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
-             let url = decodeURIComponent(res.data.url).replace(/\+/g,' '),
+              const newWindow = window.open(); // 创建一个新窗口
+             let url = decodeURIComponent(res.data.url),
               div = document.createElement('div');
               div.innerHTML = url;
               newWindow.document.body.appendChild(div);
+              newWindow.document.forms[0].acceptCharset ="utf-8";
               newWindow.document.forms[0].submit();
             }
           })

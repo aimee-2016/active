@@ -223,6 +223,9 @@ const CompletedFilingDetails = () => import('@/components/Back/CompletedFilingDe
 const SpaceDetails = () => import('@/components/Back/SpaceDetails')
 const AllRegions = () => import('@/components/Back/AllRegions')
 
+// 高防IP==========================
+const DDoSIP = () => import('@/components/Back/DDoSIP')
+
 
 const CloudDatabaseBackup = () => import('@/components/Back/CloudDatabaseBackup')
 const CloudDatabase = () => import('@/components/Back/CloudDatabase')
@@ -328,7 +331,7 @@ var router = new Router({
             {path: 'objectstorage', name: 'objectstorage/', component: BObj},
             {path: 'gpu', name: 'gpu/', component: BGpu},
             {path: 'ssl', name: 'ssl/', component: BSsl},
-            {path: 'ddos', name: 'ddos/', component: BDDoS}
+            {path: 'ddosip', name: 'ddosip/', component: BDDoS}
           ]
         },
 
@@ -472,7 +475,8 @@ var router = new Router({
         {path: 'ElasticDetails', name: 'ElasticDetails', component: ElasticDetails},
         {path: 'newAddElastic', name: 'newAddElastic', component: newAddElastic},
         {path: 'TelescopicDetails', name: 'TelescopicDetails', component: TelescopicDetails},
-        {path: 'ThawDeposit', name: 'ThawDeposit', component: ThawDeposit}
+        {path: 'ThawDeposit', name: 'ThawDeposit', component: ThawDeposit},
+        {path: 'DDoSIP', name: 'DDoSIP', component: DDoSIP}
       ]
     },
     {
