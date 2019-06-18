@@ -47,7 +47,7 @@
         vipMsg: ''
       }
     },
-    beforeRouteEnter(to, from, next) {
+    created() {
       if (window.location.href.indexOf('serialNum') !== -1) {
         let serialNum = localStorage.getItem('serialNum')
         axios.get('user/payStatus.do', {
@@ -55,35 +55,29 @@
             serialNum: serialNum
           }
         }).then(response => {
-          next(vm => {
             if (response.status == 200 && response.data.status == 1) {
-              vm.payStatus = '支付成功'
-              vm.msg = response.data.message
-              vm.vipMsg = response.data.vipMessage
+              this.payStatus = '支付成功'
+              this.msg = response.data.message
+              this.vipMsg = response.data.vipMessage
             } else {
-              vm.payStatus = '支付失败'
-              vm.msg = response.data.message
+              this.payStatus = '支付失败'
+              this.msg = response.data.message
             }
           })
-        })
       } else {
-        next(vm => {
           if (sessionStorage.getItem('rechargeSuccessMsg')) {
-            vm.payStatus = '支付成功'
-            vm.msg = sessionStorage.getItem('rechargeSuccessMsg') ? sessionStorage.getItem('rechargeSuccessMsg') : ''
-            vm.vipMsg = sessionStorage.getItem('vipMsg') ? sessionStorage.getItem('vipMsg') : ''
+            this.payStatus = '支付成功'
+            this.msg = sessionStorage.getItem('rechargeSuccessMsg') ? sessionStorage.getItem('rechargeSuccessMsg') : ''
+            this.vipMsg = sessionStorage.getItem('vipMsg') ? sessionStorage.getItem('vipMsg') : ''
             sessionStorage.removeItem('rechargeSuccessMsg')
             sessionStorage.removeItem('vipMsg')
           }
           if (sessionStorage.getItem('rechargeErrorMsg')) {
-            vm.payStatus = '支付失败'
-            vm.msg = sessionStorage.getItem('rechargeErrorMsg') ? sessionStorage.getItem('rechargeErrorMsg') : ''
+            this.payStatus = '支付失败'
+            this.msg = sessionStorage.getItem('rechargeErrorMsg') ? sessionStorage.getItem('rechargeErrorMsg') : ''
             sessionStorage.removeItem('rechargeErrorMsg')
           }
-        })
       }
-    },
-    created() {
     },
     methods: {
       kf() {

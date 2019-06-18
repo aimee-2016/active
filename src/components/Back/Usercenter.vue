@@ -163,7 +163,7 @@
                    :key="index" class="authType">
                 <div class="authType-wrapper">
                   <p>{{authType.title}}</p>
-                  <Button type="primary" style="float:right" @click="notAuth.currentStep = authType.go,imgSrc=`user/getKaptchaImage.do?t=${new Date().getTime()}`">立即验证</Button>
+                  <Button type="primary" style="float:right" @click="verifyNow(authType)">立即验证</Button>
                 </div>
                 <div class="authType-flow">认证流程：
                   <div v-for="(step,i) in authType.step" style="display: inline-block">
@@ -203,7 +203,7 @@
                       :class="{notallow:notAuth.cardAuthForm.sendCodeText !='获取验证码'}" @click="sendCodePersonal('voice')">接收语音验证码</span></p>
                   </FormItem>
                   <p style="font-size: 14px;color: #666666;letter-spacing: 0.83px;margin-bottom:20px;">1、请上传实名认证图片
-                    上传文件支持jpg/png/gif/pdf，单个文件最大不超过4MB。</p>
+                    上传文件支持jpg/png/gif，单个文件最大不超过4MB。</p>
                      <p style="font-size: 14px;color: #666666;letter-spacing: 0.83px;margin-bottom:20px;">2、请将真实姓名及“仅用于新睿云身份验证“手写在白纸上，与证件正面一起拍照上传，手写内容请保证清晰可辨认</p>
                   <div class="IDCard">
                     <FormItem label="身份证人像面" style="margin-left:0px;">
@@ -412,7 +412,7 @@
                     </div>
                   </FormItem>
                   <p style="margin: 0px 0px 20px 100px;color:rgba(0,0,0,0.43);">
-                    提示：上传文件支持jpg、png、gif、pdf格式，单个文件最大不超过4MB。</p>
+                    提示：上传文件支持jpg、png、gif格式，单个文件最大不超过4MB。</p>
                   <p class="info-title" style="margin-top: 70px">企业法人信息<span
                     style="position:absolute;width:1160px;height:1px;border:0.5px solid rgb(233, 233, 233);bottom: 60px;left: 0;"></span>
                   </p>
@@ -469,7 +469,13 @@
                     </div>
                   </FormItem>
                   <p style="margin: 0px 0px 20px 100px;color:rgba(0,0,0,0.43);">
-                    提示：上传文件支持jpg、png、gif、pdf格式，单个文件最大不超过4MB。</p>
+                    提示：上传文件支持jpg、png、gif格式，单个文件最大不超过4MB。</p>
+                  <FormItem label="法人与经办人">
+                    <RadioGroup v-model="notAuth.companyAuthForm.relation">
+                       <Radio label="same">法人与经办人是同一人</Radio>
+                       <Radio label="different">法人与经办人不是同一人（可点击<span>下载法人授权委托书</span>)</Radio>
+                    </RadioGroup>
+                  </FormItem>
                   <p class="info-title" style="margin-top: 70px">经办人信息<span
                     style="position:absolute;width:1160px;height:1px;border:0.5px solid rgb(233, 233, 233);bottom: 60px;left: 0;"></span>
                   </p>
@@ -497,9 +503,12 @@
                       :class="{notallow:notAuth.companyAuthForm.codePlaceholder!='发送验证码'}"
                       @click="sendCompanyCode('voice')">接收语音验证码</span></p>
                   </FormItem>
-                  <FormItem label="身份证号码" prop="agentManID">
+                  <p class="info-title" style="margin-top: 70px">上传委托书<span
+                    style="position:absolute;width:1160px;height:1px;border:0.5px solid rgb(233, 233, 233);bottom: 60px;left: 0;"></span>
+                  </p>
+                  <!-- <FormItem label="身份证号码" prop="agentManID">
                     <Input v-model="notAuth.companyAuthForm.agentManID" placeholder="请输入经办人身份证号码" style="width: 300px;"></Input>
-                  </FormItem>
+                  </FormItem> 
                   <FormItem label="上传经办人证件">
                     <div style="display: flex;flex-wrap: wrap;">
                       <div style="padding: 10px;border:1px solid rgba(216,216,216,1);border-radius: 4px; width: 342px;margin-right: 20px">
@@ -568,8 +577,8 @@
                     </div>
                   </FormItem>
                   <p style="margin: 0px 0px 20px 100px;color:rgba(0,0,0,0.43);">
-                    提示：上传文件支持jpg、png、gif、pdf格式，单个文件最大不超过4MB。</p>
-                   <p style="margin: 0px 0px 20px 100px;color:rgba(0,0,0,0.43);">2、请将真实姓名及“仅用于新睿云身份验证“手写在白纸上，与证件正面一起拍照上传，手写内容请保证清晰可辨认</p> 
+                    提示：上传文件支持jpg、png、gif格式，单个文件最大不超过4MB。</p>
+                   <p style="margin: 0px 0px 20px 100px;color:rgba(0,0,0,0.43);">2、请将真实姓名及“仅用于新睿云身份验证“手写在白纸上，与证件正面一起拍照上传，手写内容请保证清晰可辨认</p>  -->
                 </div>
                 <div style="margin-left: 100px;">
                   <Button type="primary" @click="enterpriseAttest" style="font-size: 12px;color: #FFFFFF;">确认提交</Button>
@@ -1351,6 +1360,26 @@
         <Button type="primary" :disabled="informAffirmDisabled" @click="informAffirmModifation">确定{{ informAffirmText}}</Button>
       </p>
     </Modal>
+        <!-- 人脸识别二维码弹出框 -->
+    <Modal v-model="showModal.qrCode" width="550" :scrollable="true" :mask-closable="false" :closable="false">
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">扫码认证</span>
+      </p>
+      <div class="universal-modal-content-flex qrcode-modal">
+         <p v-show="!authStatus" class="p-top">认证完成之前，请勿关闭或者切换此页面，否则可能导致认证失败</p>
+         <p v-show="!authStatus && paneStatus.usercenter == 'certification'">请使用手机扫描二维码，并根据提示完成实名认证</p>
+         <p v-show="!authStatus && paneStatus.usercenter == 'companyInfo'">请使用手机扫描二维码，并根据提示完成企业认证</p>
+         <p v-show="authStatus" class="p-top">您的实名认证提交失败，请刷新二维码重新认证</p>
+         <div class="qr-code">
+            <vue-q-art :config="qrConfig" ></vue-q-art>
+            <div class="shade" v-show="codeLoseEfficacy"></div>
+        </div>
+        <p class="p-bottom">若二维码失效或异常，请 <span @click="refreshQRCode">刷新</span></p>
+      </div>
+      <div slot="footer" class="modal-footer-border">
+        <Button type="primary" @click="showModal.qrCode = false">确定</Button>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -1363,8 +1392,12 @@
   import $store from '../../vuex'
   import throttle from 'throttle-debounce/debounce'
   import {mapState} from 'vuex'
+  import VueQArt from 'vue-qart'
 
   export default {
+    components: {
+      VueQArt
+    },
     data() {
       // 校验地区
       const validateArea = (rule, value, callback) => {
@@ -1452,6 +1485,17 @@
       }
 
       return {
+       qrConfig: {
+          value: '',
+          imagePath: require('../../assets/img/pay/payBackground.png'),
+          filter: 'black',
+          size: 500
+        },
+        // 二维码失效
+        codeLoseEfficacy: false,
+        tempCode: '',
+        codeTimer: null,
+        authStatus: false,
         vipGrade: '',
         // 当前选中的tab页
         uploadImgDispaly: '',
@@ -1537,7 +1581,8 @@
           modifyPhoneID: false,
           Modifyname: false,
           Cancellationaccount: false,
-          cashverification: false
+          cashverification: false,
+          qrCode: false
         },
         //验证码和短信验证
         formCustom: {
@@ -1807,7 +1852,9 @@
             // 税务登记证
             tax: '',
             // 组织机构代码
-            organization: ''
+            organization: '',
+            // 法人与经办人是否同一人
+            relation:'different'
           },
           // 企业认证表单验证
           companyAuthFormValidate: {
@@ -3077,7 +3124,7 @@
         })
       }),
       // 企业认证
-      enterpriseAttest: throttle(2000, function () {
+      enterpriseAttest: throttle(1000, function () {
         this.$refs.companyAuth.validate(validate => {
           if (validate) {
             if (this.notAuth.companyAuthForm.combine == '') {
@@ -3092,57 +3139,104 @@
               this.$Message.info('请上传公司法人身份证反面')
               return
             }
-            if (this.notAuth.companyAuthForm.agentIDFront == '') {
-              this.$Message.info('请上传经办人身份证正面')
+            // if (this.notAuth.companyAuthForm.agentIDFront == '') {
+            //   this.$Message.info('请上传经办人身份证正面')
+            //   return
+            // }
+            // if (this.notAuth.companyAuthForm.agentIDBack == '') {
+            //   this.$Message.info('请上传经办人身份证反面')
+            //   return
+            // }
+            // if (this.notAuth.companyAuthForm.agentIDInHand == '') {
+            //   this.$Message.info('请上传经办人手持身份证照')
+            //   return
+            // }
+          this.tempCode =  this.uuid(6, 16)
+          let url = '/faceRecognition/getUserInfoByPcQRCode.do'
+          axios.post(url,{
+            faceType: '2',
+            tempCode: this.tempCode
+          }).then(res=>{
+            if(res.status == 200 && res.data.status == 1){
+              this.qrConfig.value = res.data.result.url
+              this.showModal.qrCode = true
+              this.refreshUserStatus()
+            } else {
+              this.codeLoseEfficacy = true
+              this.showModal.qrCode = true
+              this.refreshUserStatus()
+            }
+          })
+          }
+        })
+      }),
+      enterpriseAuthentication(){
+        this.$refs.companyAuth.validate(validate => {
+          if (validate) {
+            if (this.notAuth.companyAuthForm.combine == '') {
+              this.$Message.info('请上传公司营业执照')
               return
             }
-            if (this.notAuth.companyAuthForm.agentIDBack == '') {
-              this.$Message.info('请上传经办人身份证反面')
+            if (this.notAuth.companyAuthForm.legalPersonIDFront == '') {
+              this.$Message.info('请上传公司法人身份证正面')
               return
             }
-            if (this.notAuth.companyAuthForm.agentIDInHand == '') {
-              this.$Message.info('请上传经办人手持身份证照')
+            if (this.notAuth.companyAuthForm.legalPersonIDBack == '') {
+              this.$Message.info('请上传公司法人身份证反面')
               return
             }
-            var params = {
-              authType: this.notAuth.companyAuthForm.certificateType,
-              name: this.notAuth.companyAuthForm.name,
-              belongIndustry: this.notAuth.companyAuthForm.industry,
-              trade: this.notAuth.companyAuthForm.industry,
-              phone: this.notAuth.companyAuthForm.contact,
-              companyLinkManPhone: this.notAuth.companyAuthForm.contact,
-              companyCardURL: this.notAuth.companyAuthForm.combine,
-              idCard: this.notAuth.companyAuthForm.agentManID,
-              contectPhone: this.notAuth.companyAuthForm.linkManPhone,
-              phoneCode: this.notAuth.companyAuthForm.verificationCode,
-              businessLicenseNumber: this.notAuth.companyAuthForm.businessLicenseNumber,
-              legalPersonName: this.notAuth.companyAuthForm.linkManName,
-              companyLegalIdcardNumber: this.notAuth.companyAuthForm.linkManNameID,
-              companyLegalIdcardUrl: this.notAuth.companyAuthForm.legalPersonIDFront,
-              companyLegalIdcardBackUrl: this.notAuth.companyAuthForm.legalPersonIDBack,
-              operatorIdcardUrl: this.notAuth.companyAuthForm.agentIDFront,
-              operatorIdcardBackUrl: this.notAuth.companyAuthForm.agentIDBack,
-              operatorIdcardBackByHandUrl: this.notAuth.companyAuthForm.agentIDInHand,
-              legalPersonIDCard: this.notAuth.companyAuthForm.linkManNameID,
-              agentName: this.notAuth.companyAuthForm.agentName,
-              agentPhone: this.notAuth.companyAuthForm.linkManPhone,
-              agentIDCard: this.notAuth.companyAuthForm.agentManID,
-            }
-            axios.post('user/enterpriseAttest.do', params).then(response => {
-              if (response.status == 200 && response.data.status == 1) {
-                window._agl && window._agl.push(['track', ['success', {t: 3}]])
-                // 获取用户信息
-                this.init()
-                this.paneStatus.usercenter = 'companyInfo'
-              } else {
-                this.$message.info({
+            // if (this.notAuth.companyAuthForm.agentIDFront == '') {
+            //   this.$Message.info('请上传经办人身份证正面')
+            //   return
+            // }
+            // if (this.notAuth.companyAuthForm.agentIDBack == '') {
+            //   this.$Message.info('请上传经办人身份证反面')
+            //   return
+            // }
+            // if (this.notAuth.companyAuthForm.agentIDInHand == '') {
+            //   this.$Message.info('请上传经办人手持身份证照')
+            //   return
+            // }
+              let params = {
+                authType: this.notAuth.companyAuthForm.certificateType,
+                name: this.notAuth.companyAuthForm.name,
+                belongIndustry: this.notAuth.companyAuthForm.industry,
+                trade: this.notAuth.companyAuthForm.industry,
+                phone: this.notAuth.companyAuthForm.contact,
+                companyLinkManPhone: this.notAuth.companyAuthForm.contact,
+                companyCardURL: this.notAuth.companyAuthForm.combine,
+                idCard: this.notAuth.companyAuthForm.agentManID,
+                contectPhone: this.notAuth.companyAuthForm.linkManPhone,
+                phoneCode: this.notAuth.companyAuthForm.verificationCode,
+                businessLicenseNumber: this.notAuth.companyAuthForm.businessLicenseNumber,
+                legalPersonName: this.notAuth.companyAuthForm.linkManName,
+                companyLegalIdcardNumber: this.notAuth.companyAuthForm.linkManNameID,
+                companyLegalIdcardUrl: this.notAuth.companyAuthForm.legalPersonIDFront,
+                companyLegalIdcardBackUrl: this.notAuth.companyAuthForm.legalPersonIDBack,
+                // operatorIdcardUrl: this.notAuth.companyAuthForm.agentIDFront,
+                // operatorIdcardBackUrl: this.notAuth.companyAuthForm.agentIDBack,
+                // operatorIdcardBackByHandUrl: this.notAuth.companyAuthForm.agentIDInHand,
+                legalPersonIDCard: this.notAuth.companyAuthForm.linkManNameID,
+                agentName: this.notAuth.companyAuthForm.agentName,
+                agentPhone: this.notAuth.companyAuthForm.linkManPhone,
+                //agentIDCard: this.notAuth.companyAuthForm.agentManID,
+                tempCode: this.tempCode
+              }
+              axios.post('user/enterpriseAttest.do', params).then(response => {
+                if (response.status == 200 && response.data.status == 1) {
+                  window._agl && window._agl.push(['track', ['success', {t: 3}]])
+                  // 获取用户信息
+                  this.init()
+                  this.paneStatus.usercenter = 'companyInfo'
+                  } else {
+                  this.$message.info({
                   content: response.data.message
                 })
               }
             })
           }
         })
-      }),
+      },
       /* 企业认证发送验证码 */
       sendCompanyCode(codeType) {
         var regPhone = false
@@ -4160,6 +4254,98 @@
       changeResetPasswordType(name) {
         this.resetPasswordForm[name] === 'password' ? this.resetPasswordForm[name]= 'text' : this.resetPasswordForm[name] = 'password'
       },
+      verifyNow(authType){
+        this.authStatus = false
+        if(authType.go === 4){
+          this.tempCode =  this.uuid(6, 16)
+          let url = '/faceRecognition/getUserInfoByPcQRCode.do'
+          axios.post(url,{
+            faceType: '1',
+            tempCode: this.tempCode
+          }).then(res=>{
+            if(res.status == 200 && res.data.status == 1){
+              this.qrConfig.value = res.data.result.url
+              this.showModal.qrCode = true
+              this.refreshUserStatus()
+            } else {
+              this.codeLoseEfficacy = true
+              this.showModal.qrCode = true
+              this.refreshUserStatus()
+            }
+          })
+        } else{
+          this.notAuth.currentStep = authType.go
+          this.imgSrc=`user/getKaptchaImage.do?t=${new Date().getTime()}`
+        }
+      },
+        // 刷新用户认证状态
+      refreshUserStatus(){
+        clearInterval(this.codeTimer)
+        this.codeTimer =  setInterval(() => {
+        this.$http.get('/faceRecognition/getAllStatus.do', {params: {tempCode: this.tempCode}}).then(res => {
+          if(res.status == 200 && res.data.status == 1){
+            if(res.data.result.qrCode == 0){
+              this.codeLoseEfficacy = true
+              }
+            if(res.data.result.authStatus == 1){
+               clearInterval(this.codeTimer)
+               if(this.paneStatus.usercenter === 'certification'){
+                 this.init()
+               } else{
+                 this.enterpriseAuthentication()
+               }
+              }
+            if(res.data.result.authStatus == 0){
+              this.authStatus = true
+             }
+            }
+          })
+        }, 3000)
+      },
+      // 刷新二维码状态状态
+      refreshQRCode:throttle(1000, function (){
+        this.authStatus = false
+        this.tempCode =  this.uuid(6, 16)
+        let url = '/faceRecognition/getUserInfoByPcQRCode.do'
+        axios.post(url,{
+          faceType: '1',
+          tempCode: this.tempCode
+        }).then(res=>{
+          if(res.status == 200 && res.data.status == 1){
+            this.$Message.success('刷新成功')
+            this.qrConfig.value = res.data.result.url
+          } else {
+            this.codeLoseEfficacy = true
+          }
+        })
+      }),
+      uuid(len, radix) {
+        var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+        var uuid = [], i;
+        radix = radix || chars.length;
+    
+        if (len) {
+          // Compact form
+          for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random()*radix];
+        } else {
+          // rfc4122, version 4 form
+          var r;
+    
+          // rfc4122 requires these characters
+          uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
+          uuid[14] = '4';
+    
+          // Fill in random data.  At i==19 set the high bits of clock sequence as
+          // per rfc4122, sec. 4.1.5
+          for (i = 0; i < 36; i++) {
+            if (!uuid[i]) {
+              r = 0 | Math.random()*16;
+              uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
+            }
+          }
+        }
+        return uuid.join('');
+      }
     },
     computed: mapState({
       paneStatus: state => state.paneStatus,
@@ -4270,6 +4456,10 @@
           this.authModifyPhoneFormOne.companyHint = false
         }
       }
+    },
+    beforeRouteLeave(to, from, next) {
+      clearInterval(this.codeTimer)
+      next()
     }
   }
 </script>
@@ -4970,5 +5160,44 @@
     top: 10px;
     right: 10px;
     cursor: pointer;
+  }
+  .qrcode-modal{
+    text-align: center;
+    .qr-code{
+      height: 198px;
+      width: 197px;
+      background: url('../../assets/img/app/auth_background.png') no-repeat center;
+      margin: 0 auto;
+      position: relative;
+      .shade{
+        position: absolute;
+        top: 0;
+        height: 198px;
+        width: 197px;
+        background: url('../../assets/img/app/lose_efficacy.png')  center;
+      }
+    }
+    >p{
+      font-size:14px;
+      font-family:MicrosoftYaHei;
+      color:rgba(51,51,51,1);
+      margin: 10px;
+      >span{
+        color: #FF624B;
+      }
+    }
+    .p-top{
+      font-family:MicrosoftYaHei-Bold;
+      font-weight:bold;
+      color:rgba(237,64,20,1);
+    }
+    .p-bottom{
+      margin-top: 14px;
+      margin-bottom: 0;
+      >span{
+        color: #4297F2;
+        cursor: pointer;
+      }
+    }
   }
 </style>
