@@ -109,7 +109,7 @@
             <p>购买时长越长越便宜，年付低至3折</p>
           </div>
           <div class="product">
-            <div>
+            <div v-for="(item,index) in hotHostList" :key="index">
               <div class="head">
                 <h3>云服务器</h3>
                 <span>100%性能可用，更低价格，拒绝套路</span>
@@ -119,11 +119,19 @@
                   <ul>
                     <li>
                       <i>CPU</i>
-                      <span>2核</span>
+                      <span>{{item.config.cpu}}核</span>
                     </li>
                     <li>
-                      <i>CPU</i>
-                      <span>2核</span>
+                      <i>内存</i>
+                      <span>{{item.config.mem}}G</span>
+                    </li>
+                    <li>
+                      <i>宽带</i>
+                      <span>{{item.config.bandwith}}核</span>
+                    </li>
+                    <li>
+                      <i>系统盘</i>
+                      <span>{{item.config.disksize}}GSSD</span>
                     </li>
                   </ul>
                 </div>
@@ -131,12 +139,12 @@
               <div class="body">
                 <div>
                   <span class="label">区域：</span>
-                  <Select v-model="model1" style="width:237px">
+                  <Select v-model="item.zone" style="width:237px">
                     <Option
-                      v-for="item in systemList"
+                      v-for="item in zoneListHot"
                       :value="item.value"
                       :key="item.value"
-                    >{{ item.label }}</Option>
+                    >{{ item.name }}</Option>
                   </Select>
                 </div>
                 <div>
@@ -153,11 +161,11 @@
                   <span class="label">时长：</span>
                   <ul>
                     <li
-                      v-for="(item,index) in timeListHot"
-                      :key="index"
-                      :class="{'selected':selctedTimeHot==index}"
-                      @click="selctedTimeHot=index"
-                    >{{item}}</li>
+                      v-for="(item1,index1) in item.timeList"
+                      :key="index1"
+                      :class="{'selected':item.configId==item1.id}"
+                      @click="item.configId=item1.id"
+                    >{{month(item1.days)}}</li>
                   </ul>
                 </div>
                 <div class="price">
@@ -402,9 +410,69 @@
 </template>
 
 <script type="text/ecmascript-6">
+import axios from 'axios'
 export default {
   data () {
     return {
+      zoneListHot: [],
+      hotHostList:[
+          { 
+            headline: '包月云服务器',
+            subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
+            config:[
+            ],
+            timeList: [],
+            time: '1个月',
+            systemList: [],
+            system: 'windows',
+            zoneId: '',
+            price: '69',
+            originPrice: '176.72',
+            configId: ''
+          },
+          {
+            headline: '包年云服务器',
+            subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
+            config:[
+            ],
+            timeList: [],
+            time: '12个月',
+            systemList: [],
+            system: 'windows',
+            zoneId: '',
+            price: '69',
+            originPrice: '176.72',
+            configId: ''
+          },
+          { 
+            headline: '包月云服务器',
+            subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
+            config:[
+            ],
+            timeList: [],
+            time: '1个月',
+            systemList: [],
+            system: 'windows',
+            zoneId: '',
+            price: '69',
+            originPrice: '176.72',
+            configId: ''
+          },
+          {
+            headline: '包年云服务器',
+            subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
+            config:[
+            ],
+            timeList: [],
+            time: '12个月',
+            systemList: [],
+            system: 'windows',
+            zoneId: '',
+            price: '69',
+            originPrice: '176.72',
+            configId: ''
+          }
+        ],
       value1: 1,
       model1: '',
       systemList: [
@@ -453,7 +521,7 @@ export default {
       onStep: 0,
       showModal: {
         OpenMembership: false,
-        rule: true,
+        rule: false,
       },
     }
   },
@@ -465,11 +533,70 @@ export default {
       this.showModal.OpenMembership = true
       sessionStorage.setItem('frActiveOpenship', true)
     }
+    this.getHostZoneListHot()
+    // this.getHostZoneListHot1()
   },
   mounted () {
 
   },
   methods: {
+    // 获取活动配置,区域
+    getHostZoneListHot() {
+        let url = 'activity/getTemActInfoById.do'
+        axios.get(url, {
+          params: {
+            activityNum: '48'
+          }
+        }).then(res => {
+          if (res.data.status == 1 && res.status == 200) {
+            // 处理数组格式，满足页面渲染要求
+            let originArr = res.data.result.freevmconfigs
+            let timeList = []
+            originArr.forEach((item,index)=>{
+              if((index+1)%2!=0){
+                timeList = []
+              }
+              let rObj = {};
+                rObj['id'] = item.id;
+                rObj['discount'] = item.discount;
+                rObj['days'] = item.days;
+                timeList.push(rObj)
+              if((index+1)%2==0){
+                let num = index-(index+1)/2
+                this.hotHostList[num].config = item
+                this.hotHostList[num].timeList = timeList
+              }
+            })
+            // 获取区域列表
+            this.zoneListHot = res.data.result.optionalArea
+              console.log(this.hotHostList)
+            }
+            //默认选择
+            this.hotHostList.forEach(item=>{
+              item.configId = item.timeList[0].id
+              item.zone = this.zoneListHot[0].value
+            })
+        })
+      },
+      getHostZoneListHot1() {
+        let url = 'activity/getTemActInfoById.do'
+        axios.get(url, {
+          params: {
+            activityNum: '22'
+          }
+        }).then(res => {
+          if (res.data.status == 1 && res.status == 200) {
+            console.log(res.data.result)
+            // this.hostZoneListHot = res.data.result.optionalArea
+            // this.hostProductHot.zoneId = res.data.result.optionalArea[0].value
+            // this.gpuProductHot.freezoneId = res.data.result.optionalArea[0].value
+            // this.hostfreevmconfigs=res.data.result.freevmconfigs[0].id
+            // this.hostdisktype=res.data.result.freevmconfigs[0].disktype
+            // this.hostdisktypetwo=res.data.result.freevmconfigs[1].disktype
+            // this.hostfreevmconfigsthree=res.data.result.freevmconfigs[1].id
+          }
+        })
+      },
     judgeUserFlow () {
       this.$http.get('user/GetUserInfo.do', { params: { t: new Date().getTime() } }).then(res => {
         if (res.data.status === 1) {
@@ -483,9 +610,12 @@ export default {
         }
       })
     },
+    month(val){
+      return val>=360?val/360+'年':val/30+'个月'
+    }
   },
   computed: {
-
+   
   },
   watch: {
 
@@ -738,6 +868,7 @@ section:nth-of-type(1) {
   background: #fff;
   .product {
     display: flex;
+    justify-content: space-between;
     text-align: left;
     background: #fff;
     > div {
