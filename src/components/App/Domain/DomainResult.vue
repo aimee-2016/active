@@ -250,13 +250,14 @@
           return
         }else {
           var year = item.price.split('/')[1]
+          item.status = 'yijia'
           axios.post('domain/getDomainList.do',{
             domainName: item.name,
             year: year.split('年')[0]
           }).then(res => {
             if (res.status == 200 && res.data.status == 1) {
               this.buyLists.push (res.data.data.results)
-              item.status = 'yijia'
+              // item.status = 'yijia'
               this.yearIndex = 'yearIndex'
             }
           })
@@ -348,6 +349,11 @@
         })
       },
       singles(){
+        if (this.singles.length == 0 && this.searchText == '') {
+          this.showFix = false
+          this.Results = []
+          return this.$Message.info('请输入您要查找的域名')
+        }
         var tids = []
         for (var i = 0; i < this.singles.length; i++) {
           //判断当前数组下标为i的元素是否已经保存到临时数组
@@ -357,7 +363,7 @@
           }
         }
         this.Results = []
-        if (tids.length != 0) {
+        if (tids.length != 0 && this.searchText) {
           for (var j = 0; j < tids.length; j += 4) {
             this.showFix = true
             axios.post('domain/domainFound.do', {
@@ -375,44 +381,7 @@
                 this.showFix = false
               }
             })
-//            if ((j + 4 ) > tids.length) {
-//              this.$Message.info('加载完毕!')
-//            }
           }
-//          axios.post('domain/domainFound.do', {
-//            domainName: this.searchText,
-//            tids: tids.slice(0, 8).join(','),
-//          }).then(res => {
-//            this.showFix = false
-//            if (res.data.data.results.length != 0) {
-//              this.Results = res.data.data.results
-//              if (tids.slice(8).length != 0) {
-//                this.showFix = true
-//                this.cancel = true
-//                setTimeout(() => {
-//                  axios.post('domain/domainFound.do', {
-//                    domainName: this.searchText,
-//                    tids: tids.slice(8).join(','),
-//                  }).then(res => {
-//                    if (res.status == 200 && res.data.status == 1) {
-//                      this.showFix = false
-//                      this.cancel = false
-//                      var addList = res.data.data.results
-//                      for (var i in addList) {
-//                        this.Results.push(addList[i]);
-//                      }
-//                      this.$Message.info('加载完毕!')
-//                    }
-//                  })
-//                }, 1000)
-//              }
-//            }
-//            else {
-//              this.$Message.info('暂无数据')
-//            }
-//          })
-        } else {
-          this.Results = []
         }
       }
     },
