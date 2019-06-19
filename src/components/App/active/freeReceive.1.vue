@@ -10,7 +10,26 @@
             <router-link to="/activity/BlacKActivities">立即查看></router-link>
           </div>-->
           <div class="steps">
-            
+            <div @click="roll(400)">
+              <img src="../../../assets/img/active/freeToReceive.1/c-left.png">
+              <img class="number" src="../../../assets/img/active/freeToReceive.1/wnumber-1.png">
+              <span>免费领云服务器</span>
+            </div>
+            <div @click="roll(1400)">
+              <img src="../../../assets/img/active/freeToReceive.1/w-center.png">
+              <img class="number" src="../../../assets/img/active/freeToReceive.1/cnumber-2.png">
+              <span>热销云服务器</span>
+            </div>
+            <div @click="roll(2200)">
+              <img src="../../../assets/img/active/freeToReceive.1/w-center.png">
+              <img class="number" src="../../../assets/img/active/freeToReceive.1/cnumber-3.png">
+              <span>云服务器大集合</span>
+            </div>
+            <div @click="roll(3000)">
+              <img src="../../../assets/img/active/freeToReceive.1/w-right.png">
+              <img class="number" src="../../../assets/img/active/freeToReceive.1/cnumber-4.png">
+              <span>优惠券随时领</span>
+            </div>
           </div>
           <div class="headline" style="color:#fff">
             <h2>免费活动云服务器</h2>
@@ -1586,7 +1605,9 @@ export default {
         }
       })
     },
-
+    roll(val) {
+      $('html, body').animate({scrollTop: val}, 300)
+    }
   },
   computed: {
     notAuth () {
@@ -1702,6 +1723,31 @@ section:nth-of-type(1) {
     }
     span {
       color: #53ffef;
+    }
+  }
+  .steps{
+    display: flex;
+    margin-top: 20px;
+    >div {
+      position: relative;
+      margin-left: -10px;
+      cursor: pointer;
+      &:nth-of-type(1) {
+        margin-left: 0;
+      }
+    }
+    .number {
+      position: absolute;
+      top: 6px;
+      left: 60px;
+    }
+    span {
+      position: absolute;
+      top: 18px;
+      left: 92px;
+      font-size:20px;
+      font-weight:bold;
+      color:#191275;
     }
   }
   .product {
