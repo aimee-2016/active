@@ -335,7 +335,7 @@
     name: 'back',
     data() {
       const validPhoneNumber = (rule, value, callback) => {
-        let reg = /^1[3|5|7|8|9|6|7]\d{9}$/;
+        let reg = /^1[3|4|5|7|8|9|6|7]\d{9}$/;
         if (!reg.test(this.complaintForm.phone)) {
           return callback(new Error("请输入正确的手机号码"));
         } else {
@@ -427,8 +427,8 @@
             subItem: [
               {subName: '防火墙', type: 'firewallList'},
               {subName: '云监控', type: 'CloudMonitor'},
-              {subName: 'SSL证书', type: 'https://domain.xrcloud.net/xrdomain/domainSSL'}
-              //{subName: 'SSL证书', type: 'https://test-domain.xrcloud.net/xrdomain/domainSSL'},
+              //{subName: 'SSL证书', type: 'https://domain.xrcloud.net/xrdomain/domainSSL'}
+              {subName: 'SSL证书', type: 'https://test-domain.xrcloud.net/xrdomain/domainSSL'},
             ]
           },
           {

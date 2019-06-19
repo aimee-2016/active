@@ -44,16 +44,16 @@
           </div>
           <div class="input-box" v-show="Q=='phone'">
             <img src="./img/LR-phone.png">
-            <input v-model="registerForm.phoneLogin" type="text" placeHolder="请输入手机号" @blur="checkUserName">
+            <input v-model="registerForm.phoneLogin" type="text" placeHolder="请输入手机号" @blur="checkUserName" @input="registerWarning = ''">
             <div class="swap">
-              <p @click="Q='email'">使用邮箱注册</p>
+              <p @click="Q='email',registerWarning = ''">使用邮箱注册</p>
             </div>
           </div>
           <div class="input-box" v-show="Q=='email'">
             <img src="./img/LR-phone.png">
-            <input v-model="registerForm.emailLogin" type="text" placeHolder="请输入邮箱" @blur="checkUserName">
+            <input v-model="registerForm.emailLogin" type="text" placeHolder="请输入邮箱" @blur="checkUserName" @input="registerWarning = ''">
             <div class="swap">
-              <p @click="Q='phone'">使用手机注册</p>
+              <p @click="Q='phone',registerWarning = ''">使用手机注册</p>
             </div>
           </div>
           <div class="input-box">
@@ -172,22 +172,21 @@
           行为如扫描、嗅探、ARP欺骗、DOS等。</p>
         <p style="text-indent:3em">（5）危害电信网络安全和信息安全的其他行为。</p>
         <p>6.1.3 除乙方明示许可外，对于乙方提供的操作系统等软件，甲方不得采取修改、翻译、改编、出租、转许可、在信息网络上传播或转让等方式，也不得逆向工程、反编译或试图以
-          其他方式发现乙方提供的软件的源代码；</p>
+              其他方式发现乙方提供的软件的源代码；</p>
         <p>6.1.4 甲方不散布电子邮件广告、垃圾邮件（SPAM）：不利用乙方提供的服务散发不受欢迎的或者未经请求的电子邮件、电子广告或包含反动、色情等违法或有害信息的电子邮件；</p>
         <p>6.1.5 甲方不得建立或利用设备、配置运行与本服务无关的程序或进程，而大量占用乙方云计算资源（如云服务器、网络带宽、存储空间等）所组成的平台中服务器内存、CPU或者
-          网络带宽资源，给乙方云平台或者乙方的其他用户的网络、服务器（包括但不限于本地及外地和国际的网络、服务器等）、产品/应用等带来严重负荷，影响乙方与国际互联网或者
-          乙方与特定网络、服务器及乙方内部的通畅联系，或者导致乙方云平台产品与服务或者乙方的其他用户网站所在的服务器宕机、死机或者用户基于云平台的产品/应用不可访问等；</p>
-        <p>6.1.6甲方不进行任何改变或试图改变乙方提供的系统配置或破坏系统安全的行为；</p>
-        <p>6.1.7 若甲方存在上述6.1.1～6.1.6条约定的任一情形的，乙方有权按相关规定暂停或终止提供云业务服务，保存有关记录，并向政府主管部门报告，由此引起的一切后果和责任
-          由甲方负责。同时，乙方有权终止本协议，并不承担任何责任。</p>
+              网络带宽资源，给乙方云平台或者乙方的其他用户的网络、服务器（包括但不限于本地及外地和国际的网络、服务器等）、产品/应用等带来严重负荷，影响乙方与国际互联网或者
+              乙方与特定网络、服务器及乙方内部的通畅联系，或者导致乙方云平台产品与服务或者乙方的其他用户网站所在的服务器宕机、死机或者用户基于云平台的产品/应用不可访问等；</p>
+        <p>6.1.6 甲方不进行任何改变或试图改变乙方提供的系统配置或破坏系统安全的行为；</p>
+        <p>6.1.7 若甲方存在上述6.1.1～6.1.6条约定的任一情形的，乙方有权按相关规定删除信息、暂停或终止提供云业务服务，并有权冻结或注销您账户部分或全部功能，包括但不限于帐户被限制资金转出功能、押金提现、退款等。并且，乙方将保存有关记录，并向政府主管部门报告，由此引起的一切后果和责任由甲方负责。同时，乙方有权终止本协议，并不承担任何责任。</p>
         <p>6.2本服务使用过程中，对于甲方自行提供并使用的软件，甲方应保证该等软件的合法性和不侵权。如任何第三方主张甲方所使用软件侵犯其所有权或者知识产权等合法权益，甲方
-          应负责解决，并赔偿乙方就此而承担的一切费用和损失。</p>
-        <p>6.3甲方使用云业务服务所引起的一切后果由甲方承担。如因甲方使用云业务服务中所涉行为或内容不合法或侵权而导致乙方承担责任或对乙方造成损失的，甲方应负责解决，并赔
-          偿乙方由此遭受的全部损失；同时乙方有权终止本协议。</p>
-        <p>6.4在本协议有效期内，甲方对由乙方分配的IP地址具有使用权，且不可以任何方式转由他人使用。甲方不得私自使用乙方未分配给甲方的IP地址。甲方不再使用本服务时，则相关
-          IP地址使用权由乙方收回。</p>
-        <p>6.5对于甲方使用云业务服务过程中所涉自身信息和资料、数据（包括但不限于商业机密等）、最终用户及其他相关主体的信息和资料、数据等，甲方负责保密，并自行承担由此产
-          生的一切后果和责任。</p>
+              应负责解决，并赔偿乙方就此而承担的一切费用和损失。</p>
+        <p>6.3 甲方使用云业务服务所引起的一切后果由甲方承担。如因甲方使用云业务服务中所涉行为或内容不合法或侵权而导致乙方承担责任或对乙方造成损失的，甲方应负责解决，并赔偿乙方由此遭受的全部损失；同时乙方的新睿云账户（全部或部分权限或功能）将被冻结包括但不限于帐户被限制资金转出功能、押金提现、退款等。</p>
+        <p>6.4 乙方理解并同意，如果乙方拒绝如实提供身份证明及相关资料，或未能通过新睿云审核，新睿云有权长期冻结该等账户且长期限制账户部分或全部功能，包括但不限于资金转出功能、押金提现、退款等。</p>
+        <p>6.5 在本协议有效期内，甲方对由乙方分配的IP地址具有使用权，且不可以任何方式转由他人使用。甲方不得私自使用乙方未分配给甲方的IP地址。甲方不再使用本服务时，则相关
+              IP地址使用权由乙方收回。</p>
+        <p>6.6 对于甲方使用云业务服务过程中所涉自身信息和资料、数据（包括但不限于商业机密等）、最终用户及其他相关主体的信息和资料、数据等，甲方负责保密，并自行承担由此产
+              生的一切后果和责任。</p>
         <p style="margin-top: 20px; text-indent:0em"><strong>第七条 乙方权利和义务</strong></p>
         <p>7.1 乙方负责按照本协议约定的条件提供云业务服务及相关的支撑服务。</p>
         <p>7.2 乙方有权对甲方对外公布信息内容进行检查，一旦发现含有本协议约定的任何违法或有违社会公序良俗的内容、超出经营许可或备案项目范围的内容，或指向这些内容链接的
@@ -300,8 +299,7 @@
         <p style="text-indent:1em">4、故意制作、传播计算机病毒等破坏性程序的。</p>
         <p style="text-indent:1em">5、其他危害计算机信息网络安全的。</p>
         <p style="text-indent:0em">八、甲方承诺，当计算机信息系统发生重大安全事故时，立即采取应急措施，保留有关原始记录，并在24小时内向政府监管部门报告，并书面知会乙方。</p>
-        <p style="text-indent:0em">九、若违反本承诺书有关条款和国家相关法律法规的，甲方直接承担相应法律责任，造成财产损失的，由甲方直接赔偿。同时，乙方有权暂停提供云
-          服务直至解除服务协议。</p>
+        <p style="text-indent:0em">九、若违反本承诺书有关条款和国家相关法律法规的，甲方直接承担相应法律责任，造成财产损失的，由甲方直接赔偿。同时，乙方有权按相关规定删除信息、暂停或终止提供云业务服务，并有权冻结或注销乙方账户部分或全部功能，包括但不限于帐户被限制资金转出功能、押金提现、退款等。</p>
         <p style="text-indent:0em">十、用户承诺与最终用户参照签订此类《网络信息安全承诺书》，并督促最终用户履行相应责任，否则，用户承担连带责任。</p>
         <p style="text-indent:0em">十一、本承诺书自用户申请注册之日起生效并遵行。</p>
         <p style="margin-top: 20px; text-indent:0em"><strong>附件三  《新睿云云主机服务等级协议》</strong></p>
@@ -478,11 +476,11 @@
       },
       // 校验手机/邮箱是否注册
       checkUserName(){
-        if (this.Q == 'phone' && this.registerForm.phoneLogin.trim() != '' && !regExp.phoneVail(this.registerForm.phoneLogin)) {
+        if ((this.Q == 'phone' && this.registerForm.phoneLogin.trim() != '' && !regExp.phoneVail(this.registerForm.phoneLogin)) || (this.Q == 'phone' && this.registerForm.phoneLogin == '')) {
           this.registerWarning = '请输入正确手机号'
           return
         }
-        if (this.Q == 'email' && this.registerForm.emailLogin.trim() != '' && !regExp.emailVail(this.registerForm.emailLogin)) {
+        if ((this.Q == 'email' && this.registerForm.emailLogin.trim() != '' && !regExp.emailVail(this.registerForm.emailLogin))||(this.Q == 'email' && this.registerForm.emailLogin == '')) {
           this.registerWarning = '请输入正确邮箱'
           return
         }
@@ -512,7 +510,7 @@
           return
         }
         if (this.registerForm.phoneVailCode.trim() == '') {
-          this.registerWarning = '请输入正确邮箱'
+          this.registerWarning = '请输入正确的验证码'
           return
         }
         if (this.registerForm.password.trim() == '' || !regExp.passwordVail(this.registerForm.password)) {
