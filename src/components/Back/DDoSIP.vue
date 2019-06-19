@@ -107,6 +107,11 @@
 export default {
   data() {
     return {
+      // 弹窗
+      showModal:{
+
+      },  
+
       button1: "网站业务",
       // 证书管理
       certificateKyeHide: true,
@@ -288,8 +293,10 @@ export default {
               部署状态:'aaaa',
               防护状态:'aaa',
           }
-      ]  
-
+      ]
+      
+      // 非网站业务
+        
     };
   }
 };
