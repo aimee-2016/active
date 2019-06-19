@@ -471,16 +471,16 @@
                   <p style="margin: 0px 0px 20px 100px;color:rgba(0,0,0,0.43);">
                     提示：上传文件支持jpg、png、gif格式，单个文件最大不超过4MB。</p>
                   <FormItem label="法人与经办人">
-                    <RadioGroup v-model="notAuth.companyAuthForm.relation">
-                       <Radio label="same">法人与经办人是同一人</Radio>
-                       <Radio label="different">法人与经办人不是同一人（可点击<span>下载法人授权委托书</span>)</Radio>
+                    <RadioGroup v-model="notAuth.companyAuthForm.relation" @on-change = "changeRelation">
+                       <Radio label="same" :disabled = '!notAuth.companyAuthForm.linkManName'>法人与经办人是同一人</Radio>
+                       <Radio label="different">法人与经办人不是同一人（可点击<a href="https://www.xrcloud.net/ruicloud/keepOnRecord/attorney.doc">下载法人授权委托书</a>)</Radio>
                     </RadioGroup>
                   </FormItem>
                   <p class="info-title" style="margin-top: 70px">经办人信息<span
                     style="position:absolute;width:1160px;height:1px;border:0.5px solid rgb(233, 233, 233);bottom: 60px;left: 0;"></span>
                   </p>
                   <FormItem label="经办人姓名" prop="agentName">
-                    <Input v-model="notAuth.companyAuthForm.agentName" placeholder="请输入经办人姓名" style="width: 300px;"></Input>
+                    <Input v-model="notAuth.companyAuthForm.agentName" placeholder="请输入经办人姓名" style="width: 300px;" :disabled="notAuth.companyAuthForm.agentNameDisabled" ></Input>
                   </FormItem>
                   <FormItem label="图形验证码" prop="imgCode">
                     <Input v-model="notAuth.companyAuthForm.imgCode" placeholder="请输入图形验证码" style="width: 300px"></Input>
@@ -503,9 +503,30 @@
                       :class="{notallow:notAuth.companyAuthForm.codePlaceholder!='发送验证码'}"
                       @click="sendCompanyCode('voice')">接收语音验证码</span></p>
                   </FormItem>
-                  <p class="info-title" style="margin-top: 70px">上传委托书<span
+                  <p class="info-title" style="margin-top: 70px" v-if="notAuth.companyAuthForm.relation == 'different'">上传委托书<span
                     style="position:absolute;width:1160px;height:1px;border:0.5px solid rgb(233, 233, 233);bottom: 60px;left: 0;"></span>
                   </p>
+                  <FormItem label="上传法人委托书" v-if="notAuth.companyAuthForm.relation == 'different'">
+                    <div style="padding: 10px;border:1px solid rgba(216,216,216,1);border-radius: 4px; width: 342px;">
+                      <div style="display: flex;padding:20px;background-color: #f7f7f7;width: 320px">
+                        <div style="width:260px;">
+                          <Upload multiple type="drag" :show-upload-list="false" :with-credentials="true" action="file/upFile.do"
+                                  :format="['jpg','jpeg','png','gif']" :max-size="4096" :on-format-error="handleFormatError"
+                                  :on-exceeded-size="handleMaxSize" :on-success="powerOfAttorney">
+                            <div v-if="notAuth.companyAuthForm.powerOfAttorney==''"
+                                 style="padding: 20px 0px;margin-bottom: 32px;height: 74px;border:1px solid #ffffff;color: #999;background-color: #FFF">
+                              <img src="../../assets/img/usercenter/uc-add.png"/>
+                            </div>
+                            <img style="height: 74px" v-else :src="notAuth.companyAuthForm.powerOfAttorney">
+                            <p style="font-size:14px;font-family: MicrosoftYaHei;color:rgba(74,144,226,1);text-decoration: underline;">
+                              上传文件</p>
+                          </Upload>
+                        </div>
+                      </div>
+                    </div>
+                  </FormItem>
+                    <p style="margin: 0px 0px 20px 100px;color:rgba(0,0,0,0.43);" v-if="notAuth.companyAuthForm.relation == 'different'">
+                    提示：上传文件支持jpg、png、gif格式，单个文件最大不超过4MB。</p>
                   <!-- <FormItem label="身份证号码" prop="agentManID">
                     <Input v-model="notAuth.companyAuthForm.agentManID" placeholder="请输入经办人身份证号码" style="width: 300px;"></Input>
                   </FormItem> 
@@ -1853,8 +1874,12 @@
             tax: '',
             // 组织机构代码
             organization: '',
+            // 法人经办人同一人禁止输入经办人名称
+            agentNameDisabled: false,
             // 法人与经办人是否同一人
-            relation:'different'
+            relation:'different',
+            // 法人委托书
+            powerOfAttorney: ''
           },
           // 企业认证表单验证
           companyAuthFormValidate: {
@@ -3139,6 +3164,10 @@
               this.$Message.info('请上传公司法人身份证反面')
               return
             }
+            if (this.notAuth.companyAuthForm.relation == 'different' && this.notAuth.companyAuthForm.powerOfAttorney == '') {
+              this.$Message.info('请上传法人委托书')
+              return
+            }
             // if (this.notAuth.companyAuthForm.agentIDFront == '') {
             //   this.$Message.info('请上传经办人身份证正面')
             //   return
@@ -3185,6 +3214,10 @@
               this.$Message.info('请上传公司法人身份证反面')
               return
             }
+            if (this.this.notAuth.companyAuthForm.relation == 'different' && this.notAuth.companyAuthForm.powerOfAttorney == '') {
+              this.$Message.info('请上传法人委托书')
+              return
+            }
             // if (this.notAuth.companyAuthForm.agentIDFront == '') {
             //   this.$Message.info('请上传经办人身份证正面')
             //   return
@@ -3219,6 +3252,7 @@
                 legalPersonIDCard: this.notAuth.companyAuthForm.linkManNameID,
                 agentName: this.notAuth.companyAuthForm.agentName,
                 agentPhone: this.notAuth.companyAuthForm.linkManPhone,
+                legalPersonAuthorizationBook: this.notAuth.companyAuthForm.powerOfAttorney,
                 //agentIDCard: this.notAuth.companyAuthForm.agentManID,
                 tempCode: this.tempCode
               }
@@ -3816,6 +3850,11 @@
           this.notAuth.companyAuthForm.combine = response.result
         }
       },
+      powerOfAttorney(){
+        if (response.status == 1) {
+          this.notAuth.companyAuthForm.powerOfAttorney = response.result
+        }
+      },
       uploadHeadPhotoSuccess(response) {
         if (response.status == 1) {
           let s = setInterval(() => {
@@ -4319,6 +4358,16 @@
           }
         })
       }),
+      changeRelation(){
+        if(this.notAuth.companyAuthForm.relation == 'same'){
+          this.notAuth.companyAuthForm.agentName = this.notAuth.companyAuthForm.linkManName
+          this.notAuth.companyAuthForm.agentNameDisabled = true
+        }
+        if(this.notAuth.companyAuthForm.relation == 'different'){
+          this.notAuth.companyAuthForm.agentName = ''
+          this.notAuth.companyAuthForm.agentNameDisabled = false
+        }
+      },
       uuid(len, radix) {
         var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
         var uuid = [], i;
@@ -4442,6 +4491,14 @@
       '$store.state.zone': {
         handler: function () {
           this.getResourceAllocation()
+        },
+        deep: true
+      },
+      'notAuth.companyAuthForm.linkManName':{
+        handler: function (val) {
+          if(this.notAuth.companyAuthForm.relation == 'same'){
+            this.notAuth.companyAuthForm.agentName = val
+          }
         },
         deep: true
       },
