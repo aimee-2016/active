@@ -5192,7 +5192,7 @@
     height: 220px;
     position: relative;
     margin: 0 auto;
-    top: 15%;
+    top: 33%;
     .header{
       background: none;
        > img{
