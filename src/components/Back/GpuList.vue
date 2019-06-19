@@ -1577,12 +1577,12 @@
 
         //解绑IP
         unbind() {
-           this.hostData.forEach(host => {
-            if (host.id == this.hostSelectList.id) {
-              host.bindip = 1
-              host._disabled = true
-            }
-          })
+          //  this.hostData.forEach(host => {
+          //   if (host.id == this.hostSelectList.id) {
+          //     host.bindip = 1
+          //     host._disabled = true
+          //   }
+          // })
             this.$http.get('network/disableStaticNat.do', {
               params: {
                 ipId: this.selectLength[0].publicip,
