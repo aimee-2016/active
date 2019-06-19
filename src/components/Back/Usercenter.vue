@@ -51,6 +51,7 @@
                        <li v-if="authInfo&&authInfo.authtype==1&& authInfo.checkstatus == 2"><span>认证信息</span><span style="color: #FF9339">企业认证中</span></li>
                     <li v-if="authInfo&&authInfo.authtype==1&& authInfo.checkstatus == 1"><span>认证信息</span><span style="color: #FF9339">企业认证失败</span><span
                       @click="paneStatus.usercenter ='companyInfo'">重新认证</span></li>
+                    <li v-if="authInfo&&authInfo.authtype==1&& authInfo.checkstatus == 0"><span>认证信息</span><span style="color: #FF9339">企业认证成功</span></li>
                   </ul>
                 </div>
               </div>
