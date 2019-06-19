@@ -13,58 +13,70 @@
             <h2>免费活动云服务器</h2>
             <p>
               新用户专享，为防止恶意刷抢主机，遂需缴纳保证金，保证金随时可退
-              <span style="color:#53FFEF;cursor:pointer;text-decoration: underline;" @click="showModal.rule=true">活动规则></span>
+              <span
+                style="color:#53FFEF;cursor:pointer;text-decoration: underline;"
+                @click="showModal.rule=true"
+              >活动规则></span>
             </p>
           </div>
           <div class="product">
-            <div>
+            <div v-for="(item,index) in depositList" :key="index">
               <div class="head">
-                <h3>包月云服务器</h3>
-                <span>适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。</span>
+                <h3>{{item.headline}}</h3>
+                <span>{{item.subtitle}}</span>
               </div>
               <div class="body">
                 <div class="configure">
                   <ul>
                     <li>
                       <i>CPU</i>
-                      <span>2核</span>
+                      <span>{{item.config.cpu}}核</span>
                     </li>
                     <li>
-                      <i>CPU</i>
-                      <span>2核</span>
+                      <i>内存</i>
+                      <span>{{item.config.mem}}G</span>
+                    </li>
+                    <li>
+                      <i>宽带</i>
+                      <span>{{item.config.bandwith}}核</span>
+                    </li>
+                    <li>
+                      <i>系统盘</i>
+                      <span>{{item.config.disksize}}GSSD</span>
                     </li>
                   </ul>
                 </div>
                 <div class="area">
-                  <span class="label">选择区域:</span>
+                  <span class="label" style="padding-top: 10px;">选择区域:</span>
                   <ul>
                     <li
-                      v-for="(item,index) in zoneList"
-                      :key="index"
-                      :class="{'selected':selctedZone==index}"
-                      @click="selctedZone=index"
-                    >{{item}}</li>
+                      v-for="(item1,index1) in zoneListDeposit"
+                      :key="index1"
+                      :class="{'selected':item.zone==item1.value}"
+                      @click="changgeZoneDeposite(item,item1,index,'depositList')"
+                    >{{item1.name}}</li>
                   </ul>
                 </div>
                 <div>
                   <span class="label">选择系统:</span>
-                  <Select v-model="model1" style="width:350px">
-                    <Option
-                      v-for="item in systemList"
-                      :value="item.value"
-                      :key="item.value"
-                    >{{ item.label }}</Option>
-                  </Select>
+                  <Cascader
+                    :data="item.systemList"
+                    v-model="item.system"
+                    style="width:237px;display:inline-block"
+                  ></Cascader>
                 </div>
                 <div class="price">
                   使用价格：
-                  <span>¥0</span> /月
+                  <span>¥0</span>
+                  /{{item.unit}}
                 </div>
                 <div class="deposit">
-                  押金：¥69/月
-                  <span>原价：¥176.72</span>
+                  押金：¥{{item.cashPledge+'/'+item.unit}}
+                  <span
+                    style="text-decoration: line-through;"
+                  >原价：¥{{item.originPrice}}</span>
                 </div>
-                <Button>免费领取</Button>
+                <Button @click="getHost(index)">免费领取</Button>
               </div>
             </div>
           </div>
@@ -72,7 +84,8 @@
             温馨提示：使用期间若到“百度口碑”发布使用体验等相关评论，截图联系发送至在线客服，可领取满200减100优惠券。
             <a
               href="https://koubei.baidu.com/s/510a4f5f6316c2d0f81b3e63bc75b537?fr=search"
-              target="blank" style="text-decoration: underline;"
+              target="blank"
+              style="text-decoration: underline;"
             >点击发布评论></a>
           </div>
           <div class="fr-flow">
@@ -139,7 +152,11 @@
               <div class="body">
                 <div>
                   <span class="label">区域：</span>
-                  <Select v-model="item.zone" style="width:237px">
+                  <Select
+                    v-model="item.zone"
+                    style="width:237px"
+                    @on-change="changeZoneHost(item,index,'hotHostList')"
+                  >
                     <Option
                       v-for="item in zoneListHot"
                       :value="item.value"
@@ -149,13 +166,7 @@
                 </div>
                 <div>
                   <span class="label">系统：</span>
-                  <Select v-model="model1" style="width:237px">
-                    <Option
-                      v-for="item in systemList"
-                      :value="item.value"
-                      :key="item.value"
-                    >{{ item.label }}</Option>
-                  </Select>
+                  <Cascader :data="item.systemList" v-model="item.system" style="width:237px;"></Cascader>
                 </div>
                 <div class="time">
                   <span class="label">时长：</span>
@@ -164,16 +175,19 @@
                       v-for="(item1,index1) in item.timeList"
                       :key="index1"
                       :class="{'selected':item.configId==item1.id}"
-                      @click="item.configId=item1.id"
+                      @click="changgeTimeHot(item,item1)"
                     >{{month(item1.days)}}</li>
                   </ul>
                 </div>
                 <div class="price">
                   价格：￥
-                  <span>744.19</span>
+                  <span>{{item.price}}</span>
                 </div>
-                <div class="origin-price">原价：￥2600.64/1年</div>
-                <Button>立即购买</Button>
+                <div class="origin-price">
+                  原价：￥
+                  <span>{{item.originPrice+'/'+month(item.time)}}</span>
+                </div>
+                <Button @click="pushOrderHot(item)">立即购买</Button>
               </div>
             </div>
           </div>
@@ -201,54 +215,59 @@
                       <li
                         v-for="(item,index) in configureList"
                         :key="index"
-                        :class="{'selected':selctedConfigure==index}"
-                        @click="selctedConfigure=index"
-                      >{{item}}</li>
+                        :class="{'selected':selectConfig==item.cpu+','+item.mem}"
+                        @click="changHostConfig(item.cpu+','+item.mem)"
+                      >{{ item.cpu+'核'+item.mem+'G'}}</li>
                     </ul>
                     <span class="tips">*以上配置皆包含40G SSD系统盘</span>
                   </div>
                   <div>
                     <span class="label">GPU服务器配置选择：</span>
-                    <Select v-model="model1" style="width:476px">
+                    <Select v-model="selectConfig" style="width:476px" placeholder="请选择" @on-change="changGPUconfig">
                       <Option
-                        v-for="item in systemList"
-                        :value="item.value"
-                        :key="item.value"
-                      >{{ item.label }}</Option>
+                        v-for="(item,index) in gpuConfigList"
+                        :value="item.cpu+','+item.mem+','+item.num"
+                        :key="index"
+                      >{{ item.cpu+'核'+item.mem+'G'+item.num+' *NVIDIA_P100' }}</Option>
                     </Select>
                   </div>
-                  <div class="area">
+                  <div class="area" v-if="selectConfig.split(',').length==2">
                     <span class="label">区域选择</span>
                     <ul>
                       <li
-                        v-for="(item,index) in zoneList"
+                        v-for="(item,index) in hostZoneList"
                         :key="index"
-                        :class="{'selected':selctedZone==index}"
-                        @click="selctedZone=index"
-                      >{{item}}</li>
+                        :class="{'selected':selectZone==item.zoneid}"
+                        @click="changzone(item)"
+                      >{{item.zonename}}</li>
+                    </ul>
+                  </div>
+                  <div class="area" v-else>
+                    <span class="label">区域选择</span>
+                    <ul>
+                      <li
+                        v-for="(item,index) in gpuZoneList"
+                        :key="index"
+                        :class="{'selected':selectZone==item.zoneid}"
+                        @click="changzone(item)"
+                      >{{item.zonename}}</li>
                     </ul>
                   </div>
                 </div>
                 <div class="right">
                   <div>
                     <span class="label">带宽选择</span>
-                    <Select v-model="model1" style="width:408px">
-                      <Option
-                        v-for="item in systemList"
-                        :value="item.value"
-                        :key="item.value"
-                      >{{ item.label }}</Option>
+                    <Select v-model="selectBandWidth" style="width:408px">
+                      <Option v-for="item in bandWidthList" :value="item" :key="item">{{item}}M</Option>
                     </Select>
                   </div>
                   <div>
                     <span class="label">系统选择</span>
-                    <Select v-model="model1" style="width:408px">
-                      <Option
-                        v-for="item in systemList"
-                        :value="item.value"
-                        :key="item.value"
-                      >{{ item.label }}</Option>
-                    </Select>
+                    <Cascader
+                      :data="summarySystemList"
+                      v-model="selectSummarySystem"
+                      style="width:408px;"
+                    ></Cascader>
                   </div>
                   <div class="ssd">
                     <span class="label">SSD数据盘</span>
@@ -256,19 +275,19 @@
                       <li
                         v-for="(item,index) in ssdList"
                         :key="index"
-                        :class="{'selected':selctedSSD==index}"
-                        @click="selctedSSD=index"
-                      >{{item}}</li>
+                        :class="{'selected':selectedSSD==item}"
+                        @click="selectedSSD=item"
+                      >{{item}}G</li>
                     </ul>
                   </div>
                   <div>
                     <span class="label">购买时长</span>
-                    <Select v-model="model1" style="width:408px">
+                    <Select v-model="selectTime" style="width:408px">
                       <Option
-                        v-for="item in systemList"
-                        :value="item.value"
-                        :key="item.value"
-                      >{{ item.label }}</Option>
+                        v-for="(item,index) in hostTimeList"
+                        :value="item"
+                        :key="index"
+                      >{{item<12?item+'月':item/12+'年'}}</Option>
                     </Select>
                   </div>
                   <div>
@@ -277,7 +296,8 @@
                   </div>
                   <div class="price">
                     ￥
-                    <span>1396.09</span>
+                    <span>{{totalDataCost.toFixed(2)}}</span>
+                    <!-- <i>{{totalDataCoupon}}</i> -->
                   </div>
                   <Button>立即购买</Button>
                 </div>
@@ -301,7 +321,7 @@
                   <span>50G</span>
                 </h3>
               </div>
-              <Button>立即领取</Button>
+              <Button @click="$router.push('/activity/objectstorage/')">立即领取</Button>
             </div>
             <div>
               <div class="head">
@@ -310,7 +330,7 @@
                   <span>60</span>天
                 </h3>
               </div>
-              <Button>立即领取</Button>
+              <Button @click="$router.push('/activity/hotdatabase/')">立即领取</Button>
             </div>
           </div>
           <div class="coupons">
@@ -354,7 +374,7 @@
                 <span>升级续费券</span>
               </div>
             </div>
-            <Button>一键领取</Button>
+            <Button @click="getTiket()">一键领取</Button>
           </div>
         </div>
       </div>
@@ -374,6 +394,30 @@
         </div>
       </div>
     </transition>
+    <!-- 不满足条件-->
+    <Modal v-model="showModal.inConformityModal" :scrollable="true" :closable="false" :width="390">
+      <div class="modal-content-s" style="padding: 30px 30px 0 50px">
+        <div>
+          <div
+            class="ivu-modal-confirm-body-icon ivu-modal-confirm-body-icon-warning"
+            style="top: 48px;left: 30px;"
+          >
+            <i class="ivu-icon ivu-icon-android-alert"></i>
+          </div>
+          <p class="lh24">
+            您好，您不符合本活动的参与条件，您还可以去看看
+            <span
+              style="color: #FF9700;cursor: pointer"
+              @click="$router.push('/activity/BlacKActivities')"
+            >“低价秒杀，买一赠一”</span>活动。
+          </p>
+        </div>
+      </div>
+      <p slot="footer" class="modal-footer-s">
+        <Button @click="showModal.inConformityModal = false">取消</Button>
+        <Button type="primary" @click="$router.push('/activity/BlacKActivities')">现在就去</Button>
+      </p>
+    </Modal>
     <!-- 活动规则 -->
     <transition name="fade">
       <div class="overlay" @click.stop="showModal.rule=true" v-if="showModal.rule">
@@ -401,7 +445,7 @@
             <p>6、活动声明：为保证活动的公平公正，新睿云有权对恶意刷抢（如通过程序等技术手段）活动资源，领取后3天内未使用资源、利用资源从事违法违规行为的用户收回免费套餐使用资格。因此造成任何损失的，由该用户自行负责。</p>
           </div>
           <div class="footer">
-            <span  @click.stop="showModal.rule=false">知道了</span>
+            <span @click.stop="showModal.rule=false">知道了</span>
           </div>
         </div>
       </div>
@@ -411,68 +455,296 @@
 
 <script type="text/ecmascript-6">
 import axios from 'axios'
+import reg from '../../../util/regExp'
+import VueQArt from 'vue-qart'
+import $ from 'jquery'
 export default {
   data () {
+    const validaRegisteredPhone = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('电话号码不能为空'));
+      }
+      if (!(/^1(3|4|5|7|8|9)\d{9}$/.test(value)) && !(/^0\d{2,3}-?\d{7,8}$/.test(value))) {
+        callback(new Error('请输入正确的电话号码'));
+      } else {
+        callback()
+      }
+    }
+    const validaRegisteredID = (rule, value, callback) => {
+      if (!reg.IDCardVail(value)) {
+        callback(new Error('请输入正确的身份证号码'));
+      } else {
+        callback()
+      }
+    }
+    const validaRegisteredName = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('联系人不能为空'));
+      }
+      if ((/[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im.test(value)) || (/[·！#￥（——）：；“”‘、，|《。》？、【】[\]]/im.test(value)) || (/\s+/.test(value)) || (/^[0-9]*$/.test(value))) {
+        callback(new Error('输入姓名不能包含特殊字符、空格或是纯数字'));
+      } else {
+        callback()
+      }
+    }
     return {
+      vmCost: 0,
+      vmCoupon: 0,
+      dataDiskCost: 0,
+      coupon: 0,
+      ipCost: 0,
+      ipCoupon: 0,
+      selectSummarySystem: [],
+      summarySystemList: [{
+        value: 'window',
+        label: 'Windows',
+        children: []
+      }, {
+        value: 'centos',
+        label: 'Centos',
+        children: [],
+      },
+      {
+        value: 'debian',
+        label: 'Debian',
+        children: [],
+      },
+      {
+        value: 'ubuntu',
+        label: 'Ubuntu',
+        children: [],
+      }],
+      hostZoneList: [],
+      gpuZoneList: [],
+      selectZone: '',
+      selectConfig: '8,64,1',
+      configureList: [
+        { cpu: 1, mem: 1 },
+        { cpu: 1, mem: 2 },
+        { cpu: 2, mem: 4 },
+        { cpu: 4, mem: 8 },
+        { cpu: 8, mem: 16 },
+        { cpu: 16, mem: 32 },
+        { cpu: 32, mem: 64 },
+        { cpu: 64, mem: 256 }
+      ],
+      gpuConfigList: [
+        { cpu: 8, mem: 64, num: 1 },
+        { cpu: 16, mem: 128, num: 2 },
+        { cpu: 16, mem: 192, num: 3 },
+        { cpu: 32, mem: 256, num: 4 },
+        { cpu: 64, mem: 384, num: 6 },
+      ],
+      selectBandWidth: 1,
+      bandWidthList: [1, 2, 5, 10, 20],
+      hostTimeList: [1,2,3,4,5,6,7,8,9,10,12,24,36],
+      selectTime:1,
+      zoneListDeposit: [],
+      depositList: [
+        {
+          headline: '包月云服务器',
+          subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
+          config: [
+          ],
+          timeList: [],
+          time: '1个月',
+          systemList: [{
+            value: 'window',
+            label: 'Windows',
+            children: []
+          }, {
+            value: 'centos',
+            label: 'Centos',
+            children: [],
+          },
+          {
+            value: 'debian',
+            label: 'Debian',
+            children: [],
+          },
+          {
+            value: 'ubuntu',
+            label: 'Ubuntu',
+            children: [],
+          }],
+          system: [],
+          zone: '',
+          zoneId: '',
+          cashPledge: '69',
+          originPrice: '176.72',
+          configId: '',
+          unit: '月'
+        },
+        {
+          headline: '包年云服务器',
+          subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
+          config: [
+          ],
+          timeList: [],
+          time: '12个月',
+          systemList: [{
+            value: 'window',
+            label: 'Windows',
+            children: []
+          }, {
+            value: 'centos',
+            label: 'Centos',
+            children: [],
+          },
+          {
+            value: 'debian',
+            label: 'Debian',
+            children: [],
+          },
+          {
+            value: 'ubuntu',
+            label: 'Ubuntu',
+            children: [],
+          }],
+          system: [],
+          zone: '',
+          zoneId: '',
+          cashPledge: '569',
+          originPrice: '2120.64',
+          configId: '',
+          unit: '年'
+        }
+      ],
       zoneListHot: [],
-      hotHostList:[
-          { 
-            headline: '包月云服务器',
-            subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
-            config:[
-            ],
-            timeList: [],
-            time: '1个月',
-            systemList: [],
-            system: 'windows',
-            zoneId: '',
-            price: '69',
-            originPrice: '176.72',
-            configId: ''
+      hotHostList: [
+        {
+          headline: '包月云服务器',
+          subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
+          config: [
+          ],
+          timeList: [],
+          time: '1个月',
+          systemList: [{
+            value: 'window',
+            label: 'Windows',
+            children: []
+          }, {
+            value: 'centos',
+            label: 'Centos',
+            children: [],
           },
           {
-            headline: '包年云服务器',
-            subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
-            config:[
-            ],
-            timeList: [],
-            time: '12个月',
-            systemList: [],
-            system: 'windows',
-            zoneId: '',
-            price: '69',
-            originPrice: '176.72',
-            configId: ''
-          },
-          { 
-            headline: '包月云服务器',
-            subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
-            config:[
-            ],
-            timeList: [],
-            time: '1个月',
-            systemList: [],
-            system: 'windows',
-            zoneId: '',
-            price: '69',
-            originPrice: '176.72',
-            configId: ''
+            value: 'debian',
+            label: 'Debian',
+            children: [],
           },
           {
-            headline: '包年云服务器',
-            subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
-            config:[
-            ],
-            timeList: [],
-            time: '12个月',
-            systemList: [],
-            system: 'windows',
-            zoneId: '',
-            price: '69',
-            originPrice: '176.72',
-            configId: ''
-          }
-        ],
+            value: 'ubuntu',
+            label: 'Ubuntu',
+            children: [],
+          }],
+          system: [],
+          zone: '',
+          zoneId: '',
+          price: '69',
+          originPrice: '176.72',
+          configId: ''
+        },
+        {
+          headline: '包年云服务器',
+          subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
+          config: [
+          ],
+          timeList: [],
+          time: '12个月',
+          systemList: [{
+            value: 'window',
+            label: 'Windows',
+            children: []
+          }, {
+            value: 'centos',
+            label: 'Centos',
+            children: [],
+          },
+          {
+            value: 'debian',
+            label: 'Debian',
+            children: [],
+          },
+          {
+            value: 'ubuntu',
+            label: 'Ubuntu',
+            children: [],
+          }],
+          system: [],
+          zone: '',
+          zoneId: '',
+          price: '69',
+          originPrice: '176.72',
+          configId: ''
+        },
+        {
+          headline: '包月云服务器',
+          subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
+          config: [
+          ],
+          timeList: [],
+          time: '1个月',
+          systemList: [{
+            value: 'window',
+            label: 'Windows',
+            children: []
+          }, {
+            value: 'centos',
+            label: 'Centos',
+            children: [],
+          },
+          {
+            value: 'debian',
+            label: 'Debian',
+            children: [],
+          },
+          {
+            value: 'ubuntu',
+            label: 'Ubuntu',
+            children: [],
+          }],
+          system: [],
+          zone: '',
+          zoneId: '',
+          price: '69',
+          originPrice: '176.72',
+          configId: ''
+        },
+        {
+          headline: '包年云服务器',
+          subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
+          config: [
+          ],
+          timeList: [],
+          time: '12个月',
+          systemList: [{
+            value: 'window',
+            label: 'Windows',
+            children: []
+          }, {
+            value: 'centos',
+            label: 'Centos',
+            children: [],
+          },
+          {
+            value: 'debian',
+            label: 'Debian',
+            children: [],
+          },
+          {
+            value: 'ubuntu',
+            label: 'Ubuntu',
+            children: [],
+          }],
+          system: [],
+          zone: '',
+          zoneId: '',
+          price: '69',
+          originPrice: '176.72',
+          configId: ''
+        }
+      ],
       value1: 1,
       model1: '',
       systemList: [
@@ -481,11 +753,9 @@ export default {
       zoneList: ['西北一区', '西北一区', '西北一区', '西北一区', '西北一区'],
       selctedZone: 0,
       timeListHot: ['6个月', '1年'],
-      selctedTimeHot: 0,
-      configureList: ['1核1G', '2核1G', '1核1G', '2核1G', '1核1G', '2核1G', '1核1G', '2核1G'],
-      selctedConfigure: 0,
-      ssdList: ['0G', '20G'],
-      selctedSSD: 0,
+      selctedTimeHot: 20,
+      ssdList: [0, 20, 50, 100, 500],
+      selectedSSD: 0,
       flowGroup: [
         {
           src: require('../../../assets/img/active/freeToReceive/fr-icon21.png'),
@@ -519,7 +789,115 @@ export default {
         },
       ],
       onStep: 0,
+      time: '',
+      config: {
+        value: '',
+        imagePath: require('../../../assets/img/pay/payBackground.png'),
+        filter: 'black',
+        size: 500
+      },
+      cashPledge: 0,
+      orderColumns: [
+        {
+          title: '产品类型',
+          key: 'productType'
+        },
+        {
+          title: '资源',
+          width: 200,
+          render: (h, params) => {
+            let arr = []
+            let param3 = h('li', {}, '主机： ' + params.row.title)
+            let param = h('li', {}, '带宽： ' + params.row.configs.config[2].value)
+            let param1 = h('li', {}, '磁盘： ' + params.row.configs.config[3].value)
+            let param2 = h('li', {}, '系统： ' + params.row.configs.system)
+            arr.push(param3)
+            arr.push(param)
+            arr.push(param1)
+            arr.push(param2)
+            return h('ul', {}, arr)
+          }
+        },
+        {
+          title: '计费类型',
+          render: (h, params) => {
+            return h('span', {}, '包年包月')
+          }
+        },
+        {
+          title: '购买时长',
+          key: 'time'
+        },
+        {
+          title: '押金金额',
+          width: 130,
+          render: (h, params) => {
+            let arr = []
+            let param1 = h('li', {
+              style: {
+                textDecoration: 'line-through'
+              }
+            }, '原价：¥' + params.row.originalPrice)
+            let param2 = h('li', {
+              style: {
+                color: '#D0021B'
+              }
+            }, '¥' + params.row.cashPledge)
+            arr.push(param1)
+            arr.push(param2)
+            return h('ul', {}, arr)
+          }
+        },
+      ],
+      orderData: [],
+      payWay: 'balancePay',
+      otherPayWay: '',
+      balance: '0.0',
+      authErrorText: '',
+      // 快速认证表单
+      quicklyAuthForm: {
+        name: '',
+        IDCard: '',
+        pictureCode: '',
+        phone: '',
+        validateCode: '',
+        sendCodeText: '获取验证码'
+      },
+      // 快速认证表单验证
+      quicklyAuthFormValidate: {
+        name: [
+          { required: true, message: '请输入姓名' },
+          { validator: validaRegisteredName }
+        ],
+        IDCard: [
+          { required: true, message: '请输入身份证号' },
+          { validator: validaRegisteredID }
+        ],
+        pictureCode: [
+          { required: true, message: '请输入图片验证码' }
+        ],
+        phone: [
+          { required: true, message: '请输入以该身份证开户的手机号码' },
+          { validator: validaRegisteredPhone }
+        ],
+        validateCode: [
+          { required: true, message: '请输入验证码' }
+        ]
+      },
+      imgSrc: 'https://www.xrcloud.net/user/getKaptchaImage.do',
+      index1: '',
+      
       showModal: {
+        rechargeHint: false,
+        inConformityModal: false,
+        getSuccessModal: false,
+        payDefeatedModal: false,
+        paySuccessModal: false,
+        weChatRechargeModal: false,
+        orderConfirmationModal: false,
+        authentication: false,
+        authenticationSuccess: false,
+        authenticationError: false,
         OpenMembership: false,
         rule: false,
       },
@@ -533,70 +911,350 @@ export default {
       this.showModal.OpenMembership = true
       sessionStorage.setItem('frActiveOpenship', true)
     }
-    this.getHostZoneListHot()
-    // this.getHostZoneListHot1()
+    this.getConfigureHot()
+    this.getConfigureDeposit()
+    this.getZoneList()
+    
   },
   mounted () {
 
   },
   methods: {
     // 获取活动配置,区域
-    getHostZoneListHot() {
-        let url = 'activity/getTemActInfoById.do'
-        axios.get(url, {
-          params: {
-            activityNum: '48'
+    getConfigureDeposit () {
+      let url = 'activity/getTemActInfoById.do'
+      axios.get(url, {
+        params: {
+          activityNum: '50'
+        }
+      }).then(res => {
+        if (res.data.status == 1 && res.status == 200) {
+          // console.log(res.data.result.freevmconfigs)
+          let responseData = res.data.result.freevmconfigs
+          // 获取区域列表
+          this.zoneListDeposit = res.data.result.optionalArea
+          this.depositList.forEach((item, index) => {
+            item.config = responseData[index]
+            item.zone = this.zoneListDeposit[0].value
+            this.changgeZoneDeposite(item, this.zoneListDeposit[0], index, 'depositList')
+          })
+        }
+      })
+    },
+    changgeZoneDeposite (item, item1, index, name) {
+      item.zone = item1.value
+      this.changeZoneHost(item, index, name)
+    },
+    getHost (index1) {
+      if (!this.$store.state.userInfo) {
+        this.$LR({ type: 'register' })
+        return
+      }
+      if ((!this.authInfo) || (this.authInfo && this.authInfo.authtype == 0 && this.authInfo.checkstatus != 0) || (!this.authInfoPersion && this.authInfo && this.authInfo.authtype == 1 && this.authInfo.checkstatus != 0) || (this.authInfoPersion && this.authInfoPersion.checkstatus != 0 && this.authInfo && this.authInfo.checkstatus != 0)) {
+        this.showModal.authentication = true
+        return
+      }
+      this.$http.post('device/DescribeWalletsBalance.do').then(response => {
+        if (response.status == 200 && response.data.status == '1') {
+          this.balance = Number(response.data.data.remainder)
+          this.index1 = index1
+          this.time = this.depositList[index1].time
+          this.cashPledge = this.depositList[index1].cashPledge
+          this.showModal.rechargeHint = true
+        } else {
+          this.$message.info({
+            content: response.data.message
+          })
+        }
+      })
+    },
+    nextStep () {
+      // 判断新老用户
+      axios.get('activity/jdugeTeam.do', {
+        params: { sign: 'freeReceive' }
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          if (response.data.result.flag) {
+            this.orderData = []
+            this.orderData.push({
+              productType: '云服务器',
+              configs: this.depositList[this.index1],
+              originalPrice: this.depositList[this.index1].originalCost,
+              time: this.time,
+              title: this.depositList[this.index1].headline,
+              cashPledge: Number(this.cashPledge)
+            })
+            this.showModal.rechargeHint = false
+            this.showModal.orderConfirmationModal = true
+          } else {
+            this.showModal.rechargeHint = false
+            this.showModal.inConformityModal = true
           }
-        }).then(res => {
-          if (res.data.status == 1 && res.status == 200) {
-            // 处理数组格式，满足页面渲染要求
-            let originArr = res.data.result.freevmconfigs
-            let timeList = []
-            originArr.forEach((item,index)=>{
-              if((index+1)%2!=0){
-                timeList = []
+        } else {
+          this.$message.info({
+            content: response.data.message
+          })
+        }
+      })
+    },
+    getHost_ok () {
+      if (this.payWay == 'balancePay') {
+        if (this.balance < this.cashPledge) {
+          this.$Message.info('可用余额不足')
+        } else {
+          this.showModal.orderConfirmationModal = false
+          this.getFreeHost()
+        }
+      } else {
+        switch (this.otherPayWay) {
+          case '':
+            this.$Message.info('请选择一个支付方式')
+            break
+          case 'zfb':
+            window.open(`/zfb/alipayapi.do?total_fee=${this.cashPledge}`)
+            this.pageTimer = setInterval(() => {
+              axios.get('activity/compareForMoney.do', {
+                params: { freezeMoney: this.cashPledge }
+              }).then(val => {
+                if (val.data.status == 1) {
+                  this.showModal.orderConfirmationModal = false
+                  clearInterval(this.pageTimer)
+                  this.showModal.paySuccessModal = true
+                }
+              })
+            }, 2000)
+            break
+          case 'wx':
+            clearInterval(this.pageTimer)
+            axios.get('wx/wxpayapi.do', {
+              params: {
+                total_fee: this.cashPledge
               }
-              let rObj = {};
-                rObj['id'] = item.id;
-                rObj['discount'] = item.discount;
-                rObj['days'] = item.days;
-                timeList.push(rObj)
-              if((index+1)%2==0){
-                let num = index-(index+1)/2
-                this.hotHostList[num].config = item
-                this.hotHostList[num].timeList = timeList
+            }).then(response => {
+              if (response.status == 200 && response.data.status == 1) {
+                this.serialNum = response.data.result.serialNum
+                this.config.value = response.data.result.codeUrl
+                this.showModal.orderConfirmationModal = false
+                this.showModal.weChatRechargeModal = true
+              } else {
+                this.$message.info({
+                  content: response.data.message
+                })
               }
             })
-            // 获取区域列表
-            this.zoneListHot = res.data.result.optionalArea
-              console.log(this.hotHostList)
+            break
+        }
+      }
+    },
+    payWayChange () {
+      if (this.payWay == 'otherPay' && this.otherPayWay == '') {
+        this.otherPayWay = 'zfb'
+      } else if (this.payWay == 'balancePay') {
+        this.otherPayWay = ''
+      }
+    },
+    getFreeHost () {
+      this.showModal.paySuccessModal = false
+      let vmConfigId = ''
+      /*switch ('' + this.index1 + this.index2) {
+        case '00':
+          vmConfigId = '35'
+          this.time = '1'
+          break
+        case '01':
+          vmConfigId = '36'
+          this.time = '3'
+          break
+        case '02':
+          vmConfigId = '37'
+          this.time = '6'
+          break
+        case '03':
+          vmConfigId = '38'
+          this.time = '12'
+          break
+        case '10':
+          vmConfigId = '39'
+          this.time = '1'
+          break
+        case '11':
+          vmConfigId = '40'
+          this.time = '3'
+          break
+        case '12':
+          vmConfigId = '41'
+          this.time = '6'
+          break
+        case '13':
+          vmConfigId = '42'
+          this.time = '12'
+          break
+      }*/
+      switch (this.index1) {
+        case 0:
+          vmConfigId = '39'
+          this.time = '1'
+          break
+        case 1:
+          vmConfigId = '42'
+          this.time = '12'
+          break
+      }
+      this.vmConfig = vmConfigId
+      let url = 'user/getRemainderFrozen.do'
+      let params = {
+        eachFrozenMoney: this.cashPledge,
+        describe: '领取主机',
+        operationType: '领取主机',
+        thawCondition: '删除主机、公网IP',
+        vmConfig: this.vmConfig,
+        zoneId: this.configGroup[this.index1].zoneId
+      }
+      axios.post(url, params).then(response => {
+        if (response.data.status == 1 && response.status == 200) {
+          let url = 'activity/getFreeHost.do'
+          axios.get(url, {
+            params: {
+              vmConfigId: vmConfigId,
+              osType: this.configGroup[this.index1].system,
+              defzoneid: this.configGroup[this.index1].zoneId
             }
-            //默认选择
-            this.hotHostList.forEach(item=>{
-              item.configId = item.timeList[0].id
-              item.zone = this.zoneListHot[0].value
+          }).then(res => {
+            if (res.status == 200 && res.data.status == 1) {
+              this.showModal.getSuccessModal = true
+              this.toggleZone(this.configGroup[this.index1].zoneId)
+            } else {
+              this.$message.info({
+                content: res.data.message
+              })
+            }
+          })
+        } else {
+          this.$message.info({
+            content: response.data.message
+          })
+        }
+      })
+    },
+    // 获取活动配置,区域
+    getConfigureHot () {
+      let url = 'activity/getTemActInfoById.do'
+      axios.get(url, {
+        params: {
+          activityNum: '48'
+        }
+      }).then(res => {
+        if (res.data.status == 1 && res.status == 200) {
+          // 处理数组格式
+          let originArr = res.data.result.freevmconfigs
+          let timeList = []
+          originArr.forEach((item, index) => {
+            if ((index + 1) % 2 != 0) {
+              timeList = []
+            }
+            let rObj = {};
+            rObj['id'] = item.id;
+            rObj['discount'] = item.discount;
+            rObj['days'] = item.days;
+            timeList.push(rObj)
+            if ((index + 1) % 2 == 0) {
+              let num = index - (index + 1) / 2
+              this.hotHostList[num].config = item
+              this.hotHostList[num].timeList = timeList
+            }
+          })
+          // 获取区域列表
+          this.zoneListHot = res.data.result.optionalArea
+          // console.log(this.hotHostList)
+        }
+        //默认选择
+        this.hotHostList.forEach(item => {
+          // console.log(item)
+          item.configId = item.timeList[0].id
+          item.time = item.timeList[0].days
+          item.zone = this.zoneListHot[0].value
+          this.changgeTimeHot(item, item.timeList[0])
+        })
+      })
+    },
+    changgeTimeHot (item, innerItem) {
+      // console.log(innerItem)
+      item.configId = innerItem.id
+      this.getPriceHot(item, innerItem)
+    },
+    // 根据区域获得不同系统
+    changeZoneHost (item, index, name) {
+      axios.get('information/listTemplates.do', {
+        params: {
+          zoneId: item.zone,
+        }
+      }).then(res => {
+        if (res.status == 200 && res.data.status == 1) {
+          var x
+          for (x in res.data.result) {
+            this[name][index].systemList.forEach(item => {
+              if (item.value == x) {
+                item.children = res.data.result[x]
+              }
             })
-        })
-      },
-      getHostZoneListHot1() {
-        let url = 'activity/getTemActInfoById.do'
-        axios.get(url, {
-          params: {
-            activityNum: '22'
           }
-        }).then(res => {
-          if (res.data.status == 1 && res.status == 200) {
-            console.log(res.data.result)
-            // this.hostZoneListHot = res.data.result.optionalArea
-            // this.hostProductHot.zoneId = res.data.result.optionalArea[0].value
-            // this.gpuProductHot.freezoneId = res.data.result.optionalArea[0].value
-            // this.hostfreevmconfigs=res.data.result.freevmconfigs[0].id
-            // this.hostdisktype=res.data.result.freevmconfigs[0].disktype
-            // this.hostdisktypetwo=res.data.result.freevmconfigs[1].disktype
-            // this.hostfreevmconfigsthree=res.data.result.freevmconfigs[1].id
-          }
-        })
-      },
+          this[name][index].systemList.forEach(item => {
+            item.children.forEach(item => {
+              item.value = item.systemtemplateid
+              item.label = item.templatedescript
+            })
+          })
+          this[name][index].systemList.forEach((item, index) => {
+            if (item.children.length == 0) {
+              item.disabled = true
+            }
+          })
+          // 设置默认系统
+          this[name].forEach(item => {
+            item.system = ['window', res.data.result.window[0].systemtemplateid]
+          })
+        }
+      })
+    },
+    getPriceHot (item, innerItem) {
+      // console.log(item.zone)
+      axios.get('activity/getOriginalPrice.do', {
+        params: {
+          zoneId: item.zone,
+          vmConfigId: item.configId,
+          month: innerItem.days / 30
+        }
+      }).then(res => {
+        if (res.status == 200 && res.data.status == 1) {
+          // console.log(res.data.result.originalPrice)
+          // console.log(this[name][index].price)
+          item.price = res.data.result.cost;
+          item.originPrice = res.data.result.originalPrice;
+        }
+      })
+    },
+    pushOrderHot (item) {
+      if (!this.$store.state.userInfo) {
+        this.$LR({ type: 'register' })
+        return
+      }
+      if ((!this.authInfo) || (this.authInfo && this.authInfo.authtype == 0 && this.authInfo.checkstatus != 0) || (!this.authInfoPersion && this.authInfo && this.authInfo.authtype == 1 && this.authInfo.checkstatus != 0) || (this.authInfoPersion && this.authInfoPersion.checkstatus != 0 && this.authInfo && this.authInfo.checkstatus != 0)) {
+        this.showModal.authentication = true
+        return
+      }
+      axios.get('information/getDiskcountMv.do', {
+        params: {
+          defzoneid: item.zone,
+          vmConfigId: item.configId,
+          osType: item.system[1]
+        }
+      }).then(res => {
+        if (res.status == 200 && res.data.status == 1) {
+          this.$Message.success('创建订单成功')
+          this.$router.push('/order')
+        }
+      })
+    },
     judgeUserFlow () {
       this.$http.get('user/GetUserInfo.do', { params: { t: new Date().getTime() } }).then(res => {
         if (res.data.status === 1) {
@@ -610,12 +1268,248 @@ export default {
         }
       })
     },
-    month(val){
-      return val>=360?val/360+'年':val/30+'个月'
-    }
+    month (val) {
+      return val >= 360 ? val / 360 + '年' : val / 30 + '个月'
+    },
+    // 快速认证时发送验证码
+    sendCode () {
+      this.$refs.sendCode.validate(validate => {
+        if (validate) {
+          axios.get('user/code.do', {
+            params: {
+              aim: this.quicklyAuthForm.phone,
+              isemail: 0,
+              vailCode: this.quicklyAuthForm.pictureCode
+            }
+          }).then(response => {
+            // 发送成功，进入倒计时
+            if (response.status == 200 && response.data.status == 1) {
+              var countdown = 60
+              this.quicklyAuthForm.sendCodeText = `重新发送(${countdown})S`
+              var Interval = setInterval(() => {
+                countdown--
+                this.quicklyAuthForm.sendCodeText = `重新发送(${countdown})S`
+                if (countdown == 0) {
+                  clearInterval(Interval)
+                  this.quicklyAuthForm.sendCodeText = '获取验证码'
+                }
+              }, 1000)
+            } else {
+              this.$Message.error(response.data.message)
+            }
+          })
+        }
+      })
+    },
+    // 快速认证
+    quicklyAuth () {
+      var quicklyAuth = this.$refs.quicklyAuth.validate(validate => {
+        return Promise.resolve(validate)
+      })
+      var sendCode = this.$refs.sendCode.validate(validate => {
+        return Promise.resolve(validate)
+      })
+      Promise.all([quicklyAuth, sendCode]).then(results => {
+        if (results[0] === true && results[1] === true) {
+          axios.post('user/personalAttest.do', {
+            cardID: this.quicklyAuthForm.IDCard,
+            name: this.quicklyAuthForm.name,
+            phone: this.quicklyAuthForm.phone,
+            phoneCode: this.quicklyAuthForm.validateCode,
+            type: '0'
+          }).then(response => {
+            if (response.status == 200 && response.data.status == 1) {
+              this.showModal.authentication = false
+              this.showModal.authenticationSuccess = true
+              this.init()
+            } else {
+              this.showModal.authenticationError = true
+              this.authErrorText = response.data.message
+            }
+          })
+        }
+      })
+    },
+    isPay () {
+      axios.get('user/payStatus.do', {
+        params: {
+          serialNum: this.serialNum
+        }
+      }).then(response => {
+        this.showModal.weChatRechargeModal = false
+        if (response.status == 200 && response.data.status == 1) {
+          this.showModal.paySuccessModal = true
+        } else {
+          this.showModal.payDefeatedModal = true
+        }
+      })
+    },
+    changHostConfig (config) {
+        this.selectConfig = config
+    },
+    changGPUconfig (config) {
+        this.selectConfig = config
+    },
+    changzone (item) {
+      this.selectZone = item.zoneid
+      this.setTemplateHost(item.zoneid)
+    },
+    getZoneList () {
+      axios.get('information/zone.do', { params: { t: new Date().getTime() } }).then(res => {
+        if (res.status == 200 && res.data.status == 1) {
+          this.hostZoneList = res.data.result.filter(item => {
+            return item.gpuserver == 0
+          })
+          this.gpuZoneList = res.data.result.filter(item => {
+            return item.gpuserver == 1
+          })
+          // this.selectZone = this.hostZoneList[0].zoneid
+          this.selectZone = this.gpuZoneList[0].zoneid
+          // console.log(this.selectZone)
+          this.setTemplateHost(this.selectZone)
+          this.queryCustomVM()
+          this.queryDiskPrice()
+          this.queryIPPrice()
+        }
+      })
+    },
+    // 查询GPU价格
+      // 查询自定义主机价格
+      queryCustomVM() {
+        var params = {
+          cpuNum: this.selectConfig.split(',')[0],
+          diskSize: '128',
+          diskType: 'ssd',
+          memory: this.selectConfig.split(',')[1],
+          timeType: this.selectTime<12?'month':'year',
+          timeValue: this.selectTime<12?this.selectTime:this.selectTime/12,
+          zoneId: this.selectZone,
+          gpu: '100',
+          gpuSize: this.selectConfig.split(',')[2],
+        }
+        axios.post('device/QueryBillingPrice.do', params).then(response => {
+          this.vmCost = response.data.cost
+          if (response.data.coupon) {
+            this.vmCoupon = response.data.coupon
+          } else {
+            this.vmCoupon = 0
+          }
+        })
+      },
+    // 磁盘页面数据盘价格
+      queryDiskPrice(){
+        var params = {
+          cpuNum: '0',
+          diskSize: this.selctedTimeHot,
+          diskType: 'ssd',
+          memory: '0',
+          timeType: this.selectTime<12?'month':'year',
+          timeValue: this.selectTime<12?this.selectTime:this.selectTime/12,
+          zoneId: this.selectZone,
+        }
+        axios.post('device/QueryBillingPrice.do', params).then(response => {
+          this.dataDiskCost = response.data.cost
+          if (response.data.coupon) {
+            this.coupon = response.data.coupon
+          } else {
+            this.coupon = 0
+          }
+        })
+      },
+      // 查询数据库IP价格
+      queryIPPrice() {
+        var params = {
+          brand: this.selectBandWidth,
+          timeType: this.selectTime<12?'month':'year',
+          timeValue: this.selectTime<12?this.selectTime:this.selectTime/12,
+          zoneId: this.selectZone
+        }
+        axios.post('device/queryIpPrice.do', params).then(response => {
+          this.ipCost = response.data.cost
+          if (response.data.coupon) {
+            this.ipCoupon = response.data.coupon
+          } else {
+            this.ipCoupon = 0
+          }
+        })
+      },
+    setTemplateHost (zoneId) {
+      axios.get('information/listTemplates.do', {
+        params: {
+          zoneId: zoneId,
+        }
+      }).then(res => {
+        if (res.status == 200 && res.data.status == 1) {
+          var obj = this.cascaderSystemM(res.data.result, this.summarySystemList, this.selectSummarySystem)
+          this.selectSummarySystem = obj
+        }
+      })
+    },
+    
+    // 处理级联选择组件需要的数据格式
+    cascaderSystemM (responseData, obj, selectobj) {
+      var x;
+      for (x in responseData) {
+        obj.forEach(item => {
+          if (item.value == x) {
+            item.children = responseData[x]
+          }
+        })
+      }
+      obj.forEach(item => {
+        item.children.forEach(item => {
+          item.value = item.systemtemplateid
+          item.label = item.templatename
+        })
+      })
+      // 为空的系统不能点击
+      obj.forEach((item, index) => {
+        if (item.children.length == 0) {
+          item.disabled = true
+        }
+      })
+      selectobj = ['window', responseData.window[0].systemtemplateid]
+      return selectobj
+    },
+    getTiket () {
+      axios.get('ticket/getTicketForActivity.do', {
+        params: {
+          activityNum: 49
+        }
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          console.log(response.data)
+          this.$message.info({
+            content: response.data.message
+          })
+        } else {
+          this.$message.info({
+            content: response.data.message
+          })
+        }
+      })
+    },
+    
   },
   computed: {
-   
+    notAuth () {
+      return (!this.$store.state.authInfo) || (this.$store.state.authInfo && this.$store.state.authInfo.authtype == 0 && this.$store.state.authInfo.checkstatus != 0) || (!this.$store.state.authInfoPersion && this.$store.state.authInfo && this.$store.state.authInfo.authtype == 1 && this.$store.state.authInfo.checkstatus != 0) || (this.$store.state.authInfoPersion && this.$store.state.authInfoPersion.checkstatus != 0 && this.$store.state.authInfo && this.$store.state.authInfo.checkstatus != 0)
+    },
+    disabled () {
+      return !(this.form.loginname && this.form.password && this.form.vailCode && this.vailForm.loginname.warning == false)
+    },
+    authInfo () {
+      return this.$store.state.authInfo ? this.$store.state.authInfo : null
+    },
+    authInfoPersion () {
+      return this.$store.state.authInfoPersion
+    },
+    totalDataCost() {
+          return this.vmCost + this.ipCost + this.dataDiskCost
+      },
+    totalDataCoupon() {
+        return this.vmCoupon + this.ipCoupon + this.coupon
+    },
   },
   watch: {
 
@@ -683,6 +1577,7 @@ section:nth-of-type(1) {
   }
   .product {
     display: flex;
+    justify-content: space-around;
     text-align: left;
     > div {
       width: 534px;
@@ -1054,13 +1949,20 @@ section:nth-of-type(1) {
             color: #4b3c3d;
             cursor: pointer;
             font-size: 14px;
-            &:nth-child(4n) {
-              margin-right: 0;
-            }
           }
           .selected {
             background: #4990e2;
             color: #fff;
+          }
+        }
+      }
+      .configure,
+      .area {
+        ul {
+          li {
+            &:nth-child(4n) {
+              margin-right: 0;
+            }
           }
         }
       }
