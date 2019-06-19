@@ -3195,7 +3195,10 @@
     methods: {
       // 从其他项目(文档)跳转到费用中心，并且选中tab
       defaultTabOther(){
-        this.paneStatus.expenses = this.$route.query.tabs
+        this.paneStatus.expenses = this.$route.query.tabs;
+        if(this.$route.query.domain == '1'){
+          this.getOrder('5');
+        }
       },
       // 切换到导出记录调用一下接口
       billChangeTabs(index) {
