@@ -1106,6 +1106,7 @@
           }).then(res=>{
             if(res.status == 200 && res.data.status == 1){
               this.qrConfig.value = res.data.result.url
+               this.codeLoseEfficacy = false
               this.showModal.qrCode = true
               this.refreshUserStatus(mainParams,siteParams)
             } else {
@@ -1153,6 +1154,7 @@
         }).then(res=>{
           if(res.status == 200 && res.data.status == 1){
             this.qrConfig.value = res.data.result.url
+             this.codeLoseEfficacy = false
           } else {
             this.codeLoseEfficacy = true
           }

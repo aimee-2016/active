@@ -167,7 +167,7 @@
     <!-- 功能介绍区域 -->
     <div class="box-container">
       <div class="container">
-        <div v-for="(item,index) in boxContainer" :key="index" class="container-item">
+        <div v-for="(item,index) in boxContainer" :key="index" class="container-item" @click="$router.push(item.url)">
           <i class="iconfont" :class="item.img" style="font-size:40px;line-height:1" :title="item.title"></i>
           <div>
             <p :title="item.title">{{item.title}}</p>
@@ -753,11 +753,11 @@
           require('../../assets/img/home/carousel-4-1.jpg')
         ],
         boxContainer: [
-          {title: '10万级IOPS', desc: '高性能SSD硬盘', img: 'icon-wanjiIOPS'},
-          {title: '全场景存储', desc: 'SSD、SAS、SATA', img: 'icon-quanchangjingcunchu'},
-          {title: '新春采购季', desc: '低至一折', img: 'icon-Gmianfeifanghu'},
-          {title: '全冗余架构', desc: '高可用保障', img: 'icon-quanrongyujiagou'},
-          {title: '虚拟私有云', desc: '网络隔离、子网分配', img: 'icon-xunisiyouyun'}
+          {title: '10万级IOPS', desc: '高性能SSD硬盘', img: 'icon-wanjiIOPS',url:''},
+          {title: '全场景存储', desc: 'SSD、SAS、SATA', img: 'icon-quanchangjingcunchu',url:''},
+          {title: '新用户特权', desc: '免费用一年', img: 'icon-Gmianfeifanghu',url:'/activity/free/'},
+          {title: '全冗余架构', desc: '高可用保障', img: 'icon-quanrongyujiagou',url:''},
+          {title: '虚拟私有云', desc: '网络隔离、子网分配', img: 'icon-xunisiyouyun',url:''}
         ],
         /* title--产品名  img--未选中img  clickImg--选中img  select--是否选中 ME--是否显示左右切换箭头  prodItem中ME表示单个item是否hover选中 */
         cloudContainer: [
