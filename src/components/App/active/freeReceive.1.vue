@@ -1,5 +1,6 @@
 <template>
   <div class="deposit-activity">
+    <img class="discount-icon" src="../../../assets/img/active/freeToReceive.1/discount-1.png" alt="一折秒杀" @click="$router.push('/activity/BlacKActivities')">
     <section>
       <div class="free-host">
         <div class="wrap">
@@ -10,25 +11,18 @@
             <router-link to="/activity/BlacKActivities">立即查看></router-link>
           </div>-->
           <div class="steps">
-            <div @click="roll(400)">
+           <div @click="roll(400)">
               <img src="../../../assets/img/active/freeToReceive.1/c-left.png">
               <img class="number" src="../../../assets/img/active/freeToReceive.1/wnumber-1.png">
               <span>免费领云服务器</span>
             </div>
-            <div @click="roll(1400)">
-              <img src="../../../assets/img/active/freeToReceive.1/w-center.png">
-              <img class="number" src="../../../assets/img/active/freeToReceive.1/cnumber-2.png">
-              <span>热销云服务器</span>
-            </div>
-            <div @click="roll(2200)">
-              <img src="../../../assets/img/active/freeToReceive.1/w-center.png">
-              <img class="number" src="../../../assets/img/active/freeToReceive.1/cnumber-3.png">
-              <span>云服务器大集合</span>
-            </div>
-            <div @click="roll(3000)">
-              <img src="../../../assets/img/active/freeToReceive.1/w-right.png">
-              <img class="number" src="../../../assets/img/active/freeToReceive.1/cnumber-4.png">
-              <span>优惠券随时领</span>
+            <!-- 这只能用v-show,不然index会出现错乱 -->
+            <div v-for="(item,index) in stepsList" :key="index"  @mouseenter="enter(item,index)" @mouseleave="leave(item,index)" @click="roll(item.distance)">
+              <img  :src="item.imgbg" v-show="item.isShow">
+              <img  class="number" :src="item.imgnum" v-show="item.isShow">
+              <img  :src="item.imgbgH" v-show="!item.isShow">
+              <img  class="number" :src="item.imgnumH" v-show="!item.isShow">
+              <span :class="{'selctedStep':!item.isShow}">{{item.text}}</span>
             </div>
           </div>
           <div class="headline" style="color:#fff">
@@ -64,7 +58,7 @@
                     </li>
                     <li>
                       <i>系统盘</i>
-                      <span>{{item.config.disksize}}GSSD</span>
+                      <span>{{item.config.disksize}}<span>GSSD</span></span>
                     </li>
                   </ul>
                 </div>
@@ -166,7 +160,7 @@
                     </li>
                     <li>
                       <i>系统盘</i>
-                      <span>{{item.config.disksize}}GSSD</span>
+                      <span>{{item.config.disksize}}<span>GSSD</span></span>
                     </li>
                   </ul>
                 </div>
@@ -238,7 +232,7 @@
                         v-for="(item,index) in configureList"
                         :key="index"
                         :class="{'selected':selectConfig==item.cpu+','+item.mem}"
-                        @click="changHostConfig(item.cpu+','+item.mem)"
+                        @click="changConfigHost(item.cpu+','+item.mem)"
                       >{{ item.cpu+'核'+item.mem+'G'}}</li>
                     </ul>
                     <span class="tips">*以上配置皆包含40G SSD系统盘</span>
@@ -249,7 +243,7 @@
                       v-model="selectConfig"
                       style="width:476px"
                       placeholder="请选择"
-                      @on-change="changGPUconfig"
+                      @on-change="changConfigGPU"
                     >
                       <Option
                         v-for="(item,index) in gpuConfigList"
@@ -258,7 +252,7 @@
                       >{{ item.cpu+'核'+item.mem+'G'+item.num+' *NVIDIA_P100' }}</Option>
                     </Select>
                   </div>
-                  <div class="area" v-if="selectConfig.split(',').length==2">
+                  <div class="area" v-if="configLength==2">
                     <span class="label">区域选择</span>
                     <ul>
                       <li
@@ -276,7 +270,7 @@
                         v-for="(item,index) in gpuZoneList"
                         :key="index"
                         :class="{'selected':selectZone==item.zoneid}"
-                        @click="changzone(item)"
+                        @click="changzone(item.zoneid)"
                       >{{item.zonename}}</li>
                     </ul>
                   </div>
@@ -319,14 +313,17 @@
                   </div>
                   <div>
                     <span class="label">购买数量</span>
-                    <InputNumber :max="10" :min="1" v-model="value1"></InputNumber>
+                    <InputNumber :max="10" :min="1" v-model="count"></InputNumber>
                   </div>
                   <div class="price">
                     ￥
-                    <span>{{totalDataCost.toFixed(2)}}</span>
+                    <span>{{(totalDataCost.toFixed(2))*count}}</span>
+                    <!-- <span>{{vmCost}}</span>/
+                    <span>{{ipCost}}</span>/
+                    <span>{{dataDiskCost}}</span> -->
                     <!-- <i>{{totalDataCoupon}}</i> -->
                   </div>
-                  <Button @click="pushOrderHost()" v-if="selectConfig.split(',').length==2">立即购买</Button>
+                  <Button @click="pushOrderHost()" v-if="configLength==2">立即购买</Button>
                   <Button @click="pushOrderGpu()" v-else>立即购买</Button>
                 </div>
               </div>
@@ -516,6 +513,7 @@ export default {
       }
     }
     return {
+      count:1,
       vmCost: 0,
       vmCoupon: 0,
       dataDiskCost: 0,
@@ -545,8 +543,8 @@ export default {
       hostZoneList: [],
       gpuZoneList: [],
       selectZone: '',
-      // selectConfig: '8,64,1',
       selectConfig: '1,1',
+      configLength: 2,
       configureList: [
         { cpu: 1, mem: 1 },
         { cpu: 1, mem: 2 },
@@ -914,7 +912,35 @@ export default {
       },
       imgSrc: 'https://www.xrcloud.net/user/getKaptchaImage.do',
       index1: '',
-
+      stepsList: [
+        {
+          distance: 1400,
+          imgbg: require('../../../assets/img/active/freeToReceive.1/w-center.png'),
+          imgnum: require('../../../assets/img/active/freeToReceive.1/cnumber-2.png'),
+          imgbgH: require('../../../assets/img/active/freeToReceive.1/c-center.png'),
+          imgnumH: require('../../../assets/img/active/freeToReceive.1/wnumber-2.png'),
+          text:'热销云服务器',
+          isShow: true,
+        },
+        {
+          distance: 2200,
+          imgbg: require('../../../assets/img/active/freeToReceive.1/w-center.png'),
+          imgnum: require('../../../assets/img/active/freeToReceive.1/cnumber-3.png'),
+          imgbgH: require('../../../assets/img/active/freeToReceive.1/c-center.png'),
+          imgnumH: require('../../../assets/img/active/freeToReceive.1/wnumber-3.png'),
+          text:'云服务器大集合',
+          isShow: true,
+        },
+        {
+          distance: 3000,
+          imgbg: require('../../../assets/img/active/freeToReceive.1/w-right.png'),
+          imgnum: require('../../../assets/img/active/freeToReceive.1/cnumber-4.png'),
+          imgbgH: require('../../../assets/img/active/freeToReceive.1/c-right.png'),
+          imgnumH: require('../../../assets/img/active/freeToReceive.1/wnumber-4.png'),
+          text:'优惠券随时领',
+          isShow: true,
+        },
+      ],
       showModal: {
         rechargeHint: false,
         inConformityModal: false,
@@ -948,6 +974,12 @@ export default {
 
   },
   methods: {
+    enter(item,index){
+      this.stepsList[index].isShow = false
+    },
+    leave(item,index){
+      this.stepsList[index].isShow = true
+    },
     // 获取活动配置,区域
     getConfigureDeposit () {
       let url = 'activity/getTemActInfoById.do'
@@ -1372,15 +1404,27 @@ export default {
         }
       })
     },
-    changHostConfig (config) {
+    changConfigHost (config) {
+      let originLength = this.configLength
+      this.configLength = config.split(',').length
       this.selectConfig = config
+      if(this.configLength!=originLength){
+        // console.log('进入2')
+        this.changzone(this.hostZoneList[0].zoneid)
+      }
     },
-    changGPUconfig (config) {
+    changConfigGPU (config) {
+      let originLength = this.configLength
+      this.configLength = config.split(',').length
       this.selectConfig = config
+      if(this.configLength!=originLength){
+        // console.log('进入3')
+        this.changzone(this.gpuZoneList[0].zoneid)
+      }
     },
-    changzone (item) {
-      this.selectZone = item.zoneid
-      this.setTemplateHost(item.zoneid)
+    changzone (zoneid) {
+      this.selectZone = zoneid
+      this.setTemplateHost(zoneid)
     },
     getZoneList () {
       axios.get('information/zone.do', { params: { t: new Date().getTime() } }).then(res => {
@@ -1391,10 +1435,7 @@ export default {
           this.gpuZoneList = res.data.result.filter(item => {
             return item.gpuserver == 1
           })
-          // this.selectZone = this.hostZoneList[0].zoneid
-          this.selectZone = this.hostZoneList[0].zoneid
-          // console.log(this.selectZone)
-          this.setTemplateHost(this.selectZone)
+          this.changzone(this.hostZoneList[0].zoneid)
           this.queryCustomVM()
           this.queryDiskPrice()
           this.queryIPPrice()
@@ -1404,7 +1445,7 @@ export default {
     // 查询自定义主机价格
     queryCustomVM () {
       var params = {}
-      if (this.selectConfig.split.length == 3) {
+      if (this.selectConfig.split(',').length == 3) {
         //gpu
         params = {
           cpuNum: this.selectConfig.split(',')[0],
@@ -1417,7 +1458,7 @@ export default {
           gpu: '100',
           gpuSize: this.selectConfig.split(',')[2],
         }
-      } else if (this.selectConfig.split.length == 2) {
+      } else if (this.selectConfig.split(',').length == 2) {
         // 主机
         params = {
           cpuNum: this.selectConfig.split(',')[0],
@@ -1493,7 +1534,7 @@ export default {
         bandWidth: this.selectBandWidth,
         timeType: this.selectTime < 12 ? 'month' : 'year',
         timeValue: this.selectTime < 12 ? this.selectTime : this.selectTime / 12,
-        count: 1,
+        count: this.count,
         isAutoRenew: '1',
         cpuNum: this.selectConfig.split(',')[0],
         memory: this.selectConfig.split(',')[1],
@@ -1505,6 +1546,7 @@ export default {
         diskType: 'ssd',
         diskSize: this.selectedSSD
       }
+      // console.log(params)
       axios.get('gpuserver/createGpuServer.do', { params }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
           this.$router.push('/order')
@@ -1527,7 +1569,7 @@ export default {
           bandWidth: this.selectBandWidth,
           timeType: this.selectTime < 12 ? 'month' : 'year',
           timeValue: this.selectTime < 12 ? this.selectTime : this.selectTime / 12,
-          count: 1,
+          count: this.count,
           isAutoRenew: '1',
           cpuNum: this.selectConfig.split(',')[0],
           memory: this.selectConfig.split(',')[1],
@@ -1537,6 +1579,7 @@ export default {
           diskType: 'ssd',
           diskSize: this.selectedSSD
         }
+        // console.log(params)
         axios.get('information/deployVirtualMachine.do', {params}).then(response => {
           if (response.status == 200 && response.data.status == 1) {
             this.$router.push({
@@ -1588,13 +1631,16 @@ export default {
       return selectobj
     },
     getTiket () {
+      if (!this.$store.state.userInfo) {
+        this.$LR({ type: 'register' })
+        return
+      }
       axios.get('ticket/getTicketForActivity.do', {
         params: {
           activityNum: 49
         }
       }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          console.log(response.data)
           this.$message.info({
             content: response.data.message
           })
@@ -1632,13 +1678,6 @@ export default {
   watch: {
     'selectZone': {
       handler () {
-        // this.setTemplate()
-        // this.setGpuServer()
-        // this.queryVpc()
-        // this.fireList()
-        // this.queryCustomVM()
-        // this.queryDiskPrice()
-        // this.queryIPPrice()
         this.queryCustomVM()
         this.queryDiskPrice()
         this.queryIPPrice()
@@ -1697,6 +1736,11 @@ section:nth-of-type(1) {
     rgba(55, 156, 240, 1) 100%
   );
 }
+.discount-icon {
+  position: fixed;
+  top: 470px;
+  right: 190px;
+}
 .free-host {
   margin: 0 auto;
   padding: 60px 0 40px;
@@ -1708,23 +1752,23 @@ section:nth-of-type(1) {
       no-repeat,
     url("../../../assets/img/active/freeToReceive.1/circle-right.png") 100% 90%
       no-repeat;
-  .news {
-    display: inline-block;
-    margin-top: 18px;
-    padding: 8px 50px;
-    background: rgba(0, 35, 100, 0.15);
-    border-radius: 20px;
-    font-size: 18px;
-    color: rgba(255, 255, 255, 1);
-    line-height: 24px;
-    letter-spacing: 1px;
-    img {
-      vertical-align: middle;
-    }
-    span {
-      color: #53ffef;
-    }
-  }
+  // .news {
+  //   display: inline-block;
+  //   margin-top: 18px;
+  //   padding: 8px 50px;
+  //   background: rgba(0, 35, 100, 0.15);
+  //   border-radius: 20px;
+  //   font-size: 18px;
+  //   color: rgba(255, 255, 255, 1);
+  //   line-height: 24px;
+  //   letter-spacing: 1px;
+  //   img {
+  //     vertical-align: middle;
+  //   }
+  //   span {
+  //     color: #53ffef;
+  //   }
+  // }
   .steps{
     display: flex;
     margin-top: 20px;
@@ -1749,6 +1793,9 @@ section:nth-of-type(1) {
       font-weight:bold;
       color:#191275;
     }
+    .selctedStep {
+      color: #fff
+    }
   }
   .product {
     display: flex;
@@ -1758,11 +1805,16 @@ section:nth-of-type(1) {
       width: 534px;
       box-shadow: 0px 3px 10px -3px rgba(45, 58, 91, 1);
       border-radius: 4px;
+      &:nth-of-type(1) .head {
+        background: url("../../../assets/img/active/freeToReceive.1/free-host-product-bg.png");
+      }
+      &:nth-of-type(2) .head {
+        background: url("../../../assets/img/active/freeToReceive.1/free-host-product-bg1.png");
+      }
     }
     .head {
       padding: 20px 30px;
       color: #fff;
-      background: url("../../../assets/img/active/freeToReceive.1/free-host-product-bg.png");
       h3 {
         margin-bottom: 6px;
         font-size: 18px;
@@ -1799,6 +1851,9 @@ section:nth-of-type(1) {
             span {
               color: #333;
               font-size: 20px;
+              span {
+                font-size: 14px;
+              }
             }
           }
         }
@@ -1850,7 +1905,7 @@ section:nth-of-type(1) {
         width: 100%;
         background: #f66d59;
         border: none;
-        box-shadow: 0px 3px 10px -3px rgba(45, 58, 91, 1);
+        // box-shadow: 0px 3px 10px -3px rgba(45, 58, 91, 1);
         border-radius: 4px;
         color: #fff;
         height: 40px;
@@ -1992,6 +2047,9 @@ section:nth-of-type(1) {
             span {
               color: #0f0f68;
               font-size: 18px;
+              span {
+                font-size: 14px;
+              }
             }
           }
         }
@@ -2070,9 +2128,9 @@ section:nth-of-type(1) {
     .head {
       padding: 15px 20px;
       color: #fff;
-      background: url("../../../assets/img/active/freeToReceive.1/hot-host-product-bg.png")
+      background: url("../../../assets/img/active/freeToReceive.1/summary-product-bg.png")
         no-repeat;
-      background-size: cover;
+      // background-size: cover;
       h3 {
         margin-bottom: 6px;
         font-size: 18px;
