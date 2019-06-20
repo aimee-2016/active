@@ -27,6 +27,7 @@ const BData = () =>import('@/components/App/buy/BData')
 const BGpu = () =>import('@/components/App/buy/BGpu')
 const BSsl = () =>import('@/components/App/buy/BSsl')
 const Ecs = () =>import('@/components/App/product/ECS')
+const BDDoS = () => import('@/components/App/buy/BHighIp')
 const Document = () =>import('@/components/App/Document')
 const Document1 = () =>import('@/components/App/Document1')
 const Record = () =>import('@/components/App/Record')
@@ -223,6 +224,9 @@ const CompletedFilingDetails = () => import('@/components/Back/CompletedFilingDe
 const SpaceDetails = () => import('@/components/Back/SpaceDetails')
 const AllRegions = () => import('@/components/Back/AllRegions')
 
+// 高防IP==========================
+const DDoSIP = () => import('@/components/Back/DDoSIP')
+
 
 const CloudDatabaseBackup = () => import('@/components/Back/CloudDatabaseBackup')
 const CloudDatabase = () => import('@/components/Back/CloudDatabase')
@@ -327,7 +331,8 @@ var router = new Router({
             {path: 'database', name: 'database/', component: BData},
             {path: 'objectstorage', name: 'objectstorage/', component: BObj},
             {path: 'gpu', name: 'gpu/', component: BGpu},
-            {path: 'ssl', name: 'ssl/', component: BSsl}
+            {path: 'ssl', name: 'ssl/', component: BSsl},
+            {path: 'ddosip', name: 'ddosip/', component: BDDoS}
           ]
         },
 
@@ -472,7 +477,8 @@ var router = new Router({
         {path: 'ElasticDetails', name: 'ElasticDetails', component: ElasticDetails},
         {path: 'newAddElastic', name: 'newAddElastic', component: newAddElastic},
         {path: 'TelescopicDetails', name: 'TelescopicDetails', component: TelescopicDetails},
-        {path: 'ThawDeposit', name: 'ThawDeposit', component: ThawDeposit}
+        {path: 'ThawDeposit', name: 'ThawDeposit', component: ThawDeposit},
+        {path: 'DDoSIP', name: 'DDoSIP', component: DDoSIP}
       ]
     },
     {

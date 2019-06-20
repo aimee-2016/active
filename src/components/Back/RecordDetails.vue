@@ -491,7 +491,7 @@
               type="drag"
               :show-upload-list="false"
               :with-credentials="true"
-              action="file/upFile.do"
+              action="https://zschj.xrcloud.net/file/upFile.do"
               :format="['jpg','jpeg','png']"
               :on-success="webRecordSuccess"
               :on-format-error="webRecordFormatError"
@@ -1053,8 +1053,6 @@
         <Button type="primary" @click="hostUpdate('address')">确定</Button>
       </div>
     </Modal>
-
-   
   </div>
 </template>
 
@@ -1907,7 +1905,7 @@ export default {
         let s = setInterval(() => {
           this.percentCheckList++;
           if (this.percentCheckList > 100) {
-            this.updateHostUnitList.webrecordauthenticityurl = response.result;
+            this.hostUnitList.webrecordauthenticityurl = response.result;
             this.$Message.success("上传成功");
             window.clearInterval(s);
             this.percentCheckList = 0;
