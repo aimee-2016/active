@@ -430,7 +430,7 @@
         <!--费用、以及加入预算清单-->
         <div style="margin-top: 20px;padding: 0 40px 40px">
           <a style="text-align: left;font-size: 14px;color: #2A99F2;cursor: pointer"
-             href="https://kaifa.xrcloud.net/support/products.html">查看计价详情</a>
+             href="https://www.xrcloud.net/support_docs/iP6aZYWLX_yI7TQwMwN.html">查看计价详情</a>
           <p style="text-align: right;font-size: 14px;color: #666666;margin-bottom: 10px;">
             <span v-if="timeForm.currentTimeType == 'annual'&&timeForm.currentTimeValue.type == 'year'">折后费用：</span><span v-else>费用：</span><span
             style="font-size: 24px;color: #EE6723;">{{totalDataCost.toFixed(2)}}元</span><span

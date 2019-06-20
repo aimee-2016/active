@@ -92,12 +92,37 @@
                 </Tabs>
              </div>
         </div>
-        <Modal :mask-closable="false">
+        <Modal :mask-closable="false" v-model="showModal.certificate">
             <p slot="header" class="modal-header-border">
                 <span class="universal-modal-title">新增证书</span>
             </p>
-            <div >
-
+            <div class="md-cer">
+                 <Form ref="certificateValidate" :model="certificateValidate" :rules="certificateRule" :label-width="80">
+                    <FormItem label="证书名称" prop="name">
+                        <Input v-model="certificateValidate.name" placeholder="Enter your name"></Input>
+                    </FormItem>
+                    <FormItem label="证书文件" prop="file">
+                        <Input type="textarea" v-model="certificateValidate.file" placeholder="Enter your name">
+                            <span>0/500</span>
+                        </Input>
+                    </FormItem>
+                    <FormItem label="秘钥内容" prop="secret">
+                        <Input type="textarea" v-model="certificateValidate.secret" placeholder="Enter your name"></Input>
+                    </FormItem>
+                    <FormItem label="CA内容" prop="ca">
+                        <Input type="textarea" v-model="certificateValidate.ca" placeholder="Enter your name"></Input>
+                    </FormItem>
+                    <FormItem label="加密方式" prop="name">
+                        <Input v-model="certificateValidate.name" placeholder="Enter your name"></Input>
+                    </FormItem>
+                    <FormItem label="证书备注" prop="name">
+                        <Input v-model="certificateValidate.name" placeholder="Enter your name"></Input>
+                    </FormItem>
+                 </Form>   
+            </div>
+            <div slot="footer" class="modal-footer-border">
+                <Button type="ghost" @click="showModal.certificate = false">取消</Button>
+                <Button type="primary" >确定</Button>
             </div>
         </Modal>
     </div>
@@ -109,7 +134,8 @@ export default {
     return {
       // 弹窗
       showModal:{
-
+        certificate:true,
+        
       },  
 
       button1: "网站业务",
@@ -208,6 +234,14 @@ export default {
           当前证书使用域名: "ssss"
         }
       ],
+      certificateValidate:{
+          name:'',
+          file:'',
+          secret:'',
+          ca:'',
+
+      },
+      certificateRule:{},
 
       // 网站业务
       domainList:[
@@ -315,6 +349,9 @@ export default {
 }
 .dp-page{
     text-align:right;margin-top:20px;
+  }
+  .md-cer{
+      overflow: auto;
   }
 </style>
 
