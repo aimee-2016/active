@@ -68,8 +68,8 @@ const smlj = () =>import('@/components/App/active/smlj')
 const GroupBooking = () =>import('@/components/App/groupbooking/homePage')
 const ProductShare = () =>import('@/components/App/groupbooking/sharePage')
 const GBActivity = () =>import('@/components/App/groupbooking/activityPage')
-const FrActive = () =>import('@/components/App/active/freeReceive')
-const FrActive1 = () =>import('@/components/App/active/freeReceive.1')
+const FrActive1 = () =>import('@/components/App/active/freeReceive')
+const FrActive = () =>import('@/components/App/active/freeReceive.1')
 
 const DBActive = () =>import('@/components/App/active/DatabaseActive')
 
