@@ -441,7 +441,7 @@
             </RadioGroup>
           </div>
         </Form>
-        <p class="modal-text-hint-bottom">提示：云主机快照为每块磁盘提供<span>8个</span>快照额度，当某个主机的快照数量达到额度上限，在创建新的快照任务时，系统会删除由自动快照策略所生成的时间最早的自动快照点
+        <p class="modal-text-hint-bottom">提示：云主机快照为每块磁盘提供<span>{{ totalQuota }}个</span>快照额度，当某个主机的快照数量达到额度上限，在创建新的快照任务时，系统会删除由自动快照策略所生成的时间最早的自动快照点
         </p>
       </div>
       <div slot="footer" class="modal-footer-border">
@@ -1552,7 +1552,8 @@
             chart: null
           }
         ],
-        currentData: this.getCurrentDate()
+        currentData: this.getCurrentDate(),
+        totalQuota: ''
       }
     },
     created() {
@@ -1565,8 +1566,19 @@
         this.guideStep = 0
       }
       this.getHostList()
+      this.getResourceAllocation()
     },
     methods: {
+      // 获取资源配额
+      getResourceAllocation() {
+        this.$http.get('user/personalCenterResourceQuota.do', {
+          params: {}
+        }).then(res => {
+          if (res.status == 200 && res.data.status == 1) {
+            this.totalQuota = res.data.result[1].totalQuota
+          }
+        })
+      },
       toggleZone(zoneId) {
         // 切换默认区域
         axios.get('user/setDefaultZone.do', {params: {zoneId: zoneId}}).then(response => {

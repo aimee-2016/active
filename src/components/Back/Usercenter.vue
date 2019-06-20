@@ -2865,8 +2865,9 @@
               authInfoPersion: null
             })
             } else{
+              response.data.authInfo.authtype = 0
               $store.commit('setAuthInfo', {
-              authInfo: null,
+              authInfo: response.data.authInfo.authtype,
               userInfo: response.data.result,
               authInfoPersion: response.data.authInfo_persion
             })
