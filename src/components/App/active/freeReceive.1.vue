@@ -225,8 +225,9 @@
               </div>
               <div class="body">
                 <div class="left">
+                    <RadioGroup v-model="single" size="large">
+                        <Radio label="选择云服务器" style="color:#4768B1;margin-bottom:20px;font-size:18px;"></Radio>
                   <div class="configure">
-                    <span class="label">云服务器配置选择：</span>
                     <ul>
                       <li
                         v-for="(item,index) in configureList"
@@ -237,12 +238,12 @@
                     </ul>
                     <span class="tips">*以上配置皆包含40G SSD系统盘</span>
                   </div>
-                  <div>
-                    <span class="label">GPU服务器配置选择：</span>
+                  <Radio label="选择GPU服务器" style="color:#4768B1;margin-top:40px;margin-bottom:20px;font-size:18px;"></Radio>
+                  <div ref="summary-host-select">
                     <Select
                       v-model="selectConfig"
                       style="width:476px"
-                      placeholder="请选择"
+                      placeholder=" "
                       @on-change="changConfigGPU"
                     >
                       <Option
@@ -252,6 +253,7 @@
                       >{{ item.cpu+'核'+item.mem+'G'+item.num+' *NVIDIA_P100' }}</Option>
                     </Select>
                   </div>
+                  </RadioGroup>
                   <div class="area" v-if="configLength==2">
                     <span class="label">区域选择</span>
                     <ul>
@@ -317,7 +319,7 @@
                   </div>
                   <div class="price">
                     ￥
-                    <span>{{(totalDataCost.toFixed(2))*count}}</span>
+                    <span>{{(totalDataCost*count).toFixed(2)}}</span>
                     <!-- <span>{{vmCost}}</span>/
                     <span>{{ipCost}}</span>/
                     <span>{{dataDiskCost}}</span> -->
@@ -404,21 +406,6 @@
         </div>
       </div>
     </section>
-    <!-- 欢迎页 -->
-    <transition name="fade">
-      <div class="overlay" @click="showModal.OpenMembership=false" v-if="showModal.OpenMembership">
-        <div class="shipmodel" @click.stop="$router.push('/activity/BlacKActivities')">
-          <div class="header">
-            <img
-              src="../../../assets/img/active/freeToReceive/fr-xx.png"
-              @click.stop="showModal.OpenMembership=false"
-            >
-          </div>
-          <div class="body"></div>
-          <div class="footer"></div>
-        </div>
-      </div>
-    </transition>
     <!-- 不满足条件-->
     <Modal v-model="showModal.inConformityModal" :scrollable="true" :closable="false" :width="390">
       <div class="modal-content-s" style="padding: 30px 30px 0 50px">
@@ -513,7 +500,8 @@ export default {
       }
     }
     return {
-      count:1,
+      // 云服务器大集合参数
+      single:'选择云服务器',
       vmCost: 0,
       vmCoupon: 0,
       dataDiskCost: 0,
@@ -543,8 +531,6 @@ export default {
       hostZoneList: [],
       gpuZoneList: [],
       selectZone: '',
-      selectConfig: '1,1',
-      configLength: 2,
       configureList: [
         { cpu: 1, mem: 1 },
         { cpu: 1, mem: 2 },
@@ -562,10 +548,16 @@ export default {
         { cpu: 32, mem: 256, num: 4 },
         { cpu: 64, mem: 384, num: 6 },
       ],
-      selectBandWidth: 1,
+      selectConfig: '1,1',
+      configLength: 2,
       bandWidthList: [1, 2, 5, 10, 20],
+      selectBandWidth: 1,
       hostTimeList: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 24, 36],
       selectTime: 1,
+      ssdList: [0, 20, 50, 100, 500],
+      selectedSSD: 0,
+      count:1,
+      // 结束
       zoneListDeposit: [],
       depositList: [
         {
@@ -631,7 +623,7 @@ export default {
           system: [],
           zone: '',
           zoneId: '',
-          cashPledge: '569',
+          cashPledge: '1269',
           originPrice: '2120.64',
           configId: '',
           unit: '年'
@@ -772,16 +764,6 @@ export default {
           configId: ''
         }
       ],
-      value1: 1,
-      model1: '',
-      systemList: [
-        { label: 'windows', value: '12324' }
-      ],
-      zoneList: ['西北一区', '西北一区', '西北一区', '西北一区', '西北一区'],
-      selctedZone: 0,
-      timeListHot: ['6个月', '1年'],
-      ssdList: [0, 20, 50, 100, 500],
-      selectedSSD: 20,
       flowGroup: [
         {
           src: require('../../../assets/img/active/freeToReceive/fr-icon21.png'),
@@ -796,12 +778,12 @@ export default {
         {
           src: require('../../../assets/img/active/freeToReceive/fr-icon23.png'),
           onSrc: require('../../../assets/img/active/freeToReceive/fr-icon29.png'),
-          text: '充值押金 领取主机'
+          text: '充值保证金 领取云服务器'
         },
         {
           src: require('../../../assets/img/active/freeToReceive/fr-icon24.png'),
           onSrc: require('../../../assets/img/active/freeToReceive/fr-icon30.png'),
-          text: '免费试用 云主机'
+          text: '免费使用 云服务器'
         },
         {
           src: require('../../../assets/img/active/freeToReceive/fr-icon25.png'),
@@ -811,7 +793,7 @@ export default {
         {
           src: require('../../../assets/img/active/freeToReceive/fr-icon26.png'),
           onSrc: require('../../../assets/img/active/freeToReceive/fr-icon32.png'),
-          text: '退还押金'
+          text: '退还保证金'
         },
       ],
       onStep: 0,
@@ -952,34 +934,20 @@ export default {
         authentication: false,
         authenticationSuccess: false,
         authenticationError: false,
-        OpenMembership: false,
         rule: false,
       },
     }
   },
   created () {
     this.judgeUserFlow()
-    if (sessionStorage.getItem('frActiveOpenship')) {
-      this.showModal.OpenMembership = false
-    } else {
-      this.showModal.OpenMembership = true
-      sessionStorage.setItem('frActiveOpenship', true)
-    }
     this.getConfigureHot()
     this.getConfigureDeposit()
     this.getZoneList()
-
   },
   mounted () {
 
   },
   methods: {
-    enter(item,index){
-      this.stepsList[index].isShow = false
-    },
-    leave(item,index){
-      this.stepsList[index].isShow = true
-    },
     // 获取活动配置,区域
     getConfigureDeposit () {
       let url = 'activity/getTemActInfoById.do'
@@ -1462,7 +1430,7 @@ export default {
         // 主机
         params = {
           cpuNum: this.selectConfig.split(',')[0],
-          diskSize: '128',
+          diskSize: '40',
           diskType: 'ssd',
           memory: this.selectConfig.split(',')[1],
           timeType: this.selectTime < 12 ? 'month' : 'year',
@@ -1604,7 +1572,6 @@ export default {
         }
       })
     },
-
     // 处理级联选择组件需要的数据格式
     cascaderSystemM (responseData, obj, selectobj) {
       var x;
@@ -1653,6 +1620,12 @@ export default {
     },
     roll(val) {
       $('html, body').animate({scrollTop: val}, 300)
+    },
+    enter(item,index){
+      this.stepsList[index].isShow = false
+    },
+    leave(item,index){
+      this.stepsList[index].isShow = true
     }
   },
   computed: {
@@ -1701,6 +1674,33 @@ export default {
         this.queryIPPrice()
       },
       deep: true
+    },
+    // select组件，选中的值不在选项中，不清空选中数据的bug
+    'configLength': {
+      handler (val) {
+        if(val==2) {
+          this.single = '选择云服务器'
+          let dom = this.$refs['summary-host-select']
+          dom.getElementsByClassName('ivu-select-placeholder')[0].style.display = "block"
+          dom.getElementsByClassName('ivu-select-selected-value')[0].style.display = "none"
+        } else if(val==3){
+          this.single = '选择GPU服务器'
+          let dom = this.$refs['summary-host-select']
+          dom.getElementsByClassName('ivu-select-placeholder')[0].style.display = "none"
+          dom.getElementsByClassName('ivu-select-selected-value')[0].style.display = "block"
+        }
+      },
+      deep: true
+    },
+    'single': {
+      handler (val) {
+        if (val == '选择云服务器') {
+          this.changConfigHost('1,1')
+        } else if(val == '选择GPU服务器'){
+          this.changConfigGPU('8,64,1')
+        }
+      },
+      deep: true
     }
   },
   components: {
@@ -1745,7 +1745,6 @@ section:nth-of-type(1) {
   margin: 0 auto;
   padding: 60px 0 40px;
   width: 1900px;
-  height: 1336px;
   background: url("../../../assets/img/active/freeToReceive.1/free-host-bg.png")
       top no-repeat,
     url("../../../assets/img/active/freeToReceive.1/circle-left.png") left
@@ -1944,6 +1943,9 @@ section:nth-of-type(1) {
         height: 100%;
         position: relative;
         padding-left: 20px;
+        &:nth-of-type(3) .item-text>p {
+          width: 120px;
+        }
         &.onStep {
           background: url("../../../assets/img/active/freeToReceive/fr-banner14.png");
         }
@@ -1962,6 +1964,7 @@ section:nth-of-type(1) {
             font-family: MicrosoftYaHei-Bold;
             font-weight: bold;
             color: rgba(25, 18, 117, 1);
+            text-align: left;
             &.onStep {
               color: rgba(255, 255, 255, 1);
             }
@@ -2256,6 +2259,7 @@ section:nth-of-type(1) {
       background: url("../../../assets/img/active/freeToReceive.1/coupon-obj-bg.png");
       h3 {
         font-weight: normal;
+        font-size: 32px;
       }
       span {
         font-weight: bold;
