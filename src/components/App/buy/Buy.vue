@@ -318,7 +318,8 @@
             {label: '数据库', value: 'database/'},
             {label: '对象存储', value: 'objectstorage/'},
             {label: 'GPU服务器', value: 'gpu/'},
-            {label: 'SSL证书', value: 'ssl/'}
+            {label: 'SSL证书', value: 'ssl/'},
+            {label: 'DDoS高防IP套餐', value: 'ddosip/'}
           ]
         },
         // 当前可以创建的剩余资源数
@@ -705,7 +706,8 @@
           'database/': 'dataBase',
           'gpu/': 'gpu',
           'objectstorage/': 'objectstorage',
-          'ssl/': 'ssl'
+          'ssl/': 'ssl',
+          'ddosip/':'ddosip'
         }
         return map[this.product.currentProduct]
       }

@@ -351,6 +351,9 @@ export default {
       },
       disabledCoupon: false,
       groupList: [],
+      
+      // 订单状态
+      orderState:0,
 
       canUseTicket: true,
       showModal: {
@@ -472,6 +475,7 @@ export default {
           } else {
             data.discountmessage = "";
           }
+        this.orderState = data["订单状态"]?data["订单状态"]:0;
           if (data["订单状态"]) {
             this.orderState == data["订单状态"];
             this.couponInfo.originCost +=
@@ -536,11 +540,10 @@ export default {
           .then(response => {
             if (response.status == 200 && response.data.status == 1) {
               this.orderPay = response.data.result;
-              if (
-                Number(response.data.result.voucher.toFixed(2)) != 0 &&
-                response.data.result.isUseVoucher != 0
-              ) {
+              if ( Number(response.data.result.voucher.toFixed(2)) != 0 &&   response.data.result.isUseVoucher != 0 && this.vipName == undefined && this.vipName == '') {
                 this.groupList.push("cash");
+              }else{
+                this.groupList.push("coupon");
               }
             } else {
               this.$Message.error({

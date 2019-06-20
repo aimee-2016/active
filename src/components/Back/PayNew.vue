@@ -33,10 +33,10 @@
           </CheckboxGroup>
         </div>
 
-        <p style="color:#333333;font-size:14px;" v-if="orderStatus == -1">其他支付方式支付</p>
-        <div class="pay" v-if="orderStatus == -1">
+        <p style="color:#333333;font-size:14px;" >其他支付方式支付</p>
+        <div class="pay" >
           <!--包年包月第三方支付页面-->
-          <Tabs value="name1" @on-click="currentTabs">
+          <Tabs value="name1">
             <span slot="extra">其他支付方式支付：<span style="color:#FF624B;font-size:18px;">{{otherPayCount.toFixed(2)}}</span>元</span>
             <TabPane label="第三方支付" name="name1">
               <RadioGroup v-model="otherPay" @on-change="otherPayChange">
@@ -48,26 +48,27 @@
                 </Radio>
               </RadioGroup>
             </TabPane>
-            <!-- <TabPane label="线下汇款" name="name2">
-                <div class="outLineContent" v-if="currentTab == 'outLine'">
-                    <div style="width:555px;height:180px;background:#F6FAFD;padding:20px 0 20px 20px;">
-                        <p class="p">公司名称：北京允睿讯通科技有限公司</p>
-                        <p class="p">开户银行：中国建设银行北京龙锦支行</p>
-                        <p class="p">开户行所在地：北京</p>
-                        <p class="p">银行账号：11001018402059000005</p>
-                    </div>
-                    <div class="out_hint">
-                        <div>
-                            <img src="../../assets/img/payresult/Shape.png" style="margin-right:7px;vertical-align:middle;">
-                            <span style="font-size:14px;color:#333333;vertical-align:middle;" >提示</span>
-                        </div>
-                        <p style="line-height: 25px;"><span style="color: #2A99F2"></span>请您在汇款摘要中注明“云服务”。汇款成功后请将汇款凭证（汇款凭证扫描件或者图片、网银付款截图）、汇款人姓名、联系电话、注册手机或邮箱地址发送到“公司邮箱”以便财务进行进行确认。财务确认到账后，会讲汇款金额充值到您的注册账户。为了避免因账户欠帐影响您的正常使用，请务必至少提前三到五个工作日进行线下汇款，以免造成不必要的损失。</p>
-                    </div>
+            <TabPane label="个人网银" name="name2">
+                <div class="outLineContent">
+                   <RadioGroup v-model="otherPay" @on-change="otherPayChange">
+                    <Radio label="individual" style="margin-right: 40px;">
+                      <img style="vertical-align: middle;" src="../../assets/img/payresult/unionPay1.png">
+                    </Radio>
+                  </RadioGroup>
                 </div>
-            </TabPane> -->
+            </TabPane>
+            <TabPane label="企业网银" name="name3">
+                <div class="outLineContent" >
+                   <RadioGroup v-model="otherPay" @on-change="otherPayChange">
+                    <Radio label="enterprise" style="margin-right: 40px;">
+                      <img style="vertical-align: middle;" src="../../assets/img/payresult/unionPay1.png">
+                    </Radio>
+                  </RadioGroup>
+                </div>
+            </TabPane>
           </Tabs>
         </div>
-        <div style="margin-top:20px;text-align:right;" v-if="currentTab=='otherPay'">
+        <div style="margin-top:20px;text-align:right;">
           <Button @click="$router.push({path:'order'})" style="margin-right:10px;">取消支付</Button>
           <Button type="primary" @click="pay" :disabled="payText!='确认支付'">{{payText}}</Button>
         </div>
@@ -104,8 +105,7 @@
         accountPay: [],
         // 第三方支付
         otherPay: '',
-        // 默认显示第三方支付
-        currentTab: 'otherPay',
+  
         // 余额与现金券支付金额
         accountPayCount: 0,
 
@@ -242,12 +242,58 @@
             sessionStorage.setItem('total_fee', this.otherPayCount.toFixed(2))
           }
           this.$router.push('wxpay')
+        } else if(this.otherPay == 'individual'){
+          this.individualUnionPay();
+        } else if(this.otherPay == 'enterprise'){
+          this.enterpriseUnionPay();
         }
       },
-      // 充值其他可选金额
-      resetRecharge(item) {
-        this.rechargeValue = item
+
+      // 个人网银支付
+      individualUnionPay(){
+        
+          axios.get('yl/ylb2cPay.do',{
+            params:{
+              total_fee:this.otherPayCount.toFixed(2),
+              orders: this.orderInfo.order,
+              ticket: this.orderInfo.ticket
+            }
+          }).then(res =>{
+            if(res.status == 200 && res.data.status == 1){
+              const newWindow = window.open(); // 创建一个新窗口
+              let url = decodeURIComponent(res.data.url),  // URL解码
+              div = document.createElement('div');
+              div.innerHTML = url;
+              newWindow.document.body.appendChild(div);
+              newWindow.document.forms[0].acceptCharset ="utf-8";
+              newWindow.document.forms[0].submit(); // 提交表单
+            }
+          })
       },
+
+      // 企业网银支付
+      enterpriseUnionPay(){
+       
+        axios.get('yl/ylb2bPay.do',{
+            params:{
+              total_fee:this.otherPayCount.toFixed(2),
+              orders: this.orderInfo.order,
+              ticket: this.orderInfo.ticket
+            }
+          }).then(res =>{
+            if(res.status == 200 && res.data.status == 1){
+              const newWindow = window.open(); // 创建一个新窗口
+             let url = decodeURIComponent(res.data.url),
+              div = document.createElement('div');
+              div.innerHTML = url;
+              newWindow.document.body.appendChild(div);
+              newWindow.document.forms[0].acceptCharset ="utf-8";
+              newWindow.document.forms[0].submit();
+            }
+          })
+      },
+
+
       // 支付宝支付 获取支付宝流水号再跳转
       getzfbNum() {
         window.open("about:blank","alipay")
@@ -272,7 +318,7 @@
           if (response.data.status === 1 && response.status == 200) {
             this.zfbNum = response.data.serialNum
             localStorage.setItem('serialNum', this.zfbNum)
-            window.open(null,'alipay').location.href = `https://www.xrcloud.net/zfb/alipaypage.do?serialNum=${this.zfbNum}&route=resultNew`
+            window.open(null,'alipay').location.href = `https://zschj.xrcloud.net/zfb/alipaypage.do?serialNum=${this.zfbNum}&route=resultNew`
             this.showModal.paymentCofirm = true
           } else {
             this.$message.info({
@@ -338,13 +384,6 @@
         }
         return i;
       },
-      currentTabs(name) {
-        if (name == 'name2') {
-          this.currentTab = 'outLine'
-        } else {
-          this.currentTab = 'otherPay'
-        }
-      }
     },
     computed: {
       // 是否允许第三方支付
