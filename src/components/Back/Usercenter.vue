@@ -3190,6 +3190,7 @@
             if(res.status == 200 && res.data.status == 1){
               this.qrConfig.value = res.data.result.url
               this.showModal.qrCode = true
+              this.codeLoseEfficacy = false
               this.refreshUserStatus()
             } else {
               this.codeLoseEfficacy = true
@@ -3851,7 +3852,7 @@
           this.notAuth.companyAuthForm.combine = response.result
         }
       },
-      powerOfAttorney(){
+      powerOfAttorney(response){
         if (response.status == 1) {
           this.notAuth.companyAuthForm.powerOfAttorney = response.result
         }
@@ -4306,6 +4307,7 @@
             if(res.status == 200 && res.data.status == 1){
               this.qrConfig.value = res.data.result.url
               this.showModal.qrCode = true
+              this.codeLoseEfficacy = false
               this.refreshUserStatus()
             } else {
               this.codeLoseEfficacy = true
