@@ -724,20 +724,23 @@
       </p>
       <div class="modal-content-s">
         <div>
-          <p class="lh24" style="font-size:14px;font-family:MicrosoftYaHei;color:rgba(51,51,51,1);line-height:24px;">为保障您的账户安全，我们将向您的实名认证手机号码
-            <span style="color: #FF624B">{{userphone?userphone.substr(0,3) + '****' + userphone.substr(7):''}}</span> 发送一条验证短信，请收到验证信息之后将验证码填入下方。
+          <p class="lh24" style="font-size:14px;font-family:MicrosoftYaHei;color:rgba(51,51,51,1);line-height:24px;">
+            为保障您的账户安全，请进行手机验证：
           </p>
         </div>
       </div>
       <div class="modal-content-s">
         <Form ref="cashverification" label-position="left" :model="formCustom" :rules="ruleCustom" style="width: 500px;">
+          <FormItem prop="VerificationPhone">
+            <Input v-model="formCustom.VerificationPhone" placeholder="请输入手机号码" style="width: 300px;"></Input>
+          </FormItem>
           <FormItem prop="Verificationcode">
             <Input v-model="formCustom.Verificationcode" placeholder="请输入随机验证码" style="width: 300px;"></Input>
             <img :src="imgSrc" @click="imgSrc=`user/getKaptchaImage.do?t=${new Date().getTime()}`" style="height:32px;vertical-align: middle;margin-left: 10px;">
           </FormItem>
           <FormItem prop="messagecode">
             <Input v-model="formCustom.messagecode" placeholder="请输入收到的验证码" style="width: 300px;"></Input>
-            <Button type="primary" @click="getPhoneCode('code')" :disabled="formCustom.newCodeText !='获取验证码' && userphone" style="margin-left: 10px;">{{formCustom.newCodeText}}
+            <Button type="primary" @click="getPhoneCode('code')" :disabled="formCustom.newCodeText !='获取验证码'" style="margin-left: 10px;">{{formCustom.newCodeText}}
             </Button>
           </FormItem>
         </Form>
@@ -1507,6 +1510,11 @@
       }
 
       return {
+      regExpObj: {
+          phone: /^1[3|4|5|8|9|6|7]\d{9}$/,
+          email: /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/,
+          password: /(?!(^[^a-z]+$))(?!(^[^A-Z]+$))(?!(^[^\d]+$))^[\w`~!#$%_()^&*,-<>?@.+=]{8,32}$/
+        },
        qrConfig: {
           value: '',
           imagePath: require('../../assets/img/pay/payBackground.png'),
@@ -1608,6 +1616,7 @@
         },
         //验证码和短信验证
         formCustom: {
+          VerificationPhone:'',
           //图片随机码
           Verificationcode: '',
           //短信验证码
@@ -1616,6 +1625,11 @@
           codeText: '获取验证码',
         },
         ruleCustom: {
+            VerificationPhone: [{
+            required: true,
+            validator: validaRegisteredPhone,
+            trigger: 'blur'
+          }],
           Verificationcode: [{
             required: true,
             message: '请输入图形验证码',
@@ -2698,7 +2712,9 @@
         otherInfoShow: false,
         informAffirmTimer: null,
         informAffirmText: '(10S)',
-        successHint: ''
+        successHint: '',
+        // 手机验证用途 "logout": 注销  "identification": 身份证明
+        phoneVerifyType: 'identification'
       }
     },
     created() {
@@ -4205,6 +4221,10 @@
       },
       //短信验证码
       getPhoneCode(codeType) {
+        if(!this.regExpObj.phone.test(this.formCustom.VerificationPhone)){
+          this.$Message.info('请输入正确的手机号')
+          return
+        }
         this.$refs.cashverification.validateField('Verificationcode', (text) => {
           if (text == '') {
             var url = ''
@@ -4217,7 +4237,7 @@
             }
             axios.get(url, {
               params: {
-                aim: this.userphone,
+                aim: this.formCustom.VerificationPhone,
                 isemail: 0,
                 vailCode: this.formCustom.Verificationcode
               }
@@ -4267,7 +4287,32 @@
               params
             }).then(res => {
               if (res.data.status == 1 && res.status == 200) {
-                this.$router.push('/cancellationaccount')
+                if(this.phoneVerifyType === 'identification'){
+                    this.showModal.cashverification = false
+                    this.tempCode =  this.uuid(6, 16)
+                    let url = '/faceRecognition/getUserInfoByPcQRCode.do'
+                    let config = {
+                       phone: this.formCustom.VerificationPhone,
+                     }
+                    axios.post(url,{
+                      faceType: '1',
+                      config: JSON.stringify(config),
+                      tempCode: this.tempCode
+                    }).then(res=>{
+                      if(res.status == 200 && res.data.status == 1){
+                        this.qrConfig.value = res.data.result.url
+                        this.showModal.qrCode = true
+                        this.codeLoseEfficacy = false
+                        this.refreshUserStatus()
+                      } else {
+                        this.codeLoseEfficacy = true
+                        this.showModal.qrCode = true
+                        this.refreshUserStatus()
+                      }
+                    })
+                } else if(this.phoneVerifyType === 'logout'){
+                  this.$router.push('/cancellationaccount')
+                }
               } else {
                 this.$message.info({
                   content: res.data.message
@@ -4279,6 +4324,7 @@
       },
       userInfoQ() {
         this.showModal.Cancellationaccount = false
+        this.phoneVerifyType = 'logout'
         this.showModal.cashverification = true
         axios.get('user/GetUserInfo.do').then(response => {
           if (response.status == 200 && response.data.status == 1) {
@@ -4298,23 +4344,8 @@
       verifyNow(authType){
         this.authStatus = false
         if(authType.go === 4){
-          this.tempCode =  this.uuid(6, 16)
-          let url = '/faceRecognition/getUserInfoByPcQRCode.do'
-          axios.post(url,{
-            faceType: '1',
-            tempCode: this.tempCode
-          }).then(res=>{
-            if(res.status == 200 && res.data.status == 1){
-              this.qrConfig.value = res.data.result.url
-              this.showModal.qrCode = true
-              this.codeLoseEfficacy = false
-              this.refreshUserStatus()
-            } else {
-              this.codeLoseEfficacy = true
-              this.showModal.qrCode = true
-              this.refreshUserStatus()
-            }
-          })
+          this.phoneVerifyType = 'identification'
+          this.showModal.cashverification = true
         } else{
           this.notAuth.currentStep = authType.go
           this.imgSrc=`user/getKaptchaImage.do?t=${new Date().getTime()}`
@@ -4356,6 +4387,7 @@
           if(res.status == 200 && res.data.status == 1){
             this.$Message.success('刷新成功')
             this.qrConfig.value = res.data.result.url
+            this.codeLoseEfficacy = false
           } else {
             this.codeLoseEfficacy = true
           }
