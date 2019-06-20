@@ -389,14 +389,14 @@
         if ($store.state.userInfo) {
           return $store.state.userInfo
         }
-        return {}
+        return null
       },
       // 认证信息
       authInfo() {
         if ($store.state.authInfo) {
           return $store.state.authInfo
         }
-        return {}
+        return null
       },
       authInfoPersion(){
         return $store.state.authInfoPersion ? $store.state.authInfoPersion : null

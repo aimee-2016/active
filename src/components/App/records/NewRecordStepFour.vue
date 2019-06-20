@@ -498,7 +498,8 @@
           zoneId: this.zoneId,
           hostCompanyUrl: this.mainParams.hostCompanyUrl,
           mark2: this.mainParams.mark2,
-          mark3: this.mainParams.mark3
+          mark3: this.mainParams.mark3,
+          tempCode: sessionStorage.getItem('tempCode')
         }
           let addMainCompany = axios.post('recode/addMainCompany.do', params)
           Promise.all([addMainCompany]).then(response => {

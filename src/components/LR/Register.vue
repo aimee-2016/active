@@ -27,7 +27,7 @@
           </my-carousel>
         </div>
         <div class="loginOrRegister-form">
-          <div class="title">
+          <div class="title" v-if="registerForm.onStep < 3">
             <span :class="{select: formType === 'login'}" @click="$router.push('Login')">登录</span>
             <span :class="{select: formType === 'register'}" @click="$router.push('Register')">注册</span>
           </div>
@@ -130,12 +130,13 @@
               </div>
             </div>
             <div class="registerSuccess" v-if="registerForm.onStep === 3||registerForm.onStep === 4">
-              <img src="../../assets/img/login/lr-icon9.png"/>
+              <div class="qr-code">
+                  <img width="185" height="185" src="../../assets/img/app/QR-code.jpg" alt="新睿云二维码">
+              </div>
               <h2>注册成功</h2>
-              <p>现在完成<span style="color: #2A99F2;cursor: pointer;text-decoration: underline" @click="$router.push('userCenter')"> 实名认证 </span>即可获得<span
-                style="color: #FF624B"> 196元 </span>专属优惠券，还可参加<span style="color: #FF624B;cursor: pointer" @click="$router.push('fractive')"> 多款主机免费领 </span>活动。<span v-show="registerForm.onStep === 4">请联系您的专属客服小牛获取优惠券</span></p>
-              <button @click="$router.push('userCenter')">前往认证</button>
-              <router-link to="/">返回首页></router-link>
+              <p>扫描二维码完成实名认证即可获得<span style="color: #FF9801"> 196元 </span>专属优惠券，还可参加<span style="color: #FF9801;cursor: pointer" @click="$router.push('fractive')"> 多款主机免费领 </span>活动。<span v-show="registerForm.onStep === 4">请联系您的专属客服小牛获取优惠券</span></p>
+              <!-- <button @click="$router.push('userCenter')">前往认证</button> -->
+              <router-link to="/" style="color:#4297F2">返回首页></router-link>
             </div>
           </div>
         </div>
@@ -737,9 +738,16 @@
       }
       .registerSuccess {
         text-align: center;
+        .qr-code{
+          height: 198px;
+          width: 197px;
+          padding-top: 5px;
+          background: url('../../assets/img/app/auth_background.png') no-repeat center;
+          margin: 0 auto;
+        }
         > h2 {
           font-size: 24px;
-          margin-top: 10px;
+          margin-top: 20px;
           font-weight: normal;
           font-family: MicrosoftYaHei;
           color: rgba(51, 51, 51, 1);
@@ -838,7 +846,8 @@
         },
         codeCaptchaObjStatus: false,
         codeCaptchaObj: null,
-        onLogin: false
+        onLogin: false,
+        timer: null
       }
     },
     created() {
@@ -1204,9 +1213,11 @@
           if (response.status === 200 && response.data.status === 1) {
             window._agl && window._agl.push(['track', ['success', {t: 3}]])
             this.registerForm.onStep = 3
+            this.getUserStatus()
           } else if (response.status === 200 && response.data.status === 3) {
             window._agl && window._agl.push(['track', ['success', {t: 3}]])
             this.registerForm.onStep = 4
+            this.getUserStatus()
           } else {
             this.$message.info({
               content: response.data.message
@@ -1216,6 +1227,21 @@
       },
       callService() {
         window.open('tencent://message/?uin=1014172393&amp;Site=www.cloudsoar.com&amp;Menu=yes', '_blank')
+      },
+      // 注册成功刷新状态
+      getUserStatus(){
+        this.timer =  setInterval(() => {
+          this.$http.get('user/GetUserInfo.do', {params: {t: new Date().getTime()}}).then(res => {
+            if(res.status == 200 && res.data.status == 1){
+              if(res.data.authInfo && res.data.authInfo.checkstatus == 0){
+                clearInterval(this.timer)
+                sessionStorage.setItem('pane','certification')
+                sessionStorage.setItem('registerSuccessMsg','1')
+                this.$router.push('userCenter')
+              }
+            }
+          })
+        }, 3000)
       }
     },
     computed: {},
@@ -1228,6 +1254,10 @@
           this.registerForm.passwordDegree = 2
         }
       }
+    },
+    beforeRouteLeave(to, from, next) {
+      clearInterval(this.timer)
+      next()
     }
   }
 </script>

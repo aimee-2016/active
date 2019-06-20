@@ -389,7 +389,7 @@
       </div>
       <div class="content-footer">
         <button @click="$router.go(-1)">上一步，填写网站信息</button>
-        <button style="margin-left: 20px" @click="netStep()">下一步，办理拍照/上传资料</button>
+        <button style="margin-left: 20px" @click="netStep()">下一步，核验选择</button>
       </div>
     </div>
     <div class="ImageView is-active" style="padding-bottom: 10px;" v-show="imageViewShow" @click="imageViewShow=false">
@@ -398,6 +398,25 @@
              style="width: 520px; transform: translate3d(140%, 15%, 0) scale3d(1.00003, 1.00003, 1); opacity: 1;">
       </div>
     </div>
+    <!-- 人脸识别二维码弹出框 -->
+    <Modal v-model="showModal.qrCode" width="550" :scrollable="true" :mask-closable="false" :closable="false">
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">扫码认证</span>
+      </p>
+      <div class="universal-modal-content-flex qrcode-modal">
+         <p v-show="!authStatus" class="p-top">认证完成之前，请勿关闭此页面，否则可能导致认证失败</p>
+         <p v-show="!authStatus">请<span>{{ siteListStr[0]?siteListStr[0].basicInformation.principalName : '' }}</span>使用手机扫描二维码，并根据提示完成人脸识别认证</p>
+         <p v-show="authStatus" class="p-top">您的实名认证提交失败，请刷新二维码重新认证</p>
+         <div class="qr-code">
+            <vue-q-art :config="qrConfig" ></vue-q-art>
+            <div class="shade" v-show="codeLoseEfficacy"></div>
+        </div>
+        <p class="p-bottom">若二维码失效或异常，请 <span @click="refreshQRCode">刷新</span></p>
+      </div>
+      <div slot="footer" class="modal-footer-border">
+        <Button type="primary" @click="showModal.qrCode = false">确定</Button>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -405,6 +424,8 @@
   import step from './step.vue'
   import oStep from "./ostep.vue";
   import records from './../Records'
+  import VueQArt from 'vue-qart'
+  import axios from 'axios'
 
   export default {
     metaInfo: {
@@ -415,7 +436,7 @@
       }]
     },
     components: {
-      step, records, oStep
+      step, records, oStep,VueQArt
     },
     beforeRouteEnter(to, from, next) {
       var area = sessionStorage.getItem('zone')
@@ -430,6 +451,9 @@
     },
     data() {
       return {
+        showModal:{
+          qrCode: false
+        },
         // 主体负责人id是否显示
         mainPersonIDShow: false,
         // 用与标记正在操作的身份证件照
@@ -484,13 +508,25 @@
         percentCombine: 0,
         percentCertification: 0,
         percentOtherFile: 0,
-        percentCheckList: 0
+        percentCheckList: 0,
+        qrConfig: {
+          value: '',
+          imagePath: require('../../../assets/img/pay/payBackground.png'),
+          filter: 'black',
+          size: 500
+        },
+        // 二维码失效
+        codeLoseEfficacy: false,
+        tempCode: '',
+        timer: null,
+        authStatus: false
       }
     },
     created() {
       this.getMandate()
       this.getCheckList()
       this.getCheckSrc()
+      this.tempCode = sessionStorage.getItem('tempCode') ? sessionStorage.getItem('tempCode') : ''
     },
     methods: {
       markIDCard(index) {
@@ -1053,9 +1089,74 @@
           mark2: this.uploadForm.lpIdIDPhotoList.idFont,
           mark3: this.uploadForm.lpIdIDPhotoList.idBack
         }
-        sessionStorage.setItem('mainParamsStr', JSON.stringify(mainParams))
-        sessionStorage.setItem('siteParamsStr', JSON.stringify(siteParams))
-        this.$router.push('NewRecordStepFour')
+        if(this.tempCode){
+           sessionStorage.setItem('mainParamsStr', JSON.stringify(mainParams))
+           sessionStorage.setItem('siteParamsStr', JSON.stringify(siteParams))
+           this.$router.push('NewRecordStepFour')
+        } else{
+          this.tempCode =  this.uuid(6, 16)
+          let url = '/faceRecognition/getUserInfoByPcQRCode.do'
+          let config = {
+            name: this.siteListStr[0].basicInformation.principalName
+          }
+          axios.post(url,{
+            faceType: '3',
+            tempCode: this.tempCode,
+            config: JSON.stringify(config)
+          }).then(res=>{
+            if(res.status == 200 && res.data.status == 1){
+              this.qrConfig.value = res.data.result.url
+              this.showModal.qrCode = true
+              this.refreshUserStatus(mainParams,siteParams)
+            } else {
+              this.codeLoseEfficacy = true
+              this.showModal.qrCode = true
+              this.refreshUserStatus(mainParams,siteParams)
+            }
+          })
+        }
+      },
+      // 刷新用户认证状态
+      refreshUserStatus(mainParams,siteParams){
+        this.timer =  setInterval(() => {
+        this.$http.get('/faceRecognition/getAllStatus.do', {params: {tempCode: this.tempCode}}).then(res => {
+          if(res.status == 200 && res.data.status == 1){
+            if(res.data.result.qrCode == 0){
+              this.codeLoseEfficacy = true
+              }
+            if(res.data.result.authStatus == 1){
+              clearInterval(this.timer)
+              sessionStorage.setItem('mainParamsStr', JSON.stringify(mainParams))
+              sessionStorage.setItem('siteParamsStr', JSON.stringify(siteParams))
+              sessionStorage.setItem('tempCode',this.tempCode)
+              this.$router.push('NewRecordStepFour')
+              }
+            if(res.data.result.authStatus == 0){
+              this.authStatus = true
+            }
+            }
+          })
+        }, 3000)
+      },
+      // 刷新二维码状态状态
+      refreshQRCode(){
+        this.authStatus = false
+        this.tempCode =  this.uuid(6, 16)
+        let url = '/faceRecognition/getUserInfoByPcQRCode.do'
+        let config = {
+          name: this.siteListStr[0].basicInformation.principalName
+         }
+        axios.post(url,{
+          faceType: '3',
+          tempCode: this.tempCode,
+          config: JSON.stringify(config)
+        }).then(res=>{
+          if(res.status == 200 && res.data.status == 1){
+            this.qrConfig.value = res.data.result.url
+          } else {
+            this.codeLoseEfficacy = true
+          }
+        })
       },
       getMandate() {
         let province = JSON.parse(sessionStorage.getItem('mainUnitInformationStr')).province
@@ -1101,12 +1202,43 @@
           hash[next[name]] ? '' : hash[next[name]] = true && item.push(next);
           return item;
         }, []);
+      },
+      uuid(len, radix) {
+        var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+        var uuid = [], i;
+        radix = radix || chars.length;
+    
+        if (len) {
+          // Compact form
+          for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random()*radix];
+        } else {
+          // rfc4122, version 4 form
+          var r;
+    
+          // rfc4122 requires these characters
+          uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
+          uuid[14] = '4';
+    
+          // Fill in random data.  At i==19 set the high bits of clock sequence as
+          // per rfc4122, sec. 4.1.5
+          for (i = 0; i < 36; i++) {
+            if (!uuid[i]) {
+              r = 0 | Math.random()*16;
+              uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
+            }
+          }
+        }
+        return uuid.join('');
       }
     },
     mounted() {
       this.siteInfoShow = true
     },
-    computed: {}
+    computed: {},
+    beforeRouteLeave(to, from, next) {
+      clearInterval(this.timer)
+      next()
+    }
   }
 </script>
 
@@ -1279,5 +1411,44 @@
 
   .ImageView-img {
     cursor: zoom-out;
+  }
+  .qrcode-modal{
+    text-align: center;
+    .qr-code{
+      height: 198px;
+      width: 197px;
+      background: url('../../../assets/img/app/auth_background.png') no-repeat center;
+      margin: 0 auto;
+      position: relative;
+      .shade{
+        position: absolute;
+        top: 0;
+        height: 198px;
+        width: 197px;
+        background: url('../../../assets/img/app/lose_efficacy.png')  center;
+      }
+    }
+    >p{
+      font-size:14px;
+      font-family:MicrosoftYaHei;
+      color:rgba(51,51,51,1);
+      margin: 10px;
+      >span{
+        color: #FF624B;
+      }
+    }
+    .p-top{
+      font-family:MicrosoftYaHei-Bold;
+      font-weight:bold;
+      color:rgba(237,64,20,1);
+    }
+    .p-bottom{
+      margin-top: 14px;
+      margin-bottom: 0;
+      >span{
+        color: #4297F2;
+        cursor: pointer;
+      }
+    }
   }
 </style>
