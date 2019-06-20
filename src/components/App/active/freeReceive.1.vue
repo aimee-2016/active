@@ -9,6 +9,28 @@
             云服务器低价秒杀1折起，更有买一赠一超值惊喜。
             <router-link to="/activity/BlacKActivities">立即查看></router-link>
           </div>-->
+          <div class="steps">
+            <div @click="roll(400)">
+              <img src="../../../assets/img/active/freeToReceive.1/c-left.png">
+              <img class="number" src="../../../assets/img/active/freeToReceive.1/wnumber-1.png">
+              <span>免费领云服务器</span>
+            </div>
+            <div @click="roll(1400)">
+              <img src="../../../assets/img/active/freeToReceive.1/w-center.png">
+              <img class="number" src="../../../assets/img/active/freeToReceive.1/cnumber-2.png">
+              <span>热销云服务器</span>
+            </div>
+            <div @click="roll(2200)">
+              <img src="../../../assets/img/active/freeToReceive.1/w-center.png">
+              <img class="number" src="../../../assets/img/active/freeToReceive.1/cnumber-3.png">
+              <span>云服务器大集合</span>
+            </div>
+            <div @click="roll(3000)">
+              <img src="../../../assets/img/active/freeToReceive.1/w-right.png">
+              <img class="number" src="../../../assets/img/active/freeToReceive.1/cnumber-4.png">
+              <span>优惠券随时领</span>
+            </div>
+          </div>
           <div class="headline" style="color:#fff">
             <h2>免费活动云服务器</h2>
             <p>
@@ -223,7 +245,12 @@
                   </div>
                   <div>
                     <span class="label">GPU服务器配置选择：</span>
-                    <Select v-model="selectConfig" style="width:476px" placeholder="请选择" @on-change="changGPUconfig">
+                    <Select
+                      v-model="selectConfig"
+                      style="width:476px"
+                      placeholder="请选择"
+                      @on-change="changGPUconfig"
+                    >
                       <Option
                         v-for="(item,index) in gpuConfigList"
                         :value="item.cpu+','+item.mem+','+item.num"
@@ -299,7 +326,8 @@
                     <span>{{totalDataCost.toFixed(2)}}</span>
                     <!-- <i>{{totalDataCoupon}}</i> -->
                   </div>
-                  <Button>立即购买</Button>
+                  <Button @click="pushOrderHost()" v-if="selectConfig.split(',').length==2">立即购买</Button>
+                  <Button @click="pushOrderGpu()" v-else>立即购买</Button>
                 </div>
               </div>
             </div>
@@ -517,7 +545,8 @@ export default {
       hostZoneList: [],
       gpuZoneList: [],
       selectZone: '',
-      selectConfig: '8,64,1',
+      // selectConfig: '8,64,1',
+      selectConfig: '1,1',
       configureList: [
         { cpu: 1, mem: 1 },
         { cpu: 1, mem: 2 },
@@ -537,8 +566,8 @@ export default {
       ],
       selectBandWidth: 1,
       bandWidthList: [1, 2, 5, 10, 20],
-      hostTimeList: [1,2,3,4,5,6,7,8,9,10,12,24,36],
-      selectTime:1,
+      hostTimeList: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 24, 36],
+      selectTime: 1,
       zoneListDeposit: [],
       depositList: [
         {
@@ -753,9 +782,8 @@ export default {
       zoneList: ['西北一区', '西北一区', '西北一区', '西北一区', '西北一区'],
       selctedZone: 0,
       timeListHot: ['6个月', '1年'],
-      selctedTimeHot: 20,
       ssdList: [0, 20, 50, 100, 500],
-      selectedSSD: 0,
+      selectedSSD: 20,
       flowGroup: [
         {
           src: require('../../../assets/img/active/freeToReceive/fr-icon21.png'),
@@ -886,7 +914,7 @@ export default {
       },
       imgSrc: 'https://www.xrcloud.net/user/getKaptchaImage.do',
       index1: '',
-      
+
       showModal: {
         rechargeHint: false,
         inConformityModal: false,
@@ -914,7 +942,7 @@ export default {
     this.getConfigureHot()
     this.getConfigureDeposit()
     this.getZoneList()
-    
+
   },
   mounted () {
 
@@ -1345,10 +1373,10 @@ export default {
       })
     },
     changHostConfig (config) {
-        this.selectConfig = config
+      this.selectConfig = config
     },
     changGPUconfig (config) {
-        this.selectConfig = config
+      this.selectConfig = config
     },
     changzone (item) {
       this.selectZone = item.zoneid
@@ -1364,7 +1392,7 @@ export default {
             return item.gpuserver == 1
           })
           // this.selectZone = this.hostZoneList[0].zoneid
-          this.selectZone = this.gpuZoneList[0].zoneid
+          this.selectZone = this.hostZoneList[0].zoneid
           // console.log(this.selectZone)
           this.setTemplateHost(this.selectZone)
           this.queryCustomVM()
@@ -1373,63 +1401,151 @@ export default {
         }
       })
     },
-    // 查询GPU价格
-      // 查询自定义主机价格
-      queryCustomVM() {
-        var params = {
+    // 查询自定义主机价格
+    queryCustomVM () {
+      var params = {}
+      if (this.selectConfig.split.length == 3) {
+        //gpu
+        params = {
           cpuNum: this.selectConfig.split(',')[0],
           diskSize: '128',
           diskType: 'ssd',
           memory: this.selectConfig.split(',')[1],
-          timeType: this.selectTime<12?'month':'year',
-          timeValue: this.selectTime<12?this.selectTime:this.selectTime/12,
+          timeType: this.selectTime < 12 ? 'month' : 'year',
+          timeValue: this.selectTime < 12 ? this.selectTime : this.selectTime / 12,
           zoneId: this.selectZone,
           gpu: '100',
           gpuSize: this.selectConfig.split(',')[2],
         }
-        axios.post('device/QueryBillingPrice.do', params).then(response => {
-          this.vmCost = response.data.cost
-          if (response.data.coupon) {
-            this.vmCoupon = response.data.coupon
-          } else {
-            this.vmCoupon = 0
-          }
-        })
-      },
-    // 磁盘页面数据盘价格
-      queryDiskPrice(){
-        var params = {
-          cpuNum: '0',
-          diskSize: this.selctedTimeHot,
+      } else if (this.selectConfig.split.length == 2) {
+        // 主机
+        params = {
+          cpuNum: this.selectConfig.split(',')[0],
+          diskSize: '128',
           diskType: 'ssd',
-          memory: '0',
-          timeType: this.selectTime<12?'month':'year',
-          timeValue: this.selectTime<12?this.selectTime:this.selectTime/12,
+          memory: this.selectConfig.split(',')[1],
+          timeType: this.selectTime < 12 ? 'month' : 'year',
+          timeValue: this.selectTime < 12 ? this.selectTime : this.selectTime / 12,
           zoneId: this.selectZone,
         }
-        axios.post('device/QueryBillingPrice.do', params).then(response => {
-          this.dataDiskCost = response.data.cost
-          if (response.data.coupon) {
-            this.coupon = response.data.coupon
-          } else {
-            this.coupon = 0
-          }
-        })
-      },
-      // 查询数据库IP价格
-      queryIPPrice() {
-        var params = {
-          brand: this.selectBandWidth,
-          timeType: this.selectTime<12?'month':'year',
-          timeValue: this.selectTime<12?this.selectTime:this.selectTime/12,
-          zoneId: this.selectZone
+      }
+      axios.post('device/QueryBillingPrice.do', params).then(response => {
+        this.vmCost = response.data.cost
+        if (response.data.coupon) {
+          this.vmCoupon = response.data.coupon
+        } else {
+          this.vmCoupon = 0
         }
-        axios.post('device/queryIpPrice.do', params).then(response => {
-          this.ipCost = response.data.cost
-          if (response.data.coupon) {
-            this.ipCoupon = response.data.coupon
+      })
+    },
+    // 磁盘页面数据盘价格
+    queryDiskPrice () {
+      var params = {
+        cpuNum: '0',
+        diskSize: this.selectedSSD,
+        diskType: 'ssd',
+        memory: '0',
+        timeType: this.selectTime < 12 ? 'month' : 'year',
+        timeValue: this.selectTime < 12 ? this.selectTime : this.selectTime / 12,
+        zoneId: this.selectZone,
+      }
+      axios.post('device/QueryBillingPrice.do', params).then(response => {
+        this.dataDiskCost = response.data.cost
+        if (response.data.coupon) {
+          this.coupon = response.data.coupon
+        } else {
+          this.coupon = 0
+        }
+      })
+    },
+    // 查询数据库IP价格
+    queryIPPrice () {
+      var params = {
+        brand: this.selectBandWidth,
+        timeType: this.selectTime < 12 ? 'month' : 'year',
+        timeValue: this.selectTime < 12 ? this.selectTime : this.selectTime / 12,
+        zoneId: this.selectZone
+      }
+      axios.post('device/queryIpPrice.do', params).then(response => {
+        this.ipCost = response.data.cost
+        if (response.data.coupon) {
+          this.ipCoupon = response.data.coupon
+        } else {
+          this.ipCoupon = 0
+        }
+      })
+    },
+    pushOrderGpu () {
+      if (!this.$store.state.userInfo) {
+        this.$LR({ type: 'register' })
+        return
+      }
+      // if (this.zone.buyover == 1) {
+      //   this.$Message.info({
+      //     content: '请选择需要购买的区域'
+      //   })
+      //   this.roll(100)
+      //   return
+      // }
+      let params = {
+        zoneId: this.selectZone,
+        templateId: this.selectSummarySystem[1],
+        bandWidth: this.selectBandWidth,
+        timeType: this.selectTime < 12 ? 'month' : 'year',
+        timeValue: this.selectTime < 12 ? this.selectTime : this.selectTime / 12,
+        count: 1,
+        isAutoRenew: '1',
+        cpuNum: this.selectConfig.split(',')[0],
+        memory: this.selectConfig.split(',')[1],
+        networkId: 'no',
+        rootDiskType: 'ssd',
+        vpcId: 'no',
+        gpusize: this.selectConfig.split(',')[2],
+        serviceType: 'G5500',
+        diskType: 'ssd',
+        diskSize: this.selectedSSD
+      }
+      axios.get('gpuserver/createGpuServer.do', { params }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          this.$router.push('/order')
+        } else {
+          this.$message.info({
+            content: response.data.message
+          })
+        }
+      })
+    },
+     // 购买主机
+      pushOrderHost() {
+        if (!this.$store.state.userInfo) {
+        this.$LR({ type: 'register' })
+        return
+      }
+        let params = {
+          zoneId: this.selectZone,
+          templateId: this.selectSummarySystem[1],
+          bandWidth: this.selectBandWidth,
+          timeType: this.selectTime < 12 ? 'month' : 'year',
+          timeValue: this.selectTime < 12 ? this.selectTime : this.selectTime / 12,
+          count: 1,
+          isAutoRenew: '1',
+          cpuNum: this.selectConfig.split(',')[0],
+          memory: this.selectConfig.split(',')[1],
+          networkId: 'no',
+          rootDiskType: 'ssd',
+          vpcId: 'no',
+          diskType: 'ssd',
+          diskSize: this.selectedSSD
+        }
+        axios.get('information/deployVirtualMachine.do', {params}).then(response => {
+          if (response.status == 200 && response.data.status == 1) {
+            this.$router.push({
+              path: '/order'
+            })
           } else {
-            this.ipCoupon = 0
+            this.$message.info({
+              content: response.data.message
+            })
           }
         })
       },
@@ -1445,7 +1561,7 @@ export default {
         }
       })
     },
-    
+
     // 处理级联选择组件需要的数据格式
     cascaderSystemM (responseData, obj, selectobj) {
       var x;
@@ -1489,7 +1605,9 @@ export default {
         }
       })
     },
-    
+    roll(val) {
+      $('html, body').animate({scrollTop: val}, 300)
+    }
   },
   computed: {
     notAuth () {
@@ -1504,15 +1622,47 @@ export default {
     authInfoPersion () {
       return this.$store.state.authInfoPersion
     },
-    totalDataCost() {
-          return this.vmCost + this.ipCost + this.dataDiskCost
-      },
-    totalDataCoupon() {
-        return this.vmCoupon + this.ipCoupon + this.coupon
+    totalDataCost () {
+      return this.vmCost + this.ipCost + this.dataDiskCost
+    },
+    totalDataCoupon () {
+      return this.vmCoupon + this.ipCoupon + this.coupon
     },
   },
   watch: {
-
+    'selectZone': {
+      handler () {
+        // this.setTemplate()
+        // this.setGpuServer()
+        // this.queryVpc()
+        // this.fireList()
+        // this.queryCustomVM()
+        // this.queryDiskPrice()
+        // this.queryIPPrice()
+        this.queryCustomVM()
+        this.queryDiskPrice()
+        this.queryIPPrice()
+      },
+      deep: true
+    },
+    'selectConfig': {
+      handler () {
+        this.queryCustomVM()
+      },
+      deep: true
+    },
+    'selectedSSD': {
+      handler () {
+        this.queryDiskPrice()
+      },
+      deep: true
+    },
+    'selectBandWidth': {
+      handler () {
+        this.queryIPPrice()
+      },
+      deep: true
+    }
   },
   components: {
 
@@ -1573,6 +1723,31 @@ section:nth-of-type(1) {
     }
     span {
       color: #53ffef;
+    }
+  }
+  .steps{
+    display: flex;
+    margin-top: 20px;
+    >div {
+      position: relative;
+      margin-left: -10px;
+      cursor: pointer;
+      &:nth-of-type(1) {
+        margin-left: 0;
+      }
+    }
+    .number {
+      position: absolute;
+      top: 6px;
+      left: 60px;
+    }
+    span {
+      position: absolute;
+      top: 18px;
+      left: 92px;
+      font-size:20px;
+      font-weight:bold;
+      color:#191275;
     }
   }
   .product {

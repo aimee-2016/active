@@ -490,11 +490,7 @@
                         title: '删除数据库',
                         content: `数据库删除之后将进入回收站（注：资源在回收站中也将会持续扣费，请及时处理），新睿云将为您保留2小时，在2小时之内您可以恢复资源，超出保留时间之后，将彻底删除资源，无法在恢复。`,
                         onOk: () => {
-                          this.dataBaseData.forEach(item => {
-                            if (item.computerid == params.row.computerid) {
-                              item.dbStatus = '5'
-                            }
-                          })
+                          
                           this.$http.get('information/deleteVM.do', {
                             params: {
                               id: params.row.id
@@ -502,6 +498,11 @@
                           }).then(response => {
                             if (response.status == 200 && response.data.status == 1) {
                               this.$Message.success(response.data.message)
+                              this.dataBaseData.forEach(item => {
+                              if (item.computerid == params.row.computerid) {
+                                  item.dbStatus = '5'
+                                }
+                              })
                               this.dataBaseData = this.dataBaseData.filter(database => {
                                 return database.id != params.row.id
                               })
@@ -683,17 +684,17 @@
                         title: '删除数据库',
                         content: `数据库删除之后将进入回收站（注：资源在回收站中也将会持续扣费，请及时处理），新睿云将为您保留2小时，在2小时之内您可以恢复资源，超出保留时间之后，将彻底删除资源，无法在恢复。`,
                         onOk: () => {
-                          this.dataBaseData.forEach(item => {
-                            if (item.computerid == params.row.computerid) {
-                              item.dbStatus = '5'
-                            }
-                          })
                           this.$http.get('information/deleteVM.do', {
                             params: {
                               id: params.row.id
                             }
                           }).then(response => {
                             if (response.status == 200 && response.data.status == 1) {
+                              this.dataBaseData.forEach(item => {
+                            if (item.computerid == params.row.computerid) {
+                                  item.dbStatus = '5'
+                                }
+                              })
                               this.$Message.success(response.data.message)
                               this.dataBaseData = this.dataBaseData.filter(database => {
                                 return database.id != params.row.id
