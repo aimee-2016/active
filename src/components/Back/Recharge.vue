@@ -48,6 +48,40 @@
                   <Button type="primary" @click="recharge" :disabled="chargeDisabled">确认充值</Button>
                 </div>
               </Tab-pane>
+              <TabPane label="个人网银" name="name2">
+                <div >
+                   <RadioGroup v-model="zf">
+                    <Radio label="individual" style="margin-right: 40px;">
+                      <img style="vertical-align: middle;" src="../../assets/img/payresult/unionPay1.png">
+                    </Radio>
+                  </RadioGroup>
+                </div>
+                <div class="pay-right">
+                  <div v-if="input >= 10000">
+                    <p>您已满足成为{{ memberGrade}}资格！</p>
+                    <Checkbox v-model="agreeStatus" :disabled="vipRuleDisabled"><span style="font-size: 12px;margin-left: 5px">我已阅读并同意<span
+                      style="cursor: pointer;color:#4A97EE" @click="getVipRule">《会员制规则》</span></span></Checkbox>
+                  </div>
+                  <Button type="primary" @click="recharge" :disabled="chargeDisabled">确认充值</Button>
+                </div>
+            </TabPane>
+            <TabPane label="企业网银" name="name3">
+                <div  >
+                   <RadioGroup v-model="zf">
+                    <Radio label="enterprise" style="margin-right: 40px;">
+                      <img style="vertical-align: middle;" src="../../assets/img/payresult/unionPay1.png">
+                    </Radio>
+                  </RadioGroup>
+                </div>
+                <div class="pay-right">
+                  <div v-if="input >= 10000">
+                    <p>您已满足成为{{ memberGrade}}资格！</p>
+                    <Checkbox v-model="agreeStatus" :disabled="vipRuleDisabled"><span style="font-size: 12px;margin-left: 5px">我已阅读并同意<span
+                      style="cursor: pointer;color:#4A97EE" @click="getVipRule">《会员制规则》</span></span></Checkbox>
+                  </div>
+                  <Button type="primary" @click="recharge" :disabled="chargeDisabled">确认充值</Button>
+                </div>
+            </TabPane>
               <Tab-pane label="线下支付">
                 <p class="p">公司名称：北京允睿讯通科技有限公司</p>
                 <p class="p">开户银行：中国建设银行北京龙锦支行</p>
@@ -154,6 +188,8 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
+import axios from 'axios';
+
   export default {
     data() {
       return {
@@ -262,9 +298,56 @@
               name: 'wxpay'
             })
             sessionStorage.setItem('total_fee', this.input)
-            break
+            break;
+           case 'individual':
+            this.individualUnionPay();
+           break;
+           case 'enterprise':
+            this.enterpriseUnionPay();
+           break;
+
         }
       },
+
+       // 个人网银支付
+      individualUnionPay(){
+          axios.get('yl/ylb2cPay.do',{
+            params:{
+              total_fee:this.input.toFixed(2),
+            }
+          }).then(res =>{
+            if(res.status == 200 && res.data.status == 1){
+              const newWindow = window.open(); // 创建一个新窗口
+              let url = decodeURIComponent(res.data.url),  // URL解码
+              div = document.createElement('div');
+              div.innerHTML = url;
+              newWindow.document.body.appendChild(div);
+              newWindow.document.forms[0].acceptCharset ="utf-8";
+              newWindow.document.forms[0].submit(); // 提交表单
+            }
+          })
+      },
+
+      // 企业网银支付
+      enterpriseUnionPay(){
+        axios.get('yl/ylb2bPay.do',{
+            params:{
+              total_fee:this.input.toFixed(2),
+            }
+          }).then(res =>{
+            if(res.status == 200 && res.data.status == 1){
+              const newWindow = window.open(); // 创建一个新窗口
+             let url = decodeURIComponent(res.data.url),
+              div = document.createElement('div');
+              div.innerHTML = url;
+              newWindow.document.body.appendChild(div);
+              newWindow.document.forms[0].acceptCharset ="utf-8";
+              newWindow.document.forms[0].submit();
+            }
+          })
+      },
+
+
       understand() {
         this.$router.push('active')
       },
