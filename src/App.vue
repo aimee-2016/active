@@ -218,7 +218,7 @@
             <p style="margin:0px;margin-right: 20px;">{{item.time}}</p>
             <li style="cursor: auto">{{item.title}}</li>
             <li>
-              <a href="http://www.miitbeian.gov.cn/" target="_blank" rel="nofollow">{{item.preparation}}</a>
+              <a href="http://www.beian.miit.gov.cn/" target="_blank" rel="nofollow">{{item.preparation}}</a>
             </li>
             <li>
               <a href="http://www.beian.miit.gov.cn" rel="nofollow" target="_blank"
