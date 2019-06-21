@@ -14,7 +14,7 @@
            <div @click="roll(400)">
               <img src="../../../assets/img/active/freeToReceive.1/c-left.png">
               <img class="number" src="../../../assets/img/active/freeToReceive.1/wnumber-1.png">
-              <span>免费领云服务器</span>
+              <span style="color:#fff">免费领云服务器</span>
             </div>
             <!-- 这只能用v-show,不然index会出现错乱 -->
             <div v-for="(item,index) in stepsList" :key="index"  @mouseenter="enter(item,index)" @mouseleave="leave(item,index)" @click="roll(item.distance)">
@@ -135,7 +135,12 @@
         <div class="wrap">
           <div class="headline">
             <h2>热销云服务器</h2>
-            <p>购买时长越长越便宜，年付低至3折</p>
+            <p>购买时长越长越便宜，年付低至3折
+              <span
+                style="color:#387dff;cursor:pointer;text-decoration: underline;"
+                @click="showModal.ruleHost=true"
+              >活动规则></span>
+            </p>
           </div>
           <div class="product">
             <div v-for="(item,index) in hotHostList" :key="index">
@@ -339,6 +344,10 @@
         <div class="wrap">
           <div class="headline">
             <h2>配置不够用 券券来帮忙</h2>
+            <p><span
+                style="color:#387dff;cursor:pointer;text-decoration: underline;"
+                @click="showModal.ruleCoupon=true"
+              >活动规则></span></p>
           </div>
           <div class="product">
             <div>
@@ -406,22 +415,31 @@
         </div>
       </div>
     </section>
+    <!-- 领取提示 -->
+    <Modal v-model="showModal.rechargeHint" :scrollable="true" :closable="false" :width="390">
+      <div class="modal-content-s" style="padding: 30px 30px 0 50px">
+        <div>
+          <div class="ivu-modal-confirm-body-icon ivu-modal-confirm-body-icon-success" style="top: 48px;left: 30px;">
+            <i class="ivu-icon ivu-icon-checkmark-circled"></i>
+          </div>
+          <strong>提示</strong>
+          <p class="lh24">本免费活动充值押金<span style="color: #D0021B ">{{ cashPledge }}</span>元，主机到期或删除时押金自动退还到账户余额。
+          </p>
+        </div>
+      </div>
+      <p slot="footer" class="modal-footer-s">
+        <Button @click="showModal.rechargeHint = false">取消</Button>
+        <Button type="primary" @click="nextStep">下一步</Button>
+      </p>
+    </Modal>
     <!-- 不满足条件-->
     <Modal v-model="showModal.inConformityModal" :scrollable="true" :closable="false" :width="390">
       <div class="modal-content-s" style="padding: 30px 30px 0 50px">
         <div>
-          <div
-            class="ivu-modal-confirm-body-icon ivu-modal-confirm-body-icon-warning"
-            style="top: 48px;left: 30px;"
-          >
+          <div class="ivu-modal-confirm-body-icon ivu-modal-confirm-body-icon-warning" style="top: 48px;left: 30px;">
             <i class="ivu-icon ivu-icon-android-alert"></i>
           </div>
-          <p class="lh24">
-            您好，您不符合本活动的参与条件，您还可以去看看
-            <span
-              style="color: #FF9700;cursor: pointer"
-              @click="$router.push('/activity/BlacKActivities')"
-            >“低价秒杀，买一赠一”</span>活动。
+          <p class="lh24">您好，您不符合本活动的参与条件，您还可以去看看<span style="color: #FF9700;cursor: pointer" @click="$router.push('/activity/BlacKActivities')">“低价秒杀，买一赠一”</span>活动。
           </p>
         </div>
       </div>
@@ -429,6 +447,202 @@
         <Button @click="showModal.inConformityModal = false">取消</Button>
         <Button type="primary" @click="$router.push('/activity/BlacKActivities')">现在就去</Button>
       </p>
+    </Modal>
+    <!-- 领取成功 -->
+    <Modal v-model="showModal.getSuccessModal" :scrollable="true" :closable="false" :width="390">
+      <div class="modal-content-s" style="padding: 30px 30px 0 50px">
+        <div>
+          <div class="ivu-modal-confirm-body-icon ivu-modal-confirm-body-icon-success" style="top: 48px;left: 30px;">
+            <i class="ivu-icon ivu-icon-checkmark-circled"></i>
+          </div>
+          <strong>提示</strong>
+          <p class="lh24">恭喜您押金已冻结完成，主机领取成功，主机在实名认证之前只可保留3天，请尽快使用。
+          </p>
+        </div>
+      </div>
+      <p slot="footer" class="modal-footer-s">
+        <Button @click="showModal.getSuccessModal = false">取消</Button>
+        <Button type="primary" @click="$router.push('/host')">查看主机</Button>
+      </p>
+    </Modal>
+    <!-- 支付充值失败 -->
+    <Modal v-model="showModal.payDefeatedModal" width="640" :scrollable="true">
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">支付/充值</span>
+      </p>
+      <div class="universal-modal-content-flex">
+        <div class="modal-p">
+          <Steps :current="2" status="error">
+            <Step title="订单确认"></Step>
+            <Step title="支付"></Step>
+            <Step title="支付失败"></Step>
+          </Steps>
+          <p><img src="../../../assets/img/sceneInfo/si-defeated.png" alt="支付失败"/><span>抱歉，支付失败，请再次尝试！</span></p>
+        </div>
+      </div>
+      <div slot="footer" class="modal-footer-border">
+        <Button type="primary" @click="showModal.payDefeatedModal = false,showModal.orderConfirmationModal = true">再次支付</Button>
+      </div>
+    </Modal>
+    <!-- 支付充值成功 -->
+    <Modal v-model="showModal.paySuccessModal" width="640" :scrollable="true" :closable="false" :mask-closable="false">
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">支付/充值</span>
+      </p>
+      <div class="universal-modal-content-flex">
+        <div class="modal-p">
+          <Steps :current="2">
+            <Step title="订单确认"></Step>
+            <Step title="支付"></Step>
+            <Step title="支付成功"></Step>
+          </Steps>
+          <p><img src="../../../assets/img/sceneInfo/si-success.png" alt="支付成功"/><span>恭喜您支付成功！我们即将冻结押金</span><span style="color: #D0021B;margin-left: 0">{{ cashPledge }}</span><span
+            style="margin-left: 0">元</span></p>
+        </div>
+      </div>
+      <div slot="footer" class="modal-footer-border">
+        <Button type="primary" @click="getFreeHost">确认冻结</Button>
+      </div>
+    </Modal>
+
+    <!-- 微信支付弹窗 -->
+    <Modal v-model="showModal.weChatRechargeModal" width="640" :scrollable="true">
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">微信支付/充值</span>
+      </p>
+      <div class="universal-modal-content-flex">
+        <div class="modal-p">
+          <Steps :current="1">
+            <Step title="订单确认"></Step>
+            <Step title="支付"></Step>
+            <Step title="支付成功"></Step>
+          </Steps>
+          <div class="payInfo">
+            <div id="code">
+              <vue-q-art :config="config" v-if="config.value!=''"></vue-q-art>
+            </div>
+            <div class="pay-p">
+              <p>应付金额(元)：<span>{{cashPledge}}</span></p>
+              <p>请使用微信扫一扫，扫描二维码支付</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div slot="footer" class="modal-footer-border">
+        <Button @click="isPay">已完成支付</Button>
+        <Button type="primary" @click="showModal.weChatRechargeModal = false,showModal.orderConfirmationModal = true">更换支付方式</Button>
+      </div>
+    </Modal>
+
+    <!-- 订单确认弹窗 -->
+    <Modal v-model="showModal.orderConfirmationModal" width="640" :scrollable="true">
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">订单确认</span>
+      </p>
+      <div>
+        <div class="modal-p">
+          <Steps :current="0">
+            <Step title="订单确认"></Step>
+            <Step title="支付"></Step>
+            <Step title="支付成功"></Step>
+          </Steps>
+        </div>
+        <Table :columns="orderColumns" :data="orderData" style="margin-top: 30px"></Table>
+        <div class="pay-wap">
+          <p>选择支付方式</p>
+          <RadioGroup v-model="payWay" vertical @on-change="payWayChange">
+            <Radio label="balancePay">
+              <span style="color:rgba(51,51,51,1);font-size: 14px;margin-right: 40px">余额支付</span>
+              <span style="color:rgba(102,102,102,1);font-size: 14px">账户余额：</span>
+              <span style="color:#D0021B;font-size: 14px">¥{{ balance }}</span>
+            </Radio>
+            <Radio label="otherPay" class="pw-img" :disabled="balance >= cashPledge">
+              <span style="color:rgba(51,51,51,1);font-size: 14px;margin-right: 25px">第三方支付</span>
+              <img src="../../../assets/img/payresult/alipay.png" :class="{selected: otherPayWay == 'zfb'}" @click="balance < cashPledge?otherPayWay = 'zfb':null" alt="支付宝">
+              <img src="../../../assets/img/payresult/wxpay.png" :class="{selected: otherPayWay == 'wx'}" @click="balance < cashPledge?otherPayWay = 'wx':null" alt="微信">
+            </Radio>
+
+            <!--            <Radio label="otherPay" class="pw-img">
+                          <span style="color:rgba(51,51,51,1);font-size: 14px;margin-right: 25px">第三方支付</span>
+                          <img src="../../../assets/img/payresult/alipay.png" :class="{selected: otherPayWay == 'zfb'}" @click="otherPayWay = 'zfb'">
+                          <img src="../../../assets/img/payresult/wxpay.png" :class="{selected: otherPayWay == 'wx'}" @click="otherPayWay = 'wx'">
+                        </Radio>-->
+          </RadioGroup>
+        </div>
+      </div>
+      <div slot="footer" class="modal-footer-border">
+        <Button type="primary" @click="getHost_ok">确认</Button>
+      </div>
+    </Modal>
+    <!-- 购买前实名认证 -->
+    <Modal v-model="showModal.authentication" width="640" :scrollable="true">
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">实名认证</span>
+      </p>
+      <Form :model="quicklyAuthForm" :label-width="100" ref="quicklyAuth"
+            :rules="quicklyAuthFormValidate"
+            style="width:450px;margin-top:20px;">
+        <FormItem label="真实姓名" prop="name" style="width: 100%">
+          <Input v-model="quicklyAuthForm.name" placeholder="请输入姓名"></Input>
+        </FormItem>
+        <FormItem label="身份证号" prop="IDCard" style="width: 100%">
+          <Input v-model="quicklyAuthForm.IDCard" placeholder="请输入身份证号"></Input>
+        </FormItem>
+        <Form :model="quicklyAuthForm" :rules="quicklyAuthFormValidate" ref="sendCode"
+              :label-width="100">
+          <FormItem label="图形验证码" prop="pictureCode">
+            <div style="display: flex">
+              <Input v-model="quicklyAuthForm.pictureCode" placeholder="请输入图片验证码"
+                     style="width:250px;margin-right: 10px"></Input>
+              <img :src="imgSrc" style="height:33px;"
+                   @click="imgSrc=`https://www.xrcloud.net/user/getKaptchaImage.do?t=${new Date().getTime()}`">
+            </div>
+          </FormItem>
+          <FormItem label="手机号码" prop="phone" style="width: 100%">
+            <Input v-model="quicklyAuthForm.phone" placeholder="请输入以该身份证开户的手机号码"></Input>
+          </FormItem>
+        </Form>
+        <FormItem label="验证码" prop="validateCode" style="width: 100%">
+          <div style="display: flex;justify-content: space-between">
+            <Input v-model="quicklyAuthForm.validateCode" placeholder="请输入验证码" style="width:260px;margin-right: 10px"></Input>
+            <Button type="primary" @click="sendCode"
+                    :disabled="quicklyAuthForm.sendCodeText!='获取验证码'">
+              {{quicklyAuthForm.sendCodeText}}
+            </Button>
+          </div>
+        </FormItem>
+      </Form>
+      <div slot="footer" class="modal-footer-border">
+        <Button type="primary" @click="quicklyAuth">提交</Button>
+      </div>
+    </Modal>
+    <!-- 实名认证成功 -->
+    <Modal v-model="showModal.authenticationSuccess" width="640" :scrollable="true">
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">实名认证</span>
+      </p>
+      <div style="text-align:center;padding:40px 0;">
+        <img src="../../../assets/img/payresult/paySuccess.png"
+             style="width:36px;vertical-align:middle;margin-right:10px;" alt="实名认证成功">
+        <span style="font-size:14px;line-height:36px">恭喜您，实名认证成功！</span>
+      </div>
+      <div slot="footer" class="modal-footer-border">
+        <Button type="primary" @click="showModal.authenticationSuccess=false">确认</Button>
+      </div>
+    </Modal>
+    <!-- 实名认证失败 -->
+    <Modal v-model="showModal.authenticationError" width="640" :scrollable="true">
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">实名认证</span>
+      </p>
+      <div style="text-align:center;padding:40px 0;">
+        <img src="../../../assets/img/payresult/payFail.png"
+             style="width:36px;vertical-align:middle;margin-right:10px;" alt="实名认证失败">
+        <span style="font-size:14px;line-height:36px">抱歉，实名认证失败，原因：{{authErrorText}}</span>
+      </div>
+      <div slot="footer" class="modal-footer-border">
+        <Button type="primary" @click="showModal.authenticationError=false">确认</Button>
+      </div>
     </Modal>
     <!-- 活动规则 -->
     <transition name="fade">
@@ -458,6 +672,49 @@
           </div>
           <div class="footer">
             <span @click.stop="showModal.rule=false">知道了</span>
+          </div>
+        </div>
+      </div>
+    </transition>
+    <!-- 活动规则 -->
+    <transition name="fade">
+      <div class="overlay" @click.stop="showModal.ruleHost=true" v-if="showModal.ruleHost">
+        <div class="rule-modal">
+          <div class="header">
+            <span>活动规则</span>
+            <img src=../../../assets/img/active/freeToReceive.1/close-icon.png alt="关闭图标" @click.stop="showModal.ruleHost=false">
+          </div>
+          <div class="body">
+            <p>1、活动时间：2019.6.19开始</p>
+            <p>2、活动对象：平台已完成实名认证的新老用户。</p>
+            <p>3、数量限制：云服务器产品每个用户限购7台（若有更多需求，可向客服申请提高配额）</p>
+            <p>4、参与本次活动购买的产品不能进行退款。</p>
+            <p>5、购买时不可使用任何优惠券。</p>
+            <p>6、活动最终解释权为新睿云所有。</p>
+          </div>
+          <div class="footer">
+            <span @click.stop="showModal.ruleHost=false">知道了</span>
+          </div>
+        </div>
+      </div>
+    </transition>
+    <!-- 活动规则 -->
+    <transition name="fade">
+      <div class="overlay" @click.stop="showModal.ruleCoupon=true" v-if="showModal.ruleCoupon">
+        <div class="rule-modal">
+          <div class="header">
+            <span>活动规则</span>
+            <img src=../../../assets/img/active/freeToReceive.1/close-icon.png alt="关闭图标" @click.stop="showModal.ruleCoupon=false">
+          </div>
+          <div class="body">
+            <p>1、活动时间：2019.6.19开始</p>
+            <p>2、活动对象：平台已完成实名认证的新老用户。</p>
+            <p>3、数量限制：优惠券每个用户限领取一次，不同账号同一认证信息视为一个用户</p>
+            <p>4、域名与SSL证书优惠券有效期为3个月、续费优惠券有效期为1年</p>
+            <p>5、活动最终解释权为新睿云所有。</p>
+          </div>
+          <div class="footer">
+            <span @click.stop="showModal.ruleCoupon=false">知道了</span>
           </div>
         </div>
       </div>
@@ -500,6 +757,21 @@ export default {
       }
     }
     return {
+      showModal: {
+        rechargeHint: false,
+        inConformityModal: false,
+        getSuccessModal: false,
+        payDefeatedModal: false,
+        paySuccessModal: false,
+        weChatRechargeModal: false,
+        orderConfirmationModal: false,
+        authentication: false,
+        authenticationSuccess: false,
+        authenticationError: false,
+        rule: false,
+        ruleHost: false,
+        ruleCoupon: false,
+      },
       // 云服务器大集合参数
       single:'选择云服务器',
       vmCost: 0,
@@ -923,19 +1195,6 @@ export default {
           isShow: true,
         },
       ],
-      showModal: {
-        rechargeHint: false,
-        inConformityModal: false,
-        getSuccessModal: false,
-        payDefeatedModal: false,
-        paySuccessModal: false,
-        weChatRechargeModal: false,
-        orderConfirmationModal: false,
-        authentication: false,
-        authenticationSuccess: false,
-        authenticationError: false,
-        rule: false,
-      },
     }
   },
   created () {
@@ -948,6 +1207,13 @@ export default {
 
   },
   methods: {
+    init() {
+        axios.get('user/GetUserInfo.do').then(response => {
+          if (response.status == 200 && response.data.status == 1) {
+            this.$store.commit('setAuthInfo', {authInfo: response.data.authInfo, userInfo: response.data.result, authInfoPersion: response.data.authInfo_persion})
+          }
+        })
+      },
     // 获取活动配置,区域
     getConfigureDeposit () {
       let url = 'activity/getTemActInfoById.do'
@@ -2187,7 +2453,7 @@ section:nth-of-type(1) {
             font-size: 14px;
           }
           .selected {
-            background: #4990e2;
+            background: #387dff;
             color: #fff;
           }
         }
