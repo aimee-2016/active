@@ -2736,7 +2736,7 @@
         return new Date().getFullYear().toString() + '.' + (new Date().getMonth() + 1).toString() + '.' + new Date().getDate().toString()
       },
       push(type) {
-        sessionStorage.setItem('pane', type)
+        this.$store.commit('setPane', {vpc: 'VPC', vpn: 'remote', usercenter: type,expenses: 'accountSummary'})
         this.$router.push('/usercenter')
       },
       guideNext() {

@@ -1235,7 +1235,7 @@
             if(res.status == 200 && res.data.status == 1){
               if(res.data.authInfo && res.data.authInfo.checkstatus == 0){
                 clearInterval(this.timer)
-                sessionStorage.setItem('pane','certification')
+                this.$store.commit('setPane', {vpc: 'VPC', vpn: 'remote', usercenter: 'certification',expenses: 'accountSummary'})
                 sessionStorage.setItem('registerSuccessMsg','1')
                 this.$router.push('userCenter')
               }

@@ -1668,7 +1668,7 @@
           regular: false,
           notLoginModal: false,
           authModal: false,
-          authErrorModal: false,
+          authErrorModal: true,
           rule1: false,
           rule2: false,
           vipRuleModal: false,
@@ -2073,7 +2073,7 @@
         this.s2 = Math.floor(leftTime / 1000 % 60 % 10)
       },
       toAuth() {
-        sessionStorage.setItem('pane', 'certification')
+        this.$store.commit('setPane', {vpc: 'VPC', vpn: 'remote', usercenter: 'certification',expenses: 'accountSummary'})
         this.$router.push('/userCenter')
       },
       roll(val) {
