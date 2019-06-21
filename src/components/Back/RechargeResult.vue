@@ -42,8 +42,8 @@
   export default {
     data() {
       return {
-        payStatus: '支付成功',
-        msg: '',
+        payStatus: '支付中，请稍候',
+        msg: '支付中，请稍候',
         vipMsg: ''
       }
     },
