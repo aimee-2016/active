@@ -251,7 +251,6 @@
 
       // 个人网银支付
       individualUnionPay(){
-        
           axios.get('yl/ylb2cPay.do',{
             params:{
               total_fee:this.otherPayCount.toFixed(2),
@@ -273,7 +272,6 @@
 
       // 企业网银支付
       enterpriseUnionPay(){
-       
         axios.get('yl/ylb2bPay.do',{
             params:{
               total_fee:this.otherPayCount.toFixed(2),

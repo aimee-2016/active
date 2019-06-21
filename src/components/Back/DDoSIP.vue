@@ -9,6 +9,10 @@
                 </div>
                  <Tabs type="card">
                     <TabPane label="概览">
+                        
+                       
+                    </TabPane>
+                    <TabPane label="业务管理">
                         <div class="dp-row">
                             <div>
                                 <RadioGroup v-model="button1" type="button">
@@ -47,7 +51,7 @@
                         <div v-if="button1 == '证书管理'">
                             <div class="dp-row">
                                 <div>
-                                    <Button type="primary" style="margin-right:10px;">添加证书</Button>
+                                    <Button type="primary" style="margin-right:10px;" @click="showModal. certificate = true">添加证书</Button>
                                     <Button type="primary">删除</Button>
                                 </div>
                                 <div>
@@ -66,28 +70,37 @@
                         <div v-if="button1 == '非网站业务'">
                             <div class="dp-row">
                                 <div>
-                                    <Button type="primary" style="margin-right:10px;">添加规则</Button>
+                                    <Button type="primary" style="margin-right:10px;" @click="$router.push('ddosipruleadd')">添加规则</Button>
                                     <Button type="primary">删除</Button>
                                     <span class="dp-cn">CNAME：sectest564as65d4a65s4d5as4d5a6s4d6</span>
                                 </div>
                                 <div>
-                                     <Select v-model="domain" style="width:100px">
-                                        <Option v-for="item in domainList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                                     <Select v-model="visitPort" style="width:100px">
+                                        <Option v-for="item in visitPortSelect" :value="item.value" :key="item.value">{{ item.label }}</Option>
                                     </Select>
                                     <Input placeholder="请输入端口名称" style="width:180px;margin-right:10px;"></Input>
                                     <Button type="primary" style="width:84px;">查询</Button>
                                 </div>
                             </div>
-                            <Table :columns="certificateList" :data="certificateData"></Table>
+                            <Table :columns="ruleList" :data="ruleData"></Table>
                             <div class="dp-page">
-                                <span>总共{{certificateData.length}}个项目</span>
+                                <span>总共{{ruleData.length}}个项目</span>
                                 <Page :total="100" style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
                             </div>
                         </div>
-                       
                     </TabPane>
-                    <TabPane label="业务管理">标签二的内容</TabPane>
-                    <TabPane label="防护管理">标签三的内容</TabPane>
+                    <TabPane label="防护管理">
+                        <div class="dp-row">
+                            <span>套餐选择</span>
+                            <Select v-model="visitPort" style="width:100px">
+                                <Option v-for="item in visitPortSelect" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                            </Select>
+                            <Button>保存修改</Button>
+                        </div>
+                        <div style="line-height:26px;">
+                                <span>添加域名帮助文档</span>
+                        </div>
+                    </TabPane>
                     <TabPane label="操作日志">标签三的内容</TabPane>
                 </Tabs>
              </div>
@@ -103,14 +116,16 @@
                     </FormItem>
                     <FormItem label="证书文件" prop="file">
                         <Input type="textarea" v-model="certificateValidate.file" placeholder="Enter your name">
-                            <span>0/500</span>
                         </Input>
+                        <span class="f-p">0/500</span>
                     </FormItem>
                     <FormItem label="秘钥内容" prop="secret">
                         <Input type="textarea" v-model="certificateValidate.secret" placeholder="Enter your name"></Input>
+                        <span class="f-p">0/500</span>
                     </FormItem>
                     <FormItem label="CA内容" prop="ca">
                         <Input type="textarea" v-model="certificateValidate.ca" placeholder="Enter your name"></Input>
+                        <span class="f-p">0/500</span>
                     </FormItem>
                     <FormItem label="加密方式" prop="name">
                         <Input v-model="certificateValidate.name" placeholder="Enter your name"></Input>
@@ -134,7 +149,7 @@ export default {
     return {
       // 弹窗
       showModal:{
-        certificate:true,
+        certificate:false,
         
       },  
 
@@ -241,7 +256,12 @@ export default {
           ca:'',
 
       },
-      certificateRule:{},
+      certificateRule:{
+          name:[{required: true, message: '请输入证书名称', trigger: 'blur'}],
+          file:[{required: true, message: '请输入证书文件   ', trigger: 'blur'}],
+          secret:[{required: true, message: '请输入秘钥内容', trigger: 'blur'}],
+          ca:[{required: true, message: '请输入CA内容', trigger: 'blur'}]
+      },
 
       // 网站业务
       domainList:[
@@ -327,10 +347,83 @@ export default {
               部署状态:'aaaa',
               防护状态:'aaa',
           }
-      ]
+      ],
       
       // 非网站业务
-        
+       ruleList:[
+           {
+              type: "selection",
+              width: 60,
+              align: "center"
+           },
+           {
+               key:'协议',
+               title:'协议'
+           },
+           {
+               key:'访问端口',
+               title:'访问端口'
+           },
+           {
+               key:'源站端口',
+               title:'源站端口'
+           },
+           {
+               key:'回源负载均衡',
+               title:'回源负载均衡'
+           },
+           {
+               key:'acc',
+               title:'源站IP/域名'
+           },
+           {
+               key:'部署状态',
+               title:'部署状态'
+           },
+           {
+               key:'防护状态',
+               title:'防护状态'
+           },
+           {
+               key:'操作',
+               title:'操作',
+               render:(h,params)=>{
+                   return h('div',[
+                       h('span',{
+                           style:{
+                               color:"#2A99F2",
+                               cursor:"pointer",
+                               marginRight:'10px'
+                           }
+                       },'修改'),
+                       h('span',{
+                            style:{
+                               color:"#2A99F2",
+                               cursor:"pointer"
+                           }
+                       },'删除'),
+                   ])
+               }
+           },
+       ],
+       ruleData:[
+           {
+               协议:'tcp',
+               访问端口:'0.0.0.0',
+               源站端口:'0.0.0.0',
+               回源负载均衡:'轮询模式',
+               acc:'192.168.0.0',
+               部署状态:'待部署',
+               防护状态:'DDoS防护：开',
+           }
+       ],
+       visitPort:'访问端口',
+       visitPortSelect:[
+           {
+               value:'访问端口',
+               label:'访问'
+           }
+       ]
     };
   }
 };
@@ -352,6 +445,15 @@ export default {
   }
   .md-cer{
       overflow: auto;
+  }
+  .f-p{
+    position: absolute;
+    right: 11px;
+    top: 53px;
+    color: #B2B2B2;
+  }
+  .ivu-input-wrapper textarea.ivu-input{
+          resize: none;
   }
 </style>
 
