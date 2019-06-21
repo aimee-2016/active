@@ -1089,7 +1089,7 @@
           mark2: this.uploadForm.lpIdIDPhotoList.idFont,
           mark3: this.uploadForm.lpIdIDPhotoList.idBack
         }
-        if(this.tempCode){
+        if(sessionStorage.getItem('tempCode')){
            sessionStorage.setItem('mainParamsStr', JSON.stringify(mainParams))
            sessionStorage.setItem('siteParamsStr', JSON.stringify(siteParams))
            this.$router.push('NewRecordStepFour')
