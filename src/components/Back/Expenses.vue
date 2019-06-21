@@ -2278,14 +2278,14 @@
             title: '面值/折扣',
             align: 'left',
             render: (h, params) => {
-              return h('span', params.row.tickettype == '1' ? `${params.row.money}折` : `${params.row.money}元`)
+              return h('span', params.row.ticketType == 1 ? `${params.row.money*10}折` : `${params.row.money}元`)
             }
           },
           {
             title: '余额',
             align: 'left',
             render: (h, params) => {
-              return h('span', params.row.tickettype == '1' ? `${params.row.money}折` : `${params.row.money}元`)
+              return h('span', params.row.ticketType != 1 ? `${params.row.money}元` : '')
             }
           },
           {
