@@ -350,23 +350,13 @@
               >活动规则></span></p>
           </div>
           <div class="product">
-            <div>
+            <div v-for="(item,index) in activityList" :key="index" @click="$router.push(item.url)">
               <div class="head">
                 <h3>
-                  对象存储免费领取
-                  <span>50G</span>
+                  {{item.text}}
+                  <span>{{item.config}}</span>
                 </h3>
               </div>
-              <Button @click="$router.push('/activity/objectstorage/')">立即领取</Button>
-            </div>
-            <div>
-              <div class="head">
-                <h3>
-                  云数据库免费试用
-                  <span>60</span>天
-                </h3>
-              </div>
-              <Button @click="$router.push('/activity/hotdatabase/')">立即领取</Button>
             </div>
           </div>
           <div class="coupons">
@@ -374,7 +364,7 @@
               <div>
                 <div class="head">
                   <span>
-                    <i>9</i>折
+                    <i>8</i>折
                   </span>
                   <span>域名优惠券</span>
                 </div>
@@ -383,7 +373,7 @@
               <div>
                 <div class="head">
                   <span>
-                    <i>8</i>折
+                    <i>7</i>折
                   </span>
                   <span>SSL证书优惠券</span>
                 </div>
@@ -400,11 +390,11 @@
                 <span>升级续费券</span>
               </div>
               <div>
-                <div class="head">
+                <div class="head" style="padding-right:0">
                   <span class="full-cut">
                     满
-                    <i>500</i>减
-                    <i>200</i>
+                    <i>1000</i>减
+                    <i>500</i>
                   </span>
                 </div>
                 <span>升级续费券</span>
@@ -1194,6 +1184,18 @@ export default {
           text:'优惠券随时领',
           isShow: true,
         },
+      ],
+      activityList: [
+        {
+          text: '对象存储免费领取',
+          config: '50G',
+          url: '/activity/objectstorage/',
+        },
+        {
+          text: '云数据库免费试用',
+          config: '60天',
+          url: '/activity/objectstorage/',
+        }
       ],
     }
   },
@@ -2512,14 +2514,17 @@ section:nth-of-type(1) {
     display: flex;
     justify-content: space-between;
     background: #fff;
-    margin-bottom: 36px;
+    margin-bottom: 30px;
     > div {
-      width: 582px;
+      width: 578px;
       box-shadow: 0px 3px 10px -3px rgba(237, 190, 175, 0.7);
+      &:nth-of-type(2) .head{
+        background: url("../../../assets/img/active/freeToReceive.1/coupon-database-bg.png");
+      }
     }
     .head {
-      padding: 40px 0;
-      height: 130px;
+      padding: 55px 0;
+      height: 152px;
       font-size: 32px;
       color: rgba(53, 14, 3, 1);
       background: url("../../../assets/img/active/freeToReceive.1/coupon-obj-bg.png");

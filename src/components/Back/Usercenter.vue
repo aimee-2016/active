@@ -2721,18 +2721,6 @@
       }
     },
     created() {
-      let authType = sessionStorage.getItem('pane')
-      this.paneStatus.usercenter = 'personalInfo'
-      if (authType == 'company') {
-        this.paneStatus.usercenter = 'companyInfo'
-      } else if (authType == 'person') {
-        this.paneStatus.usercenter = 'personalInfo'
-      } else if (authType == 'nonrealname') {
-        this.paneStatus.usercenter = 'certification'
-      } else {
-        this.paneStatus.usercenter = authType
-      }
-      sessionStorage.removeItem('pane')
       this.successHint = sessionStorage.getItem('registerSuccessMsg') ? sessionStorage.getItem('registerSuccessMsg') : ''
       sessionStorage.removeItem('registerSuccessMsg')
       if (this.paneStatus.usercenter == 'personalInfo' || this.paneStatus.usercenter == 'companyInfo'){
