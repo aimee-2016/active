@@ -16,7 +16,7 @@
           <button id="refresh_button" @click="$router.go(0)" style="margin-top: 10px;">刷新</button>
         </div>
         <div class="universal-alert">
-          <p>SSH密钥。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。</p>
+          <p>SSH密钥</p>
         </div>
         <div class="operator-bar">
           <Button type="primary" @click="createSSHSecretKey">创建密钥</Button>

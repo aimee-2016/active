@@ -91,15 +91,65 @@
                     </TabPane>
                     <TabPane label="防护管理">
                         <div class="dp-row">
-                            <span>套餐选择</span>
-                            <Select v-model="visitPort" style="width:100px">
-                                <Option v-for="item in visitPortSelect" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                            </Select>
-                            <Button>保存修改</Button>
+                            <div>
+                                <span style="font-size:14px;color:#333333;">套餐选择</span>
+                                <Select v-model="setMeal" style="width:230px">
+                                    <Option v-for="item in setMealList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                                </Select>
+                                <Button>保存修改</Button>
+                            </div>
+                            <div style="line-height:26px;">
+                                <span>查看域名添加指引</span>
+                            </div>
                         </div>
-                        <div style="line-height:26px;">
-                                <span>添加域名帮助文档</span>
+                        <div class="dp-box">
+                            <div class="dp-grad dp-row">
+                                <div>
+                                    <span class="b-font">DDoS防护</span>
+                                    <span >DDoS防护配置，针对该套餐下的所有网站业务的域名和非网站业务的转发规则都生效。</span>
+                                </div>
+                                <div>
+                                <span class="o-font">配置变更之后请点击保存！</span> 
+                                </div>
+                            </div>
+                            <div style="display:flex;">
+                                <div class="dp-fh">
+                                    <div>
+                                        <div>
+                                            <span class="fh-sp">四层DDoS清洗</span>
+                                            <i-switch :true-value='true' :false-value='true' v-model="protectSwicth"></i-switch>
+                                        </div>
+                                        <div style="margin-top:10px;">
+                                            <span style="color:#FF9801;">默认开启，暂不支持修改</span>
+                                        </div>
+                                    </div>    
+                                </div>
+                                <div class="dp-fh">
+                                    <div>
+                                        <div>
+                                            <span class="fh-sp">空连接防护</span>
+                                            <i-switch v-model="emptyLink"></i-switch>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>   
                         </div>
+                        <!-- CC防护 -->
+                        <div class="dp-cc">
+                            <div class="dp-grad dp-row">
+                                <div>
+                                    <span class="b-font">CC防护</span>
+                                    <span >选择需要修改防护配置的域名，开启或是关闭防护状态，或是修改防护的模式。</span>
+                                </div>
+                                <div>
+                                <span class="o-font">配置变更之后请点击保存！</span> 
+                                </div>
+                            </div>
+                            <Table :columns="ccProtectList" :data="ccProtectData"></Table>
+                            <div class="dp-page">
+                                <Page :total="100" style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
+                            </div>
+                        </div>    
                     </TabPane>
                     <TabPane label="操作日志">标签三的内容</TabPane>
                 </Tabs>
@@ -423,13 +473,87 @@ export default {
                value:'访问端口',
                label:'访问'
            }
-       ]
+       ],
+
+    //    防护管理
+        setMeal:'套餐ID',
+        setMealList:[
+            {
+                value:'套餐ID',
+                label:'套餐ID'
+            }
+        ],
+        protectSwicth:true,
+        emptyLink:false,
+        ccProtectList:[
+            {
+                type: 'expand',
+                width: 50,
+            },
+            {
+                key:'域名',
+                title:'域名'
+            },
+            {
+                key:'acc',
+                title:'源站IP/域名'
+            },
+            {
+                key:'防护状态',
+                title:'防护状态'
+            },
+            {
+                key:'防护模式',
+                title:'防护模式'
+            },
+            {
+                key:'黑白名单',
+                title:'黑白名单',
+                render:(h,params)=>{
+                    return h('span',{
+                        style:{
+                            color:'#4297F2',
+                            cursor:'pointer'
+                        }
+                    },'添加')
+                }
+            }
+        ],
+        ccProtectData:[
+            {
+                域名:'test.com',
+                acc:'1.1.1.1',
+
+            }
+        ],
     };
+  },
+  methods:{
+  
   }
 };
 </script>
 
 <style lang="less" scoped>
+ .ivu-input-wrapper textarea.ivu-input{
+          resize: none;
+  }
+  .ivu-switch-checked{
+      border-color: #19BE6A;
+      background-color: #19BE6A;
+  }
+  .ivu-switch-checked:after {
+    left: 22px;
+  }
+  .ivu-switch:after{
+    width: 16px;
+    height: 16px
+  }
+  .ivu-switch{
+      width: 40px;
+      height: 20px;
+  }
+
 .dp-row {
   display: flex;
   justify-content: space-between;
@@ -452,8 +576,49 @@ export default {
     top: 53px;
     color: #B2B2B2;
   }
-  .ivu-input-wrapper textarea.ivu-input{
-          resize: none;
+  .dp-box{
+      padding-bottom: 20px;
+      border-bottom:1px solid rgba(233,233,233,1);
   }
+  .dp-grad{
+      height:40px;
+      background:linear-gradient(270deg,rgba(42,153,242,0) 4%,rgba(42,153,242,0.34) 100%,rgba(42,153,242,0.30) 27%);
+      line-height: 40px;
+      font-size: 14px;
+      color: #666666;
+  }
+  .b-font{
+      font-size: 18px;
+      color: #333333;
+      font-weight: bold;
+      margin:0 10px;
+  }
+  .o-font{
+      color: #ED4014;
+  }
+  .dp-fh{
+        width:272px;
+        height:92px;
+        background:rgba(255,255,255,1);
+        box-shadow:0px 1px 9px -2px rgba(0,0,0,0.2);
+        margin-right: 10px;
+        position: relative;
+        >div{
+            margin: 32px 0 10px 20px;
+        }
+        .fh-sp{
+            color:#333333;font-size:14px;margin-right:10px;
+        }
+  }
+  .dp-fh::before{
+      content: '';
+      position: absolute;
+      width:272px;
+      height: 6px;
+      background-color: #666666;
+  }
+    .dp-cc{
+        margin-top: 18px;
+    }
 </style>
 
