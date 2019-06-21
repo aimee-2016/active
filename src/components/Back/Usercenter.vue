@@ -724,14 +724,17 @@
       </p>
       <div class="modal-content-s">
         <div>
-          <p class="lh24" style="font-size:14px;font-family:MicrosoftYaHei;color:rgba(51,51,51,1);line-height:24px;">
+          <p class="lh24" style="font-size:14px;font-family:MicrosoftYaHei;color:rgba(51,51,51,1);line-height:24px;" v-if="userInfo.phone">
+            为保障您的账户安全，我们将对您的注册手机{{userInfo.phone }}进行验证：
+          </p>
+          <p class="lh24" style="font-size:14px;font-family:MicrosoftYaHei;color:rgba(51,51,51,1);line-height:24px;" v-else>
             为保障您的账户安全，请进行手机验证：
           </p>
         </div>
       </div>
       <div class="modal-content-s">
         <Form ref="cashverification" label-position="left" :model="formCustom" :rules="ruleCustom" style="width: 500px;">
-          <FormItem prop="VerificationPhone">
+          <FormItem prop="VerificationPhone" v-if="!userInfo.phone">
             <Input v-model="formCustom.VerificationPhone" placeholder="请输入手机号码" style="width: 300px;"></Input>
           </FormItem>
           <FormItem prop="Verificationcode">
@@ -3325,7 +3328,7 @@
               })
             } else {
               this.$Message.error(response.data.message)
-              this.imgSrc = `user/getKaptchaImage.do?t=${new Date().getTime()}`
+              this.notAuth.companyAuthForm.imgSrc=`user/getKaptchaImage.do?t=${new Date().getTime()}`
             }
           })
         }
@@ -4209,7 +4212,7 @@
       },
       //短信验证码
       getPhoneCode(codeType) {
-        if(!this.regExpObj.phone.test(this.formCustom.VerificationPhone)){
+        if(!this.userInfo.phone && !this.regExpObj.phone.test(this.formCustom.VerificationPhone)){
           this.$Message.info('请输入正确的手机号')
           return
         }
@@ -4225,7 +4228,7 @@
             }
             axios.get(url, {
               params: {
-                aim: this.formCustom.VerificationPhone,
+                aim: this.userInfo.phone ? this.userInfo.phone : this.formCustom.VerificationPhone,
                 isemail: 0,
                 vailCode: this.formCustom.Verificationcode
               }
@@ -4257,19 +4260,10 @@
         this.$refs.cashverification.validateField('messagecode', (text) => {
           if (text == '') {
             let url = 'user/judgeCode.do'
-            let params = {}
-            if (this.userInfo.phone) {
-              params = {
-                aim: this.userInfo.phone,
-                isemail: 0,
-                code: this.formCustom.messagecode
-              }
-            } else {
-              params = {
-                aim: this.userInfo.loginname ? this.userInfo.loginname : '',
-                isemail: 1,
-                code: this.formCustom.messagecode
-              }
+            let params = {
+              aim: this.userInfo.phone ? this.userInfo.phone : this.formCustom.VerificationPhone,
+              isemail: 0,
+              code: this.formCustom.messagecode
             }
             axios.get(url, {
               params
@@ -4280,7 +4274,7 @@
                     this.tempCode =  this.uuid(6, 16)
                     let url = '/faceRecognition/getUserInfoByPcQRCode.do'
                     let config = {
-                       phone: this.formCustom.VerificationPhone,
+                       phone: this.userInfo.phone ? this.userInfo.phone : this.formCustom.VerificationPhone,
                      }
                     axios.post(url,{
                       faceType: '1',

@@ -317,6 +317,9 @@ import axios from 'axios';
             }
           }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
+              this.serialNum = res.data.serialNum
+              localStorage.setItem('serialNum', this.serialNum)
+              this.showModal.rechargeHint = true
               const newWindow = window.open(); // 创建一个新窗口
               let url = decodeURIComponent(res.data.url),  // URL解码
               div = document.createElement('div');
@@ -336,7 +339,10 @@ import axios from 'axios';
             }
           }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
-              const newWindow = window.open(); // 创建一个新窗口
+            this.serialNum = res.data.serialNum
+            localStorage.setItem('serialNum', this.serialNum)
+            this.showModal.rechargeHint = true
+            const newWindow = window.open(); // 创建一个新窗口
              let url = decodeURIComponent(res.data.url),
               div = document.createElement('div');
               div.innerHTML = url;

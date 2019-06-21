@@ -1880,7 +1880,7 @@
     box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.2);
     border-radius: 4px;
     position: absolute;
-    z-index: 9999;
+    z-index: 1;
     padding: 20px;
     > p {
       font-size: 14px;

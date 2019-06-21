@@ -259,6 +259,8 @@
             }
           }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
+              this.zfbNum = res.data.serialNum;
+              localStorage.setItem('serialNum',res.data.serialNum);
               const newWindow = window.open(); // 创建一个新窗口
               let url = decodeURIComponent(res.data.url),  // URL解码
               div = document.createElement('div');
@@ -266,6 +268,7 @@
               newWindow.document.body.appendChild(div);
               newWindow.document.forms[0].acceptCharset ="utf-8";
               newWindow.document.forms[0].submit(); // 提交表单
+              this.showModal.paymentCofirm = true;
             }
           })
       },
@@ -280,6 +283,8 @@
             }
           }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
+               this.zfbNum = res.data.serialNum;
+              localStorage.setItem('serialNum',res.data.serialNum)
               const newWindow = window.open(); // 创建一个新窗口
              let url = decodeURIComponent(res.data.url),
               div = document.createElement('div');
@@ -287,6 +292,7 @@
               newWindow.document.body.appendChild(div);
               newWindow.document.forms[0].acceptCharset ="utf-8";
               newWindow.document.forms[0].submit();
+              this.showModal.paymentCofirm = true;
             }
           })
       },
