@@ -133,7 +133,7 @@
 						<div id="divself3">
 							{{failurePrompt}}
 						</div>
-						<Button @click="$router.push('/index')" id="butself3">返回官网</Button>
+						<Button @click="$router.push('/')" id="butself3">返回官网</Button>
 						<Button type="primary" id="butself4" @click="$router.push('/overview')">返回控制台</Button>
 					</div>
 				</div>
@@ -148,7 +148,7 @@
 						<div id="divself3">
 							{{failurePrompt}}
 						</div>
-						<Button @click="$router.push('/index')" id="butself3">返回官网</Button>
+						<Button @click="$router.push('/')" id="butself3">返回官网</Button>
 						<Button type="primary" id="butself4" @click="$router.push('/overview')">返回控制台</Button>
 					</div>
 				</div>
@@ -314,7 +314,7 @@
 						<p id="pself13">提交成功</p>
 						<p id="pself14">您的信息已提交成功，我们会在24小时内审核完毕</p>
 						<p id="pself15">请耐心等待</p>
-						<Button @click="$router.push('/index')" id="btuself3">返回官网</Button>
+						<Button @click="$router.push('/')" id="btuself3">返回官网</Button>
 					</div>
 				</div>
 				<div v-if="$store.state.authInfo == null" style="float: left;width: 100%;">
@@ -323,7 +323,7 @@
 							<span style="color: #FF624B;">24小时内</span> 审核完成，并将审核结果发送至您号码为 <span style="color: #FF624B;">{{ $store.state.userInfo.phone}}</span>
 							的手机上，请注意查收。</p>
 						<Progress :percent="cancelpercent" status="active" id="progressself3"></Progress><br /><!-- changeTab('content2') -->
-						<Button type="primary" @click="$router.push('/index')" style="margin-top: 40px;">返回官网</Button>
+						<Button type="primary" @click="$router.push('/')" style="margin-top: 40px;">返回官网</Button>
 					</div>
 				</div>
 			</div>

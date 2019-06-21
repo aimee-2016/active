@@ -42,21 +42,11 @@
               <Dropdown @on-click="go">
                 <router-link to="expenses" class="dropdown-a" :class="{active:pageInfo.path=='expenses'}"><span>费用</span></router-link>
                 <DropdownMenu slot="list">
-                  <DropdownItem name="accountSummary#expenses">
-                    <span @click="$router.push('/expenses')">财务总览</span>
-                  </DropdownItem>
-									<DropdownItem name="bills#expenses">
-                    <span @click="$router.push('/expenses')">账单</span>
-									</DropdownItem>
-									<DropdownItem name="orderManage#expenses">
-                    <span @click="$router.push('/expenses')">订单管理</span>
-									</DropdownItem>
-									<DropdownItem name="myCard#expenses">
-                    <span @click="$router.push('/expenses')">我的卡券</span>
-									</DropdownItem>
-                  <DropdownItem name="applyInvoice#expenses">
-                    <span @click="$router.push('/expenses')">发票管理</span>
-									</DropdownItem>
+                  <DropdownItem name="accountSummary#expenses">财务总览</DropdownItem>
+									<DropdownItem name="bills#expenses">账单</DropdownItem>
+									<DropdownItem name="orderManage#expenses">订单管理</DropdownItem>
+									<DropdownItem name="myCard#expenses">我的卡券</DropdownItem>
+                  <DropdownItem name="applyInvoice#expenses">发票管理</DropdownItem>
                 </DropdownMenu>
               </Dropdown>
 						</li>
@@ -70,31 +60,12 @@
                   <span>{{userInfo?userInfo.realname:''}}</span>
                 <Icon type="arrow-down-b"></Icon>
                 </router-link>
-                <!-- <sup class="circle-dot" v-if="this.$store.state.Msg>0"></sup> -->
                 <DropdownMenu slot="list">
-                  <DropdownItem name="personalInfo#usercenter">
-                    <span @click="$router.push('/userCenter')">个人信息</span>
-                  </DropdownItem>
-									<DropdownItem name="remainder#usercenter">
-                    <span @click="$router.push('/userCenter')">提醒设置</span>
-									</DropdownItem>
-									<DropdownItem name="certification#usercenter">
-                    <span @click="$router.push('/userCenter')">实名认证</span>
-									</DropdownItem>
-									<DropdownItem name="key#usercenter">
-                    <span @click="$router.push('/userCenter')">Access Key</span>
-									</DropdownItem>
-                  <!-- <DropdownItem name="expenses">
-                    <router-link to="/expenses">费用中心</router-link>
-                  </DropdownItem>
-                  <DropdownItem name="msgCenter" style="position:relative">
-                    <router-link to="/msgCenter">消息中心<sup v-if="this.$store.state.Msg>0" class="badge">{{this.$store.state.Msg}}</sup>
-                    </router-link>
-                  </DropdownItem> -->
-                  <DropdownItem divided name="exit">
-                    <!-- <router-link to="">退出</router-link> -->
-                    <span style="color:#666;">退出</span>
-                  </DropdownItem>
+                  <DropdownItem name="personalInfo#usercenter">个人信息</DropdownItem>
+									<DropdownItem name="remainder#usercenter">提醒设置</DropdownItem>
+									<DropdownItem name="certification#usercenter">实名认证</DropdownItem>
+									<DropdownItem name="key#usercenter">Access Key</DropdownItem>
+                  <DropdownItem divided name="exit">退出</DropdownItem>
                 </DropdownMenu>
               </Dropdown>
             </li>
@@ -638,7 +609,6 @@
           this.pane(path)
 				  return
 				}
-        // this.$router.push(path)
       },
       pane(pane) {
         var paneStatue = {
@@ -657,6 +627,7 @@
         }else {
           paneStatue.vpc = arr[0]
         }
+        this.$router.push(arr[1])
         this.$store.commit('setPane', paneStatue)
       },
       menuStyle(type) {

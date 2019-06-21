@@ -724,14 +724,17 @@
       </p>
       <div class="modal-content-s">
         <div>
-          <p class="lh24" style="font-size:14px;font-family:MicrosoftYaHei;color:rgba(51,51,51,1);line-height:24px;">
+          <p class="lh24" style="font-size:14px;font-family:MicrosoftYaHei;color:rgba(51,51,51,1);line-height:24px;" v-if="userInfo.phone">
+            为保障您的账户安全，我们将对您的注册手机{{userInfo.phone }}进行验证：
+          </p>
+          <p class="lh24" style="font-size:14px;font-family:MicrosoftYaHei;color:rgba(51,51,51,1);line-height:24px;" v-else>
             为保障您的账户安全，请进行手机验证：
           </p>
         </div>
       </div>
       <div class="modal-content-s">
         <Form ref="cashverification" label-position="left" :model="formCustom" :rules="ruleCustom" style="width: 500px;">
-          <FormItem prop="VerificationPhone">
+          <FormItem prop="VerificationPhone" v-if="!userInfo.phone">
             <Input v-model="formCustom.VerificationPhone" placeholder="请输入手机号码" style="width: 300px;"></Input>
           </FormItem>
           <FormItem prop="Verificationcode">
@@ -1397,7 +1400,7 @@
          <p v-show="authStatus" class="p-top">您的实名认证提交失败，请刷新二维码重新认证</p>
          <div class="qr-code">
             <vue-q-art :config="qrConfig" ></vue-q-art>
-            <div class="shade" v-show="codeLoseEfficacy"></div>
+            <div class="shade" :class="{scanSuccess: codeLoseEfficacy=== 'scanSuccess'}" v-show="codeLoseEfficacy"></div>
         </div>
         <p class="p-bottom">若二维码失效或异常，请 <span @click="refreshQRCode">刷新</span></p>
       </div>
@@ -1522,7 +1525,7 @@
           size: 500
         },
         // 二维码失效
-        codeLoseEfficacy: false,
+        codeLoseEfficacy: '',
         tempCode: '',
         codeTimer: null,
         authStatus: false,
@@ -2718,18 +2721,6 @@
       }
     },
     created() {
-      let authType = sessionStorage.getItem('pane')
-      this.paneStatus.usercenter = 'personalInfo'
-      if (authType == 'company') {
-        this.paneStatus.usercenter = 'companyInfo'
-      } else if (authType == 'person') {
-        this.paneStatus.usercenter = 'personalInfo'
-      } else if (authType == 'nonrealname') {
-        this.paneStatus.usercenter = 'certification'
-      } else {
-        this.paneStatus.usercenter = authType
-      }
-      sessionStorage.removeItem('pane')
       this.successHint = sessionStorage.getItem('registerSuccessMsg') ? sessionStorage.getItem('registerSuccessMsg') : ''
       sessionStorage.removeItem('registerSuccessMsg')
       if (this.paneStatus.usercenter == 'personalInfo' || this.paneStatus.usercenter == 'companyInfo'){
@@ -3206,10 +3197,10 @@
             if(res.status == 200 && res.data.status == 1){
               this.qrConfig.value = res.data.result.url
               this.showModal.qrCode = true
-              this.codeLoseEfficacy = false
+              this.codeLoseEfficacy = ''
               this.refreshUserStatus()
             } else {
-              this.codeLoseEfficacy = true
+              this.codeLoseEfficacy = 'lose'
               this.showModal.qrCode = true
               this.refreshUserStatus()
             }
@@ -3337,7 +3328,7 @@
               })
             } else {
               this.$Message.error(response.data.message)
-              this.imgSrc = `user/getKaptchaImage.do?t=${new Date().getTime()}`
+              this.notAuth.companyAuthForm.imgSrc=`user/getKaptchaImage.do?t=${new Date().getTime()}`
             }
           })
         }
@@ -4221,7 +4212,7 @@
       },
       //短信验证码
       getPhoneCode(codeType) {
-        if(!this.regExpObj.phone.test(this.formCustom.VerificationPhone)){
+        if(!this.userInfo.phone && !this.regExpObj.phone.test(this.formCustom.VerificationPhone)){
           this.$Message.info('请输入正确的手机号')
           return
         }
@@ -4237,7 +4228,7 @@
             }
             axios.get(url, {
               params: {
-                aim: this.formCustom.VerificationPhone,
+                aim: this.userInfo.phone ? this.userInfo.phone : this.formCustom.VerificationPhone,
                 isemail: 0,
                 vailCode: this.formCustom.Verificationcode
               }
@@ -4269,19 +4260,10 @@
         this.$refs.cashverification.validateField('messagecode', (text) => {
           if (text == '') {
             let url = 'user/judgeCode.do'
-            let params = {}
-            if (this.userInfo.phone) {
-              params = {
-                aim: this.userInfo.phone,
-                isemail: 0,
-                code: this.formCustom.messagecode
-              }
-            } else {
-              params = {
-                aim: this.userInfo.loginname ? this.userInfo.loginname : '',
-                isemail: 1,
-                code: this.formCustom.messagecode
-              }
+            let params = {
+              aim: this.userInfo.phone ? this.userInfo.phone : this.formCustom.VerificationPhone,
+              isemail: 0,
+              code: this.formCustom.messagecode
             }
             axios.get(url, {
               params
@@ -4292,7 +4274,7 @@
                     this.tempCode =  this.uuid(6, 16)
                     let url = '/faceRecognition/getUserInfoByPcQRCode.do'
                     let config = {
-                       phone: this.formCustom.VerificationPhone,
+                       phone: this.userInfo.phone ? this.userInfo.phone : this.formCustom.VerificationPhone,
                      }
                     axios.post(url,{
                       faceType: '1',
@@ -4302,10 +4284,10 @@
                       if(res.status == 200 && res.data.status == 1){
                         this.qrConfig.value = res.data.result.url
                         this.showModal.qrCode = true
-                        this.codeLoseEfficacy = false
+                        this.codeLoseEfficacy = ''
                         this.refreshUserStatus()
                       } else {
-                        this.codeLoseEfficacy = true
+                        this.codeLoseEfficacy = 'lose'
                         this.showModal.qrCode = true
                         this.refreshUserStatus()
                       }
@@ -4358,7 +4340,10 @@
         this.$http.get('/faceRecognition/getAllStatus.do', {params: {tempCode: this.tempCode}}).then(res => {
           if(res.status == 200 && res.data.status == 1){
             if(res.data.result.qrCode == 0){
-              this.codeLoseEfficacy = true
+              this.codeLoseEfficacy = 'lose'
+              }
+            if(res.data.result.qrCode == 2){
+              this.codeLoseEfficacy = 'scanSuccess'
               }
             if(res.data.result.authStatus == 1){
                clearInterval(this.codeTimer)
@@ -4380,16 +4365,23 @@
         this.authStatus = false
         this.tempCode =  this.uuid(6, 16)
         let url = '/faceRecognition/getUserInfoByPcQRCode.do'
-        axios.post(url,{
-          faceType: '1',
+        let config = {
+          phone: this.userInfo.phone ? this.userInfo.phone : this.formCustom.VerificationPhone,
+        }
+        let params = {
+          faceType: this.paneStatus.usercenter === 'certification'? '1' : '2',
           tempCode: this.tempCode
-        }).then(res=>{
+        }
+        if(this.paneStatus.usercenter === 'certification'){
+          params.config = JSON.stringify(config)
+        }
+        axios.post(url,params).then(res=>{
           if(res.status == 200 && res.data.status == 1){
             this.$Message.success('刷新成功')
             this.qrConfig.value = res.data.result.url
-            this.codeLoseEfficacy = false
+            this.codeLoseEfficacy = ''
           } else {
-            this.codeLoseEfficacy = true
+            this.codeLoseEfficacy = 'lose'
           }
         })
       }),
@@ -5267,6 +5259,9 @@
         height: 198px;
         width: 197px;
         background: url('../../assets/img/app/lose_efficacy.png')  center;
+        &.scanSuccess{
+          background: url('../../assets/img/app/scan_success.png')  center;
+        }
       }
     }
     >p{

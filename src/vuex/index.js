@@ -60,7 +60,7 @@ const store = new Vuex.Store({
     setZone(state, zone) {
       state.zone = zone
     },
-    setPane(state, paneStatus = {vpc: 'VPC', vpn: 'remote', usercenter: 'personalInfo'}) {
+    setPane(state, paneStatus = {vpc: 'VPC', vpn: 'remote', usercenter: 'personalInfo',expenses: 'accountSummary'}) {
       state.paneStatus = paneStatus
     },
     setKey(state, key) {
