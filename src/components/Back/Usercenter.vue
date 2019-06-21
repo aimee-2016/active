@@ -4269,19 +4269,10 @@
         this.$refs.cashverification.validateField('messagecode', (text) => {
           if (text == '') {
             let url = 'user/judgeCode.do'
-            let params = {}
-            if (this.userInfo.phone) {
-              params = {
-                aim: this.userInfo.phone,
-                isemail: 0,
-                code: this.formCustom.messagecode
-              }
-            } else {
-              params = {
-                aim: this.userInfo.loginname ? this.userInfo.loginname : '',
-                isemail: 1,
-                code: this.formCustom.messagecode
-              }
+            let params = {
+              aim: this.formCustom.VerificationPhone,
+              isemail: 0,
+              code: this.formCustom.messagecode
             }
             axios.get(url, {
               params
