@@ -960,7 +960,9 @@
     },
     methods: {
       defaultOpen(){
-        this.paneStatus.vpc = this.$route.query.pane
+        if(this.$route.query.pane) {
+          this.paneStatus.vpc = this.$route.query.pane
+        }
         if (sessionStorage.getItem('modal')) {
           var modalName = sessionStorage.getItem('modal')
           if (modalName == 'confirm') {
