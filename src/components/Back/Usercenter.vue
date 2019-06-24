@@ -1400,7 +1400,7 @@
          <p v-show="authStatus" class="p-top">您的实名认证提交失败，请刷新二维码重新认证</p>
          <div class="qr-code">
             <vue-q-art :config="qrConfig" ></vue-q-art>
-            <div class="shade" v-show="codeLoseEfficacy"></div>
+            <div class="shade" :class="{scanSuccess: codeLoseEfficacy=== 'scanSuccess'}" v-show="codeLoseEfficacy"></div>
         </div>
         <p class="p-bottom">若二维码失效或异常，请 <span @click="refreshQRCode">刷新</span></p>
       </div>
@@ -1525,7 +1525,7 @@
           size: 500
         },
         // 二维码失效
-        codeLoseEfficacy: false,
+        codeLoseEfficacy: '',
         tempCode: '',
         codeTimer: null,
         authStatus: false,
@@ -3197,10 +3197,10 @@
             if(res.status == 200 && res.data.status == 1){
               this.qrConfig.value = res.data.result.url
               this.showModal.qrCode = true
-              this.codeLoseEfficacy = false
+              this.codeLoseEfficacy = ''
               this.refreshUserStatus()
             } else {
-              this.codeLoseEfficacy = true
+              this.codeLoseEfficacy = 'lose'
               this.showModal.qrCode = true
               this.refreshUserStatus()
             }
@@ -4284,10 +4284,10 @@
                       if(res.status == 200 && res.data.status == 1){
                         this.qrConfig.value = res.data.result.url
                         this.showModal.qrCode = true
-                        this.codeLoseEfficacy = false
+                        this.codeLoseEfficacy = ''
                         this.refreshUserStatus()
                       } else {
-                        this.codeLoseEfficacy = true
+                        this.codeLoseEfficacy = 'lose'
                         this.showModal.qrCode = true
                         this.refreshUserStatus()
                       }
@@ -4340,7 +4340,10 @@
         this.$http.get('/faceRecognition/getAllStatus.do', {params: {tempCode: this.tempCode}}).then(res => {
           if(res.status == 200 && res.data.status == 1){
             if(res.data.result.qrCode == 0){
-              this.codeLoseEfficacy = true
+              this.codeLoseEfficacy = 'lose'
+              }
+            if(res.data.result.qrCode == 2){
+              this.codeLoseEfficacy = 'scanSuccess'
               }
             if(res.data.result.authStatus == 1){
                clearInterval(this.codeTimer)
@@ -4362,16 +4365,23 @@
         this.authStatus = false
         this.tempCode =  this.uuid(6, 16)
         let url = '/faceRecognition/getUserInfoByPcQRCode.do'
-        axios.post(url,{
-          faceType: '1',
+        let config = {
+          phone: this.userInfo.phone ? this.userInfo.phone : this.formCustom.VerificationPhone,
+        }
+        let params = {
+          faceType: this.paneStatus.usercenter === 'certification'? '1' : '2',
           tempCode: this.tempCode
-        }).then(res=>{
+        }
+        if(this.paneStatus.usercenter === 'certification'){
+          params.config = JSON.stringify(config)
+        }
+        axios.post(url,params).then(res=>{
           if(res.status == 200 && res.data.status == 1){
             this.$Message.success('刷新成功')
             this.qrConfig.value = res.data.result.url
-            this.codeLoseEfficacy = false
+            this.codeLoseEfficacy = ''
           } else {
-            this.codeLoseEfficacy = true
+            this.codeLoseEfficacy = 'lose'
           }
         })
       }),
@@ -5249,6 +5259,9 @@
         height: 198px;
         width: 197px;
         background: url('../../assets/img/app/lose_efficacy.png')  center;
+        &.scanSuccess{
+          background: url('../../assets/img/app/scan_success.png')  center;
+        }
       }
     }
     >p{

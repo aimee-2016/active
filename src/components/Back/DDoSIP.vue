@@ -9,8 +9,29 @@
                 </div>
                  <Tabs type="card">
                     <TabPane label="概览">
-                        
-                       
+                        <div class="dp-row">
+                            <RadioGroup v-model="overviewRadio" type="button">
+                                <Radio label="概览"></Radio>
+                                <Radio label="DDoS攻击统计"></Radio>
+                                <Radio label="CC统计"></Radio>
+                                <Radio label="业务统计"></Radio>
+                            </RadioGroup>
+                        </div>
+
+                        <!-- 概览 -->
+                       <div v-if="overviewRadio == '概览'">
+                           <div>
+                               <Button type="primary">购买套餐</Button>
+                               <Button type="primary" :disabled='true'>套餐续费</Button>
+                           </div>
+                           <div>
+                               <div class="selectMark">
+                                    <img src="../../assets/img/host/h-icon10.png"/>
+                                    <span>共 10 项 | 已选择 <span style="color:#FF624B;">{{ overviewData.length }} </span>项</span>
+                                </div>
+                                 <Table :columns="overviewList" :data="overviewData" ></Table>
+                           </div>
+                       </div>
                     </TabPane>
                     <TabPane label="业务管理">
                         <div class="dp-row">
@@ -151,7 +172,21 @@
                             </div>
                         </div>    
                     </TabPane>
-                    <TabPane label="操作日志">标签三的内容</TabPane>
+                    <TabPane label="操作日志">
+                        <div style="margin-bottom:21px;">
+                            <span>操作时间</span>
+                            <DatePicker type="daterange"  placement="bottom-end" placeholder="Select date" style="width: 200px;margin:0 20px;"></DatePicker>
+                            <span>操作对象</span>
+                            <Select v-model="operationObject" style="width:230px;margin:0 22px;">
+                                <Option v-for="item in operationList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                            </Select>
+                            <Button type="primary">查询</Button>    
+                        </div>
+                        <Table :columns="journalList" :data="journalData"></Table>
+                        <div class="dp-page">
+                            <Page :total="100" style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
+                        </div>
+                    </TabPane>
                 </Tabs>
              </div>
         </div>
@@ -194,7 +229,9 @@
 </template>
 
 <script>
+import expandRow from './DDosExpandRow.vue';
 export default {
+components: { expandRow },
   data() {
     return {
       // 弹窗
@@ -202,8 +239,12 @@ export default {
         certificate:false,
         
       },  
-
+      overviewRadio:'概览',
       button1: "网站业务",
+       
+    //   概览
+        overviewList:[],
+        overviewData:[],
       // 证书管理
       certificateKyeHide: true,
       certificateList: [
@@ -489,6 +530,13 @@ export default {
             {
                 type: 'expand',
                 width: 50,
+                render: (h, params) => {
+                    return h(expandRow, {
+                        props: {
+                            row: params.row
+                        }
+                    })
+                }
             },
             {
                 key:'域名',
@@ -526,6 +574,45 @@ export default {
 
             }
         ],
+        // 操作日志
+         operationObject:'操作对象',
+         operationList:[
+             {
+                 value:'操作对象',
+                 label:'操作对象'
+             }
+         ],
+         journalList:[
+             {
+                 key:'操作对象',
+                 title:'操作对象'
+             },
+             {
+                 key:'操作时间',
+                 title:'操作时间'
+             },
+             {
+                 key:'操作结果',
+                 title:'操作结果'
+             },
+             {
+                 key:'行为描述',
+                 title:'行为描述'
+             },
+             {
+                 key:'关联资源',
+                 title:'关联资源'
+             },
+         ],
+         journalData:[
+             {
+                 操作对象:'主机',
+                 操作时间:'2019-1-1',
+                 操作结果:'成功',
+                 行为描述:'删除主机',
+                 关联资源:'----'
+             }
+         ]
     };
   },
   methods:{
@@ -553,7 +640,9 @@ export default {
       width: 40px;
       height: 20px;
   }
-
+   .ivu-table-tbody > td.ivu-table-expanded-cell{
+        padding: 20px 20px;
+    }
 .dp-row {
   display: flex;
   justify-content: space-between;
@@ -620,5 +709,17 @@ export default {
     .dp-cc{
         margin-top: 18px;
     }
+    .selectMark {
+     margin: 10px 0;
+    > img {
+      position: relative;
+      top: 4px;
+    }
+    > span {
+      font-size: 14px;
+      font-family: MicrosoftYaHei;
+      color: rgba(102, 102, 102, 1);
+    }
+  }
 </style>
 
