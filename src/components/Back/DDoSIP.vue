@@ -7,6 +7,9 @@
                     <span id="title">DDoS高防IP</span>
                     <button id="refresh_button" @click="$router.go(0)" style="margin-top: 10px;">刷新</button>
                 </div>
+                 <div class="text-box">
+                    <p></p>
+                </div>
                  <Tabs type="card">
                     <TabPane label="概览">
                         <div class="dp-row">
@@ -22,15 +25,84 @@
                        <div v-if="overviewRadio == '概览'">
                            <div>
                                <Button type="primary">购买套餐</Button>
-                               <Button type="primary" :disabled='true'>套餐续费</Button>
+                               <Button type="primary" :disabled='true' @click="showModal.meal = true">套餐续费</Button>
                            </div>
                            <div>
                                <div class="selectMark">
                                     <img src="../../assets/img/host/h-icon10.png"/>
-                                    <span>共 10 项 | 已选择 <span style="color:#FF624B;">{{ overviewData.length }} </span>项</span>
+                                    <span>共 {{ overviewData.length }} 项 | 已选择 <span style="color:#FF624B;">{{ overviewSelect.length }} </span>项</span><span style="margin-left:10px;">总价:</span><span style="color:#FF624B;">￥0.00</span>
                                 </div>
-                                 <Table :columns="overviewList" :data="overviewData" ></Table>
+                                 <Table :columns="overviewList" :data="overviewData" @on-selection-change='overviewTableChange'></Table>
+                                 <div class="dp-page">
+                                    <Page :total="100" style="display:inline-block;vertical-align: middle;margin-left:20px;" show-sizer :page-size-opts=[10,20,50,100]></Page>
+                                </div>
                            </div>
+                       </div>
+
+                       <!-- DDoS攻击统计  -->
+                       <div v-if="overviewRadio == 'DDoS攻击统计'">
+                           <div class="dp-ds">
+                               <div> 
+                                   <span>套餐选择</span>
+                                    <Select size="small" v-model="domain" style="width:100px;">
+                                        <Option v-for="item in domainList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                                    </Select>
+                               </div>
+                              <div>
+                                   <span>按统计时间</span>
+                                   <DatePicker size='small' :transfer='true' type="daterange"  placement="bottom-end" placeholder="Select date" style="width: 200px;"></DatePicker>
+                                   <Button size='small' type="primary" style="width:54px;">查询</Button>
+                               </div>
+                           </div>
+                           <div>
+                               <div class="dp-grad dp-row">
+                                    <div>
+                                        <span class="b-font">DDoS清洗流量</span>
+                                        <span>统计该套餐下在所选时间段所有域名和转发规则下攻击峰值</span>
+                                    </div>
+                                    <div>
+                                    <span class="l-font">刷新</span> 
+                                    </div>
+                                </div>
+                                <div style="display:flex;">
+                                    <div class="dp-fh" style="width:380px;">
+                                        <div>
+                                            <div>
+                                                <span class="fh-sp">峰值时间</span>
+                                            </div>
+                                            <div class="dp-bt">
+                                                <span class="b-font" style="margin:0px;">2018-10-05 23:45</span>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                    <div class="dp-fh" style="width:380px;">
+                                        <div>
+                                            <div>
+                                                <span class="fh-sp">DDoS攻击带宽峰</span>
+                                            </div>
+                                            <div class="dp-bt">
+                                                <span class="b-font" style="margin:0px;">34.25Gbps</span>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                    <div class="dp-fh" style="width:380px;margin:0;">
+                                        <div>
+                                            <div>
+                                                <span class="fh-sp">已清洗流</span>
+                                            </div>
+                                            <div class="dp-bt">
+                                                <span class="b-font" style="margin:0px;">34.25Gbps</span>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                </div>
+
+                                <div style="border:1px dashed #999999;padding:20px;border-radius:4px;margin-top:20px;">
+                                    <p>清洗流量统计（单位Gbps）</p>
+
+                                </div>
+                           </div>
+                           
                        </div>
                     </TabPane>
                     <TabPane label="业务管理">
@@ -175,7 +247,7 @@
                     <TabPane label="操作日志">
                         <div style="margin-bottom:21px;">
                             <span>操作时间</span>
-                            <DatePicker type="daterange"  placement="bottom-end" placeholder="Select date" style="width: 200px;margin:0 20px;"></DatePicker>
+                            <DatePicker :transfer='true' type="daterange"  placement="bottom-end" placeholder="Select date" style="width: 200px;margin:0 20px;"></DatePicker>
                             <span>操作对象</span>
                             <Select v-model="operationObject" style="width:230px;margin:0 22px;">
                                 <Option v-for="item in operationList" :value="item.value" :key="item.value">{{ item.label }}</Option>
@@ -190,6 +262,45 @@
                 </Tabs>
              </div>
         </div>
+
+        <!-- 套餐续费 -->
+         <Modal :mask-closable="false" v-model="showModal.meal">
+             <p slot="header" class="modal-header-border">
+                <span class="universal-modal-title">套餐续费</span>
+            </p>
+             <div class="dp-er">
+                 <Icon type="close-circled" color='#ED4014' size='12px'></Icon>
+                 <span style="margin-left:4px;">错误原因</span>
+             </div>
+             <ul>
+                 <li style="display:flex;">
+                     <div>
+                        <p>续费套餐ID</p>
+                     </div>
+                     <div>
+                        <p>DMS-50GB 5656</p> 
+                     </div>
+                 </li>
+                 <li>
+                     <div>
+                        <p>购买时长</p>
+                     </div>
+                     <div>
+                        <div class="dp-ti" v-for="item in durationList" :key="item.value">{{item.label}}</div> 
+                     </div>
+                 </li>
+                 <li>
+                     <div>
+                        <p>续费到期时间</p>
+                     </div>
+                     <div>
+                        <p>2019-6-23 12：56</p> 
+                     </div>
+                 </li>
+             </ul>
+         </Modal>   
+
+        <!-- 新增业务证书  -->
         <Modal :mask-closable="false" v-model="showModal.certificate">
             <p slot="header" class="modal-header-border">
                 <span class="universal-modal-title">新增证书</span>
@@ -225,6 +336,7 @@
                 <Button type="primary" >确定</Button>
             </div>
         </Modal>
+
     </div>
 </template>
 
@@ -237,14 +349,110 @@ components: { expandRow },
       // 弹窗
       showModal:{
         certificate:false,
-        
+        meal:false,
       },  
       overviewRadio:'概览',
       button1: "网站业务",
+      duration:'',
+      durationList:[
+          {
+              value:'30',
+              label:'1个月'
+          },
+          {
+              value:'60',
+              label:'2个月'
+          },
+          {
+              value:'90',
+              label:'3个月'
+          },
+          {
+              value:'120',
+              label:'4个月'
+          },
+          {
+              value:'150',
+              label:'5个月'
+          },
+          {
+              value:'180',
+              label:'6个月'
+          },
+          {
+              value:'360',
+              label:'1年'
+          },
+          {
+              value:'720',
+              label:'2年'
+          },
+          {
+              value:'1080',
+              label:'3年'
+          },
+      ],
        
     //   概览
-        overviewList:[],
-        overviewData:[],
+        overviewSelect:'',
+        overviewList:[
+            {
+                type: "selection",
+                width: 60,
+                align: "center"
+            },
+            {
+                key:'套餐ID',
+                title:'套餐ID',
+                render:(h,params)=>{
+                    return h('span',{
+                        style:{
+                            color:'#2A99F2',
+                            cursor:'pointer'
+                        }
+                    },params.row.套餐ID)
+                }
+            },
+            {
+                key:'套餐类型',
+                title:'套餐类型'
+            },
+            {
+                key:'有效期',
+                title:'有效期'
+            },
+            {
+                key:'购买日期',
+                title:'购买日期'
+            },
+            {
+                key:'攻击事件',
+                title:'攻击事件'
+            },
+            {
+                key:'操作',
+                title:'操作',
+                render:(h,params)=>{
+                    return h('span',{
+                        style:{
+                            color:'#2A99F2',
+                            cursor:'pointer'
+                        }
+                    },'操作')
+                }
+            },
+        ],
+        overviewData:[
+            {
+                套餐ID:'2019023101240915',
+                套餐类型:'DMS-50GB',
+                有效期:'2019/3/25 21:29',
+                购买日期:'2019/3/25 21:29',
+                攻击事件:'次数'
+            }
+        ],
+
+
       // 证书管理
       certificateKyeHide: true,
       certificateList: [
@@ -616,7 +824,10 @@ components: { expandRow },
     };
   },
   methods:{
-  
+    //   套餐表格选项切换
+      overviewTableChange(list){
+          this.overviewSelect = list;
+      }
   }
 };
 </script>
@@ -653,6 +864,10 @@ components: { expandRow },
       font-weight:bold;
   }
 }
+.dp-bt{
+    margin-top: 10px;
+    font-size: 18px;
+}
 .dp-page{
     text-align:right;margin-top:20px;
   }
@@ -676,14 +891,24 @@ components: { expandRow },
       font-size: 14px;
       color: #666666;
   }
+
   .b-font{
       font-size: 18px;
       color: #333333;
       font-weight: bold;
       margin:0 10px;
   }
+
   .o-font{
       color: #ED4014;
+  }
+  .l-font{
+      color: #2A99F2;
+      cursor: pointer;
+      font-size: 14px;
+  }
+  .dp-more{
+      width: 380px;
   }
   .dp-fh{
         width:272px;
@@ -702,7 +927,7 @@ components: { expandRow },
   .dp-fh::before{
       content: '';
       position: absolute;
-      width:272px;
+      width:inherit;
       height: 6px;
       background-color: #666666;
   }
@@ -721,5 +946,45 @@ components: { expandRow },
       color: rgba(102, 102, 102, 1);
     }
   }
+  .dp-er{
+      height: 32px;
+      line-height: 32px;
+      padding:0 20px;
+      border:1px solid #ED4014;
+      border-radius: 4px;
+      background-color:rgba(237, 64, 20, 0.08);
+  }
+  .dp-ti{
+      width: 61px;
+      height: 32px;
+      line-height: 32px;
+      text-align: center;
+      border:1px solid #E1E1E1;
+      display: inline-block;
+      margin-bottom: 10px;
+  }
+  .dp-ds{
+    height:48px;
+    background:rgba(245,245,245,1);
+    color: #666666;
+    padding-left: 21px;
+    margin-bottom: 20px;
+    >div{
+        display: inline-block;
+        height: inherit;
+        line-height: 48px;
+    }
+  }
+  .text-box{
+  border:1px solid #2A99F2;
+  background-color: RGBA(42, 153, 242, 0.1);
+  padding: 7px 10px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #666666;
+  margin-bottom: 20px;
+}
 </style>
 
