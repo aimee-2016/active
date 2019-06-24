@@ -172,10 +172,10 @@
       </div>
       <div style="display: flex;margin-top:20px">
         <div style="width:50%;text-align: center">
-          <Button type="primary" @click="push('person')">立即认证</Button>
+          <Button type="primary" @click="push('personalInfo')">立即认证</Button>
         </div>
         <div style="width:50%;text-align: center">
-          <Button type="primary" @click="push('company')">立即认证</Button>
+          <Button type="primary" @click="push('companyInfo')">立即认证</Button>
         </div>
       </div>
       <div slot="footer">
