@@ -319,7 +319,7 @@
             {label: '对象存储', value: 'objectstorage/'},
             {label: 'GPU服务器', value: 'gpu/'},
             {label: 'SSL证书', value: 'ssl/'},
-            {label: 'DDoS高防IP套餐', value: 'ddosip/'}
+            // {label: 'DDoS高防IP套餐', value: 'ddosip/'}
           ]
         },
         // 当前可以创建的剩余资源数
@@ -707,7 +707,7 @@
           'gpu/': 'gpu',
           'objectstorage/': 'objectstorage',
           'ssl/': 'ssl',
-          'ddosip/':'ddosip'
+          // 'ddosip/':'ddosip'
         }
         return map[this.product.currentProduct]
       }

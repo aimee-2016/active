@@ -540,7 +540,7 @@ export default {
           .then(response => {
             if (response.status == 200 && response.data.status == 1) {
               this.orderPay = response.data.result;
-              if ( Number(response.data.result.voucher.toFixed(2)) != 0 &&   response.data.result.isUseVoucher != 0 && this.vipName == undefined && this.vipName == '') {
+              if ( Number(response.data.result.voucher.toFixed(2)) != 0 &&  response.data.result.isUseVoucher != 0 && this.vipName != '' && this.vipName != undefined  ) {
                 this.groupList.push("cash");
               }else{
                 this.groupList.push("coupon");
@@ -597,6 +597,7 @@ export default {
     },
     changeCashbox(bol) {
       if (this.couponInfo.cash > 0) {
+        
         if (this.orderPay.isUseVoucher == 1 && bol.indexOf("cash") == -1) {
           this.groupList.push("cash");
           this.$message.info({
@@ -607,7 +608,6 @@ export default {
           this.couponInfo.selectTicket = "";
         }
       }
-
       if (this.orderPay.isUseVoucher == 0 && bol.indexOf("cash") > -1) {
         this.groupList.splice(bol.indexOf("cash"), 1);
         this.$message.info({
