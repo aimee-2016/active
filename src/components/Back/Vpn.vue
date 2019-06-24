@@ -1047,7 +1047,9 @@
         this.showModal.vpnLink = true
       },
       defaultOpen(){
-        this.paneStatus.vpn = this.$route.query.pane
+        if (this.paneStatus.vpn = this.$route.query.pane) {
+          this.paneStatus.vpn = this.$route.query.pane
+        }
         if (sessionStorage.getItem('modal')) {
           var modalName = sessionStorage.getItem('modal')
           this.showModal[modalName] = true

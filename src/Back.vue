@@ -50,10 +50,6 @@
                 </DropdownMenu>
               </Dropdown>
 						</li>
-						
-            <!-- <li>
-              <router-link to="recharge" :class="{active:pageInfo.path=='recharge'}"><span>充值</span></router-link>
-            </li> -->
             <li class="nav-dropdown">
               <Dropdown @on-click="go">
                 <router-link to="userCenter" class="dropdown-a" :class="{active:pageInfo.path=='userCenter'}">
@@ -70,8 +66,6 @@
               </Dropdown>
             </li>
 						<li>
-						  <!-- <router-link to="msgCenter" :class="{active:pageInfo.path=='msgCenter'}" style="position:relative;"><img src="./assets/img/back/back-hint.png" /><sup v-if="this.$store.state.Msg>0" class="badge" style="top: 17px;right: -30px;">{{this.$store.state.Msg}}</sup>
-						  </router-link> -->
               <router-link to="msgCenter" :class="{active:pageInfo.path=='msgCenter'}" style="position:relative;">
                 <Badge :count="this.$store.state.Msg" overflow-count="999" class="messagenum">
                     <img src="./assets/img/back/back-hint.png" />
@@ -125,7 +119,7 @@
                 </a>
                 <DropdownMenu slot="list">
                   <DropdownItem v-for="(thrItem,index) in subItem.thrItem" :key="index"
-                                :name="`${thrItem.pane}#${subItem.subName}`">
+                                :name="`${thrItem.pane}#${subItem.type}`">
                     <a>{{thrItem.thrName}}</a>
                   </DropdownItem>
                 </DropdownMenu>
@@ -569,7 +563,6 @@
 
       // 进入三级路由，记录二级路由入口
       push(pType, sType, pane) {
-        // console.log(pane)
         this.pageInfo.static = true;
         this.pageInfo.selectItem = pType;
         this.pageInfo.sType = sType;
@@ -593,7 +586,7 @@
           if (pane == undefined) {
             this.$router.push(sType)
           } else {
-            var newpane = pane + '#虚拟私有云VPC'
+            var newpane = pane + '#vpcList'
             this.pane(newpane)
             this.$router.push(sType)
           }
@@ -618,7 +611,7 @@
           expenses: 'accountSummary'
         }
         let arr = pane.split('#')
-        if (arr[1] == '虚拟专网VPN') {
+        if (arr[1] == 'vpnBlanck') {
           paneStatue.vpn = arr[0]
         } else if(arr[1] == 'usercenter') {
           paneStatue.usercenter = arr[0]
@@ -810,7 +803,9 @@
                 this.pageInfo.hoverItem = this.pageInfo.selectItem = item.type
                 this.pageInfo.sType = sItem.type
                 this.pageInfo.static = true
-                this.pageInfo.pane = sItem.pane
+                if(this.pageInfo.pane!='VPN') {
+                  this.pageInfo.pane = sItem.pane
+                }
               }
             }
           }
