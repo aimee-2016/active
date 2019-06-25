@@ -54,7 +54,7 @@
         title,
         message,
         firstMessage,
-        kfURL: ''
+        kfURL: '' 
       }
     },
     created() {
