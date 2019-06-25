@@ -39,21 +39,11 @@
 
   export default {
     data() {
-      var payResult = sessionStorage.getItem('payResult')
-      sessionStorage.removeItem('payResult')
-      if (payResult == 'success') {
-        var title = '支付成功'
-        var message = sessionStorage.getItem('successMsg') || '您的订单已支付成功，我们需要一到三分钟为您分配云服务，请稍后。'
-        var firstMessage = sessionStorage.getItem('firstMsg') || ''
-      } else {
-        title = '支付失败'
-        message = '抱歉，您的订单支付失败。失败原因是：' + sessionStorage.getItem('errMsg') + ',如已扣款仍支付失败，请联系客服。' || '抱歉，您的订单支付失败。如未完成扣款，请重新提起支付；如已扣款仍支付失败，请联系客服。'
-      }
       return {
-        payResult,
-        title,
-        message,
-        firstMessage,
+        payResult:sessionStorage.getItem('payResult'),
+        title:'',
+        message:'',
+        firstMessage:'',
         kfURL: '' 
       }
     },
@@ -68,7 +58,11 @@
       if (this.payResult == undefined && this.$route.query == '') {
         this.$router.replace('overview')
       }
+
       if(this.$route.query != ''){
+         this.title = '支付中';
+         this.payResult = 'success';
+         this.message = '订单支付中';
         let serialNum = localStorage.getItem('serialNum')
         axios.get('user/payStatus.do', {
           params: {
@@ -76,13 +70,24 @@
           }
         }).then(response => {
             if (response.status == 200 && response.data.status == 1) {
+              this.title = '支付成功';
               this.payResult = 'success'
               this.message = response.data.message
             } else {
-              this.payStatus = 'faild'
+              this.payStatus = 'fail'
               this.message = response.data.message
+              this.title = '支付失败';
             }
           })
+      }else{
+         if (payResult == 'success') {
+            this.title = '支付成功'
+             this.message = sessionStorage.getItem('successMsg') || '您的订单已支付成功，我们需要一到三分钟为您分配云服务，请稍后。'
+             this.firstMessage = sessionStorage.getItem('firstMsg') || ''
+          } else {
+             this.title = '支付失败'
+             this.message = '抱歉，您的订单支付失败。失败原因是：' + sessionStorage.getItem('errMsg') + ',如已扣款仍支付失败，请联系客服。' || '抱歉，您的订单支付失败。如未完成扣款，请重新提起支付；如已扣款仍支付失败，请联系客服。'
+          }
       }
       this.back()
       this.$http.get('user/getKfAdd.do').then(response => {
