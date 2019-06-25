@@ -69,7 +69,7 @@
           </Tabs>
         </div>
         <div style="margin-top:20px;text-align:right;">
-          <Button @click="$router.push({path:'order'})" style="margin-right:10px;">取消支付</Button>
+          <Button @click="showModal.cancelPay = true" style="margin-right:10px;">取消支付</Button>
           <Button type="primary" @click="pay" :disabled="payText!='确认支付'">{{payText}}</Button>
         </div>
       </div>
@@ -88,6 +88,23 @@
       <p slot="footer" class="modal-footer-s">
         <Button @click="showModal.paymentCofirm = false">更换支付方式</Button>
         <Button type="primary" @click="paySuccess">已完成支付</Button>
+      </p>
+    </Modal>
+
+      <!-- 取消支付 -->
+     <Modal v-model="showModal.cancelPay" :scrollable="true" :closable="true" :width="390" :mask-closable="false">
+        <p slot="header" class="modal-header-border">
+           <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
+               <span class="universal-modal-title">取消支付</span>
+        </p>
+      <div class="modal-content-s">
+        <div>
+          <p class="lh24">是否取消支付该订单？若取消支付，您可以在订单管理页面找到未完成的订单，并继续完成支付。</p>
+        </div>
+      </div>
+      <p slot="footer" class="modal-footer-s">
+        <Button @click="showModal.cancelPay = false">继续支付</Button>
+        <Button type="primary" @click="$router.push('order')">取消支付</Button>
       </p>
     </Modal>
 
@@ -114,7 +131,8 @@
         rechargeValue: 0,
         rechargeMin: 0,
         showModal: {
-          paymentCofirm: false
+          paymentCofirm: false,
+          cancelPay:false
         },
         // 支付宝流水号
         zfbNum: '',
@@ -297,6 +315,7 @@
             }
           })
       },
+
 
 
       // 支付宝支付 获取支付宝流水号再跳转

@@ -58,8 +58,26 @@
     },
     created() {
       this.toggleZone(this.$store.state.zone.zoneid)
-      if (this.payResult == undefined) {
+      if (this.payResult == undefined && this.$route.query == '') {
         this.$router.replace('overview')
+      }
+      if(this.$route.query != ''){
+        let serialNum = localStorage.getItem('serialNum')
+        axios.get('user/payStatus.do', {
+          params: {
+            serialNum: serialNum
+          }
+        }).then(response => {
+            if (response.status == 200 && response.data.status == 1) {
+              this.payResult = 'success'
+              this.msg = response.data.message
+              this.vipMsg = response.data.vipMessage
+            } else {
+              this.payStatus = 'faild'
+              this.msg = response.data.message
+            }
+          })
+        this.$router.push('resultNew');
       }
       this.back()
       this.$http.get('user/getKfAdd.do').then(response => {
