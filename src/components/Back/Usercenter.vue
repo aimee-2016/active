@@ -37,9 +37,9 @@
                       @click="modifyEmail">去绑定</span></li>
                     <li v-else><span>注册邮箱</span><span>{{ userInfo.loginname }}</span><span
                       @click="modifyEmail">修改</span></li>
-                    <li v-if="!userInfo.phone"><span>手机号码</span><span>尚未绑定</span><span
+                    <li v-if="!userInfo.phone && !authInfo"><span>手机号码</span><span>尚未绑定</span><span
                       @click="modifyTelphone">去绑定</span></li>
-                    <li v-else><span>手机号码</span><span>{{ userInfo.phone?userInfo.phone.substr(0,3) + '****' + userInfo.phone.substr(7): ''}}</span><span
+                    <li v-else><span>手机号码</span><span>{{ userInfo.phone?userInfo.phone.substr(0,3) + '****' + userInfo.phone.substr(7): authInfoPersion.phone?authInfoPersion.phone.substr(0,3) + '****' + authInfoPersion.phone.substr(7):''}}</span><span
                       @click="telModify_btn()">修改</span></li>
                     <!--<li><span>账号密码</span><span>尚未设置</span><span @click="showModal.setNewPassword = true">去设置</span></li>-->
                     <li><span>账号密码</span><span>************</span><span @click="showModal.modifyPassword = true">修改</span></li>
