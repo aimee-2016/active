@@ -222,7 +222,7 @@
             imgPath: require('../../assets/img/activecenter/blackact.png'),
             name: '低价秒杀 买一赠一',
             desc: '云电脑惊喜上市 提前预约 抢先体验',
-            time: '2019.5.29-2019.6.30',
+            time: '2019.5.29-2019.7.19',
             activeObj: '新老用户皆可参加',
             url: '/activity/BlacKActivities',
             isStart: true,

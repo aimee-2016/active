@@ -4327,7 +4327,31 @@
         this.authStatus = false
         if(authType.go === 4){
           this.phoneVerifyType = 'identification'
-          this.showModal.cashverification = true
+          if(this.userInfo.phone){
+                this.tempCode =  this.uuid(6, 16)
+                    let url = '/faceRecognition/getUserInfoByPcQRCode.do'
+                    let config = {
+                       phone: this.userInfo.phone,
+                     }
+                    axios.post(url,{
+                      faceType: '1',
+                      config: JSON.stringify(config),
+                      tempCode: this.tempCode
+                    }).then(res=>{
+                      if(res.status == 200 && res.data.status == 1){
+                        this.qrConfig.value = res.data.result.url
+                        this.showModal.qrCode = true
+                        this.codeLoseEfficacy = ''
+                        this.refreshUserStatus()
+                      } else {
+                        this.codeLoseEfficacy = 'lose'
+                        this.showModal.qrCode = true
+                        this.refreshUserStatus()
+                      }
+                    })
+          } else {
+            this.showModal.cashverification = true
+          }
         } else{
           this.notAuth.currentStep = authType.go
           this.imgSrc=`user/getKaptchaImage.do?t=${new Date().getTime()}`
@@ -4346,6 +4370,7 @@
               this.codeLoseEfficacy = 'scanSuccess'
               }
             if(res.data.result.authStatus == 1){
+               this.showModal.qrCode = false
                clearInterval(this.codeTimer)
                if(this.paneStatus.usercenter === 'certification'){
                  this.init()

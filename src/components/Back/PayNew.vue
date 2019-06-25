@@ -10,8 +10,8 @@
         <span style="font-size:24px;color:#333333;">支付</span>
         <div class="content_pay">
           <div style="border-bottom:1px solid #E9E9E9;padding-bottom:20px;">
-            <span style="font-size:18px;">共支付<span style="color:#FF624B;">{{orderInfo.orderNum}}</span>笔订单</span>
-            <span style="float:right;margin-top:4px;">总计支付:<strong style="color:#FF624B;font-size:24px;">{{orderInfo.money}}</strong>元</span>
+            <span style="font-size:18px;">共支付<span style="color:#FF624B;">{{orderInfo.orderNum || 0}}</span>笔订单</span>
+            <span style="float:right;margin-top:4px;">总计支付:<strong style="color:#FF624B;font-size:24px;">{{orderInfo.money || 0}}</strong>元</span>
           </div>
           <div class="pay_time">
             <p>请在
@@ -210,6 +210,7 @@
             }
           }).then(response => {
             if (response.status == 200 && response.data.status == 1) {
+              sessionStorage.removeItem('payInfo');
               window._agl && window._agl.push(['track', ['success', {t: 3}]])
               sessionStorage.setItem('payResult', 'success')
               sessionStorage.setItem('successMsg', response.data.message)
@@ -348,6 +349,7 @@
             this.$router.push('resultNew')
           } else {
             sessionStorage.setItem('payResult', 'fail')
+            sessionStorage.setItem('errMsg', response.data.message)
             this.$router.push('resultNew')
           }
         })

@@ -8,7 +8,25 @@
 				</div>
 				<span class="returnmoney">注销账号</span>
 				<button id="refresh_button" @click="refreshPage">刷新</button>
-				<div class="withdrawal" v-if="$store.state.authInfo == null">
+				<div class="withdrawal" v-if="($store.state.authInfo&&$store.state.authInfo.checkstatus==0) || ($store.state.authInfoPersion&&$store.state.authInfoPersion.checkstatus==0)">
+					<div class="withdrawalpo">
+						<p class="withpw">协议与反馈</p>
+						<img src="../../assets/img/back/noname1.png" />
+					</div>
+					<div class="withdrawalpo" id="mleft-12">
+						<p class="withpw">账号信息检测</p>
+						<img src="../../assets/img/back/noname2.png" />
+					</div>
+					<div class="withdrawalpo" id="mleft-12">
+						<p class="withpw">扫描二维码并进行人脸核验</p>
+						<img src="../../assets/img/back/noname2.png" />
+					</div>
+					<div class="withdrawalpo" id="mleft-12">
+						<p class="withpw" id="left125">注销完成</p>
+						<img src="../../assets/img/back/noname2.png" />
+					</div>
+				</div>
+				<div class="withdrawal" v-else>
 					<div class="withdrawalpo">
 						<p class="withp">协议与反馈</p>
 						<img src="../../assets/img/back/Rectangle 2.png" />
@@ -20,24 +38,6 @@
 					<div class="withdrawalpo" id="mleft-17">
 						<p class="withp" id="left175">注销完成</p>
 						<img src="../../assets/img/back/Rectangle 21.png" />
-					</div>
-				</div>
-				<div class="withdrawal" v-if="$store.state.authInfo&&$store.state.authInfo.checkstatus==0">
-					<div class="withdrawalpo">
-						<p class="withpw">协议与反馈</p>
-						<img src="../../assets/img/back/noname1.png" />
-					</div>
-					<div class="withdrawalpo" id="mleft-12">
-						<p class="withpw">账号信息检测</p>
-						<img src="../../assets/img/back/noname2.png" />
-					</div>
-					<div class="withdrawalpo" id="mleft-12">
-						<p class="withpw">实名信息填写</p>
-						<img src="../../assets/img/back/noname2.png" />
-					</div>
-					<div class="withdrawalpo" id="mleft-12">
-						<p class="withpw" id="left125">注销完成</p>
-						<img src="../../assets/img/back/noname2.png" />
 					</div>
 				</div>
 				<div class="box1">
@@ -76,7 +76,7 @@
 					</FormItem>
 				</Form>
 				<p>
-					<Checkbox v-model="cancellationCheck" id="checkself1">已了解<span @click="$router.push('/support_docs/6bSYke1gB_EdIzqD3Bb.html')" style="color: #2A99F2;">《新睿云账号注销协议》</span>，提交申请后，我的账号{{$store.state.userInfo.phone}}将被注销，包含的内容、数据和服务都不可再恢复</Checkbox>
+					<Checkbox v-model="cancellationCheck" id="checkself1">已了解<a href="/support_docs/6bSYke1gB_EdIzqD3Bb.html" style="color: #2A99F2;">《新睿云账号注销协议》</a>，提交申请后，我的账号{{$store.state.userInfo.phone}}将被注销，包含的内容、数据和服务都不可再恢复</Checkbox>
 				</p>
 				<Button @click="$router.push('/usercenter')" id="butself1">取消注销</Button>
 				<Button type="primary" :disabled="Cancellationdisabled" @click="handleSubmit('formInline')" id="butself2">确定注销</Button>
@@ -86,7 +86,25 @@
 					<Icon class="icon1" type="chevron-left"></Icon>
 				</div>
 				<span class="returnmoney">注销账号</span>
-				<div class="withdrawal" v-if="$store.state.authInfo == null">
+				<div class="withdrawal" v-if="($store.state.authInfo&&$store.state.authInfo.checkstatus==0) || ($store.state.authInfoPersion&&$store.state.authInfoPersion.checkstatus==0)">
+					<div class="withdrawalpo">
+						<p class="withpw">协议与反馈</p>
+						<img src="../../assets/img/back/noname1.png" />
+					</div>
+					<div class="withdrawalpo" id="mleft-12">
+						<p class="withpw">账号信息检测</p>
+						<img src="../../assets/img/back/noname3.png" />
+					</div>
+					<div class="withdrawalpo" id="mleft-12">
+						<p class="withpw">扫描二维码并进行人脸核验</p>
+						<img src="../../assets/img/back/noname2.png" />
+					</div>
+					<div class="withdrawalpo" id="mleft-12">
+						<p class="withpw" id="left125">注销完成</p>
+						<img src="../../assets/img/back/noname2.png" />
+					</div>
+				</div>
+				<div class="withdrawal" v-else>
 					<div class="withdrawalpo">
 						<p class="withp">协议与反馈</p>
 						<img src="../../assets/img/back/Rectangle 2.png" />
@@ -100,32 +118,14 @@
 						<img src="../../assets/img/back/Rectangle 21.png" />
 					</div>
 				</div>
-				<div class="withdrawal" v-if="$store.state.authInfo&&$store.state.authInfo.checkstatus==0">
-					<div class="withdrawalpo">
-						<p class="withpw">协议与反馈</p>
-						<img src="../../assets/img/back/noname1.png" />
-					</div>
-					<div class="withdrawalpo" id="mleft-12">
-						<p class="withpw">账号信息检测</p>
-						<img src="../../assets/img/back/noname3.png" />
-					</div>
-					<div class="withdrawalpo" id="mleft-12">
-						<p class="withpw">实名信息填写</p>
-						<img src="../../assets/img/back/noname2.png" />
-					</div>
-					<div class="withdrawalpo" id="mleft-12">
-						<p class="withpw" id="left125">注销完成</p>
-						<img src="../../assets/img/back/noname2.png" />
-					</div>
-				</div>
-				<div v-if="$store.state.authInfo&&$store.state.authInfo.checkstatus==0" id="divself1">
+				<div v-if="($store.state.authInfo&&$store.state.authInfo.checkstatus==0) || ($store.state.authInfoPersion&&$store.state.authInfoPersion.checkstatus==0)" id="divself1">
 					<div v-if="testingStatus==1||testingStatus==0" class="ProgressCancel">
 						<p v-if="testingStatus==0" id="pself2">正在检测您的账号，请稍等…</p>
 						<p v-if="testingStatus==1" id="pself2">检测完毕，请继续完成下一步实名认证，我们会在
 							<span style="color: #FF624B;">24小时内</span> 审核完成，并将审核结果发送至您号码为 <span style="color: #FF624B;">{{ $store.state.userInfo.phone}}</span>
 							的手机上，请注意查收。</p>
 						<Progress :percent="cancelpercent" status="active" id="progressself1"></Progress><br /><!-- changeTab('content2') -->
-						<Button type="primary" v-if="testingStatus==1" @click="changeTab('content2')" style="margin-top: 40px;">下一步</Button>
+						<Button type="primary" v-if="testingStatus==1" @click="changeTab('content2','face')" style="margin-top: 40px;">下一步</Button>
 					</div>
 					<div v-if="testingStatus==2" id="divself2">
 						<img src="../../assets/img/back/false.png" />
@@ -137,7 +137,7 @@
 						<Button type="primary" id="butself4" @click="$router.push('/overview')">返回控制台</Button>
 					</div>
 				</div>
-				<div v-if="$store.state.authInfo == null" style="float: left;width: 100%;">
+				<div v-else style="float: left;width: 100%;">
 					<div v-if="testingStatus==0" class="ProgressCancel">
 						<p id="pself4">正在检测您的账号，请稍等…</p>
 						<Progress :percent="cancelpercent" status="active" id="progressself2"></Progress>
@@ -158,7 +158,25 @@
 					<Icon class="icon1" type="chevron-left"></Icon>
 				</div>
 				<span class="returnmoney">注销账号</span>
-				<div class="withdrawal" v-if="$store.state.authInfo == null">
+				<div class="withdrawal" v-if="($store.state.authInfo&&$store.state.authInfo.checkstatus==0) || ($store.state.authInfoPersion&&$store.state.authInfoPersion.checkstatus==0)">
+					<div class="withdrawalpo">
+						<p class="withpw">协议与反馈</p>
+						<img src="../../assets/img/back/noname1.png" />
+					</div>
+					<div class="withdrawalpo" id="mleft-12">
+						<p class="withpw">账号信息检测</p>
+						<img src="../../assets/img/back/noname3.png" />
+					</div>
+					<div class="withdrawalpo" id="mleft-12">
+						<p class="withpw">扫描二维码并进行人脸核验</p>
+						<img src="../../assets/img/back/noname3.png" />
+					</div>
+					<div class="withdrawalpo" id="mleft-12">
+						<p class="withpw" id="left125">注销完成</p>
+						<img src="../../assets/img/back/noname2.png" />
+					</div>
+				</div>
+				<div class="withdrawal" v-else>
 					<div class="withdrawalpo">
 						<p class="withp">协议与反馈</p>
 						<img src="../../assets/img/back/Rectangle 2.png" />
@@ -169,30 +187,12 @@
 					</div>
 					<div class="withdrawalpo" id="mleft-17">
 						<p class="withp" id="left175">注销完成</p>
-						<img src="../../assets/img/back/Rectangle 22.png" />
+						<img src="../../assets/img/back/Rectangle 21.png" />
 					</div>
 				</div>
-				<div class="withdrawal" v-if="$store.state.authInfo&&$store.state.authInfo.checkstatus==0">
-					<div class="withdrawalpo">
-						<p class="withpw">协议与反馈</p>
-						<img src="../../assets/img/back/noname1.png" />
-					</div>
-					<div class="withdrawalpo" style="margin-left:-12px;">
-						<p class="withpw">账号信息检测</p>
-						<img src="../../assets/img/back/noname3.png" />
-					</div>
-					<div class="withdrawalpo" id="mleft-12">
-						<p class="withpw">实名信息填写</p>
-						<img src="../../assets/img/back/noname3.png" />
-					</div>
-					<div class="withdrawalpo" id="mleft-12">
-						<p class="withpw" id="left125">注销完成</p>
-						<img src="../../assets/img/back/noname2.png" />
-					</div>
-				</div>
-				<div v-if="$store.state.authInfo&&$store.state.authInfo.checkstatus==0" style="float: left;width: 100%;">
+				<div v-if="($store.state.authInfo&&$store.state.authInfo.checkstatus==0) || ($store.state.authInfoPersion&&$store.state.authInfoPersion.checkstatus==0)" style="float: left;width: 100%;">
 					<div v-if="checkStatus==0">
-						<div>
+						<!-- <div>
 							<Form :model="authModifyPhoneFormOne" :rules="authModifyPhoneOneRuleValidate" ref="authModifyPhoneFormOne">
 								<div v-if="$store.state.authInfo&&$store.state.authInfo.authtype==0&&$store.state.authInfo.checkstatus==0">
 									<Form-item id="formitself1">
@@ -305,9 +305,20 @@
 									提示：上传文件支持jpg、png、gif、pdf格式，单个文件最大不超过<span class="red">4MB</span>。
 								</p>
 							</div>
+						</div> -->
+						<div class="qrcode">
+							<p v-show="!authStatus" class="p-top">注销完成之前，请勿关闭此页面，否则可能导致注销失败</p>
+							<p>请使用手机扫描二维码，并根据提示完成人脸核验</p>
+							<p v-show="authStatus" class="p-top">您的实名认证提交失败，请刷新二维码重新认证</p>
+							<div class="qr-code">
+								<vue-q-art :config="qrConfig" ></vue-q-art>
+								<div class="shade" :class="{scanSuccess: codeLoseEfficacy=== 'scanSuccess'}" v-show="codeLoseEfficacy">
+								</div>
+							</div>
+							<p class="p-bottom">若二维码失效或异常，请 <span @click="refreshQRCode">刷新</span></p>
 						</div>
-						<Button @click="$router.push('/usercenter')" id="btuself1">取消注销</Button>
-						<Button type="primary" @click="SubInformation" id="btuself2">提交信息</Button>
+						<Button type="primary" @click="$router.push('/usercenter')" id="btuself1">取消注销</Button>
+						<!-- <Button type="primary" @click="SubInformation" id="btuself2">提交信息</Button> -->
 					</div>
 					<div v-if="checkStatus==1" id="divself4">
 						<img src="../../assets/img/back/susses.png" />
@@ -317,7 +328,7 @@
 						<Button @click="$router.push('/')" id="btuself3">返回官网</Button>
 					</div>
 				</div>
-				<div v-if="$store.state.authInfo == null" style="float: left;width: 100%;">
+				<div v-else style="float: left;width: 100%;">
 					<div v-if="testingStatus==1" class="ProgressCancel">
 						<p id="pself4">检测完毕，我们会在
 							<span style="color: #FF624B;">24小时内</span> 审核完成，并将审核结果发送至您号码为 <span style="color: #FF624B;">{{ $store.state.userInfo.phone}}</span>
@@ -352,7 +363,13 @@
 	import axios from 'axios'
 	import $store from '../../vuex'
 	import reg from '../../util/regExp'
+	import throttle from 'throttle-debounce/debounce'
+	import VueQArt from 'vue-qart'
+
 	export default {
+		components: {
+     		 VueQArt
+       		 },
 		props: {
 			selectedTab: {
 				type: String,
@@ -413,16 +430,47 @@
 						message: '请输入公司营业执照号码',
 						trigger: 'blur'
 					}, ]
-				}
+				},
+			qrConfig: {
+				value: '',
+				imagePath: require('../../assets/img/pay/payBackground.png'),
+				filter: 'black',
+				size: 500
+        	},
+			// 二维码失效
+			codeLoseEfficacy: '',
+			tempCode: '',
+			codeTimer: null,
+			authStatus: false,
 			}
-		},
+		 },
 		created() {
 			this.loggedOffState()
 		},
 		methods: {
-			changeTab(name) {
-				this.selectedTabSec = name
-				this.$emit('changeTabSec', name)
+			changeTab(name,str) {
+				if(str === 'face'){
+                  this.tempCode =  this.uuid(6, 16)
+                    let url = '/faceRecognition/getUserInfoByPcQRCode.do'
+                    axios.post(url,{
+                      faceType: (this.$store.state.authInfo && this.$store.state.authInfo.authtype == 1 && this.$store.state.authInfo.checkstatus==0)? '6' : '5',
+                      tempCode: this.tempCode
+                    }).then(res=>{
+                      if(res.status == 200 && res.data.status == 1){
+                        this.qrConfig.value = res.data.result.url
+						this.codeLoseEfficacy = ''
+						this.selectedTabSec = name
+                        this.refreshUserStatus()
+                      } else {
+						this.codeLoseEfficacy = 'lose'
+						this.selectedTabSec = name
+                        this.refreshUserStatus()
+                      }
+                    })
+				} else {
+					this.selectedTabSec = name
+					this.$emit('changeTabSec', name)
+				}
 			},
 			backpage() {
 				this.$router.history.go(-1)
@@ -444,7 +492,7 @@
 				//this.cancellationCheck = false
 				//this.formInline.cancellation = ''
 				this.changeTab('content1')
-				if (this.$store.state.authInfo && this.$store.state.authInfo.checkstatus == 0) {
+				if (($store.state.authInfo&&$store.state.authInfo.checkstatus==0) || ($store.state.authInfoPersion&&$store.state.authInfoPersion.checkstatus==0)) {
 					var Interval = setInterval(() => {
 						this.cancelpercent++
 						if (this.cancelpercent == 100) {
@@ -466,7 +514,7 @@
 
 						}
 					}, 100)
-				} else if (this.$store.state.authInfo == null) {
+				} else  {
 					var Interval = setInterval(() => {
 						this.cancelpercent++
 						if (this.cancelpercent == 100) {
@@ -485,7 +533,7 @@
 											cancellationDesc: this.formInline.cancellation
 										}).then(response => {
 											if (response.status == 200 && response.data.status == 1) {} else {
-												this.$Message.error(response.data.message)
+												this.$Message.info(response.data.message)
 											}
 										})
 									}
@@ -547,57 +595,70 @@
 				})
 			},
 			SubInformation() {
-				if (this.authInfo && this.authInfo.authtype == 0 && this.authInfo.checkstatus == 0) {
-					if (this.uploadImgDispaly == '') {
-						this.$Message.info({
-							content: '请上传手持身份证人像照片',
-							duration: 2
-						})
-					} else {
-						this.$refs.authModifyPhoneFormOne.validate(validate => {
-							if (validate) {
-								axios.post('user/clearAccountApplyFor.do', {
-									authType: '0',
-									cancellationDesc: this.formInline.cancellation,
-									IdCard: this.authModifyPhoneFormOne.ID,
-									personIdCardHandUrl: this.uploadImgDispaly
-								}).then(response => {
-									if (response.status == 200 && response.data.status == 1) {
-										this.loggedOffState()
-									} else {
-										this.$Message.error(response.data.message)
-									}
-								})
+				// if (this.authInfo && this.authInfo.authtype == 0 && this.authInfo.checkstatus == 0) {
+				// 	if (this.uploadImgDispaly == '') {
+				// 		this.$Message.info({
+				// 			content: '请上传手持身份证人像照片',
+				// 			duration: 2
+				// 		})
+				// 	} else {
+				// 		this.$refs.authModifyPhoneFormOne.validate(validate => {
+				// 			if (validate) {
+				// 				axios.post('user/clearAccountApplyFor.do', {
+				// 					authType: '0',
+				// 					cancellationDesc: this.formInline.cancellation,
+				// 					IdCard: this.authModifyPhoneFormOne.ID,
+				// 					personIdCardHandUrl: this.uploadImgDispaly
+				// 				}).then(response => {
+				// 					if (response.status == 200 && response.data.status == 1) {
+				// 						this.loggedOffState()
+				// 					} else {
+				// 						this.$Message.error(response.data.message)
+				// 					}
+				// 				})
 
-							}
-						})
-					}
-				} else if (this.authInfo && this.authInfo.authtype != 0 && this.authInfo.checkstatus == 0) {
-					if (this.uploadImgDispaly1 == '' || this.uploadImgDispaly2 == '') {
-						this.$Message.info({
-							content: '请上传手持身份证人像照片',
-							duration: 2
-						})
+				// 			}
+				// 		})
+				// 	}
+				// } else if (this.authInfo && this.authInfo.authtype != 0 && this.authInfo.checkstatus == 0) {
+				// 	if (this.uploadImgDispaly1 == '' || this.uploadImgDispaly2 == '') {
+				// 		this.$Message.info({
+				// 			content: '请上传手持身份证人像照片',
+				// 			duration: 2
+				// 		})
+				// 	} else {
+				// 		this.$refs.authModifyPhoneFormOne.validate(validate => {
+				// 			if (validate) {
+				// 				axios.post('user/clearAccountApplyFor.do', {
+				// 					authType: '1',
+				// 					cancellationDesc: this.formInline.cancellation,
+				// 					businessLicense: this.authModifyPhoneFormOne.businessLicense,
+				// 					legalIdCardFrontUrl: this.uploadImgDispaly1,
+				// 					agentIdCardHandUrl: this.uploadImgDispaly2
+				// 				}).then(response => {
+				// 					if (response.status == 200 && response.data.status == 1) {
+				// 						this.loggedOffState()
+				// 					} else {
+				// 						this.$Message.error(response.data.message)
+				// 					}
+				// 				})
+				// 			}
+				// 		})
+				// 	}
+				// }
+				axios.post('user/clearAccountApplyFor.do', {
+					authType: (this.$store.state.authInfo && this.$store.state.authInfo.authtype == 1 && this.$store.state.authInfo.checkstatus==0)? '1' : '0',
+					cancellationDesc: this.formInline.cancellation,
+					tempCode: this.tempCode
+				}).then(response => {
+					if (response.status == 200 && response.data.status == 1) {
+					    this.loggedOffState()
 					} else {
-						this.$refs.authModifyPhoneFormOne.validate(validate => {
-							if (validate) {
-								axios.post('user/clearAccountApplyFor.do', {
-									authType: '1',
-									cancellationDesc: this.formInline.cancellation,
-									businessLicense: this.authModifyPhoneFormOne.businessLicense,
-									legalIdCardFrontUrl: this.uploadImgDispaly1,
-									agentIdCardHandUrl: this.uploadImgDispaly2
-								}).then(response => {
-									if (response.status == 200 && response.data.status == 1) {
-										this.loggedOffState()
-									} else {
-										this.$Message.error(response.data.message)
-									}
-								})
-							}
+						this.$message.info({
+							content:response.data.message
 						})
 					}
-				}
+				})
 			},
 			MonitorInput() {
 				if (this.formInline.cancellation == '') {
@@ -605,8 +666,76 @@
 				} else {
 
 				}
+			},
+			// 刷新用户认证状态
+			refreshUserStatus(){
+				clearInterval(this.codeTimer)
+				this.codeTimer =  setInterval(() => {
+				this.$http.get('/faceRecognition/getAllStatus.do', {params: {tempCode: this.tempCode}}).then(res => {
+				if(res.status == 200 && res.data.status == 1){
+					if(res.data.result.qrCode == 0){
+					this.codeLoseEfficacy = 'lose'
+					}
+					if(res.data.result.qrCode == 2){
+					this.codeLoseEfficacy = 'scanSuccess'
+					}
+					if(res.data.result.authStatus == 1){
+					clearInterval(this.codeTimer)
+					 this.SubInformation()
+					}
+					if(res.data.result.authStatus == 0){
+					this.authStatus = true
+					}
+					}
+				})
+				}, 3000)
+			},
+			// 刷新二维码状态状态
+			refreshQRCode:throttle(1000, function (){
+				this.authStatus = false
+				this.tempCode =  this.uuid(6, 16)
+				let url = '/faceRecognition/getUserInfoByPcQRCode.do'
+				let params = {
+				faceType: (this.$store.state.authInfo && this.$store.state.authInfo.authtype == 1 && this.$store.state.authInfo.checkstatus==0)? '6' : '5',
+				tempCode: this.tempCode
+				}
+				axios.post(url,params).then(res=>{
+				if(res.status == 200 && res.data.status == 1){
+					this.$Message.success('刷新成功')
+					this.qrConfig.value = res.data.result.url
+					this.codeLoseEfficacy = ''
+				} else {
+					this.codeLoseEfficacy = 'lose'
+				}
+				})
+			}),
+			uuid(len, radix) {
+				var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+				var uuid = [], i;
+				radix = radix || chars.length;
+			
+				if (len) {
+				// Compact form
+				for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random()*radix];
+				} else {
+				// rfc4122, version 4 form
+				var r;
+			
+				// rfc4122 requires these characters
+				uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
+				uuid[14] = '4';
+			
+				// Fill in random data.  At i==19 set the high bits of clock sequence as
+				// per rfc4122, sec. 4.1.5
+				for (i = 0; i < 36; i++) {
+					if (!uuid[i]) {
+					r = 0 | Math.random()*16;
+					uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
+					}
+				}
+				}
+				return uuid.join('');
 			}
-
 		},
 		computed: {
 			Cancellationdisabled() {
@@ -623,6 +752,10 @@
 		},
 		watch: {
 
+		},
+		beforeRouteLeave(to, from, next) {
+			clearInterval(this.codeTimer)
+			next()
 		}
 	}
 </script>
@@ -999,7 +1132,7 @@
 	}
 
 	#btuself1 {
-		margin-left: 939px;
+		// margin-left: 939px;
 		margin-top: 40px;
 	}
 
@@ -1046,5 +1179,54 @@
 		font-family: MicrosoftYaHei;
 		color: rgba(102, 102, 102, 1);
 		line-height: 24px;
+	}
+	.qrcode{
+		margin-top: 20px;
+		padding: 20px;
+		width:500px;
+		background:rgba(255,255,255,1);
+		border-radius:4px;
+		border:1px solid rgba(230,230,230,1);
+		text-align: center;
+		.qr-code{
+			height: 198px;
+			width: 197px;
+			background: url('../../assets/img/app/auth_background.png') no-repeat center;
+			margin: 0 auto;
+			position: relative;
+			.shade{
+				position: absolute;
+				top: 0;
+				height: 198px;
+				width: 197px;
+				background: url('../../assets/img/app/lose_efficacy.png')  center;
+				&.scanSuccess{
+				background: url('../../assets/img/app/scan_success.png')  center;
+				}
+			}
+		}
+		>p{
+			font-size:14px;
+			font-family:MicrosoftYaHei;
+			color:rgba(51,51,51,1);
+			margin: 10px;
+			>span{
+				color: #FF624B;
+			}
+			}
+			.p-top{
+			font-family:MicrosoftYaHei-Bold;
+			font-weight:bold;
+			color:rgba(237,64,20,1);
+			margin-top: 0;
+			}
+			.p-bottom{
+			margin-top: 14px;
+			margin-bottom: 0;
+			>span{
+				color: #4297F2;
+				cursor: pointer;
+			}
+		}
 	}
 </style>
