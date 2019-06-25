@@ -1668,7 +1668,7 @@
           regular: false,
           notLoginModal: false,
           authModal: false,
-          authErrorModal: true,
+          authErrorModal: false,
           rule1: false,
           rule2: false,
           vipRuleModal: false,

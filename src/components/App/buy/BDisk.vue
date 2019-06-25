@@ -50,7 +50,7 @@
             </div>
           </div>
         </div>
-        <!--虚拟私有云-->
+        <!--磁盘-->
         <div v-for="(disk,index) in dataDiskList" :key="index">
           <div class="item-wrapper">
             <div style="display: flex">
@@ -58,9 +58,9 @@
                 <p class="item-title" style="margin-top: 7px;">类型</p>
               </div>
               <div>
-                <div v-for="(item,index) in dataDiskType" :key="item.value" class="zoneItem"
+                <div v-for="(item,typeIndex) in dataDiskType" :key="item.value" class="zoneItem"
                      :class="{zoneSelect:disk.type==item.value}"
-                     @click="disk.type=item.value;disk.label=item.label">{{item.label}}
+                     @click="changeDiskType(item,index)">{{item.label}}
                 </div>
               </div>
               <img src="../../../assets/img/buy/across.png" @click="removeDisk(index)"
@@ -77,13 +77,13 @@
                 <i-slider
                   v-model="disk.size"
                   unit="GB"
-                  :min=20
+                  :min= disk.minDiskSize
                   :max=1000
-                  :step=10
+                  :step= disk.diskSizeStep
                   :points="[500,800]"
                   style="margin-right:30px;vertical-align: middle;">
                 </i-slider>
-                <InputNumber :max="500" :min="20" v-model="disk.size" size="large" :step=10
+                <InputNumber :max="1000" :min="disk.minDiskSize" v-model="disk.size" size="large" :step= disk.diskSizeStep
                              @on-blur="change_DiskSize(index,disk.size)"
                              @on-focus="change_DiskSize(index,disk.size)" :precision="0"></InputNumber>
               </div>
@@ -215,7 +215,7 @@
         ],
         // 添加购买的数据盘
         dataDiskList: [
-          {type: 'ssd', size: 20, label: 'SSD存储'}
+          {type: 'ssd', size: 20, label: 'SSD存储',minDiskSize: 20,diskSizeStep: 20}
         ],
         diskName: '',
         // 自动续费
@@ -232,10 +232,23 @@
     },
     methods: {
       pushDisk() {
-        this.dataDiskList.push({type: 'ssd', size: 20, label: 'SSD存储'})
+        this.dataDiskList.push({type: 'ssd', size: 20, label: 'SSD存储',minDiskSize: 20,diskSizeStep: 20})
       },
       removeDisk(index) {
         this.dataDiskList.splice(index, 1)
+      },
+      changeDiskType(item,index){
+        this.dataDiskList[index].type=item.value
+        this.dataDiskList[index].label=item.label
+        if(item.value === 'sata'){
+          this.dataDiskList[index].minDiskSize = 100
+          this.dataDiskList[index].size = 100
+          this.dataDiskList[index].diskSizeStep = 100
+        } else if(item.value === 'sas'){
+          this.dataDiskList[index].minDiskSize = 50
+          this.dataDiskList[index].size = 50
+          this.dataDiskList[index].diskSizeStep = 50
+        }
       },
       addDiskCart() {
        if (this.zone.buyover == 1) {
@@ -373,7 +386,7 @@
       },
       remainDisk() {
         return 5 - this.dataDiskList.length
-      },
+      }
     },
     watch: {
       'timeForm': {

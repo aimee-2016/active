@@ -37,9 +37,9 @@
                       @click="modifyEmail">去绑定</span></li>
                     <li v-else><span>注册邮箱</span><span>{{ userInfo.loginname }}</span><span
                       @click="modifyEmail">修改</span></li>
-                    <li v-if="!userInfo.phone"><span>手机号码</span><span>尚未绑定</span><span
+                    <li v-if="!userInfo.phone && !authInfo"><span>手机号码</span><span>尚未绑定</span><span
                       @click="modifyTelphone">去绑定</span></li>
-                    <li v-else><span>手机号码</span><span>{{ userInfo.phone?userInfo.phone.substr(0,3) + '****' + userInfo.phone.substr(7): ''}}</span><span
+                    <li v-else><span>手机号码</span><span>{{ userInfo.phone?userInfo.phone.substr(0,3) + '****' + userInfo.phone.substr(7): authInfoPersion.phone?authInfoPersion.phone.substr(0,3) + '****' + authInfoPersion.phone.substr(7):''}}</span><span
                       @click="telModify_btn()">修改</span></li>
                     <!--<li><span>账号密码</span><span>尚未设置</span><span @click="showModal.setNewPassword = true">去设置</span></li>-->
                     <li><span>账号密码</span><span>************</span><span @click="showModal.modifyPassword = true">修改</span></li>
@@ -4327,7 +4327,31 @@
         this.authStatus = false
         if(authType.go === 4){
           this.phoneVerifyType = 'identification'
-          this.showModal.cashverification = true
+          if(this.userInfo.phone){
+                this.tempCode =  this.uuid(6, 16)
+                    let url = '/faceRecognition/getUserInfoByPcQRCode.do'
+                    let config = {
+                       phone: this.userInfo.phone,
+                     }
+                    axios.post(url,{
+                      faceType: '1',
+                      config: JSON.stringify(config),
+                      tempCode: this.tempCode
+                    }).then(res=>{
+                      if(res.status == 200 && res.data.status == 1){
+                        this.qrConfig.value = res.data.result.url
+                        this.showModal.qrCode = true
+                        this.codeLoseEfficacy = ''
+                        this.refreshUserStatus()
+                      } else {
+                        this.codeLoseEfficacy = 'lose'
+                        this.showModal.qrCode = true
+                        this.refreshUserStatus()
+                      }
+                    })
+          } else {
+            this.showModal.cashverification = true
+          }
         } else{
           this.notAuth.currentStep = authType.go
           this.imgSrc=`user/getKaptchaImage.do?t=${new Date().getTime()}`
@@ -4346,6 +4370,7 @@
               this.codeLoseEfficacy = 'scanSuccess'
               }
             if(res.data.result.authStatus == 1){
+               this.showModal.qrCode = false
                clearInterval(this.codeTimer)
                if(this.paneStatus.usercenter === 'certification'){
                  this.init()
