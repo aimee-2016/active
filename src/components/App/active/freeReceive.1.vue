@@ -496,7 +496,7 @@
     </Modal>
 
     <!-- 微信支付弹窗 -->
-    <Modal v-model="showModal.weChatRechargeModal" width="640" :scrollable="true">
+    <Modal v-model="showModal.weChatRechargeModal" width="640" :scrollable="true" :mask-closable="false">
       <p slot="header" class="modal-header-border">
         <span class="universal-modal-title">微信支付/充值</span>
       </p>
@@ -525,7 +525,7 @@
     </Modal>
 
     <!-- 订单确认弹窗 -->
-    <Modal v-model="showModal.orderConfirmationModal" width="640" :scrollable="true">
+    <Modal v-model="showModal.orderConfirmationModal" width="640" :scrollable="true" :mask-closable="false">
       <p slot="header" class="modal-header-border">
         <span class="universal-modal-title">订单确认</span>
       </p>
@@ -825,8 +825,7 @@ export default {
         {
           headline: '包月云服务器',
           subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
-          config: [
-          ],
+          config: {},
           timeList: [],
           time: '1个月',
           systemList: [{
@@ -850,7 +849,6 @@ export default {
           }],
           system: [],
           zone: '',
-          zoneId: '',
           cashPledge: '69',
           originPrice: '176.72',
           configId: '',
@@ -859,8 +857,7 @@ export default {
         {
           headline: '包年云服务器',
           subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
-          config: [
-          ],
+          config: {},
           timeList: [],
           time: '12个月',
           systemList: [{
@@ -884,7 +881,6 @@ export default {
           }],
           system: [],
           zone: '',
-          zoneId: '',
           cashPledge: '1269',
           originPrice: '2120.64',
           configId: '',
@@ -896,8 +892,7 @@ export default {
         {
           headline: '包月云服务器',
           subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
-          config: [
-          ],
+          config: {},
           timeList: [],
           time: '1个月',
           systemList: [{
@@ -921,7 +916,6 @@ export default {
           }],
           system: [],
           zone: '',
-          zoneId: '',
           price: '69',
           originPrice: '176.72',
           configId: ''
@@ -929,8 +923,7 @@ export default {
         {
           headline: '包年云服务器',
           subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
-          config: [
-          ],
+          config: {},
           timeList: [],
           time: '12个月',
           systemList: [{
@@ -954,7 +947,6 @@ export default {
           }],
           system: [],
           zone: '',
-          zoneId: '',
           price: '69',
           originPrice: '176.72',
           configId: ''
@@ -962,8 +954,7 @@ export default {
         {
           headline: '包月云服务器',
           subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
-          config: [
-          ],
+          config: {},
           timeList: [],
           time: '1个月',
           systemList: [{
@@ -987,7 +978,6 @@ export default {
           }],
           system: [],
           zone: '',
-          zoneId: '',
           price: '69',
           originPrice: '176.72',
           configId: ''
@@ -995,8 +985,7 @@ export default {
         {
           headline: '包年云服务器',
           subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
-          config: [
-          ],
+          config: {},
           timeList: [],
           time: '12个月',
           systemList: [{
@@ -1020,7 +1009,6 @@ export default {
           }],
           system: [],
           zone: '',
-          zoneId: '',
           price: '69',
           originPrice: '176.72',
           configId: ''
@@ -1078,9 +1066,9 @@ export default {
           render: (h, params) => {
             let arr = []
             let param3 = h('li', {}, '主机： ' + params.row.title)
-            let param = h('li', {}, '带宽： ' + params.row.configs.config[2].value)
-            let param1 = h('li', {}, '磁盘： ' + params.row.configs.config[3].value)
-            let param2 = h('li', {}, '系统： ' + params.row.configs.system)
+            let param = h('li', {}, '带宽： ' + params.row.configs.config.bandwith) + 'M'
+            let param1 = h('li', {}, '磁盘： ' + params.row.configs.config.disksize) + 'G SSD'
+            let param2 = h('li', {}, '系统： ' + params.row.configs.system[0])
             arr.push(param3)
             arr.push(param)
             arr.push(param1)
@@ -1275,7 +1263,7 @@ export default {
             this.orderData.push({
               productType: '云服务器',
               configs: this.depositList[this.index1],
-              originalPrice: this.depositList[this.index1].originalCost,
+              originalPrice: this.depositList[this.index1].originPrice,
               time: this.time,
               title: this.depositList[this.index1].headline,
               cashPledge: Number(this.cashPledge)
@@ -1404,7 +1392,7 @@ export default {
         operationType: '领取主机',
         thawCondition: '删除主机、公网IP',
         vmConfig: this.vmConfig,
-        zoneId: this.configGroup[this.index1].zoneId
+        zoneId: this.hotHostList[this.index1].zone
       }
       axios.post(url, params).then(response => {
         if (response.data.status == 1 && response.status == 200) {
@@ -1412,13 +1400,13 @@ export default {
           axios.get(url, {
             params: {
               vmConfigId: vmConfigId,
-              osType: this.configGroup[this.index1].system,
-              defzoneid: this.configGroup[this.index1].zoneId
+              osType: this.hotHostList[this.index1].system,
+              defzoneid: this.hotHostList[this.index1].zone
             }
           }).then(res => {
             if (res.status == 200 && res.data.status == 1) {
               this.showModal.getSuccessModal = true
-              this.toggleZone(this.configGroup[this.index1].zoneId)
+              this.toggleZone(this.hotHostList[this.index1].zone)
             } else {
               this.$message.info({
                 content: res.data.message
@@ -1972,8 +1960,8 @@ export default {
     }
   },
   components: {
-
-  }
+    'vue-q-art': VueQArt
+  },
 }
 </script>
 
@@ -2680,4 +2668,65 @@ section:nth-of-type(1) {
     }
   }
 }
+.modal-p {
+    > div {
+      margin-left: 60px;
+    }
+    > p {
+      span {
+        font-size: 16px;
+        font-family: MicrosoftYaHei;
+        font-weight: 400;
+        color: rgba(51, 51, 51, 1);
+        line-height: 22px;
+        margin-left: 10px;
+        position: relative;
+        bottom: 18px;
+      }
+      margin: 50px 0;
+      text-align: center;
+    }
+    .payInfo {
+      margin-top: 50px;
+      display: flex;
+      .pay-p {
+        p {
+          font-size: 16px;
+          font-family: MicrosoftYaHei;
+          font-weight: 400;
+          color: rgba(51, 51, 51, 1);
+          line-height: 22px;
+          margin: 30px 40px;
+          span {
+            font-size: 36px;
+            font-weight: 600;
+            color: rgba(208, 2, 27, 1);
+          }
+        }
+      }
+    }
+  }
+   .pay-wap {
+    padding: 20px;
+    > p {
+      font-size: 14px;
+      font-family: MicrosoftYaHei;
+      font-weight: 400;
+      color: rgba(102, 102, 102, 1);
+      margin-bottom: 10px;
+    }
+    .pw-img {
+      img {
+        display: inline-block;
+        margin-right: 20px;
+        cursor: pointer;
+        position: relative;
+        top: 12px;
+        border: 1px solid #FFF;
+        &.selected {
+          border: 1px solid rgba(74, 144, 226, 1);
+        }
+      }
+    }
+  }
 </style>
