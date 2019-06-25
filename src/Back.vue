@@ -889,7 +889,7 @@
                 }
               }
               .nav-dropdown {
-                .ivu-dropdown-item:hover span {
+                .ivu-dropdown-item:hover{
                   color: #2A99F2
                 }
               }

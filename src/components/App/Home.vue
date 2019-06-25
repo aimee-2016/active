@@ -63,23 +63,7 @@
             </div>
           </div>
         </my-carousel-item>
-        <my-carousel-item class="carousel-item">
-          <div class="eightscene" @click="push('/scene/')">
-            <div class="wrap">
-              <div class="left">
-                <img src="../../assets/img/home/eightscene-text.png" alt="eightscene">
-                <Button @click.stop="$router.push('/scene/')">立即使用</Button>
-              </div>
-              <div class="right">
-                <p>现在注册</p>
-                <p>即可体验 <span>免费套餐</span></p>
-                <p>多款云主机</p>
-                <p @click.stop="$router.push('/activity/free')">免费领取</p>
-                <Button type="primary" long @click.stop="$router.push('register')">注册新账号</Button>
-              </div>
-            </div>
-          </div>
-        </my-carousel-item>
+
         <my-carousel-item class="carousel-item">
           <div @click="push('/activity/free/')"
                style="cursor: pointer;background: #F56B23;">
@@ -93,6 +77,24 @@
                 <div class="free-receive-img">
                   <img src="../../assets/img/active/freeToReceive/fr-banner7.png" alt="fr-banner"/>
                 </div>
+              </div>
+            </div>
+          </div>
+        </my-carousel-item>
+        
+        <my-carousel-item class="carousel-item">
+          <div class="eightscene" @click="push('/scene/')">
+            <div class="wrap">
+              <div class="left">
+                <img src="../../assets/img/home/eightscene-text.png" alt="eightscene">
+                <Button @click.stop="$router.push('/scene/')">立即使用</Button>
+              </div>
+              <div class="right">
+                <p>现在注册</p>
+                <p>即可体验 <span>免费套餐</span></p>
+                <p>多款云主机</p>
+                <p @click.stop="$router.push('/activity/free')">免费领取</p>
+                <Button type="primary" long @click.stop="$router.push('register')">注册新账号</Button>
               </div>
             </div>
           </div>
