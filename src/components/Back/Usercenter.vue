@@ -1408,7 +1408,7 @@
         <Button type="primary" @click="showModal.qrCode = false">确定</Button>
       </div>
     </Modal>
-        <!--注销中弹窗-->
+    <!--注销中弹窗-->
     <Modal v-model="showModal.WriteAudit" :scrollable="true" :closable="false" :width="380">
       <p slot="header" class="modal-header-border">
         <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
