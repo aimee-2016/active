@@ -117,6 +117,21 @@
                                     <Page :total="100" style="display:inline-block;vertical-align: middle;margin-left:20px;" show-sizer :page-size-opts=[10,20,50,100]></Page>
                                 </div>
                            </div>
+                            <div>
+                               <div class="dp-grad dp-row">
+                                    <div>
+                                        <span class="b-font">攻击目标统计</span>
+                                        <span>查询指定套餐，及指定时间范围已防护的业务的遭受DDoS的攻击目标IP的相关信息</span>
+                                    </div>
+                                    <div>
+                                    <span class="l-font">刷新</span> 
+                                    </div>
+                                </div>
+                                <Table :columns="overviewList" :data="overviewData" @on-selection-change='overviewTableChange'></Table>
+                                <div class="dp-page">
+                                    <Page :total="100" style="display:inline-block;vertical-align: middle;margin-left:20px;" show-sizer :page-size-opts=[10,20,50,100]></Page>
+                                </div>
+                           </div>
                        </div>
                     </TabPane>
                     <TabPane label="业务管理">
