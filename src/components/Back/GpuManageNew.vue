@@ -19,7 +19,7 @@
             </div>
           </div>
           <div class="host-details">
-              <p>{{gpuDetail.cpuNum}}CPU ,{{gpuDetail.memory}}G内存 ,{{gpuDetail.bandwith+'M宽带'}} </p>
+              <p>{{gpuDetail.cpuNum}}CPU ,{{gpuDetail.memory}}G内存 ,{{gpuDetail.bandwith == '' ? 0+'M宽带':gpuDetail.bandwith+'M宽带'}} </p>
           </div>
         </div>
         <div class="config-type">

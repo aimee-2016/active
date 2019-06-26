@@ -1869,7 +1869,7 @@ export default {
                 }
               });
             } else {
-              this.isAllUpate = true;
+              this.isAllUpate = false;
             }
           } else {
             this.$Loading.finish();
@@ -2148,16 +2148,16 @@ export default {
         companyResponsibilityUrlBack: this.updateHostUnitList
           .webresponsibilityurlback,
         domainCertificateUrl: this.hostUnitList.domaincertificateurl,
-        otherDataUrl:this.hostUnitList.otherdataurl,
-        backgroundUrl: backgroundUrl,
+        otherDataUrl:'',//this.hostUnitList.otherdataurl
+        backgroundUrl: '',//backgroundUrl
         backgroundAddress: this.hostUnitList.mark2,
         backgroundName: this.hostUnitList.mark3,
         backgroundPhone: this.hostUnitList.mark4,
-        mainrecordnumber:this.hostUnitList.mainrecordnumber,
+        mainrecordnumber:'asdsadasdas',//this.hostUnitList.mainrecordnumber
         icprecordpassword:this.hostUnitList.icprecordpassword,
-        urgentLinkManNumber:this.hostUnitList.urgentlinkmannumber,
-        webLinkMainRelationship:this.hostUnitList.weblinkmainrelationship,
-        urgentLinkMan:this.hostUnitList.urgentlinkman
+        urgentLinkManNumber:'111111111',//this.hostUnitList.urgentlinkmannumber
+        webLinkMainRelationship:'哈哈哈',//this.hostUnitList.weblinkmainrelationship
+        urgentLinkMan:'呵呵呵'//this.hostUnitList.urgentlinkman
       };
       for(let i in web){
         if(web[i] == ''){
@@ -2192,7 +2192,7 @@ export default {
       };
       let addMian = this.$http.post("recode/addMainCompany.do", main);
       Promise.all([update, addMian]).then(res => {
-        if (res[0].data.status == 1) {
+        if (res[0].data.status == 1&&res[1].data.status == 1) {
           this.$router.push({ path: "BRecords" });
           this.$Message.success("修改成功");
         } else {
