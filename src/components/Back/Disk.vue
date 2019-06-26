@@ -44,9 +44,9 @@
             </Select>
           </Form-item>
           <Form-item label="类型" prop="diskType">
-            <Select v-model="diskForm.diskType" placeholder="请选择">
+            <Select v-model="diskForm.diskType" placeholder="请选择"  @on-change="changeDiskType">
               <Option v-for="item in diskTypeList" :key="item.value" :value="item.value"
-                      v-if="$store.state.zone.gpuserver!='1'||item.value=='ssd'">{{ item.label }}
+                      v-if="$store.state.zone.gpuserver!='1' || item.value=='ssd'">{{ item.label }}
               </Option>
             </Select>
           </Form-item>
@@ -61,13 +61,13 @@
             <i-slider
               v-model="diskForm.diskSize"
               unit="G"
-              :min=20
+              :min= diskForm.minDiskSize
               :max=1000
-              :step=10
+              :step= diskForm.diskSizeStep
               :points="[250,500]"
               style="width:300px;vertical-align: middle;">
             </i-slider>
-            <InputNumber :max="1000" :min="20" v-model="diskForm.diskSize" :step=10 :editable="false"
+            <InputNumber :max="1000" :min= diskForm.minDiskSize v-model="diskForm.diskSize" :step= diskForm.diskSizeStep :editable="false"
                          style="margin-left: 20px" :precision="0"></InputNumber>
             <span style="margin-left: 10px">GB</span>
           </Form-item>
@@ -652,6 +652,8 @@
           diskGpu: '',
           timeValue: '',
           diskSize: 20,
+          minDiskSize: 20,
+          diskSizeStep: 20,
           // 购买磁盘数量
           quantity: 1,
         },
@@ -1386,6 +1388,19 @@
             }
           }
         })
+      },
+      changeDiskType(value){
+      if(value === 'sata'){
+          this.diskForm.minDiskSize = 100
+          this.diskForm.diskSize = 100
+          this.diskForm.diskSizeStep = 100
+        } else if(value === 'sas'){
+          this.diskForm.minDiskSize = 50
+          this.diskForm.diskSize = 50
+          this.diskForm.diskSizeStep = 50
+        } else{
+          this.diskForm.diskSizeStep = 20
+        }
       }
     },
     computed: {

@@ -1400,7 +1400,7 @@ export default {
           axios.get(url, {
             params: {
               vmConfigId: vmConfigId,
-              osType: this.hotHostList[this.index1].system,
+              osType: this.hotHostList[this.index1].system[1],
               defzoneid: this.hotHostList[this.index1].zone
             }
           }).then(res => {
@@ -1536,6 +1536,10 @@ export default {
         if (res.status == 200 && res.data.status == 1) {
           this.$Message.success('创建订单成功')
           this.$router.push('/order')
+        } else {
+          this.$message.info({
+            content: res.data.message
+          })
         }
       })
     },
