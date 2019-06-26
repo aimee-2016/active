@@ -491,7 +491,7 @@
               type="drag"
               :show-upload-list="false"
               :with-credentials="true"
-              action="https://zschj.xrcloud.net/file/upFile.do"
+              action="https://www.xrcloud.net/file/upFile.do"
               :format="['jpg','jpeg','png']"
               :on-success="webRecordSuccess"
               :on-format-error="webRecordFormatError"
