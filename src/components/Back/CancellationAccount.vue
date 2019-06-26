@@ -76,7 +76,7 @@
 					</FormItem>
 				</Form>
 				<p>
-					<Checkbox v-model="cancellationCheck" id="checkself1">已了解<a href="/support_docs/6bSYke1gB_EdIzqD3Bb.html" style="color: #2A99F2;">《新睿云账号注销协议》</a>，提交申请后，我的账号{{$store.state.userInfo.phone}}将被注销，包含的内容、数据和服务都不可再恢复</Checkbox>
+					<Checkbox v-model="cancellationCheck" id="checkself1">已了解<a href="/support_docs/6bSYke1gB_EdIzqD3Bb.html" style="color: #2A99F2;" target="blank">《新睿云账号注销协议》</a>，提交申请后，我的账号{{$store.state.userInfo.phone}}将被注销，包含的内容、数据和服务都不可再恢复</Checkbox>
 				</p>
 				<Button @click="$router.push('/usercenter')" id="butself1">取消注销</Button>
 				<Button type="primary" :disabled="Cancellationdisabled" @click="handleSubmit('formInline')" id="butself2">确定注销</Button>
@@ -317,7 +317,9 @@
 							</div>
 							<p class="p-bottom">若二维码失效或异常，请 <span @click="refreshQRCode">刷新</span></p>
 						</div>
+						<div style="text-align: center">
 						<Button type="primary" @click="$router.push('/usercenter')" id="btuself1">取消注销</Button>
+						</div>
 						<!-- <Button type="primary" @click="SubInformation" id="btuself2">提交信息</Button> -->
 					</div>
 					<div v-if="checkStatus==1" id="divself4">
@@ -1133,7 +1135,7 @@
 
 	#btuself1 {
 		// margin-left: 939px;
-		margin-top: 40px;
+		margin-top: 20px;
 	}
 
 	#btuself2 {
@@ -1181,7 +1183,7 @@
 		line-height: 24px;
 	}
 	.qrcode{
-		margin-top: 20px;
+		margin: 20px auto;
 		padding: 20px;
 		width:500px;
 		background:rgba(255,255,255,1);
