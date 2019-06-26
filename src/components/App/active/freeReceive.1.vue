@@ -1342,11 +1342,11 @@ export default {
       let vmConfigId = ''
       switch (this.index1) {
         case 0:
-          vmConfigId = '39'
+          vmConfigId = '451'
           this.time = '1'
           break
         case 1:
-          vmConfigId = '42'
+          vmConfigId = '452'
           this.time = '12'
           break
       }
