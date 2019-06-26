@@ -1395,8 +1395,8 @@
       </p>
       <div class="universal-modal-content-flex qrcode-modal">
          <p v-show="!authStatus" class="p-top">认证完成之前，请勿关闭或者切换此页面，否则可能导致认证失败</p>
-         <p v-show="!authStatus && paneStatus.usercenter == 'certification'">请使用手机扫描二维码，并根据提示完成实名认证</p>
-         <p v-show="!authStatus && paneStatus.usercenter == 'companyInfo'">请使用手机扫描二维码，并根据提示完成企业认证</p>
+         <p v-show="!authStatus && paneStatus.usercenter == 'certification'">请使用手机（推荐使用微信）扫描二维码，并根据提示完成实名认证</p>
+         <p v-show="!authStatus && paneStatus.usercenter == 'companyInfo'">请使用手机（推荐使用微信）扫描二维码，并根据提示完成企业认证</p>
          <p v-show="authStatus" class="p-top">您的实名认证提交失败，请刷新二维码重新认证</p>
          <div class="qr-code">
             <vue-q-art :config="qrConfig" ></vue-q-art>
