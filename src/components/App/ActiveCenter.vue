@@ -57,7 +57,7 @@
               <div class="wrap">
               <div class="text">
                  <p>爆款云服务器免费用一年</p>
-              <p>押金随时可退</p>
+              <p>保证金随时可退</p>
              </div>
            <div class="img">
                 <img src="../../assets/img/active/freeToReceive/fr-banner22.png" />
@@ -233,8 +233,8 @@
           {
             imgPath: require('../../assets/img/activecenter/bg-card-2.png'),
             name: '免费云主机 不限量领取',
-            desc: '交押金最长可用一年 押金闪退',
-            time: '2018.08.03开始',
+            desc: '保证金闪退',
+            time: '2019.06.26开始',
             activeObj: '云主机 新注册用户',
             url: '/activity/free/',
             isStart: true,

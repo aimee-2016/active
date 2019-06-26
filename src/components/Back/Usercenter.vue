@@ -4234,45 +4234,97 @@
           this.$Message.info('请输入正确的手机号')
           return
         }
-        this.$refs.cashverification.validateField('Verificationcode', (text) => {
-          if (text == '') {
-            var url = ''
-            if (codeType == 'code' || codeType == 'againCode' && this.formCustom.newCodeText == '获取验证码') {
-              url = 'user/code.do'
-            } else if (codeType == 'voice' && this.formCustom.newCodeText == '获取验证码') {
-              url = 'user/voiceCode.do'
-            } else {
-              return false
-            }
-            axios.get(url, {
+        if(this.formCustom.VerificationPhone){
+          axios.get('user/isRegister.do', {
               params: {
-                aim: this.userInfo.phone ? this.userInfo.phone : this.formCustom.VerificationPhone,
-                isemail: 0,
-                vailCode: this.formCustom.Verificationcode
+                username: this.formCustom.VerificationPhone
               }
-            }).then(response => {
-              // 发送成功，进入倒计时
-              if (response.status == 200 && response.data.status == 1) {
-                var countdown = 60
-                this.formCustom.newCodeText = `${countdown}S`
-                var Interval = setInterval(() => {
-                  countdown--
-                  this.formCustom.newCodeText = `${countdown}S`
-                  if (countdown == 0) {
-                    clearInterval(Interval)
-                    this.formCustom.newCodeText = '获取验证码'
+            }).then(res => {
+              if (res.status === 200 && res.data.status === 1) {
+                this.$refs.cashverification.validateField('Verificationcode', (text) => {
+                  if (text == '') {
+                    var url = ''
+                    if (codeType == 'code' || codeType == 'againCode' && this.formCustom.newCodeText == '获取验证码') {
+                      url = 'user/code.do'
+                    } else if (codeType == 'voice' && this.formCustom.newCodeText == '获取验证码') {
+                      url = 'user/voiceCode.do'
+                    } else {
+                      return false
+                    }
+                    axios.get(url, {
+                      params: {
+                        aim: this.userInfo.phone ? this.userInfo.phone : this.formCustom.VerificationPhone,
+                        isemail: 0,
+                        vailCode: this.formCustom.Verificationcode
+                      }
+                    }).then(response => {
+                      // 发送成功，进入倒计时
+                      if (response.status == 200 && response.data.status == 1) {
+                        var countdown = 60
+                        this.formCustom.newCodeText = `${countdown}S`
+                        var Interval = setInterval(() => {
+                          countdown--
+                          this.formCustom.newCodeText = `${countdown}S`
+                          if (countdown == 0) {
+                            clearInterval(Interval)
+                            this.formCustom.newCodeText = '获取验证码'
+                          }
+                        }, 1000)
+                      } else {
+                        this.$message.info({
+                          content: response.data.message
+                        })
+                        this.imgSrc = `user/getKaptchaImage.do?t=${new Date().getTime()}`
+                        this.formCustom.Verificationcode = ''
+                      }
+                    })
                   }
-                }, 1000)
-              } else {
-                this.$message.info({
-                  content: response.data.message
                 })
-                this.imgSrc = `user/getKaptchaImage.do?t=${new Date().getTime()}`
-                this.formCustom.Verificationcode = ''
+              } else {
+                this.$Message.info('该手机号已被使用')
               }
             })
-          }
-        })
+        } else {
+          this.$refs.cashverification.validateField('Verificationcode', (text) => {
+            if (text == '') {
+              var url = ''
+              if (codeType == 'code' || codeType == 'againCode' && this.formCustom.newCodeText == '获取验证码') {
+                url = 'user/code.do'
+              } else if (codeType == 'voice' && this.formCustom.newCodeText == '获取验证码') {
+                url = 'user/voiceCode.do'
+              } else {
+                return false
+              }
+              axios.get(url, {
+                params: {
+                  aim: this.userInfo.phone ? this.userInfo.phone : this.formCustom.VerificationPhone,
+                  isemail: 0,
+                  vailCode: this.formCustom.Verificationcode
+                }
+              }).then(response => {
+                // 发送成功，进入倒计时
+                if (response.status == 200 && response.data.status == 1) {
+                  var countdown = 60
+                  this.formCustom.newCodeText = `${countdown}S`
+                  var Interval = setInterval(() => {
+                    countdown--
+                    this.formCustom.newCodeText = `${countdown}S`
+                    if (countdown == 0) {
+                      clearInterval(Interval)
+                      this.formCustom.newCodeText = '获取验证码'
+                    }
+                  }, 1000)
+                } else {
+                  this.$message.info({
+                    content: response.data.message
+                  })
+                  this.imgSrc = `user/getKaptchaImage.do?t=${new Date().getTime()}`
+                  this.formCustom.Verificationcode = ''
+                }
+              })
+            }
+          })
+        }
       },
       Callpresentation() {
         this.$refs.cashverification.validateField('messagecode', (text) => {

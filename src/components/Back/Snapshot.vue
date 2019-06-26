@@ -1540,6 +1540,13 @@
                       display: 'inline-block',
                       marginRight: '10px'
                     }
+                  }), h('span', {}, '回滚中')])
+                case 4:
+                  return h('div', {}, [h('Spin', {
+                    style: {
+                      display: 'inline-block',
+                      marginRight: '10px'
+                    }
                   }), h('span', {}, '删除中')])
               }
             }
@@ -1978,21 +1985,27 @@
       },
       rollbackSubmit() {
         this.showModal.rollback = false
-        this.loadingMessage = '正在回滚主机'
-        this.loading = true
+          this.snapshotData.forEach(item => {
+          if (item.snapshotid == this.cursnapshot.snapshotid) {
+            item.status = 3
+            item._disabled = true
+          }
+        })
         var URL = 'Snapshot/revertToVMSnapshot.do'
         axios.get(URL, {
           params: {
             snapshotId: this.cursnapshot.snapshotid,
             zoneId: $store.state.zone.zoneid
           }
-        })
-          .then(response => {
-            if (response.status == 200) {
-              this.loading = false
+        }).then(response => {
+            if (response.status == 200 && response.data.status == 1) {
               this.$Message.success({
                 content: response.data.message,
                 duration: 5
+              })
+            } else{
+              this.$message.info({
+                content: response.data.message
               })
             }
           })
@@ -2048,7 +2061,7 @@
         this.showModal.delsnaps = false
         this.snapshotData.forEach(item => {
           if (item.snapshotid == this.snapsSelection.snapshotid) {
-            item.status = 3
+            item.status = 4
             item._disabled = true
           }
         })
