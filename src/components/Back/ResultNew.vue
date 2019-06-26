@@ -55,11 +55,10 @@
         this.toggleZone(this.$store.state.zone.zoneid)
       }
 
-      if (this.payResult == undefined && this.$route.query == '') {
+      if (this.payResult == undefined && Object.keys(this.$route.query).length == 0) {
         this.$router.replace('overview')
       }
-
-      if(this.$route.query != ''){
+      if(Object.keys(this.$route.query).length != 0 ){
          this.title = '支付中';
          this.payResult = 'success';
          this.message = '订单支付中';
@@ -71,8 +70,9 @@
         }).then(response => {
             if (response.status == 200 && response.data.status == 1) {
               this.title = '支付成功';
-              this.payResult = 'success'
-              this.message = response.data.message
+              this.payResult = 'success';
+              this.message = response.data.message;
+              localStorage.removeItem('serialNum');
             } else {
               this.payStatus = 'fail'
               this.message = response.data.message
@@ -80,7 +80,7 @@
             }
           })
       }else{
-         if (payResult == 'success') {
+         if (this.payResult == 'success') {
             this.title = '支付成功'
              this.message = sessionStorage.getItem('successMsg') || '您的订单已支付成功，我们需要一到三分钟为您分配云服务，请稍后。'
              this.firstMessage = sessionStorage.getItem('firstMsg') || ''
