@@ -71,10 +71,10 @@
             if (response.status == 200 && response.data.status == 1) {
               this.title = '支付成功';
               this.payResult = 'success';
-              this.message ='您已支付成功';
+              this.message ='您的订单已支付成功，我们需要一到三分钟为您分配云服务，请稍后。';
               localStorage.removeItem('serialNum');
             } else {
-              this.payStatus = 'fail'
+              this.payResult = 'fail'
               this.message = response.data.message
               this.title = '支付失败';
             }

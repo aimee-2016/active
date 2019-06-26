@@ -80,7 +80,6 @@ function requestIntercept(config) {
     config.data = {
       ...config.data,
       zoneId: store.state.zone ? store.state.zone.zoneid : ''
-
     }
     config.data = appendMD5(config.data, 'post')
   }
@@ -95,8 +94,8 @@ function appendMD5(params, type) {
   var str = '', count = 0;
   for (let i in params) {
       if (typeof(params[i]) !== "undefined"){
-        str += i.substr(0, 1) + params[i]
-        count++
+        str += i.substr(0, 1) + params[i];
+        count++;
       }
   }
   str += count
@@ -104,7 +103,7 @@ function appendMD5(params, type) {
     if (type != 'post') {
       str = encodeURI(str)
     }
-    str = md5(str)
+    str = md5(str);
     count = count % 10
     var mac = str.substr(0, count) + count + str.substr(count)
     return {
