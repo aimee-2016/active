@@ -3158,6 +3158,7 @@
       }),
       // 企业认证
       enterpriseAttest: throttle(1000, function () {
+        this.paneStatus.usercenter = 'companyInfo'
         this.$refs.companyAuth.validate(validate => {
           if (validate) {
             if (this.notAuth.companyAuthForm.combine == '') {
@@ -3223,7 +3224,7 @@
               this.$Message.info('请上传公司法人身份证反面')
               return
             }
-            if (this.this.notAuth.companyAuthForm.relation == 'different' && this.notAuth.companyAuthForm.powerOfAttorney == '') {
+            if (this.notAuth.companyAuthForm.relation == 'different' && this.notAuth.companyAuthForm.powerOfAttorney == '') {
               this.$Message.info('请上传法人委托书')
               return
             }
@@ -4370,13 +4371,13 @@
               this.codeLoseEfficacy = 'scanSuccess'
               }
             if(res.data.result.authStatus == 1){
-               this.showModal.qrCode = false
-               clearInterval(this.codeTimer)
-               if(this.paneStatus.usercenter === 'certification'){
+              if(this.paneStatus.usercenter == 'certification'){
                  this.init()
                } else{
                  this.enterpriseAuthentication()
                }
+               this.showModal.qrCode = false
+               clearInterval(this.codeTimer)
               }
             if(res.data.result.authStatus == 0){
               this.authStatus = true

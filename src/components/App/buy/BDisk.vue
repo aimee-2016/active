@@ -248,6 +248,8 @@
           this.dataDiskList[index].minDiskSize = 50
           this.dataDiskList[index].size = 50
           this.dataDiskList[index].diskSizeStep = 50
+        } else{
+          this.dataDiskList[index].diskSizeStep = 20
         }
       },
       addDiskCart() {
