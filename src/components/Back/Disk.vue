@@ -44,9 +44,9 @@
             </Select>
           </Form-item>
           <Form-item label="类型" prop="diskType">
-            <Select v-model="diskForm.diskType" placeholder="请选择">
+            <Select v-model="diskForm.diskType" placeholder="请选择"  @on-change="changeDiskType">
               <Option v-for="item in diskTypeList" :key="item.value" :value="item.value"
-                      v-if="$store.state.zone.gpuserver!='1'||item.value=='ssd'">{{ item.label }}
+                      v-if="$store.state.zone.gpuserver!='1' || item.value=='ssd'">{{ item.label }}
               </Option>
             </Select>
           </Form-item>
@@ -1388,6 +1388,19 @@
             }
           }
         })
+      },
+      changeDiskType(value){
+      if(value === 'sata'){
+          this.diskForm.minDiskSize = 100
+          this.diskForm.diskSize = 100
+          this.diskForm.diskSizeStep = 100
+        } else if(value === 'sas'){
+          this.diskForm.minDiskSize = 50
+          this.diskForm.diskSize = 50
+          this.diskForm.diskSizeStep = 50
+        } else{
+          this.diskForm.diskSizeStep = 20
+        }
       }
     },
     computed: {

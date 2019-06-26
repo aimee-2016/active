@@ -306,7 +306,7 @@
             title: "操作",
             key: "waitOperation",
             render: (h, params) => {
-              const hide = params.row.status == '初审中' || params.row.status == '初审拒绝' || params.row.status == '上传' ? '' : 'none'
+              const hide = params.row.status == '初审中' || params.row.status == '初审拒绝' || params.row.status == '上传成功' ? '' : 'none'
               return (
                 "div",
                   [
