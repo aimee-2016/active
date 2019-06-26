@@ -54,11 +54,11 @@
                     </li>
                     <li>
                       <i>宽带</i>
-                      <span>{{item.config.bandwith}}核</span>
+                      <span>{{item.config.bandwith}}M</span>
                     </li>
                     <li>
                       <i>系统盘</i>
-                      <span>{{item.config.disksize}}<span>GSSD</span></span>
+                      <span>{{item.config.disksize}}G<span>SSD</span></span>
                     </li>
                   </ul>
                 </div>
@@ -87,7 +87,7 @@
                   /{{item.unit}}
                 </div>
                 <div class="deposit">
-                  押金：¥{{item.cashPledge+'/'+item.unit}}
+                  保证金：¥{{item.cashPledge+'/'+item.unit}}
                   <span
                     style="text-decoration: line-through;"
                   >原价：¥{{item.originPrice}}</span>
@@ -161,11 +161,11 @@
                     </li>
                     <li>
                       <i>宽带</i>
-                      <span>{{item.config.bandwith}}核</span>
+                      <span>{{item.config.bandwith}}M</span>
                     </li>
                     <li>
                       <i>系统盘</i>
-                      <span>{{item.config.disksize}}<span>GSSD</span></span>
+                      <span>{{item.config.disksize}}G<span>SSD</span></span>
                     </li>
                   </ul>
                 </div>
@@ -413,7 +413,7 @@
             <i class="ivu-icon ivu-icon-checkmark-circled"></i>
           </div>
           <strong>提示</strong>
-          <p class="lh24">本免费活动充值押金<span style="color: #D0021B ">{{ cashPledge }}</span>元，主机到期或删除时押金自动退还到账户余额。
+          <p class="lh24">本免费活动充值保证金<span style="color: #D0021B ">{{ cashPledge }}</span>元，主机到期或删除时保证金自动退还到账户余额。
           </p>
         </div>
       </div>
@@ -446,7 +446,7 @@
             <i class="ivu-icon ivu-icon-checkmark-circled"></i>
           </div>
           <strong>提示</strong>
-          <p class="lh24">恭喜您押金已冻结完成，主机领取成功，主机在实名认证之前只可保留3天，请尽快使用。
+          <p class="lh24">恭喜您保证金已冻结完成，主机领取成功，主机在实名认证之前只可保留3天，请尽快使用。
           </p>
         </div>
       </div>
@@ -486,7 +486,7 @@
             <Step title="支付"></Step>
             <Step title="支付成功"></Step>
           </Steps>
-          <p><img src="../../../assets/img/sceneInfo/si-success.png" alt="支付成功"/><span>恭喜您支付成功！我们即将冻结押金</span><span style="color: #D0021B;margin-left: 0">{{ cashPledge }}</span><span
+          <p><img src="../../../assets/img/sceneInfo/si-success.png" alt="支付成功"/><span>恭喜您支付成功！我们即将冻结保证金</span><span style="color: #D0021B;margin-left: 0">{{ cashPledge }}</span><span
             style="margin-left: 0">元</span></p>
         </div>
       </div>
@@ -1087,7 +1087,7 @@ export default {
           key: 'time'
         },
         {
-          title: '押金金额',
+          title: '保证金金额',
           width: 130,
           render: (h, params) => {
             let arr = []
