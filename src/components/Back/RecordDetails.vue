@@ -727,7 +727,7 @@
         <div class="updates">
           <div style="width:100%;min-height: 197px;" v-if="hostUnitList.status =='初审拒绝'|| hostUnitList.status =='管局审核拒绝'">
             <p class="hide-text" v-if="hostUnitList.domaincertificateurl==''">暂无执照扫描件</p>
-            <div style="text-align: center;margin-top:10px;">
+            <div style="text-align: center;margin-top:10px;" v-else>
               <img style="width: auto;height:auto;max-height:100%;max-width:100%;" :src="hostUnitList.domaincertificateurl">
             </div>
             <Upload
@@ -763,8 +763,8 @@
       <div class="updatePhoto">
         <div class="updates">
           <div style="width:100%;text-align: center;" v-if="hostUnitList.status =='初审拒绝'|| hostUnitList.status =='管局审核拒绝' ">
-            <p class="hide-text" v-if="otherData.length==0">暂无其他文件信息</p>
-            <div style="margin-top:10px;width:300px;display:inline-block;">
+            <p class="hide-text" v-if="hostUnitList.otherdataurl==''">暂无其他文件信息</p>
+            <div style="margin-top:10px;width:300px;display:inline-block;" v-else>
               <p style="line-height: 20px;">
                 <img style="width:100%;height:100%;" :src="hostUnitList.otherdataurl">
               </p>
@@ -1869,7 +1869,7 @@ export default {
                 }
               });
             } else {
-              this.isAllUpate = false;
+              this.isAllUpate = true;
             }
           } else {
             this.$Loading.finish();
@@ -2148,16 +2148,16 @@ export default {
         companyResponsibilityUrlBack: this.updateHostUnitList
           .webresponsibilityurlback,
         domainCertificateUrl: this.hostUnitList.domaincertificateurl,
-        otherDataUrl:'',//this.hostUnitList.otherdataurl
-        backgroundUrl: '',//backgroundUrl
+        otherDataUrl:this.hostUnitList.otherdataurl,//
+        backgroundUrl: backgroundUrl,//
         backgroundAddress: this.hostUnitList.mark2,
         backgroundName: this.hostUnitList.mark3,
         backgroundPhone: this.hostUnitList.mark4,
-        mainrecordnumber:'asdsadasdas',//this.hostUnitList.mainrecordnumber
+        mainrecordnumber:this.hostUnitList.mainrecordnumber,//'粤ICP备16125441号'
         icprecordpassword:this.hostUnitList.icprecordpassword,
-        urgentLinkManNumber:'111111111',//this.hostUnitList.urgentlinkmannumber
-        webLinkMainRelationship:'哈哈哈',//this.hostUnitList.weblinkmainrelationship
-        urgentLinkMan:'呵呵呵'//this.hostUnitList.urgentlinkman
+        urgentLinkManNumber:this.hostUnitList.urgentlinkmannumber,//
+        webLinkMainRelationship:this.hostUnitList.weblinkmainrelationship,//
+        urgentLinkMan:this.hostUnitList.urgentlinkman//
       };
       for(let i in web){
         if(web[i] == ''){

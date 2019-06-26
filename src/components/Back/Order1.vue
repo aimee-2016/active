@@ -65,7 +65,7 @@
         <div style="text-align:right;margin-top:40px;">
           <Button @click="deleteOrder" style="margin-right:10px;">取消订单</Button>
           <Button type="primary" @click="payCash" v-if="isButtonCash" :disabled="orderState == 0?false:true">确认购买</Button>
-          <Button type="primary" @click="pay" v-else  :disabled="orderState == 0?false:true">提交订单</Button>
+          <Button type="primary" @click="pay" v-else :disabled="orderState == 0?false:true">提交订单</Button>
         </div>
 
         <div style="clear: both"></div>
