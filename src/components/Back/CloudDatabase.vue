@@ -316,6 +316,9 @@
                 case 0:
                   text = '欠费';
                   break;
+                case -1:
+                  text = '异常';
+                  break;
                 case 1:
                   if(row.dbStatus == 1) {
                     text = '开启'

@@ -1400,7 +1400,7 @@ export default {
           axios.get(url, {
             params: {
               vmConfigId: vmConfigId,
-              osType: this.hotHostList[this.index1].system,
+              osType: this.hotHostList[this.index1].system[1],
               defzoneid: this.hotHostList[this.index1].zone
             }
           }).then(res => {
