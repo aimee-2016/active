@@ -231,7 +231,7 @@
     </div>
     <router-view/>
 
-    <!--登录失效弹窗-->
+    <!--注销中弹窗-->
     <Modal v-model="showModal.WriteAudit" :scrollable="true" :closable="false" :width="380">
       <p slot="header" class="modal-header-border">
         <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>

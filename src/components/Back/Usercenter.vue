@@ -23,7 +23,7 @@
                 </div>
                 <div class="pi-base-info">
                   <ul>
-                    <li><span>用户名称</span><span @click="showModal.Cancellationaccount = true" style="display: inline;cursor: pointer;">{{(authInfo&&authInfo.name)? authInfo.name:userInfo.realname}}</span>
+                    <li><span>用户名称</span><span @click="loggedOffState" style="display: inline;cursor: pointer;">{{(authInfo&&authInfo.name)? authInfo.name:userInfo.realname}}</span>
                       <span v-if="(authInfo&&authInfo.authtype==0&&authInfo.checkstatus==0) || (authInfoPersion&&authInfoPersion.authtype==0&&authInfoPersion.checkstatus==0 && authInfo&&authInfo.authtype!=0&&authInfo.checkstatus==1)"
                             style="background:rgba(255,255,255,1);border-radius:10px;padding: 1px 6px;border:1px solid rgba(42,153,242,1);margin-left: 20px;font-size: 10px;">个人认证</span>
                       <span v-if="authInfo&&authInfo.authtype!=0&&authInfo.checkstatus==0"
@@ -1408,6 +1408,22 @@
         <Button type="primary" @click="showModal.qrCode = false">确定</Button>
       </div>
     </Modal>
+        <!--注销中弹窗-->
+    <Modal v-model="showModal.WriteAudit" :scrollable="true" :closable="false" :width="380">
+      <p slot="header" class="modal-header-border">
+        <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
+        <span class="universal-modal-title">提示</span>
+      </p>
+      <div class="modal-content-s" style="padding: 0;width: 101%;">
+        <div style="font-size:14px;font-family:MicrosoftYaHei;color:rgba(102,102,102,1);line-height:24px;">
+          您的用户名为"{{userInfo?userInfo.realname: userInfo.phone ? userInfo.phone : userInfo.loginname }}"的账号正在注销审核中，请勿重复操作。若需要购买产品，请点击 <span @click="CanCancellation" style="color: #2A99F2;text-decoration: underline;cursor: pointer;">取消注销</span> 。
+        </div>
+      </div>
+      <p slot="footer" class="modal-footer-s">
+        <Button @click="showModal.WriteAudit = false">关闭弹窗</Button>
+        <Button type="primary" @click="CanCancellation">取消注销</Button>
+      </p>
+    </Modal>
   </div>
 </template>
 
@@ -1615,7 +1631,8 @@
           Modifyname: false,
           Cancellationaccount: false,
           cashverification: false,
-          qrCode: false
+          qrCode: false,
+          WriteAudit: false
         },
         //验证码和短信验证
         formCustom: {
@@ -4447,7 +4464,41 @@
           }
         }
         return uuid.join('');
-      }
+      },
+      loggedOffState() {
+        axios.get('user/listClearAccountApplyFor.do', {
+          params: {}
+        }).then(response => {
+          if (response.status == 200 && response.data.status == 1) {
+            if (response.data.checkstatus == 1) {
+              this.showModal.WriteAudit = true
+            } else{
+              this.showModal.Cancellationaccount = true
+            }
+          } else {
+            this.$message.info({
+              content: response.data.message
+            })
+          }
+        })
+      },
+      CanCancellation() {
+        axios.get('user/cancelLogout.do', {
+          params: {}
+        }).then(response => {
+          if (response.status == 200 && response.data.status == 1) {
+            this.showModal.WriteAudit = false
+            this.$Message.success({
+              content: response.data.message,
+              duration: 5,
+              closable: true
+            });
+          } else {
+            this.showModal.WriteAudit = false
+            this.$Message.error(response.data.message)
+          }
+        })
+      },
     },
     computed: mapState({
       paneStatus: state => state.paneStatus,
