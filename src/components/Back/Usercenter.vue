@@ -614,13 +614,13 @@
                 </div>
                 <li><span>公司名称</span><span>{{authInfo.name}}</span></li>
                 <li><span>所属行业</span><span>{{authInfo.belongindustry}}</span></li>
-                <li><span>企业联系电话</span><span>{{authInfo.companylinkmanphone}}</span></li>
+                <li><span>企业联系电话</span><span>{{authInfo.companylinkmanphone?authInfo.companylinkmanphone.substr(0,3) + '****' + authInfo.companylinkmanphone.substr(7):''}}</span></li>
                 <li><span>营业执照号</span><span>{{authInfo.businesslicense}}</span></li>
                 <li><span>企业法人姓名</span><span>{{authInfo.legalpersonname}}</span></li>
-                <li><span>企业法人身份证号</span><span>{{authInfo.legalpersonidcard}}</span></li>
+                <li><span>企业法人身份证号</span><span>{{authInfo.legalpersonidcard?authInfo.legalpersonidcard.substr(0,4) + '****' + authInfo.legalpersonidcard.substr(14):''}}</span></li>
                 <li><span>经办人姓名</span><span>{{authInfo.agentname}}</span></li>
-                <li><span>经办人联系电话</span><span>{{authInfo.agentphone}}</span></li>
-                <li><span>经办人身份证号</span><span>{{authInfo.agentidcard}}</span></li>
+                <li><span>经办人联系电话</span><span>{{authInfo.agentphone?authInfo.agentphone.substr(0,3) + '****' + authInfo.agentphone.substr(7):''}}</span></li>
+                <li><span>经办人身份证号</span><span>{{authInfo.agentidcard?authInfo.agentidcard.substr(0,4) + '****' + authInfo.agentidcard.substr(14):''}}</span></li>
                 <li><span>认证时间</span><span>{{authInfo.createtime}}</span></li>
               </ol>
             </div>
