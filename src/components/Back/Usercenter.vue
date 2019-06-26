@@ -3248,7 +3248,7 @@
                 phone: this.notAuth.companyAuthForm.contact,
                 companyLinkManPhone: this.notAuth.companyAuthForm.contact,
                 companyCardURL: this.notAuth.companyAuthForm.combine,
-                idCard: this.notAuth.companyAuthForm.agentManID,
+                //idCard: this.notAuth.companyAuthForm.agentManID,
                 contectPhone: this.notAuth.companyAuthForm.linkManPhone,
                 phoneCode: this.notAuth.companyAuthForm.verificationCode,
                 businessLicenseNumber: this.notAuth.companyAuthForm.businessLicenseNumber,
