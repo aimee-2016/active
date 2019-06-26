@@ -71,7 +71,7 @@
             if (response.status == 200 && response.data.status == 1) {
               this.title = '支付成功';
               this.payResult = 'success';
-              this.message = response.data.message;
+              this.message ='您已支付成功';
               localStorage.removeItem('serialNum');
             } else {
               this.payStatus = 'fail'

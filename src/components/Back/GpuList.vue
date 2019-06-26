@@ -41,7 +41,7 @@
               confirm
               width="230"
               placement="right"
-              @on-ok="deleteHost"
+              @on-ok="deleteHost(1)"
               title="您确认删除选中的主机吗？">
               <Button type="primary" :disabled="deleteDisabled">删除</Button>
             </Poptip>
@@ -53,7 +53,9 @@
               <DropdownMenu slot="list">
                   <DropdownItem name="resetPassword" :disabled="resetPasswordDisabled">重置密码</DropdownItem>
                   <DropdownItem name="bindingIP" :disabled="bindingIPDisabled">绑定IP</DropdownItem>
+                  <Dropdown-item   v-if="unbindIPDisabled" name="unbindIP" :disabled="unbindIPDisabled">解绑公网IP</Dropdown-item>
                     <Poptip
+                    v-else
                       confirm
                       width="200"
                       placement="right"
@@ -62,6 +64,7 @@
                       style="display: block">
                       <Dropdown-item name="unbindIP" :disabled="unbindIPDisabled">解绑公网IP</Dropdown-item>
                     </Poptip>
+                     
                   <DropdownItem name="rename" :disabled="renameDisabled">重命名</DropdownItem>
                   <DropdownItem name="ratesChange" :disabled="ratesChangeDisabled">
                     <Tooltip content="资费变更只适用于实时计费的资源" placement="top">资费变更
@@ -159,7 +162,7 @@
         <br>
         <div slot="footer" class="modal-footer-border">
           <Button type="ghost" @click="showModal.ipShow=false">取消</Button>
-          <Button type="primary" @click="bindipSubmit">确定</Button>
+          <Button type="primary" @click="bindipSubmit()">确定</Button>
         </div>
       </Modal>
 
@@ -424,16 +427,7 @@
       callback();
     }
   }
-  const mirrorName = (rule, value, callback) => {
-    let reg = /^[0-9a-zA-Z~:,*]{6,23}$/;
-    if(value == ''){
-      return callback(new Error('请输入镜像名称'));
-    }else if(!reg.test(value)){
-      return callback(new Error('请输入6-23位包含大小写与数字的密码,可用特殊符号：~:,*_'));
-    }else {
-      callback();
-    }
-  }
+
   const validatePassword = (rule, value, callback) => {
         if (!value) {
           callback(new Error('密码不能为空'));
@@ -658,7 +652,7 @@
           },
           mirrorRuleValidate:{
             name:[
-              {required:true,validator:mirrorName,trigger:'blur'}
+              {required:true,validator:regExps.validaRegisteredName,trigger:'blur'}
             ]
           },
 
@@ -762,7 +756,6 @@
                 ])
               },
               render:(h,params)=> {
-                this.hostSelectList = params.row;
                 if ((params.row.status == 1 && this.auth && this.auth.checkstatus == 0 )|| (params.row.status == 1 && this.personAuth && this.personAuth.checkstatus == 0 )){
                   return h('ul',[
                     h('li',{
@@ -818,6 +811,7 @@
               title:'状态/监控(全部)',
               // width:138,
               render:(h,params) => {
+                this.hostSelectList = params.row;
               let restart = params.row.restart ? params.row.restart : 0;
               let restore = params.row.restore ? params.row.restore : 0;
               let bindip = params.row.bindip ? params.row.bindip : 0;
@@ -1011,8 +1005,8 @@
               render: (h, params) => {
               let textArr = params.row.serviceoffername.split('+')
               let text_1 = 'CPU:' + textArr[0]
-              let text_2 = '内存:' + textArr[2]
-              let text_3 = '带宽:' + textArr[1]
+              let text_2 = '显卡:' + textArr[2]
+              let text_3 = '内存:' + textArr[1]
               return h('ul', {}, [
                 h('li', {}, text_1),
                 h('li', {}, text_2),
@@ -1200,7 +1194,7 @@
                       on: {
                         click: () => {
                           this.deleteList = params.row;
-                          this.deleteHost(params.row._index);
+                          this.deleteHost(2);
                         }
                       }
                     }, '删除')])
@@ -1225,7 +1219,7 @@
                       on: {
                         click: () => {
                           this.deleteList = params.row;
-                          this.deleteHost(params.row._index);
+                          this.deleteHost(2);
                         }
                       }
                     }, '删除')])
@@ -1279,6 +1273,7 @@
                             if(params.row.publicip != '' && params.row.publicip != undefined){
                               this.$Message.info('该主机已绑定IP');
                             }else {
+                              
                               if(params.row.status == 2 || params.row.status ==3){
                                 this.$Message.info('请等待主机完成当前操作');
                               }else {
@@ -1301,7 +1296,8 @@
                                   title:'解绑IP',
                                   content:'是否解绑该GPU的IP?',
                                   onOk:()=>{
-                                    this.unbind();
+                                    this.hostSelectList = params.row;
+                                    this.unbind(2);
                                   }
                                 })
                                 this.uuId = params.row.computerid;
@@ -1334,7 +1330,8 @@
                                 title:'提示',
                                 content:'确定要重启主机吗',
                                 onOk:()=>{
-                                  this.reStartGPU(params.row._index);
+                                  this.hostSelectList = params.row;
+                                  this.reStartGPU(2);
                                 }
                               })
                             }
@@ -1352,7 +1349,8 @@
                                 }
                                 this.VMId = params.row.id;
                                 this.uuId = params.row.computerid;
-                                this.ratesChange();
+                                 this.hostSelectList = params.row;
+                                this.ratesChange(2);
                                 this.showModal.ratesChange = true;
                               }
                             }
@@ -1381,7 +1379,7 @@
                                 this.$Message.info('请等待主机完成当前操作');
                               }else {
                                 this.deleteList = params.row;
-                                this.deleteHost(params.row._index);
+                                this.deleteHost(2);
                               }
                             }
                           }
@@ -1584,20 +1582,20 @@
 
         //解绑IP
         unbind() {
-           this.hostData.forEach(host => {
-            if (host.id == this.hostSelectList.id) {
-              host.status = 2
-              host.bindip = 2
-              host._disabled = true
-            }
-          })
             this.$http.get('network/disableStaticNat.do', {
               params: {
-                ipId: this.selectLength[0].publicip,
-                VMId:this.selectLength[0].computerid
+                ipId: this.hostSelectList.publicip,
+                VMId:this.hostSelectList.computerid
               }
             }).then(response => {
               if (response.status == 200 && response.data.status == 1) {
+                  this.hostData.forEach(host => {
+                    if (host.id == this.hostSelectList.id) {
+                      host.status = 2
+                      host.bindip = 2
+                      host._disabled = true
+                    }
+                  })
                   this.$Message.info({
                     content: `<span style="color:#2A99F2">${this.companyname}</span>GPU云服务器,正在解绑公网IP`
                   })
@@ -1624,6 +1622,7 @@
             })
           })
         } else {
+          
           this.hostData.forEach(host => {
             if (host.id == this.hostSelectList.id) {
               host.status = 2
@@ -1696,7 +1695,7 @@
          })
         },
       delBefore(index){
-          if (this.hostDelWay === 1) {
+          if (index === 1) {
           this.hostData.forEach(host => {
             this.selectHostIds.forEach(item => {
               if (host.id == item) {
@@ -1731,7 +1730,7 @@
              }).then(res => {
                if(res.status == 200 && res.data.status == 1){
                  this.$Message.success(res.data.message);
-                 this.delBefore();
+                 this.delBefore(index);
                  if(index == undefined){
                     this.timingRefesh(this.selectHostIds+'');
                   }else{
@@ -1751,7 +1750,7 @@
 
       //重启主机
       reStartGPU(index){
-        if (index == 1) {
+        if (index == undefined) {
           this.hostData.forEach(host => {
             this.selectHostIds.forEach(item => {
               if (host.id == item) {
@@ -1793,11 +1792,12 @@
       selectIndex(selection){
         this.uuId = '';
         this.selectLength = selection;
+        this.hostSelectList = selection[0];
         if(selection.length != 0){
           for(let i = 0;i<selection.length;i++){
           this.uuId += selection[i].computerid+',';
-          this.uuId = this.uuId.substring(0,this.uuId.length-1);
           }
+          this.uuId = this.uuId.substring(0,this.uuId.length-1);
         }
       },
 
@@ -2217,7 +2217,7 @@
           }
           switch (name) {
             case 'bindingIP':
-            if(this.hostSelectList.publicip != '' && this.hostSelectList.publicip != undefined){
+            if(this.selectLength[0].publicip != '' && this.selectLength[0].publicip != undefined){
               this.$Message.info('该主机已绑定IP');
               return;
             }
@@ -2235,7 +2235,7 @@
               }
               break
             case 'renewal':
-             if(this.hostSelectList.caseType == 3){
+             if(this.selectLength[0].caseType == 3){
                   this.$Message.info('请选择包年包月主机续费');
                   return;
              }
