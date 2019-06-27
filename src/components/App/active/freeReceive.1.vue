@@ -266,7 +266,7 @@
                         v-for="(item,index) in hostZoneList"
                         :key="index"
                         :class="{'selected':selectZone==item.zoneid}"
-                        @click="changzone(item)"
+                        @click="changzone(item.zoneid)"
                       >{{item.zonename}}</li>
                     </ul>
                   </div>
