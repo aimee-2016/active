@@ -3206,6 +3206,14 @@
             //   this.$Message.info('请上传经办人手持身份证照')
             //   return
             // }
+        this.$http.get('user/judgeEnterpriseAttest.do',{
+          params:{
+            phone: this.notAuth.companyAuthForm.contact,
+            contectPhone: this.notAuth.companyAuthForm.linkManPhone,
+            phoneCode: this.notAuth.companyAuthForm.verificationCode
+          } 
+        }).then(response =>{
+          if(response.data.status == 1 && response.status == 200){
           this.tempCode =  this.uuid(6, 16)
           let url = '/faceRecognition/getUserInfoByPcQRCode.do'
           axios.post(url,{
@@ -3223,6 +3231,12 @@
               this.refreshUserStatus()
             }
           })
+          } else {
+            this.$message.info({
+              content: response.data.message
+            })
+          }
+           })
           }
         })
       }),
