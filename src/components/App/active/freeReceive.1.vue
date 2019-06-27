@@ -5,11 +5,6 @@
       <div class="free-host">
         <div class="wrap">
           <img src="../../../assets/img/active/freeToReceive.1/free-host-text.png">
-          <!-- <div class="news">
-            <img src="../../../assets/img/active/freeToReceive.1/horn-icon.png">
-            云服务器低价秒杀1折起，更有买一赠一超值惊喜。
-            <router-link to="/activity/BlacKActivities">立即查看></router-link>
-          </div>-->
           <div class="steps">
            <div @click="roll(400)">
               <img src="../../../assets/img/active/freeToReceive.1/c-left.png">
@@ -176,7 +171,7 @@
                   <Select
                     v-model="item.zone"
                     style="width:237px"
-                    @on-change="changeZoneHost(item,index,'hotHostList')"
+                   @on-change="changeZoneHost(item,index,'hotHostList')"
                   >
                     <Option
                       v-for="item in zoneListHot"
@@ -197,7 +192,9 @@
                       :key="index1"
                       :class="{'selected':item.configId==item1.id}"
                       @click="changgeTimeHot(item,item1)"
-                    >{{month(item1.days)}}</li>
+                    >{{month(item1.days)}}
+                    <span>{{item1.discount*10}}折</span>
+                    </li>
                   </ul>
                 </div>
                 <div class="price">
@@ -1221,6 +1218,7 @@ export default {
             item.config = responseData[index]
             item.zone = this.zoneListDeposit[0].value
             this.changgeZoneDeposite(item, this.zoneListDeposit[0], index, 'depositList')
+            this.getPriceDeposit(item)
           })
         }
       })
@@ -1228,6 +1226,20 @@ export default {
     changgeZoneDeposite (item, item1, index, name) {
       item.zone = item1.value
       this.changeZoneHost(item, index, name)
+    },
+    getPriceDeposit (item) {
+      axios.get('activity/getOriginalPrice.do', {
+        params: {
+          zoneId: item.zone,
+          vmConfigId: item.config.id,
+          month: item.config.days / 30
+        }
+      }).then(res => {
+        if (res.status == 200 && res.data.status == 1) {
+          item.cashPledge = res.data.result.cost;
+          item.originPrice = res.data.result.originalPrice;
+        }
+      })
     },
     getHost (index1) {
       if (!this.$store.state.userInfo) {
@@ -1977,23 +1989,6 @@ section:nth-of-type(1) {
       no-repeat,
     url("../../../assets/img/active/freeToReceive.1/circle-right.png") 100% 90%
       no-repeat;
-  // .news {
-  //   display: inline-block;
-  //   margin-top: 18px;
-  //   padding: 8px 50px;
-  //   background: rgba(0, 35, 100, 0.15);
-  //   border-radius: 20px;
-  //   font-size: 18px;
-  //   color: rgba(255, 255, 255, 1);
-  //   line-height: 24px;
-  //   letter-spacing: 1px;
-  //   img {
-  //     vertical-align: middle;
-  //   }
-  //   span {
-  //     color: #53ffef;
-  //   }
-  // }
   .steps{
     display: flex;
     margin-top: 20px;
@@ -2289,6 +2284,7 @@ section:nth-of-type(1) {
           flex-wrap: wrap;
           width: 354px;
           li {
+            position: relative;
             width: 110px;
             height: 34px;
             margin-right: 12px;
@@ -2301,6 +2297,18 @@ section:nth-of-type(1) {
             cursor: pointer;
             &:nth-child(3n + 3) {
               margin-right: 0;
+            }
+            span {
+              position: absolute;
+              top: -14px;
+              right: 5px;
+              display: inline-block;
+              width:38px;
+              height:20px;
+              background:rgba(246,109,89,1);
+              font-size:14px;
+              color:rgba(255,255,255,1);
+              line-height:19px;
             }
           }
           .selected {
