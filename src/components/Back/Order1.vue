@@ -577,7 +577,9 @@ export default {
       if (selection.length == 0) {
         this.couponInfo.totalCost = 0;
       } else {
-        if (this.groupList.length == 0) this.couponInfo.totalCost = cost;
+        if(this.groupList[0] == 'coupon' || this.groupList[1] == 'coupon'){
+          this.couponInfo.totalCost = cost;
+        }
       }
       let orderNumber = this.orderData.map(item => {
         return item.orderId;

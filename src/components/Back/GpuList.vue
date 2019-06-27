@@ -1460,12 +1460,15 @@
                     }
                   this.hostData = list;
                   this.hostData.forEach(item =>{
-                    ids.push(item.id)
+                      if (item.status == 2 || item.status == -2) {
+                          item._disabled = true
+                          ids.push(item.id)
+                      }
                   })
-                  if (ids.length !== 0) {
+                }
+                if (ids.length !== 0) {
                     this.timingRefesh(ids + '')
                   }
-                }
                 this.total = list.length;
               }else{
                 this.hostData = [];
