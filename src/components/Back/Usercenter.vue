@@ -3206,12 +3206,10 @@
             //   this.$Message.info('请上传经办人手持身份证照')
             //   return
             // }
-        this.$http.get('user/judgeEnterpriseAttest.do',{
-          params:{
+        this.$http.post('user/judgeEnterpriseAttest.do',{
             phone: this.notAuth.companyAuthForm.contact,
             contectPhone: this.notAuth.companyAuthForm.linkManPhone,
             phoneCode: this.notAuth.companyAuthForm.verificationCode
-          } 
         }).then(response =>{
           if(response.data.status == 1 && response.status == 200){
           this.tempCode =  this.uuid(6, 16)
