@@ -336,15 +336,15 @@
       <div class="universal-modal-content-flex" style="position: relative;">
         <Form :model="modifyPasswordForm" ref="modifyPassword" :rules="modifyPasswordFormRule">
           <FormItem label="当前密码" prop="oldPassword" style="width: 80%;margin-bottom: 10px">
-            <Input type="password" :type="modifyPasswordForm.oldPasswordInput" v-model="modifyPasswordForm.oldPassword" :maxlength="32"></Input>
+            <Input :type="modifyPasswordForm.oldPasswordInput" v-model="modifyPasswordForm.oldPassword" :maxlength="32"></Input>
             <img class="modal-img" @click="changeLoginPasType(1)" src="../../assets/img/login/lr-icon3.png"/>
           </FormItem>
           <FormItem label="新的密码" prop="newPassword" style="width: 80%;margin-bottom: 10px">
-            <Input type="password" :maxlength="32" :type="modifyPasswordForm.newPasswordInput" v-model="modifyPasswordForm.newPassword" @on-focus="modifyPasswordForm.passwordHint = true" @on-blur="modifyPasswordForm.passwordHint = false"></Input>
+            <Input :maxlength="32" :type="modifyPasswordForm.newPasswordInput" v-model="modifyPasswordForm.newPassword" @on-focus="modifyPasswordForm.passwordHint = true" @on-blur="modifyPasswordForm.passwordHint = false"></Input>
             <img class="modal-img" @click="changeLoginPasType(2)" src="../../assets/img/login/lr-icon3.png"/>
           </FormItem>
           <FormItem label="确认密码" prop="confirmPassword" style="width: 80%;margin-bottom: 10px">
-            <Input type="password" :maxlength="32" :type="modifyPasswordForm.confirmPasswordInput" v-model="modifyPasswordForm.confirmPassword"></Input>
+            <Input :maxlength="32" :type="modifyPasswordForm.confirmPasswordInput" v-model="modifyPasswordForm.confirmPassword"></Input>
             <img class="modal-img" @click="changeLoginPasType(3)" src="../../assets/img/login/lr-icon3.png"/>
           </FormItem>
           <div class="popTip" v-show="modifyPasswordForm.passwordHint">
