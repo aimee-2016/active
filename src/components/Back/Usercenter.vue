@@ -3281,7 +3281,7 @@
                 companyCardURL: this.notAuth.companyAuthForm.combine,
                 //idCard: this.notAuth.companyAuthForm.agentManID,
                 contectPhone: this.notAuth.companyAuthForm.linkManPhone,
-                phoneCode: this.notAuth.companyAuthForm.verificationCode,
+                //phoneCode: this.notAuth.companyAuthForm.verificationCode,
                 businessLicenseNumber: this.notAuth.companyAuthForm.businessLicenseNumber,
                 legalPersonName: this.notAuth.companyAuthForm.linkManName,
                 companyLegalIdcardNumber: this.notAuth.companyAuthForm.linkManNameID,

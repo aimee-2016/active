@@ -1553,7 +1553,8 @@
           }
         ],
         currentData: this.getCurrentDate(),
-        totalQuota: ''
+        totalQuota: '',
+        hostTimer: null
       }
     },
     created() {
@@ -1709,7 +1710,7 @@
       },
       /* 局部刷新 */
       timingRefresh(ids) {
-        let timer = setInterval(() => {
+        this.hostTimer = setInterval(() => {
           let url = 'information/listVirtualMachines.do'
           this.$http.get(url, {
             params: {
@@ -1730,7 +1731,7 @@
                     }
                   })
                 })
-                clearInterval(timer)
+                clearInterval(this.hostTimer)
               } else {
                 this.hostListData.forEach((host, index) => {
                   locality.forEach(item => {
@@ -3110,6 +3111,7 @@
     },
     beforeRouteLeave(to, from, next) {
       // 导航离开该组件的对应路由时调用
+      clearInterval(this.hostTimer)
       next()
     }
   }
