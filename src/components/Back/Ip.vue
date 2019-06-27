@@ -848,11 +848,13 @@
         },
         hide: '',
         intervalInstance: null,
+        ipTimer: null,
         unbundleResource: {},
       }
     },
     beforeRouteLeave(to, from, next) {
       clearInterval(this.intervalInstance);
+      clearInterval(this.ipTimer);
       next();
     },
     created() {
@@ -965,7 +967,7 @@
       },
       // 局部刷新
       timingRefresh(id) {
-        let timer = setInterval(() => {
+        this.ipTimer = setInterval(() => {
           axios.get('network/listPublicIpById.do', {
             params: {
               zoneId: $store.state.zone.zoneid,
@@ -981,7 +983,7 @@
                 }
               })
               if (!(status == 2 || status == 3 || status == 4 || status == 5)) {
-                clearInterval(timer)
+                clearInterval(this.ipTimer)
                 this.refresh()
               }
             }

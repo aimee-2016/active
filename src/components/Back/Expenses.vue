@@ -3863,6 +3863,8 @@
                      this.payForm.cashCoupon = this.voucher > parseInt(this.payForm.paymentAmount) ? this.payForm.paymentAmount : this.voucher
                      this.payForm.cashCouponBalance = this.voucher > parseInt(this.payForm.paymentAmount) ? (this.voucher - this.payForm.paymentAmount).toFixed(2) : 0
                   } else{
+                       this.numorder=params.row.ordernumber
+                       this.orderall=params.row
                        this.payForm.cashCoupon = 0
                        this.payForm.cashCouponBalance = this.voucher
                      }

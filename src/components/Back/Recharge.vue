@@ -284,7 +284,7 @@ import axios from 'axios';
               if (res.data.status == 1 && res.status == 200) {
                 this.serialNum = res.data.serialNum
                 localStorage.setItem('serialNum', this.serialNum)
-                window.open(null,'alipay').location.href = `https://www.xrcloud.net/zfb/alipaypage.do?serialNum=${this.serialNum}&route=rechargeResult`
+                window.open(null,'alipay').location.href = `https://zschj.xrcloud.net/zfb/alipaypage.do?serialNum=${this.serialNum}&route=rechargeResult`
                 this.showModal.rechargeHint = true
               } else {
                 this.$message.info({
@@ -320,13 +320,7 @@ import axios from 'axios';
               this.serialNum = res.data.serialNum
               localStorage.setItem('serialNum', this.serialNum)
               this.showModal.rechargeHint = true
-              const newWindow = window.open(); // 创建一个新窗口
-              let url = decodeURIComponent(res.data.url),  // URL解码
-              div = document.createElement('div');
-              div.innerHTML = url;
-              newWindow.document.body.appendChild(div);
-              newWindow.document.forms[0].acceptCharset ="utf-8";
-              newWindow.document.forms[0].submit(); // 提交表单
+              window.open('https://zschj.xrcloud.net/yl/openYlb2cPay.do');
             }
           })
       },
@@ -342,13 +336,7 @@ import axios from 'axios';
             this.serialNum = res.data.serialNum
             localStorage.setItem('serialNum', this.serialNum)
             this.showModal.rechargeHint = true
-            const newWindow = window.open(); // 创建一个新窗口
-             let url = decodeURIComponent(res.data.url),
-              div = document.createElement('div');
-              div.innerHTML = url;
-              newWindow.document.body.appendChild(div);
-              newWindow.document.forms[0].acceptCharset ="utf-8";
-              newWindow.document.forms[0].submit();
+            window.open('https://zschj.xrcloud.net/yl/openYlb2bPay.do');
             }
           })
       },

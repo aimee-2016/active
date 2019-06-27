@@ -68,6 +68,9 @@
             </TabPane>
           </Tabs>
         </div>
+        <div id="pay">
+
+        </div>
         <div style="margin-top:20px;text-align:right;">
           <Button @click="showModal.cancelPay = true" style="margin-right:10px;">取消支付</Button>
           <Button type="primary" @click="pay" :disabled="payText!='确认支付'">{{payText}}</Button>
@@ -280,14 +283,8 @@
             if(res.status == 200 && res.data.status == 1){
               this.zfbNum = res.data.serialNum;
               localStorage.setItem('serialNum',res.data.serialNum);
-              const newWindow = window.open(); // 创建一个新窗口
-              let url = decodeURIComponent(res.data.url),  // URL解码
-              div = document.createElement('div');
-              div.innerHTML = url;
-              newWindow.document.body.appendChild(div);
-              newWindow.document.forms[0].acceptCharset ="utf-8";
-              newWindow.document.forms[0].submit(); // 提交表单
-              this.showModal.paymentCofirm = true;
+              this.showModal.rechargeHint = true;
+              window.open('https://zschj.xrcloud.net/yl/openYlb2cPay.do'); // 创建一个新窗口
             }
           })
       },
@@ -303,15 +300,9 @@
           }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
                this.zfbNum = res.data.serialNum;
-              localStorage.setItem('serialNum',res.data.serialNum)
-              const newWindow = window.open(); // 创建一个新窗口
-             let url = decodeURIComponent(res.data.url),
-              div = document.createElement('div');
-              div.innerHTML = url;
-              newWindow.document.body.appendChild(div);
-              newWindow.document.forms[0].acceptCharset ="utf-8";
-              newWindow.document.forms[0].submit();
-              this.showModal.paymentCofirm = true;
+              localStorage.setItem('serialNum',res.data.serialNum);
+              this.showModal.rechargeHint = true;
+              window.open('https://zschj.xrcloud.net/yl/openYlb2bPay.do'); // 创建一个新窗口
             }
           })
       },
@@ -342,7 +333,7 @@
           if (response.data.status === 1 && response.status == 200) {
             this.zfbNum = response.data.serialNum
             localStorage.setItem('serialNum', this.zfbNum)
-            window.open(null,'alipay').location.href = `https://www.xrcloud.net/zfb/alipaypage.do?serialNum=${this.zfbNum}&route=resultNew`
+            window.open(null,'alipay').location.href = `https://zschj.xrcloud.net/zfb/alipaypage.do?serialNum=${this.zfbNum}&route=resultNew`
             this.showModal.paymentCofirm = true
           } else {
             this.$message.info({
