@@ -1,13 +1,13 @@
 <template>
   <div id="background">
     <div id="wrapper">
-     <span><span @click="$router.push('/userCenter')">个人中心</span> / <span @click="$router.push('/expenses')">费用中心</span> / <span>押金解冻</span></span>
+     <span><span @click="$router.push('/userCenter')">个人中心</span> / <span @click="$router.push('/expenses')">费用中心</span> / <span>保证金解冻</span></span>
       <Alert type="warning" show-icon style="margin-bottom:10px" v-if="!auth">您尚未进行实名认证，只有认证用户才能对外提供服务，
         <router-link to="/userCenter">立即认证</router-link>
       </Alert>
       <div id="content">
         <div id="header" style="border-bottom:1px solid rgba(233,233,233,1);">
-          <span id="title"><img style="vertical-align:sub;cursor:pointer" @click="$router.push('/expenses')" src="../../assets/img/host/h-icon9.png" alt="back to expenses"/> 押金解冻或续费</span>
+          <span id="title"><img style="vertical-align:sub;cursor:pointer" @click="$router.push('/expenses')" src="../../assets/img/host/h-icon9.png" alt="back to expenses"/> 保证金解冻或续费</span>
           <button id="refresh_button" @click="$router.go(0)" style="margin-top: 10px;">刷新</button>
         </div>
         <div class="unfreeze-content">
@@ -18,10 +18,10 @@
           </Steps>
           <div v-if="unfreezeStep === 0">
             <div class="unfreeze-hint">
-            <p><span class="blod">温馨提醒</span>：感谢您使用新睿云云服务器押金活动主机，本活动可支持  <span class="blue" @click="ToRenew">押金一键转续费 </span>功能：<span>69元</span>押金可<span>续费一个月</span>,
-            <span>569元</span>押金可<span>续费一年</span>，操作简单方便，性价比超高，爆款云服务器等您继续使用！<span class="blue"  @click="ToRenew">立即续费 </span></p>
+            <p><span class="blod">温馨提醒</span>：感谢您使用新睿云云服务器免费活动主机，本活动可支持  <span class="blue" @click="ToRenew">保证金一键转续费 </span>功能：<span>69元</span>保证金可<span>续费一个月</span>,
+            <span>569元</span>保证金可<span>续费一年</span>，操作简单方便，性价比超高，爆款云服务器等您继续使用！<span class="blue"  @click="ToRenew">立即续费 </span></p>
             </div>
-            <p class="title">请问您退押金的原因是什么？（可多选）</p>
+            <p class="title">请问您退保证金的原因是什么？（可多选）</p>
             <span class="empty-hint" v-if="emptyHint === 0">为提升服务质量，请您配合填写退款原因 </span>
              <div v-for="(item,index) in issueData" :key="index" class="issus">
             <div class="issus-title">
@@ -56,7 +56,7 @@
                          <p>解冻到余额</p>
                       </Radio>
                       <Radio label="freezeToRenew" class="item" :class="{selsected: unfreezeTo == 'freezeToRenew'}">
-                         <p>押金转续费</p>
+                         <p>保证金转续费</p>
                       </Radio>
                     </RadioGroup>
                    <Table :columns="freezeOrderColumns" :data="freezeOrderData" style="margin-top: 20px"></Table>
@@ -131,9 +131,9 @@
             <div>
               <img src="../../assets/img/thawDeposit/td_img_1.png" />
             </div>
-            <p v-if="unfreezeTo === 'account'">您的押金已经解冻到充值账户</p>
-            <p v-if="unfreezeTo === 'yue'">您的押金已经解冻到余额</p>
-            <p v-if="unfreezeTo === 'freezeToRenew'">您的押金已经成功转为续费</p>
+            <p v-if="unfreezeTo === 'account'">您的保证金已经解冻到充值账户</p>
+            <p v-if="unfreezeTo === 'yue'">您的保证金已经解冻到余额</p>
+            <p v-if="unfreezeTo === 'freezeToRenew'">您的保证金已经成功转为续费</p>
              <p v-if="unfreezeTo === 'freezeToRenew'">转为续费之后资源到期时间为{{renewalFeeTime}}</p>
             <Button  type="primary"  @click="$router.push('/expenses')">返回控制台</Button>
           </div>
@@ -181,7 +181,7 @@
       </p>
     </Modal>
 
-    <!-- 押金转续费弹窗 实际到期时间和续费时间相差大于1个月-->
+    <!-- 保证金转续费弹窗 实际到期时间和续费时间相差大于1个月-->
     <Modal v-model="showModal.freezeToRenewAffirm" crollable="true" :closable="false" :width="390" :mask-closable="false">
       <p slot="header" class="modal-header-border">
         <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
@@ -189,7 +189,7 @@
       </p>
       <div class="modal-content-s">
         <div>
-          <p class="lh24">当前免费剩余时长为<span style="color:#2A99F2">{{freeTime}}个月</span>（到期时间为：<span style="color: #2A99F2">{{ freezeEndTime}}</span>），转为续费之后资源到期时间为<span style="color: #2A99F2">{{ renewalFeeTime}}</span>，您是否确认将押金转为续费？ 
+          <p class="lh24">当前免费剩余时长为<span style="color:#2A99F2">{{freeTime}}个月</span>（到期时间为：<span style="color: #2A99F2">{{ freezeEndTime}}</span>），转为续费之后资源到期时间为<span style="color: #2A99F2">{{ renewalFeeTime}}</span>，您是否确认将保证金转为续费？ 
           </p>
           <p style="margin-bottom: 20px">请输入“confirm”</p>
           <Input v-model="freezeToRenewAffirm" placeholder="请输入“confirm”"></Input>
@@ -200,7 +200,7 @@
         <Button type="primary" :disabled="freezeToRenewAffirmDisabled" @click="freezeToRenew_ok">确定</Button>
       </p>
     </Modal>
-    <!-- 押金转续费弹窗 实际到期时间和续费时间相差小于1个月-->
+    <!-- 保证金转续费弹窗 实际到期时间和续费时间相差小于1个月-->
     <Modal v-model="showModal._freezeToRenewAffirm" crollable="true" :closable="false" :width="390" :mask-closable="false">
       <p slot="header" class="modal-header-border">
         <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
@@ -209,7 +209,7 @@
       <div class="modal-content-s">
         <div>
           <p class="lh24">当前免费剩余时长为<span style="color:#2A99F2">{{freeTime}}个月</span>（到期时间为：<span style="color: #2A99F2">{{ freezeEndTime}}</span>），转为续费之后资源到期时间为<span style="color: #2A99F2">{{ renewalFeeTime}}</span>，
-          ，实际到期时间和续费时间相差<span style="color: #FF624B">小于1个月</span>（<span style="color:#FF9801">若您在{{ currentData }}转为续费之后，资源到期时间为{{ renewalFeeTime}}</span>）您是否确认现在将押金转为续费？ 
+          ，实际到期时间和续费时间相差<span style="color: #FF624B">小于1个月</span>（<span style="color:#FF9801">若您在{{ currentData }}转为续费之后，资源到期时间为{{ renewalFeeTime}}</span>）您是否确认现在将保证金转为续费？ 
           </p>
         </div>
       </div>
@@ -850,7 +850,7 @@
           this.showModal.freezeToRenewAffirm = true
         }
       },
-            // 押金转续费
+            // 保证金转续费
       freezeToRenew_ok() {
         let url = 'user/depositRenewal.do'
         this.$http.get(url, {
@@ -1046,7 +1046,7 @@
             if (res.status == 200 && res.data.status == 1) {
               this.$Message.success('解冻成功')
               this.showModal.unfreezeToBalanceHint = false
-
+              this.unfreezeStep = 2
             } else {
               this.$message.info({
                 content: res.data.message

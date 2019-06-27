@@ -266,7 +266,7 @@
                         v-for="(item,index) in hostZoneList"
                         :key="index"
                         :class="{'selected':selectZone==item.zoneid}"
-                        @click="changzone(item)"
+                        @click="changzone(item.zoneid)"
                       >{{item.zonename}}</li>
                     </ul>
                   </div>
@@ -1340,47 +1340,13 @@ export default {
     getFreeHost () {
       this.showModal.paySuccessModal = false
       let vmConfigId = ''
-      /*switch ('' + this.index1 + this.index2) {
-        case '00':
-          vmConfigId = '35'
-          this.time = '1'
-          break
-        case '01':
-          vmConfigId = '36'
-          this.time = '3'
-          break
-        case '02':
-          vmConfigId = '37'
-          this.time = '6'
-          break
-        case '03':
-          vmConfigId = '38'
-          this.time = '12'
-          break
-        case '10':
-          vmConfigId = '39'
-          this.time = '1'
-          break
-        case '11':
-          vmConfigId = '40'
-          this.time = '3'
-          break
-        case '12':
-          vmConfigId = '41'
-          this.time = '6'
-          break
-        case '13':
-          vmConfigId = '42'
-          this.time = '12'
-          break
-      }*/
       switch (this.index1) {
         case 0:
-          vmConfigId = '39'
+          vmConfigId = '451'
           this.time = '1'
           break
         case 1:
-          vmConfigId = '42'
+          vmConfigId = '452'
           this.time = '12'
           break
       }
@@ -1392,7 +1358,7 @@ export default {
         operationType: '领取主机',
         thawCondition: '删除主机、公网IP',
         vmConfig: this.vmConfig,
-        zoneId: this.hotHostList[this.index1].zone
+        zoneId: this.depositList[this.index1].zone
       }
       axios.post(url, params).then(response => {
         if (response.data.status == 1 && response.status == 200) {
@@ -1400,13 +1366,13 @@ export default {
           axios.get(url, {
             params: {
               vmConfigId: vmConfigId,
-              osType: this.hotHostList[this.index1].system[1],
-              defzoneid: this.hotHostList[this.index1].zone
+              osType: this.depositList[this.index1].system[1],
+              defzoneid: this.depositList[this.index1].zone
             }
           }).then(res => {
             if (res.status == 200 && res.data.status == 1) {
               this.showModal.getSuccessModal = true
-              this.toggleZone(this.hotHostList[this.index1].zone)
+              this.toggleZone(this.depositList[this.index1].zone)
             } else {
               this.$message.info({
                 content: res.data.message

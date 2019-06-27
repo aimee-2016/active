@@ -405,7 +405,7 @@
       </p>
       <div class="universal-modal-content-flex qrcode-modal">
          <p v-show="!authStatus" class="p-top">认证完成之前，请勿关闭此页面，否则可能导致认证失败</p>
-         <p v-show="!authStatus">请<span>{{ siteListStr[0]?siteListStr[0].basicInformation.principalName : '' }}</span>使用手机扫描二维码，并根据提示完成人脸识别认证</p>
+         <p v-show="!authStatus">请<span>{{ siteListStr[0]?siteListStr[0].basicInformation.principalName : '' }}</span>使用手机（推荐使用微信）扫描二维码，并根据提示完成人脸识别认证</p>
          <p v-show="authStatus" class="p-top">您的实名认证提交失败，请刷新二维码重新认证</p>
          <div class="qr-code">
             <vue-q-art :config="qrConfig" ></vue-q-art>

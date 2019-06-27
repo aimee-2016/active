@@ -394,6 +394,7 @@
               {subName: '云监控', type: 'CloudMonitor'},
               // {subName: 'DDoS高防IP', type: 'ddosip'},
               {subName: 'SSL证书', type: 'https://test-domain.xrcloud.net/xrdomain/domainSSL'},
+              //{subName: 'SSL证书', type: 'https://domain.xrcloud.net/xrdomain/domainSSL'},
             ]
           },
           {

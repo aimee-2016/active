@@ -1395,8 +1395,8 @@
       </p>
       <div class="universal-modal-content-flex qrcode-modal">
          <p v-show="!authStatus" class="p-top">认证完成之前，请勿关闭或者切换此页面，否则可能导致认证失败</p>
-         <p v-show="!authStatus && paneStatus.usercenter == 'certification'">请使用手机扫描二维码，并根据提示完成实名认证</p>
-         <p v-show="!authStatus && paneStatus.usercenter == 'companyInfo'">请使用手机扫描二维码，并根据提示完成企业认证</p>
+         <p v-show="!authStatus && paneStatus.usercenter == 'certification'">请使用手机（推荐使用微信）扫描二维码，并根据提示完成实名认证</p>
+         <p v-show="!authStatus && paneStatus.usercenter == 'companyInfo'">请使用手机（推荐使用微信）扫描二维码，并根据提示完成企业认证</p>
          <p v-show="authStatus" class="p-top">您的实名认证提交失败，请刷新二维码重新认证</p>
          <div class="qr-code">
             <vue-q-art :config="qrConfig" ></vue-q-art>
@@ -3206,6 +3206,14 @@
             //   this.$Message.info('请上传经办人手持身份证照')
             //   return
             // }
+        this.$http.get('user/judgeEnterpriseAttest.do',{
+          params:{
+            phone: this.notAuth.companyAuthForm.contact,
+            contectPhone: this.notAuth.companyAuthForm.linkManPhone,
+            phoneCode: this.notAuth.companyAuthForm.verificationCode
+          } 
+        }).then(response =>{
+          if(response.data.status == 1 && response.status == 200){
           this.tempCode =  this.uuid(6, 16)
           let url = '/faceRecognition/getUserInfoByPcQRCode.do'
           axios.post(url,{
@@ -3223,6 +3231,12 @@
               this.refreshUserStatus()
             }
           })
+          } else {
+            this.$message.info({
+              content: response.data.message
+            })
+          }
+           })
           }
         })
       }),
@@ -3267,7 +3281,7 @@
                 companyCardURL: this.notAuth.companyAuthForm.combine,
                 //idCard: this.notAuth.companyAuthForm.agentManID,
                 contectPhone: this.notAuth.companyAuthForm.linkManPhone,
-                phoneCode: this.notAuth.companyAuthForm.verificationCode,
+                //phoneCode: this.notAuth.companyAuthForm.verificationCode,
                 businessLicenseNumber: this.notAuth.companyAuthForm.businessLicenseNumber,
                 legalPersonName: this.notAuth.companyAuthForm.linkManName,
                 companyLegalIdcardNumber: this.notAuth.companyAuthForm.linkManNameID,
