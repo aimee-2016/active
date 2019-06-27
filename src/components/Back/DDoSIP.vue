@@ -98,8 +98,8 @@
                                 </div>
 
                                 <div style="border:1px dashed #999999;padding:20px;border-radius:4px;margin-top:20px;">
-                                    <p>清洗流量统计（单位Gbps）</p>
-
+                                    <p style="font-size:14px;color:#333333;">清洗流量统计（单位Gbps）</p>
+                                    <chart style="width:100%;" ref="cpu" :options="hightIp"></chart>
                                 </div>
                            </div>
                            <div>
@@ -112,7 +112,7 @@
                                     <span class="l-font">刷新</span> 
                                     </div>
                                 </div>
-                                <Table :columns="overviewList" :data="overviewData" @on-selection-change='overviewTableChange'></Table>
+                                <Table no-data-text='暂无攻击数据' :columns="overviewList" :data="overviewData" @on-selection-change='overviewTableChange'></Table>
                                 <div class="dp-page">
                                     <Page :total="100" style="display:inline-block;vertical-align: middle;margin-left:20px;" show-sizer :page-size-opts=[10,20,50,100]></Page>
                                 </div>
@@ -127,7 +127,7 @@
                                     <span class="l-font">刷新</span> 
                                     </div>
                                 </div>
-                                <Table :columns="overviewList" :data="overviewData" @on-selection-change='overviewTableChange'></Table>
+                                <Table no-data-text='暂无攻击数据' :columns="overviewList" :data="overviewData" @on-selection-change='overviewTableChange'></Table>
                                 <div class="dp-page">
                                     <Page :total="100" style="display:inline-block;vertical-align: middle;margin-left:20px;" show-sizer :page-size-opts=[10,20,50,100]></Page>
                                 </div>
@@ -371,6 +371,8 @@
 
 <script>
 import expandRow from './DDosExpandRow.vue';
+import hightIp from '@/echarts/hightIp';
+const dIp  = JSON.stringify(hightIp);
 export default {
 components: { expandRow },
   data() {
@@ -480,6 +482,7 @@ components: { expandRow },
                 攻击事件:'次数'
             }
         ],
+        hightIp:JSON.parse(dIp),
 
 
       // 证书管理
