@@ -633,7 +633,7 @@
     <!-- 活动规则 -->
     <transition name="fade">
       <div class="overlay" @click.stop="showModal.rule=true" v-if="showModal.rule">
-        <div class="rule-modal">
+        <div class="rule-modal" style="max-height: 80%;overflow-y: auto;">
           <div class="header">
             <span>活动规则</span>
             <img src=../../../assets/img/active/freeToReceive.1/close-icon.png alt="关闭图标" @click.stop="showModal.rule=false">
@@ -1395,6 +1395,16 @@ export default {
           })
         }
       })
+    },
+    toggleZone(zoneId) {
+      // 切换默认区域
+      axios.get('user/setDefaultZone.do', {params: {zoneId: zoneId}}).then(response => {
+      })
+      for (var zone of this.$store.state.zoneList) {
+        if (zone.zoneid == zoneId) {
+          $store.commit('setZone', zone);
+        }
+      }
     },
     // 获取活动配置,区域
     getConfigureHot () {
@@ -2275,12 +2285,11 @@ section:nth-of-type(1) {
         ul {
           display: flex;
           flex-wrap: wrap;
-          width: 354px;
+          justify-content: space-between;
           li {
             position: relative;
             width: 110px;
             height: 34px;
-            margin-right: 12px;
             margin-bottom: 10px;
             line-height: 32px;
             border-radius: 2px;
