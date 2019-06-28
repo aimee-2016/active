@@ -33,8 +33,8 @@
           </CheckboxGroup>
         </div>
 
-        <p style="color:#333333;font-size:14px;" >其他支付方式支付</p>
-        <div class="pay" >
+        <p style="color:#333333;font-size:14px;" v-if="orderStatus == -1">其他支付方式支付</p>
+        <div class="pay" v-if="orderStatus == -1">
           <!--包年包月第三方支付页面-->
           <Tabs value="name1">
             <span slot="extra">其他支付方式支付：<span style="color:#FF624B;font-size:18px;">{{otherPayCount.toFixed(2)}}</span>元</span>
@@ -68,9 +68,7 @@
             </TabPane>
           </Tabs>
         </div>
-        <div id="pay">
-
-        </div>
+  
         <div style="margin-top:20px;text-align:right;">
           <Button @click="showModal.cancelPay = true" style="margin-right:10px;">取消支付</Button>
           <Button type="primary" @click="pay" :disabled="payText!='确认支付'">{{payText}}</Button>
