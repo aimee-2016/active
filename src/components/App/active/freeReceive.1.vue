@@ -1469,40 +1469,23 @@ export default {
           break
       }
       this.vmConfig = vmConfigId
-      let url = 'user/getRemainderFrozen.do'
-      let params = {
-        eachFrozenMoney: this.cashPledge,
-        describe: '领取主机',
-        operationType: '领取主机',
-        thawCondition: '删除主机、公网IP',
-        vmConfig: this.vmConfig,
-        zoneId: this.depositList[this.index1].zone
-      }
-      axios.post(url, params).then(response => {
-        if (response.data.status == 1 && response.status == 200) {
-          let url = 'activity/getFreeHost.do'
-          axios.get(url, {
-            params: {
-              vmConfigId: vmConfigId,
-              osType: this.depositList[this.index1].system[1],
-              defzoneid: this.depositList[this.index1].zone
-            }
-          }).then(res => {
-            if (res.status == 200 && res.data.status == 1) {
-              this.showModal.getSuccessModal = true
-              this.toggleZone(this.depositList[this.index1].zone)
-            } else {
-              this.$message.info({
-                content: res.data.message
-              })
-            }
-          })
-        } else {
-          this.$message.info({
-            content: response.data.message
-          })
-        }
-      })
+      let url = 'activity/getFreeHostNew.do'
+        axios.get(url, {
+          params: {
+            vmConfigId: vmConfigId,
+            osType: this.depositList[this.index1].system[1],
+            defzoneid: this.depositList[this.index1].zone
+          }
+        }).then(res => {
+          if (res.status == 200 && res.data.status == 1) {
+            this.showModal.getSuccessModal = true
+            this.toggleZone(this.depositList[this.index1].zone)
+          } else {
+            this.$message.info({
+              content: res.data.message
+            })
+          }
+        })
     },
     toggleZone (zoneId) {
       // 切换默认区域
