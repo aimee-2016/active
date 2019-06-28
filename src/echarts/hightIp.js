@@ -2,7 +2,7 @@ var echart = require('echarts/lib/echarts');
 export default {
   
     tooltip: {
-        trigger: 'axis',
+    trigger: 'axis',
        axisPointer: {
          type: 'line',
          lineStyle: {
@@ -12,6 +12,14 @@ export default {
          },
        }
    },
+   legend: {
+        data: ['已清洗流量', '正常业务流量'],
+        bottom: 0,
+        icon: 'circle',
+        padding: [20, 0, 0, 0],
+        itemWidth: 100,
+        itemHeight: 20
+    },
    grid: {
        left: '3%',
        right: '4%',

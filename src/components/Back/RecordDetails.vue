@@ -43,24 +43,24 @@
               <ul class="nav_list">
                 <li class="nav_item">
                   <p>{{hostUnitList.maincompanyarea}}</p>
-                  <div v-if="mainCompanyAreaHide == 'mainCompanyArea'" class="text_block"><span
+                  <div v-if="mainCompanyAreaHide" class="text_block"><span
                     style="color:red">信息有误</span> <span style="color:#2a99f2;cursor:pointer;"
                                                         @click="host = true">重新输入</span></div>
                 </li>
                 <li class="nav_item">
                   <p>{{hostUnitList.maincompanycertificatestype}}</p>
-                  <div v-if="mainCompanyCertificatesTypeHide == 'mainCompanyCertificatesType'" class="text_block">
+                  <div v-if="mainCompanyCertificatesTypeHide" class="text_block">
                     <span style="color:red">信息有误</span> <span style="color:#2a99f2;cursor:pointer;" @click="host = true">重新输入</span>
                   </div>
                 </li>
                 <li class="nav_item">
                   <p>{{hostUnitList.maincompanynature}}</p>
-                  <div v-if="mainCompanyNatureHide == 'mainCompanyNature'" class="text_block"><span style="color:red">信息有误</span>
+                  <div v-if="mainCompanyNatureHide" class="text_block"><span style="color:red">信息有误</span>
                     <span style="color:#2a99f2;cursor:pointer;" @click="host = true">重新输入</span></div>
                 </li>
                 <li class="nav_item">
                   <p>{{hostUnitList.maincompanynumber}}</p>
-                  <div v-if="mainCompanyNumberHide == 'mainCompanyNumber'" class="text_block"><span style="color:red">信息有误</span>
+                  <div v-if="mainCompanyNumberHide" class="text_block"><span style="color:red">信息有误</span>
                     <span style="color:#2a99f2;cursor:pointer;" @click="host = true">重新输入</span></div>
                 </li>
               </ul>
@@ -73,25 +73,25 @@
               <ul class="nav_list">
                 <li class="nav_item">
                   <p>{{hostUnitList.maincompanyname}}</p>
-                  <div v-if="mainCompanyNameHide == 'mainCompanyName'" class="text_block"><span
+                  <div v-if="mainCompanyNameHide" class="text_block"><span
                     style="color:red">信息有误</span> <span style="color:#2a99f2;cursor:pointer;"
                                                         @click="host = true">重新输入</span></div>
                 </li>
                 <li class="nav_item">
                   <p>{{hostUnitList.maincompanycertificatesloaction}}</p>
-                  <div v-if="mainCompanyCertificatesLoactionHide == 'mainCompanyCertificatesLoaction'"
+                  <div v-if="mainCompanyCertificatesLoactionHide"
                        class="text_block"><span style="color:red">信息有误</span> <span
                     style="color:#2a99f2;cursor:pointer;" @click="host = true">重新输入</span></div>
                 </li>
                 <li class="nav_item">
                   <p>{{hostUnitList.maincompanycommunicatlocation}}</p>
-                  <div v-if="mainCompanyCommunicatLocationHide == 'mainCompanyCommunicatLocation'" class="text_block">
+                  <div v-if="mainCompanyCommunicatLocationHide" class="text_block">
                     <span style="color:red">信息有误</span> <span style="color:#2a99f2;cursor:pointer;"
                                                               @click="host = true">重新输入</span></div>
                 </li>
                 <li class="nav_item">
                   <p>{{hostUnitList.investorname}}</p>
-                  <div v-if="investorNameHide == 'investorName'" class="text_block"><span style="color:red">信息有误</span>
+                  <div v-if="investorNameHide" class="text_block"><span style="color:red">信息有误</span>
                     <span style="color:#2a99f2;cursor:pointer;" @click="host = true">重新输入</span></div>
                 </li>
               </ul>
@@ -115,24 +115,24 @@
               <ul class="nav_list">
                 <li class="nav_item">
                   <p>{{hostUnitList.legalname}}</p>
-                  <div v-if="legalNameHide == 'legalName'" class="text_block"><span style="color:red">信息有误</span> <span
+                  <div v-if="legalNameHide" class="text_block"><span style="color:red">信息有误</span> <span
                     style="color:#2a99f2;cursor:pointer;" @click="legal = true">重新输入</span></div>
                 </li>
                 <li class="nav_item">
                   <p>{{hostUnitList.legalcertificatestype}}</p>
-                  <div v-if="legalCertificatesTypeHide == 'legalCertificatesType'" class="text_block"><span
+                  <div v-if="legalCertificatesTypeHide" class="text_block"><span
                     style="color:red">信息有误</span> <span style="color:#2a99f2;cursor:pointer;"
                                                         @click="legal = true">重新输入</span></div>
                 </li>
                 <li class="nav_item">
                   <p>{{hostUnitList.legalcertificatesnumber}}</p>
-                  <div v-if="legalCertificatesNumberHide == 'legalCertificatesNumber'" class="text_block"><span
+                  <div v-if="legalCertificatesNumberHide" class="text_block"><span
                     style="color:red">信息有误</span> <span style="color:#2a99f2;cursor:pointer;"
                                                         @click="legal = true">重新输入</span></div>
                 </li>
                 <li class="nav_item">
                   <p>+86 {{hostUnitList.officenumber}}</p>
-                  <div v-if="officeNumberHide == 'officeNumber'" class="text_block"><span style="color:red">信息有误</span>
+                  <div v-if="officeNumberHide" class="text_block"><span style="color:red">信息有误</span>
                     <span style="color:#2a99f2;cursor:pointer;" @click="legal = true">重新输入</span></div>
                 </li>
               </ul>
@@ -145,12 +145,12 @@
               <ul class="nav_list">
                 <li class="nav_item">
                   <p>{{hostUnitList.companyphone}}</p>
-                  <div v-if="companyPhoneHide == 'companyPhone'" class="text_block"><span style="color:red">信息有误</span> <span
+                  <div v-if="companyPhoneHide" class="text_block"><span style="color:red">信息有误</span> <span
                     style="color:#2a99f2;cursor:pointer;" @click="legal = true">重新输入</span></div>
                 </li>
                 <li class="nav_item">
                   <p>{{hostUnitList.companyemail}}</p>
-                  <div v-if="companyEmailHide == 'companyEmail'" class="text_block"><span style="color:red">信息有误</span> <span
+                  <div v-if="companyEmailHide" class="text_block"><span style="color:red">信息有误</span> <span
                     style="color:#2a99f2;cursor:pointer;" @click="legal = true">重新输入</span></div>
                 </li>
                 <li class="nav_item"></li>
@@ -176,17 +176,17 @@
               <ul class="nav_list">
                 <li class="nav_item">
                   <p>{{hostUnitList.webname}}</p>
-                  <div v-if="webNameHide == 'webName'" class="text_block"><span style="color:red">信息有误</span> <span
+                  <div v-if="webNameHide" class="text_block"><span style="color:red">信息有误</span> <span
                     style="color:#2a99f2;cursor:pointer;" @click="website = true">重新输入</span></div>
                 </li>
                 <li class="nav_item">
                   <p>{{hostUnitList.webdomian}}</p>
-                  <div v-if="webDomianHide == 'webDomian'" class="text_block"><span style="color:red">信息有误</span> <span
+                  <div v-if="webDomianHide" class="text_block"><span style="color:red">信息有误</span> <span
                     style="color:#2a99f2;cursor:pointer;" @click="website = true">重新输入</span></div>
                 </li>
                 <li class="nav_item">
                   <p>{{hostUnitList.weburl}}</p>
-                  <div v-if="webUrlHide == 'webUrl'" class="text_block"><span style="color:red">信息有误</span> <span
+                  <div v-if="webUrlHide" class="text_block"><span style="color:red">信息有误</span> <span
                     style="color:#2a99f2;cursor:pointer;" @click="website = true">重新输入</span></div>
                 </li>
                  <li class="nav_item">
@@ -207,13 +207,13 @@
               <ul class="nav_list">
                 <li class="nav_item">
                   <p>{{hostUnitList.webservercontent}}</p>
-                  <div v-if="webServerContentHide == 'webservercontent'" class="text_block"><span
+                  <div v-if="webServerContentHide" class="text_block"><span
                     style="color:red">信息有误</span> <span style="color:#2a99f2;cursor:pointer;" @click="website = true">重新输入</span>
                   </div>
                 </li>
                 <li class="nav_item">
                   <p>{{hostUnitList.webmessage}}</p>
-                  <div v-if="webMessageHide == 'webmessage'" class="text_block"><span style="color:red">信息有误</span>
+                  <div v-if="webMessageHide" class="text_block"><span style="color:red">信息有误</span>
                     <span style="color:#2a99f2;cursor:pointer;" @click=" website = true">重新输入</span></div>
                 </li>
                 <li class="nav_item">
@@ -245,19 +245,19 @@
               <ul class="nav_list">
                 <li class="nav_item">
                   <p>{{hostUnitList.webresponsibilitylinkname}}</p>
-                  <div v-if="webResponsibilityLinkNameHide == 'webResponsibilityLinkName'" class="text_block"><span
+                  <div v-if="webResponsibilityLinkNameHide" class="text_block"><span
                     style="color:red">信息有误</span> <span style="color:#2a99f2;cursor:pointer;"
                                                         @click=" websitePerson = true">重新输入</span></div>
                 </li>
                 <li class="nav_item">
                   <p>{{hostUnitList.webresponsibilitycertificatestype}}</p>
-                  <div v-if="webResponsibilityCertificatesTypeHide == 'webResponsibilityCertificatesType'"
+                  <div v-if="webResponsibilityCertificatesTypeHide"
                        class="text_block"><span style="color:red">信息有误</span> <span
                     style="color:#2a99f2;cursor:pointer;" @click=" websitePerson = true">重新输入</span></div>
                 </li>
                 <li class="nav_item">
                   <p>{{hostUnitList.webresponsibilitycertificatesnumber}}</p>
-                  <div v-if="webResponsibilityCertificatesNumberHide == 'webResponsibilityCertificatesNumber'"
+                  <div v-if="webResponsibilityCertificatesNumberHide"
                        class="text_block"><span style="color:red">信息有误</span> <span
                     style="color:#2a99f2;cursor:pointer;" @click=" websitePerson = true">重新输入</span></div>
                 </li>
@@ -281,17 +281,17 @@
               <ul class="nav_list">
                 <li class="nav_item">
                   <p>+86 {{hostUnitList.offacenumber}}</p>
-                  <div v-if="offaceNumberHide == 'offaceNumber'" class="text_block"><span style="color:red">信息有误</span>
+                  <div v-if="offaceNumberHide" class="text_block"><span style="color:red">信息有误</span>
                     <span style="color:#2a99f2;cursor:pointer;" @click=" websitePerson = true">重新输入</span></div>
                 </li>
                 <li class="nav_item">
                   <p>{{hostUnitList.phone}}</p>
-                  <div v-if="phoneHide == 'phone'" class="text_block"><span style="color:red">信息有误</span>
+                  <div v-if="phoneHide" class="text_block"><span style="color:red">信息有误</span>
                     <span style="color:#2a99f2;cursor:pointer;" @click=" websitePerson = true">重新输入</span></div>
                 </li>
                 <li class="nav_item">
                   <p>{{hostUnitList.email}}</p>
-                  <div v-if="emailHide == 'email'" class="text_block"><span style="color:red">信息有误</span>
+                  <div v-if="emailHide" class="text_block"><span style="color:red">信息有误</span>
                     <span style="color:#2a99f2;cursor:pointer;" @click=" websitePerson = true">重新输入</span></div>
                 </li>
                 <li class="nav_item">
@@ -320,17 +320,17 @@
               <ul class="nav_list">
                 <li class="nav_item">
                   <p :title="hostUnitList.ispname">{{hostUnitList.ispname}}</p>
-                  <div v-if="ISPNameHide == 'ISPName'" class="text_block" ><span style="color:red">信息有误</span> <span
+                  <div v-if="ISPNameHide" class="text_block" ><span style="color:red">信息有误</span> <span
                     style="color:#2a99f2;cursor:pointer;" @click="webIsp = true">重新输入</span></div>
                 </li>
                 <li class="nav_item">
                   <p>{{hostUnitList.webip}}</p>
-                  <div v-if="webIpHide == 'webIp'" class="text_block"><span style="color:red">信息有误</span> <span
+                  <div v-if="webIpHide" class="text_block"><span style="color:red">信息有误</span> <span
                     style="color:#2a99f2;cursor:pointer;" @click="webIsp = true">重新输入</span></div>
                 </li>
                 <li class="nav_item">
                   <div>{{hostUnitList.webaccesstype}}</div>
-                  <div v-if="webAccessTypeHide =='webAccessType'" class="text_block"><span style="color:red">信息有误</span>
+                  <div v-if="webAccessTypeHide" class="text_block"><span style="color:red">信息有误</span>
                     <span style="color:#2a99f2;cursor:pointer;" @click="webIsp = true">重新输入</span>
                   </div>
                 </li>
@@ -343,7 +343,7 @@
               <ul class="nav_list">
                 <li class="nav_item">
                   <p>{{hostUnitList.webserveraddress}}</p>
-                  <div v-if="webServerAddressHide =='webServerAddress'" class="text_block"><span
+                  <div v-if="webServerAddressHide" class="text_block"><span
                     style="color:red">信息有误</span> <span style="color:#2a99f2;cursor:pointer;" @click="webIsp = true">重新输入</span>
                   </div>
                 </li>
@@ -368,12 +368,12 @@
               <ul class="nav_list">
                 <li class="nav_item">
                   <p>{{hostUnitList.mark3}}</p>
-                  <div v-if="mark3Hide == 'mark3'" class="text_block"><span style="color:red">信息有误</span> <span
+                  <div v-if="mark3Hide" class="text_block"><span style="color:red">信息有误</span> <span
                     style="color:#2a99f2;cursor:pointer;" @click="addressModal = true">重新输入</span></div>
                 </li>
                 <li class="nav_item">
                   <p>{{hostUnitList.mark4}}</p>
-                  <div v-if="mark4Hide == 'mark4'" class="text_block"><span style="color:red">信息有误</span> <span
+                  <div v-if="mark4Hide" class="text_block"><span style="color:red">信息有误</span> <span
                     style="color:#2a99f2;cursor:pointer;" @click="addressModal = true">重新输入</span></div>
                 </li>
               </ul>
@@ -404,12 +404,12 @@
                 <ul class="tab_list">
                   <li class="tab_item">主办单位负责人照片</li>
                   <li class="tab_item" @click="sponsorPhoto = true">点击查看
-                    <div v-if="sponsorPhotoHide =='sponsorPhoto'" class="text_block"><span style="color:red">信息有误</span>
+                    <div v-if="sponsorPhotoHide" class="text_block"><span style="color:red">信息有误</span>
                     </div>
                   </li>
                   <li class="tab_item">主办单位照片</li>
                   <li class="tab_item" @click="organizerPhoto = true">点击查看
-                    <div v-if="organizerPhotoHide =='organizerPhoto'" class="text_block"><span style="color:red">信息有误</span>
+                    <div v-if="organizerPhotoHide" class="text_block"><span style="color:red">信息有误</span>
                     </div>
                   </li>
                 </ul>
@@ -425,12 +425,12 @@
                 <ul class="tab_list">
                   <li class="tab_item">域名证书</li>
                   <li class="tab_item" @click="domainNameCertificate = true">点击查看
-                    <div v-if="domainNameCertificateHide =='domainNameCertificate'" class="text_block"><span style="color:red">信息有误</span>
+                    <div v-if="domainNameCertificateHide" class="text_block"><span style="color:red">信息有误</span>
                     </div>
                   </li>
                   <li class="tab_item">网站核验单</li>
                   <li class="tab_item" @click="checkList = true">点击查看
-                    <div v-if="checkListHide =='checkList'" class="text_block"><span style="color:red">信息有误</span>
+                    <div v-if="checkListHide" class="text_block"><span style="color:red">信息有误</span>
                     </div>
                   </li>
                 </ul>
@@ -446,12 +446,12 @@
                 <ul class="tab_list">
                   <li class="tab_item">其他资料</li>
                   <li class="tab_item" @click="otherInfo = true">点击查看
-                    <div v-if="otherInfoHide =='otherInfo'" class="text_block"><span style="color:red">信息有误</span>
+                    <div v-if="otherInfoHide" class="text_block"><span style="color:red">信息有误</span>
                     </div>
                   </li>
                   <li class="tab_item">幕布照片</li>
                   <li class="tab_item" @click="curtainInfo = true">点击查看
-                    <div v-if="curtainInfoHide =='curtainInfo'" class="text_block"><span style="color:red">信息有误</span>
+                    <div v-if="curtainInfoHide" class="text_block"><span style="color:red">信息有误</span>
                     </div>
                   </li>
                 </ul>
@@ -546,7 +546,7 @@
               type="drag"
               :show-upload-list="false"
               :with-credentials="true"
-              action="file/upFile.do"
+              action="https://zschj.xrcloud.net/file/upFile.do"
               :format="['jpg','jpeg','png']"
               :on-success="cardSuccess"
               :on-format-error="cardFormatError"
@@ -583,7 +583,7 @@
               type="drag"
               :show-upload-list="false"
               :with-credentials="true"
-              action="file/upFile.do"
+              action="https://zschj.xrcloud.net/file/upFile.do"
               :format="['jpg','jpeg','png']"
               :on-success="cardBackSuccess"
               :on-format-error="cardBackFormatError"
@@ -774,7 +774,7 @@
               type="drag"
               :show-upload-list="false"
               :with-credentials="true"
-              action="file/upFile.do"
+              action="https://zschj.xrcloud.net/file/upFile.do"
               :on-success="otherFileSuccess"
               :on-format-error="otherFormatError"
               :before-upload="otherBeforeUpload">
@@ -1734,131 +1734,124 @@ export default {
               this.hostUnitList.errorMessage.forEach(item => {
                 switch (item) {
                   case "webresponsibilitylinkname":
-                    this.webResponsibilityLinkNameHide =
-                      "webResponsibilityLinkName";
+                    this.webResponsibilityLinkNameHide = true;
                     break;
                   case "phone":
-                    this.phoneHide = "phone";
+                    this.phoneHide = true;
                     break;
                   case "offacenumber":
-                    this.offaceNumberHide = "offaceNumber";
+                    this.offaceNumberHide = true;
                     break;
                   case "webresponsibilitycertificatestype":
-                    this.webResponsibilityCertificatesTypeHide =
-                      "webResponsibilityCertificatesType";
+                    this.webResponsibilityCertificatesTypeHide =  true;
                     break;
                   case "maincompanyarea":
-                    this.mainCompanyAreaHide = "mainCompanyArea";
+                    this.mainCompanyAreaHide = true;
                     break;
                   case "maincompanycertificatestype":
-                    this.mainCompanyCertificatesTypeHide =
-                      "mainCompanyCertificatesType";
+                    this.mainCompanyCertificatesTypeHide =true;
                     break;
                   case "maincompanynature":
-                    this.mainCompanyNatureHide = "mainCompanyNature";
+                    this.mainCompanyNatureHide = true;
                     break;
                   case "maincompanynumber":
-                    this.mainCompanyNumberHide = "mainCompanyNumber";
+                    this.mainCompanyNumberHide = true;
                     break;
                   case "maincompanyname":
-                    this.mainCompanyNameHide = "mainCompanyName";
+                    this.mainCompanyNameHide = true;
                     break;
                   case "maincompanycertificatesloaction":
-                    this.mainCompanyCertificatesLoactionHide =
-                      "mainCompanyCertificatesLoaction";
+                    this.mainCompanyCertificatesLoactionHide = true;
                     break;
                   case "investorname":
-                    this.investorNameHide = "investorName";
+                    this.investorNameHide = true;
                     break;
                   case "legalname":
-                    this.legalNameHide = "legalName";
+                    this.legalNameHide = true;
                     break;
                   case "legalcertificatestype":
-                    this.legalCertificatesTypeHide = "legalCertificatesType";
+                    this.legalCertificatesTypeHide = true;
                     break;
                   case "legalcertificatesnumber":
-                    this.legalCertificatesNumberHide =
-                      "legalCertificatesNumber";
+                    this.legalCertificatesNumberHide =true;
                     break;
                   case "officenumber":
-                    this.officeNumberHide = "officeNumber";
+                    this.officeNumberHide = true;
                     break;
                   case "phone":
-                    this.phoneHide = "phone";
+                    this.phoneHide = true;
                     break;
                   case "email":
-                    this.emailHide = "email";
+                    this.emailHide = true;
                     break;
                   case "webname":
-                    this.webNameHide = "webName";
+                    this.webNameHide = true;
                     break;
                   case "webdomian":
-                    this.webDomianHide = "webDomian";
+                    this.webDomianHide = true;
                     break;
                   case "weburl":
                     this.webUrlHide = "webUrl";
                     break;
                   case "webservercontent":
-                    this.webServerContentHide = "webServerContent";
+                    this.webServerContentHide = true;
                     break;
                   case "webmessage":
-                    this.webMessageHide = "webMessage";
+                    this.webMessageHide = true;
                     break;
                   case "webresponsibilitycertificatesnumber":
-                    this.webResponsibilityCertificatesNumberHide =
-                      "webResponsibilityCertificatesNumber";
+                    this.webResponsibilityCertificatesNumberHide = true;
                     break;
                   case "companyemail":
-                    this.companyEmailHide = "companyEmail";
+                    this.companyEmailHide = true;
                     break;
                   case "companyphone":
-                    this.companyPhoneHide = "companyPhone";
+                    this.companyPhoneHide = true;
                     break;
                   case "ispname":
-                    this.ISPNameHide = "ISPName";
+                    this.ISPNameHide = true;
                     break;
                   case "webip":
-                    this.webIpHide = "webIp";
+                    this.webIpHide = true;
                     break;
                   case "webaccesstype":
-                    this.webAccessTypeHide = "webAccessType";
+                    this.webAccessTypeHide = true;
                     break;
                   case "webserveraddress":
-                    this.webServerAddressHide = "webServerAddress";
+                    this.webServerAddressHide = true;
                     break;
                   case "maincompanycommunicatlocation":
-                    this.mainCompanyCommunicatLocationHide =
-                      "mainCompanyCommunicatLocation";
+                    this.mainCompanyCommunicatLocationHide = true;
                     break;
                   case "webresponsibilityurlpositive":
-                    this.sponsorPhotoHide = "sponsorPhoto";
+                    this.sponsorPhotoHide = true;
                     break;
                   case "webresponsibilityurlback":
-                    this.sponsorPhotoHide = "sponsorPhoto";
+                    this.sponsorPhotoHide = true;
                     break;
                   case "hostcompanyurl":
-                    this.organizerPhotoHide = "organizerPhoto";
+                    this.organizerPhotoHide = true;
                     break;
                   case "domaincertificateurl":
-                    this.domainNameCertificateHide = "domainNameCertificate";
+                    this.domainNameCertificateHide = true;
                     break;
                   case "otherdataurl":
-                    this.otherInfoHide = "otherInfo";
+                    this.otherInfoHide = true;
                     break;
                   case "webrecordauthenticityurl":
-                    this.checkListHide = "checkList";
+                    this.checkListHide = true;
                     break;
                   case "mark5":
-                    this.curtainInfoHide = "curtainInfo";
+                    this.curtainInfoHide = true;
                     break;
                   case "mark2":
-                    this.mark2Hide = "mark2";
+                    this.mark2Hide = true;
                     break;
                   case "mark3":
-                    this.mark3Hide = "mark3";
+                    this.mark3Hide = true;
                     break;
                   case "mark4":
-                    this.mark4Hide = "mark4";
+                    this.mark4Hide = true;
                     break;
                   case "icprecordpassword":
                     this.icprecordpasswordHide = true;
@@ -2143,9 +2136,9 @@ export default {
         email: this.hostUnitList.email,
         webRecordAuthenticityUrl: this.hostUnitList
           .webrecordauthenticityurl,
-        companyResponsibilityUrlPositive: this.updateHostUnitList
+        companyResponsibilityUrlPositive: this.hostUnitList
           .webresponsibilityurlpositive,
-        companyResponsibilityUrlBack: this.updateHostUnitList
+        companyResponsibilityUrlBack: this.hostUnitList
           .webresponsibilityurlback,
         domainCertificateUrl: this.hostUnitList.domaincertificateurl,
         otherDataUrl:this.hostUnitList.otherdataurl,//
@@ -2399,8 +2392,6 @@ export default {
       .nav_list {
         width: 280px;
         .text_block {
-          // width: 100px;
-          // float: right;
           display:inline-block;
         }
         .nav_item {
@@ -2430,13 +2421,15 @@ export default {
       }
       .tab_list {
         height: 39px;
-
         .tab_item {
           padding: 5px 10px 5px 10px;
           float: left;
           width: 279px;
           height: 39px;
           border-right: 1px solid #e9e9e9;
+          .text_block {
+          display:inline-block;
+        }
         }
         .tab_item:last-child {
           border: none;
