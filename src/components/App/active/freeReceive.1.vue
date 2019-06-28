@@ -1976,13 +1976,13 @@ section:nth-of-type(1) {
 }
 .discount-icon {
   position: fixed;
+  z-index: 100;
   top: 470px;
   right: 190px;
 }
 .free-host {
   margin: 0 auto;
   padding: 60px 0 40px;
-  width: 1900px;
   background: url("../../../assets/img/active/freeToReceive.1/free-host-bg.png")
       top no-repeat,
     url("../../../assets/img/active/freeToReceive.1/circle-left.png") left
