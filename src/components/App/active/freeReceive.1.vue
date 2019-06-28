@@ -20,84 +20,83 @@
               <span :class="{'selctedStep':!item.isShow}">{{item.text}}</span>
             </div>
           </div>
-          <div class="headline" style="color:#fff">
-            <h2>免费活动云服务器</h2>
-            <p>
+          <div style="padding:0 30px;">
+            <p style="margin:80px 0 20px;text-align:left;font-size:18px;color:#fff;">
               新用户专享，为防止恶意刷抢主机，遂需缴纳保证金，保证金随时可退
               <span
                 style="color:#53FFEF;cursor:pointer;text-decoration: underline;"
                 @click="showModal.rule=true"
               >活动规则></span>
             </p>
-          </div>
-          <div class="product">
-            <div v-for="(item,index) in depositList" :key="index">
-              <div class="head">
-                <h3>{{item.headline}}</h3>
-                <span>{{item.subtitle}}</span>
-              </div>
-              <div class="body">
-                <div class="configure">
-                  <ul>
-                    <li>
-                      <i>CPU</i>
-                      <span>{{item.config.cpu}}核</span>
-                    </li>
-                    <li>
-                      <i>内存</i>
-                      <span>{{item.config.mem}}G</span>
-                    </li>
-                    <li>
-                      <i>宽带</i>
-                      <span>{{item.config.bandwith}}M</span>
-                    </li>
-                    <li>
-                      <i>系统盘</i>
-                      <span>{{item.config.disksize}}G<span>SSD</span></span>
-                    </li>
-                  </ul>
+            <div class="product">
+              <div v-for="(item,index) in depositList" :key="index">
+                <div class="head">
+                  <h3>{{item.headline}}</h3>
+                  <span>{{item.subtitle}}</span>
                 </div>
-                <div class="area">
-                  <span class="label" style="padding-top: 10px;">选择区域:</span>
-                  <ul>
-                    <li
-                      v-for="(item1,index1) in zoneListDeposit"
-                      :key="index1"
-                      :class="{'selected':item.zone==item1.value}"
-                      @click="changgeZoneDeposite(item,item1,index,'depositList')"
-                    >{{item1.name}}</li>
-                  </ul>
+                <div class="body">
+                  <div class="configure">
+                    <ul>
+                      <li>
+                        <i>CPU</i>
+                        <span>{{item.config.cpu}}核</span>
+                      </li>
+                      <li>
+                        <i>内存</i>
+                        <span>{{item.config.mem}}G</span>
+                      </li>
+                      <li>
+                        <i>宽带</i>
+                        <span>{{item.config.bandwith}}M</span>
+                      </li>
+                      <li>
+                        <i>系统盘</i>
+                        <span>{{item.config.disksize}}G<span>SSD</span></span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="area">
+                    <span class="label" style="padding-top: 10px;">选择区域:</span>
+                    <ul>
+                      <li
+                        v-for="(item1,index1) in zoneListDeposit"
+                        :key="index1"
+                        :class="{'selected':item.zone==item1.value}"
+                        @click="changgeZoneDeposite(item,item1,index,'depositList')"
+                      >{{item1.name}}</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <span class="label">选择系统:</span>
+                    <Cascader
+                      :data="item.systemList"
+                      v-model="item.system"
+                      style="width:237px;display:inline-block"
+                    ></Cascader>
+                  </div>
+                  <div class="price">
+                    使用价格：
+                    <span>¥0</span>
+                    /{{item.unit}}
+                  </div>
+                  <div class="deposit">
+                    保证金：¥{{item.cashPledge+'/'+item.unit}}
+                    <span
+                      style="text-decoration: line-through;"
+                    >原价：¥{{item.originPrice}}</span>
+                  </div>
+                  <Button @click="getHost(index)">免费领取</Button>
                 </div>
-                <div>
-                  <span class="label">选择系统:</span>
-                  <Cascader
-                    :data="item.systemList"
-                    v-model="item.system"
-                    style="width:237px;display:inline-block"
-                  ></Cascader>
-                </div>
-                <div class="price">
-                  使用价格：
-                  <span>¥0</span>
-                  /{{item.unit}}
-                </div>
-                <div class="deposit">
-                  保证金：¥{{item.cashPledge+'/'+item.unit}}
-                  <span
-                    style="text-decoration: line-through;"
-                  >原价：¥{{item.originPrice}}</span>
-                </div>
-                <Button @click="getHost(index)">免费领取</Button>
               </div>
             </div>
-          </div>
-          <div class="tips">
-            温馨提示：使用期间若到“百度口碑”发布使用体验等相关评论，截图并发送至在线客服，可领取满200减100优惠券。
-            <a
-              href="https://koubei.baidu.com/s/510a4f5f6316c2d0f81b3e63bc75b537?fr=search"
-              target="blank"
-              style="text-decoration: underline;"
-            >点击发布评论></a>
+            <div class="tips">
+              温馨提示：使用期间若到“百度口碑”发布使用体验等相关评论，截图并发送至在线客服，可领取满200减100优惠券。
+              <a
+                href="https://koubei.baidu.com/s/510a4f5f6316c2d0f81b3e63bc75b537?fr=search"
+                target="blank"
+                style="text-decoration: underline;"
+              >点击发布评论></a>
+            </div>
           </div>
           <div class="fr-flow">
             <div class="headline" style="color:#fff;width:1180px;">
@@ -171,7 +170,7 @@
                   <Select
                     v-model="item.zone"
                     style="width:237px"
-                   @on-change="changeZoneHost(item,index,'hotHostList')"
+                  @on-change="changeZoneHot(item,index,'hotHostList')"
                   >
                     <Option
                       v-for="item in zoneListHot"
@@ -891,7 +890,7 @@ export default {
           subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
           config: {},
           timeList: [],
-          time: '1个月',
+          time: 180,
           systemList: [{
             value: 'window',
             label: 'Windows',
@@ -922,7 +921,7 @@ export default {
           subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
           config: {},
           timeList: [],
-          time: '12个月',
+          time: 180,
           systemList: [{
             value: 'window',
             label: 'Windows',
@@ -953,7 +952,7 @@ export default {
           subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
           config: {},
           timeList: [],
-          time: '1个月',
+          time: 180,
           systemList: [{
             value: 'window',
             label: 'Windows',
@@ -984,7 +983,7 @@ export default {
           subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
           config: {},
           timeList: [],
-          time: '12个月',
+          time: 180,
           systemList: [{
             value: 'window',
             label: 'Windows',
@@ -1216,9 +1215,7 @@ export default {
           this.zoneListDeposit = res.data.result.optionalArea
           this.depositList.forEach((item, index) => {
             item.config = responseData[index]
-            item.zone = this.zoneListDeposit[0].value
             this.changgeZoneDeposite(item, this.zoneListDeposit[0], index, 'depositList')
-            this.getPriceDeposit(item)
           })
         }
       })
@@ -1226,6 +1223,7 @@ export default {
     changgeZoneDeposite (item, item1, index, name) {
       item.zone = item1.value
       this.changeZoneHost(item, index, name)
+      this.getPriceDeposit(item)
     },
     getPriceDeposit (item) {
       axios.get('activity/getOriginalPrice.do', {
@@ -1440,9 +1438,13 @@ export default {
       })
     },
     changgeTimeHot (item, innerItem) {
-      // console.log(innerItem)
       item.configId = innerItem.id
-      this.getPriceHot(item, innerItem)
+      item.time = innerItem.days
+      this.getPriceHot(item)
+    },
+    changeZoneHot(item, index, name) {
+      this.changeZoneHost (item, index, name)
+      this.getPriceHot(item)
     },
     // 根据区域获得不同系统
     changeZoneHost (item, index, name) {
@@ -1478,18 +1480,16 @@ export default {
         }
       })
     },
-    getPriceHot (item, innerItem) {
+    getPriceHot (item) {
       // console.log(item.zone)
       axios.get('activity/getOriginalPrice.do', {
         params: {
           zoneId: item.zone,
           vmConfigId: item.configId,
-          month: innerItem.days / 30
+          month: item.time / 30
         }
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
-          // console.log(res.data.result.originalPrice)
-          // console.log(this[name][index].price)
           item.price = res.data.result.cost;
           item.originPrice = res.data.result.originalPrice;
         }
@@ -1727,13 +1727,6 @@ export default {
         this.$LR({ type: 'register' })
         return
       }
-      // if (this.zone.buyover == 1) {
-      //   this.$Message.info({
-      //     content: '请选择需要购买的区域'
-      //   })
-      //   this.roll(100)
-      //   return
-      // }
       let params = {
         zoneId: this.selectZone,
         templateId: this.selectSummarySystem[1],
@@ -1991,10 +1984,10 @@ section:nth-of-type(1) {
       no-repeat;
   .steps{
     display: flex;
-    margin-top: 20px;
+    margin-top: 40px;
     >div {
       position: relative;
-      margin-left: -10px;
+      margin-left: -16px;
       cursor: pointer;
       &:nth-of-type(1) {
         margin-left: 0;
@@ -2019,7 +2012,7 @@ section:nth-of-type(1) {
   }
   .product {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     text-align: left;
     > div {
       width: 534px;
