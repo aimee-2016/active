@@ -3214,9 +3214,13 @@
           if(response.data.status == 1 && response.status == 200){
           this.tempCode =  this.uuid(6, 16)
           let url = '/faceRecognition/getUserInfoByPcQRCode.do'
+          let config = {
+            name: this.notAuth.companyAuthForm.agentName
+          } 
           axios.post(url,{
             faceType: '2',
-            tempCode: this.tempCode
+            tempCode: this.tempCode,
+            config: JSON.stringify(config)
           }).then(res=>{
             if(res.status == 200 && res.data.status == 1){
               this.qrConfig.value = res.data.result.url
@@ -4472,15 +4476,20 @@
         this.authStatus = false
         this.tempCode =  this.uuid(6, 16)
         let url = '/faceRecognition/getUserInfoByPcQRCode.do'
-        let config = {
+        let config1 = {
           phone: this.userInfo.phone ? this.userInfo.phone : this.formCustom.VerificationPhone,
+        }
+        let config2 = {
+          name: this.notAuth.companyAuthForm.agentName
         }
         let params = {
           faceType: this.paneStatus.usercenter === 'certification'? '1' : '2',
           tempCode: this.tempCode
         }
         if(this.paneStatus.usercenter === 'certification'){
-          params.config = JSON.stringify(config)
+          params.config = JSON.stringify(config1)
+        } else{
+          params.config = JSON.stringify(config2)
         }
         axios.post(url,params).then(res=>{
           if(res.status == 200 && res.data.status == 1){
