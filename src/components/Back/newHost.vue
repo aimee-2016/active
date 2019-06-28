@@ -1076,7 +1076,12 @@
                       on: {
                         click: () => {
                           this.hostCurrentSelected = params.row
-                          this.renewHost(this.hostCurrentSelected)
+                          if(this.hostCurrentSelected.freeHostVmConfigId){
+                              sessionStorage.setItem('unfreezeId',this.hostCurrentSelected.freeHostVmConfigId)
+                              this.$router.push({path:'ThawDeposit',query:{from: "host"}})
+                            } else {
+                              this.renewHost(this.hostCurrentSelected)
+                          }
                         }
                       }
                     }, '续费'), h('span', {
@@ -1152,7 +1157,12 @@
                                   }
                                   break
                                 case 'hostRenew':
-                                  this.renewHost(this.hostCurrentSelected)
+                                  if(this.hostCurrentSelected.freeHostVmConfigId){
+                                      sessionStorage.setItem('unfreezeId',this.hostCurrentSelected.freeHostVmConfigId)
+                                      this.$router.push({path:'ThawDeposit',query:{from: "host"}})
+                                    } else {
+                                      this.renewHost(this.hostCurrentSelected)
+                                    }
                                   break
                                 case 'makeSnapshot':
                                   this.backupForm.backupName = ''
@@ -1312,7 +1322,12 @@
                                   })
                                   break
                                 case 'hostRenew':
-                                  this.renewHost(this.hostCurrentSelected)
+                                  if(this.hostCurrentSelected.freeHostVmConfigId){
+                                      sessionStorage.setItem('unfreezeId',this.hostCurrentSelected.freeHostVmConfigId)
+                                      this.$router.push({path:'ThawDeposit',query:{from: "host"}})
+                                    } else {
+                                      this.renewHost(this.hostCurrentSelected)
+                                    }
                                   break
                                 case 'makeSnapshot':
                                   this.backupForm.backupName = ''
@@ -1613,7 +1628,12 @@
               }
               break
             case 'renewal':
-              this.renewHost(this.hostCurrentSelected)
+              if(this.hostCurrentSelected.freeHostVmConfigId){
+                sessionStorage.setItem('unfreezeId',this.hostCurrentSelected.freeHostVmConfigId)
+                this.$router.push({path:'ThawDeposit',query:{from: "host"}})
+              } else {
+                this.renewHost(this.hostCurrentSelected)
+              }
               break
             case 'backup':
               this.backupForm.backupName = ''

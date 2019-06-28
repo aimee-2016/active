@@ -1,123 +1,138 @@
 <template>
   <div class="deposit-activity">
-    <img class="discount-icon" src="../../../assets/img/active/freeToReceive.1/discount-1.png" alt="一折秒杀" @click="$router.push('/activity/BlacKActivities')">
+    <img
+      class="discount-icon"
+      src="../../../assets/img/active/freeToReceive.1/discount-1.png"
+      alt="一折秒杀"
+      @click="$router.push('/activity/BlacKActivities')"
+    >
     <section>
       <div class="free-host">
         <div class="wrap">
           <img src="../../../assets/img/active/freeToReceive.1/free-host-text.png">
           <div class="steps">
-           <div @click="roll(400)">
+            <div @click="roll(400)">
               <img src="../../../assets/img/active/freeToReceive.1/c-left.png">
               <img class="number" src="../../../assets/img/active/freeToReceive.1/wnumber-1.png">
               <span style="color:#fff">免费领云服务器</span>
             </div>
             <!-- 这只能用v-show,不然index会出现错乱 -->
-            <div v-for="(item,index) in stepsList" :key="index"  @mouseenter="enter(item,index)" @mouseleave="leave(item,index)" @click="roll(item.distance)">
-              <img  :src="item.imgbg" v-show="item.isShow">
-              <img  class="number" :src="item.imgnum" v-show="item.isShow">
-              <img  :src="item.imgbgH" v-show="!item.isShow">
-              <img  class="number" :src="item.imgnumH" v-show="!item.isShow">
+            <div
+              v-for="(item,index) in stepsList"
+              :key="index"
+              @mouseenter="enter(item,index)"
+              @mouseleave="leave(item,index)"
+              @click="roll(item.distance)"
+            >
+              <img :src="item.imgbg" v-show="item.isShow">
+              <img class="number" :src="item.imgnum" v-show="item.isShow">
+              <img :src="item.imgbgH" v-show="!item.isShow">
+              <img class="number" :src="item.imgnumH" v-show="!item.isShow">
               <span :class="{'selctedStep':!item.isShow}">{{item.text}}</span>
             </div>
           </div>
-          <div class="headline" style="color:#fff">
-            <h2>免费活动云服务器</h2>
-            <p>
+          <div style="padding:0 30px;">
+            <p style="margin:80px 0 20px;text-align:left;font-size:18px;color:#fff;">
               新用户专享，为防止恶意刷抢主机，遂需缴纳保证金，保证金随时可退
               <span
                 style="color:#53FFEF;cursor:pointer;text-decoration: underline;"
                 @click="showModal.rule=true"
               >活动规则></span>
             </p>
-          </div>
-          <div class="product">
-            <div v-for="(item,index) in depositList" :key="index">
-              <div class="head">
-                <h3>{{item.headline}}</h3>
-                <span>{{item.subtitle}}</span>
-              </div>
-              <div class="body">
-                <div class="configure">
-                  <ul>
-                    <li>
-                      <i>CPU</i>
-                      <span>{{item.config.cpu}}核</span>
-                    </li>
-                    <li>
-                      <i>内存</i>
-                      <span>{{item.config.mem}}G</span>
-                    </li>
-                    <li>
-                      <i>宽带</i>
-                      <span>{{item.config.bandwith}}M</span>
-                    </li>
-                    <li>
-                      <i>系统盘</i>
-                      <span>{{item.config.disksize}}G<span>SSD</span></span>
-                    </li>
-                  </ul>
+            <div class="product">
+              <div v-for="(item,index) in depositList" :key="index">
+                <div class="head">
+                  <h3>{{item.headline}}</h3>
+                  <span>{{item.subtitle}}</span>
                 </div>
-                <div class="area">
-                  <span class="label" style="padding-top: 10px;">选择区域:</span>
-                  <ul>
-                    <li
-                      v-for="(item1,index1) in zoneListDeposit"
-                      :key="index1"
-                      :class="{'selected':item.zone==item1.value}"
-                      @click="changgeZoneDeposite(item,item1,index,'depositList')"
-                    >{{item1.name}}</li>
-                  </ul>
+                <div class="body">
+                  <div class="configure">
+                    <ul>
+                      <li>
+                        <i>CPU</i>
+                        <span>{{item.config.cpu}}核</span>
+                      </li>
+                      <li>
+                        <i>内存</i>
+                        <span>{{item.config.mem}}G</span>
+                      </li>
+                      <li>
+                        <i>宽带</i>
+                        <span>{{item.config.bandwith}}M</span>
+                      </li>
+                      <li>
+                        <i>系统盘</i>
+                        <span>
+                          {{item.config.disksize}}G
+                          <span>SSD</span>
+                        </span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="area">
+                    <span class="label" style="padding-top: 10px;">选择区域:</span>
+                    <ul>
+                      <li
+                        v-for="(item1,index1) in zoneListDeposit"
+                        :key="index1"
+                        :class="{'selected':item.zone==item1.value}"
+                        @click="changgeZoneDeposite(item,item1,index,'depositList')"
+                      >{{item1.name}}</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <span class="label">选择系统:</span>
+                    <Cascader
+                      :data="item.systemList"
+                      v-model="item.system"
+                      style="width:237px;display:inline-block"
+                    ></Cascader>
+                  </div>
+                  <div class="price">
+                    使用价格：
+                    <span>¥0</span>
+                    /{{item.unit}}
+                  </div>
+                  <div class="deposit">
+                    保证金：¥{{item.cashPledge+'/'+item.unit}}
+                    <span
+                      style="text-decoration: line-through;"
+                    >原价：¥{{item.originPrice}}</span>
+                  </div>
+                  <Button @click="getHost(index)">免费领取</Button>
                 </div>
-                <div>
-                  <span class="label">选择系统:</span>
-                  <Cascader
-                    :data="item.systemList"
-                    v-model="item.system"
-                    style="width:237px;display:inline-block"
-                  ></Cascader>
-                </div>
-                <div class="price">
-                  使用价格：
-                  <span>¥0</span>
-                  /{{item.unit}}
-                </div>
-                <div class="deposit">
-                  保证金：¥{{item.cashPledge+'/'+item.unit}}
-                  <span
-                    style="text-decoration: line-through;"
-                  >原价：¥{{item.originPrice}}</span>
-                </div>
-                <Button @click="getHost(index)">免费领取</Button>
               </div>
             </div>
-          </div>
-          <div class="tips">
-            温馨提示：使用期间若到“百度口碑”发布使用体验等相关评论，截图并发送至在线客服，可领取满200减100优惠券。
-            <a
-              href="https://koubei.baidu.com/s/510a4f5f6316c2d0f81b3e63bc75b537?fr=search"
-              target="blank"
-              style="text-decoration: underline;"
-            >点击发布评论></a>
-          </div>
-          <div class="fr-flow">
-            <div class="headline" style="color:#fff;width:1180px;">
-              <h2>活动流程</h2>
-              <p>新用户注册登录账号并且完成实名认证就可参与此活动</p>
+            <div class="tips">
+              温馨提示：使用期间若到“百度口碑”发布使用体验等相关评论，截图并发送至在线客服，可领取满200减100优惠券。
+              <a
+                href="https://koubei.baidu.com/s/510a4f5f6316c2d0f81b3e63bc75b537?fr=search"
+                target="blank"
+                style="text-decoration: underline;"
+              >点击发布评论></a>
             </div>
-            <div class="flow">
-              <div
-                v-for="(item,index) in flowGroup"
-                :key="index"
-                class="item"
-                :class="{onStep:onStep > index,outStep: onStep <= index }"
-                :style="{right: index * 30 + 'px'}"
-              >
-                <div class="item-img">
-                  <img v-if="onStep <= index" :src="item.src">
-                  <img v-else :src="item.onSrc" alt="描述">
-                </div>
-                <div class="item-text">
-                  <p :class="{onStep: onStep > index}">{{ item.text }}</p>
+          </div>
+          <div style="width:1200px;overflow: hidden">
+            <div class="fr-flow">
+              <div class="headline" style="color:#fff;width:1180px;">
+                <h2>活动流程</h2>
+                <p>新用户注册登录账号并且完成实名认证就可参与此活动</p>
+              </div>
+              <div class="flow">
+                <div
+                  v-for="(item,index) in flowGroup"
+                  :key="index"
+                  class="item"
+                  :class="{onStep:onStep > index,outStep: onStep <= index }"
+                  :style="{right: index * 30 + 'px'}"
+                >
+                  <div class="item-img">
+                    <img v-if="onStep <= index" :src="item.src">
+                    <img v-else :src="item.onSrc" alt="描述">
+                  </div>
+                  <div class="item-text">
+                    <p :class="{onStep: onStep > index}">{{ item.text }}</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -130,7 +145,8 @@
         <div class="wrap">
           <div class="headline">
             <h2>热销云服务器</h2>
-            <p>购买时长越长越便宜，年付低至3折
+            <p>
+              购买时长越长越便宜，年付低至3折
               <span
                 style="color:#387dff;cursor:pointer;text-decoration: underline;"
                 @click="showModal.ruleHost=true"
@@ -160,7 +176,10 @@
                     </li>
                     <li>
                       <i>系统盘</i>
-                      <span>{{item.config.disksize}}G<span>SSD</span></span>
+                      <span>
+                        {{item.config.disksize}}G
+                        <span>SSD</span>
+                      </span>
                     </li>
                   </ul>
                 </div>
@@ -171,7 +190,7 @@
                   <Select
                     v-model="item.zone"
                     style="width:237px"
-                   @on-change="changeZoneHost(item,index,'hotHostList')"
+                    @on-change="changeZoneHot(item,index,'hotHostList')"
                   >
                     <Option
                       v-for="item in zoneListHot"
@@ -192,8 +211,9 @@
                       :key="index1"
                       :class="{'selected':item.configId==item1.id}"
                       @click="changgeTimeHot(item,item1)"
-                    >{{month(item1.days)}}
-                    <span>{{item1.discount*10}}折</span>
+                    >
+                      {{month(item1.days)}}
+                      <span>{{item1.discount*10}}折</span>
                     </li>
                   </ul>
                 </div>
@@ -227,34 +247,37 @@
               </div>
               <div class="body">
                 <div class="left">
-                    <RadioGroup v-model="single" size="large">
-                        <Radio label="选择云服务器" style="color:#4768B1;margin-bottom:20px;font-size:18px;"></Radio>
-                  <div class="configure">
-                    <ul>
-                      <li
-                        v-for="(item,index) in configureList"
-                        :key="index"
-                        :class="{'selected':selectConfig==item.cpu+','+item.mem}"
-                        @click="changConfigHost(item.cpu+','+item.mem)"
-                      >{{ item.cpu+'核'+item.mem+'G'}}</li>
-                    </ul>
-                    <span class="tips">*以上配置皆包含40G SSD系统盘</span>
-                  </div>
-                  <Radio label="选择GPU服务器" style="color:#4768B1;margin-top:40px;margin-bottom:20px;font-size:18px;"></Radio>
-                  <div ref="summary-host-select">
-                    <Select
-                      v-model="selectConfig"
-                      style="width:476px"
-                      placeholder=" "
-                      @on-change="changConfigGPU"
-                    >
-                      <Option
-                        v-for="(item,index) in gpuConfigList"
-                        :value="item.cpu+','+item.mem+','+item.num"
-                        :key="index"
-                      >{{ item.cpu+'核'+item.mem+'G'+item.num+' *NVIDIA_P100' }}</Option>
-                    </Select>
-                  </div>
+                  <RadioGroup v-model="single" size="large">
+                    <Radio label="选择云服务器" style="color:#4768B1;margin-bottom:20px;font-size:18px;"></Radio>
+                    <div class="configure">
+                      <ul>
+                        <li
+                          v-for="(item,index) in configureList"
+                          :key="index"
+                          :class="{'selected':selectConfig==item.cpu+','+item.mem}"
+                          @click="changConfigHost(item.cpu+','+item.mem)"
+                        >{{ item.cpu+'核'+item.mem+'G'}}</li>
+                      </ul>
+                      <span class="tips">*以上配置皆包含40G SSD系统盘</span>
+                    </div>
+                    <Radio
+                      label="选择GPU服务器"
+                      style="color:#4768B1;margin-top:40px;margin-bottom:20px;font-size:18px;"
+                    ></Radio>
+                    <div ref="summary-host-select">
+                      <Select
+                        v-model="selectConfig"
+                        style="width:476px"
+                        placeholder=" "
+                        @on-change="changConfigGPU"
+                      >
+                        <Option
+                          v-for="(item,index) in gpuConfigList"
+                          :value="item.cpu+','+item.mem+','+item.num"
+                          :key="index"
+                        >{{ item.cpu+'核'+item.mem+'G'+item.num+' *NVIDIA_P100' }}</Option>
+                      </Select>
+                    </div>
                   </RadioGroup>
                   <div class="area" v-if="configLength==2">
                     <span class="label">区域选择</span>
@@ -324,7 +347,7 @@
                     <span>{{(totalDataCost*count).toFixed(2)}}</span>
                     <!-- <span>{{vmCost}}</span>/
                     <span>{{ipCost}}</span>/
-                    <span>{{dataDiskCost}}</span> -->
+                    <span>{{dataDiskCost}}</span>-->
                     <!-- <i>{{totalDataCoupon}}</i> -->
                   </div>
                   <Button @click="pushOrderHost()" v-if="configLength==2">立即购买</Button>
@@ -341,10 +364,12 @@
         <div class="wrap">
           <div class="headline">
             <h2>配置不够用 券券来帮忙</h2>
-            <p><span
+            <p>
+              <span
                 style="color:#387dff;cursor:pointer;text-decoration: underline;"
                 @click="showModal.ruleCoupon=true"
-              >活动规则></span></p>
+              >活动规则></span>
+            </p>
           </div>
           <div class="product">
             <div v-for="(item,index) in activityList" :key="index" @click="$router.push(item.url)">
@@ -406,11 +431,16 @@
     <Modal v-model="showModal.rechargeHint" :scrollable="true" :closable="false" :width="390">
       <div class="modal-content-s" style="padding: 30px 30px 0 50px">
         <div>
-          <div class="ivu-modal-confirm-body-icon ivu-modal-confirm-body-icon-success" style="top: 48px;left: 30px;">
+          <div
+            class="ivu-modal-confirm-body-icon ivu-modal-confirm-body-icon-success"
+            style="top: 48px;left: 30px;"
+          >
             <i class="ivu-icon ivu-icon-checkmark-circled"></i>
           </div>
           <strong>提示</strong>
-          <p class="lh24">本免费活动充值保证金<span style="color: #D0021B ">{{ cashPledge }}</span>元，主机到期或删除时保证金自动退还到账户余额。
+          <p class="lh24">
+            本免费活动充值保证金
+            <span style="color: #D0021B ">{{ cashPledge }}</span>元，主机到期或删除时保证金自动退还到账户余额。
           </p>
         </div>
       </div>
@@ -423,10 +453,18 @@
     <Modal v-model="showModal.inConformityModal" :scrollable="true" :closable="false" :width="390">
       <div class="modal-content-s" style="padding: 30px 30px 0 50px">
         <div>
-          <div class="ivu-modal-confirm-body-icon ivu-modal-confirm-body-icon-warning" style="top: 48px;left: 30px;">
+          <div
+            class="ivu-modal-confirm-body-icon ivu-modal-confirm-body-icon-warning"
+            style="top: 48px;left: 30px;"
+          >
             <i class="ivu-icon ivu-icon-android-alert"></i>
           </div>
-          <p class="lh24">您好，您不符合本活动的参与条件，您还可以去看看<span style="color: #FF9700;cursor: pointer" @click="$router.push('/activity/BlacKActivities')">“低价秒杀，买一赠一”</span>活动。
+          <p class="lh24">
+            您好，您不符合本活动的参与条件，您还可以去看看
+            <span
+              style="color: #FF9700;cursor: pointer"
+              @click="$router.push('/activity/BlacKActivities')"
+            >“低价秒杀，买一赠一”</span>活动。
           </p>
         </div>
       </div>
@@ -439,12 +477,14 @@
     <Modal v-model="showModal.getSuccessModal" :scrollable="true" :closable="false" :width="390">
       <div class="modal-content-s" style="padding: 30px 30px 0 50px">
         <div>
-          <div class="ivu-modal-confirm-body-icon ivu-modal-confirm-body-icon-success" style="top: 48px;left: 30px;">
+          <div
+            class="ivu-modal-confirm-body-icon ivu-modal-confirm-body-icon-success"
+            style="top: 48px;left: 30px;"
+          >
             <i class="ivu-icon ivu-icon-checkmark-circled"></i>
           </div>
           <strong>提示</strong>
-          <p class="lh24">恭喜您保证金已冻结完成，主机领取成功，主机在实名认证之前只可保留3天，请尽快使用。
-          </p>
+          <p class="lh24">恭喜您保证金已冻结完成，主机领取成功，主机在实名认证之前只可保留3天，请尽快使用。</p>
         </div>
       </div>
       <p slot="footer" class="modal-footer-s">
@@ -464,15 +504,27 @@
             <Step title="支付"></Step>
             <Step title="支付失败"></Step>
           </Steps>
-          <p><img src="../../../assets/img/sceneInfo/si-defeated.png" alt="支付失败"/><span>抱歉，支付失败，请再次尝试！</span></p>
+          <p>
+            <img src="../../../assets/img/sceneInfo/si-defeated.png" alt="支付失败">
+            <span>抱歉，支付失败，请再次尝试！</span>
+          </p>
         </div>
       </div>
       <div slot="footer" class="modal-footer-border">
-        <Button type="primary" @click="showModal.payDefeatedModal = false,showModal.orderConfirmationModal = true">再次支付</Button>
+        <Button
+          type="primary"
+          @click="showModal.payDefeatedModal = false,showModal.orderConfirmationModal = true"
+        >再次支付</Button>
       </div>
     </Modal>
     <!-- 支付充值成功 -->
-    <Modal v-model="showModal.paySuccessModal" width="640" :scrollable="true" :closable="false" :mask-closable="false">
+    <Modal
+      v-model="showModal.paySuccessModal"
+      width="640"
+      :scrollable="true"
+      :closable="false"
+      :mask-closable="false"
+    >
       <p slot="header" class="modal-header-border">
         <span class="universal-modal-title">支付/充值</span>
       </p>
@@ -483,8 +535,12 @@
             <Step title="支付"></Step>
             <Step title="支付成功"></Step>
           </Steps>
-          <p><img src="../../../assets/img/sceneInfo/si-success.png" alt="支付成功"/><span>恭喜您支付成功！我们即将冻结保证金</span><span style="color: #D0021B;margin-left: 0">{{ cashPledge }}</span><span
-            style="margin-left: 0">元</span></p>
+          <p>
+            <img src="../../../assets/img/sceneInfo/si-success.png" alt="支付成功">
+            <span>恭喜您支付成功！我们即将冻结保证金</span>
+            <span style="color: #D0021B;margin-left: 0">{{ cashPledge }}</span>
+            <span style="margin-left: 0">元</span>
+          </p>
         </div>
       </div>
       <div slot="footer" class="modal-footer-border">
@@ -493,7 +549,12 @@
     </Modal>
 
     <!-- 微信支付弹窗 -->
-    <Modal v-model="showModal.weChatRechargeModal" width="640" :scrollable="true" :mask-closable="false">
+    <Modal
+      v-model="showModal.weChatRechargeModal"
+      width="640"
+      :scrollable="true"
+      :mask-closable="false"
+    >
       <p slot="header" class="modal-header-border">
         <span class="universal-modal-title">微信支付/充值</span>
       </p>
@@ -509,7 +570,10 @@
               <vue-q-art :config="config" v-if="config.value!=''"></vue-q-art>
             </div>
             <div class="pay-p">
-              <p>应付金额(元)：<span>{{cashPledge}}</span></p>
+              <p>
+                应付金额(元)：
+                <span>{{cashPledge}}</span>
+              </p>
               <p>请使用微信扫一扫，扫描二维码支付</p>
             </div>
           </div>
@@ -517,12 +581,20 @@
       </div>
       <div slot="footer" class="modal-footer-border">
         <Button @click="isPay">已完成支付</Button>
-        <Button type="primary" @click="showModal.weChatRechargeModal = false,showModal.orderConfirmationModal = true">更换支付方式</Button>
+        <Button
+          type="primary"
+          @click="showModal.weChatRechargeModal = false,showModal.orderConfirmationModal = true"
+        >更换支付方式</Button>
       </div>
     </Modal>
 
     <!-- 订单确认弹窗 -->
-    <Modal v-model="showModal.orderConfirmationModal" width="640" :scrollable="true" :mask-closable="false">
+    <Modal
+      v-model="showModal.orderConfirmationModal"
+      width="640"
+      :scrollable="true"
+      :mask-closable="false"
+    >
       <p slot="header" class="modal-header-border">
         <span class="universal-modal-title">订单确认</span>
       </p>
@@ -545,15 +617,25 @@
             </Radio>
             <Radio label="otherPay" class="pw-img" :disabled="balance >= cashPledge">
               <span style="color:rgba(51,51,51,1);font-size: 14px;margin-right: 25px">第三方支付</span>
-              <img src="../../../assets/img/payresult/alipay.png" :class="{selected: otherPayWay == 'zfb'}" @click="balance < cashPledge?otherPayWay = 'zfb':null" alt="支付宝">
-              <img src="../../../assets/img/payresult/wxpay.png" :class="{selected: otherPayWay == 'wx'}" @click="balance < cashPledge?otherPayWay = 'wx':null" alt="微信">
+              <img
+                src="../../../assets/img/payresult/alipay.png"
+                :class="{selected: otherPayWay == 'zfb'}"
+                @click="balance < cashPledge?otherPayWay = 'zfb':null"
+                alt="支付宝"
+              >
+              <img
+                src="../../../assets/img/payresult/wxpay.png"
+                :class="{selected: otherPayWay == 'wx'}"
+                @click="balance < cashPledge?otherPayWay = 'wx':null"
+                alt="微信"
+              >
             </Radio>
 
             <!--            <Radio label="otherPay" class="pw-img">
                           <span style="color:rgba(51,51,51,1);font-size: 14px;margin-right: 25px">第三方支付</span>
                           <img src="../../../assets/img/payresult/alipay.png" :class="{selected: otherPayWay == 'zfb'}" @click="otherPayWay = 'zfb'">
                           <img src="../../../assets/img/payresult/wxpay.png" :class="{selected: otherPayWay == 'wx'}" @click="otherPayWay = 'wx'">
-                        </Radio>-->
+            </Radio>-->
           </RadioGroup>
         </div>
       </div>
@@ -566,23 +648,37 @@
       <p slot="header" class="modal-header-border">
         <span class="universal-modal-title">实名认证</span>
       </p>
-      <Form :model="quicklyAuthForm" :label-width="100" ref="quicklyAuth"
-            :rules="quicklyAuthFormValidate"
-            style="width:450px;margin-top:20px;">
+      <Form
+        :model="quicklyAuthForm"
+        :label-width="100"
+        ref="quicklyAuth"
+        :rules="quicklyAuthFormValidate"
+        style="width:450px;margin-top:20px;"
+      >
         <FormItem label="真实姓名" prop="name" style="width: 100%">
           <Input v-model="quicklyAuthForm.name" placeholder="请输入姓名"></Input>
         </FormItem>
         <FormItem label="身份证号" prop="IDCard" style="width: 100%">
           <Input v-model="quicklyAuthForm.IDCard" placeholder="请输入身份证号"></Input>
         </FormItem>
-        <Form :model="quicklyAuthForm" :rules="quicklyAuthFormValidate" ref="sendCode"
-              :label-width="100">
+        <Form
+          :model="quicklyAuthForm"
+          :rules="quicklyAuthFormValidate"
+          ref="sendCode"
+          :label-width="100"
+        >
           <FormItem label="图形验证码" prop="pictureCode">
             <div style="display: flex">
-              <Input v-model="quicklyAuthForm.pictureCode" placeholder="请输入图片验证码"
-                     style="width:250px;margin-right: 10px"></Input>
-              <img :src="imgSrc" style="height:33px;"
-                   @click="imgSrc=`https://www.xrcloud.net/user/getKaptchaImage.do?t=${new Date().getTime()}`">
+              <Input
+                v-model="quicklyAuthForm.pictureCode"
+                placeholder="请输入图片验证码"
+                style="width:250px;margin-right: 10px"
+              ></Input>
+              <img
+                :src="imgSrc"
+                style="height:33px;"
+                @click="imgSrc=`https://www.xrcloud.net/user/getKaptchaImage.do?t=${new Date().getTime()}`"
+              >
             </div>
           </FormItem>
           <FormItem label="手机号码" prop="phone" style="width: 100%">
@@ -591,11 +687,16 @@
         </Form>
         <FormItem label="验证码" prop="validateCode" style="width: 100%">
           <div style="display: flex;justify-content: space-between">
-            <Input v-model="quicklyAuthForm.validateCode" placeholder="请输入验证码" style="width:260px;margin-right: 10px"></Input>
-            <Button type="primary" @click="sendCode"
-                    :disabled="quicklyAuthForm.sendCodeText!='获取验证码'">
-              {{quicklyAuthForm.sendCodeText}}
-            </Button>
+            <Input
+              v-model="quicklyAuthForm.validateCode"
+              placeholder="请输入验证码"
+              style="width:260px;margin-right: 10px"
+            ></Input>
+            <Button
+              type="primary"
+              @click="sendCode"
+              :disabled="quicklyAuthForm.sendCodeText!='获取验证码'"
+            >{{quicklyAuthForm.sendCodeText}}</Button>
           </div>
         </FormItem>
       </Form>
@@ -609,8 +710,11 @@
         <span class="universal-modal-title">实名认证</span>
       </p>
       <div style="text-align:center;padding:40px 0;">
-        <img src="../../../assets/img/payresult/paySuccess.png"
-             style="width:36px;vertical-align:middle;margin-right:10px;" alt="实名认证成功">
+        <img
+          src="../../../assets/img/payresult/paySuccess.png"
+          style="width:36px;vertical-align:middle;margin-right:10px;"
+          alt="实名认证成功"
+        >
         <span style="font-size:14px;line-height:36px">恭喜您，实名认证成功！</span>
       </div>
       <div slot="footer" class="modal-footer-border">
@@ -623,8 +727,11 @@
         <span class="universal-modal-title">实名认证</span>
       </p>
       <div style="text-align:center;padding:40px 0;">
-        <img src="../../../assets/img/payresult/payFail.png"
-             style="width:36px;vertical-align:middle;margin-right:10px;" alt="实名认证失败">
+        <img
+          src="../../../assets/img/payresult/payFail.png"
+          style="width:36px;vertical-align:middle;margin-right:10px;"
+          alt="实名认证失败"
+        >
         <span style="font-size:14px;line-height:36px">抱歉，实名认证失败，原因：{{authErrorText}}</span>
       </div>
       <div slot="footer" class="modal-footer-border">
@@ -634,7 +741,7 @@
     <!-- 活动规则 -->
     <transition name="fade">
       <div class="overlay" @click.stop="showModal.rule=true" v-if="showModal.rule">
-        <div class="rule-modal">
+        <div class="rule-modal" style="max-height: 80%;overflow-y: auto;">
           <div class="header">
             <span>活动规则</span>
             <img src=../../../assets/img/active/freeToReceive.1/close-icon.png alt="关闭图标" @click.stop="showModal.rule=false">
@@ -760,7 +867,7 @@ export default {
         ruleCoupon: false,
       },
       // 云服务器大集合参数
-      single:'选择云服务器',
+      single: '选择云服务器',
       vmCost: 0,
       vmCoupon: 0,
       dataDiskCost: 0,
@@ -815,7 +922,7 @@ export default {
       selectTime: 1,
       ssdList: [0, 20, 50, 100, 500],
       selectedSSD: 0,
-      count:1,
+      count: 1,
       // 结束
       zoneListDeposit: [],
       depositList: [
@@ -891,7 +998,7 @@ export default {
           subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
           config: {},
           timeList: [],
-          time: '1个月',
+          time: 180,
           systemList: [{
             value: 'window',
             label: 'Windows',
@@ -922,7 +1029,7 @@ export default {
           subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
           config: {},
           timeList: [],
-          time: '12个月',
+          time: 180,
           systemList: [{
             value: 'window',
             label: 'Windows',
@@ -953,7 +1060,7 @@ export default {
           subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
           config: {},
           timeList: [],
-          time: '1个月',
+          time: 180,
           systemList: [{
             value: 'window',
             label: 'Windows',
@@ -984,7 +1091,7 @@ export default {
           subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
           config: {},
           timeList: [],
-          time: '12个月',
+          time: 180,
           systemList: [{
             value: 'window',
             label: 'Windows',
@@ -1148,7 +1255,7 @@ export default {
           imgnum: require('../../../assets/img/active/freeToReceive.1/cnumber-2.png'),
           imgbgH: require('../../../assets/img/active/freeToReceive.1/c-center.png'),
           imgnumH: require('../../../assets/img/active/freeToReceive.1/wnumber-2.png'),
-          text:'热销云服务器',
+          text: '热销云服务器',
           isShow: true,
         },
         {
@@ -1157,7 +1264,7 @@ export default {
           imgnum: require('../../../assets/img/active/freeToReceive.1/cnumber-3.png'),
           imgbgH: require('../../../assets/img/active/freeToReceive.1/c-center.png'),
           imgnumH: require('../../../assets/img/active/freeToReceive.1/wnumber-3.png'),
-          text:'云服务器大集合',
+          text: '云服务器大集合',
           isShow: true,
         },
         {
@@ -1166,7 +1273,7 @@ export default {
           imgnum: require('../../../assets/img/active/freeToReceive.1/cnumber-4.png'),
           imgbgH: require('../../../assets/img/active/freeToReceive.1/c-right.png'),
           imgnumH: require('../../../assets/img/active/freeToReceive.1/wnumber-4.png'),
-          text:'优惠券随时领',
+          text: '优惠券随时领',
           isShow: true,
         },
       ],
@@ -1194,13 +1301,13 @@ export default {
 
   },
   methods: {
-    init() {
-        axios.get('user/GetUserInfo.do').then(response => {
-          if (response.status == 200 && response.data.status == 1) {
-            this.$store.commit('setAuthInfo', {authInfo: response.data.authInfo, userInfo: response.data.result, authInfoPersion: response.data.authInfo_persion})
-          }
-        })
-      },
+    init () {
+      axios.get('user/GetUserInfo.do').then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          this.$store.commit('setAuthInfo', { authInfo: response.data.authInfo, userInfo: response.data.result, authInfoPersion: response.data.authInfo_persion })
+        }
+      })
+    },
     // 获取活动配置,区域
     getConfigureDeposit () {
       let url = 'activity/getTemActInfoById.do'
@@ -1216,9 +1323,7 @@ export default {
           this.zoneListDeposit = res.data.result.optionalArea
           this.depositList.forEach((item, index) => {
             item.config = responseData[index]
-            item.zone = this.zoneListDeposit[0].value
             this.changgeZoneDeposite(item, this.zoneListDeposit[0], index, 'depositList')
-            this.getPriceDeposit(item)
           })
         }
       })
@@ -1226,6 +1331,7 @@ export default {
     changgeZoneDeposite (item, item1, index, name) {
       item.zone = item1.value
       this.changeZoneHost(item, index, name)
+      this.getPriceDeposit(item)
     },
     getPriceDeposit (item) {
       axios.get('activity/getOriginalPrice.do', {
@@ -1398,6 +1504,16 @@ export default {
         }
       })
     },
+    toggleZone (zoneId) {
+      // 切换默认区域
+      axios.get('user/setDefaultZone.do', { params: { zoneId: zoneId } }).then(response => {
+      })
+      for (var zone of this.$store.state.zoneList) {
+        if (zone.zoneid == zoneId) {
+          $store.commit('setZone', zone);
+        }
+      }
+    },
     // 获取活动配置,区域
     getConfigureHot () {
       let url = 'activity/getTemActInfoById.do'
@@ -1440,9 +1556,13 @@ export default {
       })
     },
     changgeTimeHot (item, innerItem) {
-      // console.log(innerItem)
       item.configId = innerItem.id
-      this.getPriceHot(item, innerItem)
+      item.time = innerItem.days
+      this.getPriceHot(item)
+    },
+    changeZoneHot (item, index, name) {
+      this.changeZoneHost(item, index, name)
+      this.getPriceHot(item)
     },
     // 根据区域获得不同系统
     changeZoneHost (item, index, name) {
@@ -1478,18 +1598,16 @@ export default {
         }
       })
     },
-    getPriceHot (item, innerItem) {
+    getPriceHot (item) {
       // console.log(item.zone)
       axios.get('activity/getOriginalPrice.do', {
         params: {
           zoneId: item.zone,
           vmConfigId: item.configId,
-          month: innerItem.days / 30
+          month: item.time / 30
         }
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
-          // console.log(res.data.result.originalPrice)
-          // console.log(this[name][index].price)
           item.price = res.data.result.cost;
           item.originPrice = res.data.result.originalPrice;
         }
@@ -1614,7 +1732,7 @@ export default {
       let originLength = this.configLength
       this.configLength = config.split(',').length
       this.selectConfig = config
-      if(this.configLength!=originLength){
+      if (this.configLength != originLength) {
         // console.log('进入2')
         this.changzone(this.hostZoneList[0].zoneid)
       }
@@ -1623,7 +1741,7 @@ export default {
       let originLength = this.configLength
       this.configLength = config.split(',').length
       this.selectConfig = config
-      if(this.configLength!=originLength){
+      if (this.configLength != originLength) {
         // console.log('进入3')
         this.changzone(this.gpuZoneList[0].zoneid)
       }
@@ -1727,13 +1845,6 @@ export default {
         this.$LR({ type: 'register' })
         return
       }
-      // if (this.zone.buyover == 1) {
-      //   this.$Message.info({
-      //     content: '请选择需要购买的区域'
-      //   })
-      //   this.roll(100)
-      //   return
-      // }
       let params = {
         zoneId: this.selectZone,
         templateId: this.selectSummarySystem[1],
@@ -1763,41 +1874,41 @@ export default {
         }
       })
     },
-     // 购买主机
-      pushOrderHost() {
-        if (!this.$store.state.userInfo) {
+    // 购买主机
+    pushOrderHost () {
+      if (!this.$store.state.userInfo) {
         this.$LR({ type: 'register' })
         return
       }
-        let params = {
-          zoneId: this.selectZone,
-          templateId: this.selectSummarySystem[1],
-          bandWidth: this.selectBandWidth,
-          timeType: this.selectTime < 12 ? 'month' : 'year',
-          timeValue: this.selectTime < 12 ? this.selectTime : this.selectTime / 12,
-          count: this.count,
-          isAutoRenew: '1',
-          cpuNum: this.selectConfig.split(',')[0],
-          memory: this.selectConfig.split(',')[1],
-          networkId: 'no',
-          rootDiskType: 'ssd',
-          vpcId: 'no',
-          diskType: 'ssd',
-          diskSize: this.selectedSSD
+      let params = {
+        zoneId: this.selectZone,
+        templateId: this.selectSummarySystem[1],
+        bandWidth: this.selectBandWidth,
+        timeType: this.selectTime < 12 ? 'month' : 'year',
+        timeValue: this.selectTime < 12 ? this.selectTime : this.selectTime / 12,
+        count: this.count,
+        isAutoRenew: '1',
+        cpuNum: this.selectConfig.split(',')[0],
+        memory: this.selectConfig.split(',')[1],
+        networkId: 'no',
+        rootDiskType: 'ssd',
+        vpcId: 'no',
+        diskType: 'ssd',
+        diskSize: this.selectedSSD
+      }
+      // console.log(params)
+      axios.get('information/deployVirtualMachine.do', { params }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          this.$router.push({
+            path: '/order'
+          })
+        } else {
+          this.$message.info({
+            content: response.data.message
+          })
         }
-        // console.log(params)
-        axios.get('information/deployVirtualMachine.do', {params}).then(response => {
-          if (response.status == 200 && response.data.status == 1) {
-            this.$router.push({
-              path: '/order'
-            })
-          } else {
-            this.$message.info({
-              content: response.data.message
-            })
-          }
-        })
-      },
+      })
+    },
     setTemplateHost (zoneId) {
       axios.get('information/listTemplates.do', {
         params: {
@@ -1856,13 +1967,13 @@ export default {
         }
       })
     },
-    roll(val) {
-      $('html, body').animate({scrollTop: val}, 300)
+    roll (val) {
+      $('html, body').animate({ scrollTop: val }, 300)
     },
-    enter(item,index){
+    enter (item, index) {
       this.stepsList[index].isShow = false
     },
-    leave(item,index){
+    leave (item, index) {
       this.stepsList[index].isShow = true
     }
   },
@@ -1916,12 +2027,12 @@ export default {
     // select组件，选中的值不在选项中，不清空选中数据的bug
     'configLength': {
       handler (val) {
-        if(val==2) {
+        if (val == 2) {
           this.single = '选择云服务器'
           let dom = this.$refs['summary-host-select']
           dom.getElementsByClassName('ivu-select-placeholder')[0].style.display = "block"
           dom.getElementsByClassName('ivu-select-selected-value')[0].style.display = "none"
-        } else if(val==3){
+        } else if (val == 3) {
           this.single = '选择GPU服务器'
           let dom = this.$refs['summary-host-select']
           dom.getElementsByClassName('ivu-select-placeholder')[0].style.display = "none"
@@ -1934,7 +2045,7 @@ export default {
       handler (val) {
         if (val == '选择云服务器') {
           this.changConfigHost('1,1')
-        } else if(val == '选择GPU服务器'){
+        } else if (val == '选择GPU服务器') {
           this.changConfigGPU('8,64,1')
         }
       },
@@ -1976,25 +2087,25 @@ section:nth-of-type(1) {
 }
 .discount-icon {
   position: fixed;
+  z-index: 100;
   top: 470px;
   right: 190px;
 }
 .free-host {
   margin: 0 auto;
   padding: 60px 0 40px;
-  width: 1900px;
   background: url("../../../assets/img/active/freeToReceive.1/free-host-bg.png")
       top no-repeat,
     url("../../../assets/img/active/freeToReceive.1/circle-left.png") left
       no-repeat,
     url("../../../assets/img/active/freeToReceive.1/circle-right.png") 100% 90%
       no-repeat;
-  .steps{
+  .steps {
     display: flex;
-    margin-top: 20px;
-    >div {
+    margin-top: 40px;
+    > div {
       position: relative;
-      margin-left: -10px;
+      margin-left: -16px;
       cursor: pointer;
       &:nth-of-type(1) {
         margin-left: 0;
@@ -2009,17 +2120,17 @@ section:nth-of-type(1) {
       position: absolute;
       top: 18px;
       left: 92px;
-      font-size:20px;
-      font-weight:bold;
-      color:#191275;
+      font-size: 20px;
+      font-weight: bold;
+      color: #191275;
     }
     .selctedStep {
-      color: #fff
+      color: #fff;
     }
   }
   .product {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     text-align: left;
     > div {
       width: 534px;
@@ -2164,7 +2275,7 @@ section:nth-of-type(1) {
         height: 100%;
         position: relative;
         padding-left: 20px;
-        &:nth-of-type(3) .item-text>p {
+        &:nth-of-type(3) .item-text > p {
           width: 120px;
         }
         &.onStep {
@@ -2282,12 +2393,11 @@ section:nth-of-type(1) {
         ul {
           display: flex;
           flex-wrap: wrap;
-          width: 354px;
+          justify-content: space-between;
           li {
             position: relative;
             width: 110px;
             height: 34px;
-            margin-right: 12px;
             margin-bottom: 10px;
             line-height: 32px;
             border-radius: 2px;
@@ -2303,12 +2413,12 @@ section:nth-of-type(1) {
               top: -14px;
               right: 5px;
               display: inline-block;
-              width:38px;
-              height:20px;
-              background:rgba(246,109,89,1);
-              font-size:14px;
-              color:rgba(255,255,255,1);
-              line-height:19px;
+              width: 38px;
+              height: 20px;
+              background: rgba(246, 109, 89, 1);
+              font-size: 14px;
+              color: rgba(255, 255, 255, 1);
+              line-height: 19px;
             }
           }
           .selected {
@@ -2484,7 +2594,7 @@ section:nth-of-type(1) {
     > div {
       width: 578px;
       box-shadow: 0px 3px 10px -3px rgba(237, 190, 175, 0.7);
-      &:nth-of-type(2) .head{
+      &:nth-of-type(2) .head {
         background: url("../../../assets/img/active/freeToReceive.1/coupon-database-bg.png");
       }
     }
@@ -2647,64 +2757,64 @@ section:nth-of-type(1) {
   }
 }
 .modal-p {
-    > div {
-      margin-left: 60px;
+  > div {
+    margin-left: 60px;
+  }
+  > p {
+    span {
+      font-size: 16px;
+      font-family: MicrosoftYaHei;
+      font-weight: 400;
+      color: rgba(51, 51, 51, 1);
+      line-height: 22px;
+      margin-left: 10px;
+      position: relative;
+      bottom: 18px;
     }
-    > p {
-      span {
+    margin: 50px 0;
+    text-align: center;
+  }
+  .payInfo {
+    margin-top: 50px;
+    display: flex;
+    .pay-p {
+      p {
         font-size: 16px;
         font-family: MicrosoftYaHei;
         font-weight: 400;
         color: rgba(51, 51, 51, 1);
         line-height: 22px;
-        margin-left: 10px;
-        position: relative;
-        bottom: 18px;
-      }
-      margin: 50px 0;
-      text-align: center;
-    }
-    .payInfo {
-      margin-top: 50px;
-      display: flex;
-      .pay-p {
-        p {
-          font-size: 16px;
-          font-family: MicrosoftYaHei;
-          font-weight: 400;
-          color: rgba(51, 51, 51, 1);
-          line-height: 22px;
-          margin: 30px 40px;
-          span {
-            font-size: 36px;
-            font-weight: 600;
-            color: rgba(208, 2, 27, 1);
-          }
+        margin: 30px 40px;
+        span {
+          font-size: 36px;
+          font-weight: 600;
+          color: rgba(208, 2, 27, 1);
         }
       }
     }
   }
-   .pay-wap {
-    padding: 20px;
-    > p {
-      font-size: 14px;
-      font-family: MicrosoftYaHei;
-      font-weight: 400;
-      color: rgba(102, 102, 102, 1);
-      margin-bottom: 10px;
-    }
-    .pw-img {
-      img {
-        display: inline-block;
-        margin-right: 20px;
-        cursor: pointer;
-        position: relative;
-        top: 12px;
-        border: 1px solid #FFF;
-        &.selected {
-          border: 1px solid rgba(74, 144, 226, 1);
-        }
+}
+.pay-wap {
+  padding: 20px;
+  > p {
+    font-size: 14px;
+    font-family: MicrosoftYaHei;
+    font-weight: 400;
+    color: rgba(102, 102, 102, 1);
+    margin-bottom: 10px;
+  }
+  .pw-img {
+    img {
+      display: inline-block;
+      margin-right: 20px;
+      cursor: pointer;
+      position: relative;
+      top: 12px;
+      border: 1px solid #fff;
+      &.selected {
+        border: 1px solid rgba(74, 144, 226, 1);
       }
     }
   }
+}
 </style>

@@ -41,7 +41,10 @@ Vue.prototype.$LR = LR
 Vue.config.productionTip = false
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1054e487a6e0e0e9fe2d6fd2683c9b03a5fbb69c
 axios.defaults.withCredentials = true
 
 //axios.defaults.baseURL = 'https://kaifa.xrcloud.net/'
