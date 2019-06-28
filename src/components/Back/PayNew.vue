@@ -163,7 +163,7 @@
       })
     },
     created() {
-      this.overTime = sessionStorage.getItem('overtime')
+      this.overTime = sessionStorage.getItem('overtime').replace(/\-/g,'/');
       this.orderInfo = JSON.parse(sessionStorage.getItem('payInfo')) ? JSON.parse(sessionStorage.getItem('payInfo')) : this.$route.params;
       this.orderStatus = sessionStorage.getItem('orderStatus').indexOf('实时');
       // 充值有限制  不能少于10元
@@ -365,8 +365,8 @@
         })
       },
       setTime() {
-        let endTime = new Date(this.overTime).getTime()
-        let limitTime = endTime - this.startTime
+        let endTime = new Date(this.overTime).getTime();
+        let limitTime = endTime - this.startTime;
         if (limitTime > 0) {
           this.setLimit(limitTime)
           this.intervalInstance = setInterval(() => {
