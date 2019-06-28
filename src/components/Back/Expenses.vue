@@ -3967,7 +3967,7 @@
           }).then(response => {
             if (response.status == 200 && response.data.status == 1) {
               if(this.orderNumber==null||this.orderNumber==''||this.orderNumber==[]){
-                var overtime = new Date(this.orderall.overTime).getTime()
+                var overtime = new Date(this.orderall.overTime.replace(/\-/g,'/')).getTime();
                 // this.orderall.forEach(item => {
                 //   let overTime = new Date(item.overTime).getTime()
                 //   if (overTime < overtime) {
@@ -3976,9 +3976,9 @@
                 // })
               }
               else{
-                var overtime = new Date(this.orderNumber[0].overTime).getTime()
+                var overtime = new Date(this.orderNumber[0].overTime.replace(/\-/g,'/')).getTime();
                 this.orderNumber.forEach(item => {
-                  var overTime = new Date(item.overTime).getTime()
+                  var overTime = new Date(item.overTime.replace(/\-/g,'/')).getTime()
                   if (overTime < overtime) {
                     overtime = overTime
                   }
@@ -3999,7 +3999,8 @@
         }
       },
       toStr(date) {
-        var datetime = new Date(date)//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+        console.log(date);
+        var datetime = new Date(date);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
         var year = datetime.getFullYear()
         var month = datetime.getMonth() + 1
         var date = datetime.getDate()
@@ -4021,7 +4022,7 @@
         if (second < 10) {
           second = '0' + second
         }
-        var time = year + '-' + month + '-' + date + ' ' + hour + ':' + minutes + ':' + second
+        var time = year + '/' + month + '/' + date + ' ' + hour + ':' + minutes + ':' + second
         return time
       },
       selectone(selection,row){

@@ -1,8 +1,6 @@
 var echart = require('echarts/lib/echarts');
 export default {
-    title: {
-        text: '折线图堆叠'
-    },
+  
     tooltip: {
         trigger: 'axis',
        axisPointer: {
