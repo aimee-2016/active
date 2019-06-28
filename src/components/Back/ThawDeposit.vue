@@ -586,9 +586,18 @@
         },
       }
     },
+    beforeRouteEnter(to, from, next) {
+      next(vm=>{
+        
+      })
+    },
     created() {
       this.unfreezeId = sessionStorage.getItem('unfreezeId')
       this.getQuestionnaire()
+      // 如果从主机页面过来，则是主机押金转续费
+      if(this.$route.query.from){
+        this.ToRenew()
+      }
     },
     computed: {
       auth() {
