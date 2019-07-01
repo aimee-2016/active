@@ -1989,6 +1989,14 @@ export default {
       },
       deep: true
     },
+    'selectTime': {
+      handler () {
+        this.queryCustomVM()
+        this.queryDiskPrice()
+        this.queryIPPrice()
+      },
+      deep: true
+    },
     'selectConfig': {
       handler () {
         this.queryCustomVM()
