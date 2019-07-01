@@ -313,9 +313,7 @@ import axios from 'axios';
        individualUnionPay(){
           axios.get('yl/ylb2cPay.do',{
             params:{
-              total_fee:this.otherPayCount.toFixed(2),
-              orders: this.orderInfo.order,
-              ticket: this.orderInfo.ticket
+              total_fee:this.input
             }
           }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
@@ -332,9 +330,7 @@ import axios from 'axios';
       enterpriseUnionPay(){
         axios.get('yl/ylb2bPay.do',{
             params:{
-              total_fee:this.otherPayCount.toFixed(2),
-              orders: this.orderInfo.order,
-              ticket: this.orderInfo.ticket
+              total_fee:this.input
             }
           }).then(res =>{
             if(res.status == 200 && res.data.status == 1){

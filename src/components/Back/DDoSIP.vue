@@ -30,7 +30,7 @@
                            <div>
                                <div class="selectMark">
                                     <img src="../../assets/img/host/h-icon10.png"/>
-                                    <span>共 {{ overviewData.length }} 项 | 已选择 <span style="color:#FF624B;">{{ overviewSelect.length }} </span>项</span><span style="margin-left:10px;">总价:</span><span style="color:#FF624B;">￥0.00</span>
+                                    <span>共 {{ overviewData.length }} 项 | 已选择 <span style="color:#FF624B;">{{ overviewSelect.length }} </span>项</span><span style="margin-left:10px;">总价:</span><span style="color:#FF624B;">￥{{price}}</span>
                                 </div>
                                  <Table :columns="overviewList" :data="overviewData" @on-selection-change='overviewTableChange'></Table>
                                  <div class="dp-page">
@@ -445,7 +445,7 @@ components: { expandRow },
                             color:'#2A99F2',
                             cursor:'pointer'
                         }
-                    },params.row.套餐ID)
+                    },params.row.packageid.substr(params.row.packageid.indexOf('-')+1,params.row.packageid.length))
                 }
             },
             {
@@ -453,7 +453,7 @@ components: { expandRow },
                 title:'套餐类型'
             },
             {
-                key:'有效期',
+                key:'endtime',
                 title:'有效期'
             },
             {
@@ -472,8 +472,13 @@ components: { expandRow },
                         style:{
                             color:'#2A99F2',
                             cursor:'pointer'
+                        },
+                        on:{
+                            click:()=>{
+
+                            }
                         }
-                    },'操作')
+                    },'业务配置')
                 }
             },
         ],
@@ -487,6 +492,7 @@ components: { expandRow },
             }
         ],
         hightIp:JSON.parse(dIp),
+        price:0,
 
 
       // 证书管理
@@ -864,13 +870,24 @@ components: { expandRow },
       this.getDomainList();
   },
   methods:{
+
     //   套餐表格选项切换
       overviewTableChange(list){
+          this.price = 0;
           this.overviewSelect = list;
+          list.forEach(item => {
+            this.price += item.totalprice; 
+          });
       },
+      
     //  获取套餐
       getDdosOverview(){
-          this.$http.get('ddosImitationIp/ddospackage.do',{}).then(res=>{
+          this.$http.get('ddosImitationIp/queryAllPackage.do',{
+              params:{
+                  page:'1',
+                  pageSize:'10'
+              }
+          }).then(res=>{
               if(res.status == 200 && res.data.status == 1){
                 this.overviewData = res.data.result;
               }else{
@@ -894,6 +911,8 @@ components: { expandRow },
             }
         })
     },
+  },
+  computed:{
   }
 };
 </script>
