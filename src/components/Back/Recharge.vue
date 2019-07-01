@@ -319,7 +319,6 @@ import axios from 'axios';
             if(res.status == 200 && res.data.status == 1){
               this.serialNum = res.data.serialNum;
               localStorage.setItem('serialNum',res.data.serialNum);
-              this.showModal.rechargeHint = true;
               window.open('https://www.xrcloud.net/yl/openYlb2cPay.do'); // 创建一个新窗口
               this.showModal.rechargeHint = true;
             }
