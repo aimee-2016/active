@@ -1292,6 +1292,7 @@
       let strat30 = new Date(now.getTime()-30*24*60*60*1000).format('yyyy-MM-dd')
       let end30 = new Date().format('yyyy-MM-dd')
       return {
+        payOrderType: 'all',
         billExportflag: true,
         billExportText: '点击生成',
         billExportUrl: '',
@@ -3851,6 +3852,7 @@
         this.init()
       },
       payorderone(params){
+        this.payOrderType = 'one'
         this.payForm.paymentAmount = params.row.cost
         this.$http.get('information/zfconfirm.do',{params:{
            order: params.row.ordernumber,
@@ -3868,7 +3870,8 @@
                        this.payForm.cashCoupon = 0
                        this.payForm.cashCouponBalance = this.voucher
                      }
-                       this.showModal.payAffirm = true
+                      sessionStorage.setItem('orderStatus', JSON.parse(params.row.display)['类型'])
+                      this.showModal.payAffirm = true
                 } else{
                   this.$message.info({
                        content: res.data.message
@@ -3882,6 +3885,7 @@
           }).reduce((total, num) => {
            return total + num
         }, 0).toFixed(2)*/
+        this.payOrderType = 'all'
         this.payForm.paymentAmount = this.actualDelivery
         if (this.orderNumber.length != 0) {
           let orderNum = this.orderNumber.map(item => {
@@ -3937,10 +3941,12 @@
             }
         }
         let orderStatus = ''
-        this.orderNumber.forEach(item=>{
-          orderStatus += JSON.parse(item.display)['类型']
-        }) // 判断是否实时订单资源确定能否显示第三方支付
-        sessionStorage.setItem('orderStatus', orderStatus)
+        if (this.payOrderType == 'all') {
+          this.orderNumber.forEach(item=>{
+            orderStatus += JSON.parse(item.display)['类型']
+          }) // 判断是否实时订单资源确定能否显示第三方支付
+          sessionStorage.setItem('orderStatus', orderStatus)
+        }
         if (this.voucher > parseInt(this.payForm.paymentAmount)) {
           axios.get('information/payOrder.do', {
             params: paramsA
