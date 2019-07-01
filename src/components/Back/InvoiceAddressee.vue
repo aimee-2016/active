@@ -229,7 +229,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-import area from "../../options/area.json";
+import area from "../../options/area-all.json";
 import axios from "axios";
 export default {
   data () {
