@@ -281,8 +281,8 @@
             if(res.status == 200 && res.data.status == 1){
               this.zfbNum = res.data.serialNum;
               localStorage.setItem('serialNum',res.data.serialNum);
-              this.showModal.rechargeHint = true;
               window.open('https://zschj.xrcloud.net/yl/openYlb2cPay.do'); // 创建一个新窗口
+              this.showModal.rechargeHint = true;
             }
           })
       },
@@ -299,8 +299,8 @@
             if(res.status == 200 && res.data.status == 1){
                this.zfbNum = res.data.serialNum;
               localStorage.setItem('serialNum',res.data.serialNum);
-              this.showModal.rechargeHint = true;
               window.open('https://zschj.xrcloud.net/yl/openYlb2bPay.do'); // 创建一个新窗口
+               this.showModal.rechargeHint = true;
             }
           })
       },

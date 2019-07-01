@@ -310,17 +310,20 @@ import axios from 'axios';
       },
 
        // 个人网银支付
-      individualUnionPay(){
+       individualUnionPay(){
           axios.get('yl/ylb2cPay.do',{
             params:{
-              total_fee:this.input.toFixed(2),
+              total_fee:this.otherPayCount.toFixed(2),
+              orders: this.orderInfo.order,
+              ticket: this.orderInfo.ticket
             }
           }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
-              this.serialNum = res.data.serialNum
-              localStorage.setItem('serialNum', this.serialNum)
-              this.showModal.rechargeHint = true
-              window.open('https://zschj.xrcloud.net/yl/openYlb2cPay.do');
+              this.serialNum = res.data.serialNum;
+              localStorage.setItem('serialNum',res.data.serialNum);
+              this.showModal.rechargeHint = true;
+              window.open('https://zschj.xrcloud.net/yl/openYlb2cPay.do'); // 创建一个新窗口
+              this.showModal.rechargeHint = true;
             }
           })
       },
@@ -329,14 +332,16 @@ import axios from 'axios';
       enterpriseUnionPay(){
         axios.get('yl/ylb2bPay.do',{
             params:{
-              total_fee:this.input.toFixed(2),
+              total_fee:this.otherPayCount.toFixed(2),
+              orders: this.orderInfo.order,
+              ticket: this.orderInfo.ticket
             }
           }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
-            this.serialNum = res.data.serialNum
-            localStorage.setItem('serialNum', this.serialNum)
-            this.showModal.rechargeHint = true
-            window.open('https://zschj.xrcloud.net/yl/openYlb2bPay.do');
+               this.serialNum = res.data.serialNum;
+              localStorage.setItem('serialNum',res.data.serialNum);
+              window.open('https://zschj.xrcloud.net/yl/openYlb2bPay.do'); // 创建一个新窗口
+              this.showModal.rechargeHint = true;
             }
           })
       },

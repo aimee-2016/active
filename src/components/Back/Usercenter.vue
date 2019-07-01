@@ -654,7 +654,7 @@
       </div>
     </div>
     <!--选择两种认证方式-->
-    <Modal v-model="showModal.selectAuthType" width="550" :scrollable="true" style="top:172px">
+    <Modal v-model="showModal.selectAuthType" width="550" :mask-closable="false" :scrollable="true" style="top:172px">
       <div slot="header" class="modal-header-border">
         <span class="universal-modal-title"> 选择认证方式</span>
       </div>
@@ -686,7 +686,7 @@
     </Modal>
 
     <!--修改用户名-->
-    <Modal v-model="showModal.Modifyname" :scrollable="true" :closable="true" :width="500">
+    <Modal v-model="showModal.Modifyname" :mask-closable="false" :scrollable="true" :closable="true" :width="500">
       <p slot="header" class="modal-header-border">
         <span class="universal-modal-title">修改用户名</span>
       </p>
@@ -696,13 +696,13 @@
       </div>
       <p slot="footer" class="modal-footer-s">
         <Button @click="showModal.Modifyname = false">取消</Button>
-        <Button type="primary" @click="">确定</Button>
+        <Button type="primary">确定</Button>
         <!-- $router.push('/cashprocess') -->
       </p>
     </Modal>
 
     <!--注销账号弹窗-->
-    <Modal v-model="showModal.Cancellationaccount" :scrollable="true" :closable="false" :width="380">
+    <Modal v-model="showModal.Cancellationaccount" :mask-closable="false" :scrollable="true" :closable="false" :width="380">
       <p slot="header" class="modal-header-border">
         <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
         <span class="universal-modal-title">注销账号</span>
@@ -724,17 +724,20 @@
       </p>
       <div class="modal-content-s">
         <div>
-          <p class="lh24" style="font-size:14px;font-family:MicrosoftYaHei;color:rgba(51,51,51,1);line-height:24px;" v-if="userInfo.phone">
+          <p class="lh24" style="font-size:14px;font-family:MicrosoftYaHei;color:rgba(51,51,51,1);line-height:24px;" v-if="(userInfo.phone && !userInfo.loginname && paneStatus.usercenter !== 'certification') || (userInfo.phone && userInfo.loginname && paneStatus.usercenter !== 'certification')">
             为保障您的账户安全，我们将对您的注册手机{{userInfo.phone }}进行验证：
           </p>
-          <p class="lh24" style="font-size:14px;font-family:MicrosoftYaHei;color:rgba(51,51,51,1);line-height:24px;" v-else>
+          <p class="lh24" style="font-size:14px;font-family:MicrosoftYaHei;color:rgba(51,51,51,1);line-height:24px;" v-if="!userInfo.phone && paneStatus.usercenter !== 'certification' && userInfo.loginname">
+            为保障您的账户安全，我们将对您的注册邮箱{{userInfo.loginname }}进行验证：
+          </p>
+          <p class="lh24" style="font-size:14px;font-family:MicrosoftYaHei;color:rgba(51,51,51,1);line-height:24px;" v-if="!userInfo.phone && userInfo.loginname && paneStatus.usercenter == 'certification'">
             为保障您的账户安全，请进行手机验证：
           </p>
         </div>
       </div>
       <div class="modal-content-s">
         <Form ref="cashverification" label-position="left" :model="formCustom" :rules="ruleCustom" style="width: 500px;">
-          <FormItem prop="VerificationPhone" v-if="!userInfo.phone">
+          <FormItem prop="VerificationPhone" v-if="!userInfo.phone && paneStatus.usercenter == 'certification'">
             <Input v-model="formCustom.VerificationPhone" placeholder="请输入手机号码" style="width: 300px;"></Input>
           </FormItem>
           <FormItem prop="Verificationcode">
@@ -773,7 +776,7 @@
     </Modal>
 
     <!-- 更换头像 -->
-    <Modal v-model="showModal.setHeadPhoto" width="550" :scrollable="true">
+    <Modal v-model="showModal.setHeadPhoto" width="550" :mask-closable="false" :scrollable="true">
       <p slot="header" class="modal-header-border">
         <span class="universal-modal-title">头像设置</span>
       </p>
@@ -829,7 +832,7 @@
 
 
     <!-- 设置新密码 -->
-    <Modal v-model="showModal.setNewPassword" width="550" :scrollable="true">
+    <Modal v-model="showModal.setNewPassword" width="550" :mask-closable="false" :scrollable="true">
       <p slot="header" class="modal-header-border">
         <span class="universal-modal-title">设置密码</span>
       </p>
@@ -887,7 +890,7 @@
       </div>
     </Modal>
     <!--修改密码-->
-    <Modal width="550" v-model="showModal.modifyPassword" :scrollable="true">
+    <Modal width="550" v-model="showModal.modifyPassword" :mask-closable="false" :scrollable="true">
       <p slot="header" class="modal-header-border">
         <span class="universal-modal-title">重置账户密码</span>
       </p>
@@ -915,7 +918,7 @@
       </div>
     </Modal>
     <!-- 修改手机号码验证 -->
-    <Modal v-model="showModal.ModifyTelVail" width="550" :scrollable="true">
+    <Modal v-model="showModal.ModifyTelVail" width="550" :mask-closable="false" :scrollable="true">
       <p slot="header" class="modal-header-border">
         <span class="universal-modal-title">修改手机号码</span>
       </p>
@@ -941,7 +944,7 @@
       </div>
     </Modal>
     <!-- 绑定手机 -->
-    <Modal v-model="showModal.bindingMobilePhone" width="550" :scrollable="true">
+    <Modal v-model="showModal.bindingMobilePhone" width="550" :mask-closable="false" :scrollable="true">
       <p slot="header" class="modal-header-border">
         <span class="universal-modal-title">设置手机号码</span>
       </p>
@@ -1028,7 +1031,7 @@
     </Modal>
 
     <!-- 绑定邮箱 -->
-    <Modal v-model="showModal.bindingEmail" width="550" :scrollable="true">
+    <Modal v-model="showModal.bindingEmail" width="550" :mask-closable="false" :scrollable="true">
       <p slot="header" class="modal-header-border">
         <span class="universal-modal-title">设置邮箱</span>
       </p>
@@ -1092,7 +1095,7 @@
     </Modal>
 
     <!--添加联系人-->
-    <Modal width="550" v-model="showModal.addLinkman" :scrollable="true">
+    <Modal width="550" v-model="showModal.addLinkman" :mask-closable="false" :scrollable="true">
       <p slot="header" class="modal-header-border">
         <span class="universal-modal-title">添加联系人</span>
       </p>
@@ -1116,7 +1119,7 @@
       </div>
     </Modal>
     <!-- 修改联系人 -->
-    <Modal width="550" v-model="showModal.updateLinkman" :scrollable="true">
+    <Modal width="550" v-model="showModal.updateLinkman" :mask-closable="false" :scrollable="true">
       <p slot="header" class="modal-header-border">
         <span class="universal-modal-title">修改联系人</span>
       </p>
@@ -1141,7 +1144,7 @@
     </Modal>
 
     <!--密钥手机验证-->
-    <Modal width="550" v-model="showModal.keyPhoneVal" :scrollable="true">
+    <Modal width="550" v-model="showModal.keyPhoneVal" :mask-closable="false" :scrollable="true">
       <p slot="header" class="modal-header-border">
         <span class="universal-modal-title">提示</span>
       </p>
@@ -1175,7 +1178,7 @@
       </div>
     </Modal>
     <!-- 修改手机号码(身份证验证) -->
-    <Modal v-model="showModal.modifyPhoneID" width="550" :scrollable="true">
+    <Modal v-model="showModal.modifyPhoneID" width="550" :mask-closable="false" :scrollable="true">
       <p slot="header" class="modal-header-border">
         <span class="universal-modal-title">修改手机号码</span>
       </p>
@@ -1322,7 +1325,7 @@
       </div>
     </Modal>
     <!--显示图片-->
-    <Modal width="550" v-model="showModal.showPicture" :scrollable="true">
+    <Modal width="550" v-model="showModal.showPicture" :mask-closable="false" :scrollable="true">
       <div class="newPhone">
         <img src="../../assets/img/usercenter/combine.jpg" style="width:330px;height:450px;margin:0px auto;display:block">
       </div>
@@ -1330,7 +1333,7 @@
       </div>
     </Modal>
 
-     <Modal width="550" v-model="showModal.showPersonPicture" :scrollable="true">
+     <Modal width="550" v-model="showModal.showPersonPicture" :mask-closable="false" :scrollable="true">
       <div class="newPhone">
         <img src="../../assets/img/usercenter/person-hand.png" style="width:349px;height:369px;margin:0px auto;display:block">
       </div>
@@ -4246,7 +4249,7 @@
       },
       //短信验证码
       getPhoneCode(codeType) {
-        if(!this.userInfo.phone && !this.regExpObj.phone.test(this.formCustom.VerificationPhone)){
+        if(!this.userInfo.phone &&this.paneStatus.usercenter == 'certification' && !this.regExpObj.phone.test(this.formCustom.VerificationPhone)){
           this.$Message.info('请输入正确的手机号')
           return
         }
@@ -4269,7 +4272,7 @@
                     }
                     axios.get(url, {
                       params: {
-                        aim: this.userInfo.phone ? this.userInfo.phone : this.formCustom.VerificationPhone,
+                        aim: this.formCustom.VerificationPhone,
                         isemail: 0,
                         vailCode: this.formCustom.Verificationcode
                       }
@@ -4306,17 +4309,27 @@
               var url = ''
               if (codeType == 'code' || codeType == 'againCode' && this.formCustom.newCodeText == '获取验证码') {
                 url = 'user/code.do'
-              } else if (codeType == 'voice' && this.formCustom.newCodeText == '获取验证码') {
+              } else if (codeType == 'voice' && this.formCustom.newCodeText == '获取验证码' && this.userInfo.phone) {
                 url = 'user/voiceCode.do'
               } else {
                 return false
               }
-              axios.get(url, {
-                params: {
-                  aim: this.userInfo.phone ? this.userInfo.phone : this.formCustom.VerificationPhone,
-                  isemail: 0,
+              let params = {}
+              if(this.userInfo.phone){
+                params = {
+                  aim: this.userInfo.phone,
+                  isemail: '0',
                   vailCode: this.formCustom.Verificationcode
                 }
+              } else {
+                params ={
+                  aim: this.userInfo.loginname,
+                  isemail: '1',
+                  vailCode: this.formCustom.Verificationcode
+                }
+              }
+              axios.get(url, {
+                params: params
               }).then(response => {
                 // 发送成功，进入倒计时
                 if (response.status == 200 && response.data.status == 1) {
@@ -4346,10 +4359,25 @@
         this.$refs.cashverification.validateField('messagecode', (text) => {
           if (text == '') {
             let url = 'user/judgeCode.do'
-            let params = {
-              aim: this.userInfo.phone ? this.userInfo.phone : this.formCustom.VerificationPhone,
-              isemail: 0,
-              code: this.formCustom.messagecode
+            let params = {}
+            if(this.formCustom.VerificationPhone){
+              params = {
+                  aim: this.formCustom.VerificationPhone,
+                  isemail: 0,
+                  code: this.formCustom.messagecode
+              }
+            } else if(!this.formCustom.VerificationPhone && this.userInfo.phone){
+               params = {
+                  aim: this.userInfo.phone,
+                  isemail: 0,
+                  code: this.formCustom.messagecode
+              }
+            } else if(!this.formCustom.VerificationPhone && !this.userInfo.phone){
+               params = {
+                  aim: this.userInfo.loginname,
+                  isemail: 1,
+                  code: this.formCustom.messagecode
+              }
             }
             axios.get(url, {
               params
