@@ -6,13 +6,13 @@
         <span>订单确认</span>
         <button style="float:right" class="button" @click="$router.go(-1)">返回</button>
         <div class="order_text"
-             v-if="routerName == '新建云主机' || routerName =='续费' || routerName == '新建云硬盘' || routerName == '磁盘升级' || routerName == '新建GPU云服务器' || routerName == '系统盘扩容'">
+             v-if="isTitleHide">
           <div>
             <p>请确保当前选择安全组开放22端口和ICMP协议，否则无法远程登录和PING云服务器</p>
-            <p v-if="routerName == '新建云主机'" style="margin-top:10px;">当前黑龙江、内蒙古、山东三地暂时无法提供域名备案，您可以选择邻省进行备案</p>
-            <p style="margin-top:10px;">请牢记您所设置的密码，如遗忘可登录云服务器控制台重置密码。<a class="blue_font" href="/support_docs/kiRWuMFJd_kmKQJcCNq.html" target="_blank" >查看</a></p>
-            <p style="margin-top:10px;" v-if="isNotBuyDisk || routerName == '新建云硬盘'">云服务器购买成功后，数据盘默认是未挂载的情况，需要自行格式化硬盘后，挂载分区后才能在云服务器内看到。<a class="blue_font" href="support_docs/kieLofe4O_3BKrwYD0i.html" target="_blank">查看windows如何格式化、</a><a class="blue_font" href="/support_docs/kieLofe4O_l455ekGff.html" target="_blank">Linux如何格式化</a></p>
-            <p style="margin-top:10px;" v-if="routerName == '系统盘扩容'">若您购买了额外的系统盘，默认为未分区状态，需要自行扩容文件系统之后使用。<a class="blue_font" href="/support_docs/kiRWuMFJd_14u6nDwUP8.html" target="_blank">查看如何扩容windows文件系统、</a><a class="blue_font" href="/support_docs/kiRWuMFJd_14usXqMEji.html" target="_blank">扩容Linux文件系统</a></p>
+            <p v-if="routerName == '新建云主机'" class="o-fm">当前黑龙江、内蒙古、山东三地暂时无法提供域名备案，您可以选择邻省进行备案</p>
+            <p class="o-fm">请牢记您所设置的密码，如遗忘可登录云服务器控制台重置密码。<a class="blue_font" href="/support_docs/kiRWuMFJd_kmKQJcCNq.html" target="_blank" >查看</a></p>
+            <p class="o-fm" v-if="isNotBuyDisk || routerName == '新建云硬盘'">云服务器购买成功后，数据盘默认是未挂载的情况，需要自行格式化硬盘后，挂载分区后才能在云服务器内看到。<a class="blue_font" href="support_docs/kieLofe4O_3BKrwYD0i.html" target="_blank">查看windows如何格式化、</a><a class="blue_font" href="/support_docs/kieLofe4O_l455ekGff.html" target="_blank">Linux如何格式化</a></p>
+            <p class="o-fm" v-if="routerName == '系统盘扩容'">若您购买了额外的系统盘，默认为未分区状态，需要自行扩容文件系统之后使用。<a class="blue_font" href="/support_docs/kiRWuMFJd_14u6nDwUP8.html" target="_blank">查看如何扩容windows文件系统、</a><a class="blue_font" href="/support_docs/kiRWuMFJd_14usXqMEji.html" target="_blank">扩容Linux文件系统</a></p>
           </div>
         </div>
         <div class="selectMark">
@@ -876,6 +876,15 @@ export default {
         return "SSL证书购买";
       }
     },
+
+    isTitleHide(){
+      if(this.routerName == '新建云主机' || this.routerName =='续费' || this.routerName == '新建云硬盘' || this.routerName == '磁盘升级' || this.routerName == '新建GPU云服务器' || this.routerName == '系统盘扩容'){
+        return true;
+      }else{
+        return false;
+      }
+    },
+    
     // 待优化
     vipPrice() {
       if (this.vipName != "" || this.vipName != undefined) {
@@ -1295,5 +1304,8 @@ export default {
 .blue_font {
   color: #2a99f2;
   cursor: pointer;
+}
+.o-fm{
+  margin-top: 10px;
 }
 </style>

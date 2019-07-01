@@ -546,7 +546,7 @@
               type="drag"
               :show-upload-list="false"
               :with-credentials="true"
-              action="https://zschj.xrcloud.net/file/upFile.do"
+              action="file/upFile.do"
               :format="['jpg','jpeg','png']"
               :on-success="cardSuccess"
               :on-format-error="cardFormatError"
@@ -583,7 +583,7 @@
               type="drag"
               :show-upload-list="false"
               :with-credentials="true"
-              action="https://zschj.xrcloud.net/file/upFile.do"
+              action="file/upFile.do"
               :format="['jpg','jpeg','png']"
               :on-success="cardBackSuccess"
               :on-format-error="cardBackFormatError"
@@ -764,7 +764,7 @@
         <div class="updates">
           <div style="width:100%;text-align: center;" v-if="hostUnitList.status =='初审拒绝'|| hostUnitList.status =='管局审核拒绝' ">
             <p class="hide-text" v-if="hostUnitList.otherdataurl==''">暂无其他文件信息</p>
-            <div style="margin-top:10px;width:300px;display:inline-block;" v-else>
+            <div style="margin-top:10px;max-width:300px;display:inline-block;" v-else>
               <p style="line-height: 20px;">
                 <img style="width:100%;height:100%;" :src="hostUnitList.otherdataurl">
               </p>
@@ -774,7 +774,7 @@
               type="drag"
               :show-upload-list="false"
               :with-credentials="true"
-              action="https://zschj.xrcloud.net/file/upFile.do"
+              action="file/upFile.do"
               :on-success="otherFileSuccess"
               :on-format-error="otherFormatError"
               :before-upload="otherBeforeUpload">
