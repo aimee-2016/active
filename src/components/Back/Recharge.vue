@@ -313,15 +313,12 @@ import axios from 'axios';
        individualUnionPay(){
           axios.get('yl/ylb2cPay.do',{
             params:{
-              total_fee:this.otherPayCount.toFixed(2),
-              orders: this.orderInfo.order,
-              ticket: this.orderInfo.ticket
+              total_fee:this.input
             }
           }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
               this.serialNum = res.data.serialNum;
               localStorage.setItem('serialNum',res.data.serialNum);
-              this.showModal.rechargeHint = true;
               window.open('https://www.xrcloud.net/yl/openYlb2cPay.do'); // 创建一个新窗口
               this.showModal.rechargeHint = true;
             }
@@ -332,9 +329,7 @@ import axios from 'axios';
       enterpriseUnionPay(){
         axios.get('yl/ylb2bPay.do',{
             params:{
-              total_fee:this.otherPayCount.toFixed(2),
-              orders: this.orderInfo.order,
-              ticket: this.orderInfo.ticket
+              total_fee:this.input
             }
           }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
