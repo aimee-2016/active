@@ -284,7 +284,7 @@ import axios from 'axios';
               if (res.data.status == 1 && res.status == 200) {
                 this.serialNum = res.data.serialNum
                 localStorage.setItem('serialNum', this.serialNum)
-                window.open(null,'alipay').location.href = `https://zschj.xrcloud.net/zfb/alipaypage.do?serialNum=${this.serialNum}&route=rechargeResult`
+                window.open(null,'alipay').location.href = `https://www.xrcloud.net/zfb/alipaypage.do?serialNum=${this.serialNum}&route=rechargeResult`
                 this.showModal.rechargeHint = true
               } else {
                 this.$message.info({
@@ -320,7 +320,7 @@ import axios from 'axios';
               this.serialNum = res.data.serialNum;
               localStorage.setItem('serialNum',res.data.serialNum);
               this.showModal.rechargeHint = true;
-              window.open('https://zschj.xrcloud.net/yl/openYlb2cPay.do'); // 创建一个新窗口
+              window.open('https://www.xrcloud.net/yl/openYlb2cPay.do'); // 创建一个新窗口
               this.showModal.rechargeHint = true;
             }
           })
@@ -336,7 +336,7 @@ import axios from 'axios';
             if(res.status == 200 && res.data.status == 1){
                this.serialNum = res.data.serialNum;
               localStorage.setItem('serialNum',res.data.serialNum);
-              window.open('https://zschj.xrcloud.net/yl/openYlb2bPay.do'); // 创建一个新窗口
+              window.open('https://www.xrcloud.net/yl/openYlb2bPay.do'); // 创建一个新窗口
               this.showModal.rechargeHint = true;
             }
           })
