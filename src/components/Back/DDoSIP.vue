@@ -162,6 +162,10 @@
                                     <Button type="primary" style="width:84px;">查询</Button>
                                 </div>
                             </div>
+                            <div class="selectMark">
+                                    <img src="../../assets/img/host/h-icon10.png"/>
+                                    <span>共 {{ businessData.length }} 项 | 已选择 <span style="color:#FF624B;">{{ overviewSelect.length }} </span>项</span><span style="margin-left:10px;">总价:</span><span style="color:#FF624B;">￥0.00</span>
+                            </div>
                             <Table :columns="businessList" :data="businessData"></Table>
                             <div class="dp-page">
                                 <span>总共{{businessData.length}}个项目</span>
@@ -433,7 +437,7 @@ components: { expandRow },
                 align: "center"
             },
             {
-                key:'套餐ID',
+                key:'packageid',
                 title:'套餐ID',
                 render:(h,params)=>{
                     return h('span',{
@@ -445,7 +449,7 @@ components: { expandRow },
                 }
             },
             {
-                key:'套餐类型',
+                key:'packagename',
                 title:'套餐类型'
             },
             {
@@ -453,7 +457,7 @@ components: { expandRow },
                 title:'有效期'
             },
             {
-                key:'购买日期',
+                key:'createtime',
                 title:'购买日期'
             },
             {
@@ -855,11 +859,41 @@ components: { expandRow },
          ]
     };
   },
+  created(){
+      this.getDdosOverview();
+      this.getDomainList();
+  },
   methods:{
     //   套餐表格选项切换
       overviewTableChange(list){
           this.overviewSelect = list;
-      }
+      },
+    //  获取套餐
+      getDdosOverview(){
+          this.$http.get('ddosImitationIp/ddospackage.do',{}).then(res=>{
+              if(res.status == 200 && res.data.status == 1){
+                this.overviewData = res.data.result;
+              }else{
+                  this.$Message.info(res.data.message);
+              }
+          }).catch(err =>{
+              
+          })           
+      },
+
+    // 获取网站业务
+    getDomainList(){
+        this.$http.get('ddosImitationIp/QueryAlldomain.do',{
+            params:{
+                page:'1',
+                pageSize:'10'
+            }
+        }).then(res => {
+            if(res.status == 200 && res.data.status == 1){
+                this.domainData = res.data.result;
+            }
+        })
+    },
   }
 };
 </script>
