@@ -376,7 +376,7 @@
           </my-carousel>
         </div>
       </div>
-    </div> -->
+    </div> 
     <div class="require" ref="require">
       <div class="wrap">
         <div class="header-g">
@@ -394,6 +394,34 @@
               </span>
             </div>
             <span>{{item.desc}}</span>
+          </div>
+        </div>
+      </div>
+    </div>-->
+    <!-- 合作案列 -->
+    <div class="cooperation-case">
+      <div class="wrap">
+        <div class="header-g">
+          <p class="title" style="padding-bottom: 0">合作案例</p>
+        </div>
+        <div class="solution-content clearfix">
+          <div class="solution-container clearfix">
+            <div class="solution-wrapper clearfix">
+              <div class="solution-slide" :class="{open: index === cooperationCaseIndex}" v-for="(item,index) in cooperationCaseList" :key="index" @click="cooperationCaseIndex = index">
+                <div class="solution-card-bg">
+                  <img :src="item.imgurl" />
+                </div>
+                <div class="solution-card-collapse"></div>
+                <div class="solution-card-open"></div>
+              </div>
+            </div>
+          </div>
+          <div class="solution-ctrl">
+            <div class="solution-ctrl-bg">
+            </div>
+            <div class="solution-ctrl-arrow">
+              <span></span>
+            </div>
           </div>
         </div>
       </div>
@@ -1173,7 +1201,31 @@
             left: '430px',
             online: false
           }
-        ]
+        ],
+        cooperationCaseList:[
+          {
+            imgurl: require("../../assets/img/home/case_bg1.png")
+          },
+          {
+            imgurl: require("../../assets/img/home/case_bg2.png")
+          },
+          {
+            imgurl: require("../../assets/img/home/case_bg3.png")
+          },
+          {
+            imgurl: require("../../assets/img/home/case_bg4.png")
+          },
+          {
+            imgurl: require("../../assets/img/home/case_bg5.png")
+          },
+          {
+            imgurl: require("../../assets/img/home/case_bg6.png")
+          },
+          {
+            imgurl: require("../../assets/img/home/case_bg7.png")
+          }
+        ],
+        cooperationCaseIndex: 0
       }
     },
     mounted() {
@@ -1207,23 +1259,23 @@
       //     window.removeEventListener('scroll', this.scrollFn)
       //   }
       // })
-      this.scrollFn = throttle(200, () => {
-        let height = document.body.clientHeight - this.$refs.require.offsetTop + window.scrollY || window.pageYOffset
-        if (height > 300) {
-          this.requireData.forEach((item, index) => {
-            this.$set(item, 'isShow', 'once')
-          })
-          this.requireflag = true
-        }
-        if ((height > 1200 || height < 300) && this.requireflag == true) {
-          window.removeEventListener('scroll', this.scrollFn)
-          this.requireData.forEach((item, index) => {
-            this.$set(item, 'isShow', 'static')
-          })
-        }
-      })
-      this.scrollFn()
-      window.addEventListener('scroll', this.scrollFn)
+      // this.scrollFn = throttle(200, () => {
+      //   let height = document.body.clientHeight - this.$refs.require.offsetTop + window.scrollY || window.pageYOffset
+      //   if (height > 300) {
+      //     this.requireData.forEach((item, index) => {
+      //       this.$set(item, 'isShow', 'once')
+      //     })
+      //     this.requireflag = true
+      //   }
+      //   if ((height > 1200 || height < 300) && this.requireflag == true) {
+      //     window.removeEventListener('scroll', this.scrollFn)
+      //     this.requireData.forEach((item, index) => {
+      //       this.$set(item, 'isShow', 'static')
+      //     })
+      //   }
+      // })
+      // this.scrollFn()
+      // window.addEventListener('scroll', this.scrollFn)
 
     },
     created() {
@@ -3356,5 +3408,206 @@
 
   .w_button:hover {
     box-shadow: 0px 2px 2px 1px #881411;
+  }
+  .cooperation-case{
+    .wrap{
+      .solution-content{
+        height: 360px;
+        .solution-container{
+          height: 100%;
+          width: 1040px;
+          float: left;
+          cursor: pointer;
+          overflow: hidden;
+          .solution-wrapper{
+            position: relative;
+            height: 100%;
+            white-space: nowrap;
+            .solution-slide{
+                display: inline-block;
+                position: relative;
+                height: 100%;
+                transition: width 0.4s ease;
+                width: 160px;
+                background-repeat: no-repeat;
+                background-position: center top;
+                background-size: cover;
+                overflow: hidden;
+                vertical-align: top;
+                white-space: normal;
+                &:hover .solution-card-bg{
+                  -ms-transform: scale(1.1);
+                  transform: scale(1.1);
+                  &::after{
+                    opacity: 0.7;
+                  }
+                }
+                .solution-card-bg {
+                  position: relative;
+                  width: 100%;
+                  height: 100%;
+                  transition: 0.2s;
+                  &::after{
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    bottom: 0;
+                    left: 0;
+                    background-color: #030725;
+                    opacity: 0.8;
+                    transition: 0.2s;
+                  }
+                  img{
+                    display: block;
+                    position: absolute;
+                    top: -10000px;
+                    right: -10000px;
+                    bottom: -10000px;
+                    left: -10000px;
+                    height: 100%;
+                    margin: auto;
+                  }
+                }
+                .solution-card-collapse{
+                  position: absolute;
+                  top: 0;
+                  right: 0;
+                  bottom: 0;
+                  left: 0;
+                  cursor: pointer;
+                  transition: 0.5s;
+                }
+                .solution-card-open{
+                  position: absolute;
+                  top: 0;
+                  right: 0;
+                  bottom: 0;
+                  left: 0;
+                  cursor: pointer;
+                  opacity: 0;
+                  transition: 0.5s;
+                }
+                &.open{
+                  transition: width 0.4s ease;
+                  width: 560px;
+                  .solution-card-bg{
+                    &::after{
+                      opacity: 0.8;
+                  }
+                  }
+                  &:hover .solution-card-bg{
+                  -ms-transform: scale(1);
+                  transform: scale(1);
+                  &::after{
+                    opacity: 0.8;
+                  }
+                }
+                }
+            }
+          }
+        }
+      }
+      .solution-ctrl{
+        height: 100%;
+        width: 160px;
+        float: left;
+        color: #fff;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        .solution-ctrl-bg{
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          background-image: url("../../assets/img/home/case_bg8.png");
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: cover;
+          transition: 0.2s;
+          &:hover{
+            -ms-transform: scale(1.1);
+            transform: scale(1.1);
+            &::after{
+              opacity: 0.7;
+            }
+          }
+          &::after{
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-color: #030725;
+            opacity: 0.8;
+            transition: 0.2s;
+          }
+        }
+        .solution-ctrl-arrow{
+          display: block;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 20px;
+          height: 28px;
+          margin-left: -10px;
+          margin-top: -14px;
+          opacity: 0.5;
+          transition: 0.2s;
+          transform: rotateY(0);
+          animation: solution-arrow-flash 0.6s ease-in infinite alternate;
+          span{
+            display: block;
+            width: 28px;
+            height: 28px;
+            margin-left: -12px;
+            -ms-transform: rotate(135deg);
+            transform: rotate(135deg);
+            &::before{
+              content: "";
+              display: block;
+              width: 100%;
+              border-top: solid 4px;
+              border-radius: 2px;
+            }
+            &::after{
+              content: "";
+              display: block;
+              width: 4px;
+              height: 100%;
+              border-right: solid 4px;
+              border-radius: 2px;
+              margin-top: -4px;
+            }
+          }
+        }
+        &:hover{
+          .solution-ctrl-arrow{
+            animation: none;
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+  @keyframes solution-arrow-flash {
+      0% {
+          opacity: 0.3;
+      }
+
+      100% {
+          opacity: 1;
+      }
+  }
+  .clearfix{
+    ::after{ 
+      content: '';
+      display: block; 
+      clear:both; 
+      zoom : 1
+    }
   }
 </style>
