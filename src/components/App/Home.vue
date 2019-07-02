@@ -1276,7 +1276,7 @@
         ],
         // 合作案例展开项
         cooperationCaseOpenIndex: 0,
-        // 显示的合作案例第一项下表
+        // 显示的合作案例第一项下标
         cooperationCaseLeftIndex: 0
       }
     },
