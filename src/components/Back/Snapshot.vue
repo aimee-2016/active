@@ -2004,6 +2004,7 @@
                 duration: 5
               })
             } else{
+              this.listsnaps()
               this.$message.info({
                 content: response.data.message
               })
