@@ -376,7 +376,7 @@
           </my-carousel>
         </div>
       </div>
-    </div> -->
+    </div> 
     <div class="require" ref="require">
       <div class="wrap">
         <div class="header-g">
@@ -394,6 +394,48 @@
               </span>
             </div>
             <span>{{item.desc}}</span>
+          </div>
+        </div>
+      </div>
+    </div>-->
+    <!-- 合作案列 -->
+    <div class="cooperation-case">
+      <div class="wrap">
+        <div class="header-g">
+          <p class="title" style="padding-bottom: 0">合作案例</p>
+        </div>
+        <div class="solution-content clearfix">
+          <div class="solution-container clearfix">
+            <div class="solution-wrapper clearfix" ref="solutionCase">
+              <div class="solution-slide" :class="{open: index === cooperationCaseOpenIndex}" v-for="(item,index) in cooperationCaseList" :key="index" @click="cooperationCaseOpenIndex = index">
+                <div class="solution-card-bg">
+                  <img :src="item.imgurl" />
+                </div>
+                <div class="solution-card-collapse" v-show="index !== cooperationCaseOpenIndex">
+                  <div class="collapse-close">
+                    <p>{{ item.title}}</p>
+                    <p class="across">—</p>
+                    <p>{{ item.company}}</p>
+                  </div>
+                </div>
+                <div class="solution-card-open" v-show="index === cooperationCaseOpenIndex">
+                  <div>
+                    <h4>{{ item.casetitle }}</h4>
+                    <p>项目背景</p>
+                    <span>{{ item.background }}</span>
+                    <p>解决方案</p>
+                    <span>{{ item.discription }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="solution-ctrl" @click="changeCase">
+            <div class="solution-ctrl-bg">
+            </div>
+            <div class="solution-ctrl-arrow" :class="{aleft: cooperationCaseLeftIndex === 3}">
+              <span></span>
+            </div>
           </div>
         </div>
       </div>
@@ -1173,7 +1215,69 @@
             left: '430px',
             online: false
           }
-        ]
+        ],
+        cooperationCaseList:[
+          {
+            imgurl: require("../../assets/img/home/case_bg1.png"),
+            title: '大数据营销云案例',
+            company: '网娱互动',
+            casetitle: '大数据营销云案例—网娱互动',
+            background: '网娱互动科技（北京）股份有限公司是一家专注于提供自动化营销解决方案的服务商。网娱互动的大数据定位主要是通过大数据来解决传播相关的问题。通过每日从互联网上采集大量的数据，帮助企业解决用户洞察相关研究和分析。随着业务的发展，运维成本高、部署难、扩容问题亟待解决。',
+            discription: '在项目建设中，采用新睿云的弹性云服务器，在云服务器中部署爬虫环境。通过云服务器的镜像或快照功能快速创建多个环境一致的ECS实例。同时云上资源支持弹性扩容，可根据业务高峰自由收缩，提高整体运维效率和可靠性。'
+          },
+          {
+            imgurl: require("../../assets/img/home/case_bg2.png"),
+            title: '企业ERP系统云案例 ',
+            company: '珠峰时代',
+            casetitle: '企业ERP系统云案例—珠峰时代',
+            background: '北京珠峰时代科技有限公司的金蝶K3是一款ERP软件。ERP系统是一个在全公司范围内应用的、高度集成的系统。其集物资、财务、人力、信息等资源管理于一体，实现进、销、存、生产和财务相结合。金蝶想利用云计算等新技术，打破财务与业务之间的围墙，让数据从单一的财务系统、会计软件、财务软件、进销存管理软件等软件系统从孤岛中脱离出来，让信息快速流动。',
+            discription: '针对系统的应用需求，新睿云为珠峰时代提供了企业ERP系统解决方案，通过高性能的云主机、高带宽及大容量的系统盘等，完成数据存储、系统整合、弹性扩容等功能，从而降低企业运营成本、缩短产品研发生产周期。'
+          },
+          {
+            imgurl: require("../../assets/img/home/case_bg3.png"),
+            title: '游戏开发测试案例',
+            company: '元年科技',
+            casetitle: '游戏开发测试案例—元年科技',
+            background: '北京元年诺亚舟咨询有限公司专注于以管理会计为核心的管理咨询和管理信息化领域。业务平台要实现共享中心建设和企业商城一体化的云端应用产品解决方案。该公司需要开发并测试游戏业务，对服务器运算能力、IO能力和稳定性有要求，且测试需要大量部署环境。',
+            discription: '根据元年科技的产品需求，新睿云提供内存优化型云服务器、高带宽、大容量系统盘等产品，出色完成了游戏开发测试过程。'
+          },
+          {
+            imgurl: require("../../assets/img/home/case_bg4.png"),
+            title: '建站案例',
+            company: '艾特菲',
+            casetitle: '建站案例--艾特菲',
+            background: '西安艾特菲信息技术有限公司需要建立一个网站，用于网上点餐。建站包括网站准备、部署、运维、运营等步骤，如何保障网站安全稳定运行及数据存储问题随之而来。',
+            discription: '新睿云推出的网站解决方案为西安艾特菲信息技术有限公司实现灵活弹性自动化的基础IT设施建设、按需付费的服务模式以及0成本运维服务体系。网站服务器搭建灵活，支持弹性伸缩扩容，可轻松应对业务访问高峰。'
+          },
+          {
+            imgurl: require("../../assets/img/home/case_bg5.png"),
+            title: '企业办公系统案例',
+            company: '汇融通信',
+            casetitle: '企业办公系统案例--汇融通信',
+            background: '苏州汇融信息工程有限公司需要建立公司办公系统，峰值100人左右，涉及部门上传及下载工作，且下载内容不超过1G。',
+            discription: '新睿云推出企业办公系统解决方案，搭配标准型云服务器及SATA数据盘，实现硬件资源弹性化分配，可根据企业需求划分或释放不同的虚拟资源。'
+          },
+          {
+            imgurl: require("../../assets/img/home/case_bg6.png"),
+            title: '电子商务服务平台案例',
+            company: '神秘绿泉',
+            casetitle: '电子商务服务平台案例--神秘绿泉',
+            background: '重庆神秘绿泉文化传播有限责任公司需要构建高效的订单分发平台，可以快速处理商务订单，推动公司的发展及扩展更多的业务量。',
+            discription: '新睿云的电子商务服务平台云解决方案，提供标准型云服务器，对订单的数据服务、仓储作业、库存分配、作业调度、订单转移、报表平台等模块自动化匹配，大大提高业务作业效率。'
+          },
+          {
+            imgurl: require("../../assets/img/home/case_bg7.png"),
+            title: '建材行业软件部署案例',
+            company: '软宝科技',
+            casetitle: '建材行业软件部署案例--软宝科技',
+            background: '襄阳软宝信息科技有限公司针对建材行业要构建云售后服务管理系统，针对售后服务部门人员使用，解决企业售后服务的派工、签到、记录、凭借等流程问题，提高售后服务效率。。',
+            discription: '云售后服务管理系统采用新睿云的云服务技术，通过内存优化型云服务器，加上高带宽网络， 助力完成售后服务闭环，打通用户、企业关联，有效提升企业竞争力。'
+          }
+        ],
+        // 合作案例展开项
+        cooperationCaseOpenIndex: 0,
+        // 显示的合作案例第一项下表
+        cooperationCaseLeftIndex: 0
       }
     },
     mounted() {
@@ -1207,28 +1311,29 @@
       //     window.removeEventListener('scroll', this.scrollFn)
       //   }
       // })
-      this.scrollFn = throttle(200, () => {
-        let height = document.body.clientHeight - this.$refs.require.offsetTop + window.scrollY || window.pageYOffset
-        if (height > 300) {
-          this.requireData.forEach((item, index) => {
-            this.$set(item, 'isShow', 'once')
-          })
-          this.requireflag = true
-        }
-        if ((height > 1200 || height < 300) && this.requireflag == true) {
-          window.removeEventListener('scroll', this.scrollFn)
-          this.requireData.forEach((item, index) => {
-            this.$set(item, 'isShow', 'static')
-          })
-        }
-      })
-      this.scrollFn()
-      window.addEventListener('scroll', this.scrollFn)
+      // this.scrollFn = throttle(200, () => {
+      //   let height = document.body.clientHeight - this.$refs.require.offsetTop + window.scrollY || window.pageYOffset
+      //   if (height > 300) {
+      //     this.requireData.forEach((item, index) => {
+      //       this.$set(item, 'isShow', 'once')
+      //     })
+      //     this.requireflag = true
+      //   }
+      //   if ((height > 1200 || height < 300) && this.requireflag == true) {
+      //     window.removeEventListener('scroll', this.scrollFn)
+      //     this.requireData.forEach((item, index) => {
+      //       this.$set(item, 'isShow', 'static')
+      //     })
+      //   }
+      // })
+      // this.scrollFn()
+      // window.addEventListener('scroll', this.scrollFn)
 
     },
     created() {
       this.getnews()
       this.getlinkList()
+      this.getCooperationCase()
     },
     methods: {
       init() {
@@ -1360,6 +1465,27 @@
       /* 切换banner */
       change(activeIndex) {
         this.activeBanner = activeIndex + 1
+      },
+      // 切换合作案例
+      changeCase(){
+        if(this.cooperationCaseLeftIndex === 3){ // 展示到最后项 不能再左移了
+          this.cooperationCaseLeftIndex -= 3
+          if(this.cooperationCaseOpenIndex > 3 ){
+             this.cooperationCaseOpenIndex = 0  
+          }
+        } else {
+          this.cooperationCaseLeftIndex += 3
+          this.cooperationCaseOpenIndex = 3  
+        }
+         this.$refs.solutionCase.style.transform = 'translateX(' + this.cooperationCaseLeftIndex * -160 + 'px)'
+      },
+      getCooperationCase(){
+        let url = '/nVersionUser/getCloudCooperationCase.do'
+        axios.get(url,{params:{}}).then(res=>{
+          if(res.data.status === 1){
+            this.cooperationCaseList = res.data.result
+          }
+        })
       }
     },
     computed: {
@@ -3356,5 +3482,252 @@
 
   .w_button:hover {
     box-shadow: 0px 2px 2px 1px #881411;
+  }
+  .cooperation-case{
+    .wrap{
+      .solution-content{
+        background-color: #030725;
+        height: 360px;
+        .solution-container{
+          height: 100%;
+          width: 1040px;
+          float: left;
+          cursor: pointer;
+          overflow: hidden;
+          .solution-wrapper{
+            position: relative;
+            height: 100%;
+            white-space: nowrap;
+            transition: .3s;
+            .solution-slide{
+                display: inline-block;
+                position: relative;
+                height: 100%;
+                transition: width 0.5s ease;
+                width: 160px;
+                background-repeat: no-repeat;
+                background-position: center top;
+                background-size: cover;
+                overflow: hidden;
+                vertical-align: top;
+                white-space: normal;
+                &:hover .solution-card-bg{
+                  -ms-transform: scale(1.1);
+                  transform: scale(1.1);
+                  &::after{
+                    opacity: 0.7;
+                  }
+                }
+                .solution-card-bg {
+                  position: relative;
+                  width: 100%;
+                  height: 100%;
+                  transition: 0.2s;
+                  &::after{
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    bottom: 0;
+                    left: 0;
+                    background-color: #030725;
+                    opacity: 0.8;
+                    transition: 0.2s;
+                  }
+                  img{
+                    display: block;
+                    position: absolute;
+                    top: -10000px;
+                    right: -10000px;
+                    bottom: -10000px;
+                    left: -10000px;
+                    height: 100%;
+                    margin: auto;
+                  }
+                }
+                .solution-card-collapse{
+                  position: absolute;
+                  top: 0;
+                  right: 0;
+                  bottom: 0;
+                  left: 0;
+                  cursor: pointer;
+                  transition: 0.5s;
+                  text-align: center;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  .collapse-close{
+                    >p{
+                      font-size:14px;
+                      font-family:MicrosoftYaHei-Bold;
+                      font-weight:bold;
+                      color:rgba(255,255,255,1);
+                      &.across{
+                        color: #377DFF;
+                        margin: 10px 0;
+                      }
+                    }
+                  }
+                }
+                .solution-card-open{
+                  position: absolute;
+                  top: 0;
+                  right: 0;
+                  bottom: 0;
+                  left: 0;
+                  cursor: pointer;
+                  transition: 0.5s;
+                  padding: 50px 40px;
+                  >div{
+                    width: 480px;
+                    >h4{
+                      font-size:20px;
+                      font-family:MicrosoftYaHei-Bold;
+                      font-weight:bold;
+                      color:rgba(255,255,255,1);
+                      margin-bottom: 10px;
+                    }
+                    >p{
+                      font-size:16px;
+                      font-family:MicrosoftYaHei-Bold;
+                      font-weight:bold;
+                      color:rgba(255,255,255,1);
+                      margin-top: 20px;
+                      margin-bottom: 5px;
+                    }
+                    >span{
+                      margin-top: 5px;
+                      font-size:14px;
+                      font-family:MicrosoftYaHei;
+                      color:rgba(255,255,255,1);
+                      line-height:19px;
+                    }
+                  }
+                }
+                &.open{
+                  transition: width 0.5s ease;
+                  width: 560px;
+                  .solution-card-bg{
+                    &::after{
+                      opacity: 0.8;
+                  }
+                  }
+                  &:hover .solution-card-bg{
+                  -ms-transform: scale(1);
+                  transform: scale(1);
+                  &::after{
+                    opacity: 0.8;
+                  }
+                }
+                }
+            }
+          }
+        }
+      }
+      .solution-ctrl{
+        height: 100%;
+        width: 160px;
+        float: left;
+        color: #fff;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        .solution-ctrl-bg{
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          background-image: url("../../assets/img/home/case_bg8.png");
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: cover;
+          transition: 0.2s;
+          &:hover{
+            -ms-transform: scale(1.1);
+            transform: scale(1.1);
+            &::after{
+              opacity: 0.7;
+            }
+          }
+          &::after{
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-color: #030725;
+            opacity: 0.8;
+            transition: 0.2s;
+          }
+        }
+        .solution-ctrl-arrow{
+          display: block;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 20px;
+          height: 28px;
+          margin-left: -10px;
+          margin-top: -14px;
+          opacity: 0.5;
+          transition: 0.2s;
+          transform: rotateY(0);
+          animation: solution-arrow-flash 0.6s ease-in infinite alternate;
+          &.aleft{
+            transform: rotateY(180deg);
+          }
+          span{
+            display: block;
+            width: 28px;
+            height: 28px;
+            margin-left: -12px;
+            -ms-transform: rotate(135deg);
+            transform: rotate(135deg);
+            &::before{
+              content: "";
+              display: block;
+              width: 100%;
+              border-top: solid 4px;
+              border-radius: 2px;
+            }
+            &::after{
+              content: "";
+              display: block;
+              width: 4px;
+              height: 100%;
+              border-right: solid 4px;
+              border-radius: 2px;
+              margin-top: -4px;
+            }
+          }
+        }
+        &:hover{
+          .solution-ctrl-arrow{
+            animation: none;
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+  @keyframes solution-arrow-flash {
+      0% {
+          opacity: 0.3;
+      }
+
+      100% {
+          opacity: 1;
+      }
+  }
+  .clearfix{
+    &::after{ 
+      content: '';
+      display: block; 
+      clear:both; 
+      zoom : 1
+    }
   }
 </style>
