@@ -413,7 +413,7 @@
           <FormItem label="新的密码" prop="newPassword" style="width: 80%;margin-bottom: 10px">
             <Input type="password" :type="modifyPasswordForm.newPasswordInput" v-model="modifyPasswordForm.newPassword" @on-focus="passwordForm.passwordHint = true" @on-blur="passwordForm.passwordHint = false"></Input>
             <img class="modal-img" @click="changeLoginPasType(2)" src="../../assets/img/login/lr-icon3.png"/>
-            <div class="popTip" v-show="passwordForm.passwordHint">
+            <div class="popTip" v-show="passwordForm.passwordHint==true">
                   <div><i :class="{reach: passwordForm.secondDegree}"></i>
                     <p>不能输入连续6位数字或字母，如123456aA</p></div>
                   <div><i :class="{reach: passwordForm.firstDegree}"></i>
