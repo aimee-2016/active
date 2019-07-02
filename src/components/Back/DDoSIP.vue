@@ -25,7 +25,7 @@
                        <div v-if="overviewRadio == '概览'">
                            <div>
                                <Button type="primary">购买套餐</Button>
-                               <Button type="primary" :disabled='true' @click="showModal.meal = true">套餐续费</Button>
+                               <Button type="primary" :disabled='renewDisabled' @click="showModal.meal = true">套餐续费</Button>
                            </div>
                            <div>
                                <div class="selectMark">
@@ -34,7 +34,7 @@
                                 </div>
                                  <Table :columns="overviewList" :data="overviewData" @on-selection-change='overviewTableChange'></Table>
                                  <div class="dp-page">
-                                    <Page :total="100" style="display:inline-block;vertical-align: middle;margin-left:20px;" show-sizer :page-size-opts=[10,20,50,100]></Page>
+                                    <Page :total="overviewData.length" @on-change='getDdosOverview' :page-size='pageSize' :current='overviewPage' style="display:inline-block;vertical-align: middle;margin-left:20px;" show-sizer :page-size-opts=[10,20,50,100]></Page>
                                 </div>
                            </div>
                        </div>
@@ -44,14 +44,14 @@
                            <div class="dp-ds">
                                <div> 
                                    <span>套餐选择</span>
-                                    <Select size="small" v-model="domain" style="width:100px;">
-                                        <Option v-for="item in domainList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                                    <Select size="small" v-model="attackMeal" style="width:231px;">
+                                        <Option v-for="item in setMealList" :value="item.packageid" :key="item.packageid">{{ item.packageid }}</Option>
                                     </Select>
                                </div>
                               <div>
                                    <span>按统计时间</span>
-                                   <DatePicker size='small' :transfer='true' type="daterange"  placement="bottom-end" placeholder="Select date" style="width: 200px;"></DatePicker>
-                                   <Button size='small' type="primary" style="width:54px;">查询</Button>
+                                   <DatePicker v-model='statisticsTime' format='yyyy-MM-dd' size='small' :transfer='true' type="daterange"  placement="bottom-end" placeholder="Select date" style="width: 231px;"></DatePicker>
+                                   <Button size='small' type="primary" style="width:54px;" @click="getMitigatedBandwidth">查询</Button>
                                </div>
                            </div>
                            <div>
@@ -185,10 +185,10 @@
                                     <Button type="primary" style="width:84px;">查询</Button>
                                 </div>
                             </div>
-                            <Table :columns="certificateList" :data="certificateData"></Table>
+                            <Table :columns="certificateList" :data="certificateData" @on-selection-change='overviewTableChange' ></Table>
                             <div class="dp-page">
                                 <span>总共{{certificateData.length}}个项目</span>
-                                <Page :total="100" style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
+                                <Page :total="certificateData.length" @on-change='getCertificate'  style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
                             </div>
                         </div>
 
@@ -220,7 +220,7 @@
                             <div>
                                 <span style="font-size:14px;color:#333333;">套餐选择</span>
                                 <Select v-model="setMeal" style="width:230px">
-                                    <Option v-for="item in setMealList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                                    <Option v-for="item in setMealList" :value="item.packageid" :key="item.packageid">{{ item.packageid }}</Option>
                                 </Select>
                                 <Button>保存修改</Button>
                             </div>
@@ -289,7 +289,7 @@
                         </div>
                         <Table :columns="journalList" :data="journalData"></Table>
                         <div class="dp-page">
-                            <Page :total="100" style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
+                            <Page :total="100" @on-change='getLog' style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
                         </div>
                     </TabPane>
                 </Tabs>
@@ -319,7 +319,7 @@
                         <p>购买时长</p>
                      </div>
                      <div>
-                        <div class="dp-ti" v-for="item in durationList" :key="item.value">{{item.label}}</div> 
+                        <div class="dp-ti" :class="durationIndex == index?'dp-tis':''" v-for="(item,index) in durationList" :key="item.value" @click="durationIndex = index">{{item.label}}</div> 
                      </div>
                  </li>
                  <li>
@@ -389,42 +389,52 @@ components: { expandRow },
       overviewRadio:'概览',
       button1: "网站业务",
       duration:'',
+      durationIndex:0,
       durationList:[
           {
               value:'30',
-              label:'1个月'
+              label:'1个月',
+              isTrue:0
           },
           {
               value:'60',
-              label:'2个月'
+              label:'2个月',
+               isTrue:-1
           },
           {
               value:'90',
-              label:'3个月'
+              label:'3个月',
+               isTrue:-2
           },
           {
               value:'120',
-              label:'4个月'
+              label:'4个月',
+                isTrue:-3
           },
           {
               value:'150',
-              label:'5个月'
+              label:'5个月',
+              isTrue:-4
           },
           {
               value:'180',
-              label:'6个月'
+              label:'6个月',
+              isTrue:-5
           },
           {
               value:'360',
-              label:'1年'
+              label:'1年',
+              isTrue:-6
           },
           {
               value:'720',
-              label:'2年'
+              label:'2年',
+              isTrue:-7
           },
           {
               value:'1080',
-              label:'3年'
+              label:'3年',
+              isTrue:-8
           },
       ],
        
@@ -444,6 +454,12 @@ components: { expandRow },
                         style:{
                             color:'#2A99F2',
                             cursor:'pointer'
+                        },
+                        on:{
+                            click:()=>{
+                                sessionStorage.setItem('ddopId',params.row.packageid);
+                                this.$router.push('ddosipdetails');
+                            }
                         }
                     },params.row.packageid.substr(params.row.packageid.indexOf('-')+1,params.row.packageid.length))
                 }
@@ -493,6 +509,12 @@ components: { expandRow },
         ],
         hightIp:JSON.parse(dIp),
         price:0,
+        overviewPage:1,
+        renewDisabled:true,
+        pageSize:10,
+        attackMeal:'',
+        // 统计时间
+        statisticsTime:'',
 
 
       // 证书管理
@@ -768,11 +790,7 @@ components: { expandRow },
 
     //    防护管理
         setMeal:'套餐ID',
-        setMealList:[
-            {
-                value:'套餐ID',
-                label:'套餐ID'
-            }
+        setMealList:[       
         ],
         protectSwicth:true,
         emptyLink:false,
@@ -834,7 +852,7 @@ components: { expandRow },
          ],
          journalList:[
              {
-                 key:'操作对象',
+                 key:'packageUserName',
                  title:'操作对象'
              },
              {
@@ -842,11 +860,11 @@ components: { expandRow },
                  title:'操作时间'
              },
              {
-                 key:'操作结果',
+                 key:'isDisplay',
                  title:'操作结果'
              },
              {
-                 key:'行为描述',
+                 key:'operatorDes',
                  title:'行为描述'
              },
              {
@@ -866,37 +884,67 @@ components: { expandRow },
     };
   },
   created(){
-      this.getDdosOverview();
+      this.getDdosOverview(1);
       this.getDomainList();
+      this.getCertificate(1);
+
+      this.getLog(1);
+      this.getId();
   },
   methods:{
 
+    //   获取用户套餐ID
+    getId(){
+        this.$http.get('ddosImitationIp/packageIdInfo.do',{}).then(res=>{
+            if(res.status == 200 && res.data.status == 1){
+                this.setMealList = res.data.result;
+            }else{
+                this.setMealList = res.data.result;
+                this.$Message.info(res.data.message);
+            }
+        })
+    },
+
     //   套餐表格选项切换
-      overviewTableChange(list){
-          this.price = 0;
-          this.overviewSelect = list;
-          list.forEach(item => {
+    overviewTableChange(list){
+        this.price = 0;
+        this.overviewSelect = list;
+        this.renewDisabled = false;
+        list.forEach(item => {
             this.price += item.totalprice; 
-          });
-      },
+        });
+    },
       
     //  获取套餐
-      getDdosOverview(){
-          this.$http.get('ddosImitationIp/queryAllPackage.do',{
+    getDdosOverview(page){
+        this.$http.get('ddosImitationIp/queryAllPackage.do',{
               params:{
-                  page:'1',
-                  pageSize:'10'
+                  page:page,
+                  pageSize:this.pageSize
               }
-          }).then(res=>{
-              if(res.status == 200 && res.data.status == 1){
+        }).then(res=>{
+            if(res.status == 200 && res.data.status == 1){
                 this.overviewData = res.data.result;
-              }else{
+            }else{
                   this.$Message.info(res.data.message);
-              }
-          }).catch(err =>{
+            }
+        }).catch(err =>{
               
-          })           
-      },
+        })           
+    },
+
+    // DDOS清洗流量
+    getMitigatedBandwidth(){
+        this.$http.get('ddosImitationIp/QueryMitigatedBandwidth.do',{
+            params:{
+                packageId:this.attackMeal,
+                startdate:this.statisticsTime[0].format('yyyy-MM-dd hh:mm:ss'),
+                enddate:this.statisticsTime[1].format('yyyy-MM-dd hh:mm:ss')
+            }
+        }).then(res => {
+            
+        })
+    },
 
     // 获取网站业务
     getDomainList(){
@@ -908,9 +956,44 @@ components: { expandRow },
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
                 this.domainData = res.data.result;
+            }else{
+                  this.$Message.info(res.data.message);
             }
         })
     },
+
+    // 获取证书
+    getCertificate(page){
+        this.$http.get('ddosImitationIp/QueryAllCertificate.do',{
+            params:{
+                page:page,
+                pageSize:'10',
+            }
+        }).then(res =>{
+            if(res.status == 200 && res.data.status == 1){
+                this.ccProtectData = res.data.result;
+            }else{
+                  this.$Message.info(res.data.message);
+            }
+        }).catch(err =>{})
+    },
+
+    // 获取操作日志
+    getLog(page){
+        this.$http.get('ddosImitationIp/queryLog.do',{
+            params:{
+                page:'1',
+                pageSize:'10'
+            }
+        }).then(res =>{
+            if(res.status == 200 && res.data.status == 1){
+                this.journalData = res.data.result;
+            }else{
+                  this.$Message.info(res.data.message);
+            }
+        })
+    }
+
   },
   computed:{
   }
@@ -962,7 +1045,7 @@ components: { expandRow },
   .f-p{
     position: absolute;
     right: 11px;
-    top: 53px;
+    top: 30px;
     color: #B2B2B2;
   }
   .dp-box{
@@ -1047,6 +1130,7 @@ components: { expandRow },
       border:1px solid #E1E1E1;
       display: inline-block;
       margin-bottom: 10px;
+      cursor: pointer;
   }
   .dp-ds{
     height:48px;
@@ -1070,6 +1154,11 @@ components: { expandRow },
   font-size: 14px;
   color: #666666;
   margin-bottom: 20px;
+}
+.dp-tis{
+    color: #FFFFFF;
+    background-color: #4297F2;
+    border: 1px solid #4297F2;
 }
 </style>
 
