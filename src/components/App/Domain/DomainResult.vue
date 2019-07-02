@@ -11,8 +11,8 @@
             </Input>
             <transition name="showChosse">
               <div v-show="choose" class="change" @mouseleave="choose=!choose">
-              <span v-for="(item,index) in suffixChange" :key="index"
-                    style="width:70px;display:inline-block;height: 30px;padding: 5px 0;" @click="addAppend(item)">{{item}}</span>
+              <span v-for="(item,index) in suffixSingle" :key="index"
+                    style="width:60px;display:inline-block;height: 30px;padding: 5px 0;" @click="addAppend(item)">{{item}}</span>
               </div>
             </transition>
           </div>
@@ -30,7 +30,14 @@
             </button>
           </div>
           <div class="show" v-show="showValue">
-            <Checkbox v-model="showButton" @on-change="showBtn" :disabled="cancel">所有后缀</Checkbox>
+            <div class="change-top">
+                <RadioGroup v-model="radio" @on-change="radioChange">
+                      <Radio label="english">英文域名</Radio>
+                      <Radio label="chinese">中文域名</Radio>
+                      <Radio label="administrative">行政域名</Radio>
+                  </RadioGroup>
+                <Checkbox v-model="showButton" @on-change="showBtn" :disabled="cancel">所有后缀</Checkbox>
+              </div>
             <CheckboxGroup v-model="singles"
                            style="display: flex;flex-wrap: wrap;justify-content: flex-start;margin-top: 20px;">
               <Checkbox v-for="(item,index) in suffixChange" :key="index" :label="item" style="width:108px;">{{item}}
@@ -133,17 +140,7 @@
   import $store from '@/vuex'
   export default{
     beforeRouteEnter(to, from, next){
-      next(vm => {
-        let len = JSON.parse(sessionStorage.getItem("suffix")).length
-        if (len !== 0) {
-          vm.singles = JSON.parse(sessionStorage.getItem("suffix"))
-          vm.append = vm.singles[0]
-        } else {
-          vm.singles = JSON.parse(sessionStorage.getItem('suffixChange')).en
-          vm.showButton = true
-          vm.append = '.com'
-        }
-      })
+      next()
     },
     data(){
       window.scrollTo(0, 0);
@@ -151,7 +148,10 @@
         append: '',
         searchText: sessionStorage.getItem('name'),
         choose: false,
+        showSuffix: [],
+        suffixSingle: [],
         suffixChange: [],
+        radio: 'english',
         showValue: false,
         singles: [],
         Results: [],
@@ -196,13 +196,30 @@
         this.singles.unshift(name)
       },
 
+      // 筛选
+      radioChange () {
+        this.singles = []
+        this.showButton = false
+        switch (this.radio) {
+          case 'english':
+            this.suffixChange = this.showSuffix.en
+            break;
+          case 'chinese':
+            this.suffixChange = this.showSuffix.cn
+            break;
+          case 'administrative':
+            this.suffixChange = this.showSuffix.xz
+            break;
+        }
+      },
+
       //全选
       showBtn(){
+        this.singles = []
         if (this.showButton) {
           this.singles = this.suffixChange
         } else {
           this.Results = []
-          this.singles = []
         }
       },
 
@@ -386,12 +403,26 @@
       }
     },
     created(){
-      var arry = (JSON.parse(sessionStorage.getItem('suffixChange'))).en
-      for (var i = 0; i < arry.length; i++) {
-        if (this.suffixChange.indexOf(arry[i]) == -1) {
-          this.suffixChange.push(arry[i])
+      axios.post('domain/getSuffix.do', {}).then(res => {
+        if (res.status == 200 && res.data.status == 1) {
+          this.showSuffix = res.data.data
+          var arry = []
+          for (var key in this.showSuffix) {
+            arry = arry.concat(this.showSuffix[key])
+          }
+          this.suffixSingle = Array.from(new Set(arry))
+          this.suffixChange = this.showSuffix.en
+          let len = JSON.parse(sessionStorage.getItem("suffix")).length
+          if (len != 0) {
+            this.singles = JSON.parse(sessionStorage.getItem("suffix"))
+            this.append = this.singles[0]
+          } else {
+            this.showButton = true
+            this.append = '.com'
+            this.singles = this.showSuffix.en
+          }
         }
-      }
+      })
     }
   }
 </script>
@@ -421,7 +452,6 @@
           .change {
             margin-top: 1px;
             width: 550px;
-            height: 300px;
             position: absolute;
             top: 36px;
             text-align: left;
@@ -432,7 +462,7 @@
             flex-wrap: wrap;
             justify-content: flex-start;
             z-index: 1000;
-            padding: 18px 42px 17px 30px;
+            padding: 18px 30px;
             span {
               cursor: pointer;
               text-align: center;
@@ -494,6 +524,17 @@
         border: 1px solid rgba(230, 230, 230, 1);
         padding: 20px 20px 40px 20px;
         position: relative;
+        .change-top {
+              padding-bottom: 10px;
+              border-bottom: 1px solid #D9D9D9;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              .ivu-radio-group {
+                font-size: 14px;
+                font-weight:400;
+            }
+          }
         button {
           position: absolute;
           right: 95px;
