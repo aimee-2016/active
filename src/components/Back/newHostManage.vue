@@ -816,7 +816,7 @@
               key: 'snapshotname',
             },
             {
-              title: '状态',
+              title: '状态', 
               key: 'status',
               render: (h, params) => {
                 switch (params.row.status) {
@@ -832,6 +832,13 @@
                       }
                     }), h('span', {}, '创建中')])
                   case 3:
+                    return h('div', {}, [h('Spin', {
+                      style: {
+                        display: 'inline-block',
+                        marginRight: '10px'
+                      }
+                    }), h('span', {}, '回滚中')])
+                 case 4:
                     return h('div', {}, [h('Spin', {
                       style: {
                         display: 'inline-block',
@@ -1568,6 +1575,12 @@
       },
       rollbackSubmit() {
         this.showModal.rollback = false
+        this.tab4.snapshootData.forEach(item => {
+          if (this.tab4.cursnapshot.snapshotid == item.snapshotid) {
+            item.status = 3
+            item._disabled = true
+          }
+        })
         let URL = 'Snapshot/revertToVMSnapshot.do'
         this.$http.get(URL, {
           params: {
@@ -1575,11 +1588,13 @@
           }
         }).then(response => {
           if (response.status == 200 && response.data.status == 1) {
+            this.getHostSnapshoot()
             this.$Message.success({
               content: response.data.message,
               duration: 5
             })
           } else {
+            this.getHostSnapshoot()
             this.$message.info({
               content: response.data.message,
             })
@@ -1592,7 +1607,7 @@
         this.tab4.snapshootData.forEach(item => {
           this.tab4.snapshootSelection.forEach(item1 => {
             if (item.snapshotid == item1.snapshotid) {
-              item.status = 3
+              item.status = 4
             }
           })
         })
