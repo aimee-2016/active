@@ -231,6 +231,8 @@ const DDoSIpRuleAdd = () => import('@/components/Back/DDoSIpRuleAdd')
 
 const CloudDatabaseBackup = () => import('@/components/Back/CloudDatabaseBackup')
 const CloudDatabase = () => import('@/components/Back/CloudDatabase')
+const Database = () => import('@/components/Back/Database')
+const DatabaseManage = () => import('@/components/Back/DatabaseManage')
 const CloudDataManage = () => import('@/components/Back/CloudDataManage')
 const dataBaseUpgrade = () => import('@/components/Back/dataBaseUpgrade')
 // 帮助文档路由
@@ -468,7 +470,9 @@ var router = new Router({
         {path: 'completedFilingDetails', name: 'completedFilingDetails', component: CompletedFilingDetails},
         {path: 'cloudDataManage', name: 'cloudDataManage', component: CloudDataManage},
         {path: 'cloudDatabaseBackup', name: 'cloudDatabaseBackup', component: CloudDatabaseBackup},
-        {path: 'cloudDatabase', name: 'cloudDatabase', component: CloudDatabase},
+        {path: 'cloudDatabase1', name: 'cloudDatabase', component: CloudDatabase},
+        {path: 'cloudDatabase', name: 'database', component: Database},
+        {path: 'databaseManage', name: 'databaseManage', component: DatabaseManage},
         {path: 'dataBaseUpgrade', name: 'dataBaseUpgrade', component: dataBaseUpgrade},
         {path: 'GpuList', name: 'GpuList', component: GpuList},
         {path: 'gpuManage', name: 'gpuManage', component: gpuManage},
