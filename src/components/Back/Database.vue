@@ -21,7 +21,11 @@
           <p>专业的云数据库服务，支持Mysql、SQL Server、PostgreSQL、MangoDB引擎，提供简易方便的Web界面管理、可靠的数据备份和恢复、完备的安全管理、完善的监控等功能。</p>
         </div>
         <div class="operator-bar" style="position: relative">
-          <Button type="primary" @click="$router.push('/buy/host/')" style="margin-right:10px">+ 创建</Button>
+          <Button
+            type="primary"
+            @click="$router.push('/buy/database/')"
+            style="margin-right:10px"
+          >+ 创建</Button>
           <Poptip confirm width="230" placement="right" @on-ok="hostDelete(1)" title="您确认删除选中的主机吗？">
             <Button type="primary" :disabled="deleteDisabled">删除</Button>
           </Poptip>
@@ -39,7 +43,10 @@
           @on-selection-change="hostSelectionChange"
         ></Table>
         <div style="margin: 10px 10px 0 0;overflow: hidden">
-          <p style="float:left;font-size:14px;">点击查看<a href="/support_docs/4LlTC3MYo_RjDqVv0ZP.html">如何连接数据库？</a></p>
+          <p style="float:left;font-size:14px;">
+            点击查看
+            <a href="/support_docs/4LlTC3MYo_RjDqVv0ZP.html">如何连接数据库？</a>
+          </p>
           <div style="float: right;">
             <Page
               :total="hostPages"
@@ -49,38 +56,6 @@
             ></Page>
           </div>
         </div>
-      </div>
-    </div>
-    <!-- 监控信息 -->
-    <div class="monitor" ref="monitor">
-      <div class="title">
-        <span>{{ monitorName }}云主机监控图表</span>
-        <div @click="closeMonitor">
-          <Icon type="close" style="font-size: 18px;cursor: pointer"></Icon>
-        </div>
-      </div>
-      <div class="item" v-for="(item,index) in monitoringList">
-        <div class="item-title">
-          <span>{{ item.title}}</span>
-          <span>{{ currentData }}</span>
-        </div>
-        <div class="item-type">
-          <Radio-group v-model="item.type" type="button" @on-change="changeMonitorDate(index)">
-            <Radio label="近一天"></Radio>
-            <Radio label="最近7天"></Radio>
-            <Radio label="最近30天"></Radio>
-          </Radio-group>
-          <Radio-group
-            v-model="item.showType"
-            type="button"
-            @on-change="changeMonitorShowType(index)"
-            style="float:right"
-          >
-            <Radio label="折线"></Radio>
-            <Radio label="柱状图"></Radio>
-          </Radio-group>
-        </div>
-        <chart :options="item.chart" style="width:100%;height:80%;"></chart>
       </div>
     </div>
     <!--选择两种认证方式-->
@@ -150,18 +125,18 @@
     <Modal v-model="showModal.delHost" :scrollable="true" :closable="false" :width="390">
       <p slot="header" class="modal-header-border">
         <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
-        <span class="universal-modal-title">删除主机</span>
+        <span class="universal-modal-title">删除数据库</span>
       </p>
       <div class="modal-content-s">
         <div>
           <p
             class="lh24"
-          >主机删除之后将进入回收站（注：资源在回收站中也将会持续扣费，请及时处理），新睿云将为您保留2小时，在2小时之内您可以恢复资源，超出保留时间之后，将彻底删除资源，无法在恢复。</p>
+          >数据库删除之后将进入回收站（注：资源在回收站中也将会持续扣费，请及时处理），新睿云将为您保留2小时，在2小时之内您可以恢复资源，超出保留时间之后，将彻底删除资源，无法在恢复。</p>
         </div>
       </div>
       <p slot="footer" class="modal-footer-s">
         <Button @click="showModal.delHost = false">取消</Button>
-        <Button type="primary" @click="delHostOkBefore">确认删除</Button>
+        <Button type="primary" @click="delHostOk">确认删除</Button>
       </p>
     </Modal>
     <!-- 加入负载均衡弹窗 -->
@@ -444,31 +419,6 @@
         <Button type="primary" @click="backupSubmit('backupForm')">制作快照</Button>
       </div>
     </Modal>
-    <!-- 生成镜像弹窗 -->
-    <Modal v-model="showModal.mirror" width="590" :scrollable="true">
-      <div slot="header" class="modal-header-border">
-        <span class="universal-modal-title">制作镜像</span>
-      </div>
-      <div class="universal-modal-content-flex">
-        <Form :model="mirrorForm" ref="mirrorForm" :rules="mirrorFormRule">
-          <Form-item label="镜像名称" prop="mirrorName">
-            <Input v-model="mirrorForm.mirrorName" placeholder="小于20位数字或字母"></Input>
-          </Form-item>
-          <Form-item label="备注">
-            <Input
-              v-model="mirrorForm.description"
-              type="textarea"
-              :autosize="{minRows: 2,maxRows: 2}"
-              placeholder="小于20个字（选填)"
-            ></Input>
-          </Form-item>
-        </Form>
-      </div>
-      <div slot="footer" class="modal-footer-border">
-        <Button type="ghost" @click="showModal.mirror = false">取消</Button>
-        <Button type="primary" @click="mirrorSubmit('mirrorForm')">确定</Button>
-      </div>
-    </Modal>
     <!-- 解绑公网ip确认框 -->
     <Modal v-model="showModal.unbindIP" :scrollable="true" :closable="false" :width="390">
       <p slot="header" class="modal-header-border">
@@ -485,129 +435,6 @@
         <Button @click="showModal.unbindIP = false">取消</Button>
         <Button type="primary" @click="unbind">确认解绑</Button>
       </p>
-    </Modal>
-    <!-- 批量重置密码框-->
-    <Modal v-model="showModal.resetPassword" width="700" :scrollable="true">
-      <p slot="header" class="modal-header-border">
-        <span class="universal-modal-title">重置密码</span>
-      </p>
-      <div class="universal-modal-content-flex">
-        <p class="resetModal-title">
-          您已选
-          <span>{{ resetPasswordHostData.length }} 台主机</span>
-        </p>
-        <ul class="resetModal-table">
-          <li>No.</li>
-          <li>用户名</li>
-          <li>主机名</li>
-          <li>当前密码</li>
-        </ul>
-        <ul class="resetModal-table data" v-for="(item,index) in resetPasswordHostData">
-          <li>{{ index + 1 }}</li>
-          <li>{{ item.computername}}</li>
-          <li @click="toManage(item)">{{ item.instancename}}</li>
-          <li v-if="item.changepassword">
-            <input
-              :class="{error: item.errorMsg}"
-              v-model="item.currentPassword"
-              @input="item.errorMsg = ''"
-              type="text"
-              placeholder="请输入当前密码"
-              :maxlength="32"
-            >
-            <p v-if="item.errorMsg == 'passwordMistake'">您输入的密码有误</p>
-            <p v-if="item.errorMsg == 'passwordIsEmpty'">请输入主机密码</p>
-          </li>
-          <li v-else>默认密码</li>
-        </ul>
-        <div v-if="resetPasswordForm.hintGrade == 0">
-          <div class="resetModal-import">
-            <span>新密码</span>
-            <input
-              v-model="resetPasswordForm.password"
-              maxlength="32"
-              @focus="resetPasswordForm.passwordHint = true"
-              @blur="resetPasswordForm.passwordHint = false"
-              type="password"
-              @input="verifyPassword"
-              placeholder="请输入新密码"
-              ref="passwordInput"
-            >
-            <img
-              src="../../assets/img/login/lr-icon3.png"
-              @click="changeResetPasswordType('passwordInput')"
-            >
-            <div class="popTip" v-show="resetPasswordForm.passwordHint">
-              <div>
-                <i :class="{reach: resetPasswordForm.secondDegree }"></i>
-                <p>不能输入连续6位数字或字母，如123456aA</p>
-              </div>
-              <div>
-                <i :class="{reach: resetPasswordForm.firstDegree }"></i>
-                <p>长度8~30位，推荐使用12位以上的密码</p>
-              </div>
-              <div>
-                <i :class="{reach: resetPasswordForm.thirdDegree }"></i>
-                <p>至少包含：小写字母，大写字母，数字</p>
-              </div>
-              <div>
-                <p style="color:rgba(102,102,102,1);">可用特殊符号：~:，*_</p>
-              </div>
-            </div>
-          </div>
-          <div class="resetModal-hint">
-            <p v-show="resetPasswordForm.errorMsg=='passwordUndercapacity'">您输入的密码不符合格式要求</p>
-            <p
-              v-show="resetPasswordForm.errorMsg=='passwordHint'"
-            >提醒：密码必须是8-30个包含数字和英文大小写的字符，可用特殊符号：~:,*_</p>
-            <p
-              v-show="resetPasswordForm.errorMsg=='passwordHintTwo'"
-            >注意：您的密码已经符合设置密码规则，但密码需要具备一定的强度，建议您设置12位以上，至少包括4项（~:,*）的特殊字符，每种字符大于等于2位</p>
-          </div>
-          <div class="resetModal-import">
-            <span>确认密码</span>
-            <input
-              type="password"
-              maxlength="32"
-              v-model="resetPasswordForm.passwordAffirm"
-              placeholder="请确认新密码"
-              ref="passwordInputAffirm"
-            >
-            <img
-              src="../../assets/img/login/lr-icon3.png"
-              @click="changeResetPasswordType('passwordInputAffirm')"
-            >
-          </div>
-          <div class="resetModal-hint">
-            <p v-show="resetPasswordForm.errorMsg=='passwordAffirm'">提醒：两次输入的密码不一致</p>
-          </div>
-        </div>
-        <div v-else class="resetModal-p">
-          <p>
-            1、为了避免数据丢失，重置密码需要在
-            <span>关机</span>状态下操作，实例将关机中断您的业务，请仔细确认
-          </p>
-          <p>2、强制关机可能会导致数据丢失或文件损坏，您也可以主动关机后进行重置密码</p>
-          <p style="margin-bottom: 20px">3、强制关机可能需要您等待较长时间，请耐心等待</p>
-          <Checkbox v-model="resetPasswordForm.agreeRule">
-            <span style="margin-left: 10px;font-size: 14px">同意强制关机</span>
-          </Checkbox>
-        </div>
-      </div>
-      <div slot="footer" class="modal-footer-border">
-        <Button type="ghost" @click="showModal.resetPassword = false">取消</Button>
-        <Button
-          type="primary"
-          @click="resetPasswordNext"
-          v-if="resetPasswordForm.hintGrade == 0"
-        >下一步</Button>
-        <Button
-          type="primary"
-          v-else
-          :disabled="!resetPasswordForm.agreeRule"
-          @click="resetPasswordOk"
-        >确定</Button>
-      </div>
     </Modal>
   </div>
 </template>
@@ -650,6 +477,7 @@ export default {
         },
         {
           ellipsis: true,
+          width: 120,
           renderHeader: (h, params) => {
             return h('ul', {}, [
               h('li', {}, '用户名称 / '),
@@ -696,6 +524,7 @@ export default {
         },
         {
           title: '状态/监控',
+          width: 110,
           filters: [
             {
               label: '开启',
@@ -748,11 +577,13 @@ export default {
                     display: 'flex'
                   }
                 }, [
-                    h('img', {
-                      attrs: {
-                        src: icon_5
-                      }
-                    }, ''),
+                    h('div', [
+                      h('img', {
+                        attrs: {
+                          src: icon_5
+                        }
+                      }, ''),
+                    ]),
                     h('span', {
                       style: styleInfo
                     }, '删除至回收站')
@@ -764,11 +595,13 @@ export default {
                     display: 'flex'
                   }
                 }, [
-                    h('img', {
-                      attrs: {
-                        src: icon_2
-                      }
-                    }, ''),
+                    h('div', [
+                      h('img', {
+                        attrs: {
+                          src: icon_2
+                        }
+                      }, ''),
+                    ]),
                     h('span', {
                       style: styleInfo
                     }, '异常')
@@ -780,11 +613,13 @@ export default {
                     display: 'flex'
                   }
                 }, [
-                    h('img', {
-                      attrs: {
-                        src: icon_3
-                      }
-                    }, ''),
+                    h('div', [
+                      h('img', {
+                        attrs: {
+                          src: icon_3
+                        }
+                      }, ''),
+                    ]),
                     h('span', {
                       style: styleInfo
                     }, '欠费')
@@ -807,11 +642,13 @@ export default {
                       }
                     }
                   }, [
-                      h('img', {
-                        attrs: {
-                          src: icon_1
-                        }
-                      }, ''),
+                      h('div', [
+                        h('img', {
+                          attrs: {
+                            src: icon_1
+                          }
+                        }, ''),
+                      ]),
                       h('span', {
                         style: styleInfo
                       }, '开启')
@@ -832,11 +669,13 @@ export default {
                       }
                     }
                   }, [
-                      h('img', {
-                        attrs: {
-                          src: icon_4
-                        }
-                      }, ''),
+                      h('div', [
+                        h('img', {
+                          attrs: {
+                            src: icon_4
+                          }
+                        }, ''),
+                      ]),
                       h('span', {
                         style: styleInfo
                       }, '关机')
@@ -918,6 +757,7 @@ export default {
         },
         {
           title: '镜像系统',
+          width: 110,
           key: 'templatename',
           render: (h, params) => {
             let templateName = params.row.templatename.substr(0, 1).toUpperCase() // 用第一个字符判断镜像选用图标
@@ -1013,6 +853,34 @@ export default {
           }
         },
         {
+          title: '数据库端口',
+          ellipsis: true,
+          render: (h, params) => {
+            if (params.row.status == 1) {
+              return h('div', {}, [h('span', {
+                style: {
+                  marginRight: '10px',
+                }
+              }, params.row.dbPort), h('span', {
+                style: !this.notAuth ? this.styleVisible : this.styleDisable,
+                on: {
+                  click: () => {
+                    if (!this.notAuth) {
+                      this.current = params.row
+                      this.showModal.beforePortModify = true
+                      this.portModifyForm.currentPorts = params.row.dbPort
+                      this.currentComputerId = params.row.computerid
+                    }
+                  }
+                }
+              }, '修改端口')])
+            } else {
+              return h('span', {}, params.row.dbPort)
+            }
+          }
+        },
+        {
+          width: 130,
           renderHeader: (h, params) => {
             return h('ul', {}, [
               h('li', {}, '创建时间 / '),
@@ -1032,6 +900,7 @@ export default {
         {
           title: '计费类型',
           key: 'caseType',
+          width: 110,
           filters: [
             {
               label: '包年',
@@ -1070,14 +939,10 @@ export default {
         {
           title: '操作',
           render: (h, params) => {
+            // dbStatus  数据库开启或关闭状态   1开启  0关闭  2开启中  3关闭中   4重启中 5修改端口中 6绑定IP中 7解绑IP中 8数据库扩容中
+            // Status 1: 正常   0:余额不足 -1:扣费时除余额不足的其他原因   -2:用户删除实时虚拟机   2创建中   3删除中   5数据库扩容中   6数据库升级中
             if ((!this.auth) || (this.auth && this.auth.authtype == 0 && this.auth.checkstatus != 0) || (!this.authInfoPersion && this.auth && this.auth.authtype == 1 && this.auth.checkstatus != 0) || (this.authInfoPersion && this.authInfoPersion.checkstatus != 0 && this.auth && this.auth.checkstatus != 0)) {
               return h('div', {}, [
-                h('p', {
-                  style: {
-                    lineHeight: '20px',
-                    cursor: 'not-allowed'
-                  },
-                }, '连接'),
                 h('p', {
                   style: {
                     lineHeight: '30px',
@@ -1152,20 +1017,8 @@ export default {
                   }, '删除')])
                   break
                 case 1:
-                  if (params.row.computerstate == 1) {
+                  if (params.row.dbStatus == 1) {
                     return h('div', {}, [
-                      h('p', {
-                        style: {
-                          lineHeight: '20px',
-                          cursor: 'pointer',
-                          color: '#2A99F2'
-                        },
-                        on: {
-                          click: () => {
-                            this.linkHost(params.row)
-                          }
-                        }
-                      }, '连接'),
                       h('p', {
                         style: {
                           lineHeight: '30px',
@@ -1246,16 +1099,6 @@ export default {
                       }, [h('a', {}, ['更多操作 ', h('Icon', { attrs: { type: 'arrow-down-b' } })]), h('DropdownMenu', { slot: 'list' }, [
                         h('DropdownItem', {
                           attrs: {
-                            name: 'resetPassword'
-                          }
-                        }, '重置密码'),
-                        h('DropdownItem', {
-                          attrs: {
-                            name: 'joinLoadBalance'
-                          }
-                        }, '加入负载均衡'),
-                        h('DropdownItem', {
-                          attrs: {
                             name: 'bindingIP'
                           }
                         }, '绑定IP'),
@@ -1266,34 +1109,29 @@ export default {
                         }, '解绑公网IP'),
                         h('DropdownItem', {
                           attrs: {
-                            name: 'rename'
-                          }
-                        }, '重命名'),
-                        h('DropdownItem', {
-                          attrs: {
                             name: 'ratesChange'
                           }
-                        }, '资费变更'),
+                        }, '数据库扩容'),
                         h('DropdownItem', {
                           attrs: {
                             name: 'hostRenew'
                           }
-                        }, '主机续费'),
+                        }, '数据库续费'),
                         h('DropdownItem', {
                           attrs: {
                             name: 'makeSnapshot'
                           }
-                        }, '制作快照'),
+                        }, '手动备份'),
                         h('DropdownItem', {
                           attrs: {
                             name: 'shutdown'
                           }
-                        }, '关机'),
+                        }, '关闭数据库'),
                         h('DropdownItem', {
                           attrs: {
                             name: 'restart'
                           }
-                        }, '重启'),
+                        }, '重启数据库'),
                         h('DropdownItem', {
                           attrs: {
                             name: 'deleteHost'
@@ -1302,11 +1140,6 @@ export default {
                     ])
                   } else {
                     return h('div', {}, [
-                      h('p', {
-                        style: {
-                          lineHeight: '20px',
-                        }
-                      }, '连接'),
                       h('p', {
                         style: {
                           lineHeight: '30px',
@@ -1417,16 +1250,6 @@ export default {
                       }, ['更多操作 ', h('Icon', { attrs: { type: 'arrow-down-b' } })]), h('DropdownMenu', { slot: 'list' }, [
                         h('DropdownItem', {
                           attrs: {
-                            name: 'resetPassword'
-                          }
-                        }, '重置密码'),
-                        h('DropdownItem', {
-                          attrs: {
-                            name: 'joinLoadBalance'
-                          }
-                        }, '加入负载均衡'),
-                        h('DropdownItem', {
-                          attrs: {
                             name: 'bindingIP'
                           }
                         }, '绑定IP'),
@@ -1437,39 +1260,29 @@ export default {
                         }, '解绑公网IP'),
                         h('DropdownItem', {
                           attrs: {
-                            name: 'rename'
-                          }
-                        }, '重命名'),
-                        h('DropdownItem', {
-                          attrs: {
                             name: 'ratesChange'
                           }
-                        }, '资费变更'),
+                        }, '数据库扩容'),
                         h('DropdownItem', {
                           attrs: {
                             name: 'hostRenew'
                           }
-                        }, '主机续费'),
+                        }, '数据库续费'),
                         h('DropdownItem', {
                           attrs: {
                             name: 'hostUpgrade'
                           }
-                        }, '主机升级'),
+                        }, '数据库升级'),
                         h('DropdownItem', {
                           attrs: {
                             name: 'makeSnapshot'
                           }
-                        }, '制作快照'),
-                        h('DropdownItem', {
-                          attrs: {
-                            name: 'makeMirror'
-                          }
-                        }, '制作镜像'),
+                        }, '手动备份'),
                         h('DropdownItem', {
                           attrs: {
                             name: 'startingUp'
                           }
-                        }, '开机'),
+                        }, '开启数据库'),
                         h('DropdownItem', {
                           attrs: {
                             name: 'deleteHost'
@@ -1480,12 +1293,6 @@ export default {
                   break
                 default:
                   return h('div', {}, [
-                    h('p', {
-                      style: {
-                        lineHeight: '20px',
-                        cursor: 'not-allowed'
-                      },
-                    }, '连接'),
                     h('p', {
                       style: {
                         lineHeight: '30px',
@@ -1507,7 +1314,7 @@ export default {
       ],
       hostListData: [],
       hostPages: 0,
-      pageSize: 10,
+      pageSize: 6,
       currentPage: 1,
       hostSelection: [],
       hostCurrentSelected: null,
@@ -1746,10 +1553,15 @@ export default {
     },
     getHostList () {
       let url = 'database/listDB.do'
-      this.$http.get(url).then(res => {
+      this.$http.get(url, {
+        params: {
+          page: this.currentPage,
+          pageSize: this.pageSize
+        }
+      }).then(res => {
         if (res.data.status == 1 && res.status == 200) {
-          this.hostListData = res.data.result
-          // this.hostPages = res.data.result.total
+          this.hostListData = res.data.result.info
+          this.hostPages = res.data.result.count
           let ids = []
           this.hostListData.forEach(host => {
             if (host.status == 2 || host.status == -2) {
@@ -1779,10 +1591,9 @@ export default {
     /* 局部刷新 */
     timingRefresh (ids) {
       this.hostTimer = setInterval(() => {
-        let url = 'information/listVirtualMachines.do'
+        let url = 'database/listDB.do'
         this.$http.get(url, {
           params: {
-            returnList: '1',
             ids: ids
           }
         }).then(res => {
@@ -1969,43 +1780,6 @@ export default {
       } else {
         this.showModal.delHost = true
       }
-    },
-    delHostOkBefore () {
-      this.showModal.delHost = false
-      let url = 'information/delVMHint.do'
-      let params = {}
-      if (this.hostDelWay === 1) {
-        this.hostListData.forEach(host => {
-          this.selectHostIds.forEach(item => {
-            if (host.id == item) {
-              host.status = -2
-              host._disabled = true
-            }
-          })
-        })
-        params = {
-          computerId: this.selectHostComputerIds + '',
-          type: '1'
-        }
-      } else {
-        this.hostListData.forEach(host => {
-          if (host.id == this.hostCurrentSelected.id) {
-            host.status = -2
-            host._disabled = true
-          }
-        })
-        params = {
-          computerId: this.hostCurrentSelected.computerid,
-        }
-      }
-      this.$http.get(url, { params }).then(res => {
-        if (res.status === 200 && res.data.status === 1) {
-          this.delHostOk()
-        } else {
-          this.delHostMessage = res.data.message
-          this.showModal.delHostHint = true
-        }
-      })
     },
     delHostOk () {
       this.showModal.delHostHint = false;
@@ -2502,7 +2276,7 @@ export default {
         })
       }
     },
-    // 包年/月主机续费
+    // 包年/月数据库续费
     renewalOk () {
       var selectIp = ''
       var selectDisk = ''
@@ -2546,7 +2320,7 @@ export default {
         name: 'upgrade'
       })
     },
-    // 欠费主机续费
+    // 欠费数据库续费
     renewHost (item) {
       if (item.caseType == 3) {
         if (item.status == 0) {
@@ -2594,7 +2368,7 @@ export default {
         }
       })
     },
-    // 实时欠费主机续费确认
+    // 实时欠费数据库续费确认
     renewOk () {
       this.showModal.Renew = false
       this.$http.get('information/vmRenew.do', {
@@ -2604,7 +2378,7 @@ export default {
       }).then(response => {
         this.getHostList()
         if (response.status == 200 && response.data.status == 1) {
-          this.$Message.success('主机续费成功')
+          this.$Message.success('数据库续费成功')
         } else {
           this.$message.info({
             content: response.data.message
@@ -2693,13 +2467,6 @@ export default {
           })
         }
       })
-    },
-    linkHost (item) {
-      localStorage.setItem('link-companyid', item.companyid)
-      localStorage.setItem('link-vmid', item.computerid)
-      localStorage.setItem('link-zoneid', item.zoneid)
-      localStorage.setItem('link-phone', this.$store.state.authInfo.phone)
-      window.open('/link')
     },
     showMonitor (name) {
       this.monitorName = name
