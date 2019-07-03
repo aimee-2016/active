@@ -93,6 +93,7 @@ function appendMD5(params, type) {
   for (let i in params) {
       if (typeof(params[i]) !== "undefined"){
         str += i.substr(0, 1) + params[i];
+        console.log(str);
         count++;
       }
   }
@@ -102,6 +103,7 @@ function appendMD5(params, type) {
       str = encodeURI(str)
     }
     str = md5(str);
+    console.log(str);
     count = count % 10
     var mac = str.substr(0, count) + count + str.substr(count)
     return {

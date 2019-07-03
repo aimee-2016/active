@@ -227,6 +227,7 @@ const AllRegions = () => import('@/components/Back/AllRegions')
 // 高防IP==========================
 const DDoSIP = () => import('@/components/Back/DDoSIP')
 const DDoSIpRuleAdd = () => import('@/components/Back/DDoSIpRuleAdd')
+const DDoSIPdetails = () => import('@/components/Back/DDoSIPdetails')
 
 
 const CloudDatabaseBackup = () => import('@/components/Back/CloudDatabaseBackup')
@@ -480,7 +481,8 @@ var router = new Router({
         {path: 'TelescopicDetails', name: 'TelescopicDetails', component: TelescopicDetails},
         {path: 'ThawDeposit', name: 'ThawDeposit', component: ThawDeposit},
         {path: 'DDoSIP', name: 'DDoSIP', component: DDoSIP},
-        {path: 'ddosipruleadd', name: 'ddosipruleadd', component: DDoSIpRuleAdd}
+        {path: 'ddosipruleadd', name: 'ddosipruleadd', component: DDoSIpRuleAdd},
+        {path: 'ddosipdetails', name: 'ddosipdetails', component: DDoSIPdetails}
       ]
     },
     {
