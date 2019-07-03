@@ -235,6 +235,7 @@ const Database = () => import('@/components/Back/Database')
 const DatabaseManage = () => import('@/components/Back/DatabaseManage')
 const CloudDataManage = () => import('@/components/Back/CloudDataManage')
 const dataBaseUpgrade = () => import('@/components/Back/dataBaseUpgrade')
+const dataBaseUpgrade1 = () => import('@/components/Back/dataBaseUpgrade1')
 // 帮助文档路由
 const documentInfo = () => import('@/components/App/DocumentInfo')
 const hotQuestion = () => import('@/components/App/HotQuestion')
@@ -473,7 +474,8 @@ var router = new Router({
         {path: 'cloudDatabase1', name: 'cloudDatabase', component: CloudDatabase},
         {path: 'cloudDatabase', name: 'database', component: Database},
         {path: 'databaseManage', name: 'databaseManage', component: DatabaseManage},
-        {path: 'dataBaseUpgrade', name: 'dataBaseUpgrade', component: dataBaseUpgrade},
+        {path: 'dataBaseUpgrade1', name: 'dataBaseUpgrade', component: dataBaseUpgrade},
+        {path: 'dataBaseUpgrade', name: 'dataBaseUpgrade1', component: dataBaseUpgrade1},
         {path: 'GpuList', name: 'GpuList', component: GpuList},
         {path: 'gpuManage', name: 'gpuManage', component: gpuManage},
         {path: 'GpuManageNew', name: 'GpuManageNew', component: GpuManageNew},

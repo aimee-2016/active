@@ -3,7 +3,7 @@
     <div id="wrapper">
       <span class="title">
         云数据库 /
-        <span>云数据库</span>
+        <span>云数据库实例</span>
       </span>
       <Alert type="warning" show-icon style="margin-bottom:10px" v-if="!auth">
         您尚未进行实名认证，只有认证用户才能对外提供服务，
@@ -38,7 +38,8 @@
           :data="hostListData"
           @on-selection-change="hostSelectionChange"
         ></Table>
-        <div style="margin: 10px;overflow: hidden">
+        <div style="margin: 10px 10px 0 0;overflow: hidden">
+          <p style="float:left;font-size:14px;">点击查看<a href="/support_docs/4LlTC3MYo_RjDqVv0ZP.html">如何连接数据库？</a></p>
           <div style="float: right;">
             <Page
               :total="hostPages"
