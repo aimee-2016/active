@@ -280,12 +280,12 @@
                     <TabPane label="操作日志">
                         <div style="margin-bottom:21px;">
                             <span>操作时间</span>
-                            <DatePicker :transfer='true' type="daterange"  placement="bottom-end" placeholder="Select date" style="width: 200px;margin:0 20px;"></DatePicker>
+                            <DatePicker v-model="logTime" :transfer='true' format='yyyy-MM-dd' type="daterange"  placement="bottom-end" placeholder="Select date" style="width: 200px;margin:0 20px;"></DatePicker>
                             <span>操作对象</span>
                             <Select v-model="operationObject" style="width:230px;margin:0 22px;">
-                                <Option v-for="item in operationList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                                <Option v-for="item in setMealList" :value="item.packageid" :key="item.packageid">{{ item.packageid }}</Option>
                             </Select>
-                            <Button type="primary">查询</Button>    
+                            <Button type="primary" @click="getLog(1)">查询</Button>    
                         </div>
                         <Table :columns="journalList" :data="journalData"></Table>
                         <div class="dp-page">
@@ -301,36 +301,41 @@
              <p slot="header" class="modal-header-border">
                 <span class="universal-modal-title">套餐续费</span>
             </p>
-             <div class="dp-er">
+             <div class="dp-er" v-if="renewPrice.status != 1">
                  <Icon type="close-circled" color='#ED4014' size='12px'></Icon>
-                 <span style="margin-left:4px;">错误原因</span>
+                 <span style="margin-left:4px;">{{renewPrice.message}}</span>
              </div>
-             <ul>
-                 <li style="display:flex;">
-                     <div>
+             <ul class="dp-xfu">
+                 <li class="dp-xfl">
+                     <div class="dp-xfz">
                         <p>续费套餐ID</p>
                      </div>
-                     <div>
+                     <div class="dp-xfy">
                         <p>DMS-50GB 5656</p> 
                      </div>
                  </li>
-                 <li>
-                     <div>
+                 <li class="dp-xfl">
+                     <div class="dp-xfz">
                         <p>购买时长</p>
                      </div>
-                     <div>
-                        <div class="dp-ti" :class="durationIndex == index?'dp-tis':''" v-for="(item,index) in durationList" :key="item.value" @click="durationIndex = index">{{item.label}}</div> 
+                     <div class="dp-xfy" style="padding-left:26px;">
+                        <div class="dp-ti" :class="durationIndex == index?'dp-tis':''" v-for="(item,index) in durationList" :key="item.value" @click="queryMealRenew(index)">{{item.label}}</div> 
                      </div>
                  </li>
-                 <li>
-                     <div>
+                 <li class="dp-xfl">
+                     <div class="dp-xfz">
                         <p>续费到期时间</p>
                      </div>
-                     <div>
-                        <p>2019-6-23 12：56</p> 
+                     <div class="dp-xfy">
+                        <p>{{renewPrice.endTime}}</p> 
                      </div>
                  </li>
              </ul>
+            <p class="dp-ren">续费订单费用<span>{{renewPrice.price}}元</span></p>
+             <div slot="footer" class="modal-footer-border">
+                <Button type="ghost" @click="showModal.meal = false">取消</Button>
+                <Button type="primary" >确定</Button>
+            </div>
          </Modal>   
 
         <!-- 新增业务证书  -->
@@ -510,11 +515,11 @@ components: { expandRow },
         hightIp:JSON.parse(dIp),
         price:0,
         overviewPage:1,
-        renewDisabled:true,
         pageSize:10,
         attackMeal:'',
         // 统计时间
         statisticsTime:'',
+        renewPrice:{},
 
 
       // 证书管理
@@ -852,35 +857,34 @@ components: { expandRow },
          ],
          journalList:[
              {
-                 key:'packageUserName',
+                 key:'packageusername',
                  title:'操作对象'
              },
              {
-                 key:'操作时间',
+                 key:'createtime',
                  title:'操作时间'
              },
              {
-                 key:'isDisplay',
-                 title:'操作结果'
+                 key:'isdisplay',
+                 title:'操作结果',
+                 render:(h,params) =>{
+                     return h('p',{
+
+                     },params.row.isdisplay == 1?'成功':'失败')
+                 }
              },
              {
-                 key:'operatorDes',
+                 key:'operatordes',
                  title:'行为描述'
              },
              {
-                 key:'关联资源',
+                 key:'packageuserid',
                  title:'关联资源'
              },
          ],
-         journalData:[
-             {
-                 操作对象:'主机',
-                 操作时间:'2019-1-1',
-                 操作结果:'成功',
-                 行为描述:'删除主机',
-                 关联资源:'----'
-             }
-         ]
+         journalData:[            
+         ],
+         logTime:[]   
     };
   },
   created(){
@@ -909,7 +913,6 @@ components: { expandRow },
     overviewTableChange(list){
         this.price = 0;
         this.overviewSelect = list;
-        this.renewDisabled = false;
         list.forEach(item => {
             this.price += item.totalprice; 
         });
@@ -931,6 +934,25 @@ components: { expandRow },
         }).catch(err =>{
               
         })           
+    },
+
+    // 获取续费套餐价格
+    queryMealRenew(index){
+        this.durationIndex = index;
+        this.$http.get('ddosImitationIp/PackageRenewalPrice.do',{
+            params:{
+                packageId:this.overviewSelect[0].packageid,
+                timeVlue:this.durationList[index].value
+            }
+        }).then(res => {
+            if(res.status == 200 && res.data.status == 1){
+                this.renewPrice = res.data;
+            }else{
+                this.$Message.info(res.data.messgae);
+            }
+        }).catch(err =>{
+
+        })
     },
 
     // DDOS清洗流量
@@ -982,8 +1004,11 @@ components: { expandRow },
     getLog(page){
         this.$http.get('ddosImitationIp/queryLog.do',{
             params:{
-                page:'1',
-                pageSize:'10'
+                page:page,
+                pageSize:'10',
+                packageName:this.operationObject,
+                // startTime:this.logTime[0].format('yyyy-MM-dd hh:mm:ss') == undefined ?'':this.logTime[0].format('yyyy-MM-dd hh:mm:ss'),
+                // endTime:this.logTime[1].format('yyyy-MM-dd hh:mm:ss')== undefined ?'':this.logTime[1].format('yyyy-MM-dd hh:mm:ss')
             }
         }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
@@ -996,6 +1021,13 @@ components: { expandRow },
 
   },
   computed:{
+      renewDisabled(){
+          if(this.overviewSelect.length == 0){
+              return true;
+          }else{
+              return false;
+          }
+      }
   }
 };
 </script>
@@ -1117,6 +1149,7 @@ components: { expandRow },
   .dp-er{
       height: 32px;
       line-height: 32px;
+      margin-bottom: 20px;
       padding:0 20px;
       border:1px solid #ED4014;
       border-radius: 4px;
@@ -1159,6 +1192,30 @@ components: { expandRow },
     color: #FFFFFF;
     background-color: #4297F2;
     border: 1px solid #4297F2;
+}
+.dp-xfu{
+    margin-bottom:20px;
+    .dp-xfl{
+        margin-bottom: 10px;
+        display:flex;
+        .dp-xfz{
+            width: 84px;
+            margin-right: 10px;
+            text-align: left;
+            color: #333333;
+            font-size: 14px;
+        }
+        .dp-xfy{
+            color: #666666;
+            font-size: 14px;
+        }
+    }
+}
+.dp-ren{
+    text-align:right;font-size:14px;color:#333333;margin-right:10px;
+    span{
+        font-size:18px;color:#FF624B;font-weight:bold;
+    }
 }
 </style>
 
