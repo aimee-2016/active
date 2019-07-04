@@ -496,7 +496,7 @@ export default {
                   },
                   on: {
                     click: () => {
-                      sessionStorage.setItem('manageId', params.row.computerid)
+                      sessionStorage.setItem('manageId', params.row.id)
                       this.$router.push('/databaseManage')
                     }
                   }
@@ -508,7 +508,7 @@ export default {
                   },
                   on: {
                     click: () => {
-                      sessionStorage.setItem('manageId', params.row.computerid)
+                      sessionStorage.setItem('manageId', params.row.id)
                       this.$router.push('databaseManage')
                     }
                   }
@@ -546,9 +546,9 @@ export default {
           filterMultiple: false,
           filterMethod (value, row) {
             if (value === 1) {
-              return row.status == 1 && row.computerstate == 1;
+              return row.status == 1 && row.dbStatus == 1;
             } else if (value === 2) {
-              return row.status == 1 && row.computerstate == 0;
+              return row.status == 1 && row.dbStatus == 0;
             } else if (value === 3) {
               return row.status == 0;
             } else if (value === 4) {
@@ -557,10 +557,10 @@ export default {
           },
           render: (h, params) => {
             let restart = params.row.restart ? params.row.restart : 0
-            let restore = params.row.restore ? params.row.restore : 0
-            let resetpwd = params.row.resetpwd ? params.row.resetpwd : 0
-            let bindip = params.row.bindip ? params.row.bindip : 0
-            let createtemplate = params.row.createtemplate ? params.row.createtemplate : 0
+            // let restore = params.row.restore ? params.row.restore : 0
+            // let resetpwd = params.row.resetpwd ? params.row.resetpwd : 0
+            // let bindip = params.row.bindip ? params.row.bindip : 0
+            // let createtemplate = params.row.createtemplate ? params.row.createtemplate : 0
             let icon_1 = require('../../assets/img/host/h-icon1.png')
             let icon_2 = require('../../assets/img/host/h-icon2.png')
             let icon_3 = require('../../assets/img/host/h-icon3.png')
@@ -626,7 +626,7 @@ export default {
                   ])
                 break
               case 1:
-                if (params.row.computerstate == 1) {
+                if (params.row.dbStatus == 1) {
                   return h('div', {
                     style: {
                       display: 'flex',
@@ -653,7 +653,7 @@ export default {
                         style: styleInfo
                       }, '开启')
                     ])
-                } else {
+                } else if (params.row.dbStatus == 0) {
                   return h('div', {
                     style: {
                       display: 'flex',
@@ -680,64 +680,61 @@ export default {
                         style: styleInfo
                       }, '关机')
                     ])
-                }
-                break
-              case 2:
-                if (restart == 1) {
+                } else if (params.row.dbStatus == 4) {
                   return h('div', {}, [h('Spin', {
                     style: {
                       display: 'inline-block'
                     }
                   }), h('span', { style: styleInfo }, '重启中')])
-                } else if (restore == 1) {
-                  return h('div', {}, [h('Spin', {
-                    style: {
-                      display: 'inline-block'
-                    }
-                  }), h('span', { style: styleInfo }, '重装中')])
-                } else if (resetpwd == 1) {
-                  return h('div', {}, [h('Spin', {
-                    style: {
-                      display: 'inline-block'
-                    }
-                  }), h('span', { style: styleInfo }, '重置中')])
-                } else if (bindip == 1) {
+                } else if (params.row.dbStatus == 6) {
                   return h('div', {}, [h('Spin', {
                     style: {
                       display: 'inline-block'
                     }
                   }), h('span', { style: styleInfo }, '绑定中')])
-                } else if (bindip == 2) {
+                } else if (params.row.dbStatus == 7) {
                   return h('div', {}, [h('Spin', {
                     style: {
                       display: 'inline-block'
                     }
                   }), h('span', { style: styleInfo }, '解绑中')])
-                } else if (createtemplate == 1) {
-                  return h('div', {}, [h('Spin', {
-                    style: {
-                      display: 'inline-block'
-                    }
-                  }), h('span', { style: styleInfo }, '创建模板中')])
-                } else if (params.row.computerstate == 1) {
+                } else if (params.row.dbStatus == 3) {
                   return h('div', {}, [h('Spin', {
                     style: {
                       display: 'inline-block'
                     }
                   }), h('span', { style: styleInfo }, '关机中')])
-                } else if (params.row.computerstate == 0) {
+                } else if (params.row.dbStatus == 2) {
                   return h('div', {}, [h('Spin', {
                     style: {
                       display: 'inline-block'
                     }
                   }), h('span', { style: styleInfo }, '开机中')])
-                } else {
-                  return h('div', {}, [h('Spin', {
+                } else if (params.row.status) {
+                  return h('div', {
                     style: {
-                      display: 'inline-block'
+                      display: 'flex'
                     }
-                  }), h('span', { style: styleInfo }, '创建中')])
+                  }, [
+                      h('div', [
+                        h('img', {
+                          attrs: {
+                            src: icon_1
+                          }
+                        }, ''),
+                      ]),
+                      h('span', {
+                        style: styleInfo
+                      }, '正常')
+                    ])
                 }
+                break
+              case 2:
+                return h('div', {}, [h('Spin', {
+                  style: {
+                    display: 'inline-block'
+                  }
+                }), h('span', { style: styleInfo }, '创建中')])
                 break
             }
           }
@@ -1027,7 +1024,7 @@ export default {
                         },
                         on: {
                           click: () => {
-                            sessionStorage.setItem('manageId', params.row.computerid)
+                            sessionStorage.setItem('manageId', params.row.id)
                             this.$router.push('databaseManage')
                           }
                         }
@@ -1148,7 +1145,7 @@ export default {
                         },
                         on: {
                           click: () => {
-                            sessionStorage.setItem('manageId', params.row.computerid)
+                            sessionStorage.setItem('manageId', params.row.id)
                             this.$router.push('databaseManage')
                           }
                         }
@@ -1503,7 +1500,7 @@ export default {
             this.showModal.backup = true
             break
           case 'mirror':
-            if (this.hostCurrentSelected.status == 1 && this.hostCurrentSelected.computerstate == 0) {
+            if (this.hostCurrentSelected.status == 1 && this.hostCurrentSelected.dbStatus == 0) {
               this.mirrorForm.mirrorName = ''
               this.mirrorForm.description = ''
               this.showModal.mirror = true
@@ -1517,7 +1514,7 @@ export default {
             }
             break
           case 'upgrade':
-            if (this.hostCurrentSelected.status == 1 && this.hostCurrentSelected.computerstate == 0) {
+            if (this.hostCurrentSelected.status == 1 && this.hostCurrentSelected.dbStatus == 0) {
               this.$http.get('network/VMIsHaveSnapshot.do', {
                 params: {
                   VMId: this.hostCurrentSelected.computerid
@@ -1594,11 +1591,11 @@ export default {
         let url = 'database/listDB.do'
         this.$http.get(url, {
           params: {
-            ids: ids
+            id: ids
           }
         }).then(res => {
           if (res.data.status == 1 && res.status == 200) {
-            let locality = res.data.result.data
+            let locality = res.data.result.info
             let flag = locality.some(item => {
               return item.status == 2 || item.status == -2
             }) // 操作的主机中是否有过渡状态，没有就清除定时器，取消刷新
@@ -1625,46 +1622,14 @@ export default {
       }, 3000)
     },
     // 通过val来区分是批量选择的还是单个列表里操作的
-    hostShutdown (val) {
-      let params = {}
-      if (val == 1) {
-        this.hostListData.forEach(host => {
-          this.selectHostIds.forEach(item => {
-            if (host.id == item) {
-              host.bindip = 0
-              host.status = 2
-              host.computerstate = 1
-              host._disabled = true
-            }
-          })
-        })
-        params = {
-          VMId: this.selectHostComputerIds + '',
-          forced: true
-        }
-      } else {
-        this.hostListData.forEach(host => {
-          if (host.id == this.hostCurrentSelected.id) {
-            host.bindip = 0
-            host.status = 2
-            host.computerstate = 1
-            host._disabled = true
-          }
-        })
-        params = {
-          VMId: this.hostCurrentSelected.computerid,
-          forced: true
-        }
-      }
-      let url = 'information/stopVirtualMachine.do'
-      this.$http.get(url, { params }).then(res => {
+    hostShutdown () {
+      let url = 'database/stopDB.do'
+      this.$http.get(url, {        params: {
+          DBId: this.hostCurrentSelected.computerid,
+        }      }).then(res => {
         if (res.status === 200 && res.data.status === 1) {
           this.$Message.success(res.data.message)
-          if (val == 1) {
-            this.timingRefresh(this.selectHostIds + '')
-          } else {
-            this.timingRefresh(this.hostCurrentSelected.id)
-          }
+          this.timingRefresh(this.hostCurrentSelected.id)
           this.hostSelection = []
         } else {
           this.getHostList()
@@ -1674,44 +1639,14 @@ export default {
         }
       })
     },
-    hostStart (val) {
-      let params = {}
-      if (val == 1) {
-        this.hostListData.forEach(host => {
-          this.selectHostIds.forEach(item => {
-            if (host.id == item) {
-              host.status = 2
-              host.computerstate = 0
-              host.bindip = 0
-              host._disabled = true
-            }
-          })
-        })
-        params = {
-          VMId: this.selectHostComputerIds + ''
-        }
-      } else {
-        this.hostListData.forEach(host => {
-          if (host.id == this.hostCurrentSelected.id) {
-            host.status = 2
-            host.bindip = 0
-            host.computerstate = 0
-            host._disabled = true
-          }
-        })
-        params = {
-          VMId: this.hostCurrentSelected.computerid,
-        }
-      }
-      let url = 'information/startVirtualMachine.do'
-      this.$http.get(url, { params }).then(res => {
+    hostStart () {
+      let url = 'database/startDB.do'
+      this.$http.get(url, {        params: {
+          DBId: this.hostCurrentSelected.computerid
+        }      }).then(res => {
         if (res.status === 200 && res.data.status === 1) {
           this.$Message.success(res.data.message)
-          if (val == 1) {
-            this.timingRefresh(this.selectHostIds + '')
-          } else {
-            this.timingRefresh(this.hostCurrentSelected.id)
-          }
+          this.timingRefresh(this.hostCurrentSelected.id)
           this.hostSelection = []
         } else {
           this.getHostList()
@@ -1846,7 +1781,7 @@ export default {
       }
     },
     toManage (item) {
-      sessionStorage.setItem('manageId', item.computerid)
+      sessionStorage.setItem('manageId', item.id)
       this.$router.push('databaseManage')
     },
     changeResetPasswordType (name) {
@@ -1920,7 +1855,7 @@ export default {
               this.resetPasswordHostData.forEach(item => {
                 if (host.id == item.id) {
                   host.status = 2
-                  host.resetpwd = 1
+                  // host.resetpwd = 1
                   host._disabled = true
                 }
               })
@@ -2115,7 +2050,7 @@ export default {
           this.hostListData.forEach(host => {
             if (host.id == this.hostCurrentSelected.id) {
               host.status = 2
-              host.bindip = 1
+              // host.bindip = 1
               host._disabled = true
             }
           })
@@ -2418,7 +2353,7 @@ export default {
           this.hostListData.forEach(host => {
             if (host.id == this.hostCurrentSelected.id) {
               host.status = 2
-              host.createtemplate = 1
+              // host.createtemplate = 1
               host._disabled = true
             }
           })
@@ -2444,7 +2379,7 @@ export default {
       this.hostListData.forEach(host => {
         if (host.id == this.hostCurrentSelected.id) {
           host.status = 2
-          host.bindip = 2
+          // host.bindip = 2
           host._disabled = true
         }
       })
@@ -2599,7 +2534,7 @@ export default {
       this.hostListData.forEach(item => {
         if (item.status == 1) {
           sessionStorage.setItem('guideHint', '1')
-          sessionStorage.setItem('manageId', item.computerid)
+          sessionStorage.setItem('manageId', item.id)
           this.$router.push('databaseManage')
         }
       })
@@ -2642,7 +2577,7 @@ export default {
       } else {
         // 只有开机状态的主机才能关机
         return !this.hostSelection.every(host => {
-          return host.status == 1 && host.computerstate == 1
+          return host.status == 1 && host.dbStatus == 1
         })
       }
     },
@@ -2653,7 +2588,7 @@ export default {
       } else {
         // 只有关机状态的主机才能开机
         return !this.hostSelection.every(host => {
-          return host.status == 1 && host.computerstate == 0
+          return host.status == 1 && host.dbStatus == 0
         })
       }
     },
@@ -2664,7 +2599,7 @@ export default {
       } else {
         // 只有开机状态的主机才能重启
         return !this.hostSelection.every(host => {
-          return host.status == 1 && host.computerstate == 1
+          return host.status == 1 && host.dbStatus == 1
         })
       }
     },
@@ -2735,7 +2670,7 @@ export default {
       if (len !== 1) {
         return true
       } else {
-        return !(this.hostSelection[0].status == 1 && this.hostSelection[0].computerstate == 0)
+        return !(this.hostSelection[0].status == 1 && this.hostSelection[0].dbStatus == 0)
       }
     },
     makeSnapshotDisabled () {
@@ -2751,7 +2686,7 @@ export default {
       if (len !== 1) {
         return true
       } else {
-        return !(this.hostSelection[0].status == 1 && this.hostSelection[0].computerstate == 0)
+        return !(this.hostSelection[0].status == 1 && this.hostSelection[0].dbStatus == 0)
       }
     },
     unbindIPDisabled () {

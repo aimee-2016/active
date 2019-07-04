@@ -10,15 +10,15 @@
       </Alert>
       <div class="host-config">
         <div class="config-top">
-          <p class="title"><img @click="$router.push('cloudDatabase')" src="../../assets/img/host/h-icon9.png" alt="back to hostList"/> 名称：{{ hostInfo.computerName}}
+          <p class="title"><img @click="$router.push('cloudDatabase')" src="../../assets/img/host/h-icon9.png" alt="back to hostList"/> 名称：{{ hostInfo.computername}}
             <img class="last" @click="renameForm.hostName = '',showModal.rename = true" src="../../assets/img/host/h-icon11.png" alt="modification computerName"/>
             <button @click="$router.go(0)">刷新</button>
             <button style="margin-right: 10px;background: #2A99F2;color: #FFF" @click="linkHost" v-if="hostInfo.computerStatus == 1">连接主机</button>
           </p>
-          <p v-if="hostInfo.bandwith">{{ hostInfo.cpuNum }}核CPU，{{ hostInfo.memory}}G内存，{{ hostInfo.rootDiskSize}}G硬盘，{{ hostInfo.bandwith}}M带宽 | {{ hostInfo.zoneName}} <span
+          <p v-if="hostInfo.bandwith">{{ hostInfo.serviceoffername.split('+')[0] }}CPU，{{ hostInfo.serviceoffername.split('+')[1]}}，{{ hostInfo.disksize}}G硬盘，{{ hostInfo.bandwith}}M带宽 | {{ hostInfo.zonename}} <span
             @click="hostUpgrade">[升级]</span>
           </p>
-            <p v-else>{{ hostInfo.cpuNum }}核CPU，{{ hostInfo.memory}}G内存，{{ hostInfo.rootDiskSize}}G硬盘 | {{ hostInfo.zoneName}} <span
+            <p v-else>{{ hostInfo.serviceoffername.split('+')[0] }}CPU，{{ hostInfo.serviceoffername.split('+')[1]}}，{{ hostInfo.disksize}}G硬盘 | {{ hostInfo.zonename}} <span
             @click="hostUpgrade">[升级]</span>
           </p>
         </div>
@@ -58,26 +58,26 @@
              <ul>
                <li>
                  <h4>数据库版本</h4>
-                 <div>MySQL 5.6</div>
+                 <div>{{hostInfo.templatename}}</div>
                </li>
-               <li>
+               <!-- <li>
                  <h4>实例类型</h4>
                  <div>单机
                    <span>[升级主备]</span>
                  </div>
-               </li>
+               </li> -->
                <li>
                  <h4>性能规格</h4>
-                 <div>2CPU，8G menory内存
+                 <div>{{hostInfo.serviceoffername}}
                    <span>[规格升级]</span>
                  </div>
                </li>
-             </ul>
-             <ul>
                <li>
                  <h4>管理员账户名</h4>
-                 <div>root</div>
+                 <div>{{hostInfo.loginname}}</div>
                </li>
+             </ul>
+             <ul>
                <li>
                  <h4>时区</h4>
                  <div>UTC</div>
@@ -91,33 +91,37 @@
              <ul>
                <li>
                  <h4>内网地址</h4>
-                 <div>MySQL 5.6</div>
+                 <div>{{hostInfo.privateip}}
+                   <span>[修改内网地址]</span>
+                 </div>
+
                </li>
                <li>
                  <h4>数据库端口</h4>
-                 <div>单机
-                   <span>[升级主备]</span>
+                 <div>{{hostInfo.dbPort}}
+                   <span>[修改端口]</span>
                  </div>
                </li>
                <li>
                  <h4>建议最大连接数</h4>
-                 <div>2CPU，8G menory内存
-                   <span>[规格升级]</span>
+                 <div>200
                  </div>
                </li>
              </ul>
              <ul>
                <li>
                  <h4>远程连接</h4>
-                 <div>root</div>
+                 <div>45.56.78.63
+                   <span>[解绑公网IP]</span>
+                 </div>
                </li>
                <li>
                  <h4>所属VPC</h4>
-                 <div>UTC</div>
+                 <div>{{hostInfo.vpcname}}</div>
                </li>
                <li>
                  <h4>防火墙</h4>
-                 <div>UTC</div>
+                 <div>默认防火墙</div>
                </li>
              </ul>
            </dd>
@@ -128,7 +132,9 @@
              <ul>
                <li>
                  <h4>存储空间用量</h4>
-                 <div>MySQL 5.6</div>
+                 <div>{{hostInfo.disksize+'GB/'+hostInfo.rootdisksize+'GB'}}
+                   <span>[扩容]</span>
+                 </div>
                </li>
              </ul>
            </dd>
@@ -139,18 +145,16 @@
              <ul>
                <li>
                  <h4>计费类型</h4>
-                 <div>MySQL 5.6</div>
+                 <div>{{hostInfo.caseType == 1?'包年':(hostInfo.caseType == 2?'包月':'实时')}}</div>
                </li>
                <li>
                  <h4>订单</h4>
-                 <div>单机
-                   <span>[升级主备]</span>
+                 <div>{{hostInfo.ordernumber}}
                  </div>
                </li>
                <li>
                  <h4>创建时间/到期时间</h4>
-                 <div>2CPU，8G menory内存
-                   <span>[规格升级]</span>
+                 <div>{{hostInfo.createtime+'/'+hostInfo.endtime}}
                  </div>
                </li>
              </ul>
@@ -200,19 +204,6 @@
                 <span>共 {{tab3.totalLenght}} 项 | 已选择 <span style="color:#FF624B;">{{selectLenght}}</span>项</span>
               </div>
               <Table :columns='tab3.firewalList' :data='tab3.firewalData' :loading='tab3.firewalLoading' @on-selection-change="firewalSelectionChange"></Table>
-            </div>
-          </div>
-        </div>
-        <div class="tab-4" v-show="configType == '快照管理'">
-          <Button type="primary" :disabled="delSnapshootDisabled" @click="showModal.delsnaps = true">删除快照</Button>
-          <div class="selectMark">
-            <img src="../../assets/img/host/h-icon10.png"/>
-            <span>共 {{ tab4.pageSize}} 项 | 已选择 <span style="color:#FF624B;">{{ tab4.snapshootSelection.length }} </span>项</span>
-          </div>
-          <Table :columns="tab4.snapshootColumns" :data="tab4.snapshootData" @on-selection-change="snapshootSelectionChange"></Table>
-          <div style="margin: 10px;overflow: hidden">
-            <div style="float: right;">
-              <Page :total="tab4.snapshootPages" :current="tab4.currentPage" :page-size="tab4.pageSize" @on-change="changeSnapshootPage"></Page>
             </div>
           </div>
         </div>
@@ -496,40 +487,6 @@
         </Button>
       </div>
     </Modal>
-    <!-- 回滚弹窗 -->
-    <Modal v-model="showModal.rollback" :scrollable="true" :closable="false" :width="390">
-      <p slot="header" class="modal-header-border">
-        <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
-        <span class="universal-modal-title">主机回滚</span>
-      </p>
-      <div class="modal-content-s">
-        <div>
-          <p class="lh24">是否确定回滚主机</p>
-          <p class="lh24">提示：您正使用<span class="bluetext">{{tab4.snapsName}}</span>回滚<span class="bluetext">{{tab4.hostName}}</span>至<span
-            class="bluetext">{{tab4.hostCreatetime}}</span>，当您确认操作之后，此<span class="bluetext">时间点</span>之后的主机内的数据将丢失。</p>
-        </div>
-      </div>
-      <p slot="footer" class="modal-footer-s">
-        <Button @click="showModal.rollback=false">取消</Button>
-        <Button type="primary" @click="rollbackSubmit">确定</Button>
-      </p>
-    </Modal>
-    <!-- 删除快照弹窗 -->
-    <Modal v-model="showModal.delsnaps" :scrollable="true" :closable="false" :width="390">
-      <p slot="header" class="modal-header-border">
-        <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
-        <span class="universal-modal-title">删除快照</span>
-      </p>
-      <div class="modal-content-s">
-        <div>
-          <p class="lh24">确定要删除选中的快照吗？</p>
-        </div>
-      </div>
-      <p slot="footer" class="modal-footer-s">
-        <Button @click="showModal.delsnaps=false">取消</Button>
-        <Button type="primary" @click="delsnapsSubm">确定</Button>
-      </p>
-    </Modal>
     <!-- 创建规则 -->
     <Modal v-model="showModal.createRule" width="550" :scrollable="true">
       <p slot="header" class="modal-header-border">
@@ -682,7 +639,7 @@
           input: ''
         },
         configType: '基础信息',
-        configTypes: ['基础信息', '主机监控', '防火墙', '快照管理', '操作日志'],
+        configTypes: ['基础信息', '主机监控', '防火墙',  '操作日志'],
         isAutoRenew: false,
         diskMountForm: {
           mountDisk: '',
@@ -852,108 +809,6 @@
           ],
           firewalData: []
         },
-
-        tab4: {
-          snapshootColumns: [
-            {
-              type: 'selection',
-              width: 60,
-              align: 'center'
-            },
-            {
-              title: '快照名称',
-              key: 'snapshotname',
-            },
-            {
-              title: '状态',
-              key: 'status',
-              render: (h, params) => {
-                switch (params.row.status) {
-                  case 1:
-                    return h('span', {}, '正常')
-                  case -1:
-                    return h('span', {}, '异常')
-                  case 2:
-                    return h('div', {}, [h('Spin', {
-                      style: {
-                        display: 'inline-block',
-                        marginRight: '10px'
-                      }
-                    }), h('span', {}, '创建中')])
-                  case 3:
-                    return h('div', {}, [h('Spin', {
-                      style: {
-                        display: 'inline-block',
-                        marginRight: '10px'
-                      }
-                    }), h('span', {}, '删除中')])
-                }
-              }
-            },
-            {
-              title: '快照策略',
-              key: 'createway',
-              render: (h, params) => {
-                const row = params.row
-                const text = row.createway === 'hand' ? '手动备份' : row.createway
-                return h('span', {}, text)
-              }
-            },
-            {
-              title: '快照间隔',
-              key: 'intervals',
-              render: (h, params) => {
-                const row = params.row
-                const text = row.intervals === 'hand' ? '手动' : row.intervals === 'day' ? '每天' : row.intervals === 'week' ? '每周' : row.intervals === 'month' ? '每月' : ''
-                return h('span', {}, text)
-              }
-            },
-            {
-              title: '创建时间',
-              key: 'addtime',
-            },
-            {
-              title: '操作',
-              key: 'action',
-              width: 100,
-              render: (h, params) => {
-                if (params.row.status !== 1) {
-                  return h('span', {
-                    style: {
-                      cursor: 'not-allowed'
-                    },
-                  }, '回滚')
-                } else {
-                  return h('span', {
-                    style: {
-                      color: '#2A99F2',
-                      cursor: 'pointer'
-                    },
-                    on: {
-                      click: () => {
-                        this.showModal.rollback = true
-                        this.tab4.cursnapshot = params.row
-                        this.tab4.snapsName = params.row.snapshotname
-                        this.tab4.hostName = params.row.name
-                        this.tab4.hostCreatetime = params.row.addtime
-                      }
-                    }
-                  }, '回滚')
-                }
-              }
-            }
-          ],
-          snapshootData: [],
-          snapshootPages: 0,
-          currentPage: 1,
-          pageSize: 10,
-          snapshootSelection: [],
-          cursnapshot: null,
-          snapsName: '',
-          hostName: '',
-          hostCreatetime: ''
-        },
-
         tab5: {
           timeHorizon: '近一天',
           searchName: '',
@@ -1056,24 +911,22 @@
           case '防火墙':
             this.getAclList()
             break
-          case '快照管理':
-            this.getHostSnapshoot()
-            break
           case '操作日志':
             this.getHostLog()
             break
         }
       },
       getHostInfo() {
-        let url = 'information/listVMByComputerId.do'
+        let url = 'database/listDB.do'
         this.$http.get(url, {
           params: {
-            VMId: this.computerId
+            id: this.computerId
           }
         }).then(res => {
           if (res.status == 200 && res.data.status == 1) {
-            this.hostInfo = res.data.result
+            this.hostInfo = res.data.result.info[0]
             this.isAutoRenew = Boolean(this.hostInfo.isAutoRenw)
+            console.log(this.hostInfo)
           }
         })
       },
@@ -1596,75 +1449,6 @@
           this.tab2.monitoringList[index].chart = broken
         }
       },
-      getHostSnapshoot() {
-        this.$http.get('Snapshot/listVMSnapshot.do', {
-          params: {
-            resourceType: 1,
-            resourceId: this.computerId
-          }
-        }).then(response => {
-          if (response.status == 200 && response.data.status == 1) {
-            this.tab4.snapshootData = response.data.result
-          }
-        })
-      },
-      snapshootSelectionChange(selected) {
-        this.tab4.snapshootSelection = selected
-      },
-      changeSnapshootPage(page) {
-        this.tab4.currentPage = page
-        this.getHostSnapshoot()
-      },
-      rollbackSubmit() {
-        this.showModal.rollback = false
-        let URL = 'Snapshot/revertToVMSnapshot.do'
-        this.$http.get(URL, {
-          params: {
-            snapshotId: this.tab4.cursnapshot.snapshotid,
-          }
-        }).then(response => {
-          if (response.status == 200 && response.data.status == 1) {
-            this.$Message.success({
-              content: response.data.message,
-              duration: 5
-            })
-          } else {
-            this.$message.info({
-              content: response.data.message,
-            })
-          }
-        })
-      },
-      // 确定删除快照
-      delsnapsSubm() {
-        this.showModal.delsnaps = false
-        this.tab4.snapshootData.forEach(item => {
-          this.tab4.snapshootSelection.forEach(item1 => {
-            if (item.snapshotid == item1.snapshotid) {
-              item.status = 3
-            }
-          })
-        })
-        let ids = this.tab4.snapshootSelection.map(item => {
-          return item.id
-        })
-        this.tab4.snapshootSelection = []
-        var URL = 'Snapshot/deleteVMSnapshot.do'
-        this.$http.get(URL, {
-          params: {
-            ids: ids + ''
-          }
-        }).then(response => {
-          if (response.status == 200 && response.data.status == 1) {
-            this.$Message.success(response.data.message)
-            this.getHostSnapshoot()
-          } else {
-            this.$message.info({
-              content: response.data.message,
-            })
-          }
-        })
-      },
       changeLogPage(page) {
         this.tab5.currentPage = page
         this.getHostLog()
@@ -1848,9 +1632,6 @@
     computed: {
       auth() {
         return this.$store.state.authInfo != null
-      },
-      delSnapshootDisabled() {
-        return this.tab4.snapshootSelection.length === 0
       },
       selectLenght() {
         return this.tab3.selectLenght;
@@ -2158,20 +1939,6 @@
       }
       .firewal {
         padding: 20px 0;
-      }
-    }
-    .tab-4 {
-      .selectMark {
-        margin: 10px 0;
-        > img {
-          position: relative;
-          top: 4px;
-        }
-        > span {
-          font-size: 14px;
-          font-family: MicrosoftYaHei;
-          color: rgba(102, 102, 102, 1);
-        }
       }
     }
     .tab-5 {
