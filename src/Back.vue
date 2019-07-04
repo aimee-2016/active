@@ -334,7 +334,12 @@
           {
             mainName: '云服务器',
             type: 'server',
-            subItem: [{subName: '云主机', type: 'host'}, {subName: 'GPU云服务器', type: 'GpuList'}, {
+            subItem: [{subName: '云主机', type: 'host'}, {subName: 'GPU云服务器', type: 'GpuList'},
+            {
+              subName: 'DDoS高防主机',
+              type: 'BackDdos'
+            },
+            {
               subName: '云主机快照',
               type: 'snapshot'
             }, {
@@ -778,8 +783,9 @@
         var map = {
           '/GpuList': [1],
           '/host': [0],
+          '/BackDdos': [2]
         }
-        var type = map[this.$route.path] || [0, 1]
+        var type = map[this.$route.path] || [0, 1, 2]
         var zoneList = this.$store.state.zoneList.filter(zone => {
           return type.indexOf(zone.gpuserver) > -1
         })

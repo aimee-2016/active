@@ -43,8 +43,13 @@ Vue.config.productionTip = false
 
 axios.defaults.withCredentials = true
 
+<<<<<<< HEAD
 // axios.defaults.baseURL = 'https://kaifa.xrcloud.net/'
 axios.defaults.baseURL = 'https://zschj.xrcloud.net/'
+=======
+axios.defaults.baseURL = 'https://kaifa.xrcloud.net/'
+//axios.defaults.baseURL = 'https://zschj.xrcloud.net/'
+>>>>>>> 0f21be32c9fd0a74f50b4abb6c802c2e7437ca1b
 //axios.defaults.baseURL = 'https://www.xrcloud.net/'
 
 

@@ -31,6 +31,7 @@ const BDDoS = () => import('@/components/App/buy/BHighIp')
 const Document = () =>import('@/components/App/Document')
 const Document1 = () =>import('@/components/App/Document1')
 const Record = () =>import('@/components/App/Record')
+const BDdos = () => import('@/components/App/buy/BDdos')
 
 //const hostPrice = () => import('@/components/App/Price/Host')
 //const diskPrice = () => import('@/components/App/Price/Disk')
@@ -121,6 +122,7 @@ const PobjStorage = () =>import('@/components/App/product/PobjStorage.vue')
 const PdataBase = () =>import('@/components/App/product/PdataBase.vue')
 const Pgpu = () =>import('@/components/App/product/Pgpu.vue')
 const Pelastic = () => import('@/components/App/product/Pelastic.vue')
+const PDdosHost = () => import('@/components/App/product/PDdosHost')
 // 登录注册页面
 // import Login from '@/components/LR/Login'
 // import Register from '@/components/LR/Register'
@@ -229,6 +231,10 @@ const DDoSIP = () => import('@/components/Back/DDoSIP')
 const DDoSIpRuleAdd = () => import('@/components/Back/DDoSIpRuleAdd')
 const DDoSIPdetails = () => import('@/components/Back/DDoSIPdetails')
 
+// DDOS 高防主机
+const BackDdos = () => import('@/components/Back/BackDdos')
+const protectUpgrade = () => import('@/components/Back/ProtectUpgrade')
+const protectOverlay = () => import('@/components/Back/ProtectOverlay')
 
 const CloudDatabaseBackup = () => import('@/components/Back/CloudDatabaseBackup')
 const CloudDatabase = () => import('@/components/Back/CloudDatabase')
@@ -334,7 +340,8 @@ var router = new Router({
             {path: 'objectstorage', name: 'objectstorage/', component: BObj},
             {path: 'gpu', name: 'gpu/', component: BGpu},
             {path: 'ssl', name: 'ssl/', component: BSsl},
-            {path: 'ddosip', name: 'ddosip/', component: BDDoS}
+            {path: 'ddosip', name: 'ddosip/', component: BDDoS},
+            {path: 'ddos', name: 'ddos/', component: BDdos},
           ]
         },
 
@@ -389,14 +396,15 @@ var router = new Router({
         {path: 'disk', component: Pdisk},
         {path: 'diskbackup', component: Pbackupdisk},
         {path: 'firewall', component: Pfirewall},
-        {path: 'ddos', component: Pddos},
+        {path: 'ddosip', component: Pddos},
         {path: 'monitor', component: Pmonitor},
         {path: 'objectstorage', component: PobjStorage},
         {path: 'database', component: PdataBase},
         {path: 'gpu', component: Pgpu},
         {path: 'elasticscalable',component: Pelastic},
         {path: 'documentInfo/:parentId/:id', component: documentInfo},
-        {path: 'hotQuestion/:parentId/:id', component: hotQuestion}
+        {path: 'hotQuestion/:parentId/:id', component: hotQuestion},
+        {path: 'ddos', component: PDdosHost}
       ]
     },
     {
@@ -482,7 +490,11 @@ var router = new Router({
         {path: 'ThawDeposit', name: 'ThawDeposit', component: ThawDeposit},
         {path: 'DDoSIP', name: 'DDoSIP', component: DDoSIP},
         {path: 'ddosipruleadd', name: 'ddosipruleadd', component: DDoSIpRuleAdd},
-        {path: 'ddosipdetails', name: 'ddosipdetails', component: DDoSIPdetails}
+        {path: 'ddosipdetails', name: 'ddosipdetails', component: DDoSIPdetails},
+        // DDOS 高防主机
+        {path: 'BackDdos', name: 'BackDdos', component: BackDdos},
+        {path: 'protectUpgrade', name: 'ProtectUpgrade', component: protectUpgrade},
+        {path: 'protectOverlay', name: 'ProtectOverlay', component: protectOverlay}
       ]
     },
     {

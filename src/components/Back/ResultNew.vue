@@ -159,6 +159,10 @@
         } else if (name == '22') {
           window.location.href = 'https://domain.xrcloud.net/xrdomain/domainSSL';
           return;
+        } else if (name == '25') {
+          router = 'BackDdos'
+        } else if (name == '26') {
+          router = 'BackDdos'
         }
         this.$router.push(router)
       }

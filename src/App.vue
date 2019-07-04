@@ -68,7 +68,7 @@
             <li @mouseenter="ME(1,$event)">
               <div class="menu-dropdown">
                 <div class="menu-dropdown-rel">
-                  <a href="https://zschj.xrcloud.net/overview" rel="nofollow"><span>控制台</span>
+                  <a href="https://kaifa.xrcloud.net/overview" rel="nofollow"><span>控制台</span>
                   </a>
                 </div>
               </div>
@@ -84,7 +84,7 @@
               <div class="menu-dropdown">
                 <div class="menu-dropdown-rel">
                    <!-- <a href="#" rel="nofollow"><span @click="login">登录</span></a> -->
-                  <a href="https://zschj.xrcloud.net/login" rel="nofollow"><span>登录</span>
+                  <a href="https://kaifa.xrcloud.net/login" rel="nofollow"><span>登录</span>
                   </a>
                 </div>
               </div>
@@ -92,7 +92,7 @@
             <li @mouseenter="ME(1,$event)" style="background:#387Dff;width:100px;text-align:center;">
               <div class="menu-dropdown">
                 <div class="menu-dropdown-rels">
-                  <a href="https://zschj.xrcloud.net/register" rel="nofollow"><span>注册</span>
+                  <a href="https://kaifa.xrcloud.net/register" rel="nofollow"><span>注册</span>
                   </a>
                 </div>
               </div>
@@ -494,7 +494,8 @@
                   {title: 'ECS快照', desc: '稳定可靠、安全保障', path: '/ecssnapshot/'},
                   {title: 'GPU服务器', desc: 'Tesla P100、Tesla P40 GPU', path: '/gpu/'},
                   {title: '弹性伸缩', desc: '高可用、可视化、低成本', path: '/elasticscalable/'},
-                  {title: '裸金属服务器（敬请期待）', desc: '专属物理服务器', path: '/'},
+                  {title: 'DDoS高防主机', desc: '最大800G超大防护', path: '/ddos'},
+                  {title: '裸金属服务器（敬请期待）', desc: '专属物理服务器', path: '/'}
                 ]
               },
               {

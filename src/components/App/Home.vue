@@ -402,7 +402,8 @@
     <div class="cooperation-case">
       <div class="wrap">
         <div class="header-g">
-          <p class="title" style="padding-bottom: 0">合作案例</p>
+          <p class="title">成功案例</p>
+          <span class="desc">为各行业用户提供一站式上云方案</span>
         </div>
         <div class="solution-content clearfix">
           <div class="solution-container clearfix">
@@ -422,7 +423,7 @@
                   <div>
                     <h4>{{ item.casetitle }}</h4>
                     <p>项目背景</p>
-                    <span>{{ item.background }}</span>
+                    <span class="setting"><span>{{ item.background.substr(0,80) }}</span><span class="more" v-show="item.background.length > 80 && !item.viewmore" @click="item.viewmore = true">...查看更多</span><span v-show="item.viewmore && item.background.length > 80">{{ item.background.substr(80) }}</span></span>
                     <p>解决方案</p>
                     <span>{{ item.discription }}</span>
                   </div>
@@ -1218,6 +1219,7 @@
         ],
         cooperationCaseList:[
           {
+            viewmore: false,
             imgurl: require("../../assets/img/home/case_bg1.png"),
             title: '大数据营销云案例',
             company: '网娱互动',
@@ -1226,6 +1228,7 @@
             discription: '在项目建设中，采用新睿云的弹性云服务器，在云服务器中部署爬虫环境。通过云服务器的镜像或快照功能快速创建多个环境一致的ECS实例。同时云上资源支持弹性扩容，可根据业务高峰自由收缩，提高整体运维效率和可靠性。'
           },
           {
+            viewmore: false,
             imgurl: require("../../assets/img/home/case_bg2.png"),
             title: '企业ERP系统云案例 ',
             company: '珠峰时代',
@@ -1234,6 +1237,7 @@
             discription: '针对系统的应用需求，新睿云为珠峰时代提供了企业ERP系统解决方案，通过高性能的云主机、高带宽及大容量的系统盘等，完成数据存储、系统整合、弹性扩容等功能，从而降低企业运营成本、缩短产品研发生产周期。'
           },
           {
+            viewmore: false,
             imgurl: require("../../assets/img/home/case_bg3.png"),
             title: '游戏开发测试案例',
             company: '元年科技',
@@ -1242,6 +1246,7 @@
             discription: '根据元年科技的产品需求，新睿云提供内存优化型云服务器、高带宽、大容量系统盘等产品，出色完成了游戏开发测试过程。'
           },
           {
+            viewmore: false,
             imgurl: require("../../assets/img/home/case_bg4.png"),
             title: '建站案例',
             company: '艾特菲',
@@ -1250,6 +1255,7 @@
             discription: '新睿云推出的网站解决方案为西安艾特菲信息技术有限公司实现灵活弹性自动化的基础IT设施建设、按需付费的服务模式以及0成本运维服务体系。网站服务器搭建灵活，支持弹性伸缩扩容，可轻松应对业务访问高峰。'
           },
           {
+            viewmore: false,
             imgurl: require("../../assets/img/home/case_bg5.png"),
             title: '企业办公系统案例',
             company: '汇融通信',
@@ -1258,6 +1264,7 @@
             discription: '新睿云推出企业办公系统解决方案，搭配标准型云服务器及SATA数据盘，实现硬件资源弹性化分配，可根据企业需求划分或释放不同的虚拟资源。'
           },
           {
+            viewmore: false,
             imgurl: require("../../assets/img/home/case_bg6.png"),
             title: '电子商务服务平台案例',
             company: '神秘绿泉',
@@ -1266,11 +1273,12 @@
             discription: '新睿云的电子商务服务平台云解决方案，提供标准型云服务器，对订单的数据服务、仓储作业、库存分配、作业调度、订单转移、报表平台等模块自动化匹配，大大提高业务作业效率。'
           },
           {
+            viewmore: false,
             imgurl: require("../../assets/img/home/case_bg7.png"),
             title: '建材行业软件部署案例',
             company: '软宝科技',
             casetitle: '建材行业软件部署案例--软宝科技',
-            background: '襄阳软宝信息科技有限公司针对建材行业要构建云售后服务管理系统，针对售后服务部门人员使用，解决企业售后服务的派工、签到、记录、凭借等流程问题，提高售后服务效率。。',
+            background: '襄阳软宝信息科技有限公司针对建材行业要构建云售后服务管理系统，针对售后服务部门人员使用，解决企业售后服务的派工、签到、记录、凭借等流程问题，提高售后服务效率。',
             discription: '云售后服务管理系统采用新睿云的云服务技术，通过内存优化型云服务器，加上高带宽网络， 助力完成售后服务闭环，打通用户、企业关联，有效提升企业竞争力。'
           }
         ],
@@ -3503,7 +3511,7 @@
                 display: inline-block;
                 position: relative;
                 height: 100%;
-                transition: width 0.5s ease;
+                transition: width 0.4s linear;
                 width: 160px;
                 background-repeat: no-repeat;
                 background-position: center top;
@@ -3515,7 +3523,7 @@
                   -ms-transform: scale(1.1);
                   transform: scale(1.1);
                   &::after{
-                    opacity: 0.7;
+                    //opacity: 0.7;
                   }
                 }
                 .solution-card-bg {
@@ -3552,7 +3560,7 @@
                   bottom: 0;
                   left: 0;
                   cursor: pointer;
-                  transition: 0.5s;
+                  transition: 0.5s ;
                   text-align: center;
                   display: flex;
                   justify-content: center;
@@ -3579,6 +3587,7 @@
                   cursor: pointer;
                   transition: 0.5s;
                   padding: 50px 40px;
+                  cursor: auto;
                   >div{
                     width: 480px;
                     >h4{
@@ -3602,11 +3611,19 @@
                       font-family:MicrosoftYaHei;
                       color:rgba(255,255,255,1);
                       line-height:19px;
+                      &.setting{
+                        display: block;
+                        height: 95px;
+                        .more{
+                          cursor: pointer;
+                          color: #377DFF;
+                        }
+                      }
                     }
                   }
                 }
                 &.open{
-                  transition: width 0.5s ease;
+                  transition: width 0.4s linear;
                   width: 560px;
                   .solution-card-bg{
                     &::after{
@@ -3614,10 +3631,10 @@
                   }
                   }
                   &:hover .solution-card-bg{
-                  -ms-transform: scale(1);
-                  transform: scale(1);
+                  -ms-transform: none;
+                  transform: none;
                   &::after{
-                    opacity: 0.8;
+                    //opacity: 0.8;
                   }
                 }
                 }

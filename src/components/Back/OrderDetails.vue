@@ -110,6 +110,10 @@ export default {
                 ? "域名"
                 : params.row.sourceType == 9
                 ? "云市场"
+                : params.row.sourceType == 10
+                ? "高防主机"
+                : params.row.sourceType == 11
+                ? "高防弹性公网IP"
                 : ""
             );
           }
