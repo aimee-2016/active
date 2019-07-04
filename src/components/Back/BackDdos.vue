@@ -1632,12 +1632,12 @@
               }
               break
             case 'protectionUpgrade':
-              // if (this.hostCurrentSelected.status == 1) {
+              if (this.hostCurrentSelected.status == 1) {
                 // 主机正常才能升级
                 let protectTemp = {computerId: this.hostCurrentSelected.computerid, id: this.hostCurrentSelected.id}
                 sessionStorage.setItem('ProtectUpgrade', JSON.stringify(protectTemp))
                 this.$router.push('protectUpgrade')
-              // }
+              }
               break
             case 'protectiveOverlay':
               if (this.hostCurrentSelected.status == 1) {
