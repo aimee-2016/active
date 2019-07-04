@@ -1645,7 +1645,9 @@
                 params.row.sourceType == 5 ? 'NAT网关' : 
                 params.row.sourceType == 8 ? 'SSL证书' : 
                 params.row.sourceType == 7 ? '域名' :
-                params.row.sourceType == 9 ? '云市场' : '')
+                params.row.sourceType == 9 ? '云市场' :
+                params.row.sourceType == 10 ? '高防主机' : 
+                params.row.sourceType == 11 ? '高防弹性公网IP' : '')
               },
               //this.columns5[index].filters = res;
               // 0 主机，1 磁盘 2 公网 3 数据库 4 GPU 5 NAT网关  6 对象存储  7 域名  8 ssl证书  9 云市场',
