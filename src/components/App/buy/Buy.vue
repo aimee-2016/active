@@ -25,7 +25,7 @@
               价格预算清单</p>
             <div v-for="(prod,index) in cart" ref="detailed" :key="index" style="padding-top: 20px">
               <div style="display: flex;justify-content: space-between;">
-                <h2 style="width:110px;text-align: center;font-size: 18px;color: #333333;line-height: 32px;">
+                <h2 style="width:150px;text-align: center;font-size: 18px;color: #333333;line-height: 32px;">
                   {{prod.typeName}}</h2>
                 <p
                   style="cursor: pointer;font-family: Microsoft YaHei;font-size: 14px;color: #2A99F2; line-height: 25px;"
