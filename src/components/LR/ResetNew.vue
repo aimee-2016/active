@@ -1134,7 +1134,7 @@ export default {
     },
 
     changePictureVerification(){
-            this.imgSrc = `https://www.xrcloud.net/user/getKaptchaImage.do?t=${new Date().getTime()}`
+            this.imgSrc = this.imgSrc+`?t=${new Date().getTime()}`;
     },
 
   },

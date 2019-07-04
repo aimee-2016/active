@@ -858,58 +858,26 @@
       },
       // 弹出新建磁盘模态框
       newDisk() {
-        if(this.$store.state.zone.gpuserver == 0){
-          let url = 'information/listVirtualMachines.do'
-          this.$http.get(url, {
-            params: {
-              returnList: '1',
-              page:'1',
-              pageSize: '10'
-            }
-          }).then(res=>{
-            if(res.status == 200 && res.data.status ==1){
-              if(res.data.result.data.length != 0){
-                this.showModal.newDisk = true
-              } else{
-                this.showModal.withoutHost = true
-              }
+        let url = 'information/listVirtualMachines.do'
+        this.$http.get(url, {
+          params: {
+            returnList: '1',
+            page:'1',
+            pageSize: '10'
+          }
+        }).then(res=>{
+          if(res.status == 200 && res.data.status ==1){
+            if(res.data.result.data.length != 0){
+              this.showModal.newDisk = true
             } else{
-              this.$message.info({
-                content: res.data.message
-              })
+              this.showModal.withoutHost = true
             }
-          })
-        } else {
-          let url = 'gpuserver/listGpuServer.do'
-          this.$http.get(url, {
-            params: {
-              num:'',
-              vpcId:'',
-              status:'',
-              timeType:''
-            }
-          }).then(res=>{
-            if(res.status == 200 && res.data.status ==1){
-                let list = []
-                if(Object.keys(res.data.result).length != 0){
-                  for(let index in res.data.result){
-                      for (let i = 0; i < res.data.result[index].list.length; i++) {
-                        list.push(res.data.result[index].list[i]);
-                    }
-                  }
-                }
-              if(list.length != 0){
-                this.showModal.newDisk = true
-              } else{
-                this.showModal.withoutHost = true
-              }
-            } else{
-              this.$message.info({
-                content: res.data.message
-              })
-            }
-          })
-        }
+          } else{
+            this.$message.info({
+              content: res.data.message
+            })
+          }
+        })
       },
       // 挂载磁盘到主机
       mount(data) {
@@ -1638,8 +1606,6 @@
       '$store.state.zone': {
         handler: function () {
           this.refresh()
-          this.getGpuList();
-          this.getResourceAllocation();
         },
         deep: true
       }
