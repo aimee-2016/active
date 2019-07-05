@@ -1682,7 +1682,7 @@
         if (this.bindForm.bindIpText != '绑定IP') {
           return
         }
-        this.bindForm.publicIP = ''
+        this.bindForm.publicIP = '';
         this.$http.get('network/listPublicIp.do', {
           params: {
             useType: 0,
@@ -1690,6 +1690,7 @@
           }
         }).then(response => {
           if (response.status == 200 && response.data.status == 1) {
+             this.$router.push('gpuList');
             this.publicIPList = response.data.result
             if (this.publicIPList == '') {
               this.showWindow.publicIPHint = true
@@ -1710,7 +1711,8 @@
                 }
               }).then(response => {
                 if (response.status == 200 && response.data.status == 1) {
-                  this.$Message.info(response.data.message)
+                  this.$Message.info(response.data.message);
+                   this.$router.push('gpuList');
                   this.bindForm.bindIpText = '绑定中'
                 } else {
                   this.$message.info({
@@ -1737,7 +1739,8 @@
           }
         }).then(response => {
           if (response.status == 200 && response.data.status == 1) {
-            this.$Message.info(response.data.message)
+            this.$Message.info(response.data.message);
+             this.$router.push('gpuList');
             this.bindForm.unbindText = '解绑中'
           } else {
             this.$message.info({

@@ -5,7 +5,7 @@
              <div id="content">
                 <div id="header">
                      <div class="host-name">
-                        <img style="cursor:pointer;" @click="$router.push('ddosip')" src="../../assets/img/host/h-icon9.png"/>
+                        <img style="cursor:pointer;" @click="$router.push('DDoSIPBack')" src="../../assets/img/host/h-icon9.png"/>
                         <span >概览详情</span>
                     </div>
                 </div>
