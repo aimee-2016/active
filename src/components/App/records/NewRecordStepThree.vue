@@ -931,7 +931,7 @@
       },
       handleMaxSize() {
         this.$Message.info({
-          content: '请选择大小小于4M的文件进行上传'
+          content: '请上传小于4M的图片文件'
         });
       },
       // 提交资料
