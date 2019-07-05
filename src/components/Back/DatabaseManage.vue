@@ -11,14 +11,11 @@
       <div class="host-config">
         <div class="config-top">
           <p class="title"><img @click="$router.push('cloudDatabase')" src="../../assets/img/host/h-icon9.png" alt="back to hostList"/> 名称：{{ hostInfo.computername}}
-            <img class="last" @click="renameForm.hostName = '',showModal.rename = true" src="../../assets/img/host/h-icon11.png" alt="modification computerName"/>
+            <!-- <img class="last" @click="renameForm.hostName = '',showModal.rename = true" src="../../assets/img/host/h-icon11.png" alt="modification computerName"/> -->
             <button @click="$router.go(0)">刷新</button>
             <button style="margin-right: 10px;background: #2A99F2;color: #FFF" @click="linkHost" v-if="hostInfo.computerStatus == 1">连接主机</button>
           </p>
-          <p v-if="hostInfo.bandwith">{{ hostInfo.serviceoffername.split('+')[0] }}CPU，{{ hostInfo.serviceoffername.split('+')[1]}}，{{ hostInfo.disksize}}G硬盘，{{ hostInfo.bandwith}}M带宽 | {{ hostInfo.zonename}} <span
-            @click="hostUpgrade">[升级]</span>
-          </p>
-            <p v-else>{{ hostInfo.serviceoffername.split('+')[0] }}CPU，{{ hostInfo.serviceoffername.split('+')[1]}}，{{ hostInfo.disksize}}G硬盘 | {{ hostInfo.zonename}} <span
+          <p>{{ hostInfo.serviceoffername.split('+')[0] }}CPU，{{ hostInfo.serviceoffername.split('+')[1]}}，{{ hostInfo.disksize}}G硬盘 | {{ hostInfo.zonename}} <span
             @click="hostUpgrade">[升级]</span>
           </p>
         </div>
@@ -60,24 +57,24 @@
                  <h4>数据库版本</h4>
                  <div>{{hostInfo.templatename}}</div>
                </li>
-               <!-- <li>
+               <li>
                  <h4>实例类型</h4>
                  <div>单机
-                   <span>[升级主备]</span>
+                   <!-- <span>[升级主备]</span> -->
                  </div>
-               </li> -->
+               </li>
                <li>
                  <h4>性能规格</h4>
                  <div>{{hostInfo.serviceoffername}}
                    <span>[规格升级]</span>
                  </div>
                </li>
+             </ul>
+             <ul>
                <li>
                  <h4>管理员账户名</h4>
                  <div>{{hostInfo.loginname}}</div>
                </li>
-             </ul>
-             <ul>
                <li>
                  <h4>时区</h4>
                  <div>UTC</div>
@@ -179,32 +176,6 @@
               </Radio-group>
             </div>
             <chart :options="item.chart" style="width:100%;height:80%;"></chart>
-          </div>
-        </div>
-        <div class="tab-3" v-show="configType == '防火墙'">
-          <div class="content">
-            <div class="tab-3-title">
-              <span>{{ hostInfo.firewall ? hostInfo.firewall: '----'}}</span>
-              <span style="margin-left: 40px">所属Vpc：<span @click="toOther('vpc')">{{hostInfo.vpc}}</span></span>
-              <RadioGroup v-model="tab3.rule" type="button" style="float: right" @on-change='tab3RadioChange'>
-                <Radio label="出站规则"></Radio>
-                <Radio label="入站规则"></Radio>
-              </RadioGroup>
-            </div>
-            <div class="firewal">
-              <div>
-                <Button type="primary" @click="showModal.createRule = true">创建规则</Button>
-                <!-- <Button type="primary" style="margin-left:10px;" @click="del('')">删除</Button> -->
-                <!-- <Button >开启所有端口</Button>
-                <Button >关闭所有端口</Button>
-                <Button >恢复默认</Button> -->
-              </div>
-              <div class="selectMark">
-                <img src="../../assets/img/host/h-icon10.png"/>
-                <span>共 {{tab3.totalLenght}} 项 | 已选择 <span style="color:#FF624B;">{{selectLenght}}</span>项</span>
-              </div>
-              <Table :columns='tab3.firewalList' :data='tab3.firewalData' :loading='tab3.firewalLoading' @on-selection-change="firewalSelectionChange"></Table>
-            </div>
           </div>
         </div>
         <div class="tab-5" v-show="configType == '操作日志'">
@@ -639,7 +610,7 @@
           input: ''
         },
         configType: '基础信息',
-        configTypes: ['基础信息', '主机监控', '防火墙',  '操作日志'],
+        configTypes: ['基础信息', '主机监控',  '操作日志'],
         isAutoRenew: false,
         diskMountForm: {
           mountDisk: '',
@@ -907,9 +878,6 @@
             break
           case '主机监控':
             this.getComputerMonitor()
-            break
-          case '防火墙':
-            this.getAclList()
             break
           case '操作日志':
             this.getHostLog()
@@ -1341,12 +1309,13 @@
       getComputerMonitor() {
         this.$http.get('alarm/getVmAlarmByHour.do', {
           params: {
-            vmname: this.hostInfo.instanceName,
+            vmname: this.hostInfo.instancename,
             type: 'core'
           }
         }).then(response => {
           if (response.status == 200 && response.data.status == 1) {
             // 用的以前接口数据格式，只有挨个赋值
+            let test = [0, 10, 80, 90, 100, 20, 40, 60, 70, 80, 10, 20, 30, 40, 0, 0, 0, 0, 0, 0, 0, 0, 60, 0]
             let cpuBrokenLine = JSON.parse(JSON.stringify(line))
             let memoryBrokenLine = JSON.parse(JSON.stringify(line))
             let diskBrokenLine = JSON.parse(JSON.stringify(line))
@@ -1400,7 +1369,7 @@
         let dateType = this.tab2.monitoringList[index].type == '最近7天' ? 'week' : 'month'
         this.$http.get(url, {
           params: {
-            vmname: this.hostInfo.instanceName,
+            vmname: this.hostInfo.instancename,
             type: 'core',
             datetype: dateType
           }
@@ -1462,6 +1431,12 @@
             queryTime: this.tab5.logTime,
             targetId: this.hostInfo.id,
             message: this.tab5.searchName
+
+            // pageSize: this.pageSize,
+            // currentPage: this.currentPage,
+            // target: this.target,
+            // queryTime: this.logTime,
+            // targetId: this.databaseInfo.id
           }
         }).then(response => {
           this.tab5.logPages = response.data.total
@@ -1903,42 +1878,6 @@
         .item-type {
           margin-top: 18px;
         }
-      }
-    }
-    .tab-3 {
-      .content {
-        padding: 20px;
-        background: rgba(255, 255, 255, 1);
-        border-radius: 4px;
-        border: 1px solid rgba(229, 233, 237, 1);
-        .tab-3-title {
-          border-bottom: 1px solid rgba(233, 233, 233, 1);
-          padding-bottom: 20px;
-          span {
-            font-size: 14px;
-            font-family: MicrosoftYaHei;
-            color: rgba(51, 51, 51, 1);
-            span {
-              color: #2A99F2;
-              cursor: pointer;
-            }
-          }
-        }
-      }
-      .selectMark {
-        margin: 10px 0;
-        > img {
-          position: relative;
-          top: 4px;
-        }
-        > span {
-          font-size: 14px;
-          font-family: MicrosoftYaHei;
-          color: rgba(102, 102, 102, 1);
-        }
-      }
-      .firewal {
-        padding: 20px 0;
       }
     }
     .tab-5 {
