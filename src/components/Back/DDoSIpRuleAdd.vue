@@ -58,7 +58,7 @@
                             </Tooltip>
                         </FormItem>
                     </Form>
-                    <Button style="margin-right:10px;" @click="$router.push('ddosip')">返回</Button>
+                    <Button style="margin-right:10px;" @click="$router.push('DDoSIPBack')">返回</Button>
                     <Button type="primary" @click="next">提交，查看下一步</Button>
                 </div>
 

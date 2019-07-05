@@ -448,7 +448,7 @@ var router = new Router({
         {path: 'order', name: 'order', component: Order1},
         {path: 'payResult', name: 'payResult', component: PayResult},
         {path: 'result', name: 'result', component: Result},
-        {path: 'resultNew', name:'resultNew', component:ResultNew},
+        {path: 'resultNew', name:'resultNew', component: ResultNew},
         {path: 'payNew', name:'payNew', component: PayNew},
         {path: 'expenses', name: 'expenses', component: Expenses},
         {path: 'invoiceManage', name: 'invoiceManage', component: InvoiceManage},
@@ -488,7 +488,7 @@ var router = new Router({
         {path: 'newAddElastic', name: 'newAddElastic', component: newAddElastic},
         {path: 'TelescopicDetails', name: 'TelescopicDetails', component: TelescopicDetails},
         {path: 'ThawDeposit', name: 'ThawDeposit', component: ThawDeposit},
-        {path: 'DDoSIP', name: 'DDoSIP', component: DDoSIP},
+        {path: 'DDoSIPBack', name: 'DDoSIPBack', component: DDoSIP},
         {path: 'ddosipruleadd', name: 'ddosipruleadd', component: DDoSIpRuleAdd},
         {path: 'ddosipdetails', name: 'ddosipdetails', component: DDoSIPdetails},
         // DDOS 高防主机

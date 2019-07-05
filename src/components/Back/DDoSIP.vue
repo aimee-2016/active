@@ -894,6 +894,7 @@ components: { expandRow },
 
       this.getLog(1);
       this.getId();
+      this.getProtectCC();
   },
   methods:{
 
@@ -902,8 +903,8 @@ components: { expandRow },
         this.$http.get('ddosImitationIp/packageIdInfo.do',{}).then(res=>{
             if(res.status == 200 && res.data.status == 1){
                 this.setMealList = res.data.result;
+                this.setMeal = this.attackMeal = res.data.result[0].packageid;
             }else{
-                this.setMealList = res.data.result;
                 this.$Message.info(res.data.message);
             }
         })
@@ -957,11 +958,11 @@ components: { expandRow },
 
     // DDOS清洗流量
     getMitigatedBandwidth(){
-        this.$http.get('ddosImitationIp/QueryMitigatedBandwidth.do',{
+        this.$http.get('ddosImitationIp/QueryAttInfoDetail.do',{
             params:{
                 packageId:this.attackMeal,
-                startdate:this.statisticsTime[0].format('yyyy-MM-dd hh:mm:ss'),
-                enddate:this.statisticsTime[1].format('yyyy-MM-dd hh:mm:ss')
+                startdate:this.statisticsTime[0].format('yyyy-MM-dd hh:mm:ss')+'',
+                enddate:this.statisticsTime[1].format('yyyy-MM-dd hh:mm:ss')+''
             }
         }).then(res => {
             
@@ -998,6 +999,19 @@ components: { expandRow },
                   this.$Message.info(res.data.message);
             }
         }).catch(err =>{})
+    },
+
+    //  防护配置获取CC防护
+    getProtectCC(){
+        this.$http.get('ddosImitationIp/QueryL7DDoSConfig.do',{
+            params:{
+                packageId:this.setMeal
+            }
+        }).then(res => {
+            if(res.status == 200 && res.data.status == 1){
+
+            }
+        }).catch(err => {})
     },
 
     // 获取操作日志
