@@ -87,7 +87,7 @@
                   :with-credentials="true"
                   action="file/upFile.do"
                   :format="['jpg','jpeg','png']"
-                  :max-size="2048"
+                  :max-size="4096"
                   :on-exceeded-size="handleMaxSize"
                   :on-format-error="handleFormatJpg"
                   :on-success="photoImg">
@@ -590,7 +590,7 @@
       },
       handleMaxSize() {
         this.$Message.info({
-          content: '请选择大小小于2M的文件进行上传'
+          content: '请上传小于4M的图片文件'
         });
       },
       getCheckList() {
