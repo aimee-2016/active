@@ -102,7 +102,7 @@
                 <div v-for="(item,index) in annData" :key="index" style="margin:11px 0px;">
                   <p class="universal-mini"
                      style="padding:0px;width:200px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;display: inline-block"
-                     @click="goDynamic('ann',item.id)">
+                     @click="goDynamic('ann',item.pageurl)">
                     {{item.title}}</p>
                   <p style="font-size: 14px;float:right">{{item.createtime}}</p>
                 </div>
@@ -113,7 +113,7 @@
                 <div v-for="(item,index) in activeData" :key="index" style="margin:11px 0px;">
                   <p class="universal-mini"
                      style="padding:0px;width:200px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;display: inline-block"
-                     @click="goDynamic('active',item.id)">
+                     @click="goDynamic('active',item.pageurl)">
                     {{item.title}}</p>
                   <p style="font-size: 14px;float:right">{{item.createtime}}</p>
                 </div>
@@ -124,7 +124,7 @@
                 <div v-for="(item,index) in newsData" :key="index" style="margin:11px 0px;">
                   <p class="universal-mini"
                      style="padding:0px;width:200px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;display: inline-block"
-                     @click="goDynamic('news',item.id)">
+                     @click="goDynamic('news',item.pageurl)">
                     {{item.title}}</p>
                   <p style="font-size: 14px;float:right">{{item.createtime}}</p>
                 </div>
@@ -360,8 +360,9 @@
       change() {
 
       },
-      goDynamic(type, id) {
-        this.$router.push({path: 'dynamic', query: {type, id}})
+      goDynamic(type, url) {
+        //this.$router.push({path: 'dynamic', query: {type, id}})
+        window.open(url)
       },
       getUserVipGrade() {
         if (this.userInfo && this.userInfo.vipname == '白银会员') {
