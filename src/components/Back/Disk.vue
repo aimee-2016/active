@@ -948,6 +948,7 @@
       queryDiskPrice: debounce(500, function () {
         var diskType = ''
         var diskSize = ''
+   
         if (this.diskForm.quantity === 1) {
           diskType = this.diskForm.diskType
           diskSize = this.diskForm.diskSize + ''
@@ -1004,6 +1005,7 @@
       newDisk_ok() {
         var diskType = ''
         var diskSize = ''
+        var diskGpu  = ''
         if (this.diskForm.quantity === 1) {
           diskType = this.diskForm.diskType
           diskSize = this.diskForm.diskSize + ''
@@ -1011,9 +1013,11 @@
           for (var i = 0; i < this.diskForm.quantity; i++) {
             diskType += this.diskForm.diskType + ','
             diskSize += this.diskForm.diskSize + ','
+            diskGpu += this.diskForm.diskGpu +','
           }
           diskType = diskType.substring(0, diskType.length - 1)
           diskSize = diskSize.substring(0, diskSize.length - 1)
+          diskGpu = diskGpu.substring(0, diskGpu.length - 1)
         }
         // 默认zoneList第一个元素为当前选中区域，以后会修改
         this.$http.get('Disk/createVolume.do', {
@@ -1024,7 +1028,7 @@
             timeType: this.diskForm.timeType,
             timeValue: this.diskForm.timeValue || 1,
             isAutorenew: 0,
-            serviceType: this.$store.state.zone.gpuserver == 1 ? this.diskForm.diskGpu : ''
+            serviceType: this.$store.state.zone.gpuserver == 1 ? diskGpu : ''
           }
         }).then(response => {
           if (response.status == 200 && response.data.status == 1) {
