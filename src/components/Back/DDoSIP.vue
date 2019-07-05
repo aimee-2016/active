@@ -794,7 +794,7 @@ components: { expandRow },
        ],
 
     //    防护管理
-        setMeal:'套餐ID',
+        setMeal:'',
         setMealList:[       
         ],
         protectSwicth:true,
@@ -894,7 +894,6 @@ components: { expandRow },
 
       this.getLog(1);
       this.getId();
-      this.getProtectCC();
   },
   methods:{
 
@@ -904,6 +903,7 @@ components: { expandRow },
             if(res.status == 200 && res.data.status == 1){
                 this.setMealList = res.data.result;
                 this.setMeal = this.attackMeal = res.data.result[0].packageid;
+                this.getProtectCC(this.setMeal);
             }else{
                 this.$Message.info(res.data.message);
             }
@@ -958,15 +958,19 @@ components: { expandRow },
 
     // DDOS清洗流量
     getMitigatedBandwidth(){
-        this.$http.get('ddosImitationIp/QueryAttInfoDetail.do',{
-            params:{
+        let params = {
                 packageId:this.attackMeal,
                 startdate:this.statisticsTime[0].format('yyyy-MM-dd hh:mm:ss')+'',
                 enddate:this.statisticsTime[1].format('yyyy-MM-dd hh:mm:ss')+''
-            }
-        }).then(res => {
-            
-        })
+            },
+            url1 = this.$http.post('ddosImitationIp/QueryMitigatedBandwidth.do',params),
+            url2 = this.$http.post('ddosImitationIp/QueryAttInfoDetail.do',params),
+            url3 = this.$http.post('ddosImitationIp/QueryAttEvent.do',params);
+            Promise.all([url1,url2,url3]).then(res => {
+                if(res[0].status == 200 && res[0].data.status == 1){
+
+                }
+            })
     },
 
     // 获取网站业务
@@ -1002,10 +1006,10 @@ components: { expandRow },
     },
 
     //  防护配置获取CC防护
-    getProtectCC(){
+    getProtectCC(id){
         this.$http.get('ddosImitationIp/QueryL7DDoSConfig.do',{
             params:{
-                packageId:this.setMeal
+                packageId:id
             }
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
