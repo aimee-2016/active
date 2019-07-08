@@ -3077,7 +3077,9 @@
       },
       '$store.state.zone': {
         handler: function () {
+          this.hostListData = []
           this.getHostList()
+          this.getResourceAllocation()
         },
         deep: true
       },

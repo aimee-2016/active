@@ -772,7 +772,8 @@
           diskSize: '',
           endTime: ''
         },
-        totalQuota: ''
+        totalQuota: '',
+        diskTimer: null
       }
     },
     created() {
@@ -780,6 +781,12 @@
       this.listDisk();
       this.getGpuList();
       this.getResourceAllocation();
+      this.refresh()
+    },
+    beforeRouteLeave(to, from, next) {
+      // 导航离开该组件的对应路由时调用
+      clearInterval(this.diskTimer)
+      next()
     },
     methods: {
       // 获取资源配额
@@ -799,7 +806,31 @@
       },
       refresh() {
         this.diskAreaList = this.$store.state.zoneList
-        this.listDisk()
+        this.diskTimer = setInterval(()=>{
+        this.$http.get('Disk/listDisk.do',{params:{
+          showDelete: '1'
+        }}).then(response => {
+          if (response.status == 200 && response.data.status == 1) {
+          response.data.result.forEach((item) => {
+            if (item.status != 1 && item.status != -1 && item.status != 0) {
+                       item._disabled = true
+                     }
+                   })
+            this.diskData = response.data.result
+            this.diskSelection = null
+            let flag = response.data.result.some(item => {
+                return  item.status == 2 ||item.status == 3 || item.status == 4 || item.status == 6
+              }) // 操作的磁盘中是否有过渡状态，没有就清除定时器，取消刷新
+             if (!flag) {
+               clearInterval(this.diskTimer)
+             }  
+          } else {
+            this.$message.info({
+              content: response.data.message
+            })
+          }
+        })
+        },6000)
       },
       // 验证新建磁盘的表单
       _checkNewForm() {
@@ -1278,6 +1309,7 @@
             this.$Message.info({
               content: response.data.message,
             })
+            this.refresh()
           } else {
             this.$message.info({
               content: response.data.message
@@ -1326,6 +1358,7 @@
             this.$Message.info({
               content: response.data.message,
             })
+            this.refresh()
           } else {
             this.$message.info({
               content: response.data.message
@@ -1641,6 +1674,7 @@
       },
       '$store.state.zone': {
         handler: function () {
+          this.diskData = []
           this.refresh()
           this.getGpuList();
           this.getResourceAllocation();

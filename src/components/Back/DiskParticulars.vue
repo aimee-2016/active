@@ -435,7 +435,8 @@
       if (sessionStorage.getItem('diskInfo')) {
         this.diskInfo = JSON.parse(sessionStorage.getItem('diskInfo'))
       }
-      this.getDiskAlarmByDay ()
+      this.getDiskAlarmByDay()
+      this.listDiskSnapshots()
     },
     methods: {
       /* 切换地区刷新页面 */
