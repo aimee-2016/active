@@ -763,10 +763,12 @@
       <div class="updatePhoto">
         <div class="updates">
           <div style="width:100%;text-align: center;" v-if="hostUnitList.status =='初审拒绝'|| hostUnitList.status =='管局审核拒绝' ">
-            <p class="hide-text" v-if="hostUnitList.otherdataurl==''">暂无其他文件信息</p>
-            <div style="margin-top:10px;max-width:300px;display:inline-block;" v-else>
+            <p class="hide-text" v-if="otherData.length==0">暂无其他文件信息</p>
+            <div style="text-align: center;margin-top:10px;" v-else v-for="(item,index) in otherData" :key="index">
+              <img style="width: 38px;height: 42px;" :src="item.img">
               <p style="line-height: 20px;">
-                <img style="width:100%;height:100%;" :src="hostUnitList.otherdataurl">
+                <span>{{item.name}}</span>
+                <Icon type="ios-trash-outline" @click.native="deletePhoto('onther',index)"></Icon>
               </p>
             </div>
             <Upload
@@ -782,10 +784,13 @@
               <span class="item-content-text">点击选择文件</span>
             </Upload>
           </div>
-          <div style="width:300px;display:inline-block;" v-else>
+          <div style="width:100%;" v-else>
             <p class="item-content" v-if="hostUnitList.otherdataurl==''">暂无其他文件信息</p>
-            <div style="margin-top:10px;display: inline-block;" v-else>
-              <img style="width:100%;height:100%;" :src='hostUnitList.otherdataurl'>
+            <div style="margin-top:10px;text-align:center;" v-for='(item,index) in otherData' :key="index" v-else >
+              <img style="width: 38px;height: 42px;" :src="item.img">
+              <p style="line-height: 20px;">
+                <span>{{item.name}}</span>
+              </p>
             </div>
           </div>
         </div>
@@ -1018,6 +1023,9 @@
         </FormItem>
         <FormItem prop="webserveraddress">
           <p style="margin:10px">服务器放置地</p>
+          <Select v-model="updateHostUnitList.webserveraddress">
+            <Option v-for="item in webserveraddressList" :value="item.zonename" :key="item.zoneid">{{ item.zonename }}</Option>
+          </Select>
           <Input :readonly="true" type="text" v-model="updateHostUnitList.webserveraddress"></Input>
         </FormItem>
       </Form>
@@ -1183,6 +1191,7 @@ export default {
       id: "",
       //网站核验单大图
       visibleWeb: false,
+      webserveraddressList:this.$store.state.zoneList,
       //营业执照大图
       visible: false,
       //是否显示重新输入
@@ -1633,49 +1642,47 @@ export default {
                   break;
               }
             }
-            if (this.hostUnitList.otherdataurl.indexOf(",") > 0) {
-              let onther = this.hostUnitList.otherdataurl.split(",");
-              for (let j = 0; j < onther.length; j++) {
+             if (this.hostUnitList.otherdataurl.indexOf(',') > 0) {
+                let onther = this.hostUnitList.otherdataurl.split(",");
+                for (let j = 0; j < onther.length; j++) {
+                  let obj = new Object();
+                  obj.url = onther[j]
+                  onther[j].substring(onther[j].lastIndexOf('/') + 1);
+                  obj.name = (onther[j].substring(onther[j].lastIndexOf('/') + 1));
+                  this.otherData.push(obj);
+                  switch (this.otherData[j].name.substring(this.otherData[j].name.length - 3)) {
+                    case 'pdf' :
+                      this.otherData[j].img = imgPdf;
+                      break;
+                    case 'jpg' :
+                      this.otherData[j].img = imgJpg;
+                      break;
+                    case 'doc' :
+                      this.otherData[j].img = imgDoc;
+                      break;
+                  }
+                }
+              } else {
+                 if(this.hostUnitList.otherdataurl != ''){
+                let onther = this.hostUnitList.otherdataurl
                 let obj = new Object();
-                obj.url = onther[j];
-                onther[j].substring(onther[j].lastIndexOf("/") + 1);
-                obj.name = onther[j].substring(onther[j].lastIndexOf("/") + 1);
+                obj.url = onther
+                onther.substring(onther.lastIndexOf('/') + 1);
+                obj.name = (onther.substring(onther.lastIndexOf('/') + 1));
                 this.otherData.push(obj);
-                switch (this.otherData[j].name.substring(
-                  this.otherData[j].name.length - 3
-                )) {
-                  case "pdf":
-                    this.otherData[j].img = imgPdf;
+                switch (this.otherData[0].name.substring(this.otherData[0].name.length - 3)) {
+                  case 'pdf' :
+                    this.otherData[0].img = imgPdf;
                     break;
-                  case "jpg":
-                    this.otherData[j].img = imgJpg;
+                  case 'jpg' :
+                    this.otherData[0].img = imgJpg;
                     break;
-                  case "doc":
-                    this.otherData[j].img = imgDoc;
+                  case 'doc' :
+                    this.otherData[0].img = imgDoc;
                     break;
                 }
               }
-            } else {
-              let onther = this.hostUnitList.otherdataurl;
-              let obj = new Object();
-              obj.url = onther;
-              onther.substring(onther.lastIndexOf("/") + 1);
-              obj.name = onther.substring(onther.lastIndexOf("/") + 1);
-              this.otherData.push(obj);
-              switch (this.otherData[0].name.substring(
-                this.otherData[0].name.length - 3
-              )) {
-                case "pdf":
-                  this.otherData[0].img = imgPdf;
-                  break;
-                case "jpg":
-                  this.otherData[0].img = imgJpg;
-                  break;
-                case "doc":
-                  this.otherData[0].img = imgDoc;
-                  break;
               }
-            }
 
             if (this.hostUnitList.webrecordauthenticityurl.indexOf(",") > 0) {
               let webRecord = this.hostUnitList.webrecordauthenticityurl.split(
@@ -2018,9 +2025,52 @@ export default {
         let s = setInterval(() => {
           this.percentOtherFile++;
           if (this.percentOtherFile > 100) {
+            this.hostUnitList.otherdataurl = response.result;
+             if (this.hostUnitList.otherdataurl.indexOf(',') > 0) {
+                let addy = this.hostUnitList.otherdataurl.split(",");
+                for (let i = 0; i < addy.length; i++) {
+                  let object = new Object();
+                  object.url = addy[i]
+                  addy[i].substring(addy[i].lastIndexOf('/') + 1);
+                  object.name = (addy[i].substring(addy[i].lastIndexOf('/') + 1));
+                  this.otherData.push(object);
+                  switch (this.otherData[i].name.substring(this.otherData[i].name.length - 3)) {
+                    case 'pdf' :
+                      this.otherData[i].img = imgPdf;
+                      break;
+                    case 'jpg' :
+                      this.otherData[i].img = imgJpg;
+                      break;
+                    case 'doc' :
+                      this.otherData[i].img = imgDoc;
+                      break;
+                  }
+                }
+              } else {
+                if(this.hostUnitList.otherdataurl != ''){
+                  let addy = this.hostUnitList.otherdataurl;
+                let object = new Object();
+                object.url = addy
+                addy.substring(addy.lastIndexOf('/') + 1);
+                object.name = (addy.substring(addy.lastIndexOf('/') + 1));
+                this.otherData.push(object);
+                for (let i = 0; i < this.otherData.length; i++) {
+                  switch (this.otherData[i].name.substring(this.otherData[0].name.length - 3)) {
+                    case 'pdf' :
+                      this.otherData[i].img = imgPdf;
+                      break;
+                    case 'jpg' :
+                      this.otherData[i].img = imgJpg;
+                      break;
+                    case 'doc' :
+                      this.otherData[i].img = imgDoc;
+                      break;
+                  }
+                }
+                }
+            }
             this.$Message.success("上传成功");
             window.clearInterval(s);
-            this.hostUnitList.otherdataurl = response.result;
             this.percentOtherFile = 0;
           }
         },0);
@@ -2029,11 +2079,22 @@ export default {
       }
     },
     otherBeforeUpload() {
-      if (this.otherData.length > 1) {
-        this.$Message.info("只能上传一个其他文件信息");
+      if (this.otherData.length > 2) {
+        this.$Message.info("只能上传三个其他文件信息");
         return false;
       }
     },
+    //删除上传文件
+      deletePhoto(val, index) {
+        if (val == 'aunthen') {
+          this.addy.splice(index, 1);
+        } else if (val == 'web') {
+          this.webRecordData.splice(index, 1);
+        } else if (val == 'onther') {
+          this.otherData.splice(index, 1);
+        }
+      },
+
     otherFormatError() {
       this.$Message.info("其他资料只能上传jpg,jpeg,png类型的文件");
     },
