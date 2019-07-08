@@ -106,8 +106,8 @@
                     {{item.title}}</p>
                   <p style="font-size: 14px;float:right">{{item.createtime}}</p>
                 </div>
-                <span @click="$router.push({path:'dynamic',query:{type:'ann'}})"
-                      style="color: #2A99F2;margin-top: 10px;display: block;font-size: 14px;cursor: pointer;">查看更多</span>
+                <a href="/news/huodonggonggao/"
+                      style="color: #2A99F2;margin-top: 10px;display: block;font-size: 14px;cursor: pointer;">查看更多</a>
               </TabPane>
               <TabPane label="活动">
                 <div v-for="(item,index) in activeData" :key="index" style="margin:11px 0px;">
@@ -117,8 +117,8 @@
                     {{item.title}}</p>
                   <p style="font-size: 14px;float:right">{{item.createtime}}</p>
                 </div>
-                <span @click="$router.push({path:'dynamic',query:{type:'active'}})"
-                      style="color: #2A99F2;margin-top: 10px;display: block;font-size: 14px;cursor: pointer;">查看更多</span>
+                <a href="/news/huodonggonggao/"
+                      style="color: #2A99F2;margin-top: 10px;display: block;font-size: 14px;cursor: pointer;">查看更多</a>
               </TabPane>
               <TabPane label="新闻">
                 <div v-for="(item,index) in newsData" :key="index" style="margin:11px 0px;">
@@ -128,8 +128,8 @@
                     {{item.title}}</p>
                   <p style="font-size: 14px;float:right">{{item.createtime}}</p>
                 </div>
-                <span @click="$router.push({path:'dynamic',query:{type:'news'}})"
-                      style="color: #2A99F2;margin-top: 10px;display: block;font-size: 14px;cursor: pointer;">查看更多</span>
+                <a href="/news/"
+                      style="color: #2A99F2;margin-top: 10px;display: block;font-size: 14px;cursor: pointer;">查看更多</a>
               </TabPane>
             </Tabs>
             <!--<div>
