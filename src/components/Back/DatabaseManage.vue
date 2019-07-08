@@ -1427,16 +1427,10 @@
           params: {
             pageSize: this.tab5.pageSize,
             currentPage: this.tab5.currentPage,
-            target: 'host',
+            target: 'db',
             queryTime: this.tab5.logTime,
             targetId: this.hostInfo.id,
             message: this.tab5.searchName
-
-            // pageSize: this.pageSize,
-            // currentPage: this.currentPage,
-            // target: this.target,
-            // queryTime: this.logTime,
-            // targetId: this.databaseInfo.id
           }
         }).then(response => {
           this.tab5.logPages = response.data.total

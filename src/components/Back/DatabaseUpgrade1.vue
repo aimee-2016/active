@@ -12,28 +12,24 @@
       </Alert>
       <div id="content">
         <div id="header" style="border-bottom:1px solid rgba(233,233,233,1);">
-          <span class="back-button" @click="$router.go(-1)">
+          <span class="back-button" @click="$router.push('cloudDatabase')">
             <Icon type="ios-arrow-left"></Icon>
           </span>
           <span id="title">数据库升级</span>
-          <button id="refresh_button" @click="$router.go(-1)" style="margin-top: 10px;">刷新</button>
+          <button id="refresh_button" @click="$router.go(0)" style="margin-top: 10px;">刷新</button>
         </div>
         <div class="host-config">
           <div class="config-top">
-            <p>数据库名称：{{ hostInfo.computerName}}</p>
-            <p>{{ hostInfo.cpuNum }}核CPU，{{ hostInfo.memory}}G内存，{{ hostInfo.rootDiskSize}}G硬盘，{{ hostInfo.bandwith}}M带宽 | {{ hostInfo.zoneName}}</p>
+            <p>数据库名称：{{ hostInfo.computername}}</p>
+            <p>{{ hostInfo.serviceoffername.split('+')[0] }}CPU，{{ hostInfo.serviceoffername.split('+')[1]}}，{{ hostInfo.rootdisksize}}G硬盘 | {{ hostInfo.zonename}}</p>
           </div>
           <div class="config-bottom">
-            <p>
+            <!-- <p>
               系统盘类型:
               <span>{{ hostInfo.rootDiskType}}</span>
-            </p>
-            <!-- <p>系统盘大小: <span> {{ hostInfo.rootDiskSize}}GB</span></p>
-            <p>到期时间: <span> {{ hostInfo.endTime}}</span></p>-->
-            <p>
-              剩余时长:
-              <span>1个月</span>
-            </p>
+            </p> -->
+            <!-- <p>系统盘大小: <span> {{ hostInfo.rootDiskSize}}GB</span></p> -->
+            <p>到期时间: <span> {{ hostInfo.endtime}}</span></p>
           </div>
         </div>
         <div class="config-selected">
@@ -45,7 +41,7 @@
                 v-for="(item,index) in CPUList"
                 :key="index"
                 :class="{selected: endCPU== item.CPU}"
-                v-if="item.CPU >=hostInfo.cpuNum"
+                v-if="item.CPU >=hostInfo.serviceoffername.split('+')[0].slice(0,1)"
                 @click="changeCPU(item)"
               >{{ item.CPU }}核</ul>
             </div>
@@ -55,24 +51,10 @@
                 v-for="(item,index) in memoryList"
                 :key="index"
                 :class="{selected: endMemory==item.memory}"
-                v-if="item.memory >=hostInfo.memory"
+                v-if="item.memory >=hostInfo.serviceoffername.split('+')[1].slice(0,1)"
                 @click="endMemory = item.memory"
               >{{ item.memory }}GB</ul>
             </div>
-            <!-- <p>系统盘</p>
-            <div style="width:500px;align-items:center">
-              <i-slider
-                v-model="systemDiskSize"
-                unit="GB"
-                :min='rootDiskSize'
-                :max=1000
-                :step=10
-                :points="[500,800]"
-                style="margin-right:30px;vertical-align: middle;">
-              </i-slider>
-              <InputNumber :max="1000" :min='rootDiskSize' v-model="systemDiskSize" size="large" :step=10
-                           :precision="0"></InputNumber>
-            </div>-->
           </div>
         </div>
         <div class="end-config">
@@ -86,19 +68,18 @@
               主机内存:
               <span>{{endMemory}}G</span>
             </p>
-            <!-- <p>系统盘容量: <span> {{ systemDiskSize}}GB</span></p> -->
             <div class="price">
-              <a href="/support_docs/kiRWuMFJd_kmeqtVSId.html" target="_blank">查看计费说明</a>
+              <a href="/#/computed/3-1" target="_blank">查看计费说明</a>
               <p>
                 应付差价：
-                <span>{{ price }}</span>元
+                <span>{{ cpuMemoryCost }}</span>元
               </p>
             </div>
           </div>
         </div>
         <div class="footer">
-          <Button style="margin-right: 10px" type="ghost" @click="$router.push('host')">取消升级</Button>
-          <Button type="primary" :disabled="price == 0" @click="payOrder">确认升级</Button>
+          <Button style="margin-right: 10px" type="ghost" @click="$router.push('cloudDatabase')">取消升级</Button>
+          <Button type="primary" :disabled="cpuMemoryCost == 0" @click="payOrder">确认升级</Button>
         </div>
       </div>
     </div>
@@ -113,34 +94,33 @@ export default {
     return {
       hostInfo: {},
       computerId: '',
+      vmid: '',
       endCPU: '',
       CPUList: [],
       endMemory: '',
       memoryList: [],
-      systemDiskSize: 0,
       rootDiskSize: 0,
       cpuMemoryCost: 0,
-      rootDiskCost: 0
     }
   },
   created () {
     this.computerId = sessionStorage.getItem('upgradeId')
+    this.vmid = sessionStorage.getItem('vmid')
     this.getHostInfo()
   },
   methods: {
     getHostInfo () {
-      let url = 'information/listVMByComputerId.do'
+      let url = 'database/listDB.do'
       this.$http.get(url, {
         params: {
-          VMId: this.computerId
+          id: this.computerId
         }
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
-          this.hostInfo = res.data.result
-          this.endCPU = this.hostInfo.cpuNum
-          this.endMemory = this.hostInfo.memory
-          this.rootDiskSize = this.hostInfo.rootDiskSize
-          this.systemDiskSize = this.hostInfo.rootDiskSize
+          this.hostInfo = res.data.result.info[0]
+          this.endCPU = this.hostInfo.serviceoffername.split('+')[0].slice(0,1)
+          this.endMemory = this.hostInfo.serviceoffername.split('+')[1].slice(0,1)
+          this.rootDiskSize = this.hostInfo.rootdisksize
           this.getZoneConfig()
         }
       })
@@ -156,7 +136,7 @@ export default {
             if (this.endCPU == item.CPU) {
               this.memoryList = item.list
               this.memoryList.forEach((mem, index) => {
-                if (mem.memory < this.hostInfo.memory) {
+                if (mem.memory < this.hostInfo.serviceoffername.split('+')[1].slice(0,1)) {
                   this.memoryList.splice(index, 1)
                 }
               })
@@ -177,11 +157,11 @@ export default {
       this.getCfgCost()
     },
     getCfgCost () {
-      this.$http.get('information/UpVMConfigCost.do', {
+      this.$http.get('database/UpDBConfigCost.do', {
         params: {
           cpunum: this.endCPU,
           memory: this.endMemory,
-          VMId: this.computerId
+          VMId: this.vmid
         }
       }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
@@ -192,12 +172,12 @@ export default {
       })
     },
     payOrder () {
-      if (this.cpuMemoryCost != 0 && this.rootDiskCost == 0) {
-        this.$http.get('information/UpVMConfig.do', {
+      if (this.cpuMemoryCost != 0) {
+        this.$http.get('database/upDBConfig.do', {
           params: {
             cpunum: this.endCPU,
             memory: this.endMemory,
-            VMId: this.computerId
+            VMId: this.vmid
           }
         }).then(response => {
           if (response.status == 200 && response.data.status == 1) {
@@ -205,50 +185,6 @@ export default {
             this.$router.push('order')
           } else {
             this.$Message.info(response.data.message)
-          }
-        })
-      } else if (this.cpuMemoryCost == 0 && this.rootDiskCost != 0) {
-        this.$http.get('information/resizeRootVolume.do', {
-          params: {
-            computerId: this.computerId,
-            roodDiskId: this.hostInfo.rootDiskId,
-            rootDiskSize: this.systemDiskSize
-          }
-        }).then(response => {
-          if (response.status == 200 && response.data.status == 1) {
-            this.$Message.success('订单提交成功')
-            this.$router.push('order')
-          } else {
-            this.$Message.info(response.data.message)
-          }
-        })
-      } else if (this.cpuMemoryCost != 0 && this.rootDiskCost != 0) {
-        let countOrder = uuid.v4()
-        let cpuMemoryRsp = this.$http.get('information/UpVMConfig.do', {
-          params: {
-            cpunum: this.endCPU,
-            memory: this.endMemory,
-            VMId: this.computerId,
-            countOrder
-          }
-        })
-        var systemDiskRsp = this.$http.get('information/resizeRootVolume.do', {
-          params: {
-            computerId: this.computerId,
-            roodDiskId: this.hostInfo.rootDiskId,
-            rootDiskSize: this.systemDiskSize,
-            countOrder
-          }
-        })
-
-        Promise.all([cpuMemoryRsp, systemDiskRsp]).then(res => {
-          if (res[0].status == 200 && res[0].data.status == 1 && res[1].status == 200 && res[1].data.status == 1) {
-            this.$Message.success('订单提交成功')
-            this.$router.push({
-              path: '/order', query: {
-                countOrder
-              }
-            })
           }
         })
       }
@@ -258,9 +194,6 @@ export default {
     auth () {
       return this.$store.state.authInfo != null
     },
-    price () {
-      return (this.cpuMemoryCost + this.rootDiskCost).toFixed(2)
-    }
   },
   watch: {
     '$store.state.zone': {
@@ -270,21 +203,6 @@ export default {
     },
     endMemory () {
       this.getCfgCost()
-    },
-    systemDiskSize () {
-      this.$http.get('information/resizeRootVolumeCost.do', {
-        params: {
-          computerId: this.computerId,
-          roodDiskId: this.hostInfo.rootDiskId,
-          rootDiskSize: this.systemDiskSize,
-        }
-      }).then(response => {
-        if (response.status == 200 && response.data.status == 1) {
-          this.rootDiskCost = response.data.result
-        } else {
-          this.$Message.info(response.data.message)
-        }
-      })
     }
   },
   beforeRouteLeave (to, from, next) {

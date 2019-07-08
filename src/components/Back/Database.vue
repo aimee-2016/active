@@ -1199,8 +1199,9 @@ export default {
                                         }
                                       })
                                     } else {
-                                      sessionStorage.setItem('upgradeId', this.hostCurrentSelected.computerid)
-                                      this.$router.push('upgrade')
+                                      sessionStorage.setItem('upgradeId', this.hostCurrentSelected.id)
+                                      sessionStorage.setItem('vmid', this.hostCurrentSelected.computerid)
+                                      this.$router.push('dataBaseUpgrade')
                                     }
                                   }
                                 })
@@ -1532,8 +1533,9 @@ export default {
                       }
                     })
                   } else {
-                    sessionStorage.setItem('upgradeId', this.hostCurrentSelected.computerid)
-                    this.$router.push('upgrade')
+                    sessionStorage.setItem('upgradeId', this.hostCurrentSelected.id)
+                    sessionStorage.setItem('vmid', this.hostCurrentSelected.computerid)
+                    this.$router.push('dataBaseUpgrade')
                   }
                 }
               })
