@@ -219,7 +219,7 @@
                         <div class="dp-row">
                             <div>
                                 <span style="font-size:14px;color:#333333;">套餐选择</span>
-                                <Select v-model="setMeal" style="width:230px">
+                                <Select v-model="setMeal" style="width:230px" @on-change='getProtectCC(setMeal)'>
                                     <Option v-for="item in setMealList" :value="item.packageid" :key="item.packageid">{{ item.packageid }}</Option>
                                 </Select>
                                 <Button>保存修改</Button>
@@ -361,6 +361,47 @@
                         <Input type="textarea" v-model="certificateValidate.ca" placeholder="Enter your name"></Input>
                         <span class="f-p">0/500</span>
                     </FormItem>
+                    <FormItem label="加密方式" prop="pawMode">
+                        <Input v-model="certificateValidate.pawMode" placeholder="Enter your name"></Input>
+                    </FormItem>
+                    <FormItem label="证书备注" prop="desc">
+                        <Input v-model="certificateValidate.desc" placeholder="Enter your name"></Input>
+                    </FormItem>
+                 </Form>   
+            </div>
+            <div slot="footer" class="modal-footer-border">
+                <Button type="ghost" @click="showModal.certificate = false">取消</Button>
+                <Button type="primary" @click="createCertificate">确定</Button>
+            </div>
+        </Modal>
+
+        <!-- 添加黑白名单  -->
+        <Modal :mask-closable="false" >
+            <p slot="header" class="modal-header-border">
+                <span class="universal-modal-title">添加黑白名单</span>
+            </p>
+            <div class="dp-er" v-if="renewPrice.status != 1">
+                 <Icon type="close-circled" color='#ED4014' size='12px'></Icon>
+                 <span style="margin-left:4px;">{{renewPrice.message}}</span>
+             </div>
+            <div class="md-cer">
+                 <Form ref="certificateValidate" :model="certificateValidate" :rules="certificateRule" :label-width="80">
+                    <FormItem label="证书名称" prop="name">
+                        <Input v-model="certificateValidate.name" placeholder="Enter your name"></Input>
+                    </FormItem>
+                    <FormItem label="证书文件" prop="file">
+                        <Input type="textarea" v-model="certificateValidate.file" placeholder="Enter your name">
+                        </Input>
+                        <span class="f-p">0/500</span>
+                    </FormItem>
+                    <FormItem label="秘钥内容" prop="secret">
+                        <Input type="textarea" v-model="certificateValidate.secret" placeholder="Enter your name"></Input>
+                        <span class="f-p">0/500</span>
+                    </FormItem>
+                    <FormItem label="CA内容" prop="ca">
+                        <Input type="textarea" v-model="certificateValidate.ca" placeholder="Enter your name"></Input>
+                        <span class="f-p">0/500</span>
+                    </FormItem>
                     <FormItem label="加密方式" prop="name">
                         <Input v-model="certificateValidate.name" placeholder="Enter your name"></Input>
                     </FormItem>
@@ -374,7 +415,6 @@
                 <Button type="primary" >确定</Button>
             </div>
         </Modal>
-
     </div>
 </template>
 
@@ -622,7 +662,8 @@ components: { expandRow },
           file:'',
           secret:'',
           ca:'',
-
+          desc:'',
+          pawMode:''  
       },
       certificateRule:{
           name:[{required: true, message: '请输入证书名称', trigger: 'blur'}],
@@ -812,20 +853,65 @@ components: { expandRow },
                 }
             },
             {
-                key:'域名',
+                key:'domainname',
                 title:'域名'
             },
             {
-                key:'acc',
+                key:'sourceip',
                 title:'源站IP/域名'
             },
             {
-                key:'防护状态',
-                title:'防护状态'
+                key:'ccProtectionSwitch',
+                title:'防护状态',
+                render:(h,params)=>{
+                    return h('div',[
+                        h('span',{
+                            style:{
+                                marginRight:'5px'
+                            }
+                        },'cc防护'),
+                        h('i-switch',{
+                            props:{
+                                value:params.row.ccprotect == 0 ?true:false,
+                            }
+                        })
+                    ]) 
+                }
             },
             {
-                key:'防护模式',
-                title:'防护模式'
+                key:'ccProtectionMode',
+                title:'防护模式',
+                render:(h,params)=>{
+                    this.riadosCC = params.row.protecttype == 0 ?'标准':params.row.protecttype == 1 ?'严格':'攻击应急'
+                    return h('RadioGroup',
+                    {
+                        props:{
+                            value:  this.riadosCC
+                        },
+                        on:{
+                            "on-change":(val)=>{
+                              this.riadosCC =  val;
+                              console.log(this.riadosCC);
+                            }
+                        }
+                    },[
+                        h('Radio',{
+                            props:{
+                                label:'标准',
+                            }
+                        }),
+                        h('Radio',{
+                            props:{
+                                label:'严格',
+                            }
+                        }),
+                        h('Radio',{
+                            props:{
+                                label:'攻击应急',
+                            }
+                        })
+                    ])
+                }
             },
             {
                 key:'黑白名单',
@@ -840,12 +926,8 @@ components: { expandRow },
                 }
             }
         ],
+        riadosCC:'严格',
         ccProtectData:[
-            {
-                域名:'test.com',
-                acc:'1.1.1.1',
-
-            }
         ],
         // 操作日志
          operationObject:'操作对象',
@@ -989,7 +1071,9 @@ components: { expandRow },
         })
     },
 
-    // 获取证书
+    /**
+     * 业务管理-证书管理
+     */
     getCertificate(page){
         this.$http.get('ddosImitationIp/QueryAllCertificate.do',{
             params:{
@@ -998,22 +1082,50 @@ components: { expandRow },
             }
         }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
-                this.ccProtectData = res.data.result;
+                // this.ccProtectData = res.data.result;
             }else{
                   this.$Message.info(res.data.message);
             }
         }).catch(err =>{})
     },
 
-    //  防护配置获取CC防护
-    getProtectCC(id){
-        this.$http.get('ddosImitationIp/QueryL7DDoSConfig.do',{
+    createCertificate(){
+        this.$http.get('ddosImitationIp/AddCertificate.do',{
             params:{
-                packageId:id
+                crtName:this.certificateValidate.name,
+                crtRemark:this.certificateValidate.desc,
+                crtDes:this.certificateValidate.file,
+                keyDes:this.certificateValidate.secret,
+                caDes:this.certificateValidate.ca,
+                encryptionWay:'des'
             }
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
 
+            }else{
+                this.$Message.info(res.data.message);
+            }
+        }).catch(err => {
+
+        })
+    },
+
+    /**
+     * 防护管理
+     */
+    getProtectCC(id){
+        this.$http.get('ddosImitationIp/QueryAlldomain.do',{
+            params:{
+                packageId:id,
+                page:'1',
+                pageSize:'10'
+            }
+        }).then(res => {
+            if(res.status == 200 && res.data.status == 1){
+                this.ccProtectData = res.data.result;
+                this.emptyLink = res.data.result[0].ddosProtect == 0?true:false;
+            }else{
+                this.$Message.info(res.data.message);
             }
         }).catch(err => {})
     },

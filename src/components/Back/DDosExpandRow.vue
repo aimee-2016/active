@@ -85,6 +85,9 @@ export default {
             ]
         }
     },
+    props:{
+        row:Object
+    },
     created(){
         this.blackList.forEach(item =>{
             this.blackValue +=item.value+';'
