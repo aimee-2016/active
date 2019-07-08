@@ -19,7 +19,7 @@
             <transition name="slide-fade">
               <ul v-show="otherSceneShow">
                 <li v-for="otherScene in sceneGroup">
-                  <a :href="'/scene/'+otherScene.link">
+                  <a :href="otherScene.link">
                     {{otherScene.name}}
                   </a>
                 </li>
