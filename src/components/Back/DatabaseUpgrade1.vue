@@ -21,14 +21,13 @@
         <div class="host-config">
           <div class="config-top">
             <p>数据库名称：{{ hostInfo.computername}}</p>
-            <p>{{ hostInfo.serviceoffername.split('+')[0] }}CPU，{{ hostInfo.serviceoffername.split('+')[1]}}，{{ hostInfo.rootdisksize}}G硬盘 | {{ hostInfo.zonename}}</p>
+            <p>{{ hostInfo.cpuNum }}CPU，{{ hostInfo.memory}}G内存，{{ hostInfo.rootdisksize}}G硬盘，{{hostInfo.bandwith}}M带宽 | {{ hostInfo.zonename}}</p>
           </div>
           <div class="config-bottom">
-            <!-- <p>
+            <p>
               系统盘类型:
-              <span>{{ hostInfo.rootDiskType}}</span>
-            </p> -->
-            <!-- <p>系统盘大小: <span> {{ hostInfo.rootDiskSize}}GB</span></p> -->
+              <span>{{diskType}}存储</span>
+            </p>
             <p>到期时间: <span> {{ hostInfo.endtime}}</span></p>
           </div>
         </div>
@@ -41,7 +40,7 @@
                 v-for="(item,index) in CPUList"
                 :key="index"
                 :class="{selected: endCPU== item.CPU}"
-                v-if="item.CPU >=hostInfo.serviceoffername.split('+')[0].slice(0,1)"
+                v-if="item.CPU >=hostInfo.cpuNum"
                 @click="changeCPU(item)"
               >{{ item.CPU }}核</ul>
             </div>
@@ -51,7 +50,7 @@
                 v-for="(item,index) in memoryList"
                 :key="index"
                 :class="{selected: endMemory==item.memory}"
-                v-if="item.memory >=hostInfo.serviceoffername.split('+')[1].slice(0,1)"
+                v-if="item.memory >=hostInfo.memory"
                 @click="endMemory = item.memory"
               >{{ item.memory }}GB</ul>
             </div>
@@ -110,16 +109,17 @@ export default {
   },
   methods: {
     getHostInfo () {
-      let url = 'database/listDB.do'
+      let url = 'database/listDbDetailed.do'
       this.$http.get(url, {
         params: {
           id: this.computerId
         }
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
-          this.hostInfo = res.data.result.info[0]
-          this.endCPU = this.hostInfo.serviceoffername.split('+')[0].slice(0,1)
-          this.endMemory = this.hostInfo.serviceoffername.split('+')[1].slice(0,1)
+          this.hostInfo = res.data.result.info
+          console.log(this.hostInfo)
+          this.endCPU = this.hostInfo.cpuNum
+          this.endMemory = this.hostInfo.memory
           this.rootDiskSize = this.hostInfo.rootdisksize
           this.getZoneConfig()
         }
@@ -136,7 +136,7 @@ export default {
             if (this.endCPU == item.CPU) {
               this.memoryList = item.list
               this.memoryList.forEach((mem, index) => {
-                if (mem.memory < this.hostInfo.serviceoffername.split('+')[1].slice(0,1)) {
+                if (mem.memory < this.hostInfo.memory) {
                   this.memoryList.splice(index, 1)
                 }
               })
@@ -194,6 +194,10 @@ export default {
     auth () {
       return this.$store.state.authInfo != null
     },
+    diskType() {
+      let string = this.hostInfo.rootDiskType + ''
+      return  string.toUpperCase()
+    }
   },
   watch: {
     '$store.state.zone': {

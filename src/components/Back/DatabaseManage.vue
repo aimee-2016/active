@@ -15,36 +15,12 @@
             <button @click="$router.go(0)">刷新</button>
             <button style="margin-right: 10px;background: #2A99F2;color: #FFF" @click="linkHost" v-if="hostInfo.computerStatus == 1">连接主机</button>
           </p>
-          <p>{{ hostInfo.serviceoffername.split('+')[0] }}CPU，{{ hostInfo.serviceoffername.split('+')[1]}}，{{ hostInfo.disksize}}G硬盘 | {{ hostInfo.zonename}} <span
+          <p>{{ hostInfo.cpuNum }}CPU，{{ hostInfo.memory}}G menory内存，{{ hostInfo.rootdisksize}}G硬盘 | {{ hostInfo.zonename}} <span
             @click="hostUpgrade">[升级]</span>
           </p>
         </div>
         <div class="config-type">
           <ul v-for="item in configTypes" :class="{selected: configType == item}" @click="changeTabs(item)">{{ item }}</ul>
-        </div>
-        <div class="hint_1" v-show="guideStep == 1">
-          <p>点击「升级」可进行主机升级。</p>
-          <span @click="guideStep = 2">知道了</span>
-          <span></span>
-          <span>{{guideStep + 6 }} / 10</span>
-        </div>
-        <div class="hint_2" v-show="guideStep == 2">
-          <p>主机信息项可进行镜像修改、数据盘扩容、数据盘挂/卸载、修改密码等操作。</p>
-          <span @click="guideStep = 3">知道了</span>
-          <span></span>
-          <span>{{guideStep  + 6 }} / 10</span>
-        </div>
-        <div class="hint_3" v-show="guideStep == 3">
-          <p>网络信息项可进行公网IP解绑，带宽扩容等操作。</p>
-          <span @click="guideStep = 4">知道了</span>
-          <span></span>
-          <span>{{guideStep  + 6 }} / 10</span>
-        </div>
-        <div class="hint_4" v-show="guideStep == 4">
-          <p>资费信息项可进行自动续费的开启和关闭操作。</p>
-          <span @click="seeAll">知道了</span>
-          <span></span>
-          <span>{{guideStep  + 6 }} / 10</span>
         </div>
       </div>
       <div class="config-info">
@@ -65,7 +41,7 @@
                </li>
                <li>
                  <h4>性能规格</h4>
-                 <div>{{hostInfo.serviceoffername}}
+                 <div>{{ hostInfo.cpuNum }}CPU,{{ hostInfo.memory}}G menory内存
                    <span>[规格升级]</span>
                  </div>
                </li>
@@ -1779,26 +1755,6 @@
           color: #2A99F2;
         }
       }
-    }
-    .hint_1 {
-      .hint();
-      left: 250px;
-      top: -60px;
-    }
-    .hint_2 {
-      .hint();
-      left: -35px;
-      top: 25px;
-    }
-    .hint_3 {
-      .hint();
-      left: 270px;
-      top: 65px;
-    }
-    .hint_4 {
-      .hint();
-      top: 65px;
-      right: 150px;
     }
   }
 

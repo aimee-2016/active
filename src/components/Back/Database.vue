@@ -1081,6 +1081,31 @@ export default {
                                   this.$Message.warning('该主机没有绑定公网IP')
                                 }
                                 break
+                              case 'hostUpgrade':
+                                this.$http.get('network/VMIsHaveSnapshot.do', {
+                                  params: {
+                                    VMId: this.hostCurrentSelected.computerid
+                                  }
+                                }).then(response => {
+                                  if (response.status == 200 && response.data.status == 1) {
+                                    if (!response.data.result) {
+                                      this.$Modal.confirm({
+                                        title: '提示',
+                                        content: '您的主机有快照，无法升级，请删除快照再试',
+                                        scrollable: true,
+                                        okText: '删除快照',
+                                        onOk: () => {
+                                          this.$router.push('snapshot')
+                                        }
+                                      })
+                                    } else {
+                                      sessionStorage.setItem('upgradeId', this.hostCurrentSelected.id)
+                                      sessionStorage.setItem('vmid', this.hostCurrentSelected.computerid)
+                                      this.$router.push('dataBaseUpgrade')
+                                    }
+                                  }
+                                })
+                                break
                               case 'shutdown':
                                 this.hostShutdown(2)
                                 break
@@ -1119,6 +1144,11 @@ export default {
                             name: 'makeSnapshot'
                           }
                         }, '手动备份'),
+                        h('DropdownItem', {
+                          attrs: {
+                            name: 'hostUpgrade'
+                          }
+                        }, '数据库升级'),
                         h('DropdownItem', {
                           attrs: {
                             name: 'shutdown'
