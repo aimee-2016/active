@@ -1904,9 +1904,10 @@
       '$store.state.zone': {
         handler: function () {
          this. hide= $store.state.zone.zonename.indexOf('GPU');
+          this.ipData = []
+          this.select = []
           this.refresh()
           this.listVpc()
-          this.select = []
         },
         deep: true
       },

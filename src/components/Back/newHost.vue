@@ -1700,6 +1700,7 @@
           }
         }).then(res => {
           if (res.data.status == 1 && res.status == 200) {
+            this.hostListData = []
             this.hostListData = res.data.result.data
             this.hostPages = res.data.result.total
             let ids = []
@@ -3077,7 +3078,9 @@
       },
       '$store.state.zone': {
         handler: function () {
+          this.hostListData = []
           this.getHostList()
+          this.getResourceAllocation()
         },
         deep: true
       },
