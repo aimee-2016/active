@@ -59,7 +59,7 @@
                         </FormItem>
                     </Form>
                     <Button style="margin-right:10px;" @click="$router.push('DDoSIPBack')">返回</Button>
-                    <Button type="primary" @click="next">提交，查看下一步</Button>
+                    <Button type="primary" @click="addforwardrule">提交，查看下一步</Button>
                 </div>
 
                 <div class="st-box" v-if="current == 1">
@@ -128,7 +128,40 @@ export default {
                 } else {
                     this.current += 1;
                 }
-            }
+            },
+        getAllforwardrule(page){
+            this.$http.get('ddosImitationIp/QueryAllforwardrule.do',{
+                params:{
+                    page:'1',
+                    pageSize:'10',
+                    packageUserId:''
+                }
+            }).then(res => {
+
+            }).catch(err => {
+
+            })
+        },
+        addforwardrule(){
+            this.$http.get('ddosImitationIp/addforwardrule.do',{
+                params:{
+                    packageId:'',
+                    accessProtocol:this.formValidate.agreement,
+                    accessPort:this.formValidate.visitPort,
+                    source:this.formValidate.domain,
+                    sourcePort:this.formValidate.returnPort
+                }
+            }).then(res => {
+                if(res.status == 200 && res.data.status == 1){
+                     this.current += 1;
+                }else{
+                    this.$Message.info(res.data.message);
+                }
+            }).catch(err =>{})
+        }    
+    },
+    created(){
+        this.getAllforwardrule(1);
     }
 }
 </script>
@@ -137,10 +170,10 @@ export default {
     .st-box{
         text-align: center;
         margin-top: 40px;
-        p:nth-child(2){
+        >p:nth-child(2){
             font-weight: bold;
         }
-        p{
+        >p{
             font-size: 18px;
             color: #333333;
             line-height: 25px;
