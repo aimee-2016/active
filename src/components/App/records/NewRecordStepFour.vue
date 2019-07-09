@@ -349,7 +349,6 @@
           this.recordsType = response.data.result[0].recordtype
           this.isRecord = true
           this.recordInfo = response.data.result[0]
-          this.nextStep = true
           $('html, body').animate({scrollTop: 800}, 300)
           switch (this.recordsType) {
             case '新增备案':
@@ -368,6 +367,7 @@
           // 判断是否申请幕布
           if (response.data.result[0].mark3 != '' && typeof(response.data.result[0].mark3) != "undefined") {
             this.curtainStatus = true
+            this.nextStep = true
             this.receiveForm.address = response.data.result[0].mark2
             this.receiveForm.person = response.data.result[0].mark3
             this.receiveForm.phone = response.data.result[0].mark4

@@ -1700,6 +1700,7 @@
           }
         }).then(res => {
           if (res.data.status == 1 && res.status == 200) {
+            this.hostListData = []
             this.hostListData = res.data.result.data
             this.hostPages = res.data.result.total
             let ids = []
