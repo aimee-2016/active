@@ -1643,46 +1643,48 @@ export default {
               }
             }
              if (this.hostUnitList.otherdataurl.indexOf(',') > 0) {
-                let onther = this.hostUnitList.otherdataurl.split(",");
-                for (let j = 0; j < onther.length; j++) {
-                  let obj = new Object();
-                  obj.url = onther[j]
-                  onther[j].substring(onther[j].lastIndexOf('/') + 1);
-                  obj.name = (onther[j].substring(onther[j].lastIndexOf('/') + 1));
-                  this.otherData.push(obj);
-                  switch (this.otherData[j].name.substring(this.otherData[j].name.length - 3)) {
+                let addy = this.hostUnitList.otherdataurl.split(",");
+                for (let i = 0; i < addy.length; i++) {
+                  let object = new Object();
+                  object.url = addy[i]
+                  addy[i].substring(addy[i].lastIndexOf('/') + 1);
+                  object.name = (addy[i].substring(addy[i].lastIndexOf('/') + 1));
+                  this.otherData.push(object);
+                  switch (this.otherData[i].name.substring(this.otherData[i].name.length - 3)) {
                     case 'pdf' :
-                      this.otherData[j].img = imgPdf;
+                      this.otherData[i].img = imgPdf;
                       break;
                     case 'jpg' :
-                      this.otherData[j].img = imgJpg;
+                      this.otherData[i].img = imgJpg;
                       break;
                     case 'doc' :
-                      this.otherData[j].img = imgDoc;
+                      this.otherData[i].img = imgDoc;
                       break;
                   }
                 }
               } else {
-                 if(this.hostUnitList.otherdataurl != ''){
-                let onther = this.hostUnitList.otherdataurl
-                let obj = new Object();
-                obj.url = onther
-                onther.substring(onther.lastIndexOf('/') + 1);
-                obj.name = (onther.substring(onther.lastIndexOf('/') + 1));
-                this.otherData.push(obj);
-                switch (this.otherData[0].name.substring(this.otherData[0].name.length - 3)) {
-                  case 'pdf' :
-                    this.otherData[0].img = imgPdf;
-                    break;
-                  case 'jpg' :
-                    this.otherData[0].img = imgJpg;
-                    break;
-                  case 'doc' :
-                    this.otherData[0].img = imgDoc;
-                    break;
+                if(this.hostUnitList.otherdataurl != ''){
+                  let addy = this.hostUnitList.otherdataurl;
+                let object = new Object();
+                object.url = addy
+                addy.substring(addy.lastIndexOf('/') + 1);
+                object.name = (addy.substring(addy.lastIndexOf('/') + 1));
+                this.otherData.push(object);
+                for (let i = 0; i < this.otherData.length; i++) {
+                  switch (this.otherData[i].name.substring(this.otherData[0].name.length - 3)) {
+                    case 'pdf' :
+                      this.otherData[i].img = imgPdf;
+                      break;
+                    case 'jpg' :
+                      this.otherData[i].img = imgJpg;
+                      break;
+                    case 'doc' :
+                      this.otherData[i].img = imgDoc;
+                      break;
+                  }
                 }
-              }
-              }
+                }
+            }
 
             if (this.hostUnitList.webrecordauthenticityurl.indexOf(",") > 0) {
               let webRecord = this.hostUnitList.webrecordauthenticityurl.split(
