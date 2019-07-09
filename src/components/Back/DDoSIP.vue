@@ -151,7 +151,7 @@
                          <div v-if="button1 == '网站业务'">
                             <div class="dp-row">
                                 <div>
-                                    <Button type="primary" style="margin-right:10px;">添加域名</Button>
+                                    <Button type="primary" style="margin-right:10px;" @click="showModal.addDomain = true">添加域名</Button>
                                     <Button type="primary">删除</Button>
                                 </div>
                                 <div>
@@ -181,8 +181,8 @@
                                     <Button type="primary">删除</Button>
                                 </div>
                                 <div>
-                                    <Input placeholder="证书" style="width:180px;margin-right:10px;"></Input>
-                                    <Button type="primary" style="width:84px;">查询</Button>
+                                    <Input placeholder="证书名称" v-model="crtName" style="width:180px;margin-right:10px;"></Input>
+                                    <Button type="primary" style="width:84px;" @click="queryCertificate">查询</Button>
                                 </div>
                             </div>
                             <Table :columns="certificateList" :data="certificateData" @on-selection-change='overviewTableChange' ></Table>
@@ -208,10 +208,10 @@
                                     <Button type="primary" style="width:84px;">查询</Button>
                                 </div>
                             </div>
-                            <Table :columns="ruleList" :data="ruleData"></Table>
+                            <Table :columns="ruleList" :data="ruleData" @on-selection-change='overviewTableChange'></Table>
                             <div class="dp-page">
                                 <span>总共{{ruleData.length}}个项目</span>
-                                <Page :total="100" style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
+                                <Page :total="ruleData.length" @on-change='getAllforwardrule' :current='ruleDataPage' style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
                             </div>
                         </div>
                     </TabPane>
@@ -219,7 +219,7 @@
                         <div class="dp-row">
                             <div>
                                 <span style="font-size:14px;color:#333333;">套餐选择</span>
-                                <Select v-model="setMeal" style="width:230px">
+                                <Select v-model="setMeal" style="width:230px" @on-change='getProtectCC(setMeal)'>
                                     <Option v-for="item in setMealList" :value="item.packageid" :key="item.packageid">{{ item.packageid }}</Option>
                                 </Select>
                                 <Button>保存修改</Button>
@@ -254,7 +254,7 @@
                                     <div>
                                         <div>
                                             <span class="fh-sp">空连接防护</span>
-                                            <i-switch v-model="emptyLink"></i-switch>
+                                            <i-switch v-model="emptyLink" @on-change="updateL4DDoSConfig" :true-value='1' :false-value='0'></i-switch>
                                         </div>
                                     </div>
                                 </div>
@@ -301,7 +301,7 @@
              <p slot="header" class="modal-header-border">
                 <span class="universal-modal-title">套餐续费</span>
             </p>
-             <div class="dp-er" v-if="renewPrice.status != 1">
+             <div class="dp-er" v-if="renewPrice.status != 1 && renewPrice.status !== undefined">
                  <Icon type="close-circled" color='#ED4014' size='12px'></Icon>
                  <span style="margin-left:4px;">{{renewPrice.message}}</span>
              </div>
@@ -338,11 +338,56 @@
             </div>
          </Modal>   
 
-        <!-- 新增业务证书  -->
+        <!-- 新增证书  -->
         <Modal :mask-closable="false" v-model="showModal.certificate">
             <p slot="header" class="modal-header-border">
                 <span class="universal-modal-title">新增证书</span>
             </p>
+            <div class="dp-er" v-if="renewPrice.status != 1 && renewPrice.status !== undefined">
+                 <Icon type="close-circled" color='#ED4014' size='12px'></Icon>
+                 <span style="margin-left:4px;">{{renewPrice.message}}</span>
+             </div>
+            <div class="md-cer">
+                 <Form ref="certificateValidate" :model="certificateValidate" :rules="certificateRule" :label-width="80">
+                    <FormItem label="证书名称" prop="name">
+                        <Input v-model="certificateValidate.name" placeholder="Enter your name"></Input>
+                    </FormItem>
+                    <FormItem label="证书文件" prop="file">
+                        <Input type="textarea" v-model="certificateValidate.file" placeholder="Enter your name">
+                        </Input>
+                        <span class="f-p">0/500</span>
+                    </FormItem>
+                    <FormItem label="秘钥内容" prop="secret">
+                        <Input type="textarea" v-model="certificateValidate.secret" placeholder="Enter your name"></Input>
+                        <span class="f-p">0/500</span>
+                    </FormItem>
+                    <FormItem label="CA内容" prop="ca">
+                        <Input type="textarea" v-model="certificateValidate.ca" placeholder="Enter your name"></Input>
+                        <span class="f-p">0/500</span>
+                    </FormItem>
+                    <FormItem label="加密方式" prop="pawMode">
+                        <Input v-model="certificateValidate.pawMode" placeholder="Enter your name"></Input>
+                    </FormItem>
+                    <FormItem label="证书备注" prop="desc">
+                        <Input v-model="certificateValidate.desc" placeholder="Enter your name"></Input>
+                    </FormItem>
+                 </Form>   
+            </div>
+            <div slot="footer" class="modal-footer-border">
+                <Button type="ghost" @click="showModal.certificate = false">取消</Button>
+                <Button type="primary" @click="createCertificate">确定</Button>
+            </div>
+        </Modal>
+
+        <!-- 添加黑白名单  -->
+        <Modal :mask-closable="false" v-model="showModal.nameList">
+            <p slot="header" class="modal-header-border">
+                <span class="universal-modal-title">添加黑白名单</span>
+            </p>
+            <div class="dp-er" v-if="renewPrice.status != 1">
+                 <Icon type="close-circled" color='#ED4014' size='12px'></Icon>
+                 <span style="margin-left:4px;">{{renewPrice.message}}</span>
+             </div>
             <div class="md-cer">
                  <Form ref="certificateValidate" :model="certificateValidate" :rules="certificateRule" :label-width="80">
                     <FormItem label="证书名称" prop="name">
@@ -370,8 +415,72 @@
                  </Form>   
             </div>
             <div slot="footer" class="modal-footer-border">
-                <Button type="ghost" @click="showModal.certificate = false">取消</Button>
+                <Button type="ghost" @click="showModal.nameList = false">取消</Button>
                 <Button type="primary" >确定</Button>
+            </div>
+        </Modal>
+
+          <!-- 网站关联证书  -->
+        <Modal :mask-closable="false" v-model="showModal.changeSource">
+            <p slot="header" class="modal-header-border">
+                <span class="universal-modal-title">关联证书</span>
+            </p>
+            <div class="dp-er" v-if="renewPrice.status != 1 && renewPrice.status !== undefined">
+                 <Icon type="close-circled" color='#ED4014' size='12px'></Icon>
+                 <span style="margin-left:4px;">{{renewPrice.message}}</span>
+             </div>
+            <div class="md-cer">
+                <span>证书ID</span>
+               <Select v-model="operationObject" style="width:230px;margin:0 22px;">
+                    <Option v-for="item in setMealList" :value="item.packageid" :key="item.packageid">{{ item.packageid }}</Option>
+                </Select>
+            </div>
+            <div slot="footer" class="modal-footer-border">
+                <Button type="ghost" @click="showModal.changeSource = false">取消</Button>
+                <Button type="primary" @click="updateDomain">确定</Button>
+            </div>
+        </Modal>
+
+        <!-- 添加域名 -->
+        <Modal :mask-closable="false" v-model="showModal.addDomain">
+            <p slot="header" class="modal-header-border">
+                <span class="universal-modal-title">添加域名</span>
+            </p>
+            <div class="dp-er" v-if="renewPrice.status != 1 && renewPrice.status !== undefined">
+                 <Icon type="close-circled" color='#ED4014' size='12px'></Icon>
+                 <span style="margin-left:4px;">{{renewPrice.message}}</span>
+             </div>
+            <div class="md-cer">
+                 <Form ref="addDomainList" :model="addDomainList" :rules="addDomainListRule" :label-width="80">
+                    <FormItem label="套餐选择" prop="attackMeal">
+                      <Select size="small" v-model="addDomainList.attackMeal" style="width:231px;">
+                            <Option v-for="item in setMealList" :value="item.packageid" :key="item.packageid">{{ item.packageid }}</Option>
+                        </Select>
+                    </FormItem>
+                    <FormItem label="添加域名" prop="domain">
+                        <Input v-model="addDomainList.domain" placeholder="www.test.com">
+                        </Input>
+                        <p class="y-p">注意：一级域名与二级域名需要分开配置</p>
+                    </FormItem>
+                    <FormItem label="使用协议" prop="http">
+                         <CheckboxGroup v-model="addDomainList.http">
+                             <Checkbox label="http"></Checkbox>
+                             <Checkbox label="https"></Checkbox>
+                         </CheckboxGroup>
+                        <p class="y-p">域名添加完成之后，请继续添加证书和私钥</p>
+                    </FormItem>
+                    <FormItem label="协议端口" prop="agreement">
+                        <Input  v-model="addDomainList.agreement" placeholder="请输入协议端口"></Input>
+                    </FormItem>
+                    <FormItem label="源站IP/域名" prop="ip">
+                        <Input type="textarea" v-model="addDomainList.ip" placeholder="Enter your name"></Input>
+                        <p class='dp-bf'>如果源站暴露，请参考使用 <span>高防后源站IP暴露的解决方法</span></p>
+                    </FormItem>
+                 </Form>   
+            </div>
+            <div slot="footer" class="modal-footer-border">
+                <Button type="ghost" @click="showModal.addDomain = false">取消</Button>
+                <Button type="primary" @click="addDomain">确定</Button>
             </div>
         </Modal>
 
@@ -390,6 +499,9 @@ components: { expandRow },
       showModal:{
         certificate:false,
         meal:false,
+        changeSource:false,
+        nameList:false,
+        addDomain:false,
       },  
       overviewRadio:'概览',
       button1: "网站业务",
@@ -531,15 +643,15 @@ components: { expandRow },
           align: "center"
         },
         {
-          key: "证书名称",
+          key: "crtname",
           title: "证书名称"
         },
         {
-          key: "证书备注",
+          key: "crtremark",
           title: "证书备注"
         },
         {
-          key: "证书crt内容",
+          key: "crtdes",
           title: "证书crt内容"
         },
         {
@@ -563,7 +675,9 @@ components: { expandRow },
               );
             } else {
               return h("div", [
-                h("p", {}, params.row.证书key内容),
+                h("p", {
+                    'class':'dp-rd'
+                }, params.row.keydes),
                 h(
                   "p",
                   {
@@ -584,11 +698,16 @@ components: { expandRow },
           }
         },
         {
-          key: "证书ca内容",
-          title: "证书ca内容"
+          key: "cades",
+          title: "证书ca内容",
+          render:(h,params)=>{
+              return h('p',{
+                    'class':'dp-rd'
+              },params.row.cades)
+          }
         },
         {
-          key: "当前证书使用域名",
+          key: "domainname",
           title: "当前证书使用域名"
         },
         {
@@ -622,7 +741,8 @@ components: { expandRow },
           file:'',
           secret:'',
           ca:'',
-
+          desc:'',
+          pawMode:''  
       },
       certificateRule:{
           name:[{required: true, message: '请输入证书名称', trigger: 'blur'}],
@@ -647,46 +767,83 @@ components: { expandRow },
            },
           {
               title:'域名',
-              key:'域名'
+              key:'domainname'
           },
           {
               title:'域名信息',
-              key:'域名信息'
+              key:'cname'
           },
           {
               title:'端口',
-              key:'端口'
+              key:'port'
           },
           {
               title:'源站IP/域名',
               render:(h,params)=>{
                   return h('div',[
-                      h('span',{},params.row.accct),
+                      h('span',{},params.row.sourceip),
                       h('span',{
                           style:{
                               cursor:'pointer',
                               color:'#2A99F2',
                               marginLeft:'19px'
-                          }
+                          },
+                          
                       },'换源')
                   ])
               }
           },
           {
               title:'套餐信息',
-              key:'套餐信息'
+              key:'packageusername'
           },
           {
               title:'业务状态',
-              key:'业务状态'
+              render:(h,params)=>{
+                  let sty = params.row.httpsstate == 1?'inline-block':'none'
+                  return h('div',[
+                      h('div',
+                        {
+                            style:{
+                                display:'inline-block'
+                            }
+                          },
+                          [
+                        h('p',{},params.row.httpstate == 1 ?'http':''),
+                        h('p',{},params.row.httpsstate == 1 ?'https':'')
+                      ]),
+                     h('span',{
+                         style:{
+                             display:sty,
+                             color:'#2A99F2',
+                             cursor:'pointer'
+                         },
+                         on:{
+                              click:()=>{
+                                  this.showModal.changeSource = true;
+                                  this.businessSelect = params.row;
+                              }
+                          }
+                     },'关联证书')
+                  ])
+              }
           },
           {
               title:'部署状态',
-              key:'部署状态'
+              key:'deployState',
+              render:(h,params)=>{
+                  let text = params.row.deploystate ==1?'部署成功':params.row.deploystate ==2?'部署中':params.row.deploystate ==3?'待部署':'部署失败';
+                  return h('p',{},text)
+              }
           },
           {
               title:'防护状态',
-              key:'防护状态'
+              render:(h,params)=>{
+                  return h('div',[
+                      h('p',{},params.row.ccProtect == 0?'CC防护:关':'CC防护:开'),
+                      h('p',{},params.row.ddosProtect == 0?'DDOS防护:关':'DDOS防护:开'),
+                  ])
+              }
           },
           {
               title:'操作',
@@ -705,17 +862,17 @@ components: { expandRow },
           },
       ],
       businessData:[
-          {
-              域名:'aaaa',
-              域名信息:'aaaa',
-              端口:'80',
-              accct:'dddd',
-              套餐信息:'aaaa',
-              业务状态:'aaaa',
-              部署状态:'aaaa',
-              防护状态:'aaa',
-          }
       ],
+      businessSelect:{},
+      crtName:'',
+      addDomainList:{
+          attackMeal:'',
+          domain:'',
+          http:['https'],
+          agreement:'',
+          ip:''
+      },
+      addDomainListRule:{},
       
       // 非网站业务
        ruleList:[
@@ -792,6 +949,7 @@ components: { expandRow },
                label:'访问'
            }
        ],
+       ruleDataPage:1,
 
     //    防护管理
         setMeal:'',
@@ -812,20 +970,64 @@ components: { expandRow },
                 }
             },
             {
-                key:'域名',
+                key:'domainname',
                 title:'域名'
             },
             {
-                key:'acc',
+                key:'sourceip',
                 title:'源站IP/域名'
             },
             {
-                key:'防护状态',
-                title:'防护状态'
+                key:'ccProtectionSwitch',
+                title:'防护状态',
+                render:(h,params)=>{
+                    return h('div',[
+                        h('span',{
+                            style:{
+                                marginRight:'5px'
+                            }
+                        },'cc防护'),
+                        h('i-switch',{
+                            props:{
+                                value:params.row.ccprotect == 0 ?true:false,
+                            }
+                        })
+                    ]) 
+                }
             },
             {
-                key:'防护模式',
-                title:'防护模式'
+                key:'ccProtectionMode',
+                title:'防护模式',
+                render:(h,params)=>{
+                    this.riadosCC = params.row.protecttype == 0 ?'标准':params.row.protecttype == 1 ?'严格':'攻击应急'
+                    return h('RadioGroup',
+                    {
+                        props:{
+                            value: this.riadosCC
+                        },
+                        on:{
+                            "on-change":(val)=>{
+                              this.riadosCC =  val;
+                            }
+                        }
+                    },[
+                        h('Radio',{
+                            props:{
+                                label:'标准',
+                            }
+                        }),
+                        h('Radio',{
+                            props:{
+                                label:'严格',
+                            }
+                        }),
+                        h('Radio',{
+                            props:{
+                                label:'攻击应急',
+                            }
+                        })
+                    ])
+                }
             },
             {
                 key:'黑白名单',
@@ -840,12 +1042,8 @@ components: { expandRow },
                 }
             }
         ],
+        riadosCC:'严格',
         ccProtectData:[
-            {
-                域名:'test.com',
-                acc:'1.1.1.1',
-
-            }
         ],
         // 操作日志
          operationObject:'操作对象',
@@ -894,6 +1092,7 @@ components: { expandRow },
 
       this.getLog(1);
       this.getId();
+      this.getAllforwardrule(1);
   },
   methods:{
 
@@ -982,14 +1181,58 @@ components: { expandRow },
             }
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
-                this.domainData = res.data.result;
+                this.businessData = res.data.result;
             }else{
-                  this.$Message.info(res.data.message);
+                this.$Message.info(res.data.message);
             }
         })
     },
 
-    // 获取证书
+    updateDomain(){
+        this.$http.get('ddosImitationIp/UpdateDomain.do',{
+            params:{
+                domain:this.businessSelect.domainname,
+                source:this.businessSelect.sourceip,
+                port:'20',
+                crtId:this.operationObject,
+                http:'1',
+                https:'1',
+                Id:this.businessSelect.id,
+                packageId:this.businessSelect.packageid
+            }
+        }).then(res =>{
+            if(res.status == 200 && res.data.status == 1){
+
+            }else{
+                this.$Message.info(res.data.message);
+            }   
+        }).catch(err =>{})
+    },
+    addDomain(){
+        this.$http.get('ddosImitationIp/AddDomain.do',{
+            params:{
+                packageId:this.addDomainList.attackMeal,
+                domain:this.addDomainList.domain,
+                source:this.addDomainList.ip,
+                crtId:'',
+                port:this.addDomainList.agreement,
+                http:1,//this.addDomainList.http.join(','),
+                https:1
+            }
+        }).then(res =>{
+            if(res.status == 200 && res.data.status == 1){
+
+            }else{
+                this.$Message.info(res.data.message);
+            }
+        }).catch(err =>{})
+    },
+    
+
+
+    /**
+     * 业务管理-证书管理
+     */
     getCertificate(page){
         this.$http.get('ddosImitationIp/QueryAllCertificate.do',{
             params:{
@@ -998,24 +1241,110 @@ components: { expandRow },
             }
         }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
-                this.ccProtectData = res.data.result;
+                this.certificateData = res.data.result;
             }else{
                   this.$Message.info(res.data.message);
             }
         }).catch(err =>{})
     },
 
-    //  防护配置获取CC防护
-    getProtectCC(id){
-        this.$http.get('ddosImitationIp/QueryL7DDoSConfig.do',{
-            params:{
-                packageId:id
-            }
+    createCertificate(){
+        this.$http.post('ddosImitationIp/AddCertificate.do',{
+            // params:{
+                crtName:this.certificateValidate.name,
+                crtRemark:this.certificateValidate.desc,
+                crtDes:this.certificateValidate.file,
+                keyDes:this.certificateValidate.secret,
+                caDes:this.certificateValidate.ca,
+                encryptionWay:'des'
+            // }
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
 
+            }else{
+                this.$Message.info(res.data.message);
+            }
+        }).catch(err => {
+
+        })
+    },
+    queryCertificate(){
+        this.$http.get('ddosImitationIp/QueryCertificate.do',{
+            params:{
+                crtName:this.crtName
+            }
+        }).then(res => {
+            if(res.status == 200 && res.data.status ==1){
+                 this.certificateData = [];
+                  this.certificateData.push(res.data.result);
+            }else{
+                this.$Message.info(res.data.message);
+            }
+        }).catch(err =>{})
+    },
+  
+   
+
+    /**
+     * 业务管理-非网站业务
+     */
+    getAllforwardrule(page){
+            this.$http.get('ddosImitationIp/QueryAllforwardrule.do',{
+                params:{
+                    page:'1',
+                    pageSize:'10',
+                    packageUserId:''
+                }
+            }).then(res => {
+                if(res.status == 200 && res.data.status == 1){
+                    this.ruleData = res.data.result;
+                }else{
+                    this.$Message.info(res.data.messae);
+                }
+            }).catch(err => {
+
+            })
+    },    
+
+    /**
+     * 防护管理
+     */
+    getProtectCC(id){
+        this.$http.get('ddosImitationIp/QueryAlldomain.do',{
+            params:{
+                packageId:id,
+                page:'1',
+                pageSize:'10'
+            }
+        }).then(res => {
+            if(res.status == 200 && res.data.status == 1){
+                this.ccProtectData = res.data.result;
+                this.emptyLink = res.data.result[0].ddosprotect;
+            }else{
+                this.$Message.info(res.data.message);
             }
         }).catch(err => {})
+    },
+
+    updateL4DDoSConfig(val){
+        this.$http.get('ddosImitationIp/UpdateL4DDoSConfig.do',{
+            params:{
+                packageId:this.setMeal,
+                ddosProtect:val
+            }
+        }).then(res => {
+            if(res.status == 200 && res.data.status == 1){
+                this.emptyLink = val;
+                this.$Message.success('空链接防护开启/关闭成功');
+            }else{
+                this.$Message.info(res.data.message);
+                this.emptyLink = val == 0?1:0;
+            }
+        }).catch(err =>{})
+    },
+
+    updateddoSConfig(){
+        this.$http.get('ddosImitationIp/updateddoSConfig.do')
     },
 
     // 获取操作日志
@@ -1233,6 +1562,27 @@ components: { expandRow },
     text-align:right;font-size:14px;color:#333333;margin-right:10px;
     span{
         font-size:18px;color:#FF624B;font-weight:bold;
+    }
+}
+.dp-rd{
+    text-overflow: -o-ellipsis-lastline;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.y-p{
+    margin-top: 5px;
+    color: #FF9801;
+}
+.dp-bf{
+    color: #999999;
+    margin-top: 10px;
+    >span{
+        color:#2A99F2;
+        cursor: pointer;
     }
 }
 </style>

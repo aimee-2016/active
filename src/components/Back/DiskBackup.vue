@@ -255,21 +255,21 @@
                     style: {
                       color: '#EE4545'
                     }
-                  }, '正常')
+                  }, '异常')
                 case 2:
                   return h('div', {}, [h('Spin', {
                     style: {
                       display: 'inline-block',
                       marginRight: '10px'
                     }
-                  }), h('span', {}, '删除中')])
+                  }), h('span', {}, '创建中')])
                 case 3:
                   return h('div', {}, [h('Spin', {
                     style: {
                       display: 'inline-block',
                       marginRight: '10px'
                     }
-                  }), h('span', {}, '创建中')])
+                  }), h('span', {}, '删除中')])
               }
             }
           },
@@ -644,7 +644,8 @@
         strategyName: '',
         // 备份策略id
         strategyId: '',
-        totalQuota: '10'
+        totalQuota: '10',
+        diskBackupTimer: null
       }
     },
     beforeRouteEnter(to, from, next) {
@@ -1027,21 +1028,29 @@
       },
       /* 列出磁盘备份 */
       listDiskSnapshots() {
-        this.$http.get('Snapshot/listDiskSnapshots.do', {
-          params: {
-            pageSize: 10,
-            page: this.diskBackupPage
-          }
-        }).then(response => {
-          if (response.status == 200 && response.data.status == 1) {
-            this.diskBackupsData = response.data.result
-            this.diskBackupsTotal = response.data.total
-          } else {
-            this.$message.info({
-              content: response.data.message
-            })
-          }
-        })
+        this.diskBackupTimer = setInterval(()=>{
+          this.$http.get('Snapshot/listDiskSnapshots.do', {
+            params: {
+              pageSize: 10,
+              page: this.diskBackupPage
+            }
+          }).then(response => {
+            if (response.status == 200 && response.data.status == 1) {
+              this.diskBackupsData = response.data.result
+              this.diskBackupsTotal = response.data.total
+              let flag = response.data.result.some(item => {
+                return  item.status == 2
+              }) // 操作的备份中是否有过渡状态，没有就清除定时器，取消刷新
+             if (!flag) {
+               clearInterval(this.diskBackupTimer)
+             }  
+            } else {
+              this.$message.info({
+                content: response.data.message
+              })
+            }
+          })
+        },1000) 
       },
       /* 分页 切换 */
       changePage(page) {
@@ -1158,11 +1167,6 @@
       /* 确认创建磁盘备份 */
       createDiskBackup_ok() {
         this.showModal.createDiskBackup = false
-        var diskBackup = {
-          snapshotname: this.createBackupsForm.backupsName,
-          status: 3,
-        }
-        this.diskBackupsData.push(diskBackup)
         this.$http.get('Snapshot/createDiskSnapshot.do', {
           params: {
             diskId: this.createBackupsForm.diskId,
@@ -1185,7 +1189,8 @@
         if (this.diskBackupsSelection) {
           this.diskBackupsData.forEach(item => {
             if (this.diskBackupsSelection.id === item.id) {
-              item.status = 2
+              item.status = 3
+              item._disabled = true
             }
           })
           axios.get('Snapshot/deleteDiskSnapshot.do', {

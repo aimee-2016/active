@@ -678,6 +678,7 @@
               let resetpwd = params.row.resetpwd ? params.row.resetpwd : 0
               let bindip = params.row.bindip ? params.row.bindip : 0
               let createtemplate  = params.row.createtemplate ? params.row.createtemplate : 0
+              let upcpumem  =  params.row.upcpumem ? params.row.upcpumem : 0
               let icon_1 = require('../../assets/img/host/h-icon1.png')
               let icon_2 = require('../../assets/img/host/h-icon2.png')
               let icon_3 = require('../../assets/img/host/h-icon3.png')
@@ -796,7 +797,13 @@
                         display: 'inline-block'
                       }
                     }), h('span', {style: styleInfo}, '重启中')])
-                  } else if (restore == 1) {
+                  } else if (upcpumem  == 1) {
+                    return h('div', {}, [h('Spin', {
+                      style: {
+                        display: 'inline-block'
+                      }
+                    }), h('span', {style: styleInfo}, '升级中')])
+                  }else if (restore == 1) {
                     return h('div', {}, [h('Spin', {
                       style: {
                         display: 'inline-block'
@@ -1700,6 +1707,7 @@
           }
         }).then(res => {
           if (res.data.status == 1 && res.status == 200) {
+            this.hostListData = []
             this.hostListData = res.data.result.data
             this.hostPages = res.data.result.total
             let ids = []
@@ -3077,7 +3085,9 @@
       },
       '$store.state.zone': {
         handler: function () {
+          this.hostListData = []
           this.getHostList()
+          this.getResourceAllocation()
         },
         deep: true
       },

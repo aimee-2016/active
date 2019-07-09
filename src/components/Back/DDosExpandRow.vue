@@ -12,7 +12,7 @@
             </div>
             <div>
                 <div style="margin-top:10px;"  v-if="isBlckShow">
-                    <span class="dp-dk"  v-for="(item,index) in blackList" :key="index">{{item.value}}</span>
+                    <span class="dp-dk"  v-for="(item,index) in blackList" :key="index">{{item}}</span>
                 </div>
                 <div style="margin-top:10px;" v-else>
                     <Input  type="textarea" v-model="blackValue"> </Input>
@@ -31,7 +31,7 @@
             </div>
             <div>
                 <div style="margin-top:10px;"  v-if="isWihtShow">
-                    <span class="dp-dk"  v-for="(item,index) in whitList" :key="index">{{item.value}}</span>
+                    <span class="dp-dk"  v-for="(item,index) in whitList" :key="index">{{item}}</span>
                 </div>
                 <div style="margin-top:10px;" v-else>
                     <Input  type="textarea" v-model="whitValue"> </Input>
@@ -45,53 +45,19 @@
 export default {
     data(){
         return{
-            blackList:[
-                {
-                    value:'1.1.1.1'
-                },
-                {
-                    value:'1.1.1.1'
-                },
-                {
-                    value:'1.1.1.1'
-                },
-                {
-                    value:'1.1.1.1'
-                },
-                {
-                    value:'1.1.1.1'
-                },
-            ],
-            blackValue:'',
-            whitValue:'',
+            blackList:this.row.blacklist.split(';'),
+            blackValue:this.row.blacklist,
+            whitValue:this.row.whitelist,
             isBlckShow:true,
             isWihtShow:true,
-            whitList:[
-                 {
-                    value:'1.1.1.1'
-                },
-                {
-                    value:'1.1.1.1'
-                },
-                {
-                    value:'1.1.1.1'
-                },
-                {
-                    value:'1.1.1.1'
-                },
-                {
-                    value:'1.1.1.1'
-                },
-            ]
+            whitList:this.row.whitelist.split(';')
         }
     },
+    props:{
+        row:Object
+    },
     created(){
-        this.blackList.forEach(item =>{
-            this.blackValue +=item.value+';'
-        });
-        this.whitList.forEach(item =>{
-            this.whitValue +=item.value+';'
-        })
+      
     }
 }
 </script>

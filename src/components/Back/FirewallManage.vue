@@ -540,7 +540,7 @@
       // 监听区域变换
       '$store.state.zone': {
         handler: function () {
-          this.$router.push('/firewall')
+          this.$router.push('/firewalllist')
         },
         deep: true
       }
