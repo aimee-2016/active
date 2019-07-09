@@ -3,7 +3,7 @@
     <div id="wrapper">
       <span class="title">云服务器 /
          <span>DDoS高防云服务器 / </span>
-        <span>防护升级</span>
+        <span>防护扩容</span>
       </span>
       <Alert type="warning" show-icon style="margin-bottom:10px" v-if="!auth">您尚未进行实名认证，只有认证用户才能对外提供服务，
         <router-link to="/userCenter">立即认证</router-link>
@@ -11,12 +11,12 @@
       <div id="content">
         <div id="header" style="border-bottom:1px solid #E9E9E9;">
           <img class="reTrunImg" @click="$router.go(-1)" src="../../assets/img/host/h-icon9.png" alt="back to Expenses">
-          <span id="title">防护升级</span>
+          <span id="title">防护扩容</span>
           <button id="refresh_button" @click="$router.go(0)" style="margin-top: 10px;">刷新</button>
         </div>
         <div class="host-config">
           <div class="config-top">
-            <h3>升级前防护配置</h3>
+            <h3>扩容前防护配置</h3>
           </div>
           <div class="config-bottom">
             <table cellpadding="0" cellspacing="0">
@@ -41,7 +41,7 @@
         </div>
         <div class="config-selected">
           <div class="config-group">
-            <p class="upgradeInfo">可升级配置</p>
+            <p class="upgradeInfo">可扩容配置</p>
             <div class="proConf">
               <div class="item" v-for="(item, index) in protectList" :class="{'active': item.name == selectItem.name}" :key="(index+2)*31" @click="changeUpgrade(item)">{{item.name}}GB</div>
             </div>
@@ -49,7 +49,7 @@
         </div>
         <div class="end-config">
           <div class="end-info">
-            <p class="upgradeInfo">升级后防护配置</p>
+            <p class="upgradeInfo">扩容后防护配置</p>
             <table cellpadding="0" cellspacing="0">
               <tr>
                 <td>防护配置</td>
@@ -95,7 +95,12 @@
         protectList: [
           {name: '100', value: 100},
           {name: '200', value: 200},
-          {name: '300', value: 300}
+          {name: '300', value: 300},
+          {name: '400', value: 400},
+          {name: '500', value: 500},
+          {name: '600', value: 600},
+          {name: '700', value: 700},
+          {name: '800', value: 800}
         ],
         selectItem: {},
         interfacePrice: 0,
@@ -225,7 +230,7 @@
       },
       upgradeProtect() {
         if(this.selectItem.value){
-          return this.selectItem.value
+          return this.selectItem.value + this.hostInfo.ddosProtectNumber
         } else {
           return this.hostInfo.ddosProtectNumber
         }
