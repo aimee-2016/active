@@ -1151,6 +1151,7 @@
                     this.$message.info({
                       content: response.data.message
                     })
+                    this.listDisk()
                   }
                 })
               }
@@ -1304,7 +1305,6 @@
             VMId: this.operand.mounton
           }
         }).then(response => {
-          this.listDisk()
           if (response.status == 200 && response.statusText == 'OK') {
             this.$Message.info({
               content: response.data.message,
@@ -1314,6 +1314,7 @@
             this.$message.info({
               content: response.data.message
             })
+            this.listDisk()
           }
         })
       },
@@ -1335,6 +1336,7 @@
             this.$message.info({
               content: response.data.message
             })
+            this.listDisk()
           }
         })
       },
@@ -1360,6 +1362,7 @@
             })
             this.refresh()
           } else {
+            this.listDisk()
             this.$message.info({
               content: response.data.message
             })
@@ -1418,7 +1421,7 @@
             this.$message.info({
               content: response.data.message
             })
-            this.refresh()
+            this.listDisk()
           }
         })
       },
