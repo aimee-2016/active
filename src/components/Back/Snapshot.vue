@@ -1795,7 +1795,7 @@
                 this.total = response.data.total
                 this.snapshotData = response.data.result
                 this.snapshotData.forEach(item => {
-                  if (item.status == 2 ||item.status == 3 ) {
+                  if (item.status == 2 ||item.status == 3 ||item.status == 4 ) {
                       item._disabled = true
                   }
                   if (this.snapsSelection) {
@@ -1848,7 +1848,7 @@
               this.total = response.data.total
               this.snapshotData = response.data.result
               this.snapshotData.forEach(item => {
-                 if (item.status == 2 || item.status == 3) {
+                 if (item.status == 2 || item.status == 3 || item.status == 4) {
                     item._disabled = true
                   }
                 if (this.snapsSelection) {
@@ -2004,6 +2004,7 @@
                 duration: 5
               })
             } else{
+              this.listsnaps()
               this.$message.info({
                 content: response.data.message
               })

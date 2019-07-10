@@ -361,7 +361,7 @@
         <Button type="ghost" @click="showModal.complaintModal = false">取消</Button>
         <Button type="primary" @click="sumbitComplaint('complaintForm')" v-show="complaintForm.step==1">提交反馈
         </Button>
-        <Button type="primary" @click="showModal.complaintModal = false"v-show="complaintForm.step==2">确定
+        <Button type="primary" @click="showModal.complaintModal = false" v-show="complaintForm.step==2">确定
         </Button>
       </div>
     </Modal>
@@ -494,7 +494,8 @@
                   {title: 'ECS快照', desc: '稳定可靠、安全保障', path: '/ecssnapshot/'},
                   {title: 'GPU服务器', desc: 'Tesla P100、Tesla P40 GPU', path: '/gpu/'},
                   {title: '弹性伸缩', desc: '高可用、可视化、低成本', path: '/elasticscalable/'},
-                  {title: '裸金属服务器（敬请期待）', desc: '专属物理服务器', path: '/'},
+                  {title: 'DDoS高防主机', desc: '最大800G超大防护', path: '/ddos'},
+                  {title: '裸金属服务器（敬请期待）', desc: '专属物理服务器', path: '/'}
                 ]
               },
               {

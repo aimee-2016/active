@@ -4,7 +4,7 @@
       <span>首页 / {{routerName}} / 订单确认</span>
       <div class="content">
         <span>订单确认</span>
-        <button style="float:right" class="button" @click="$router.go(-1)">返回</button>
+        <button style="float:right" class="button" @click="goRouterPath">返回</button>
         <div class="order_text"
              v-if="isTitleHide">
           <div>
@@ -13,6 +13,11 @@
             <p class="o-fm">请牢记您所设置的密码，如遗忘可登录云服务器控制台重置密码。<a class="blue_font" href="/support_docs/kiRWuMFJd_kmKQJcCNq.html" target="_blank" >查看</a></p>
             <p class="o-fm" v-if="isNotBuyDisk || routerName == '新建云硬盘'">云服务器购买成功后，数据盘默认是未挂载的情况，需要自行格式化硬盘后，挂载分区后才能在云服务器内看到。<a class="blue_font" href="support_docs/kieLofe4O_3BKrwYD0i.html" target="_blank">查看windows如何格式化、</a><a class="blue_font" href="/support_docs/kieLofe4O_l455ekGff.html" target="_blank">Linux如何格式化</a></p>
             <p class="o-fm" v-if="routerName == '系统盘扩容'">若您购买了额外的系统盘，默认为未分区状态，需要自行扩容文件系统之后使用。<a class="blue_font" href="/support_docs/kiRWuMFJd_14u6nDwUP8.html" target="_blank">查看如何扩容windows文件系统、</a><a class="blue_font" href="/support_docs/kiRWuMFJd_14usXqMEji.html" target="_blank">扩容Linux文件系统</a></p>
+          </div>
+        </div>
+        <div class="order_text" v-if="routerName == '防护升级' || routerName == 'DDoS高防云服务器'">
+          <div>
+            <p v-if="routerName == '防护升级' || routerName == 'DDoS高防云服务器'">提示：购买完成之后，需等待30分钟完成升级配置，升级套餐生效时间以服务短信通知为准</p>
           </div>
         </div>
         <div class="selectMark">
@@ -730,7 +735,7 @@ export default {
                   content: "订单取消成功",
                   duration: 3
                 });
-                this.$router.push({ path: this.routePath });
+                this.goRouterPath()
               }
             });
         }
@@ -773,6 +778,15 @@ export default {
           }
         });
     }
+    },
+
+    // 返回主页面
+    goRouterPath(){
+       if(this.routerPath.indexOf('https')>-1){
+          window.location.href = this.routerPath
+        }else{
+          this.$router.push({ path: this.routerPath });
+        }
     }
   },
   computed: {
@@ -874,6 +888,59 @@ export default {
         return "域名续费";
       } else if (this.goodType == 22) {
         return "SSL证书购买";
+      } else if (this.goodType == 25) {
+        return "防护升级";
+      } else if (this.goodType == 26){
+        return "DDoS高防云服务器"
+      }
+    },
+    routerPath() {
+      if (this.goodType == 0) {
+        return "buy/host";
+      } else if (this.goodType == 1 || this.goodType == 7) {
+        return "buy/disk/";
+      } else if (this.goodType == 2) {
+        return "buy/elasticip/";
+      } else if (this.goodType == 3) {
+        return "vpcList";
+      } else if (this.goodType == 4) {
+        return "overview";
+      } else if (this.goodType == 5) {
+        return "host";
+      } else if (this.goodType == 6) {
+        return "ip";
+      } else if (this.goodType == 8) {
+        return "ip";
+      } else if (this.goodType == 9) {
+        return "diskList";
+      } else if (this.goodType == 10) {
+        return "natList?pane=NAT";
+      } else if (this.goodType == 11) {
+        return "buy/database/";
+      } else if (this.goodType == 12) {
+        return "cloudDatabase";
+      } else if (this.goodType == 13) {
+        return "cloudDatabase";
+      } else if (this.goodType == 14) {
+        return "overview";//短信包订单
+      } else if (this.goodType == 15) {
+        return "buy/gpu/";
+      } else if (this.goodType == 16) {
+        return "GPU升级";
+      } else if (this.goodType == 17) {
+        return "buy/objectstorage/";
+      } else if (this.goodType == 18) {
+        return "https://domain.xrcloud.net/xrdomain/domainTransfer";//域名转入
+      } else if (this.goodType == 19) {
+        return "domain/";
+      } else if (this.goodType == 20) {
+        return "overview";//系统盘扩容
+      } else if (this.goodType == 21) {
+        return "overview";//域名续费
+      } else if (this.goodType == 22) {
+        return "buy/ssl/";
+      }else{
+         return "overview";
       }
     },
 
@@ -884,6 +951,8 @@ export default {
         return false;
       }
     },
+
+
     
     // 待优化
     vipPrice() {

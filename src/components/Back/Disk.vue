@@ -425,8 +425,8 @@
             ellipsis: true,
             render: (h, params) => {
               const row = params.row
-              const text = row.status === 0 ? '欠费' : (row.status === 1 && !row.mounton && !row.mountonname) ? '可挂载' : (row.status === 1 && row.mounton && row.mountonname) ? '已启用（' + row.mountonname + ')' : row.status === -1 ? '异常' : row.status === 2 ? '创建中' : row.status === 3 ? '挂载中' : row.status === 4 ? '卸载中' : row.status === -2 ? '删除至回收站' : row.status === 6 ? '备份中' : ''
-              if (row.status == 2 || row.status == 3 || row.status == 4 || row.status == 5 || row.status == 6) {
+              const text = row.status === 0 ? '欠费' : (row.status === 1 && !row.mounton && !row.mountonname) ? '可挂载' : (row.status === 1 && row.mounton && row.mountonname) ? '已启用（' + row.mountonname + ')' : row.status === -1 ? '异常' : row.status === 2 ? '创建中' : row.status === 3 ? '挂载中' : row.status === 4 ? '卸载中' : row.status === -2 ? '删除至回收站' : row.status === 6 ? '备份中' :  row.status === 8 ?  '扩容中' : ''
+              if (row.status == 2 || row.status == 3 || row.status == 4 || row.status == 8 || row.status == 6) {
                 return h('div', {}, [h('Spin', {
                   style: {
                     display: 'inline-block',
@@ -772,7 +772,8 @@
           diskSize: '',
           endTime: ''
         },
-        totalQuota: ''
+        totalQuota: '',
+        diskTimer: null
       }
     },
     created() {
@@ -780,6 +781,12 @@
       this.listDisk();
       this.getGpuList();
       this.getResourceAllocation();
+      this.refresh()
+    },
+    beforeRouteLeave(to, from, next) {
+      // 导航离开该组件的对应路由时调用
+      clearInterval(this.diskTimer)
+      next()
     },
     methods: {
       // 获取资源配额
@@ -799,7 +806,31 @@
       },
       refresh() {
         this.diskAreaList = this.$store.state.zoneList
-        this.listDisk()
+        this.diskTimer = setInterval(()=>{
+        this.$http.get('Disk/listDisk.do',{params:{
+          showDelete: '1'
+        }}).then(response => {
+          if (response.status == 200 && response.data.status == 1) {
+          response.data.result.forEach((item) => {
+            if (item.status != 1 && item.status != -1 && item.status != 0) {
+                       item._disabled = true
+                     }
+                   })
+            this.diskData = response.data.result
+            this.diskSelection = null
+            let flag = response.data.result.some(item => {
+                return  item.status == 2 ||item.status == 3 || item.status == 4 || item.status == 6 || item.status == 8
+              }) // 操作的磁盘中是否有过渡状态，没有就清除定时器，取消刷新
+             if (!flag) {
+               clearInterval(this.diskTimer)
+             }  
+          } else {
+            this.$message.info({
+              content: response.data.message
+            })
+          }
+        })
+        },6000)
       },
       // 验证新建磁盘的表单
       _checkNewForm() {
@@ -858,26 +889,58 @@
       },
       // 弹出新建磁盘模态框
       newDisk() {
-        let url = 'information/listVirtualMachines.do'
-        this.$http.get(url, {
-          params: {
-            returnList: '1',
-            page:'1',
-            pageSize: '10'
-          }
-        }).then(res=>{
-          if(res.status == 200 && res.data.status ==1){
-            if(res.data.result.data.length != 0){
-              this.showModal.newDisk = true
-            } else{
-              this.showModal.withoutHost = true
+        if(this.$store.state.zone.gpuserver == 0){
+          let url = 'information/listVirtualMachines.do'
+          this.$http.get(url, {
+            params: {
+              returnList: '1',
+              page:'1',
+              pageSize: '10'
             }
-          } else{
-            this.$message.info({
-              content: res.data.message
-            })
-          }
-        })
+          }).then(res=>{
+            if(res.status == 200 && res.data.status ==1){
+              if(res.data.result.data.length != 0){
+                this.showModal.newDisk = true
+              } else{
+                this.showModal.withoutHost = true
+              }
+            } else{
+              this.$message.info({
+                content: res.data.message
+              })
+            }
+          })
+        } else {
+          let url = 'gpuserver/listGpuServer.do'
+          this.$http.get(url, {
+            params: {
+              num:'',
+              vpcId:'',
+              status:'',
+              timeType:''
+            }
+          }).then(res=>{
+            if(res.status == 200 && res.data.status ==1){
+                let list = []
+                if(Object.keys(res.data.result).length != 0){
+                  for(let index in res.data.result){
+                      for (let i = 0; i < res.data.result[index].list.length; i++) {
+                        list.push(res.data.result[index].list[i]);
+                    }
+                  }
+                }
+              if(list.length != 0){
+                this.showModal.newDisk = true
+              } else{
+                this.showModal.withoutHost = true
+              }
+            } else {
+                this.$message.info({
+                content: res.data.message
+              })
+            }
+          })
+        }
       },
       // 挂载磁盘到主机
       mount(data) {
@@ -916,6 +979,7 @@
       queryDiskPrice: debounce(500, function () {
         var diskType = ''
         var diskSize = ''
+   
         if (this.diskForm.quantity === 1) {
           diskType = this.diskForm.diskType
           diskSize = this.diskForm.diskSize + ''
@@ -972,6 +1036,7 @@
       newDisk_ok() {
         var diskType = ''
         var diskSize = ''
+        var diskGpu  = ''
         if (this.diskForm.quantity === 1) {
           diskType = this.diskForm.diskType
           diskSize = this.diskForm.diskSize + ''
@@ -979,9 +1044,11 @@
           for (var i = 0; i < this.diskForm.quantity; i++) {
             diskType += this.diskForm.diskType + ','
             diskSize += this.diskForm.diskSize + ','
+            diskGpu += this.diskForm.diskGpu +','
           }
           diskType = diskType.substring(0, diskType.length - 1)
           diskSize = diskSize.substring(0, diskSize.length - 1)
+          diskGpu = diskGpu.substring(0, diskGpu.length - 1)
         }
         // 默认zoneList第一个元素为当前选中区域，以后会修改
         this.$http.get('Disk/createVolume.do', {
@@ -992,7 +1059,7 @@
             timeType: this.diskForm.timeType,
             timeValue: this.diskForm.timeValue || 1,
             isAutorenew: 0,
-            serviceType: this.$store.state.zone.gpuserver == 1 ? this.diskForm.diskGpu : ''
+            serviceType: this.$store.state.zone.gpuserver == 1 ? diskGpu : ''
           }
         }).then(response => {
           if (response.status == 200 && response.data.status == 1) {
@@ -1084,6 +1151,7 @@
                     this.$message.info({
                       content: response.data.message
                     })
+                    this.listDisk()
                   }
                 })
               }
@@ -1237,15 +1305,16 @@
             VMId: this.operand.mounton
           }
         }).then(response => {
-          this.listDisk()
           if (response.status == 200 && response.statusText == 'OK') {
             this.$Message.info({
               content: response.data.message,
             })
+            this.refresh()
           } else {
             this.$message.info({
               content: response.data.message
             })
+            this.listDisk()
           }
         })
       },
@@ -1267,6 +1336,7 @@
             this.$message.info({
               content: response.data.message
             })
+            this.listDisk()
           }
         })
       },
@@ -1290,7 +1360,9 @@
             this.$Message.info({
               content: response.data.message,
             })
+            this.refresh()
           } else {
+            this.listDisk()
             this.$message.info({
               content: response.data.message
             })
@@ -1344,12 +1416,12 @@
         }).then(response => {
           if (response.status == 200 && response.data.status == 1) {
             this.$Message.info(response.data.message)
-            this.$router.push('diskBackup')
+            this.$router.push('diskBackupList')
           } else {
             this.$message.info({
               content: response.data.message
             })
-            this.refresh()
+            this.listDisk()
           }
         })
       },
@@ -1605,7 +1677,10 @@
       },
       '$store.state.zone': {
         handler: function () {
+          this.diskData = []
           this.refresh()
+          this.getGpuList();
+          this.getResourceAllocation();
         },
         deep: true
       }

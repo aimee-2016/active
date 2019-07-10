@@ -8,9 +8,9 @@
       <div style="border-bottom: 1px solid #D9D9D9;">
         <h2>套餐类型</h2>
         <div class="item-wrapper">
-         <div v-for="item in mealList" :key="item.value"  class="zoneItem"
-                 :class="{zoneSelect:meal ==item.value}"
-                 @click="zoneChange(item)">{{item.lable}}
+         <div v-for="(item,index) in mealList" :key="item.ddosprotectnumber"  class="zoneItem"
+                 :class="{zoneSelect:meal ==item.ddosprotectnumber}"
+                 @click="zoneChange(item.ddosprotectnumber,index)">{{item.packagename+'GB'}}
             </div>
         </div>
         <p style="margin-top: 10px;margin-bottom: 20px;font-size: 12px;color: #999999;line-height: 25px;">
@@ -19,17 +19,17 @@
              <div class="b-meal">
                 <div class="bm-rg">套餐说明  </div>
                 <div>
-                    <p>DDoS防护能力：1Gbps </p>
-                    <p>CC防护能力：4000QPS </p>
-                    <p>套餐包含的正常业务带宽：5M </p>
-                    <p>转发的端口数（非网站业务：TCP/UDP）：50 </p>
-                    <p>支持的域名数（网站业务：Http/Https）：100</p>
+                    <p>DDoS防护能力：{{selectList.ddosprotectnumber}}Gbps </p>
+                    <p>CC防护能力：{{selectList.ccprotectnumber}}QPS </p>
+                    <p>套餐包含的正常业务带宽：{{selectList.bandwith}}M </p>
+                    <p>转发的端口数（非网站业务：TCP/UDP）：{{selectList.porttransnumber}} </p>
+                    <p>支持的域名数（网站业务：Http/Https）：{{selectList.domainnumber}}</p>
                 </div>
              </div>
              <div class="b-meal">
                  <div class="bm-rg">价格  </div>
                 <div class="bm-price">
-                    300元/月
+                    {{selectList.price}}元/月
                 </div>
              </div>
          </div>
@@ -41,18 +41,18 @@
             <div class="b-meal">
                 <div class="bm-rg">线路  </div>
                <div v-for="(item,index) in line.lineList" :key="index" class="zoneItem"
-                    :class="{zoneSelect:line.lineIndex==item.value}"
+                    :class="{zoneSelect:selectList.zonename==item.label}"
                     @click="line.lineIndex=item.value">{{item.label}}
                 </div>
              </div>
              <div class="b-meal">
                  <div class="bm-rg">弹性防护宽带 </div>
                     <div class="item-wrapper" style="width:77%;margin-top:0;">
-                            <div v-for="(item,index) in bandwidth.bandwidthList" :key="index" class="timeType"
-                                :class="{zoneSelect:bandwidth.bandwidthIndex==item.value}"
-                                @click="bandwidth.bandwidthIndex=item.value"
-                            :style="item.value == '6' ||  item.value == '12' ?'border-right:1px solid #d9d9d9;':''">
-                                {{item.label}}
+                            <div v-for="(item,index) in mealList" :key="index" class="timeType"
+                                :class="{zoneSelect:bandwidths.bandwidthIndex==item.ddosprotectnumber}"
+                                @click="bandwidths.bandwidthIndex=item.ddosprotectnumber;"
+                            :style="item.ddosprotectnumber == 60 ||  item.ddosprotectnumber == 300 ?'border-right:1px solid #d9d9d9;':''">
+                                {{item.ddosprotectnumber+'GB'}}
                                 <!-- <span v-if="item.type=='year'" class="discount-icon">惠</span> -->
                             </div>
                          <p class="bm-fn">
@@ -80,12 +80,13 @@
                         v-model="bandWidth"
                         unit="MB"
                         :min=1
-                        :max=100
+                        :max=400
                         :step=1
-                        :points="[20,50]"
+                        :points="[50,100,150,200,300]"
+                        @on-change='queryPackagePrice'
                         style="margin-right:30px;vertical-align: middle;">
                     </i-slider>
-                    <InputNumber :max="100" :min="1" v-model="bandWidth" size="large"
+                    <InputNumber :max="400" :min="1" v-model="bandWidth" size="large"
                            style="position: relative;bottom: 5px" :precision="0"></InputNumber>
                 </div>
              </div>
@@ -117,11 +118,31 @@
                     300元/月
                 </div>
              </div>
+               <!-- <div style="margin-top: 20px"> -->
+                <!--<p style="text-align: left;font-size: 14px;color: #2A99F2;cursor: pointer"
+                  @click="$router.push('computed/3-1')">查看计价详情</p>-->
+                <!-- <p style="text-align: right;font-size: 14px;color: #666666;margin-bottom: 10px;">
+                  <span v-if="timeForm.currentTimeType == 'annual'&&timeForm.currentTimeValue.type == 'year'">折后费用：</span><span v-else>费用：</span><span style="font-size: 24px;color: #EE6723;">{{dataDiskCost.toFixed(2)}}元</span><span
+                  v-show="timeForm.currentTimeType == 'current'">/小时</span>
+                </p>
+                <p style="text-align: right;font-size: 14px;color: #666666;" v-if="coupon!=0">已省：<span
+                  style="font-size: 14px;color: #EE6723;">{{coupon.toFixed(2)}}元</span></p>
+                <div style="text-align: right;margin-top: 20px;">
+                  <Button size="large"
+                          class="btn" @click="addDiskCart">
+                    加入预算清单
+                  </Button>
+                  <Button @click="buyDisk" type="primary"
+                          style="border-radius: 10px;width: 128px;height: 39px;font-size: 16px;color: #FFFFFF;background-color: #377DFF;border: 1px solid #377DFF;">
+                    立即购买
+                  </Button>
+                </div>
+              </div> -->
          </div>
       </div>
     </div>
       <!-- 当前区域没有主机提示 -->
-    <Modal v-model="showModal.withoutHost" :scrollable="true" :closable="false" :width="390">
+    <!-- <Modal v-model="showModal.withoutHost" :scrollable="true" :closable="false" :width="390">
       <p slot="header" class="modal-header-border">
         <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
         <span class="universal-modal-title">提示信息</span>
@@ -136,7 +157,7 @@
         <Button @click="showModal.withoutHost = false">取消</Button>
         <Button type="primary" @click="buyIpOK">确认</Button>
       </p>
-    </Modal>
+    </Modal> -->
   </div>
 </template>
 
@@ -163,44 +184,8 @@
 
         // 套餐类型
         mealList:[
-            {
-                lable:'DMS-1GB',
-                value:'1'
-            },
-            {
-                lable:'DMS-10GB',
-                value:'2'
-            },
-            {
-                lable:'DMS-20GB',
-                value:'3'
-            },
-            {
-                lable:'DMS-30GB',
-                value:'4'
-            },
-            {
-                lable:'DMS-40GB',
-                value:'5'
-            },
-            {
-                lable:'DMS-50GB',
-                value:'6'
-            },
-            {
-                lable:'DMS-100GB',
-                value:'7'
-            },
-            {
-                lable:'DMS-200GB',
-                value:'8'
-            },
-            {
-                lable:'DMS-300GB',
-                value:'9'
-            }
         ],
-        meal:'1',
+        meal:1,
 
         // 线路
         line:{
@@ -224,68 +209,8 @@
         domainCount:100,
 
         // 弹性防护带宽
-        bandwidth:{
+        bandwidths:{
             bandwidthList:[
-                {
-                    label:'1GB',
-                    value:'1'
-                },
-                {
-                    label:'11GB',
-                    value:'2'
-                },
-                {
-                    label:'21GB',
-                    value:'3'
-                },
-                {
-                    label:'31GB',
-                    value:'4'
-                },
-                {
-                    label:'41GB',
-                    value:'5'
-                },
-                {
-                    label:'51GB',
-                    value:'6'
-                },
-                {
-                    label:'61GB',
-                    value:'7'
-                },
-                {
-                    label:'71GB',
-                    value:'8'
-                },
-                {
-                    label:'81GB',
-                    value:'9'
-                },
-                {
-                    label:'91GB',
-                    value:'10'
-                },
-                {
-                    label:'101GB',
-                    value:'11'
-                },
-                {
-                    label:'151GB',
-                    value:'12'
-                },
-                {
-                    label:'201GB',
-                    value:'13'
-                },
-                {
-                    label:'301GB',
-                    value:'14'
-                },
-                {
-                    label:'401GB',
-                    value:'15'
-                },
             ],
             bandwidthIndex:'1'
         },
@@ -310,10 +235,6 @@
         },
 
         
-
-        // 虚拟私有云列表
-        vpcList: [],
-        vpc: '',
         // 带宽大小
         bandWidth: 1,
         // 自动续费
@@ -323,24 +244,74 @@
         coupon: 0,
         showModal:{
           withoutHost: false
-        }
+        },
+        selectList:{},
+        elasticIpPrice:0,
+        businessPrice:0
       }
     },
     created(){
-      this.queryIPPrice()
+      this.queryIPPrice();
+      this.queryVpc();
+    
+    },
+    mounted(){
     },
     methods: {
       // 查询虚拟私有云vpc列表
       queryVpc() {
-        axios.get('network/listVpcBuyComputer.do', {
-          params: {
-            zoneId: this.zone.zoneid
+        axios.get('ddosImitationIp/ddospackage.do', {
+        }).then(res => {
+          if(res.status == 200 && res.data.status ==1){
+            this.mealList = res.data.result;
+            this.zoneChange(res.data.result[0].ddosprotectnumber,1);
+            this.queryElasticbandprice();
+             this.queryPackagePrice();
+          }else{
+            this.$Message.info(res.data.message);
           }
-        }).then(response => {
-          this.vpcList = response.data.result
-          this.vpc = this.vpcList[0].vpcid
         })
       },
+
+      // 查询弹性防护带宽价格
+      queryElasticbandprice(){
+        axios.get('ddosImitationIp/elasticbandprice.do',{
+          params:{
+            elasticband:this.bandwidths.bandwidthIndex,
+            packageName:this.selectList.packagename,
+            zoneId:this.selectList.zoneid,
+            timeVlue:'1',
+            count:'1'
+          }
+        }).then(res =>{
+          if(res.status == 200 && res.data.status == 1){
+            this.elasticIpPrice = res.data.price;
+          }else{
+            this.$Message.info(res.data.message);
+          }
+        }).catch(err =>{})
+      },
+
+      // 查询业务带宽价格
+      queryPackagePrice(){
+        console.log(this.selectList);
+        axios.get('ddosImitationIp/packagePrice.do',{
+          params:{
+            elasticband:this.bandWidth,
+            zoneId:this.selectList.zoneid,
+            packagename:this.selectList.packagename,
+            timeVlue:'1',
+            count:'1'
+          }
+        }).then(res =>{
+          if(res.status == 200 && res.data.status == 1){
+            this.businessPrice = res.data.price;
+          }else{
+            this.$Message.info(res.data.message);
+          }
+        }).catch(err =>{})
+      },
+
       // 公网IP加入购物车
       addIPCart() {
         if (this.zone.buyover == 1) {
@@ -367,61 +338,6 @@
         }
         this.$parent.cart.push(JSON.parse(JSON.stringify(prod)))
       },
-      buyIP() {
-        if (this.userInfo == null) {
-          this.$LR({type: 'login'})
-          return
-        }
-        if (this.zone.buyover == 1) {
-          this.$Message.info({
-            content: '请选择需要购买的区域'
-          })
-          return
-        }
-        let url = 'information/listVirtualMachines.do'
-        axios.get(url, {
-          params: {
-            returnList: '1',
-            page:'1',
-            pageSize: '10',
-            zoneId: this.zone.zoneid
-          }
-        }).then(res=>{
-          if(res.status == 200 && res.data.status ==1){
-            if(res.data.result.data.length != 0){
-              this.buyIpOK()
-            } else{
-              this.showModal.withoutHost = true
-            }
-          } else{
-            this.$message.info({
-              content: res.data.message
-            })
-          }
-        })
-      },
-      buyIpOK(){
-        var params = {
-          zoneId: this.zone.zoneid,
-          timeType: this.timeForm.currentTimeType == 'annual' ? this.timeForm.currentTimeValue.type : 'current',
-          timeValue: this.timeForm.currentTimeValue.value,
-          count: this.count,
-          isAutorenew: this.autoRenewal ? '1' : '0',
-          brandWith: this.bandWidth,
-          vpcId: this.vpc,
-          count: 1
-        }
-        axios.get('network/createPublicIp.do', {params}).then(response => {
-            if (response.status == 200 && response.data.status == 1) {
-              this.$router.push('/order')
-            } else {
-              this.$message.info({
-                content: response.data.message
-              })
-            }
-          }
-        )
-      },
       queryIPPrice: debounce(500, function () {
         var params = {
           brand: this.bandWidth,
@@ -441,16 +357,28 @@
           }
         })
       }),
-      zoneChange(item){
+      zoneChange(item,index){
         // if(item.buyover != 1){
-         this.meal = item.value
+         this.meal = item;
+         this.selectList = this.mealList[index];
+         this.bandwidths.bandwidthList = this.mealList[index];
+         this.bandwidths.bandwidthIndex = item;
+         this.port = this.mealList[index].porttransnumber;
+         this.domainCount = this.mealList[index].domainnumber;
+         this.bandWidth = this.mealList[index].bandwith;
         // }
+      },
+      test(){
+        
       }
     },
     computed: {
       userInfo(){
         return this.$store.state.userInfo
       },
+      price(){
+        return this.elasticIpPrice;
+      }
     },
     watch: {
       'zone': {
@@ -465,9 +393,9 @@
         },
         deep: true
       },
-      'bandWidth': {
+      'bandwidths.bandwidthIndex': {
         handler(){
-          this.queryIPPrice()
+          this.queryElasticbandprice();
         },
         deep: true
       }

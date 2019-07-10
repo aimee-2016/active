@@ -253,27 +253,60 @@
           })
           return
         }
-        let url = 'information/listVirtualMachines.do'
-        axios.get(url, {
-          params: {
-            returnList: '1',
-            page:'1',
-            pageSize: '10',
-            zoneId: this.zone.zoneid
-          }
-        }).then(res=>{
-          if(res.status == 200 && res.data.status ==1){
-            if(res.data.result.data.length != 0){
-              this.buyIpOK()
-            } else{
-              this.showModal.withoutHost = true
+        if(this.zone.gpuserver == 0){
+          let url = 'information/listVirtualMachines.do'
+          axios.get(url, {
+            params: {
+              returnList: '1',
+              page:'1',
+              pageSize: '10',
+              zoneId: this.zone.zoneid
             }
-          } else{
-            this.$message.info({
-              content: res.data.message
-            })
-          }
-        })
+          }).then(res=>{
+            if(res.status == 200 && res.data.status ==1){
+              if(res.data.result.data.length != 0){
+                this.buyIpOK()
+              } else{
+                this.showModal.withoutHost = true
+              }
+            } else{
+              this.$message.info({
+                content: res.data.message
+              })
+            }
+          })
+        } else {
+          let url = 'gpuserver/listGpuServer.do'
+          axios.get(url, {
+            params: {
+              num:'',
+              vpcId:'',
+              status:'',
+              timeType:'',
+              zoneId:this.zone.zoneid,
+            }
+          }).then(res=>{
+            if(res.status == 200 && res.data.status ==1){
+                let list = []
+                if(Object.keys(res.data.result).length != 0){
+                  for(let index in res.data.result){
+                      for (let i = 0; i < res.data.result[index].list.length; i++) {
+                        list.push(res.data.result[index].list[i]);
+                    }
+                  }
+                }
+              if(list.length != 0){
+                this.buyIpOK()
+              } else{
+                this.showModal.withoutHost = true
+              }
+            } else {
+                this.$message.info({
+                content: res.data.message
+              })
+            }
+          })
+        }
       },
       buyIpOK(){
         var params = {

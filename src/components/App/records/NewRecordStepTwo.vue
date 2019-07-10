@@ -753,9 +753,7 @@
           area: this.mainUnitInformation.province
         }}).then(res=>{
           if(res.status == 200 && res.data.status == 1){
-            if(res.data.result.length == 0){
-              this.emergencyContact = false
-            }
+              this.emergencyContact = res.data.result
           } 
         })
       },

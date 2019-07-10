@@ -7,12 +7,12 @@
                 </div>
                 <div>
                     <span class="dp-xg" v-if="isBlckShow" @click="isBlckShow = false">管理</span>
-                    <span class="dp-xg" v-else @click="isBlckShow = true">确认修改</span>
+                    <span class="dp-xg" v-else @click="isBlackUpdate">确认修改</span>
                 </div>
             </div>
             <div>
-                <div style="margin-top:10px;"  v-if="isBlckShow">
-                    <span class="dp-dk"  v-for="(item,index) in blackList" :key="index">{{item.value}}</span>
+                <div style="margin-top:10px;display: flex;flex-wrap: wrap;"  v-if="isBlckShow">
+                    <span class="dp-dk"  v-for="(item,index) in blackList" :key="index">{{item}}</span>
                 </div>
                 <div style="margin-top:10px;" v-else>
                     <Input  type="textarea" v-model="blackValue"> </Input>
@@ -26,12 +26,12 @@
                 </div>
                 <div>
                     <span class="dp-xg" v-if="isWihtShow" @click="isWihtShow = false">管理</span>
-                    <span class="dp-xg" v-else @click="isWihtShow = true">确认修改</span>
+                    <span class="dp-xg" v-else @click="isWihtUpdate">确认修改</span>
                 </div>
             </div>
             <div>
-                <div style="margin-top:10px;"  v-if="isWihtShow">
-                    <span class="dp-dk"  v-for="(item,index) in whitList" :key="index">{{item.value}}</span>
+                <div style="margin-top:10px;display: flex;flex-wrap: wrap;"  v-if="isWihtShow">
+                    <span class="dp-dk"  v-for="(item,index) in whitList" :key="index">{{item}}</span>
                 </div>
                 <div style="margin-top:10px;" v-else>
                     <Input  type="textarea" v-model="whitValue"> </Input>
@@ -45,53 +45,39 @@
 export default {
     data(){
         return{
-            blackList:[
-                {
-                    value:'1.1.1.1'
-                },
-                {
-                    value:'1.1.1.1'
-                },
-                {
-                    value:'1.1.1.1'
-                },
-                {
-                    value:'1.1.1.1'
-                },
-                {
-                    value:'1.1.1.1'
-                },
-            ],
-            blackValue:'',
-            whitValue:'',
+            blackList:this.row.blacklist.split(';'),
+            blackValue:this.row.blacklist,
+            whitValue:this.row.whitelist,
             isBlckShow:true,
             isWihtShow:true,
-            whitList:[
-                 {
-                    value:'1.1.1.1'
-                },
-                {
-                    value:'1.1.1.1'
-                },
-                {
-                    value:'1.1.1.1'
-                },
-                {
-                    value:'1.1.1.1'
-                },
-                {
-                    value:'1.1.1.1'
-                },
-            ]
+            whitList:this.row.whitelist.split(';')
         }
     },
+    props:{
+        row:Object
+    },
     created(){
-        this.blackList.forEach(item =>{
-            this.blackValue +=item.value+';'
-        });
-        this.whitList.forEach(item =>{
-            this.whitValue +=item.value+';'
-        })
+      
+    },
+    methods:{
+        isWihtUpdate(){
+            this.whitList = this.whitValue.split(';');
+            if(this.whitList.length >300){
+                this.$Message.info('最大添加300个白名单');
+            }else{
+                this.isWihtShow = true;
+                this.$emit('white',this.whitValue);
+            }
+        },
+        isBlackUpdate(){
+            this.blackList = this.blackValue.split(';');
+            if(this.blackList.length >300){
+                this.$Message.info('最大添加300个黑名单');
+            }else{
+                this.isBlckShow = true;
+                this.$emit('black',this.blackValue);
+            }
+        }
     }
 }
 </script>

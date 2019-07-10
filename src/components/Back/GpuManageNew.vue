@@ -413,7 +413,7 @@
           <FormItem label="新的密码" prop="newPassword" style="width: 80%;margin-bottom: 10px">
             <Input type="password" :type="modifyPasswordForm.newPasswordInput" v-model="modifyPasswordForm.newPassword" @on-focus="passwordForm.passwordHint = true" @on-blur="passwordForm.passwordHint = false"></Input>
             <img class="modal-img" @click="changeLoginPasType(2)" src="../../assets/img/login/lr-icon3.png"/>
-            <div class="popTip" v-show="passwordForm.passwordHint">
+            <div class="popTip" v-show="passwordForm.passwordHint==true">
                   <div><i :class="{reach: passwordForm.secondDegree}"></i>
                     <p>不能输入连续6位数字或字母，如123456aA</p></div>
                   <div><i :class="{reach: passwordForm.firstDegree}"></i>
@@ -1682,7 +1682,7 @@
         if (this.bindForm.bindIpText != '绑定IP') {
           return
         }
-        this.bindForm.publicIP = ''
+        this.bindForm.publicIP = '';
         this.$http.get('network/listPublicIp.do', {
           params: {
             useType: 0,
@@ -1690,6 +1690,7 @@
           }
         }).then(response => {
           if (response.status == 200 && response.data.status == 1) {
+             this.$router.push('gpuList');
             this.publicIPList = response.data.result
             if (this.publicIPList == '') {
               this.showWindow.publicIPHint = true
@@ -1710,7 +1711,8 @@
                 }
               }).then(response => {
                 if (response.status == 200 && response.data.status == 1) {
-                  this.$Message.info(response.data.message)
+                  this.$Message.info(response.data.message);
+                   this.$router.push('gpuList');
                   this.bindForm.bindIpText = '绑定中'
                 } else {
                   this.$message.info({
@@ -1737,7 +1739,8 @@
           }
         }).then(response => {
           if (response.status == 200 && response.data.status == 1) {
-            this.$Message.info(response.data.message)
+            this.$Message.info(response.data.message);
+             this.$router.push('gpuList');
             this.bindForm.unbindText = '解绑中'
           } else {
             this.$message.info({

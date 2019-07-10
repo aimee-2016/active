@@ -294,8 +294,9 @@ export default {
       if (!value) {
         return callback(new Error('发票抬头不能为空'))
       }
-      if ((/[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im.test(value)) || (/[·！#￥（——）：；“”‘、，|《。》？、【】[\]]/im.test(value)) || (/\s+/.test(value)) || (/^[0-9]*$/.test(value))) {
-        callback(new Error('发票抬头不能包含特殊字符、空格或是纯数字'));
+      // (/[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im.test(value)) || (/[·！#￥（——）：；“”‘、，|《。》？、【】[\]]/im.test(value)) || 
+      if ((/\s+/.test(value)) || (/^[0-9]*$/.test(value))) {
+        callback(new Error('发票抬头不能包含空格或是纯数字'));
       } else {
         callback()
       }
@@ -304,8 +305,8 @@ export default {
       if (!value) {
         return callback(new Error('开户银行不能为空'))
       }
-      if ((/[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im.test(value)) || (/[·！#￥（——）：；“”‘、，|《。》？、【】[\]]/im.test(value)) || (/\s+/.test(value)) || (/^[0-9]*$/.test(value))) {
-        callback(new Error('开户银行不能包含特殊字符、空格或是纯数字'));
+      if ((/\s+/.test(value)) || (/^[0-9]*$/.test(value))) {
+        callback(new Error('开户银行不能包含空格或是纯数字'));
       } else {
         callback()
       }
@@ -908,7 +909,7 @@ header {
 .v_box {
   width: 460px;
   height: 112px;
-  padding: 20px;
+  padding: 16px;
   background: #f6fafd;
   border: 1px solid #e1e1e1;
   border-radius: 4px;
