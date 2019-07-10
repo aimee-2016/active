@@ -64,8 +64,8 @@
                   主机升级
                 </Tooltip>
               </Dropdown-item>
-              <Dropdown-item name="protectionUpgrade" :disabled="protectionUpgrade">防护升级</Dropdown-item>
-              <Dropdown-item name="protectiveOverlay" :disabled="protectiveOverlay">防护叠加</Dropdown-item>
+              <Dropdown-item name="protectionUpgrade" :disabled="protectionUpgrade">防护扩容</Dropdown-item>
+              <!-- <Dropdown-item name="protectiveOverlay" :disabled="protectiveOverlay">防护叠加</Dropdown-item> -->
             </Dropdown-menu>
           </Dropdown>
         </div>
@@ -1633,13 +1633,13 @@
               break
             case 'protectionUpgrade':
               if (this.hostCurrentSelected.status == 1) {
-                // 主机正常才能升级
+                // 主机正常才能进行防护扩容
                 let protectTemp = {computerId: this.hostCurrentSelected.computerid, id: this.hostCurrentSelected.id}
                 sessionStorage.setItem('ProtectUpgrade', JSON.stringify(protectTemp))
                 this.$router.push('protectUpgrade')
               }
               break
-            case 'protectiveOverlay':
+            /* case 'protectiveOverlay':
               if (this.hostCurrentSelected.status == 1) {
                 // 叠加
                 if (this.hostCurrentSelected.UpddosProtectNumber) {
@@ -1650,7 +1650,7 @@
                   this.$router.push('protectOverlay')
                 }
               }
-              break
+              break */
           }
         } else {
           if (this.hostSelection.length > 5) {
@@ -2884,7 +2884,7 @@
           return this.hostSelection[0].status != 1
         }
         // return false
-      },
+      } /* ,
       protectiveOverlay() {
         let len = this.hostSelection.length
         if (len !== 1) {
@@ -2893,7 +2893,7 @@
           return this.hostSelection[0].status != 1
         }
         // return false
-      }
+      }*/
     },
     watch: {
       renewalType(type) {
