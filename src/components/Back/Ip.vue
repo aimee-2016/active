@@ -996,26 +996,58 @@
       },
       // 打开新建IP模态框
       openNewIPModal() {
-        let url = 'information/listVirtualMachines.do'
-        this.$http.get(url, {
-          params: {
-            returnList: '1',
-            page:'1',
-            pageSize: '10'
-          }
-        }).then(res=>{
-          if(res.status == 200 && res.data.status ==1){
-            if(res.data.result.data.length != 0){
-              this.showModal.newIPModal = true
-            } else{
-              this.showModal.withoutHost = true
+        if(this.$store.state.zone.gpuserver == 0){
+          let url = 'information/listVirtualMachines.do'
+          this.$http.get(url, {
+            params: {
+              returnList: '1',
+              page:'1',
+              pageSize: '10'
             }
-          } else{
-            this.$message.info({
-              content: res.data.message
-            })
-          }
-        })
+          }).then(res=>{
+            if(res.status == 200 && res.data.status ==1){
+              if(res.data.result.data.length != 0){
+                this.showModal.newIPModal = true
+              } else{
+                this.showModal.withoutHost = true
+              }
+            } else{
+              this.$message.info({
+                content: res.data.message
+              })
+            }
+          })
+        } else {
+          let url = 'gpuserver/listGpuServer.do'
+          this.$http.get(url, {
+            params: {
+              num:'',
+              vpcId:'',
+              status:'',
+              timeType:''
+            }
+          }).then(res=>{
+            if(res.status == 200 && res.data.status ==1){
+                let list = []
+                if(Object.keys(res.data.result).length != 0){
+                  for(let index in res.data.result){
+                      for (let i = 0; i < res.data.result[index].list.length; i++) {
+                        list.push(res.data.result[index].list[i]);
+                    }
+                  }
+                }
+              if(list.length != 0){
+                this.showModal.newIPModal = true
+              } else{
+                this.showModal.withoutHost = true
+              }
+            } else{
+              this.$message.info({
+                content: res.data.message
+              })
+            }
+          })
+        }
       },
       // 改变购买方式触发函数
       changeTimeType() {

@@ -144,6 +144,13 @@
                     class="hidden">#</span>{{prod.downLoad}}
                   </p>
                 </div>
+                <!-- Ddos高防主机字段 -->
+                <div v-if="prod.type=='PDdosHost'">
+                  <p class="item">
+                    <span class="hidden">$</span><span class="title">防护大小</span><span
+                    class="hidden">#</span>{{prod.ddosProtectNumber}}GB
+                  </p>
+                </div>
                 <!--ssl证书清单字段-->
                 <!-- <div v-if="prod.type=='Pssl'">
                   <p class="item">
@@ -319,6 +326,7 @@
             {label: '对象存储', value: 'objectstorage/'},
             {label: 'GPU服务器', value: 'gpu/'},
             {label: 'SSL证书', value: 'ssl/'},
+            {label: 'DDoS高防主机', value: 'ddos/'},
             // {label: 'DDoS高防IP套餐', value: 'ddosip/'}
           ]
         },
@@ -588,6 +596,55 @@
               countOrder
             }
             PromiseList.push(axios.post('ruiradosPrice/createOrder.do', params))
+          } else if (prod.type == 'PDdosHost') { // 高防主机Ddos
+            var params = {
+              zoneId: prod.zone.zoneid,
+              timeType: prod.timeForm.currentTimeType == 'annual' ? prod.timeForm.currentTimeValue.type : 'current',
+              timeValue: prod.timeForm.currentTimeValue.value,
+              isAutoRenew: prod.autoRenewal ? '1' : '0',
+              count: prod.count,
+              ddosProtectNumber: prod.ddosProtectNumber,
+              countOrder
+            }
+            // 快速创建主机
+            if (prod.createType == 'fast') {
+              params.cpuNum = prod.currentSystem.kernel
+              params.memory = prod.currentSystem.RAM
+              params.bandWidth = prod.publicIP ? prod.currentSystem.bandWidth : 0
+              params.rootDiskType = prod.currentSystem.diskType
+              params.networkId = 'no'
+              params.vpcId = 'no'
+              params.templateId = prod.system.systemId
+            } else {
+              // params.templateId =  prod.currentType == 'public' ? prod.system.systemtemplateid : prod.customMirror.systemtemplateid,
+              params.cpuNum = prod.vmConfig.kernel
+              params.memory = prod.vmConfig.RAM
+              params.bandWidth = prod.IPConfig.publicIP ? prod.IPConfig.bandWidth : 0
+              params.rootDiskType = prod.vmConfig.diskType
+              params.rootDiskSize = prod.vmConfig.diskSize
+              params.networkId = prod.network
+              params.vpcId = prod.vpc
+              var diskType = '', diskSize = ''
+              for (let disk of prod.dataDiskList) {
+                diskType += `${disk.type},`
+                diskSize += `${disk.size},`
+              }
+              params.diskType = diskType
+              params.diskSize = diskSize
+              if (prod.currentType === 'app') {
+                params.templateId = prod.currentApp.templateid
+              } else if (prod.currentType === 'public') {
+                params.templateId = prod.system.systemId
+              } else {
+                params.templateId = prod.customMirror.systemtemplateid
+              }
+            }
+            // 设置了主机名和密码
+            if (prod.currentLoginType == 'custom') {
+              params.VMName = prod.computerName
+              params.password = prod.password
+            }
+            PromiseList.push(axios.get('ddosImitationhost/createDdosHostServer.do', {params}))
           }
           // else if (prod.type == 'Pssl') {
           //   // ssl证书
@@ -707,6 +764,7 @@
           'gpu/': 'gpu',
           'objectstorage/': 'objectstorage',
           'ssl/': 'ssl',
+          'ddos/': 'ddos'
           // 'ddosip/':'ddosip'
         }
         return map[this.product.currentProduct]
