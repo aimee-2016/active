@@ -1413,7 +1413,7 @@
         }).then(response => {
           if (response.status == 200 && response.data.status == 1) {
             this.$Message.info(response.data.message)
-            this.$router.push('diskBackup')
+            this.$router.push('diskBackupList')
           } else {
             this.$message.info({
               content: response.data.message

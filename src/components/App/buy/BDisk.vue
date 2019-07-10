@@ -58,8 +58,8 @@
                 <p class="item-title" style="margin-top: 7px;">类型</p>
               </div>
               <div>
-                <div v-for="(item,typeIndex) in dataDiskType" :key="item.value" class="zoneItem"
-                     :class="{zoneSelect:disk.type==item.value}"
+                <div v-for="(item,typeIndex) in dataDiskType" :key="typeIndex" class="zoneItem"
+                     :class="{zoneSelect:disk.type==item.value,zoneDisabled: zone.gpuserver == 1 && item.value !== 'ssd' }"
                      @click="changeDiskType(item,index)">{{item.label}}
                 </div>
               </div>
@@ -238,6 +238,9 @@
         this.dataDiskList.splice(index, 1)
       },
       changeDiskType(item,index){
+        if(this.zone.gpuserver == 1 && item.value !== 'ssd'){
+          return
+        }
         this.dataDiskList[index].type=item.value
         this.dataDiskList[index].label=item.label
         if(item.value === 'sata'){
@@ -412,6 +415,9 @@
       zoneChange(item){
         if(item.buyover != 1){
          this.zone = item
+        this.dataDiskList.forEach(item => {
+          item.type = 'ssd'
+        })
         }
       }
     },
