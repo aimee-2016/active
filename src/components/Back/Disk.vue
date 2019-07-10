@@ -425,8 +425,8 @@
             ellipsis: true,
             render: (h, params) => {
               const row = params.row
-              const text = row.status === 0 ? '欠费' : (row.status === 1 && !row.mounton && !row.mountonname) ? '可挂载' : (row.status === 1 && row.mounton && row.mountonname) ? '已启用（' + row.mountonname + ')' : row.status === -1 ? '异常' : row.status === 2 ? '创建中' : row.status === 3 ? '挂载中' : row.status === 4 ? '卸载中' : row.status === -2 ? '删除至回收站' : row.status === 6 ? '备份中' :  row.status === 7 ?  '扩容中' : ''
-              if (row.status == 2 || row.status == 3 || row.status == 4 || row.status == 7 || row.status == 6) {
+              const text = row.status === 0 ? '欠费' : (row.status === 1 && !row.mounton && !row.mountonname) ? '可挂载' : (row.status === 1 && row.mounton && row.mountonname) ? '已启用（' + row.mountonname + ')' : row.status === -1 ? '异常' : row.status === 2 ? '创建中' : row.status === 3 ? '挂载中' : row.status === 4 ? '卸载中' : row.status === -2 ? '删除至回收站' : row.status === 6 ? '备份中' :  row.status === 8 ?  '扩容中' : ''
+              if (row.status == 2 || row.status == 3 || row.status == 4 || row.status == 8 || row.status == 6) {
                 return h('div', {}, [h('Spin', {
                   style: {
                     display: 'inline-block',
@@ -819,7 +819,7 @@
             this.diskData = response.data.result
             this.diskSelection = null
             let flag = response.data.result.some(item => {
-                return  item.status == 2 ||item.status == 3 || item.status == 4 || item.status == 6 || item.status == 7
+                return  item.status == 2 ||item.status == 3 || item.status == 4 || item.status == 6 || item.status == 8
               }) // 操作的磁盘中是否有过渡状态，没有就清除定时器，取消刷新
              if (!flag) {
                clearInterval(this.diskTimer)
