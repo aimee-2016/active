@@ -1384,7 +1384,10 @@ export default {
     nextStep () {
       // 判断新老用户
       axios.get('activity/jdugeTeam.do', {
-        params: { sign: 'freeReceive' }
+        params: { 
+          sign: 'freeReceive',
+          vmConfigId: this.depositList[this.index1].config.id
+         }
       }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
           if (response.data.result.flag) {
@@ -1468,22 +1471,11 @@ export default {
     },
     getFreeHost () {
       this.showModal.paySuccessModal = false
-      let vmConfigId = ''
-      switch (this.index1) {
-        case 0:
-          vmConfigId = '451'
-          this.time = '1'
-          break
-        case 1:
-          vmConfigId = '452'
-          this.time = '12'
-          break
-      }
-      this.vmConfig = vmConfigId
+     
       let url = 'activity/getFreeHostNew.do'
         axios.get(url, {
           params: {
-            vmConfigId: vmConfigId,
+            vmConfigId: this.depositList[this.index1].config.id,
             osType: this.depositList[this.index1].system[1],
             defzoneid: this.depositList[this.index1].zone
           }
