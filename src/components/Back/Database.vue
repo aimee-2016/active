@@ -537,6 +537,8 @@ export default {
               marginLeft: '5px',
               lineHeight: '16px'
             }
+            // dbStatus  数据库开启或关闭状态   1开启  0关闭  2开启中  3关闭中   4重启中 5修改端口中 6绑定IP中 7解绑IP中 8数据库扩容中
+            // Status 1: 正常   0:余额不足 -1:扣费时除余额不足的其他原因   -2:用户删除实时虚拟机   2创建中   3删除中
             switch (params.row.status) {
               case -2:
                 return h('div', {
@@ -1032,20 +1034,8 @@ export default {
                                   this.$Message.warning('该主机没有绑定公网IP')
                                 }
                                 break
-                              case 'rename':
-                                this.renameForm.hostName = ''
-                                this.showModal.rename = true
-                                break
                               case 'dilatation':
                                 this.showModal.dilatation = true
-                                break
-                              case 'hostRenew':
-                                if (this.hostCurrentSelected.freeHostVmConfigId) {
-                                  sessionStorage.setItem('unfreezeId', this.hostCurrentSelected.freeHostVmConfigId)
-                                  this.$router.push({ path: 'ThawDeposit', query: { from: "host" } })
-                                } else {
-                                  this.renewHost(this.hostCurrentSelected)
-                                }
                                 break
                               case 'renewal':
                                 // if (this.hostCurrentSelected.caseType == 3) {
@@ -1055,6 +1045,11 @@ export default {
                                 //   }
                                 this.showModal.renewal = true
                                 break
+                              case 'upgrade':
+                                sessionStorage.setItem('upgradeId', this.hostCurrentSelected.id)
+                                sessionStorage.setItem('vmid', this.hostCurrentSelected.computerid)
+                                this.$router.push('dataBaseUpgrade')
+                                break
                               case 'makeSnapshot':
                                 this.showModal.newSnapshot = true
                                 break
@@ -1062,7 +1057,7 @@ export default {
                                 this.hostStart()
                                 break
                               case 'shutdown':
-                                this.hostShutdown(2)
+                                this.hostShutdown()
                                 break
                               case 'restart':
                                 this.showModal.restart = true
@@ -1096,7 +1091,7 @@ export default {
                         }, '数据库续费'),
                         h('DropdownItem', {
                           attrs: {
-                            name: 'hostUpgrade'
+                            name: 'upgrade'
                           }
                         }, '数据库升级'),
                         h('DropdownItem', {
@@ -1160,30 +1155,6 @@ export default {
         endtime: ''
       },
       hostDelWay: 1, // 1：点击按钮删除主机 2： 点击更多操作删除；原因是参数传的不同
-      delHostMessage: '',
-      resetPasswordWay: 1, // 1：点击顶部更多操作重置 2： 点击行内更多操作重置；原因是参数传的不同,
-      resetPasswordHostData: [],
-      resetPasswordForm: {
-        password: '',
-        passwordAffirm: '',
-        agreeRule: false,
-        hintGrade: 0,
-        errorMsg: 'passwordHint',
-        passwordHint: false,
-        //密码强度
-        firstDegree: false,
-        secondDegree: false,
-        thirdDegree: false
-      },
-      listLoadBalanceRole: [],
-      loadBalanceForm: {
-        loadbalanceroleid: ''
-      },
-      loadBalanceFormRule: {
-        loadbalanceroleid: [
-          { required: true, message: '请选择', trigger: 'change' }
-        ]
-      },
       bindForm: {
         publicIP: ''
       },
@@ -1193,14 +1164,6 @@ export default {
         ]
       },
       publicIPList: [],
-      renameForm: {
-        hostName: ''
-      },
-      renameFormRule: {
-        hostName: [
-          { required: true, validator: regExp.validaRegisteredName, trigger: 'blur' }
-        ]
-      },
       timeOptions: {
         renewalType: [{ label: '包年', value: 'year' }, { label: '包月', value: 'month' }],
         renewalTime: [],
@@ -1213,47 +1176,11 @@ export default {
           value: 8
         }, { label: '9月', value: 9 }, { label: '10月', value: 10 }]
       },
-      // 变更资费相关
-      ratesChangeType: '',
-      ratesChangeTime: '',
-      originRatesChangeCost: '--',
-      ratesChangeCost: '--',
-      relevanceAlteration: [],
-      relevanceDisks: '',
-      relevanceIps: '',
       // 续费相关
-      renewalInfo: {},
       renewalType: '',
       renewalTime: '',
-      bindRenewalVal: [],
-      isDisks: '',
-      isIps: '',
       originCost: '--',
       cost: '--',
-      RenewForm: {
-        cost: 0,
-        id: ''
-      },
-      backupForm: {
-        name: '',
-        memory: '1'
-      },
-      currentHostname: [],
-      backupFormRule: {
-        name: [
-          { required: true, validator: regExp.validaRegisteredName, trigger: 'blur' }
-        ]
-      },
-      mirrorForm: {
-        mirrorName: '',
-        description: ''
-      },
-      mirrorFormRule: {
-        mirrorName: [
-          { required: true, validator: regExp.validaRegisteredName, trigger: 'blur' }
-        ],
-      },
-      totalQuota: '',
       hostTimer: null
     }
   },
@@ -1262,9 +1189,6 @@ export default {
     // 用户未认证，弹出认证提示框
     if (this.$store.state.authInfo == null) {
       this.showModal.selectAuthType = true
-    }
-    if (sessionStorage.getItem('isSeeHint')) {
-      this.guideStep = 0
     }
     this.getHostList()
   },
@@ -1283,6 +1207,7 @@ export default {
         }
       }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
+          this.showModal.restart = false
           this.$Message.success(response.data.message)
           this.timingRefresh(this.hostCurrentSelected.id)
         } else {
@@ -1484,7 +1409,7 @@ export default {
       }, 3000)
     },
     hostStart () {
-      if (params.row.dbStatus == '1') {
+      if (this.hostCurrentSelected.dbStatus == '1') {
         this.$Message.info('数据库已处于开启状态')
       } else {
         // this.dataBaseData.forEach(item => {
@@ -1510,7 +1435,7 @@ export default {
       }
     },
     hostShutdown () {
-      if (params.row.dbStatus == '0') {
+      if (this.hostCurrentSelected.dbStatus == '0') {
         this.$Message.info('数据库已处于关闭状态')
       } else {
         // this.dataBaseData.forEach(item => {
@@ -1536,17 +1461,8 @@ export default {
       }
     },
     hostDelete (val) {
-      this.delHostMessage = ''
       this.hostDelWay = val
-      if (val === 1) {
-        /*          if (this.hostSelection.length > 5) {
-                    this.$Message.info('删除主机至多选择 5 项')
-                    return
-                  }*/
-        this.showModal.delHost = true
-      } else {
-        this.showModal.delHost = true
-      }
+      this.showModal.delHost = true
     },
     delHostOk () {
       this.showModal.delHostHint = false;
