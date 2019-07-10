@@ -361,7 +361,7 @@
         <Button type="ghost" @click="showModal.complaintModal = false">取消</Button>
         <Button type="primary" @click="sumbitComplaint('complaintForm')" v-show="complaintForm.step==1">提交反馈
         </Button>
-        <Button type="primary" @click="showModal.complaintModal = false"v-show="complaintForm.step==2">确定
+        <Button type="primary" @click="showModal.complaintModal = false" v-show="complaintForm.step==2">确定
         </Button>
       </div>
     </Modal>

@@ -965,6 +965,14 @@ components: { expandRow },
                     return h(expandRow, {
                         props: {
                             row: params.row
+                        },
+                        on:{
+                            'white':(value)=>{
+                               console.log(value);
+                            },
+                            'black':(value)=>{
+                                console.log(value);
+                            }
                         }
                     })
                 }
@@ -985,12 +993,13 @@ components: { expandRow },
                         h('span',{
                             style:{
                                 marginRight:'5px'
-                            }
+                            },
+                           
                         },'cc防护'),
                         h('i-switch',{
                             props:{
                                 value:params.row.ccprotect == 0 ?true:false,
-                            }
+                            },
                         })
                     ]) 
                 }
@@ -1403,9 +1412,13 @@ components: { expandRow },
       width: 40px;
       height: 20px;
   }
-   .ivu-table-tbody > td.ivu-table-expanded-cell{
+  .ivu-table-tbody > td.ivu-table-expanded-cell{
         padding: 20px 20px;
-    }
+   }
+ .i-sw {
+      border-color: #19BE6A;
+      background-color: #19BE6A;
+  }
 .dp-row {
   display: flex;
   justify-content: space-between;
