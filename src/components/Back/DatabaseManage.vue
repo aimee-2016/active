@@ -15,7 +15,7 @@
             <button @click="$router.go(0)">刷新</button>
             <button style="margin-right: 10px;background: #2A99F2;color: #FFF" @click="linkHost" v-if="hostInfo.computerStatus == 1">连接主机</button>
           </p>
-          <p>{{ hostInfo.cpuNum }}CPU，{{ hostInfo.memory}}G menory内存，{{ hostInfo.rootdisksize}}G硬盘 | {{ hostInfo.zonename}} <span
+          <p>{{ hostInfo.cpuNum }}CPU，{{ hostInfo.memory}}G menory内存，{{ hostInfo.disksize}}G硬盘 | {{ hostInfo.zonename}} <span
             @click="hostUpgrade">[升级]</span>
           </p>
         </div>

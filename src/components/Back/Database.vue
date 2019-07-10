@@ -105,22 +105,6 @@
         >提示：个人用户账户可以升级为企业用户账户，但企业用户账户不能降级为个人用户账户。完成实名认证的用户才能享受上述资源建立额度与免费试用时长如需帮助请联系：400-050-5565</p>
       </div>
     </Modal>
-    <!-- 删除主机关联其他资源确认弹窗 -->
-    <Modal v-model="showModal.delHostHint" :scrollable="true" :closable="false" :width="390">
-      <p slot="header" class="modal-header-border">
-        <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
-        <span class="universal-modal-title">提示</span>
-      </p>
-      <div class="modal-content-s">
-        <div>
-          <p class="lh24">{{ delHostMessage }}</p>
-        </div>
-      </div>
-      <p slot="footer" class="modal-footer-s">
-        <Button @click="showModal.delHostHint = false">取消</Button>
-        <Button type="primary" @click="delHostOk">确认删除</Button>
-      </p>
-    </Modal>
     <!-- 删除主机弹窗 -->
     <Modal v-model="showModal.delHost" :scrollable="true" :closable="false" :width="390">
       <p slot="header" class="modal-header-border">
@@ -139,57 +123,43 @@
         <Button type="primary" @click="delHostOk">确认删除</Button>
       </p>
     </Modal>
-    <!-- 加入负载均衡弹窗 -->
-    <Modal v-model="showModal.balance" width="590" :scrollable="true">
-      <div slot="header" class="modal-header-border">
-        <span class="universal-modal-title">加入负载均衡</span>
+    <!-- 修改端口提示框 -->
+    <Modal v-model="showModal.beforePortModify" :scrollable="true" :closable="false" :width="390">
+      <p slot="header" class="modal-header-border">
+        <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
+        <span class="universal-modal-title">修改端口</span>
+      </p>
+      <div class="modal-content-s">
+        <div>
+          <p class="lh24">修改端口会导致数据库重启，请谨慎操作，是否确认修改端口？</p>
+        </div>
       </div>
+      <p slot="footer" class="modal-footer-s">
+        <Button @click="showModal.beforePortModify = false">取消</Button>
+        <Button type="primary" @click="beforePortModify">确定</Button>
+      </p>
+    </Modal>
+    <!-- 修改端口模态框 -->
+    <Modal v-model="showModal.portModify" width="550" :scrollable="true">
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">修改端口</span>
+      </p>
       <div class="universal-modal-content-flex">
-        <Form :model="loadBalanceForm" ref="loadBalanceForm" :rules="loadBalanceFormRule">
-          <Form-item label="选择弹性负载均衡名称" prop="loadbalanceroleid">
-            <Select
-              v-model="loadBalanceForm.loadbalanceroleid"
-              placeholder="请选择"
-              style="width:240px;"
-            >
-              <Option
-                v-for="(item,index) in listLoadBalanceRole"
-                :key="index"
-                :value="item.loadbalanceroleid+item.type||item.lbid"
-              >
-                <span v-if="item.name">{{item.name}}</span>
-                <span v-if="item.lbname">{{item.lbname}}</span>
-              </Option>
-            </Select>
-            <span style="color:#2A99F2;font-size:14px;position:absolute;top:4px;right:-110px;">
-              <span style="font-weight:800;font-size:20px;">+</span>
-              <span style="cursor:pointer;" @click="$router.push('balance')">创建负载均衡</span>
-            </span>
+        <Form :model="portModifyForm" :rules="portModifyRuleValidate" ref="portModifyForm">
+          <Form-item label="当前端口">
+            <Input v-model="portModifyForm.currentPorts" :readonly="true"></Input>
+          </Form-item>
+          <Form-item label="修改端口" prop="newPorts">
+            <Input v-model="portModifyForm.newPorts" :maxlength="8"></Input>
           </Form-item>
         </Form>
       </div>
       <div slot="footer" class="modal-footer-border">
-        <Button type="ghost" @click="showModal.balance = false">取消</Button>
-        <Button type="primary" @click="joinBalanceSubm('loadBalanceForm')">确定</Button>
+        <Button type="ghost" @click="showModal.portModify = false">取消</Button>
+        <Button type="primary" @click="portModify_ok('portModifyForm')">确认</Button>
       </div>
     </Modal>
-    <!-- 绑定ip时，没有公网ip提示 -->
-    <Modal v-model="showModal.publicIPHint" :scrollable="true" :closable="false" :width="390">
-      <p slot="header" class="modal-header-border">
-        <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
-        <span class="universal-modal-title">提示信息</span>
-      </p>
-      <div class="modal-content-s">
-        <div>
-          <p class="lh24">您还未拥有公网IP，请先创建公网IP。</p>
-        </div>
-      </div>
-      <p slot="footer" class="modal-footer-s">
-        <Button @click="showModal.publicIPHint = false">取消</Button>
-        <Button type="primary" @click="$router.push('/buy/elasticip/')">创建公网IP</Button>
-      </p>
-    </Modal>
-    <!-- 绑定静态IP -->
+    <!-- 绑定公网IP -->
     <Modal v-model="showModal.bindIP" width="590" :scrollable="true">
       <div slot="header" class="modal-header-border">
         <span class="universal-modal-title">绑定IP</span>
@@ -216,70 +186,83 @@
         <Button type="primary" @click="bindIpSubmit('bindForm')">确定</Button>
       </div>
     </Modal>
-    <!-- 主机重命名弹窗 -->
-    <Modal v-model="showModal.rename" width="550" :scrollable="true">
+    <!-- 绑定ip时，没有公网ip提示 -->
+    <Modal v-model="showModal.publicIPHint" :scrollable="true" :closable="false" :width="390">
       <p slot="header" class="modal-header-border">
-        <span class="universal-modal-title">主机重命名</span>
+        <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
+        <span class="universal-modal-title">提示信息</span>
+      </p>
+      <div class="modal-content-s">
+        <div>
+          <p class="lh24">您还未拥有剩余公网IP，请先创建公网IP。</p>
+        </div>
+      </div>
+      <p slot="footer" class="modal-footer-s">
+        <Button @click="showModal.publicIPHint = false">取消</Button>
+        <Button type="primary" @click="$router.push('/buy/elasticip/')">创建公网IP</Button>
+      </p>
+    </Modal>
+    <!-- 解绑公网ip确认框 -->
+    <Modal v-model="showModal.unbindIP" :scrollable="true" :closable="false" :width="390">
+      <p slot="header" class="modal-header-border">
+        <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
+        <span class="universal-modal-title">解绑IP</span>
+      </p>
+      <div class="modal-content-s">
+        <div>
+          <p class="lh24">
+            您正在为
+            <span style="color:rgb(42, 153, 242);">{{this.hostCurrentSelected.computername}}</span>解绑公网IP,解绑之后您将不能通过公网访问该数据库，确认解绑？
+          </p>
+        </div>
+      </div>
+      <p slot="footer" class="modal-footer-s">
+        <Button @click="showModal.unbindIP = false">取消</Button>
+        <Button type="primary" @click="unbind">确认解绑</Button>
+      </p>
+    </Modal>
+    <!-- 云数据库扩容弹窗 -->
+    <Modal v-model="showModal.dilatation" width="590" :scrollable="true">
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">调整容量</span>
       </p>
       <div class="universal-modal-content-flex">
-        <Form :model="renameForm" ref="renameForm" :rules="renameFormRule">
-          <Form-item label="主机名" prop="hostName">
-            <Input v-model="renameForm.hostName" placeholder="请输入新主机名" :maxlength="15"></Input>
+        <Form :model="dilatationForm">
+          <Form-item label="扩容后容量" style="width:100%;user-select: none">
+            <i-slider
+              v-model="dilatationForm.databaseSize"
+              unit="G"
+              :min="dilatationForm.minDatabaseSize"
+              :max="1000"
+              :step="10"
+              :points="[250,500]"
+              style="width:300px;vertical-align: middle;"
+            ></i-slider>
+            <InputNumber
+              :max="1000"
+              :min="dilatationForm.minDatabaseSize"
+              v-model="dilatationForm.databaseSize"
+              :step="10"
+              :editable="false"
+              style="margin-left: 20px"
+              :precision="0"
+            ></InputNumber>
+            <span style="margin-left: 10px">GB</span>
           </Form-item>
         </Form>
       </div>
       <div slot="footer" class="modal-footer-border">
-        <Button type="ghost" @click="showModal.rename = false">取消</Button>
-        <Button type="primary" @click="checkRenameForm">确定</Button>
-      </div>
-    </Modal>
-    <!-- 资费变更弹出框 -->
-    <Modal v-model="showModal.ratesChange" width="550" :scrollable="true">
-      <p slot="header" class="modal-header-border">
-        <span class="universal-modal-title">变更资费选择（资费变更适用于实时收费转包月/年）</span>
-      </p>
-      <div class="universal-modal-content-flex">
-        <Form>
-          <FormItem label="变更类型 :">
-            <Select v-model="ratesChangeType">
-              <Option
-                v-for="(item,index) in timeOptions.renewalType"
-                :value="item.value"
-                :key="index"
-              >{{ item.label }}</Option>
-            </Select>
-          </FormItem>
-          <FormItem label="变更时长 :">
-            <Select v-model="ratesChangeTime">
-              <Option
-                v-for="(item,index) in timeOptions.renewalTime"
-                :value="item.value"
-                :key="index"
-              >{{ item.label }}</Option>
-            </Select>
-          </FormItem>
-          <FormItem label="是否同时变更绑定IP与磁盘" v-if="relevanceDisks||relevanceIps">
-            <CheckboxGroup v-model="relevanceAlteration">
-              <Checkbox label="ip" v-if="relevanceIps">变更绑定IP</Checkbox>
-              <Checkbox label="disk" v-if="relevanceDisks">变更绑定磁盘</Checkbox>
-            </CheckboxGroup>
-          </FormItem>
-        </Form>
-        <div style="font-size:16px;">
+        <div style="font-size:16px;float:left">
           资费
           <span style="color: #2b85e4; text-indent:4px;display:inline-block;">
-            现价
-            <span style="font-size:24px;">￥{{ratesChangeCost}}/</span>
+            <span style="font-size:24px;">￥{{dilatationCost}}</span>
           </span>
-          <span style="text-decoration: line-through">原价{{originRatesChangeCost}}</span>
         </div>
-      </div>
-      <div slot="footer" class="modal-footer-border">
-        <Button type="ghost" @click="showModal.ratesChange=false">取消</Button>
-        <Button type="primary" @click="ratesChange_ok" :disabled="ratesChangeCost=='--'">确认变更</Button>
+        <Button type="ghost" @click="showModal.dilatation = false">取消</Button>
+        <Button type="primary" @click="dilatationok" :disabled="dilatationCost=='--'">确认调整</Button>
       </div>
     </Modal>
-    <!-- 包年包月续费弹窗 -->
+    <!-- 云数据库续费弹窗 -->
     <Modal v-model="showModal.renewal" width="590" :scrollable="true">
       <p slot="header" class="modal-header-border">
         <span class="universal-modal-title">续费选择</span>
@@ -308,33 +291,21 @@
             <ul>
               <li>
                 <span>主机名称：</span>
-                {{renewalInfo.computername}}
+                {{this.hostCurrentSelected.computername}}
               </li>
               <li>
                 <span>操作系统：</span>
-                {{renewalInfo.templatename}}
+                {{this.hostCurrentSelected.templatename}}
               </li>
               <li>
                 <span>主机配置：</span>
-                {{renewalInfo.serviceoffername}}
+                {{this.hostCurrentSelected.serviceoffername}}
               </li>
               <li>
                 <span>剩余时长：</span>
-                {{renewalInfo.endtime}}
+                {{this.hostCurrentSelected.endtime}}
               </li>
             </ul>
-          </div>
-          <FormItem label="是否同时续费绑定IP与磁盘" v-if="isDisks||isIps">
-            <CheckboxGroup @on-change="bindRenewal" v-model="bindRenewalVal">
-              <Checkbox label="ip" v-if="isIps">续费绑定IP</Checkbox>
-              <Checkbox label="disk" v-if="isDisks">续费磁盘</Checkbox>
-            </CheckboxGroup>
-          </FormItem>
-          <div class="renewal-upgrade">
-            <p>
-              如果现在配置内容不支持使用，可进行
-              <span style="color:#333;cursor:not-allowed">主机升级</span>
-            </p>
           </div>
         </Form>
         <div style="font-size:16px;">
@@ -343,97 +314,52 @@
             现价
             <span style="font-size:24px;">￥{{cost}}/</span>
           </span>
-          <!-- <span v-if="renewalTime != ''">/</span>
-          <span style="font-size: 15px;">{{renewalTime}}<span v-if="renewalType == 'year' && renewalTime != ''">年</span>
-          <span v-if="renewalType == 'month' && renewalTime != ''">月</span></span>-->
           <span style="text-decoration: line-through">原价{{originCost}}</span>
         </div>
       </div>
       <div slot="footer" class="modal-footer-border">
         <Button type="ghost" @click="showModal.renewal = false">取消</Button>
-        <Button type="primary" @click="renewalOk" :disabled="cost=='--'">确认续费</Button>
+        <Button type="primary" @click="renewalok" :disabled="cost=='--'">确认续费</Button>
       </div>
     </Modal>
-    <!-- 实时续费 -->
-    <Modal v-model="showModal.Renew" width="590" :scrollable="true">
-      <div slot="header" class="modal-header-border">
-        <span class="universal-modal-title">续费主机</span>
-      </div>
-      <div class="universal-modal-content-flex">
-        <p style="margin-bottom: 20px">
-          温馨提示：当前资源已欠费，如需激活需要
-          <span class="bluetext">1小时费用</span>
-        </p>
-        <Form :model="RenewForm" label-position="left">
-          <Form-item label="所需资费">
-            <span style="font-size: 25px;color: #2b85e4;">￥{{RenewForm.cost}}</span>
-          </Form-item>
-        </Form>
-      </div>
-      <div slot="footer" class="modal-footer-border">
-        <Button type="ghost" @click="showModal.Renew = false">取消</Button>
-        <Button type="primary" @click="renewOk">确定</Button>
-      </div>
-    </Modal>
-    <!-- 制作快照弹窗 -->
-    <Modal v-model="showModal.backup" width="590" :scrollable="true" class="create-snas-modal">
+    <!-- 制作备份弹窗 -->
+    <Modal v-model="showModal.newSnapshot" width="550" :scrollable="true" class="create-snas-modal">
       <p slot="header" class="modal-header-border">
-        <span class="universal-modal-title">制作快照</span>
+        <span class="universal-modal-title">手动备份</span>
       </p>
-      <div class="universal-modal-content-flex">
-        <p class="mb20">
-          您正为
-          <span class="bluetext">{{currentHostname}}</span>制作快照
-        </p>
-        <Form ref="backupForm" :model="backupForm" :rules="backupFormRule">
-          <FormItem label="快照名称" prop="name">
-            <Input v-model="backupForm.name" placeholder="请输入2-4094范围内任意数字" :maxlength="15"></Input>
+      <div class="universal-modal-label-14px hide-star-symbol">
+        <Form
+          :model="createSnapsForm"
+          ref="createSnapsForm"
+          :rules="createSnapsRule"
+          :label-width="130"
+          label-position="left"
+        >
+          <FormItem label="请输入数据库名称" prop="name">
+            <Input v-model="createSnapsForm.name" placeholder="请输入数据库名称" style="width:300px;"></Input>
           </FormItem>
-          <div style="padding-top: 11px;margin-right: 100px;">
-            <div style="font-size: 14px;color:#495060;margin-bottom: 15px">
-              是否保存内存信息
-              <Poptip trigger="hover" width="400">
-                <Icon type="ios-help-outline" style="color:#2A99F2;font-size:16px;"></Icon>
-                <div slot="content">
-                  <div>
-                    您可以选择在制作快照的时候保存您主机的当前运行状态。当您选择“保存”之时，
-                    当前主机的内存将被记录，在您对快照执行回滚操作的时候，也只能在开机状态下执行；当您选择“不保存”时
-                    此次快照将不记录主机内存信息，您在通过该快照回滚的时候只能在关机状态下执行。
-                  </div>
-                </div>
-              </Poptip>
-            </div>
-            <RadioGroup v-model="backupForm.memory">
-              <Radio label="1">保存</Radio>
-              <Radio label="0">不保存</Radio>
-            </RadioGroup>
-          </div>
         </Form>
-        <p class="modal-text-hint-bottom">
-          提示：云主机快照为每块磁盘提供
-          <span>{{ totalQuota }}个</span>快照额度，当某个主机的快照数量达到额度上限，在创建新的快照任务时，系统会删除由自动快照策略所生成的时间最早的自动快照点
-        </p>
+        <p class="mb20" style="font-size:14px;">备份时间为：{{new Date().format('yyyy-MM-dd hh:mm:ss')}}</p>
       </div>
       <div slot="footer" class="modal-footer-border">
-        <Button type="ghost" @click="showModal.backup=false">取消</Button>
-        <Button type="primary" @click="backupSubmit('backupForm')">制作快照</Button>
+        <Button type="ghost" @click="cancelSnaps('createSnapsForm')">取消</Button>
+        <Button type="primary" @click="NewSnaps_ok('createSnapsForm')">确认备份</Button>
       </div>
     </Modal>
-    <!-- 解绑公网ip确认框 -->
-    <Modal v-model="showModal.unbindIP" :scrollable="true" :closable="false" :width="390">
+    <!-- 数据库重启提示框 -->
+    <Modal v-model="showModal.restart" :scrollable="true" :closable="false" :width="390">
       <p slot="header" class="modal-header-border">
         <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
-        <span class="universal-modal-title">解绑IP</span>
+        <span class="universal-modal-title">重启数据库</span>
       </p>
       <div class="modal-content-s">
         <div>
-          <p class="lh24">您确认解绑选中主机的公网IP吗</p>
-          <p class="attention">注意：解绑弹性IP不等于释放弹性IP，IP解绑之后您还需要到弹性IP列表中释放所选IP。</p>
+          <p class="lh24">您正在重启数据库，请谨慎操作</p>
         </div>
       </div>
       <p slot="footer" class="modal-footer-s">
-        <Button @click="showModal.unbindIP = false">取消</Button>
-        <Button type="primary" @click="unbind">确认解绑</Button>
+        <Button @click="showModal.restart = false">取消</Button>
+        <Button type="primary" @click="restart">确定</Button>
       </p>
     </Modal>
   </div>
@@ -445,10 +371,54 @@ import axios from 'axios'
 import line from '@/echarts/hostManage/line'
 import bar from '@/echarts/hostManage/bar'
 import regExp from '../../util/regExp'
+import debounce from 'throttle-debounce/debounce'
 
 export default {
   data () {
+    const validateNewport = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入修改后的端口号'))
+      } else {
+        if (/^[\d]+$/.test(value) && value < 65536 && value > 0) {
+          callback()
+        } else {
+          callback(new Error('请输入正确的端口号'))
+        }
+      }
+    }
+    const validChinese = (rule, value, callback) => {
+      if (value == '') {
+        return callback(new Error("数据库名称不能为空"))
+      } else if (/^[0-9a-zA-Z]{1,}$/.test(value)) {
+        callback()
+      } else {
+        return callback(new Error("名称输入有误，只能输入字母与数字"))
+      }
+    }
     return {
+      current: null,
+      dilatationCost: '--',
+      dilatationForm: {
+        databaseSize: 0,
+        minDatabaseSize: 0
+      },
+      portModifyForm: {
+        currentPorts: '',
+        newPorts: ''
+      },
+      portModifyRuleValidate: {
+        newPorts: [
+          { validator: validateNewport, trigger: 'change' }
+        ]
+      },
+      createSnapsForm: {
+        name: '',
+      },
+      createSnapsRule: {
+        name: [
+          { required: true, validator: validChinese, trigger: 'blur' }
+        ],
+      },
       guideStep: 1,
       regExpObj: {
         password: /(?!(^[^a-z]+$))(?!(^[^A-Z]+$))(?!(^[^\d]+$))^[\w~*:,]{8,30}$/
@@ -459,7 +429,6 @@ export default {
         publicIPHint: false,
         bindIP: false,
         rename: false,
-        ratesChange: false,
         renewal: false,
         Renew: false,
         backup: false,
@@ -467,7 +436,10 @@ export default {
         unbindIP: false,
         delHostHint: false,
         delHost: false,
-        resetPassword: false
+        resetPassword: false,
+        beforePortModify: false,
+        dilatation: false,
+        newSnapshot: false
       },
       hostListColumns: [
         {
@@ -556,11 +528,6 @@ export default {
             }
           },
           render: (h, params) => {
-            let restart = params.row.restart ? params.row.restart : 0
-            // let restore = params.row.restore ? params.row.restore : 0
-            // let resetpwd = params.row.resetpwd ? params.row.resetpwd : 0
-            // let bindip = params.row.bindip ? params.row.bindip : 0
-            // let createtemplate = params.row.createtemplate ? params.row.createtemplate : 0
             let icon_1 = require('../../assets/img/host/h-icon1.png')
             let icon_2 = require('../../assets/img/host/h-icon2.png')
             let icon_3 = require('../../assets/img/host/h-icon3.png')
@@ -686,18 +653,18 @@ export default {
                       display: 'inline-block'
                     }
                   }), h('span', { style: styleInfo }, '重启中')])
-                } else if (params.row.dbStatus == 6) {
+                } else if (params.row.dbStatus == 5) {
                   return h('div', {}, [h('Spin', {
                     style: {
                       display: 'inline-block'
                     }
-                  }), h('span', { style: styleInfo }, '绑定中')])
-                } else if (params.row.dbStatus == 7) {
+                  }), h('span', { style: styleInfo }, '修改中')])
+                } else if (params.row.dbStatus == 8) {
                   return h('div', {}, [h('Spin', {
                     style: {
                       display: 'inline-block'
                     }
-                  }), h('span', { style: styleInfo }, '解绑中')])
+                  }), h('span', { style: styleInfo }, '扩容中')])
                 } else if (params.row.dbStatus == 3) {
                   return h('div', {}, [h('Spin', {
                     style: {
@@ -730,11 +697,25 @@ export default {
                 }
                 break
               case 2:
-                return h('div', {}, [h('Spin', {
-                  style: {
-                    display: 'inline-block'
-                  }
-                }), h('span', { style: styleInfo }, '创建中')])
+                if (params.row.dbStatus == 6) {
+                  return h('div', {}, [h('Spin', {
+                    style: {
+                      display: 'inline-block'
+                    }
+                  }), h('span', { style: styleInfo }, '绑定中')])
+                } else if (params.row.dbStatus == 7) {
+                  return h('div', {}, [h('Spin', {
+                    style: {
+                      display: 'inline-block'
+                    }
+                  }), h('span', { style: styleInfo }, '解绑中')])
+                } else {
+                  return h('div', {}, [h('Spin', {
+                    style: {
+                      display: 'inline-block'
+                    }
+                  }), h('span', { style: styleInfo }, '创建中')])
+                }
                 break
             }
           }
@@ -856,18 +837,18 @@ export default {
             if (params.row.status == 1) {
               return h('div', {}, [h('span', {
                 style: {
-                  marginRight: '10px',
+                  marginRight: '5px',
                 }
               }, params.row.dbPort), h('span', {
-                style: !this.notAuth ? this.styleVisible : this.styleDisable,
+                style: {
+                  color: '#4297F2',
+                  cursor: 'pointer'
+                },
                 on: {
                   click: () => {
-                    if (!this.notAuth) {
-                      this.current = params.row
-                      this.showModal.beforePortModify = true
-                      this.portModifyForm.currentPorts = params.row.dbPort
-                      this.currentComputerId = params.row.computerid
-                    }
+                    this.current = params.row
+                    this.showModal.beforePortModify = true
+                    this.portModifyForm.currentPorts = params.row.dbPort
                   }
                 }
               }, '修改端口')])
@@ -936,6 +917,7 @@ export default {
         {
           title: '操作',
           render: (h, params) => {
+            // 全部状态值
             // dbStatus  数据库开启或关闭状态   1开启  0关闭  2开启中  3关闭中   4重启中 5修改端口中 6绑定IP中 7解绑IP中 8数据库扩容中
             // Status 1: 正常   0:余额不足 -1:扣费时除余额不足的其他原因   -2:用户删除实时虚拟机   2创建中   3删除中   5数据库扩容中   6数据库升级中
             if ((!this.auth) || (this.auth && this.auth.authtype == 0 && this.auth.checkstatus != 0) || (!this.authInfoPersion && this.auth && this.auth.authtype == 1 && this.auth.checkstatus != 0) || (this.authInfoPersion && this.authInfoPersion.checkstatus != 0 && this.auth && this.auth.checkstatus != 0)) {
@@ -1014,7 +996,7 @@ export default {
                   }, '删除')])
                   break
                 case 1:
-                  if (params.row.dbStatus == 1) {
+                  if (params.row.dbStatus == 1 || params.row.dbStatus == 0) {
                     return h('div', {}, [
                       h('p', {
                         style: {
@@ -1040,25 +1022,22 @@ export default {
                           'on-click': (type) => {
                             this.hostCurrentSelected = params.row
                             switch (type) {
-                              case 'resetPassword':
-                                this.hostResetPassword(2)
-                                break
-                              case 'joinLoadBalance':
-                                this.joinBalance()
-                                break
                               case 'bindingIP':
                                 this.bindIP()
+                                break
+                              case 'unbindIP':
+                                if (this.hostCurrentSelected.publicip) {
+                                  this.showModal.unbindIP = true
+                                } else {
+                                  this.$Message.warning('该主机没有绑定公网IP')
+                                }
                                 break
                               case 'rename':
                                 this.renameForm.hostName = ''
                                 this.showModal.rename = true
                                 break
-                              case 'ratesChange':
-                                if (this.hostCurrentSelected.caseType == 3) {
-                                  this.ratesChange()
-                                } else {
-                                  this.$Message.info('资费变更只适用于实时计费的资源')
-                                }
+                              case 'dilatation':
+                                this.showModal.dilatation = true
                                 break
                               case 'hostRenew':
                                 if (this.hostCurrentSelected.freeHostVmConfigId) {
@@ -1068,49 +1047,25 @@ export default {
                                   this.renewHost(this.hostCurrentSelected)
                                 }
                                 break
+                              case 'renewal':
+                                // if (this.hostCurrentSelected.caseType == 3) {
+                                //     this.$Message.info('请选择包年包月的云数据库进行续费')
+                                //   } else {
+                                //     this.showModal.renewal = true
+                                //   }
+                                this.showModal.renewal = true
+                                break
                               case 'makeSnapshot':
-                                this.backupForm.backupName = ''
-                                this.backupForm.description = ''
-                                this.currentHostname = this.hostCurrentSelected.computername
-                                this.showModal.backup = true
+                                this.showModal.newSnapshot = true
                                 break
-                              case 'unbindIP':
-                                if (this.hostCurrentSelected.publicip) {
-                                  this.showModal.unbindIP = true
-                                } else {
-                                  this.$Message.warning('该主机没有绑定公网IP')
-                                }
-                                break
-                              case 'hostUpgrade':
-                                this.$http.get('network/VMIsHaveSnapshot.do', {
-                                  params: {
-                                    VMId: this.hostCurrentSelected.computerid
-                                  }
-                                }).then(response => {
-                                  if (response.status == 200 && response.data.status == 1) {
-                                    if (!response.data.result) {
-                                      this.$Modal.confirm({
-                                        title: '提示',
-                                        content: '您的主机有快照，无法升级，请删除快照再试',
-                                        scrollable: true,
-                                        okText: '删除快照',
-                                        onOk: () => {
-                                          this.$router.push('snapshot')
-                                        }
-                                      })
-                                    } else {
-                                      sessionStorage.setItem('upgradeId', this.hostCurrentSelected.id)
-                                      sessionStorage.setItem('vmid', this.hostCurrentSelected.computerid)
-                                      this.$router.push('dataBaseUpgrade')
-                                    }
-                                  }
-                                })
+                              case 'startingUp':
+                                this.hostStart()
                                 break
                               case 'shutdown':
                                 this.hostShutdown(2)
                                 break
                               case 'restart':
-                                this.hostRestart(2)
+                                this.showModal.restart = true
                                 break
                               case 'deleteHost':
                                 this.hostDelete(2)
@@ -1131,29 +1086,19 @@ export default {
                         }, '解绑公网IP'),
                         h('DropdownItem', {
                           attrs: {
-                            name: 'ratesChange'
+                            name: 'dilatation'
                           }
                         }, '数据库扩容'),
                         h('DropdownItem', {
                           attrs: {
-                            name: 'hostRenew'
+                            name: 'renewal'
                           }
                         }, '数据库续费'),
-                        h('DropdownItem', {
-                          attrs: {
-                            name: 'makeSnapshot'
-                          }
-                        }, '手动备份'),
                         h('DropdownItem', {
                           attrs: {
                             name: 'hostUpgrade'
                           }
                         }, '数据库升级'),
-                        h('DropdownItem', {
-                          attrs: {
-                            name: 'shutdown'
-                          }
-                        }, '关闭数据库'),
                         h('DropdownItem', {
                           attrs: {
                             name: 'restart'
@@ -1161,156 +1106,19 @@ export default {
                         }, '重启数据库'),
                         h('DropdownItem', {
                           attrs: {
-                            name: 'deleteHost'
+                            name: 'shutdown'
                           }
-                        }, '删除')])])
-                    ])
-                  } else {
-                    return h('div', {}, [
-                      h('p', {
-                        style: {
-                          lineHeight: '30px',
-                          cursor: 'pointer',
-                          color: '#2A99F2'
-                        },
-                        on: {
-                          click: () => {
-                            sessionStorage.setItem('manageId', params.row.id)
-                            this.$router.push('databaseManage')
-                          }
-                        }
-                      }, '管理'),
-                      h('Dropdown', {
-                        style: {
-                          marginBottom: '5px'
-                        },
-                        props: {
-                          transfer: true
-                        },
-                        on: {
-                          'on-click': (type) => {
-                            this.hostCurrentSelected = params.row
-                            switch (type) {
-                              case 'resetPassword':
-                                this.hostResetPassword(2)
-                                break
-                              case 'joinLoadBalance':
-                                this.joinBalance()
-                                break
-                              case 'bindingIP':
-                                this.bindIP()
-                                break
-                              case 'rename':
-                                this.renameForm.hostName = ''
-                                this.showModal.rename = true
-                                break
-                              case 'ratesChange':
-                                if (this.hostCurrentSelected.caseType == 3) {
-                                  this.ratesChange()
-                                } else {
-                                  this.$Message.info('资费变更只适用于实时计费的资源')
-                                }
-                                break
-                              case 'hostUpgrade':
-                                this.$http.get('network/VMIsHaveSnapshot.do', {
-                                  params: {
-                                    VMId: this.hostCurrentSelected.computerid
-                                  }
-                                }).then(response => {
-                                  if (response.status == 200 && response.data.status == 1) {
-                                    if (!response.data.result) {
-                                      this.$Modal.confirm({
-                                        title: '提示',
-                                        content: '您的主机有快照，无法升级，请删除快照再试',
-                                        scrollable: true,
-                                        okText: '删除快照',
-                                        onOk: () => {
-                                          this.$router.push('snapshot')
-                                        }
-                                      })
-                                    } else {
-                                      sessionStorage.setItem('upgradeId', this.hostCurrentSelected.id)
-                                      sessionStorage.setItem('vmid', this.hostCurrentSelected.computerid)
-                                      this.$router.push('dataBaseUpgrade')
-                                    }
-                                  }
-                                })
-                                break
-                              case 'hostRenew':
-                                if (this.hostCurrentSelected.freeHostVmConfigId) {
-                                  sessionStorage.setItem('unfreezeId', this.hostCurrentSelected.freeHostVmConfigId)
-                                  this.$router.push({ path: 'ThawDeposit', query: { from: "host" } })
-                                } else {
-                                  this.renewHost(this.hostCurrentSelected)
-                                }
-                                break
-                              case 'makeSnapshot':
-                                this.backupForm.backupName = ''
-                                this.backupForm.description = ''
-                                this.currentHostname = this.hostCurrentSelected.computername
-                                this.showModal.backup = true
-                                break
-                              case 'makeMirror':
-                                this.mirrorForm.mirrorName = ''
-                                this.mirrorForm.description = ''
-                                this.showModal.mirror = true
-                                break
-                              case 'unbindIP':
-                                if (this.hostCurrentSelected.publicip) {
-                                  this.showModal.unbindIP = true
-                                } else {
-                                  this.$Message.warning('该主机没有绑定公网IP')
-                                }
-                                break
-                              case 'startingUp':
-                                this.hostStart(2)
-                                break
-                              case 'deleteHost':
-                                this.hostDelete(2)
-                                break
-                            }
-                          }
-                        }
-                      }, [h('a', {
-                        style: {
-                          marginBottom: '5px'
-                        }
-                      }, ['更多操作 ', h('Icon', { attrs: { type: 'arrow-down-b' } })]), h('DropdownMenu', { slot: 'list' }, [
-                        h('DropdownItem', {
-                          attrs: {
-                            name: 'bindingIP'
-                          }
-                        }, '绑定IP'),
-                        h('DropdownItem', {
-                          attrs: {
-                            name: 'unbindIP'
-                          }
-                        }, '解绑公网IP'),
-                        h('DropdownItem', {
-                          attrs: {
-                            name: 'ratesChange'
-                          }
-                        }, '数据库扩容'),
-                        h('DropdownItem', {
-                          attrs: {
-                            name: 'hostRenew'
-                          }
-                        }, '数据库续费'),
-                        h('DropdownItem', {
-                          attrs: {
-                            name: 'hostUpgrade'
-                          }
-                        }, '数据库升级'),
-                        h('DropdownItem', {
-                          attrs: {
-                            name: 'makeSnapshot'
-                          }
-                        }, '手动备份'),
+                        }, '关闭数据库'),
                         h('DropdownItem', {
                           attrs: {
                             name: 'startingUp'
                           }
                         }, '开启数据库'),
+                        h('DropdownItem', {
+                          attrs: {
+                            name: 'makeSnapshot'
+                          }
+                        }, '手动备份'),
                         h('DropdownItem', {
                           attrs: {
                             name: 'deleteHost'
@@ -1345,8 +1153,12 @@ export default {
       pageSize: 6,
       currentPage: 1,
       hostSelection: [],
-      hostCurrentSelected: null,
-
+      hostCurrentSelected: {
+        computername: '',
+        templatename: '',
+        serviceoffername: '',
+        endtime: ''
+      },
       hostDelWay: 1, // 1：点击按钮删除主机 2： 点击更多操作删除；原因是参数传的不同
       delHostMessage: '',
       resetPasswordWay: 1, // 1：点击顶部更多操作重置 2： 点击行内更多操作重置；原因是参数传的不同,
@@ -1441,22 +1253,6 @@ export default {
           { required: true, validator: regExp.validaRegisteredName, trigger: 'blur' }
         ],
       },
-      monitorName: '',
-      monitoringList: [
-        {
-          title: 'CPU使用率',
-          type: '近一天',
-          showType: '折线',
-          chart: null
-        },
-        {
-          title: '内存使用率',
-          type: '近一天',
-          showType: '折线',
-          chart: null
-        }
-      ],
-      currentData: this.getCurrentDate(),
       totalQuota: '',
       hostTimer: null
     }
@@ -1471,16 +1267,133 @@ export default {
       this.guideStep = 0
     }
     this.getHostList()
-    this.getResourceAllocation()
   },
   methods: {
-    // 获取资源配额
-    getResourceAllocation () {
-      this.$http.get('user/personalCenterResourceQuota.do', {
-        params: {}
-      }).then(res => {
-        if (res.status == 200 && res.data.status == 1) {
-          this.totalQuota = res.data.result[1].totalQuota
+    // 重启数据库
+    restart () {
+      this.showModal.restart = false
+      // this.dataBaseData.forEach(item => {
+      //   if (item.computerid == this.current.computerid) {
+      //     item.status = 4
+      //   }
+      // })
+      this.$http.get('database/rebooteDB.do', {
+        params: {
+          DBId: this.hostCurrentSelected.computerid
+        }
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          this.$Message.success(response.data.message)
+          this.timingRefresh(this.hostCurrentSelected.id)
+        } else {
+          this.$message.info({
+            content: response.data.message
+          })
+        }
+      })
+    },
+    NewSnaps_ok (name) {
+      this.$refs[name].validate((valid) => {
+        if (valid) {
+          this.showModal.newSnapshot = false
+          this.$http.get('database/DBBackup.do', {
+            params: {
+              DBId: this.hostCurrentSelected.computerid,
+              allDataBases: '0',
+              dbName: this.createSnapsForm.name
+            }
+          }).then(response => {
+            if (response.status == 200 && response.data.status == 1) {
+              this.$Message.success(response.data.message)
+            } else {
+              this.$Message.error(response.data.message)
+            }
+          })
+        }
+      })
+    },
+    cancelSnaps (name) {
+      this.$refs[name].resetFields()
+      this.showModal.newSnapshot = false
+    },
+    renewalok () {
+      let database = [
+        { type: 5, id: this.hostCurrentSelected.id }
+      ];
+      let list = JSON.stringify(database);
+      this.$http.post('continue/continueOrder.do', {
+        list: list,
+        timeType: this.renewalType,
+        timeValue: this.renewalTime + ''
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          this.$router.push({ path: 'order' })
+        } else {
+          this.$message.info({
+            content: response.data.message
+          })
+        }
+      })
+    },
+    // 数据库扩容价格查询
+    queryDatabaseCost: debounce(500, function () {
+      axios.get('database/upDBCost.do', {
+        params: {
+          DBId: this.hostCurrentSelected.computerid,
+          diskSize: this.dilatationForm.databaseSize - this.dilatationForm.minDatabaseSize,
+          zoneId: this.hostCurrentSelected.zoneid
+        }
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          this.dilatationCost = response.data.result
+        } else {
+          this.$message.info({
+            content: response.data.message
+          })
+        }
+      })
+    }),
+    dilatationok () {
+      axios.get('database/upDB.do', {
+        params: {
+          DBId: this.hostCurrentSelected.computerid,
+          diskSize: this.dilatationForm.databaseSize - this.dilatationForm.minDatabaseSize,
+          zoneId: this.hostCurrentSelected.zoneid
+        }
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          this.$router.push('order')
+        } else {
+          this.$message.info({
+            content: response.data.message
+          })
+        }
+      })
+    },
+    beforePortModify () {
+      this.showModal.beforePortModify = false
+      this.showModal.portModify = true
+    },
+    portModify_ok (name) {
+      this.$refs[name].validate((valid) => {
+        if (valid) {
+          this.showModal.portModify = false
+          this.$http.get('database/updateDBPort.do', {
+            params: {
+              DBId: this.current.computerid, //(数据库的UUID),
+              port: this.portModifyForm.newPorts //(需要更改的端口)
+            }
+          }).then(res => {
+            if (res.status === 200 && res.data.status === 1) {
+              this.$Message.success(res.data.message)
+              this.showModal.portModify = false
+              this.timingRefresh(this.current.id)
+            } else {
+              this.$message.info({
+                content: res.data.message
+              })
+            }
+          })
         }
       })
     },
@@ -1494,92 +1407,6 @@ export default {
         }
       }
     },
-    hideEvent (name) {
-      if (name !== 'resetPassword') {
-        if (this.hostSelection.length !== 1) {
-          return false
-        }
-        this.hostCurrentSelected = this.hostSelection[0]
-        switch (name) {
-          case 'joinLoadBalance':
-            this.joinBalance()
-            break
-          case 'bindingIP':
-            this.bindIP()
-            break
-          case 'rename':
-            this.renameForm.hostName = ''
-            this.showModal.rename = true
-            break
-          case 'ratesChange':
-            if (this.hostCurrentSelected.caseType == 3) {
-              this.ratesChange()
-            }
-            break
-          case 'renewal':
-            if (this.hostCurrentSelected.freeHostVmConfigId) {
-              sessionStorage.setItem('unfreezeId', this.hostCurrentSelected.freeHostVmConfigId)
-              this.$router.push({ path: 'ThawDeposit', query: { from: "host" } })
-            } else {
-              this.renewHost(this.hostCurrentSelected)
-            }
-            break
-          case 'backup':
-            this.backupForm.backupName = ''
-            this.backupForm.description = ''
-            this.currentHostname = this.hostCurrentSelected.computername
-            this.showModal.backup = true
-            break
-          case 'mirror':
-            if (this.hostCurrentSelected.status == 1 && this.hostCurrentSelected.dbStatus == 0) {
-              this.mirrorForm.mirrorName = ''
-              this.mirrorForm.description = ''
-              this.showModal.mirror = true
-            }
-            break
-          case 'unbindIP':
-            if (this.hostCurrentSelected.publicip) {
-              this.showModal.unbindIP = true
-            } else {
-              this.$Message.warning('该主机没有绑定公网IP')
-            }
-            break
-          case 'upgrade':
-            if (this.hostCurrentSelected.status == 1 && this.hostCurrentSelected.dbStatus == 0) {
-              this.$http.get('network/VMIsHaveSnapshot.do', {
-                params: {
-                  VMId: this.hostCurrentSelected.computerid
-                }
-              }).then(response => {
-                if (response.status == 200 && response.data.status == 1) {
-                  if (!response.data.result) {
-                    this.$Modal.confirm({
-                      title: '提示',
-                      content: '您的主机有快照，无法升级，请删除快照再试',
-                      scrollable: true,
-                      okText: '删除快照',
-                      onOk: () => {
-                        this.$router.push('snapshot')
-                      }
-                    })
-                  } else {
-                    sessionStorage.setItem('upgradeId', this.hostCurrentSelected.id)
-                    sessionStorage.setItem('vmid', this.hostCurrentSelected.computerid)
-                    this.$router.push('dataBaseUpgrade')
-                  }
-                }
-              })
-            }
-            break
-        }
-      } else {
-        if (this.hostSelection.length > 5) {
-          this.$Message.info('重置密码至多选择 5 项')
-          return false
-        }
-        this.hostResetPassword(1)
-      }
-    },
     getHostList () {
       let url = 'database/listDB.do'
       this.$http.get(url, {
@@ -1590,6 +1417,7 @@ export default {
       }).then(res => {
         if (res.data.status == 1 && res.status == 200) {
           this.hostListData = res.data.result.info
+          this.hostCurrentSelected = res.data.result.info[0]
           this.hostPages = res.data.result.count
           let ids = []
           this.hostListData.forEach(host => {
@@ -1619,6 +1447,8 @@ export default {
     },
     /* 局部刷新 */
     timingRefresh (ids) {
+      console.log('id')
+      console.log(ids)
       this.hostTimer = setInterval(() => {
         let url = 'database/listDB.do'
         this.$http.get(url, {
@@ -1629,7 +1459,7 @@ export default {
           if (res.data.status == 1 && res.status == 200) {
             let locality = res.data.result.info
             let flag = locality.some(item => {
-              return item.status == 2 || item.status == -2
+              return (item.dbStatus != 1 && item.dbStatus != 0) || item.status == 2
             }) // 操作的主机中是否有过渡状态，没有就清除定时器，取消刷新
             if (!flag) {
               this.hostListData.forEach((host, index) => {
@@ -1653,87 +1483,57 @@ export default {
         })
       }, 3000)
     },
-    // 通过val来区分是批量选择的还是单个列表里操作的
-    hostShutdown () {
-      let url = 'database/stopDB.do'
-      this.$http.get(url, {        params: {
-          DBId: this.hostCurrentSelected.computerid,
-        }      }).then(res => {
-        if (res.status === 200 && res.data.status === 1) {
-          this.$Message.success(res.data.message)
-          this.timingRefresh(this.hostCurrentSelected.id)
-          this.hostSelection = []
-        } else {
-          this.getHostList()
-          this.$message.info({
-            content: res.data.message
-          })
-        }
-      })
-    },
     hostStart () {
-      let url = 'database/startDB.do'
-      this.$http.get(url, {        params: {
-          DBId: this.hostCurrentSelected.computerid
-        }      }).then(res => {
-        if (res.status === 200 && res.data.status === 1) {
-          this.$Message.success(res.data.message)
-          this.timingRefresh(this.hostCurrentSelected.id)
-          this.hostSelection = []
-        } else {
-          this.getHostList()
-          this.$message.info({
-            content: res.data.message
-          })
-        }
-      })
-    },
-    hostRestart (val) {
-      let params = {}
-      if (val == 1) {
-        this.hostListData.forEach(host => {
-          this.selectHostIds.forEach(item => {
-            if (host.id == item) {
-              host.status = 2
-              host.restart = 1
-              host._disabled = true
-            }
-          })
-        })
-        params = {
-          VMId: this.selectHostComputerIds + ''
-        }
+      if (params.row.dbStatus == '1') {
+        this.$Message.info('数据库已处于开启状态')
       } else {
-        this.hostListData.forEach(host => {
-          if (host.id == this.hostCurrentSelected.id) {
-            host.status = 2
-            host.restart = 1
-            host._disabled = true
+        // this.dataBaseData.forEach(item => {
+        //   if (item.computerid == params.row.computerid) {
+        //     item.dbStatus = '2'
+        //   }
+        // })
+        let url = 'database/startDB.do'
+        this.$http.get(url, {
+          params: {
+            DBId: this.hostCurrentSelected.computerid
+          }
+        }).then(res => {
+          if (res.status == 200 && res.data.status == 1) {
+            this.$Message.success(res.data.message)
+            this.timingRefresh(this.hostCurrentSelected.id)
+          } else {
+            this.$message.info({
+              content: res.data.message
+            })
           }
         })
-        params = {
-          VMId: this.hostCurrentSelected.computerid,
-        }
       }
-      let url = 'information/rebootVirtualMachine.do'
-      this.$http.get(url, {
-        params: params
-      }).then(res => {
-        if (res.status === 200 && res.data.status === 1) {
-          this.$Message.success(res.data.message)
-          if (val == 1) {
-            this.timingRefresh(this.selectHostIds + '')
-          } else {
-            this.timingRefresh(this.hostCurrentSelected.id)
+    },
+    hostShutdown () {
+      if (params.row.dbStatus == '0') {
+        this.$Message.info('数据库已处于关闭状态')
+      } else {
+        // this.dataBaseData.forEach(item => {
+        //   if (item.computerid == params.row.computerid) {
+        //     item.dbStatus = '3'
+        //   }
+        // })
+        let url = 'database/stopDB.do'
+        this.$http.get(url, {
+          params: {
+            DBId: this.hostCurrentSelected.computerid
           }
-          this.hostSelection = []
-        } else {
-          this.getHostList()
-          this.$message.info({
-            content: res.data.message
-          })
-        }
-      })
+        }).then(res => {
+          if (res.status == 200 && res.data.status == 1) {
+            this.$Message.success(res.data.message)
+            this.timingRefresh(this.hostCurrentSelected.id)
+          } else {
+            this.$message.info({
+              content: res.data.message
+            })
+          }
+        })
+      }
     },
     hostDelete (val) {
       this.delHostMessage = ''
@@ -1795,264 +1595,6 @@ export default {
         }
       })
     },
-    hostResetPassword (val) {
-      this.resetPasswordWay = val
-      this.resetPasswordForm.password = ''
-      this.resetPasswordForm.hintGrade = 0
-      this.resetPasswordForm.passwordAffirm = ''
-      if (val === 1) {
-        if (this.hostSelection.length === 0) {
-          return false
-        }
-        this.resetPasswordHostData = this.hostSelection
-        this.showModal.resetPassword = true
-      } else {
-        this.resetPasswordHostData = []
-        this.resetPasswordHostData[0] = this.hostCurrentSelected
-        this.showModal.resetPassword = true
-      }
-    },
-    toManage (item) {
-      sessionStorage.setItem('manageId', item.id)
-      this.$router.push('databaseManage')
-    },
-    changeResetPasswordType (name) {
-      this.$refs[name].type === 'password' ? this.$refs[name].type = 'text' : this.$refs[name].type = 'password'
-    },
-    verifyPassword () {
-      if (this.regExpObj.password.test(this.resetPasswordForm.password)) {
-        this.resetPasswordForm.errorMsg = 'passwordHintTwo'
-      } else {
-        this.resetPasswordForm.errorMsg = 'passwordHint'
-      }
-    },
-    resetPasswordNext () {
-      let flag = true
-      this.resetPasswordForm.errorMsg = ''
-      this.resetPasswordHostData.forEach((item, index) => {
-        if (item.changepassword && !item.currentPassword) {
-          item.errorMsg = 'passwordIsEmpty'
-          this.resetPasswordHostData.splice(index, 1, item)
-          flag = false
-        }
-      })
-      if (!(this.resetPasswordForm.firstDegree && this.resetPasswordForm.secondDegree && this.resetPasswordForm.thirdDegree)) {
-        this.resetPasswordForm.errorMsg = 'passwordUndercapacity'
-        return false
-      }
-      if (this.resetPasswordForm.password !== this.resetPasswordForm.passwordAffirm) {
-        this.resetPasswordForm.errorMsg = 'passwordAffirm'
-        return false
-      }
-      if (flag) {
-        this.resetPasswordForm.hintGrade = 1
-      }
-    },
-    resetPasswordOk () {
-      let flag = true
-      this.resetPasswordForm.errorMsg = ''
-      this.resetPasswordHostData.forEach((item, index) => {
-        if (item.changepassword && !item.currentPassword) {
-          item.errorMsg = 'passwordIsEmpty'
-          this.resetPasswordHostData.splice(index, 1, item)
-          flag = false
-        }
-      })
-      if (flag) {
-        let url = 'information/resetPasswordForVirtualMachineBatch.do'
-        let list = []
-        this.resetPasswordHostData.forEach((item, index) => {
-          if (item.changepassword && item.currentPassword) {
-            list.push({
-              VMId: item.computerid,
-              oldPassword: item.currentPassword,
-              VMName: item.instancename
-            })
-          } else {
-            list.push({
-              VMId: item.computerid,
-              VMName: item.instancename
-            })
-          }
-        })
-        let params = {
-          password: this.resetPasswordForm.password,
-          list: JSON.stringify(list)
-        }
-        this.$http.post(url, params).then(res => {
-          if (res.status == 200 && res.data.status == 1) {
-            this.$Message.success(res.data.message)
-            this.showModal.resetPassword = false
-            this.hostListData.forEach(host => {
-              this.resetPasswordHostData.forEach(item => {
-                if (host.id == item.id) {
-                  host.status = 2
-                  // host.resetpwd = 1
-                  host._disabled = true
-                }
-              })
-            })
-            let ids = this.resetPasswordHostData.map(item => {
-              return item.id
-            })
-            this.timingRefresh(ids + '')
-            this.hostSelection = []
-          } else if (res.status == 200 && res.data.status == 2) {
-            if (res.data.result.length != 0) {
-              res.data.result.forEach(name => {
-                this.resetPasswordHostData.forEach((item, index) => {
-                  if (item.computerid == name.errhost) {
-                    item.errorMsg = 'passwordMistake'
-                    this.resetPasswordHostData.splice(index, 1, item)
-                  }
-                })
-              })
-            }
-          } else {
-            this.$message.info({
-              content: res.data.message
-            })
-          }
-        })
-      }
-    },
-    //加入负载均衡
-    joinBalance () {
-      axios.get('information/isloadbananceRoleAndServiceSchemeMatching.do', {
-        params: {
-          zoneId: $store.state.zone.zoneid,
-          VMIds: this.hostCurrentSelected.computerid,
-        }
-      }).then(response => {
-        if (response.status == 200 && response.data.status == 1) {
-          // 成功的情况
-          axios.get('information/listVMByComputerId.do', {
-            params: {
-              VMId: this.hostCurrentSelected.computerid,
-              zoneId: this.hostCurrentSelected.zoneid
-            }
-          }).then((response) => {
-            if (response.status == 200 && response.data.status == 1) {
-              if (response.data.result.loadbalance != '') {
-                this.$message.confirm({
-                  title: '提示',
-                  content: `该主机已加入负载均衡：${response.data.result.loadbalance[0]}，若您需要修改主机所属负载均衡请先将主机移出该负载均衡在进行操作`,
-                  okText: '移出主机',
-                  onOk: () => {
-                    axios.get('loadbalance/listBalanceRoleAndVMByVMId.do', {
-                      params: {
-                        computerId: this.hostCurrentSelected.computerid,
-                        zoneId: this.hostCurrentSelected.zoneid
-                      }
-                    }).then(response => {
-                      if (response.status == 200 && response.data.status == 1) {
-                        sessionStorage.setItem('balanceInfo', JSON.stringify(response.data.result.loadBalance[0]))
-                        this.$router.push('BalanceParticulars')
-                      }
-                    })
-                  }
-                })
-              } else {
-                axios.get('loadbalance/listLoadBalanceRoleVM.do', {
-                  params: {
-                    zoneId: $store.state.zone.zoneid,
-                    VMId: this.hostCurrentSelected.computerid
-                  }
-                }).then(response => {
-                  if (response.status == 200 && response.data.status == 1) {
-                    var publicLoadbalance = response.data.result.publicLoadbalance
-                    publicLoadbalance.forEach(item => {
-                      item.type = '#public'
-                    })
-                    this.listLoadBalanceRole = publicLoadbalance.concat(response.data.result.internalLoadbalance)
-                    this.showModal.balance = true
-                  }
-                })
-              }
-            }
-          })
-        } else if (response.status == 200 && response.data.status == 3) {
-          // 需要创建公网负载均衡
-          this.$message.confirm({
-            title: '提示',
-            content: '您还未创建一个负载均衡，请先创建公网负载均衡。',
-            okText: '创建负载均衡',
-            onOk: () => {
-              this.$router.push('balance')
-            }
-          })
-        } else if (response.status == 200 && response.data.status == 4) {
-          // 需要创建内网负载均衡
-          this.$message.confirm({
-            title: '提示',
-            content: '您还未创建一个负载均衡，请先创建内网负载均衡。',
-            okText: '创建负载均衡',
-            onOk: () => {
-              this.$router.push('balance')
-            }
-          })
-        } else if (response.status == 200 && response.data.status == 5) {
-          // 网络不匹配
-          this.$message.confirm({
-            title: '提示',
-            okText: '调整子网',
-            content: '您选择的主机子网的网络服务方案为普通网络，不支持负载均衡。若您需要将该主机加入负载均衡，可将该主机移入子网服务方案为：“公网/私网负载均衡网络”的子网之后再进行加入负载均衡操作。',
-            onOk: () => {
-              sessionStorage.setItem('vpcId', this.hostCurrentSelected.vpcid)
-              this.$router.push('vpcManage')
-            }
-          })
-        } else {
-          this.$Message.info(response.data.message)
-        }
-      })
-    },
-    // 确定加入负载均衡
-    joinBalanceSubm (name) {
-      this.$refs[name].validate((valid) => {
-        if (valid) {
-          this.showModal.balance = false
-          this.$Message.info('主机正在加入负载均衡，请稍后')
-          if (this.loadBalanceForm.loadbalanceroleid.split('#')[1] == 'public') {
-            axios.get('loadbalance/assignToLoadBalancerRule.do', {
-              params: {
-                VMIds: this.hostCurrentSelected.computerid,
-                zoneId: this.hostCurrentSelected.zoneid,
-                roleId: this.loadBalanceForm.loadbalanceroleid.split('#')[0]
-              }
-            }).then(response => {
-              if (response.status == 200 && response.data.status == 1) {
-                this.$Message.success(response.data.message)
-              } else {
-                this.$message.info({
-                  content: response.data.message
-                })
-              }
-              this.loadBalanceForm.loadbalanceroleid == ''
-            })
-          } else {
-            axios.get('loadbalance/assignToInternalLoadBalancerRule.do', {
-              params: {
-                VMIds: this.hostCurrentSelected.computerid,
-                zoneId: this.hostCurrentSelected.zoneid,
-                roleId: this.loadBalanceForm.loadbalanceroleid,
-                lbId: this.loadBalanceForm.loadbalanceroleid
-              }
-            })
-              .then(response => {
-                if (response.status == 200 && response.data.status == 1) {
-                  this.$Message.success(response.data.message)
-                } else {
-                  this.$message.info({
-                    content: response.data.message
-                  })
-                }
-                this.loadBalanceForm.loadbalanceroleid == ''
-              })
-          }
-        }
-      })
-    },
     bindIP () {
       if (this.hostCurrentSelected.publicip) {
         this.$Message.warning('已绑定主机无法再次绑定!')
@@ -2077,12 +1619,11 @@ export default {
       }
     },
     bindIpSubmit (name) {
+      console.log(name)
       this.$refs[name].validate((valid) => {
         if (valid) {
           this.hostListData.forEach(host => {
             if (host.id == this.hostCurrentSelected.id) {
-              host.status = 2
-              // host.bindip = 1
               host._disabled = true
             }
           })
@@ -2109,316 +1650,15 @@ export default {
       }
       )
     },
-    checkRenameForm () {
-      this.$refs.renameForm.validate((valid) => {
-        if (valid) {
-          this.showModal.rename = false
-          this.$http.post('information/changeVmName.do', {
-            vmId: this.hostCurrentSelected.computerid,
-            name: this.renameForm.hostName
-          }).then(response => {
-            if (response.status == 200 && response.data.status == 1) {
-              this.$Message.success(response.data.message)
-              this.hostSelection = []
-              this.getHostList()
-            } else {
-              this.$message.info({
-                content: response.data.message
-              })
-            }
-          })
-        }
-      })
-    },
-    ratesChange () {
-      let url = 'information/listVirtualMachinesById.do'
-      axios.get(url, {
-        params: {
-          VMId: this.hostCurrentSelected.computerid,
-          zoneId: this.hostCurrentSelected.zoneid,
-          changeCost: '1'
-        }
-      }).then(response => {
-        if (response.status == 200 && response.data.status == 1) {
-          var disks = response.data.result[0].attachDisk.map(item => {
-            return item.id
-          })
-          this.relevanceDisks = disks.join()
-          var ips = response.data.result[0].attachPublicIp.map(item => {
-            return item.id
-          })
-          this.relevanceIps = ips.join()
-          this.relevanceAlteration = ['ip', 'disk']
-          this.ratesChangeType = ''
-          this.ratesChangeTime = ''
-          this.ratesChangeCost = '--'
-          this.originRatesChangeCost = '--'
-          this.showModal.ratesChange = true
-        } else {
-          this.$message.info({
-            content: response.data.message
-          })
-        }
-      })
-    },
-    // 确认变更资费
-    ratesChange_ok () {
-      var selectIp = ''
-      var selectDisk = ''
-      for (var i = 0; i < this.relevanceAlteration.length; i++) {
-        if (this.relevanceAlteration[i] == 'ip') {
-          selectIp = this.relevanceIps
-        }
-        if (this.relevanceAlteration[i] == 'disk') {
-          selectDisk = this.relevanceDisks
-        }
-      }
-      var iplist = []
-      if (selectIp != '') {
-        iplist = selectIp.split(',').map(item => {
-          return { type: 2, id: parseInt(item) }
-        })
-      }
-      var disklist = []
-      if (selectDisk != '') {
-        disklist = selectDisk.split(',').map(item => {
-          return { type: 1, id: parseInt(item) }
-        })
-      }
-      var host = [
-        { type: 0, id: this.hostCurrentSelected.id }
-      ]
-      var list = host.concat(iplist, disklist)
-      list = JSON.stringify(list)
-      let url = 'continue/changeMoney.do'
-      this.$http.post(url, {
-        list: list,
-        timeType: this.ratesChangeType,
-        timeValue: this.ratesChangeTime + '',
-      }).then(response => {
-        if (response.data.status == 1) {
-          this.$router.push({ path: 'order' })
-        } else {
-          this.$message.info({
-            content: response.data.message
-          })
-        }
-      })
-    },
-    bindRenewal () {
-      if (this.cost != '--') {
-        var selectIp = ''
-        var selectDisk = ''
-        for (var i = 0; i < this.bindRenewalVal.length; i++) {
-          if (this.bindRenewalVal[i] == 'ip') {
-            selectIp = this.isIps
-          }
-          if (this.bindRenewalVal[i] == 'disk') {
-            selectDisk = this.isDisks
-          }
-        }
-        this.$http.get('information/getYjPrice.do', {
-          params: {
-            timeValue: this.renewalTime,
-            timeType: this.renewalType,
-            hostIdArr: this.hostCurrentSelected.id,
-            ipIdArr: selectIp,
-            diskArr: selectDisk
-          }
-        }).then((response) => {
-          if (response.status == 200 && response.data.status == 1) {
-            this.cost = response.data.result.toFixed(2)
-            this.originCost = response.data.result
-            if (response.data.cuspon) {
-              this.originCost = Number((this.originCost + response.data.cuspon).toFixed(2))
-            }
-            if (response.data.continueDiscount) {
-              this.originCost = (this.originCost + response.data.continueDiscount).toFixed(2)
-            }
-          } else {
-            this.$message.info({
-              content: response.data.message
-            })
-          }
-        })
-      }
-    },
-    // 包年/月数据库续费
-    renewalOk () {
-      var selectIp = ''
-      var selectDisk = ''
-      for (var i = 0; i < this.bindRenewalVal.length; i++) {
-        if (this.bindRenewalVal[i] == 'ip') {
-          selectIp = this.isIps
-        }
-        if (this.bindRenewalVal[i] == 'disk') {
-          selectDisk = this.isDisks
-        }
-      }
-      var iplist = []
-      if (selectIp != '') {
-        iplist = selectIp.split(',').map(item => {
-          return { type: 2, id: parseInt(item) }
-        })
-      }
-      var disklist = []
-      if (selectDisk != '') {
-        disklist = selectDisk.split(',').map(item => {
-          return { type: 1, id: parseInt(item) }
-        })
-      }
-      var host = [
-        { type: 0, id: this.hostCurrentSelected.id }
-      ]
-      var list = host.concat(iplist, disklist)
-      list = JSON.stringify(list)
-      this.$http.post('continue/continueOrder.do', {
-        list: list,
-        timeType: this.renewalType,
-        timeValue: this.renewalTime + ''
-      }).then(response => {
-        if (response.status == 200 && response.data.status == 1) {
-          this.$router.push({ path: 'order' })
-        }
-      })
-    },
-    renewalUpgrade () {
-      this.$router.push({
-        name: 'upgrade'
-      })
-    },
-    // 欠费数据库续费
-    renewHost (item) {
-      if (item.caseType == 3) {
-        if (item.status == 0) {
-          this.showModal.Renew = true
-          this.RenewForm.id = item.id
-          this.RenewForm.cost = item.cpCase
-        } else {
-          this.$Message.info('请选择包年包月的资源进行续费')
-        }
-      } else {
-        this.renewalInfo = {
-          computername: item.computername,
-          templatename: item.templatename,
-          serviceoffername: item.serviceoffername,
-          endtime: item.endtime
-        }
-        this.renewType()
-        this.showModal.renewal = true
-      }
-    },
-    // 查询续费主机下是否有ip或磁盘
-    renewType () {
-      axios.get('information/listVirtualMachinesById.do', {
-        params: {
-          VMId: this.hostCurrentSelected.computerid,
-          zoneId: this.hostCurrentSelected.zoneid
-        }
-      }).then(response => {
-        if (response.status == 200 && response.data.status == 1) {
-          var diskarr = response.data.result[0].attachDisk.map(item => {
-            return item.id
-          })
-          this.isDisks = diskarr.join()
-          var iparr = response.data.result[0].attachPublicIp.map(item => {
-            return item.id
-          })
-          this.isIps = iparr.join()
-          // 清空续费弹窗数据
-          this.bindRenewalVal = ['ip', 'disk']
-          this.cost = '--'
-          this.originCost = '--'
-          this.renewalType = ''
-          this.renewalTime = ''
-          this.showModal.renewal = true
-        }
-      })
-    },
-    // 实时欠费数据库续费确认
-    renewOk () {
-      this.showModal.Renew = false
-      this.$http.get('information/vmRenew.do', {
-        params: {
-          id: this.RenewForm.id,
-        }
-      }).then(response => {
-        this.getHostList()
-        if (response.status == 200 && response.data.status == 1) {
-          this.$Message.success('数据库续费成功')
-        } else {
-          this.$message.info({
-            content: response.data.message
-          })
-        }
-      })
-    },
-    // 生成快照
-    backupSubmit (name) {
-      this.$refs[name].validate((valid) => {
-        if (valid) {
-          this.showModal.backup = false
-          axios.get('Snapshot/createVMSnapshot.do', {
-            params: {
-              VMId: this.hostCurrentSelected.computerid,
-              snapshotName: this.backupForm.name,
-              memoryStatus: this.backupForm.memory,
-              zoneId: this.hostCurrentSelected.zoneid
-            }
-          }).then(response => {
-            if (response.status == 200 && response.data.status == 1) {
-              this.$Message.success(response.data.message)
-            } else {
-              this.$message.info({
-                content: response.data.message
-              })
-            }
-          })
-        }
-      })
-    },
-    // 创建主机镜像
-    mirrorSubmit (name) {
-      this.$refs[name].validate((valid) => {
-        if (valid) {
-          this.showModal.mirror = false
-          this.hostListData.forEach(host => {
-            if (host.id == this.hostCurrentSelected.id) {
-              host.status = 2
-              // host.createtemplate = 1
-              host._disabled = true
-            }
-          })
-          axios.get('Snapshot/createTemplate.do', {
-            params: {
-              rootDiskId: this.hostCurrentSelected.rootdiskid,
-              templateName: this.mirrorForm.mirrorName,
-              descript: this.mirrorForm.description,
-              zoneId: this.hostCurrentSelected.zoneid
-            }
-          }).then(response => {
-            if (response.status == 200 && response.data.status == 1) {
-              this.$Message.success({
-                content: '请求成功，镜像正在创建中，您可以到<span style="color: #0db4fa;cursor: pointer;">镜像列表</span>查看该镜像。',
-                duration: 5
-              })
-            }
-          })
-        }
-      })
-    },
     unbind () {
-      this.hostListData.forEach(host => {
-        if (host.id == this.hostCurrentSelected.id) {
-          host.status = 2
-          // host.bindip = 2
-          host._disabled = true
-        }
-      })
+      // this.hostListData.forEach(host => {
+      //   if (host.id == this.hostCurrentSelected.id) {
+      //     host.status = 2
+      //     // host.bindip = 2
+      //     host._disabled = true
+      //   }
+      // })
       this.showModal.unbindIP = false
-      this.$Message.info({
-        content: `<span style="color:#2A99F2">${this.hostCurrentSelected.computername}</span>云主机,正在解绑公网IP`
-      })
       this.$http.get('network/disableStaticNat.do', {
         params: {
           ipId: this.hostCurrentSelected.publicip,
@@ -2435,146 +1675,10 @@ export default {
         }
       })
     },
-    showMonitor (name) {
-      this.monitorName = name
-      this.monitoringList.forEach(item => {
-        item.type = '近一天'
-        item.showType = '折线'
-      })
-      this.getComputerMonitor()
-      this.$refs.monitor.style.width = '600px'
-      this.$refs.monitor.style.opacity = '1'
-      this.$refs.monitor.style.display = 'block'
-    },
-    closeMonitor () {
-      this.$refs.monitor.style.width = '0px'
-      this.$refs.monitor.style.opacity = '0'
-      this.$refs.monitor.style.display = 'none'
-    },
-    getComputerMonitor () {
-      this.$http.get('alarm/getVmAlarmByHour.do', {
-        params: {
-          vmname: this.monitorName,
-          type: 'core'
-        }
-      }).then(response => {
-        if (response.status == 200 && response.data.status == 1) {
-          // 用的以前接口数据格式，只有挨个赋值
-          let cpuBrokenLine = JSON.parse(JSON.stringify(line))
-          let memoryBrokenLine = JSON.parse(JSON.stringify(line))
-          cpuBrokenLine.xAxis.data = response.data.result.xaxis
-          memoryBrokenLine.xAxis.data = response.data.result.xaxis
-          cpuBrokenLine.series.push({
-            name: 'CPU使用率（%）',
-            type: 'line',
-            data: response.data.result.cpuUse,
-            barWidth: '15%'
-          })
-          this.monitoringList[0].chart = cpuBrokenLine
-          memoryBrokenLine.series.push({
-            name: '内存使用率（%）',
-            type: 'line',
-            data: response.data.result.memoryUse,
-            barWidth: '15%'
-          })
-          this.monitoringList[1].chart = memoryBrokenLine
-        }
-      })
-    },
-    changeMonitorDate (index) {
-      let url = this.monitoringList[index].type == '近一天' ? 'alarm/getVmAlarmByHour.do' : 'alarm/getVmAlarmByDay.do'
-      let dateType = this.monitoringList[index].type == '最近7天' ? 'week' : 'month'
-      this.$http.get(url, {
-        params: {
-          vmname: this.monitorName,
-          type: 'core',
-          datetype: dateType
-        }
-      }).then(res => {
-        if (res.data.status == 1) {
-          let broken = this.monitoringList[index].type == 'line' ? JSON.parse(JSON.stringify(line)) : JSON.parse(JSON.stringify(bar))
-          let type = this.monitoringList[index].showType == '折线' ? 'line' : 'bar'
-          let name = index == 0 ? 'CPU使用率（%）' : '内存使用率（%）'
-          let data = index == 0 ? res.data.result.cpuUse : res.data.result.memoryUse
-          broken.series.push({
-            name: name,
-            type: type,
-            data: data,
-            barWidth: '15%'
-          })
-          broken.xAxis.data = res.data.result.xaxis
-          this.monitoringList[index].chart = broken
-        } else {
-          this.$message.info({
-            content: res.data.message
-          })
-        }
-      })
-    },
-    changeMonitorShowType (index) {
-      let broken = {}
-      if (this.monitoringList[index].showType == '折线') {
-        broken = JSON.parse(JSON.stringify(line))
-        broken.series.push({
-          name: this.monitoringList[index].chart.series[0].name,
-          type: 'line',
-          data: this.monitoringList[index].chart.series[0].data,
-          barWidth: '15%'
-        })
-        broken.xAxis.data = this.monitoringList[index].chart.xAxis.data
-        this.monitoringList[index].chart = broken
-      } else {
-        broken = JSON.parse(JSON.stringify(bar))
-        broken.series.push({
-          name: this.monitoringList[index].chart.series[0].name,
-          type: 'bar',
-          data: this.monitoringList[index].chart.series[0].data,
-          barWidth: '15%'
-        })
-        broken.xAxis.data = this.monitoringList[index].chart.xAxis.data
-        this.monitoringList[index].chart = broken
-      }
-    },
-    getCurrentDate () {
-      return new Date().getFullYear().toString() + '.' + (new Date().getMonth() + 1).toString() + '.' + new Date().getDate().toString()
-    },
     push (type) {
       this.$store.commit('setPane', { vpc: 'VPC', vpn: 'remote', usercenter: type, expenses: 'accountSummary' })
       this.$router.push('/usercenter')
     },
-    guideNext () {
-      if (this.hostListData.length != 0) {
-        let flag = false
-        this.hostListData.forEach(item => {
-          if (item.status == 1) {
-            flag = true
-          }
-        })
-        if (flag) {
-          this.guideStep = 2
-        } else {
-          this.guideStep = 0
-          this.$Message.info('您还没有正常状态的云主机，无法查看指引提示，请先创建主机')
-        }
-      } else {
-        this.guideStep = 0
-        this.$Message.info('您还没有云主机，无法查看指引提示，请先创建主机')
-      }
-    },
-    hintToManage () {
-      this.guideStep = 0
-      this.hostListData.forEach(item => {
-        if (item.status == 1) {
-          sessionStorage.setItem('guideHint', '1')
-          sessionStorage.setItem('manageId', item.id)
-          this.$router.push('databaseManage')
-        }
-      })
-    },
-    seeAll () {
-      sessionStorage.setItem('isSeeHint', '1')
-      this.guideStep = 0
-    }
   },
   computed: {
     auth () {
@@ -2602,39 +1706,6 @@ export default {
       return ids
     },
     /* 根据主机状态确定可操作功能 */
-    shutdownDisabled () {
-      let len = this.hostSelection.length
-      if (len === 0) {
-        return true
-      } else {
-        // 只有开机状态的主机才能关机
-        return !this.hostSelection.every(host => {
-          return host.status == 1 && host.dbStatus == 1
-        })
-      }
-    },
-    startDisabled () {
-      let len = this.hostSelection.length
-      if (len === 0) {
-        return true
-      } else {
-        // 只有关机状态的主机才能开机
-        return !this.hostSelection.every(host => {
-          return host.status == 1 && host.dbStatus == 0
-        })
-      }
-    },
-    restartDisabled () {
-      let len = this.hostSelection.length
-      if (len === 0) {
-        return true
-      } else {
-        // 只有开机状态的主机才能重启
-        return !this.hostSelection.every(host => {
-          return host.status == 1 && host.dbStatus == 1
-        })
-      }
-    },
     deleteDisabled () {
       let len = this.hostSelection.length
       if (len === 0) {
@@ -2646,91 +1717,15 @@ export default {
         })
       }
     },
-    resetPasswordDisabled () {
-      let len = this.hostSelection.length
-      if (len === 0) {
-        return true
-      } else {
-        // 开启关闭主机才能重置密码
-        return this.hostSelection.some(host => {
-          return host.status != 1
-        })
-      }
-    },
-    joinLoadBalanceDisabled () {
-      let len = this.hostSelection.length
-      if (len !== 1) {
-        return true
-      } else {
-        return this.hostSelection[0].status != 1
-      }
-    },
-    bindingIPDisabled () {
-      let len = this.hostSelection.length
-      if (len !== 1) {
-        return true
-      } else {
-        return this.hostSelection[0].status != 1
-      }
-    },
-    renameDisabled () {
-      let len = this.hostSelection.length
-      if (len !== 1) {
-        return true
-      } else {
-        return this.hostSelection[0].status != 1
-      }
-    },
-    ratesChangeDisabled () {
-      let len = this.hostSelection.length
-      if (len !== 1) {
-        return true
-      } else {
-        return !(this.hostSelection[0].status == 1 && this.hostSelection[0].caseType == 3)
-      }
-    },
-    hostRenewDisabled () {
-      let len = this.hostSelection.length
-      if (len !== 1) {
-        return true
-      } else {
-        return this.hostSelection[0].status != 1 && this.hostSelection[0].status != 0
-      }
-    },
-    hostUpgradeDisabled () {
-      let len = this.hostSelection.length
-      if (len !== 1) {
-        return true
-      } else {
-        return !(this.hostSelection[0].status == 1 && this.hostSelection[0].dbStatus == 0)
-      }
-    },
-    makeSnapshotDisabled () {
-      let len = this.hostSelection.length
-      if (len !== 1) {
-        return true
-      } else {
-        return this.hostSelection[0].status != 1
-      }
-    },
-    makeMirrorDisabled () {
-      let len = this.hostSelection.length
-      if (len !== 1) {
-        return true
-      } else {
-        return !(this.hostSelection[0].status == 1 && this.hostSelection[0].dbStatus == 0)
-      }
-    },
-    unbindIPDisabled () {
-      let len = this.hostSelection.length
-      if (len !== 1) {
-        return true
-      } else {
-        return this.hostSelection[0].status != 1 && this.hostSelection[0].status != 0
-      }
-    }
   },
   watch: {
+    'dilatationForm.databaseSize' () {
+      if (this.hostCurrentSelected.disksize == this.dilatationForm.databaseSize) {
+        this.dilatationCost = '--'
+      } else {
+        this.queryDatabaseCost()
+      }
+    },
     renewalType (type) {
       this.renewalTime = ''
       this.timeOptions.renewalTime = this.timeOptions[type]
@@ -2738,36 +1733,25 @@ export default {
     renewalTime (time) {
       if (time == '') {
         this.cost = '--'
-        this.originCost = '--'
       } else {
-        var selectIp = ''
-        var selectDisk = ''
-        for (var i = 0; i < this.bindRenewalVal.length; i++) {
-          if (this.bindRenewalVal[i] == 'ip') {
-            selectIp = this.isIps
-          }
-          if (this.bindRenewalVal[i] == 'disk') {
-            selectDisk = this.isDisks
-          }
-        }
         this.$http.get('information/getYjPrice.do', {
           params: {
             timeValue: this.renewalTime,
             timeType: this.renewalType,
-            hostIdArr: this.hostCurrentSelected.id,
-            ipIdArr: selectIp,
-            diskArr: selectDisk
+            dbArr: this.hostCurrentSelected.id,
           }
         }).then((response) => {
           if (response.status == 200 && response.data.status == 1) {
-            this.cost = response.data.result.toFixed(2)
+            this.cost = response.data.result
             this.originCost = response.data.result
             if (response.data.cuspon) {
-              this.originCost = Number((this.originCost + response.data.cuspon).toFixed(2))
+              this.originCost += response.data.cuspon
             }
             if (response.data.continueDiscount) {
-              this.originCost = (this.originCost + response.data.continueDiscount).toFixed(2)
+              this.originCost += response.data.continueDiscount
             }
+            this.cost = this.cost.toFixed(2)
+            this.originCost = this.originCost.toFixed(2)
           } else {
             this.$message.info({
               content: response.data.message
@@ -2780,82 +1764,6 @@ export default {
     ratesChangeType (type) {
       this.ratesChangeTime = ''
       this.timeOptions.renewalTime = this.timeOptions[type]
-    },
-    ratesChangeTime (time) {
-      if (time == '') {
-        this.ratesChangeCost = '--'
-        this.originRatesChangeCost = '--'
-      } else {
-        var selectIp = ''
-        var selectDisk = ''
-        for (var i = 0; i < this.relevanceAlteration.length; i++) {
-          if (this.relevanceAlteration[i] == 'ip') {
-            selectIp = this.relevanceIps
-          }
-          if (this.relevanceAlteration[i] == 'disk') {
-            selectDisk = this.relevanceDisks
-          }
-        }
-        let url = 'information/getYjPrice.do'
-        this.$http.get(url, {
-          params: {
-            timeValue: this.ratesChangeTime,
-            timeType: this.ratesChangeType,
-            hostIdArr: this.hostCurrentSelected.id,
-            ipIdArr: selectIp,
-            diskArr: selectDisk
-          }
-        }).then((response) => {
-          if (response.status == 200 && response.data.status == 1) {
-            this.ratesChangeCost = response.data.result.toFixed(2)
-            this.originRatesChangeCost = response.data.result
-            if (response.data.cuspon) {
-              this.originRatesChangeCost = Number((this.originRatesChangeCost + response.data.cuspon).toFixed(2))
-            }
-            if (response.data.continueDiscount) {
-              this.originRatesChangeCost = (this.originRatesChangeCost + response.data.continueDiscount).toFixed(2)
-            }
-          }
-        })
-      }
-    },
-    relevanceAlteration () {
-      if (this.ratesChangeTime == '') {
-        this.ratesChangeCost = '--'
-      } else {
-        var selectIp = ''
-        var selectDisk = ''
-        for (var i = 0; i < this.relevanceAlteration.length; i++) {
-          if (this.relevanceAlteration[i] == 'ip') {
-            selectIp = this.relevanceIps
-          }
-          if (this.relevanceAlteration[i] == 'disk') {
-            selectDisk = this.relevanceDisks
-          }
-        }
-        let url = 'information/getYjPrice.do'
-        this.$http.get(url, {
-          params: {
-            timeValue: this.ratesChangeTime,
-            timeType: this.ratesChangeType,
-            hostIdArr: this.hostCurrentSelected.id,
-            ipIdArr: selectIp,
-            diskArr: selectDisk
-          }
-        })
-          .then((response) => {
-            if (response.status == 200 && response.data.status == 1) {
-              this.ratesChangeCost = response.data.result.toFixed(2)
-              this.originRatesChangeCost = response.data.result
-              if (response.data.cuspon) {
-                this.originRatesChangeCost = Number((this.originRatesChangeCost + response.data.cuspon).toFixed(2))
-              }
-              if (response.data.continueDiscount) {
-                this.originRatesChangeCost = (this.originRatesChangeCost + response.data.continueDiscount).toFixed(2)
-              }
-            }
-          })
-      }
     },
     '$store.state.zone': {
       handler: function () {

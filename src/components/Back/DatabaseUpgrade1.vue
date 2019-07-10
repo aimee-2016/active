@@ -21,7 +21,7 @@
         <div class="host-config">
           <div class="config-top">
             <p>数据库名称：{{ hostInfo.computername}}</p>
-            <p>{{ hostInfo.cpuNum }}CPU，{{ hostInfo.memory}}G内存，{{ hostInfo.rootdisksize}}G硬盘，{{hostInfo.bandwith}}M带宽 | {{ hostInfo.zonename}}</p>
+            <p>{{ hostInfo.cpuNum }}CPU，{{ hostInfo.memory}}G内存，{{ hostInfo.disksize}}G硬盘，{{hostInfo.bandwith}}M带宽 | {{ hostInfo.zonename}}</p>
           </div>
           <div class="config-bottom">
             <p>
