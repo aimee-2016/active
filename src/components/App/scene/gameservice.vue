@@ -65,7 +65,7 @@
                 <div class="cf-footer">
                   <p><span>押金：</span>¥{{ cfg.currentPrice}}</p>
                   <p>原价：¥{{cfg.originalPrice}}</p>
-                  <Button type="primary" v-if="(scene == '游戏服务'||scene == '图形设计'|| scene == '人工智能'|| scene == '超级运算')&& cfg.gpuSize == 2" :disabled="true">已售罄</Button>
+                  <Button type="primary" v-if="(scene == '游戏服务'||scene == '图形设计'|| scene == '人工智能'|| scene == '超级运算')&& index1 == 1" :disabled="true">已售罄</Button>
                   <Button type="primary" v-else @click="getHost(currentIndex,index1)">免费使用</Button>
                 </div>
               </div>
@@ -2621,6 +2621,8 @@
               padding-left: 15px;
               > a {
                 color: rgba(0, 0, 0, 0.65);
+                display: inline-block;
+                width: 100%;
               }
               &:hover {
                 background: #108EE9;
