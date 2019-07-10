@@ -897,14 +897,14 @@ export default {
     routerPath() {
       if (this.goodType == 0) {
         return "buy/host";
-      } else if (this.goodType == 1) {
+      } else if (this.goodType == 1 || this.goodType == 7) {
         return "buy/disk/";
       } else if (this.goodType == 2) {
         return "buy/elasticip/";
       } else if (this.goodType == 3) {
         return "vpcList";
       } else if (this.goodType == 4) {
-        return "续费";
+        return "overview";
       } else if (this.goodType == 5) {
         return "host";
       } else if (this.goodType == 6) {
@@ -939,6 +939,8 @@ export default {
         return "overview";//域名续费
       } else if (this.goodType == 22) {
         return "buy/ssl/";
+      }else{
+         return "overview";
       }
     },
 
