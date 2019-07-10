@@ -7,11 +7,11 @@
                 </div>
                 <div>
                     <span class="dp-xg" v-if="isBlckShow" @click="isBlckShow = false">管理</span>
-                    <span class="dp-xg" v-else @click="isBlckShow = true">确认修改</span>
+                    <span class="dp-xg" v-else @click="isBlackUpdate">确认修改</span>
                 </div>
             </div>
             <div>
-                <div style="margin-top:10px;"  v-if="isBlckShow">
+                <div style="margin-top:10px;display: flex;flex-wrap: wrap;"  v-if="isBlckShow">
                     <span class="dp-dk"  v-for="(item,index) in blackList" :key="index">{{item}}</span>
                 </div>
                 <div style="margin-top:10px;" v-else>
@@ -26,11 +26,11 @@
                 </div>
                 <div>
                     <span class="dp-xg" v-if="isWihtShow" @click="isWihtShow = false">管理</span>
-                    <span class="dp-xg" v-else @click="isWihtShow = true">确认修改</span>
+                    <span class="dp-xg" v-else @click="isWihtUpdate">确认修改</span>
                 </div>
             </div>
             <div>
-                <div style="margin-top:10px;"  v-if="isWihtShow">
+                <div style="margin-top:10px;display: flex;flex-wrap: wrap;"  v-if="isWihtShow">
                     <span class="dp-dk"  v-for="(item,index) in whitList" :key="index">{{item}}</span>
                 </div>
                 <div style="margin-top:10px;" v-else>
@@ -58,6 +58,26 @@ export default {
     },
     created(){
       
+    },
+    methods:{
+        isWihtUpdate(){
+            this.whitList = this.whitValue.split(';');
+            if(this.whitList.length >300){
+                this.$Message.info('最大添加300个白名单');
+            }else{
+                this.isWihtShow = true;
+                this.$emit('white',this.whitValue);
+            }
+        },
+        isBlackUpdate(){
+            this.blackList = this.blackValue.split(';');
+            if(this.blackList.length >300){
+                this.$Message.info('最大添加300个黑名单');
+            }else{
+                this.isBlckShow = true;
+                this.$emit('black',this.blackValue);
+            }
+        }
     }
 }
 </script>
