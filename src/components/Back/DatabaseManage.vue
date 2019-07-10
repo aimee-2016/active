@@ -42,7 +42,7 @@
                <li>
                  <h4>性能规格</h4>
                  <div>{{ hostInfo.cpuNum }}CPU,{{ hostInfo.memory}}G menory内存
-                   <span>[规格升级]</span>
+                   <span @click="hostUpgrade">[规格升级]</span>
                  </div>
                </li>
              </ul>
@@ -65,7 +65,7 @@
                <li>
                  <h4>内网地址</h4>
                  <div>{{hostInfo.privateip}}
-                   <span>[修改内网地址]</span>
+                   <span @click="modifyIntranet">[修改内网地址]</span>
                  </div>
 
                </li>
@@ -175,25 +175,6 @@
         </div>
       </div>
     </div>
-
-    <!-- 主机重命名弹窗 -->
-    <Modal v-model="showModal.rename" width="550" :scrollable="true">
-      <p slot="header" class="modal-header-border">
-        <span class="universal-modal-title">主机重命名</span>
-      </p>
-      <div class="universal-modal-content-flex">
-        <Form :model="renameForm" ref="renameForm" :rules="renameFormRule">
-          <Form-item label="主机名" prop="hostName">
-            <Input v-model="renameForm.hostName" placeholder="请输入新主机名" :maxlength="15"></Input>
-          </Form-item>
-        </Form>
-      </div>
-      <div slot="footer" class="modal-footer-border">
-        <Button type="ghost" @click="showModal.rename = false">取消</Button>
-        <Button type="primary" @click="checkRenameForm">确定
-        </Button>
-      </div>
-    </Modal>
     <!-- 修改镜像系统弹窗-->
     <Modal v-model="showModal.mirrorModify" width="550" :scrollable="true">
       <p slot="header" class="modal-header-border">
@@ -837,13 +818,6 @@
     created() {
       this.computerId = sessionStorage.getItem('manageId')
       this.getHostInfo()
-      if (sessionStorage.getItem('guideHint')) {
-        this.guideStep = 1
-        sessionStorage.removeItem('guideHint')
-      }
-      if (sessionStorage.getItem('isSeeHint')) {
-        this.guideStep = 0
-      }
     },
     methods: {
       changeTabs(item) {
@@ -874,6 +848,15 @@
           }
         })
       },
+      hostUpgrade() {
+        sessionStorage.setItem('upgradeId', this.hostInfo.id)
+        sessionStorage.setItem('vmid', this.hostInfo.computerid)
+        this.$router.push('dataBaseUpgrade')
+      },
+      modifyIntranet() {
+        sessionStorage.setItem('vpcId', this.hostInfo.vpcid)
+        this.$router.push('vpcManage')
+      },
       checkRenameForm() {
         this.$refs.renameForm.validate((valid) => {
           if (valid) {
@@ -900,34 +883,6 @@
         localStorage.setItem('link-zoneid', this.hostInfo.zoneId)
         localStorage.setItem('link-phone', this.$store.state.authInfo.phone)
         window.open('/link')
-      },
-      hostUpgrade() {
-        if (this.hostInfo.computerStatus == 1) {
-          this.$Message.info('主机需要在关机状态下才能升级扩容')
-          return
-        }
-        this.$http.get('network/VMIsHaveSnapshot.do', {
-          params: {
-            VMId: this.computerId
-          }
-        }).then(response => {
-          if (response.status == 200 && response.data.status == 1) {
-            if (!response.data.result) {
-              this.$Modal.confirm({
-                title: '提示',
-                content: '您的主机有快照，无法升级扩容，请删除快照再试',
-                scrollable: true,
-                okText: '删除快照',
-                onOk: () => {
-                  this.$router.push('snapshot')
-                }
-              })
-            } else {
-              sessionStorage.setItem('upgradeId', this.computerId)
-              this.$router.push('upgrade')
-            }
-          }
-        })
       },
       modifyMirror() {
         this.getMirrorList()
