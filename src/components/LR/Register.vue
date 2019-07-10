@@ -134,7 +134,7 @@
                   <img width="185" height="185" src="../../assets/img/app/QR-code.jpg" alt="新睿云二维码">
               </div>
               <h2>注册成功</h2>
-              <p>扫描二维码完成实名认证即可获得<span style="color: #FF9801"> 196元 </span>专属优惠券，还可参加<span style="color: #FF9801;cursor: pointer" @click="$router.push('fractive')"> 多款主机免费领 </span>活动。<span v-show="registerForm.onStep === 4">请联系您的专属客服小牛获取优惠券</span></p>
+              <p>扫描二维码完成实名认证即可获得<span style="color: #FF9801"> 158元 </span>专属优惠券，还可参加<span style="color: #FF9801;cursor: pointer" @click="$router.push('activity/free/')"> 多款主机免费领 </span>活动。<span v-show="registerForm.onStep === 4">请联系您的专属客服小牛获取优惠券</span></p>
               <!-- <button @click="$router.push('userCenter')">前往认证</button> -->
               <router-link to="/" style="color:#4297F2">返回首页></router-link>
             </div>

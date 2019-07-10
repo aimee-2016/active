@@ -74,7 +74,7 @@
                     type="drag"
                     :with-credentials="true"
                     :show-upload-list="false"
-                    action="file/upFile.do"
+                    action="/file/upFile.doupFile.do"
                     :format="['jpg','gif','png']"
                     :on-format-error="handleFormatJpg"
                     :max-size="4096"
@@ -103,7 +103,7 @@
                     type="drag"
                     :with-credentials="true"
                     :show-upload-list="false"
-                    action="file/upFile.do"
+                    action="/file/upFile.doupFile.do"
                     :format="['jpg','gif','png']"
                     :on-format-error="handleFormatJpg"
                     :max-size="4096"
@@ -136,7 +136,7 @@
                     type="drag"
                     :with-credentials="true"
                     :show-upload-list="false"
-                    action="file/upFile.do"
+                    action="/file/upFile.doupFile.do"
                     :format="['jpg','gif','png']"
                     :on-format-error="handleFormatJpg"
                     :max-size="4096"
@@ -147,7 +147,7 @@
                       点击上传图片
                     </div>
                     <img v-else :src="item.IDCardFront" style="height: 120px;width:164px;">
-                    <Progress v-show="percent>0" :percent="percent"></Progress>
+                    <Progress v-show="percent>0&& IDCardIndex == index" :percent="percent"></Progress>
                   </Upload>
                 </div>
                 <div class="item-img">
@@ -166,7 +166,7 @@
                     type="drag"
                     :with-credentials="true"
                     :show-upload-list="false"
-                    action="file/upFile.do"
+                    action="/file/upFile.doupFile.do"
                     :format="['jpg','gif','png']"
                     :on-format-error="handleFormatJpg"
                     :max-size="4096"
@@ -177,7 +177,7 @@
                       点击上传图片
                     </div>
                     <img v-else :src="item.IDCardBack" style="height: 120px;width:164px;" alt="上传图片">
-                    <Progress v-show="percentBack>0" :percent="percentBack"></Progress>
+                    <Progress v-show="percentBack>0&& IDCardIndex == index" :percent="percentBack"></Progress>
                   </Upload>
                 </div>
                 <div class="item-img">
@@ -203,7 +203,7 @@
                     :show-upload-list="false"
                     :format="['jpg','jpeg','png']"
                     :on-format-error="handleFormatJpg"
-                    action="file/upFile.do"
+                    action="/file/upFile.doupFile.do"
                     :max-size="4096"
                     :on-exceeded-size="handleMaxSize"
                     :on-success="combine">
@@ -253,7 +253,7 @@
                             :show-upload-list="false"
                             :max-size="4096"
                             :on-exceeded-size="handleMaxSize"
-                            action="file/upFile.do"
+                            action="/file/upFile.doupFile.do"
                             :before-upload="markCertifiedDomainNoCertification(upIndex)"
                             :on-success="certifiedDomainNoCertification">
                       <Progress v-show="percentCertification>0" :percent="percentCertification"></Progress>
@@ -268,7 +268,7 @@
                             :show-upload-list="false"
                             :max-size="4096"
                             :on-exceeded-size="handleMaxSize"
-                            action="file/upFile.do"
+                            action="/file/upFile.doupFile.do"
                             :before-upload="markCertifiedDomainNoCertification(upIndex)"
                             :on-success="certifiedDomainNoCertification">
                         <img v-if="item.certifiedDomainNoCertificationDefaultList[0].url" :src="item.certifiedDomainNoCertificationDefaultList[0].url" style="height: 120px;width:164px;">
@@ -310,7 +310,7 @@
                             :format="['jpg','jpeg','png','doc','pdf','docx','gif']"
                             :on-format-error="handleFormatError"
                             :with-credentials="true"
-                            action="file/upFile.do"
+                            action="/file/upFile.doupFile.do"
                             :max-size="4096"
                             :on-exceeded-size="handleMaxSize"
                             :before-upload="markOtherFile(upIndex)"
@@ -354,7 +354,7 @@
                           :show-upload-list="false"
                           :max-size="4096"
                           :on-exceeded-size="handleMaxSize"
-                          action="file/upFile.do"
+                          action="/file/upFile.doupFile.do"
                           :before-upload="markCheckList(upIndex)"
                           :on-success="checkList">
                     <Progress v-show="percentCheckList>0" :percent="percentCheckList"></Progress>
@@ -369,7 +369,7 @@
                           :show-upload-list="false"
                           :max-size="4096"
                           :on-exceeded-size="handleMaxSize"
-                          action="file/upFile.do"
+                          action="/file/upFile.doupFile.do"
                           :before-upload="markCheckList(upIndex)"
                           :on-success="checkList">
                     <img v-if="item.checkList[0].url" :src="item.checkList[0].url" style="height: 120px;width:164px;">
@@ -931,7 +931,7 @@
       },
       handleMaxSize() {
         this.$Message.info({
-          content: '请选择大小小于4M的文件进行上传'
+          content: '请上传小于4M的图片文件'
         });
       },
       // 提交资料

@@ -60,7 +60,7 @@ module.exports = {
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'resource',
     assetsPublicPath: '/ruicloud/',
-
+    //assetsPublicPath: '/',
     /**
      * Source Maps
      */

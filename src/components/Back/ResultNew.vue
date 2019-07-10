@@ -131,9 +131,9 @@
       revertOrder() {
         let name = sessionStorage.getItem('routername');
         let router = '';
-        if (name == '0' || name == '5' || name == '4' || name == '20') {
+        if (name == '0' || name == '5' ) {
           router = 'host';
-        } else if (name == '1' || name == '9') {
+        } else if (name == '1' || name == '9' || name == '7') {
           router = 'diskList';
         } else if (name == '2' || name == '6' || name == '8') {
           router = 'ip';
@@ -143,7 +143,7 @@
           router = 'natState';
         } else if (name == '11' || name == '12' || name == '13') {
           router = 'cloudDatabase';
-        } else if (name == 14) {
+        } else if (name == '14') {
           return '短信包订单'
         } else if (name == '15' || name == '16') {
           router = 'gpuList';
@@ -163,6 +163,8 @@
           router = 'BackDdos'
         } else if (name == '26') {
           router = 'BackDdos'
+        }else{
+          router = 'overview';
         }
         this.$router.push(router)
       }

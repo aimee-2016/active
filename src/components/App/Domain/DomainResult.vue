@@ -11,8 +11,16 @@
             </Input>
             <transition name="showChosse">
               <div v-show="choose" class="change" @mouseleave="choose=!choose">
-              <span v-for="(item,index) in suffixSingle" :key="index"
-                    style="width:60px;display:inline-block;height: 30px;padding: 5px 0;" @click="addAppend(item)">{{item}}</span>
+                  <RadioGroup v-model="radioSingle" @on-change="singleChange">
+                      <Radio label="english">英文域名</Radio>
+                      <Radio label="chinese">中文域名</Radio>
+                      <Radio label="administrative">行政域名</Radio>
+                  </RadioGroup>
+                  <div class="addSin">
+                      <p></p>
+                      <span v-for="(item,index) in suffixSingle" :key="(index+3)*2"
+                            style="width:60px;display:inline-block;height: 30px;padding: 7px 0;" @click="addAppend(item)">{{item}}</span>
+                  </div>
               </div>
             </transition>
           </div>
@@ -40,11 +48,11 @@
               </div>
             <CheckboxGroup v-model="singles"
                            style="display: flex;flex-wrap: wrap;justify-content: flex-start;margin-top: 20px;">
-              <Checkbox v-for="(item,index) in suffixChange" :key="index" :label="item" style="width:108px;">{{item}}
+              <Checkbox v-for="(item,index) in suffixChange" :key="(index+2)*5" :label="item" style="width:108px;">{{item}}
               </Checkbox>
             </CheckboxGroup>
           </div>
-          <li v-for="(item,index) in Results" :key="item.name">
+          <li v-for="(item,index) in Results" :key="(index+7)*4">
             <p>
               <Tooltip :content="item.name" placement="top">
                     <span class="dname">{{item.name}}</span>
@@ -106,7 +114,7 @@
                 <button @click="removeAll">全部移除</button>
               </p>
               <ul class="all-data" v-show="buyLists.length!=0">
-                <li v-for="(item,index) in buyLists">
+                <li v-for="(item,index) in buyLists" :key="(index+5)*6">
                     <Tooltip :content="item.domainName" placement="top">
                         <h2>{{item.domainName}}</h2>
                     </Tooltip>
@@ -152,6 +160,7 @@
         suffixSingle: [],
         suffixChange: [],
         radio: 'english',
+        radioSingle: 'english',
         showValue: false,
         singles: [],
         Results: [],
@@ -192,14 +201,14 @@
       },
 
       addAppend(name){
+        this.singles = []
+        this.showButton = false
         this.append = name
         this.singles.unshift(name)
       },
 
       // 筛选
       radioChange () {
-        this.singles = []
-        this.showButton = false
         switch (this.radio) {
           case 'english':
             this.suffixChange = this.showSuffix.en
@@ -209,6 +218,22 @@
             break;
           case 'administrative':
             this.suffixChange = this.showSuffix.xz
+            break;
+        }
+        this.singles = []
+        this.showButton = false
+      },
+      // 单个查询
+      singleChange () {
+        switch (this.radioSingle) {
+          case 'english':
+            this.suffixSingle = this.showSuffix.en
+            break;
+          case 'chinese':
+            this.suffixSingle = this.showSuffix.cn
+            break;
+          case 'administrative':
+            this.suffixSingle = this.showSuffix.xz
             break;
         }
       },
@@ -366,10 +391,9 @@
         })
       },
       singles(){
-        if (this.singles.length == 0 && this.searchText == '') {
+        if (this.singles.length == 0) {
           this.showFix = false
           this.Results = []
-          return this.$Message.info('请输入您要查找的域名')
         }
         var tids = []
         for (var i = 0; i < this.singles.length; i++) {
@@ -410,7 +434,8 @@
           for (var key in this.showSuffix) {
             arry = arry.concat(this.showSuffix[key])
           }
-          this.suffixSingle = Array.from(new Set(arry))
+         // this.suffixSingle = Array.from(new Set(arry))
+          this.suffixSingle = this.showSuffix.en
           this.suffixChange = this.showSuffix.en
           let len = JSON.parse(sessionStorage.getItem("suffix")).length
           if (len != 0) {
@@ -463,13 +488,20 @@
             justify-content: flex-start;
             z-index: 1000;
             padding: 18px 30px;
-            span {
-              cursor: pointer;
-              text-align: center;
-              &:hover {
-                background: #F5F5F6;
+              .addSin {
+                  margin-top: 15px;
+                  border-top: 1px solid #D9D9D9;
+                  p{
+                      height: 10px;
+                  }
+                  span {
+                      cursor: pointer;
+                      text-align: center;
+                      &:hover {
+                          background: #F5F5F6;
+                      }
+                  }
               }
-            }
           }
         }
         button {

@@ -300,8 +300,8 @@
               } else{
                 this.showModal.withoutHost = true
               }
-            } else{
-              this.$message.info({
+            } else {
+                this.$message.info({
                 content: res.data.message
               })
             }

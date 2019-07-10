@@ -1044,7 +1044,7 @@
           if (res.status == 200 && res.data.status == 1) {
             // dbStatus  数据库开启或关闭状态   1开启  0关闭  2开启中  3关闭中   4重启中
             // Status 1: 正常   0:余额不足 -1:扣费时除余额不足的其他原因   -2:用户删除实时虚拟机   2创建中   3删除中   5数据库扩容中   6数据库升级中
-            this.dataBaseData = res.data.result
+            this.dataBaseData = res.data.result.info
             let flag = res.data.result.some(item => {
               return item.status == 2 || item.status == 3 || item.status == 5 || item.status == 6 || item.dbStatus == 2 || item.dbStatus == 3 || item.dbStatus == 4
             })

@@ -58,8 +58,8 @@
                 <p class="item-title" style="margin-top: 7px;">类型</p>
               </div>
               <div>
-                <div v-for="(item,typeIndex) in dataDiskType" :key="item.value" class="zoneItem"
-                     :class="{zoneSelect:disk.type==item.value}"
+                <div v-for="(item,typeIndex) in dataDiskType" :key="typeIndex" class="zoneItem"
+                     :class="{zoneSelect:disk.type==item.value,zoneDisabled: zone.gpuserver == 1 && item.value !== 'ssd' }"
                      @click="changeDiskType(item,index)">{{item.label}}
                 </div>
               </div>
@@ -172,7 +172,7 @@
     },
     data(){
       var zoneList = this.$store.state.zoneList.filter(zone => {
-        return zone.gpuserver == 0
+        return zone.gpuserver == 0 || zone.gpuserver == 1
       })
       var zone = this.$store.state.zone
       // 如果默认区域在该资源下不存在
@@ -238,6 +238,9 @@
         this.dataDiskList.splice(index, 1)
       },
       changeDiskType(item,index){
+        if(this.zone.gpuserver == 1 && item.value !== 'ssd'){
+          return
+        }
         this.dataDiskList[index].type=item.value
         this.dataDiskList[index].label=item.label
         if(item.value === 'sata'){
@@ -299,27 +302,60 @@
           this.$LR({type: 'login'})
           return
         }
-        let url = 'information/listVirtualMachines.do'
-        axios.get(url, {
-          params: {
-            returnList: '1',
-            page:'1',
-            pageSize: '10',
-            zoneId: this.zone.zoneid
-          }
-        }).then(res=>{
-          if(res.status == 200 && res.data.status ==1){
-            if(res.data.result.data.length != 0){
-              this.buyDiskOK()
-            } else{
-              this.showModal.withoutHost = true
+        if(this.zone.gpuserver == 0){
+          let url = 'information/listVirtualMachines.do'
+          axios.get(url, {
+            params: {
+              returnList: '1',
+              page:'1',
+              pageSize: '10',
+              zoneId: this.zone.zoneid
             }
-          } else{
-            this.$message.info({
-              content: res.data.message
-            })
-          }
-        })
+          }).then(res=>{
+            if(res.status == 200 && res.data.status ==1){
+              if(res.data.result.data.length != 0){
+                this.buyDiskOK()
+              } else{
+                this.showModal.withoutHost = true
+              }
+            } else{
+              this.$message.info({
+                content: res.data.message
+              })
+            }
+          })
+        } else {
+          let url = 'gpuserver/listGpuServer.do'
+          axios.get(url, {
+            params: {
+              num:'',
+              vpcId:'',
+              status:'',
+              timeType:'',
+              zoneId:this.zone.zoneid,
+            }
+          }).then(res=>{
+            if(res.status == 200 && res.data.status ==1){
+                let list = []
+                if(Object.keys(res.data.result).length != 0){
+                  for(let index in res.data.result){
+                      for (let i = 0; i < res.data.result[index].list.length; i++) {
+                        list.push(res.data.result[index].list[i]);
+                    }
+                  }
+                }
+              if(list.length != 0){
+                this.buyDiskOK()
+              } else{
+                this.showModal.withoutHost = true
+              }
+            } else {
+                this.$message.info({
+                content: res.data.message
+              })
+            }
+          })
+        }
       },
       buyDiskOK(){
         var diskSize = ''
@@ -379,6 +415,9 @@
       zoneChange(item){
         if(item.buyover != 1){
          this.zone = item
+        this.dataDiskList.forEach(item => {
+          item.type = 'ssd'
+        })
         }
       }
     },

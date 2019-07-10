@@ -724,14 +724,17 @@
                   }, [h('a', {}, ['绑定资源 ', h('Icon', {attrs: {type: 'arrow-down-b'}})]), h('DropdownMenu', {slot: 'list'}, [h('DropdownItem', {
                     attrs: {
                       name: 'host'
-                    }
+                    },
+                    style: {
+                        display: this.hide == -1 ?'block':'none'
+                      },
                   }, '云主机'),
                     h('DropdownItem', {
                       attrs: {
                         name: 'gpu'
                       },
                       style: {
-                        display: this.hide
+                        display: this.hide == -1 ?'none':'block'
                       },
                     }, 'GPU云服务器'),
                     h('DropdownItem', {
@@ -846,7 +849,7 @@
           bandwidth: '',
           endTime: ''
         },
-        hide: '',
+        hide: $store.state.zone.zonename.indexOf('GPU'),
         intervalInstance: null,
         ipTimer: null,
         unbundleResource: {},
@@ -858,11 +861,6 @@
       next();
     },
     created() {
-      if ($store.state.zone.zonename.indexOf('GPU') > 1) {
-        this.hide = 'block';
-      } else {
-        this.hide = 'none';
-      }
       this.testjump()
       this.listVpc()
       this.refresh()
@@ -1041,8 +1039,8 @@
               } else{
                 this.showModal.withoutHost = true
               }
-            } else{
-              this.$message.info({
+            } else {
+                this.$message.info({
                 content: res.data.message
               })
             }
@@ -1905,14 +1903,11 @@
       // 监听区域变换
       '$store.state.zone': {
         handler: function () {
-          if ($store.state.zone.zonename.indexOf('GPU') > 1) {
-            this.hide = 'block';
-          } else {
-            this.hide = 'none';
-          }
+         this. hide= $store.state.zone.zonename.indexOf('GPU');
+          this.ipData = []
+          this.select = []
           this.refresh()
           this.listVpc()
-          this.select = []
         },
         deep: true
       },

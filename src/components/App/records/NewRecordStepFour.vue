@@ -87,7 +87,7 @@
                   :with-credentials="true"
                   action="file/upFile.do"
                   :format="['jpg','jpeg','png']"
-                  :max-size="2048"
+                  :max-size="4096"
                   :on-exceeded-size="handleMaxSize"
                   :on-format-error="handleFormatJpg"
                   :on-success="photoImg">
@@ -349,7 +349,6 @@
           this.recordsType = response.data.result[0].recordtype
           this.isRecord = true
           this.recordInfo = response.data.result[0]
-          this.nextStep = true
           $('html, body').animate({scrollTop: 800}, 300)
           switch (this.recordsType) {
             case '新增备案':
@@ -368,6 +367,7 @@
           // 判断是否申请幕布
           if (response.data.result[0].mark3 != '' && typeof(response.data.result[0].mark3) != "undefined") {
             this.curtainStatus = true
+            this.nextStep = true
             this.receiveForm.address = response.data.result[0].mark2
             this.receiveForm.person = response.data.result[0].mark3
             this.receiveForm.phone = response.data.result[0].mark4
@@ -590,7 +590,7 @@
       },
       handleMaxSize() {
         this.$Message.info({
-          content: '请选择大小小于2M的文件进行上传'
+          content: '请上传小于4M的图片文件'
         });
       },
       getCheckList() {

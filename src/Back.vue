@@ -335,10 +335,10 @@
             mainName: '云服务器',
             type: 'server',
             subItem: [{subName: '云主机', type: 'host'}, {subName: 'GPU云服务器', type: 'GpuList'},
-            {
-              subName: 'DDoS高防主机',
-              type: 'BackDdos'
-            },
+            // {
+            //   subName: 'DDoS高防主机',
+            //   type: 'BackDdos'
+            // },
             {
               subName: '云主机快照',
               type: 'snapshot'
@@ -356,8 +356,8 @@
             mainName: '云存储',
             type: 'storage',
             subItem: [
-              {subName: '对象存储', type: 'https://oss-console.xrcloud.net/ruirados/objectStorage'},
-              //{subName: '对象存储', type: 'https://testoss-console.xrcloud.net/ruirados/objectStorage'},
+              //{subName: '对象存储', type: 'https://oss-console.xrcloud.net/ruirados/objectStorage'},
+              {subName: '对象存储', type: 'https://testoss-console.xrcloud.net/ruirados/objectStorage'},
               {subName: '云硬盘', type: 'diskList'},
               {subName: '云硬盘备份', type: 'diskBackupList'}
               /* {subName: '硬盘快照', type: 'diskSnapshot'} */
@@ -398,22 +398,22 @@
               {subName: '防火墙', type: 'firewallList'},
               {subName: '云监控', type: 'CloudMonitor'},
               // {subName: 'DDoS高防IP', type: 'ddosip'},
-              //{subName: 'SSL证书', type: 'https://test-domain.xrcloud.net/xrdomain/domainSSL'},
-              {subName: 'SSL证书', type: 'https://domain.xrcloud.net/xrdomain/domainSSL'},
+              {subName: 'SSL证书', type: 'https://test-domain.xrcloud.net/xrdomain/domainSSL'},
+              //{subName: 'SSL证书', type: 'https://domain.xrcloud.net/xrdomain/domainSSL'},
             ]
           },
           {
             mainName: '域名服务',
             type: 'domain',
             subItem: [
-              {subName: '域名管理', type: 'https://domain.xrcloud.net/xrdomain/domainGroup'},
-              {subName: '信息模版', type: 'https://domain.xrcloud.net/xrdomain/domainInfoTemplate'},
-              {subName: '域名转入', type: 'https://domain.xrcloud.net/xrdomain/domainTransfer'},
-              {subName: '域名转出', type: 'https://domain.xrcloud.net/xrdomain/domainTrunDetails'}
-              //  {subName: '域名管理', type: 'https://test-domain.xrcloud.net/xrdomain/domainGroup'},
-              //  {subName: '信息模版', type: 'https://test-domain.xrcloud.net/xrdomain/domainInfoTemplate'},
-              //  {subName: '域名转入', type: 'https://test-domain.xrcloud.net/xrdomain/domainTransfer'},
-              //  {subName: '域名转出', type: 'https://test-domain.xrcloud.net/xrdomain/domainTrunDetails'},
+              // {subName: '域名管理', type: 'https://domain.xrcloud.net/xrdomain/domainGroup'},
+              // {subName: '信息模版', type: 'https://domain.xrcloud.net/xrdomain/domainInfoTemplate'},
+              // {subName: '域名转入', type: 'https://domain.xrcloud.net/xrdomain/domainTransfer'},
+              // {subName: '域名转出', type: 'https://domain.xrcloud.net/xrdomain/domainTrunDetails'}
+               {subName: '域名管理', type: 'https://test-domain.xrcloud.net/xrdomain/domainGroup'},
+               {subName: '信息模版', type: 'https://test-domain.xrcloud.net/xrdomain/domainInfoTemplate'},
+               {subName: '域名转入', type: 'https://test-domain.xrcloud.net/xrdomain/domainTransfer'},
+               {subName: '域名转出', type: 'https://test-domain.xrcloud.net/xrdomain/domainTrunDetails'},
             ]
           },
           {

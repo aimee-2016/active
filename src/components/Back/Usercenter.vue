@@ -3964,7 +3964,7 @@
       },
       handleMaxSize() {
         this.$Message.info({
-          content: '上传的文件过大'
+          content: '请上传小于4M的图片文件'
         })
       },
       //显示三证合一原图
