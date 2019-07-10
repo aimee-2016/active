@@ -1340,7 +1340,12 @@ components: { expandRow },
                 this.$Message.info(res.data.message);
                 this.emptyLink = val == 0?1:0;
             }
-        }).catch(err =>{})
+        }).catch(err =>{
+            if(err){
+                this.emptyLink = val == 0?1:0;
+                this.$Message.info('网络异常');
+            }
+        })
     },
 
     updateddoSConfig(){
@@ -1564,6 +1569,7 @@ components: { expandRow },
         font-size:18px;color:#FF624B;font-weight:bold;
     }
 }
+
 .dp-rd{
     text-overflow: -o-ellipsis-lastline;
   overflow: hidden;
