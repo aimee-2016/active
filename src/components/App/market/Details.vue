@@ -1,5 +1,5 @@
 <template>
-  <div id="details">
+  <div id="details" v-if="isReloadAlive">
     <div class="main">
       <!--左侧产品详情-->
       <div class="main-left">
@@ -19,7 +19,7 @@
             <div class="product-box-content">
               <div class="title">{{prodetials.title}}</div>
               <div class="content">{{prodetials.description}}</div>
-              <div class="hint">{{prodetials.description}}</div>
+              <div class="hint"></div>
               <i-button type="primary" @click="pop" v-show="prodetials.type == 1">咨询购买</i-button>
             </div>
           </div>
@@ -31,7 +31,7 @@
                   <span v-for="(item,index) in buyType" :key="index" :class="{sysActive: typeIndex == index }" @click="typeChes(index)">{{item}}</span>
                 </div>
               </div>
-              <Tabs :animated="false" @on-click="getPrice">
+              <Tabs :animated="false" @on-click="getPrice" class="tabType">
                 <div class="tabTitle">计费类型</div>
                 <TabPane v-for="(item, index) in buyWay" :key="index" :label="item.type" @on-click="getPrice(index)">
                   <div class="tab-row" v-show="item.dataTime != ''">
@@ -77,12 +77,10 @@
                 <div class="th">
                   <i-button type="primary" @click="useBtn">立即使用</i-button>
                   <div class="agreement">
-                    <Checkbox v-model="single">
+                    <Checkbox v-model="single" style="margin-right: 0;">
                       我已阅读并同意
-                      <router-link to="">《云市场商品服务协议》</router-link>
-                      与
-                      <router-link to="">《新睿云云市场用户协议》</router-link>
                     </Checkbox>
+                    <span>《云市场商品服务协议》</span>与<span>《新睿云云市场用户协议》</span>
                   </div>
                 </div>
               </div>
@@ -91,11 +89,11 @@
         </div>
         <!--产品参数-->
         <div class="intro">
-          <tabs :animated="false" v-model="tabName">
+          <Tabs :animated="false" v-model="tabName" class="tab">
             <TabPane v-for="(item,index) in prodetials.doc" :key="index" :label="item.name" :name="'name'+index">
-              <dl v-html="item.content">
+              <div v-html="item.content">
                 {{item.content}}
-              </dl>
+              </div>
             </TabPane>
           </Tabs>
         </div>
@@ -109,24 +107,24 @@
             <li>客服热线：{{prodetials.sellInfo?prodetials.sellInfo.mobile:''}}</li>
             <li>服务时间：7*24小时</li>
             <li>电子邮箱：{{prodetials.sellInfo?prodetials.sellInfo.email:''}}</li>
-            <li>在线客服：<router-link to="">{{prodetials.sellInfo?prodetials.sellInfo.name:''}}</router-link></li>
-            <li>供应商简介：{{prodetials.description}}</li>
+            <li>在线客服：<router-link to=""><img src="../../../assets/img/app/qq-blue.png" alt="人工客服">{{prodetials.sellInfo?prodetials.sellInfo.name:''}}</router-link></li>
+            <li>供应商简介：{{prodetials.company?prodetials.company.description:''}}</li>
           </ul>
         </div>
         <div class="other">
           <p class="other-title">合作伙伴其他服务</p>
             <div class="other-service">
-               <div v-for="(item,index) in otherService" :key="index" class="other-part" @click="checkDetails(item)">
+               <div v-for="(item,index) in otherService" :key="index" class="other-part" @click="checkDetails(item)" v-show="prodetials.id != item.id"><!--  v-show="prodetials.id != item.id" -->
                  <div style="height: 100%;">
                    <img :src="item.pictureurl" :alt="item.title">
                  </div>
                  <div class="other-sintr">
-                   <p><span>{{item.title}}——</span>{{item.description}}</p>
+                   <p><span>{{item.title}}</span>——{{item.description}}</p>
                    <span class="fwprices">￥ {{item.price}}</span>
                  </div>
                </div>
                <div class="pageType" v-if="totalPage">
-                 <Page :total="totalPage" show-total :current="page" :page-size="5" @on-change="changePages"></Page>
+                 <Page :total="totalPage" show-total :current="page" :page-size="3" @on-change="changePages"></Page>
                </div>
                <div v-else class="nodatas">
                  暂无数据
@@ -136,9 +134,10 @@
       </div>
       <!--咨询购买对话框-->
       <Modal
+        class="conModal"
         title="咨询购买请联系"
-        v-model="show"
-        class-name="vertical-center-modal"
+        v-model="buyShow"
+        class-name="conModal-center-modal"
         ok-text="立即提交">
         <div class="sell" v-if="buyStatus == 0">
           <div class="sell-item">
@@ -161,7 +160,7 @@
               <Input v-model="formValidate.mail" placeholder="请输入"></Input>
             </FormItem>
             <FormItem style="text-align: right;">
-              <Button @click="handleReset('formValidate')" style="margin-left: 8px">取消</Button>
+              <Button @click="handleReset('formValidate')" style="margin-right: 10px">取消</Button>
               <Button type="primary" @click="handleSubmit('formValidate')">立即提交</Button>
             </FormItem>
           </Form>
@@ -173,15 +172,16 @@
           <div class="success-content">
             <p>提交成功</p>
             <p>我们将尽快与您取得联系，感谢您的支持。</p>
-            <button @click="show = false">确定</button>
+            <button @click="buyShow = false">确定</button>
           </div>
         </div>
       </Modal>
       <!--自定义配置弹窗-->
       <Modal
+        class="customModal"
         title="自定义配置"
         v-model="customShow"
-        class-name="vertical-center-modal"
+        class-name="customModal-center-modal"
         ok-text="确定">
         <div class="ino-box-deploy-item">
           <div class="title">系统盘容量</div>
@@ -205,13 +205,17 @@
         <div class="ino-box-deploy-item">
           <div class="title">核心数</div>
           <div class="content">
-            <span v-for="(item,index) in coreList" :key="index" :class="{active: nucleIndex == index }" @click="changeNucleus(item,index)">{{item.name}}</span>
+            <span v-for="item in coreList" :key="item.value" 
+            :class="{active: mainFrame.cpuNum == item.value}" 
+            @click="changeNucleus(item)">{{item.name}}</span>
           </div>
         </div>
         <div class="ino-box-deploy-item">
           <div class="title">内存</div>
           <div class="content">
-           <span v-for="(item,index) in sizeList" :key="index" :class="{active: sizeIndex == index }" @click="changeSize(item,index)">{{item.name}}</span>
+           <span v-for="item in sizeList" :key="item.value" 
+             :class="{active: mainFrame.memory == item.value }" 
+             @click="mainFrame.memory = item.value">{{item.name}}</span>
           </div>
         </div>
         <div class="sub">
@@ -229,15 +233,16 @@ export default {
   data () {
     window.scrollTo(0, 0);
     return{
+      isReloadAlive : true,
       tabName: 'name0',
       typeName: sessionStorage.getItem('typeName'),
       buyType: ['付费版', '免费版'],
       buyTypeStatus: 0,
-      typeIndex: false,
+      typeIndex: 0,
       prodetials:[], // 产品详情
       mainFrame: {
-        cpuNum: '',
-        memory: '',
+        cpuNum: 1,
+        memory: 1,
         diskSize: '',
         diskType: '',
         timeType: '',
@@ -246,7 +251,7 @@ export default {
       otherService: [],// 合作伙伴其他服务
       totalPage: 0,
       page: 1,
-      show: false,
+      buyShow: false,
       customShow: false,
       // 产品价格
       price: '',
@@ -257,8 +262,8 @@ export default {
         checkIndex2: false,
         checkIndex3: false
       },
-      sysIndex: false,
-      areaIndex: false,
+      sysIndex: 0,
+      areaIndex: 0,
       introIndex: false,
       // 使用时长
       buyWay: [
@@ -361,6 +366,12 @@ export default {
     }
   },
   methods: {
+    reload() {
+        this.isReloadAlive = false
+        this.$nextTick(function(){
+          this.isReloadAlive = true
+      })
+    },
     typeChes (index) {
       this.typeIndex = index
       if (index === 1) {
@@ -457,7 +468,7 @@ export default {
         this.$LR({type: 'login'})
         return
       } else {
-        this.show = true
+        this.buyShow = true
         axios.get('cloudMarket/getConsultation.do', {
           params: {
             productId: this.prodetials.id,
@@ -488,16 +499,23 @@ export default {
       }).then(res => {
         if (res.status === 200 && res.data.status === 1) {
           this.otherService = res.data.result.list
-          this.totalPage = res.data.result.paging.total
+          this.totalPage = res.data.result.list.length
         }
       })
     },
     checkDetails (item) {
+      // 配置选择初始化
+      this.typeIndex = 0
+      this.units = '元/小时'
+      this.tabName = 'name0'
+
       sessionStorage.setItem('proid',item.id)
       sessionStorage.setItem('typeName', item.classification.name)
       this.$router.push('details')
       this.getProduct()
       window.scrollTo(0,0)
+      // this.reload()
+      // location.reload()
     },
     // 获取产品详情
     getProduct () {
@@ -627,14 +645,13 @@ export default {
       }
     },
     // 自定义默认选择
-    changeNucleus (item,index) {
-      this.nucleIndex = index
+    changeNucleus (item) {
       this.sizeList = item.RAMList
-      this.mainFrame.timeValue = item.value
+      this.mainFrame.cpuNum = item.value
+      this.mainFrame.memory = item.RAMList[0].value
     },
-    changeSize (item,index) {
-      this.sizeIndex = index
-      this.mainFrame.timeValue = item.value
+    changeSize (item) {
+      this.mainFrame.timeValue == item.timeValue
     },
     coreBtn () {
       this.mainFrame.diskSize = this.size
@@ -645,8 +662,7 @@ export default {
     },
     // 立即使用
     useBtn () {
-      console.log(this.vpcName)
-      /*if (this.userInfos == null) {
+      if (this.userInfos == null) {
         this.$LR({type: 'login'})
         return
       } else if (this.single === false) {
@@ -665,15 +681,17 @@ export default {
             memory: this.mainFrame.memory,
             networkId: 'no',
             companyId: this.userInfo.companyid,
-            vpcId: 'no',
+            vpcId: this.vpcName,
             cost: this.price
           }
         }).then(res => {
           if (res.status === 200 && res.data.status === 1) {
             this.$router.push('/order')
+          } else if (res.status === 200 && res.data.status === 2) {
+            this.$Message.warning(res.data.message);
           }
         })
-      }*/
+      }
     },
     // 产品分类
     getClass () {
@@ -716,12 +734,16 @@ export default {
 
 <style rel="stylesheet/less" lang="less" scoped>
 #details {
+  background: rgba(247,248,250,1);
   .main {
     width: 1200px;
     margin: 0 auto 80px auto;
     display: flex;
     justify-content: space-between;
     font-family:MicrosoftYaHei;
+    .customModal-center-modal{
+
+    }
     .main-left {
       width: 780px;
       .nav {
@@ -762,6 +784,7 @@ export default {
               font-size: 18px;
               height: 24px;
               line-height: 24px;
+              font-weight: bold;
             }
             .content {
               font-size: 14px;
@@ -830,6 +853,7 @@ export default {
                 text-align: right;
               }
               &:nth-of-type(3) {
+                height: 35px;
                 .th {
                   span {
                     margin-bottom: 10px;
@@ -858,6 +882,17 @@ export default {
                     font-size: 14px;
                     line-height: 20px;
                     margin-top: 10px;
+                    span{
+                      padding: 0;
+                      margin: 0;
+                      border: none;
+                      color: #57a3f3;
+                      cursor: pointer;
+                      height: 0;
+                      &:hover{
+                        background: white;
+                      }
+                    }
                   }
                 }
               }
@@ -909,6 +944,7 @@ export default {
         padding: 20px;
         box-sizing: border-box;
         margin-top: 20px;
+        margin-bottom: 60px;
       }
     }
     .main-right {
@@ -917,16 +953,17 @@ export default {
         background: rgba(255,255,255,1);
         margin-top: 40px;
         box-sizing: border-box;
+        padding: 0 20px 20px 20px;
         .partner-title{
           font-size: 18px;
           color: rgba(51,51,51,1);
           border-bottom: 1px solid rgba(233,233,233,1);
-          padding: 20px;
+          padding: 20px 20px 20px 0;
           box-sizing: border-box;
+          font-weight: bold;
         }
         .partner-intro {
               background:rgba(255,255,255,1);
-              padding: 0 20px 20px 20px;
               li {
                   padding-top: 10px;
                   list-style: none;
@@ -936,6 +973,19 @@ export default {
                   span {
                       color: #3B78FF;
                   }
+                  &:nth-of-type(5) {
+                    display: flex;
+                    a {
+                      display: flex;
+                      img{
+                        width: 18px;
+                        height: 18px;
+                        display: block;
+                        margin-top: 3px;
+                        margin-right: 5px;
+                      }
+                    }
+                  }
               }
           }
       }
@@ -943,14 +993,16 @@ export default {
         background: rgba(255,255,255,1);
         margin-top: 19px;
         box-sizing: border-box;
+        padding: 0 20px;
         .other-title {
             font-size:18px;
             color:rgba(51,51,51,1);
             line-height:24px;
-            padding: 20px;
+            border-bottom: 1px solid rgba(233,233,233,1);
+            padding: 20px 20px 20px 0;
+            font-weight: bold;
         }
           .other-service {
-              margin: 0 20px;
             .other-part {
                 padding: 20px 0;
                 display: flex;
@@ -967,9 +1019,9 @@ export default {
                     p {
                         span {
                            color:rgba(51,51,51,1);
+                           font-weight:bold;
                         }
                         font-size:14px;
-                        font-weight:bold;
                         color:rgba(102,102,102,1);
                         line-height:24px;
                         padding-bottom: 10px;

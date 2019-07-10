@@ -50,7 +50,7 @@
               <div>{{item.title}}</div>
               <div>描述：{{item.description}}</div>
               <div>供应商：{{item.company.name}}</div>
-              <div>快速链接：<span @click="open(item)">共供应商网站</span><span>|</span><span @click="toBuy(item)">使用帮助</span></div>
+              <div>快速链接：<span @click="open(item)">供应商网站</span><span>|</span><span @click="toBuy(item)">使用帮助</span></div>
             </div>
             <div class="product-list-item-price">
               <div>
@@ -274,6 +274,14 @@ export default {
           background: rgba(255, 98, 75, 0);
           cursor: pointer;
           outline: none;
+          font-size: 16px;
+          color: rgba(51,51,51,1);
+          &:hover{
+            background: #89cef1;
+            color: white;
+            transition: .3s;
+            border: 2px solid white;
+          }
         }
       }
     }
@@ -325,6 +333,11 @@ export default {
         cursor: pointer;
         font-size: 12px;
         color: rgba(102,102,102,1);
+        &:hover{
+          color: rgba(59,120,255,1);
+          border: 1px solid rgba(59,120,255,1);
+          transition: 0.3s;
+        }
       }
     }
     .product{
@@ -366,8 +379,8 @@ export default {
             >div{
               &:first-of-type{
                 font-size: 18px;
-                font-weight: bold;
                 line-height: 24px;
+                color: rgba(51,51,51,1);
               }
               &:nth-of-type(2){
                 font-size: 14px;

@@ -126,7 +126,6 @@ export default {
         >button {
           width: 229px;
           height: 44px;
-          padding: 0 30px;
           box-sizing: border-box;
           border-radius: 4px;
           border: 1px solid rgba(51, 51, 51, 1);
@@ -134,6 +133,13 @@ export default {
           background: rgba(255, 98, 75, 0);
           cursor: pointer;
           outline: none;
+          font-size: 16px;
+          &:hover{
+            background: #aec9ff;
+            color: white;
+            transition: .3s;
+            border: 2px solid white;
+          }
         }
       }
     }
@@ -168,6 +174,11 @@ export default {
             cursor: pointer;
             font-size: 12px;
             color: rgba(102,102,102,1);
+            &:hover{
+              color: rgba(59,120,255,1);
+              border: 1px solid rgba(59,120,255,1);
+              transition: 0.3s;
+            }
           }
         }
       }
@@ -189,6 +200,8 @@ export default {
           &:hover{
             box-shadow: 0 2px 20px #ece5e5;
             border: none;
+            color: rgba(59,120,255,1);
+            transition: 0.3s;
           }
           .icon{
             width: 100px;
@@ -197,6 +210,7 @@ export default {
             img{
               width: 100px;
               height: 60px;
+              color: rgba(59,120,255,1);
             }
           }
           .content{
@@ -205,7 +219,6 @@ export default {
             div{
               &:first-of-type{
                 font-size: 14px;
-                color: rgba(59,120,255,1);
                 margin-bottom: 10px;
               }
               &:last-of-type{
