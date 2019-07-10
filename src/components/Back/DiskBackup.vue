@@ -285,24 +285,24 @@
               return h('span', {}, text)
             }
           },
-          {
-            title: '备份间隔',
-            render: (h, params) => {
-              var text = '----'
-              switch (params.row.createway) {
-                case 'day':
-                  text = '每天'
-                  break
-                case 'week':
-                  text = '每周'
-                  break
-                case 'month':
-                  text = '每月'
-                  break
-              }
-              return h('span', {}, text)
-            }
-          },
+          // {
+          //   title: '备份间隔',
+          //   render: (h, params) => {
+          //     var text = '----'
+          //     switch (params.row.createway) {
+          //       case 'day':
+          //         text = '每天'
+          //         break
+          //       case 'week':
+          //         text = '每周'
+          //         break
+          //       case 'month':
+          //         text = '每月'
+          //         break
+          //     }
+          //     return h('span', {}, text)
+          //   }
+          // },
           {
             title: '创建时间',
             key: 'addtime',
