@@ -452,10 +452,10 @@
           this.showModal.hint = true
           return
         }
-        if (this.type == 3 && this.recordInfo.length == 0) {
-          this.showModal.hasMainWep = true
-          return
-        }
+        // if (this.type == 3 && this.recordInfo.length == 0) {
+        //   this.showModal.hasMainWep = true
+        //   return
+        // }
         let url = 'recode/existMainOrWeb.do'
         axios.get(url, {
           params: {

@@ -672,6 +672,7 @@
       this.getMonthCongigDate()
       this.getWeekTimeData()
       this.getResourceAllocation()
+      this.listDiskSnapshots()
     },
     computed: {
       // 该计算属性用于解决观测对象时currentValue与oldValue指向同一对象的问题，没有其他用处
