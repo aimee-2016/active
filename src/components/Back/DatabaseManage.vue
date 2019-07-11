@@ -48,6 +48,10 @@
              </ul>
              <ul>
                <li>
+                 <h4>登陆密码</h4>
+                 <div><span :class="[isActive ? 'send' : 'nosend']" @click="lookPassword()">{{codePlaceholder}}</span></div>
+               </li>
+               <li>
                  <h4>管理员账户名</h4>
                  <div>{{hostInfo.loginname}}</div>
                </li>
@@ -65,14 +69,14 @@
                <li>
                  <h4>内网地址</h4>
                  <div>{{hostInfo.privateip}}
-                   <span @click="modifyIntranet">[修改内网地址]</span>
+                   <span @click="toVpcMannage">[修改内网地址]</span>
                  </div>
 
                </li>
                <li>
                  <h4>数据库端口</h4>
                  <div>{{hostInfo.dbPort}}
-                   <span>[修改端口]</span>
+                   <span @click="portModify">[修改端口]</span>
                  </div>
                </li>
                <li>
@@ -84,18 +88,21 @@
              <ul>
                <li>
                  <h4>远程连接</h4>
-                 <div>45.56.78.63
-                   <span>[解绑公网IP]</span>
+                 <div>{{hostInfo.publicip?hostInfo.publicip:'---'}}
+                   <span v-if="hostInfo.publicip" @click="showModal.unbindIP=true" >[解绑公网IP]</span>
+                   <span v-else @click="bindIP">[绑定公网IP]</span>
                  </div>
                </li>
                <li>
                  <h4>所属VPC</h4>
-                 <div>{{hostInfo.vpcname}}</div>
+                 <div>
+                   <span @click="toVpcMannage">{{hostInfo.vpcname}}</span>
+                </div>
                </li>
-               <li>
+               <!-- <li>
                  <h4>防火墙</h4>
                  <div>默认防火墙</div>
-               </li>
+               </li> -->
              </ul>
            </dd>
          </dl>
@@ -106,7 +113,7 @@
                <li>
                  <h4>存储空间用量</h4>
                  <div>{{hostInfo.disksize+'GB/'+hostInfo.rootdisksize+'GB'}}
-                   <span>[扩容]</span>
+                   <span @click="showModal.dilatation=true">[扩容]</span>
                  </div>
                </li>
              </ul>
@@ -122,7 +129,8 @@
                </li>
                <li>
                  <h4>订单</h4>
-                 <div>{{hostInfo.ordernumber}}
+                 <div>
+                   <span @click="toOrderPage">{{hostInfo.ordernumber}}</span>
                  </div>
                </li>
                <li>
@@ -154,6 +162,54 @@
             <chart :options="item.chart" style="width:100%;height:80%;"></chart>
           </div>
         </div>
+        <div class="tab-3" v-show="configType == '修改密码'">
+          <div class="hide-star-symbol universal-modal-label-14px">
+                <label style="font-size:16px;display: block;padding-bottom: 12px;border-bottom: 1px solid #e9e9e9;">重置密码</label>
+                <Form ref="resetPasswordForm" :model="resetPasswordForm" label-position="left" :label-width="100"
+                      style="margin-top:20px;"
+                      :rules="resetRuleValidate">
+                  <Form-item label="请输入旧密码" prop="oldPassword">
+                    <Input v-model="resetPasswordForm.oldPassword" placeholder="请输入旧密码" type="password"
+                           style="width:250px;"></Input>
+                  </Form-item>
+                  <Form-item label="请输入新密码" prop="newPassword">
+                    <Input v-model="resetPasswordForm.newPassword" placeholder="请输入至少8位包含大小写与数字的密码" type="password" 
+                    @on-focus="passwordForm.passwordHint = true" @on-blur="passwordForm.passwordHint = false"
+                           style="width:250px;"></Input>
+                    <div class="popTip" v-show="passwordForm.passwordHint">
+                      <div><i :class="{reach: passwordForm.secondDegree }"></i>
+                        <p>不能输入连续6位数字或字母，如123456aA</p></div>
+                      <div><i :class="{reach: passwordForm.firstDegree }"></i>
+                        <p>长度8~30位，推荐使用12位以上的密码</p></div>
+                      <div><i :class="{reach: passwordForm.thirdDegree }"></i>
+                        <p>至少包含：小写字母，大写字母，数字</p></div>
+                      <div><p style="color:rgba(102,102,102,1);">可用特殊符号：~:，*_</p></div>
+                    </div>
+                  </Form-item>
+                  <Form-item label="请确认新密码" prop="confirmPassword">
+                    <Input v-model="resetPasswordForm.confirmPassword" placeholder="请确认新密码" type="password"
+                            @on-focus="passwordFormTwo.passwordHint = true" @on-blur="passwordFormTwo.passwordHint = false"
+                           style="width:250px;"></Input>
+                           <!-- <Input v-model="password" placeholder="请输入至少8位包含大小写与数字的密码"
+                       style="width: 300px" @on-change="passwordWarning=''"  ></Input> -->
+                    <div class="popTip" v-show="passwordFormTwo.passwordHint">
+                      <div><i :class="{reach: passwordFormTwo.secondDegree }"></i>
+                        <p>不能输入连续6位数字或字母，如123456aA</p></div>
+                      <div><i :class="{reach: passwordFormTwo.firstDegree }"></i>
+                        <p>长度8~30位，推荐使用12位以上的密码</p></div>
+                      <div><i :class="{reach: passwordFormTwo.thirdDegree }"></i>
+                        <p>至少包含：小写字母，大写字母，数字</p></div>
+                      <div><p style="color:rgba(102,102,102,1);">可用特殊符号：~:，*_</p></div>
+                    </div>
+                  </Form-item>
+                  <Form-item>
+                    <Button type="primary" size="small" style="padding: 5px 15px;" @click="resetConfirm('resetPasswordForm')">
+                      {{resetPasswordForm.buttonMessage}}
+                    </Button>
+                  </Form-item>
+                </Form>
+              </div>
+        </div>
         <div class="tab-5" v-show="configType == '操作日志'">
           <div class="title">
             <RadioGroup v-model="tab5.timeHorizon" type="button" @on-change="logToggle">
@@ -175,179 +231,99 @@
         </div>
       </div>
     </div>
-    <!-- 修改镜像系统弹窗-->
-    <Modal v-model="showModal.mirrorModify" width="550" :scrollable="true">
-      <p slot="header" class="modal-header-border">
-        <span class="universal-modal-title">修改镜像系统</span>
-      </p>
-      <div class="universal-modal-content-flex">
-        <p class="modal-p">*提示：重装主机后，将无法找回系统盘数据。数据盘需要重新挂载，请按照帮助中心中的指导说明进行。</p>
-        <Form :model="mirrorModifyForm" ref="mirrorModifyForm" :rules="mirrorModifyFormRule">
-          <Form-item label="选择镜像" style="width: 70%" prop="system">
-            <Cascader :data="osOptions" v-model="mirrorModifyForm.system"></Cascader>
-          </Form-item>
-          <Form-item label="控制台密码" style="width: 70%" prop="consolePassword">
-            <Input v-model="mirrorModifyForm.consolePassword" type="password" placeholder="请输入控制台登录密码"></Input>
-          </Form-item>
-        </Form>
-      </div>
-      <div slot="footer" class="modal-footer-border">
-        <Button type="ghost" @click="showModal.mirrorModify = false">取消</Button>
-        <Button type="primary" @click="resetSystem" :disabled="mirrorModifyForm.buttonText == '重装中'">{{mirrorModifyForm.buttonText}}</Button>
-      </div>
-    </Modal>
-    <!-- 确认系统重装弹窗 -->
-    <Modal v-model="showModal.reload" :scrollable="true" :closable="false" :width="390">
-      <p slot="header" class="modal-header-border">
-        <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
-        <span class="universal-modal-title">警告</span>
-      </p>
-      <div class="modal-content-s">
-        <div>
-          <p class="lh24">为了数据安全，系统重装之前主机会自动关闭。重装结束后，主机会自动开机。</p>
-          <p>请输入“confirm”</p>
-          <Input v-model="reloadHintForm.input" placeholder="请输入“confirm”"
-                 style="width: 300px;margin-top: 10px;"></Input>
+     <!-- 查看密码弹窗 -->
+      <Modal width="550" v-model="showModal.lookPassword" :scrollable="true" class="lookPassword">
+        <div slot="header" class="modal-header-border">
+          <span class="universal-modal-title">查看登录密码</span>
         </div>
-      </div>
-      <p slot="footer" class="modal-footer-s">
-        <Button @click="showModal.reload=false">取消</Button>
-        <Button type="primary" @click="resetSystem_ok" :disabled="reloadHintForm.input!='confirm'">确定</Button>
-      </p>
-    </Modal>
-    <!-- 挂载硬盘模态框 -->
-    <Modal v-model="showModal.mountDisk" width="550" :scrollable="true">
-      <p slot="header" class="modal-header-border">
-        <span class="universal-modal-title">挂载云硬盘</span>
-      </p>
-      <div class="universal-modal-content-flex">
-        <Form :model="diskMountForm" :rules="mountRuleValidate" ref="mountDisk">
-          <Form-item label="可挂载磁盘列表" prop="mountDisk">
-            <Select v-model="diskMountForm.mountDisk" placeholder="请选择">
-              <Option v-for="(item,index) in diskMountForm.diskList" :key="index" :value="item.diskid">{{ item.diskname}}
-              </Option>
-            </Select>
-          </Form-item>
-          <span style="font-size:14px;font-family:MicrosoftYaHei;color:rgba(42,153,242,1);cursor: pointer;position: absolute;left: 48%;top: 45%;"
-                @click="$router.push('/buy/disk/')">
-              <img style="transform: translate(0px,3px);" src="../../assets/img/public/icon_plussign.png"/>
-              购买磁盘
-            </span>
-        </Form>
-      </div>
-      <div slot="footer" class="modal-footer-border">
-        <Button type="ghost" @click="showModal.mountDisk = false">取消</Button>
-        <Button type="primary" @click="mountDisk_ok">确认挂载</Button>
-      </div>
-    </Modal>
-    <!-- 卸载硬盘模态框 -->
-    <Modal v-model="showModal.unloadDisk" width="550" :scrollable="true">
-      <p slot="header" class="modal-header-border">
-        <span class="universal-modal-title">卸载云硬盘</span>
-      </p>
-      <div class="universal-modal-content-flex">
-        <Form :model="diskUnloadForm" :rules="unloadRuleValidate" ref="unloadDisk">
-          <Form-item label="可挂载磁盘列表" prop="unloadDisk">
-            <Select v-model="diskUnloadForm.unloadDisk" placeholder="请选择">
-              <Option v-for="(item,index) in diskUnloadForm.diskList" :key="index" :value="item.diskid">{{ item.diskname}}
-              </Option>
-            </Select>
-          </Form-item>
-          <span style="font-size:14px;font-family:MicrosoftYaHei;color:rgba(42,153,242,1);cursor: pointer;position: absolute;left: 48%;top: 45%;"
-                @click="$router.push('/buy/disk/')">
-              <img style="transform: translate(0px,3px);" src="../../assets/img/public/icon_plussign.png"/>
-              购买磁盘
-            </span>
-        </Form>
-      </div>
-      <div slot="footer" class="modal-footer-border">
-        <Button type="ghost" @click="showModal.unloadDisk = false">取消</Button>
-        <Button type="primary" @click="diskUnload_ok">确认卸载</Button>
-      </div>
-    </Modal>
-    <!-- 查看密码弹窗 -->
-    <Modal width="550" v-model="showModal.lookPassword" :scrollable="true" class="lookPassword">
-      <div slot="header" class="modal-header-border">
-        <span class="universal-modal-title">查看登录密码</span>
-      </div>
-      <div>
+        <div>
+          <div class="universal-modal-content-flex">
+            <Form :model="lookPasswordForm" ref="lookPasswordForm" :rules="lookPasswordFormRule" @submit.native.prevent>
+              <FormItem label="请输入控制台登录密码" prop="input">
+                <Input v-model="lookPasswordForm.input" placeholder="请输入控制台登录密码" type="password"></Input>
+              </FormItem>
+              <!--<input type="text" hidden>-->
+            </Form>
+          </div>
+          <div style="display:flex;">
+            <p style=" font-size: 14px;line-height: 22px;">密码接收渠道</p>
+            <Checkbox v-model="lookPasswordForm.isemailalarmSec" size="large"
+                      style="margin-left: 20px;font-size: 12px;">邮箱
+            </Checkbox>
+            <Checkbox v-model="lookPasswordForm.issmsalarmSec" size="large" style="margin-left: 20px;font-size: 12px;">
+              短信
+            </Checkbox>
+          </div>
+        </div>
+        <div slot="footer" class="modal-footer-border">
+          <Button type="ghost" @click="showModal.lookPassword=false">取消</Button>
+          <Button type="primary" @click="lookPasswordSubm('lookPasswordForm')"
+                  :disabled="!(lookPasswordForm.isemailalarmSec || lookPasswordForm.issmsalarmSec)">确定
+          </Button>
+        </div>
+      </Modal>
+      <!-- 修改端口模态框 -->
+      <Modal v-model="showModal.portModify" width="550" :scrollable="true" >
+        <p slot="header" class="modal-header-border">
+          <span class="universal-modal-title">修改端口</span>
+        </p>
         <div class="universal-modal-content-flex">
-          <Form :model="lookPasswordForm" ref="lookPasswordForm" :rules="lookPasswordFormRule" @submit.native.prevent>
-            <FormItem label="请输入控制台登录密码" prop="input">
-              <Input v-model="lookPasswordForm.input" placeholder="请输入控制台登录密码" type="password"></Input>
-            </FormItem>
-            <!--<input type="text" hidden>-->
+          <Form :model="portModifyForm" :rules="portModifyRuleValidate" ref="portModifyForm">
+            <Form-item label="当前端口">
+              <Input v-model="portModifyForm.currentPorts" :readonly="true"></Input>
+            </Form-item>
+            <Form-item label="修改端口" prop="newPorts">
+              <Input v-model="portModifyForm.newPorts" :maxlength="8"></Input>
+            </Form-item>
           </Form>
         </div>
-        <div style="display:flex;">
-          <p style=" font-size: 14px;line-height: 22px;">密码接收渠道</p>
-          <Checkbox v-model="lookPasswordForm.isemailalarmSec" size="large"
-                    style="margin-left: 20px;font-size: 12px;">邮箱
-          </Checkbox>
-          <Checkbox v-model="lookPasswordForm.issmsalarmSec" size="large" style="margin-left: 20px;font-size: 12px;">
-            短信
-          </Checkbox>
+        <div slot="footer" class="modal-footer-border">
+          <Button type="ghost" @click="showModal.portModify = false">取消</Button>
+          <Button type="primary" @click="portModify_ok('portModifyForm')">确认</Button>
         </div>
-      </div>
-      <div slot="footer" class="modal-footer-border">
-        <Button type="ghost" @click="showModal.lookPassword=false">取消</Button>
-        <Button type="primary" @click="sendPassword('lookPasswordForm')"
-                :disabled="!(lookPasswordForm.isemailalarmSec || lookPasswordForm.issmsalarmSec)">确定
-        </Button>
-      </div>
-    </Modal>
-    <!-- 修改密码弹窗 -->
-    <Modal v-model="showModal.modifyPassword" width="550" :scrollable="true">
+      </Modal>
+     <!-- 云数据库扩容弹窗 -->
+    <Modal v-model="showModal.dilatation" width="590" :scrollable="true">
       <p slot="header" class="modal-header-border">
-        <span class="universal-modal-title">修改密码</span>
+        <span class="universal-modal-title">调整容量</span>
       </p>
-      <div class="universal-modal-content-flex" style="position: relative;">
-        <Form :model="modifyPasswordForm" ref="modifyPassword" :rules="modifyPasswordFormRule">
-          <FormItem label="当前密码" prop="oldPassword" style="width: 80%;margin-bottom: 10px">
-            <Input :type="modifyPasswordForm.oldPasswordInput" v-model="modifyPasswordForm.oldPassword" :maxlength="32"></Input>
-            <img class="modal-img" @click="changeLoginPasType(1)" src="../../assets/img/login/lr-icon3.png"/>
-          </FormItem>
-          <FormItem label="新的密码" prop="newPassword" style="width: 80%;margin-bottom: 10px">
-            <Input :maxlength="32" :type="modifyPasswordForm.newPasswordInput" v-model="modifyPasswordForm.newPassword" @on-focus="modifyPasswordForm.passwordHint = true" @on-blur="modifyPasswordForm.passwordHint = false"></Input>
-            <img class="modal-img" @click="changeLoginPasType(2)" src="../../assets/img/login/lr-icon3.png"/>
-          </FormItem>
-          <FormItem label="确认密码" prop="confirmPassword" style="width: 80%;margin-bottom: 10px">
-            <Input :maxlength="32" :type="modifyPasswordForm.confirmPasswordInput" v-model="modifyPasswordForm.confirmPassword"></Input>
-            <img class="modal-img" @click="changeLoginPasType(3)" src="../../assets/img/login/lr-icon3.png"/>
-          </FormItem>
-          <div class="popTip" v-show="modifyPasswordForm.passwordHint">
-                  <div><i :class="{reach: modifyPasswordForm.secondDegree }"></i>
-                    <p>不能输入连续6位数字或字母，如123456aA</p></div>
-                  <div><i :class="{reach: modifyPasswordForm.firstDegree }"></i>
-                    <p>长度8~30位，推荐使用12位以上的密码</p></div>
-                  <div><i :class="{reach: modifyPasswordForm.thirdDegree }"></i>
-                    <p>至少包含：小写字母，大写字母，数字</p></div>
-                  <div><p style="color:rgba(102,102,102,1);">可用特殊符号：~:，*_</p></div>
-          </div>
+      <div class="universal-modal-content-flex">
+        <Form :model="dilatationForm">
+          <Form-item label="扩容后容量" style="width:100%;user-select: none">
+            <i-slider
+              v-model="dilatationForm.databaseSize"
+              unit="G"
+              :min="dilatationForm.minDatabaseSize"
+              :max="1000"
+              :step="10"
+              :points="[250,500]"
+              style="width:300px;vertical-align: middle;"
+            ></i-slider>
+            <InputNumber
+              :max="1000"
+              :min="dilatationForm.minDatabaseSize"
+              v-model="dilatationForm.databaseSize"
+              :step="10"
+              :editable="false"
+              style="margin-left: 20px"
+              :precision="0"
+            ></InputNumber>
+            <span style="margin-left: 10px">GB</span>
+          </Form-item>
         </Form>
       </div>
       <div slot="footer" class="modal-footer-border">
-        <Button type="ghost" @click="showModal.modifyPassword = false">取消</Button>
-        <Button type="primary" @click="modifyPassword_ok">确认修改</Button>
-      </div>
-    </Modal>
-    <!-- 绑定ip时，没有公网ip提示 -->
-    <Modal v-model="showModal.publicIPHint" :scrollable="true" :closable="false" :width="390">
-      <p slot="header" class="modal-header-border">
-        <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
-        <span class="universal-modal-title">提示信息</span>
-      </p>
-      <div class="modal-content-s">
-        <div>
-          <p class="lh24">您还未拥有公网IP，请先创建公网IP。</p>
+        <div style="font-size:16px;float:left">
+          资费
+          <span style="color: #2b85e4; text-indent:4px;display:inline-block;">
+            <span style="font-size:24px;">￥{{dilatationCost}}</span>
+          </span>
         </div>
+        <Button type="ghost" @click="showModal.dilatation = false">取消</Button>
+        <Button type="primary" @click="dilatationok" :disabled="dilatationCost=='--'">确认调整</Button>
       </div>
-      <p slot="footer" class="modal-footer-s">
-        <Button @click="showModal.publicIPHint = false">取消</Button>
-        <Button type="primary" @click="$router.push('/buy/elasticip/')">创建公网IP</Button>
-      </p>
     </Modal>
-    <!-- 绑定静态IP -->
+     <!-- 绑定公网IP -->
     <Modal v-model="showModal.bindIP" width="590" :scrollable="true">
       <div slot="header" class="modal-header-border">
         <span class="universal-modal-title">绑定IP</span>
@@ -356,9 +332,11 @@
         <Form :model="bindForm" ref="bindForm" :rules="bindFormRule">
           <Form-item label="选择弹性IP" prop="publicIP">
             <Select v-model="bindForm.publicIP" placeholder="请选择">
-              <Option v-for="(item,index) in publicIPList" :key="index" :value="item.publicipid">
-                {{item.publicip}}
-              </Option>
+              <Option
+                v-for="(item,index) in publicIPList"
+                :key="index"
+                :value="item.publicipid"
+              >{{item.publicip}}</Option>
             </Select>
             <span style="color:#2A99F2;font-size:14px;position:absolute;top:4px;right:-110px;">
               <span style="font-weight:800;font-size:20px;">+</span>
@@ -369,9 +347,24 @@
       </div>
       <div slot="footer" class="modal-footer-border">
         <Button type="ghost" @click="showModal.bindIP = false">取消</Button>
-        <Button type="primary" @click="bindIp_ok('bindForm')">确定
-        </Button>
+        <Button type="primary" @click="bindIpSubmit('bindForm')">确定</Button>
       </div>
+    </Modal>
+    <!-- 绑定ip时，没有公网ip提示 -->
+    <Modal v-model="showModal.publicIPHint" :scrollable="true" :closable="false" :width="390">
+      <p slot="header" class="modal-header-border">
+        <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
+        <span class="universal-modal-title">提示信息</span>
+      </p>
+      <div class="modal-content-s">
+        <div>
+          <p class="lh24">您还未拥有剩余公网IP，请先创建公网IP。</p>
+        </div>
+      </div>
+      <p slot="footer" class="modal-footer-s">
+        <Button @click="showModal.publicIPHint = false">取消</Button>
+        <Button type="primary" @click="$router.push('/buy/elasticip/')">创建公网IP</Button>
+      </p>
     </Modal>
     <!-- 解绑公网ip确认框 -->
     <Modal v-model="showModal.unbindIP" :scrollable="true" :closable="false" :width="390">
@@ -381,213 +374,147 @@
       </p>
       <div class="modal-content-s">
         <div>
-          <p class="lh24">您确认解绑主机的公网IP吗
+          <p class="lh24">
+            您正在为
+            <span style="color:rgb(42, 153, 242);">{{this.hostInfo.computername}}</span>解绑公网IP,解绑之后您将不能通过公网访问该数据库，确认解绑？
           </p>
         </div>
       </div>
       <p slot="footer" class="modal-footer-s">
         <Button @click="showModal.unbindIP = false">取消</Button>
-        <Button type="primary" @click="unbind_ok">确认解绑</Button>
+        <Button type="primary" @click="unbind">确认解绑</Button>
       </p>
-    </Modal>
-    <!-- 带宽调整 -->
-    <Modal v-model="showModal.adjust" width="550" :scrollable="true">
-      <p slot="header" class="modal-header-border">
-        <span class="universal-modal-title">带宽调整</span>
-      </p>
-      <div class="universal-modal-content-flex">
-        <Form :model="adjustForm" label-position="left">
-          <Form-item label="带宽" style="width: 80%">
-            <div style="width:300px;display: inline-block;vertical-align: middle;margin-left: 11px">
-              <Slider v-model='adjustForm.brand' show-input :min='adjustForm.minBrand'></Slider>
-            </div>
-            <span>Mbps</span>
-          </Form-item>
-          <Form-item label="应付差价：" style="width: 80%">
-            <span style="font-family: Microsoft YaHei;font-size: 24px;color: #2A99F2;line-height: 43px;">￥{{adjustForm.cost}}
-            </span>
-          </Form-item>
-        </Form>
-      </div>
-      <div slot="footer" class="modal-footer-border">
-        <Button type="ghost" @click="showModal.adjust = false">取消</Button>
-        <Button type="primary" @click="adjustOK" :disabled="adjustForm.brand == adjustForm.minBrand">确定
-        </Button>
-      </div>
-    </Modal>
-    <!-- 创建规则 -->
-    <Modal v-model="showModal.createRule" width="550" :scrollable="true">
-      <p slot="header" class="modal-header-border">
-        <span class="universal-modal-title">创建规则</span>
-      </p>
-      <div class="universal-modal-content-flex">
-        <Form ref="newRuleFormValidate" :model="newRuleForm" :rules="ruleValidate">
-          <Form-item label="名称" prop="name">
-            <Input v-model="newRuleForm.name" placeholder="请输入..."></Input>
-          </Form-item>
-          <Form-item label="方向" prop="way">
-            <Select v-model="newRuleForm.way" placeholder="请选择">
-              <Option value="Egress">
-                出站规则
-              </Option>
-              <Option value="Ingress">
-                入站规则
-              </Option>
-            </Select>
-          </Form-item>
-          <Form-item label="协议" prop="protocol">
-            <Select v-model="newRuleForm.protocol" placeholder="请选择">
-              <Option v-for="item in newRuleForm.protocolOptions" :value="item" :key="item">
-                {{item}}
-              </Option>
-            </Select>
-          </Form-item>
-          <Form-item label="CIDR" prop="cidr">
-            <Input v-model="newRuleForm.cidr" placeholder="请输入IP地址..."></Input>
-          </Form-item>
-          <!--<Form-item label="优先级（数字越小优先级越高）">
-            <InputNumber v-model="newRuleForm.itemid" :max="10" :min="1"></InputNumber>
-          </Form-item>-->
-          <Form-item label="起始端口" v-show="newRuleForm.protocol != 'ICMP' && newRuleForm.protocol != 'ALL'">
-            <InputNumber v-model="newRuleForm.startPort" :max="65535" :min="0" :precision="0"></InputNumber>
-          </Form-item>
-          <Form-item label="结束端口" v-show="newRuleForm.protocol != 'ICMP' && newRuleForm.protocol != 'ALL'">
-            <InputNumber v-model="newRuleForm.endPort" :max="65535" :min="0" :precision="0"></InputNumber>
-          </Form-item>
-          <Form-item label="行为" prop="access">
-            <Select v-model="newRuleForm.access" placeholder="请选择">
-              <Option value="Allow">
-                接受
-              </Option>
-              <Option value="Deny">
-                拒绝
-              </Option>
-            </Select>
-          </Form-item>
-        </Form>
-      </div>
-      <div slot="footer" class="modal-footer-border">
-        <Button type="ghost" @click="showModal.createRule = false">取消
-        </Button>
-        <Button type="primary" @click="handleSubmit">确定
-        </Button>
-      </div>
     </Modal>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+import axios from 'axios'
   import line from '@/echarts/hostManage/line'
   import bar from '@/echarts/hostManage/bar'
   import regExp from '../../util/regExp'
   import {debounce} from 'throttle-debounce'
-
-  const validateCdir = (rule, value, callback) => {
-    var re = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\/(\d|[1-2]\d|3[0-2])$/
-    if (!value) {
-      return callback(new Error('CIDR不能为空'));
-    } else {
-      if (!re.test(value)) {
-        callback(new Error('请输入正确的CIDR'));
-      } else {
-        callback();
-      }
-    }
-  }
   export default {
     data() {
-      const validaSystem = (rule, value, callback) => {
-        if (value.length == 0) {
-          callback(new Error('请选择镜像系统'));
+      var regExp = /(?!(^[^a-z]+$))(?!(^[^A-Z]+$))(?!(^[^\d]+$))^[\w`~!#$%\\\\^&*|{};:\',\\/<>?@]{6,23}$/
+      const validateoldPassword = (rule, value, callback) => {
+        if (!value) {
+          callback(new Error('密码不能为空'));
+        } else if (!regExp.test(value)) {
+          callback(new Error('密码由6位及以上23位以下的字母数字组成，必须包含大小写字母、数字'));
         } else {
           callback();
         }
       }
-      const validaRegisteredPassWord = (rule, value, callback) => {
-        if (!(this.modifyPasswordForm.firstDegree&&this.modifyPasswordForm.secondDegree&&this.modifyPasswordForm.thirdDegree)) {
+      const validatePassword = (rule, value, callback) => {
+        if (!value) {
+          callback(new Error('密码不能为空'));
+        } else if (!(this.passwordForm.firstDegree&&this.passwordForm.secondDegree&&this.passwordForm.thirdDegree)) {
           callback(new Error('您输入的密码不符合格式要求'));
-        }  else {
-          callback()
-        }
-      }
-      const validaRegisteredPassWordTwo = (rule, value, callback) => {
-        if (this.modifyPasswordForm.newPassword != value) {
-          callback(new Error('两次输入的密码不一致'));
         } else {
-          callback()
+          if (regExp.test(value)) {
+            this.$refs.resetPasswordForm.validateField('confirmPassword');
+          }
+          callback();
         }
       }
-      const validaRegisteredName = regExp.validaRegisteredName
+      const validatePassCheck = (rule, value, callback) => {
+        if (!value) {
+          callback(new Error('密码不能为空'));
+        } else if (!(this.passwordFormTwo.firstDegree&&this.passwordFormTwo.secondDegree&&this.passwordFormTwo.thirdDegree)) {
+          callback(new Error('你输入的密码不符合格式要求'));
+        } else if (this.resetPasswordForm.newPassword != value) {
+          callback(new Error('两次密码不一致'));
+        } else {
+          callback();
+        }
+      }
+      const validaSinginName = (rule, value, callback) => {
+        if (!value) {
+          callback(new Error('密码不能为空'));
+        } else if (value.length < 8) {
+          callback(new Error('长度至少为8位'));
+        } else {
+          callback();
+        }
+      }
+      const validateNewport = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入修改后的端口号'))
+        } else {
+          if (/^[\d]+$/.test(value) && value < 65536 && value > 0) {
+            callback()
+          } else {
+            callback(new Error('请输入正确的端口号'))
+          }
+        }
+      }
       return {
-        regExpObj: {
-          password: /(?!(^[^a-z]+$))(?!(^[^A-Z]+$))(?!(^[^\d]+$))^[\w~*:,]{8,30}$/
-        },
-        guideStep: 0,
-        hostInfo: {},
-        computerId: '',
         showModal: {
-          rename: false,
-          mirrorModify: false,
-          reload: false,
-          mountDisk: false,
-          unloadDisk: false,
+          portModify: false,
           lookPassword: false,
-          modifyPassword: false,
           publicIPHint: false,
           bindIP: false,
           unbindIP: false,
-          adjust: false,
-          rollback: false,
-          delsnaps: false,
-          createRule: false
+          dilatation:false,
         },
-        renameForm: {
-          hostName: ''
+         bindForm: {
+        publicIP: ''
+      },
+      bindFormRule: {
+        publicIP: [
+          { required: true, message: '请选择', trigger: 'change' }
+        ]
+      },
+      publicIPList: [],
+        dilatationCost: '--',
+        dilatationForm: {
+          databaseSize: 0,
+          minDatabaseSize: 0
         },
-        renameFormRule: {
-          hostName: [
-            {required: true, validator: regExp.validaRegisteredName, trigger: 'blur'}
+        passwordForm: {
+          passwordHint: false,
+          //密码强度
+          firstDegree: false,
+          secondDegree: false,
+          thirdDegree: false
+        },
+        passwordFormTwo: {
+          passwordHint: false,
+          //密码强度
+          firstDegree: false,
+          secondDegree: false,
+          thirdDegree: false
+        },
+        portModifyForm: {
+          currentPorts: '',
+          newPorts: ''
+        },
+        portModifyRuleValidate: {
+          newPorts: [
+            {validator: validateNewport, trigger: 'change'}
           ]
         },
-        osOptions: [],
-        mirrorModifyForm: {
-          system: [],
-          consolePassword: '',
-          buttonText: '确认重装'
-        },
-        mirrorModifyFormRule: {
-          system: [
-            {required: true, validator: validaSystem, trigger: 'change'}
-          ],
-          consolePassword: [
-            {required: true, message: '请输入控制台登录密码', trigger: 'blur'}
-          ]
-        },
-        reloadHintForm: {
-          input: ''
-        },
-        configType: '基础信息',
-        configTypes: ['基础信息', '主机监控',  '操作日志'],
-        isAutoRenew: false,
-        diskMountForm: {
-          mountDisk: '',
-          diskList: []
-        },
-        mountRuleValidate: {
-          mountDisk: [
-            {required: true, message: '请选择挂载的磁盘', trigger: 'change'}
-          ]
-        },
-        diskUnloadForm: {
-          unloadDisk: '',
-          diskList: []
-        },
-        unloadRuleValidate: {
-          unloadDisk: [
-            {required: true, message: '请选择卸载的磁盘', trigger: 'change'}
-          ]
-        },
+        isActive: true,
+        countdown: 60,
         codePlaceholder: '发送密码',
+         resetPasswordForm: {
+          oldPassword: '',
+          newPassword: '',
+          confirmPassword: '',
+          buttonMessage: '确认重置',
+        },
+        resetRuleValidate: {
+          oldPassword: [
+            {required: true, validator: validateoldPassword, trigger: 'blur'}
+          ],
+          newPassword: [
+            {required: true, validator: validatePassword, trigger: 'blur'}
+          ],
+          confirmPassword: [
+            {required: true, validator: validatePassCheck, trigger: 'blur'}
+          ],
+        },
         lookPasswordForm: {
           input: '',
           isletterSec: false,
@@ -599,35 +526,18 @@
         },
         lookPasswordFormRule: {
           input: [
-            {required: true, message: '密码不能为空', trigger: 'blur'}
+            {required: true, validator: validaSinginName, trigger: 'blur'}
           ]
         },
-        modifyPasswordForm: {
-          oldPassword: '',
-          newPassword: '',
-          confirmPassword: '',
-          oldPasswordInput: 'password',
-          newPasswordInput: 'password',
-          confirmPasswordInput: 'password',
-          passwordHint: false,
-          //密码强度
-          firstDegree: false,
-          secondDegree: false,
-          thirdDegree: false
+        regExpObj: {
+          password: /(?!(^[^a-z]+$))(?!(^[^A-Z]+$))(?!(^[^\d]+$))^[\w~*:,]{8,30}$/
         },
-        modifyPasswordFormRule: {
-          oldPassword: [
-            {required: true, message: '请输入旧密码', trigger: 'blur'},
-          ],
-          newPassword: [
-            {required: true, message: '请输入新密码', trigger: 'blur'},
-            {validator: validaRegisteredPassWord, trigger: 'blur'}
-          ],
-          confirmPassword: [
-            {required: true, message: '请输入新密码', trigger: 'blur'},
-            {validator: validaRegisteredPassWordTwo, trigger: 'blur'}
-          ],
-        },
+        guideStep: 0,
+        hostInfo: {},
+        computerId: '',
+        configType: '基础信息',
+        configTypes: ['基础信息', '主机监控', '修改密码', '操作日志'],
+        codePlaceholder: '发送密码',
         publicIPList: [],
         bindForm: {
           publicIP: '',
@@ -645,7 +555,6 @@
           cost: '0',
           caseType: 0
         },
-
         tab2: {
           monitoringList: [
             {
@@ -680,62 +589,6 @@
             }
           ],
           currentData: this.getCurrentDate()
-        },
-
-        tab3: {
-          rule: '出站规则',
-          id: '',
-          totalLenght: 0,
-          selectLenght: 0,
-          firewalLoading: false,
-          firewalList: [
-            {
-              type: 'selection',
-              width: 55,
-              align: 'center'
-            },
-            {
-              title: '安全组名称',
-              key: 'acllistitemname'
-            },
-            {
-              title: '协议',
-              key: 'agreement'
-            },
-            {
-              title: '行为',
-              key: 'operation'
-            },
-            {
-              title: '起始端口',
-              key: 'startport'
-            },
-            {
-              title: '结束端口',
-              key: 'endport'
-            },
-            {
-              title: 'CIDR',
-              key: 'cidr'
-            },
-            {
-              title: '操作',
-              render: (h, params) => {
-                return h('div', [
-                  h('span', {
-                    style: {color: '#FF0000', cursor: 'pointer'}, on: {
-                      click: () => {
-                        this.del(params.row.id);
-                      }
-                    }
-                  }, '删除'),
-                  // h('span',{style:{margin:'0 10px',color:'#999999'}},'|'),
-                  // h('span',{style:{color:'#2A99F2',cursor:'pointer'}},'修改规则')
-                ])
-              }
-            }
-          ],
-          firewalData: []
         },
         tab5: {
           timeHorizon: '近一天',
@@ -782,37 +635,6 @@
           pageSize: 10,
           logTime: this.getCurrentDate() + ',' + this.getTomorrow()
         },
-        newRuleForm: {
-          name: '',
-          way: '',
-          protocol: '',
-          protocolOptions: ['TCP', 'UDP', 'ICMP', 'ALL'],
-          endPort: 1,
-          startPort: 1,
-          access: '',
-          cidr: '0.0.0.0/0',
-          itemid: 1,
-        },
-        ruleValidate: {
-          name: [
-            {required: true, validator: validaRegisteredName, trigger: 'change'}
-          ],
-          way: [
-            {required: true, message: '请选择方向', trigger: 'change'},
-          ],
-          protocol: [
-            {required: true, message: '请选择协议', trigger: 'change'}
-          ],
-          itemid: [
-            {required: true, message: '请填写优先级', trigger: 'change'},
-          ],
-          access: [
-            {required: true, message: '请选择行为', trigger: 'change'},
-          ],
-          cidr: [
-            {required: true, validator: validateCdir, trigger: 'blur'}
-          ]
-        }
       }
     },
     created() {
@@ -829,6 +651,8 @@
           case '主机监控':
             this.getComputerMonitor()
             break
+          case '修改密码':
+            break
           case '操作日志':
             this.getHostLog()
             break
@@ -843,192 +667,192 @@
         }).then(res => {
           if (res.status == 200 && res.data.status == 1) {
             this.hostInfo = res.data.result.info[0]
-            this.isAutoRenew = Boolean(this.hostInfo.isAutoRenw)
+            // this.isAutoRenew = Boolean(this.hostInfo.isAutoRenw)
             console.log(this.hostInfo)
           }
         })
       },
-      hostUpgrade() {
-        sessionStorage.setItem('upgradeId', this.hostInfo.id)
-        sessionStorage.setItem('vmid', this.hostInfo.computerid)
-        this.$router.push('dataBaseUpgrade')
-      },
-      modifyIntranet() {
-        sessionStorage.setItem('vpcId', this.hostInfo.vpcid)
-        this.$router.push('vpcManage')
-      },
-      checkRenameForm() {
-        this.$refs.renameForm.validate((valid) => {
-          if (valid) {
-            this.showModal.rename = false
-            this.$http.post('information/changeVmName.do', {
-              vmId: this.computerId,
-              name: this.renameForm.hostName
-            }).then(response => {
-              if (response.status == 200 && response.data.status == 1) {
-                this.$Message.success(response.data.message)
-                this.getHostInfo()
-              } else {
-                this.$message.info({
-                  content: response.data.message
-                })
-              }
-            })
+      bindIP () {
+        this.bindForm.publicIP = ''
+        axios.get('network/listPublicIp.do', {
+          params: {
+            useType: 0,
+            zoneId: this.hostInfo.zoneid,
+            vpcId: this.hostInfo.vpcid
           }
-        })
-      },
-      linkHost() {
-        localStorage.setItem('link-companyid', this.hostInfo.companyId)
-        localStorage.setItem('link-vmid', this.hostInfo.computerId)
-        localStorage.setItem('link-zoneid', this.hostInfo.zoneId)
-        localStorage.setItem('link-phone', this.$store.state.authInfo.phone)
-        window.open('/link')
-      },
-      modifyMirror() {
-        this.getMirrorList()
-        this.showModal.mirrorModify = true
-      },
-      getMirrorList() {
-        let url = 'information/getTemplateAndTemplateFunction.do'
-        this.$http.get(url, {
-          params: {}
-        }).then(res => {
-          if (res.data.status == 1 && res.status == 200) {
-            this.osOptions = res.data.result
-          } else {
-            this.$Message.info(res.data.message)
-          }
-        })
-      },
-      resetSystem() {
-        this.$refs.mirrorModifyForm.validate((valid) => {
-          if (valid) {
-            this.showModal.reload = true
-          }
-        })
-      },
-      resetSystem_ok() {
-        this.showModal.reload = false
-        this.mirrorModifyForm.buttonText = '重装中'
-        this.$http.post('information/restoreVirtualMachine.do', {
-          VMId: this.computerId,
-          templateId: this.mirrorModifyForm.system[1],
-          adminPassword: this.mirrorModifyForm.consolePassword
         }).then(response => {
           if (response.status == 200 && response.data.status == 1) {
-            this.showModal.mirrorModify = false
-            this.mirrorModifyForm.buttonText = '确认重装'
-            this.mirrorModifyForm.system = []
-            this.mirrorModifyForm.consolePassword = ''
-            this.$Message.success('系统重装成功')
-            this.getHostInfo()
-          } else {
-            this.mirrorModifyForm.buttonText = '确认重装'
-            this.$message.info({
-              content: response.data.message
-            })
+            this.publicIPList = response.data.result
+            if (this.publicIPList == '') {
+              this.showModal.publicIPHint = true
+            } else {
+              this.showModal.bindIP = true
+            }
+          }
+        })
+    },
+    bindIpSubmit (name) {
+      this.$refs[name].validate((valid) => {
+        if (valid) {
+          this.showModal.bindIP = false
+          this.$Message.info({
+            content: `<span style="color:#2A99F2">${this.hostInfo.computername}</span>云主机,正在绑定公网IP`
+          })
+          this.$http.get('network/enableStaticNatByAfter.do', {
+            params: {
+              ipId: this.bindForm.publicIP,
+              VMId: this.hostInfo.computerid
+            }
+          }).then(response => {
+            if (response.status == 200 && response.data.status == 1) {
+              this.getHostInfo()
+            } else {
+              this.$message.info({
+                content: response.data.message
+              })
+            }
+          })
+        }
+      }
+      )
+    },
+    unbind () {
+      this.showModal.unbindIP = false
+      this.$http.get('network/disableStaticNatByAfter.do', {
+        params: {
+          ipId: this.hostInfo.publicip,
+          VMId: this.hostInfo.computerid
+        }
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          this.hostInfo.publicip = ''
+        } else {
+          this.$message.info({
+            content: response.data.message
+          })
+        }
+      })
+    },
+      // 数据库扩容价格查询
+    queryDatabaseCost: debounce(500, function () {
+      axios.get('database/upDBCost.do', {
+        params: {
+          DBId: this.hostInfo.computerid,
+          diskSize: this.dilatationForm.databaseSize - this.dilatationForm.minDatabaseSize,
+          zoneId: this.hostInfo.zoneid
+        }
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          this.dilatationCost = response.data.result
+        } else {
+          this.$message.info({
+            content: response.data.message
+          })
+        }
+      })
+    }),
+    dilatationok () {
+      axios.get('database/upDB.do', {
+        params: {
+          DBId: this.hostInfo.computerid,
+          diskSize: this.dilatationForm.databaseSize - this.dilatationForm.minDatabaseSize,
+          zoneId: this.hostInfo.zoneid
+        }
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          this.$router.push('order')
+        } else {
+          this.$message.info({
+            content: response.data.message
+          })
+        }
+      })
+    },
+      portModify() {
+        this.$message.confirm({
+          title: '修改端口',
+          content: '修改端口会导致数据库重启，请谨慎操作，是否确认修改端口？',
+          onOk: () => {
+            this.portModifyForm.currentPorts = this.hostInfo.dbPort
+            this.showModal.portModify = true
           }
         })
       },
-      diskMount() {
-        this.getDiskList()
-        this.showModal.mountDisk = true
-      },
-      getDiskList() {
-        let url = 'Disk/listDisk.do'
-        this.$http.get(url, {
-          params: {
-            isCanAttach: '1'
-          }
-        }).then(res => {
-          if (res.status == 200 && res.data.status == 1) {
-            this.diskMountForm.diskList = res.data.result
-          } else {
-            this.$message.info({
-              content: res.data.message
-            })
-          }
-        })
-      },
-      mountDisk_ok() {
-        this.$refs.mountDisk.validate((valid) => {
+      portModify_ok(name) {
+        this.$refs[name].validate((valid) => {
           if (valid) {
-            this.$Message.info('磁盘正在挂载，请稍候。。。')
-            this.showModal.mountDisk = false
-            this.$http.get('Disk/attachVolume.do', {
+            this.showModal.portModify = false
+            this.$http.get('database/updateDBPort.do', {
               params: {
-                diskId: this.diskMountForm.mountDisk,
-                VMId: this.computerId
+                DBId: this.hostInfo.computerid, //(数据库的UUID),
+                port: this.portModifyForm.newPorts //(需要更改的端口)
               }
-            }).then(response => {
-              if (response.status == 200 && response.data.status == 1) {
-                this.$Message.info({
-                  content: response.data.message,
-                })
-                this.getHostInfo()
+            }).then(res => {
+              if (res.status === 200 && res.data.status === 1) {
+                this.$Message.success(res.data.message)
+                this.hostInfo.dbPort = this.portModifyForm.newPorts
               } else {
                 this.$message.info({
-                  content: response.data.message
+                  content: res.data.message
                 })
               }
             })
           }
         })
       },
-      diskUnload() {
-        this.getDiskListByComputerId()
-        this.showModal.unloadDisk = true
-      },
-      getDiskListByComputerId() {
-        let url = 'Disk/listDisk.do'
-        this.$http.get(url, {
-          params: {
-            VMId: this.computerId
-          }
-        }).then(res => {
-          if (res.status == 200 && res.data.status == 1) {
-            this.diskUnloadForm.diskList = res.data.result
-          } else {
-            this.$message.info({
-              content: res.data.message
-            })
-          }
-        })
-      },
-      diskUnload_ok() {
-        this.$refs.unloadDisk.validate((valid) => {
-          if (valid) {
-            this.$Message.info('磁盘正在卸载，请稍候。。。')
-            this.showModal.unloadDisk = false
-            this.$http.get('Disk/detachVolume.do', {
-              params: {
-                diskId: this.diskUnloadForm.unloadDisk,
-                VMId: this.computerId
-              }
-            }).then(response => {
+      inter() {
+        this.intervalSnapsList = setInterval(() => {
+          axios.get('Snapshot/listVMSnapshot.do', {
+            params: {
+              zoneId: $store.state.zone.zoneid,
+              resourceType: 1,
+              resourceId: this.snapsId
+            }
+          })
+            .then(response => {
               if (response.status == 200 && response.data.status == 1) {
-                this.$Message.info({
-                  content: response.data.message,
+                var snapshotData = response.data.result
+                snapshotData.forEach(item => {
+                  if (this.snapsSelection) {
+                    if (this.snapsSelection.id == item.id) {
+                      item._checked = true
+                    }
+                    if (item.status == 2) {
+                      item._disabled = true
+                    }
+                  }
                 })
-                this.getHostInfo()
-              } else {
-                this.$message.info({
-                  content: response.data.message
-                })
+                this.snapshotData = snapshotData
               }
             })
-          }
-        })
+        }, 1000 * 10)
       },
-      sendPassword(name) {
+       lookPassword() {
+        if (this.isActive) {
+          this.showModal.lookPassword = true
+        }
+      },
+      lookPasswordSubm(name) {
         this.$refs[name].validate((valid) => {
           if (valid) {
             this.showModal.lookPassword = false
+            this.isActive = false
+            this.codePlaceholder = '发送密码（60s）'
+            var inter = setInterval(() => {
+              this.countdown--
+              this.codePlaceholder = '发送密码（' + this.countdown + 's）'
+              if (this.countdown == 0) {
+                clearInterval(inter)
+                this.countdown = 60
+                this.codePlaceholder = '发送密码'
+                this.isActive = true
+              }
+            }, 1000)
             this.lookPasswordForm.isLetterSec = this.lookPasswordForm.isletterSec == false ? 0 : 1
             this.lookPasswordForm.isSmsAlarmSec = this.lookPasswordForm.issmsalarmSec == false ? 0 : 1
             this.lookPasswordForm.isEmailAlarmSec = this.lookPasswordForm.isemailalarmSec == false ? 0 : 1
             this.$http.post('log/sendVMPassword.do', {
-              VMId: this.computerId,
+              VMId: this.hostInfo.computerid,
               password: this.lookPasswordForm.input,
               letter: this.lookPasswordForm.isLetterSec,
               meail: this.lookPasswordForm.isEmailAlarmSec,
@@ -1036,16 +860,6 @@
             }).then(response => {
               if (response.status == 200 && response.data.status == 1) {
                 this.$Message.success(response.data.message)
-                this.codePlaceholder = '(60s)'
-                let countdown = 60
-                let inter = setInterval(() => {
-                  countdown--
-                  this.codePlaceholder = '(' + countdown + 's)'
-                  if (countdown == 0) {
-                    clearInterval(inter)
-                    this.codePlaceholder = '发送密码'
-                  }
-                }, 1000)
               } else {
                 this.$message.info({
                   content: response.data.message
@@ -1055,6 +869,45 @@
             })
           }
         })
+      },
+      resetConfirm(name) {
+        this.$refs[name].validate((valid) => {
+          if (valid) {
+            this.resetPasswordForm.buttonMessage = '正在重置中...'
+            this.$http.get('database/updateDBPassword.do', {
+              params: {
+                DBId: this.hostInfo.computerid,
+                password: this.resetPasswordForm.newPassword,
+                // oldPassword: this.resetPasswordForm.oldPassword
+              }
+            }).then(response => {
+              if (response.status == 200 && response.data.status == 1) {
+                this.$Message.success(response.data.message)
+              } else {
+                this.$message.info({
+                  content: response.data.message
+                })
+              }
+              this.resetPasswordForm.buttonMessage = '确认重置'
+              this.resetPasswordForm.oldPassword = ''
+              this.resetPasswordForm.newPassword = ''
+              this.resetPasswordForm.confirmPassword = ''
+            })
+          }
+        })
+      },
+      hostUpgrade() {
+        sessionStorage.setItem('upgradeId', this.hostInfo.id)
+        sessionStorage.setItem('vmid', this.hostInfo.computerid)
+        this.$router.push('dataBaseUpgrade')
+      },
+      toVpcMannage() {
+        sessionStorage.setItem('vpcId', this.hostInfo.vpcid)
+        this.$router.push('vpcManage')
+      },
+      toOrderPage() {
+        sessionStorage.setItem('orderid', this.hostInfo.ordernumber)
+        this.$router.push('OrderDetails')
       },
       changeLoginPasType(val) {
         switch (val) {
@@ -1068,32 +921,6 @@
             this.modifyPasswordForm.confirmPasswordInput == 'password' ? this.modifyPasswordForm.confirmPasswordInput = 'text' : this.modifyPasswordForm.confirmPasswordInput = 'password'
             break
         }
-      },
-      modifyPassword_ok() {
-        this.$refs.modifyPassword.validate((valid) => {
-          if (valid) {
-            this.showModal.modifyPassword = false
-            let url = 'information/resetPasswordForVirtualMachine.do'
-            this.$http.get(url, {
-              params: {
-                VMId: this.computerId,
-                password: this.modifyPasswordForm.newPassword,
-                oldPassword: this.modifyPasswordForm.oldPassword
-              }
-            }).then(res => {
-              if (res.status == 200 && res.data.status == 1) {
-                this.$Message.info({
-                  content: res.data.message,
-                })
-                this.getHostInfo()
-              } else {
-                this.$message.info({
-                  content: res.data.message
-                })
-              }
-            })
-          }
-        })
       },
       toOther(val) {
         switch (val) {
@@ -1109,134 +936,6 @@
             break
         }
       },
-      bindIP() {
-        if (this.bindForm.bindIpText != '绑定IP') {
-          return
-        }
-        this.bindForm.publicIP = ''
-        this.$http.get('network/listPublicIp.do', {
-          params: {
-            useType: 0,
-            vpcId: this.hostInfo.vpcId
-          }
-        }).then(response => {
-          if (response.status == 200 && response.data.status == 1) {
-            this.publicIPList = response.data.result
-            if (this.publicIPList == '') {
-              this.showModal.publicIPHint = true
-            } else {
-              this.showModal.bindIP = true
-            }
-          }
-        })
-      },
-      bindIp_ok(name) {
-        this.$refs[name].validate((valid) => {
-            if (valid) {
-              this.showModal.bindIP = false
-              this.$http.get('network/enableStaticNat.do', {
-                params: {
-                  ipId: this.bindForm.publicIP,
-                  VMId: this.computerId
-                }
-              }).then(response => {
-                if (response.status == 200 && response.data.status == 1) {
-                  this.$Message.info(response.data.message)
-                  this.bindForm.bindIpText = '绑定中'
-                } else {
-                  this.$message.info({
-                    content: response.data.message
-                  })
-                }
-              })
-            }
-          }
-        )
-      },
-      unbindIp() {
-        if (this.bindForm.unbindText != '解绑IP') {
-          return
-        }
-        this.showModal.unbindIP = true
-      },
-      unbind_ok() {
-        this.showModal.unbindIP = false
-        this.$http.get('network/disableStaticNat.do', {
-          params: {
-            ipId: this.hostInfo.publicIpId,
-            VMId: this.computerId
-          }
-        }).then(response => {
-          if (response.status == 200 && response.data.status == 1) {
-            this.$Message.info(response.data.message)
-            this.bindForm.unbindText = '解绑中'
-          } else {
-            this.$message.info({
-              content: response.data.message
-            })
-          }
-        })
-      },
-      adjustIP() {
-        this.adjustForm.brand = parseInt(this.hostInfo.bandwith)
-        this.adjustForm.minBrand = parseInt(this.hostInfo.bandwith)
-        this.showModal.adjust = true
-      },
-      adjustOK() {
-        this.showModal.adjust = false
-        this.$http.get('continue/UpPublicBnadwith.do', {
-          params: {
-            bandwith: this.adjustForm.brand,
-            publicIpId: this.hostInfo.publicId
-          }
-        }).then(response => {
-            if (response.status == 200 && response.data.status == 1) {
-              this.$router.push({path: 'order'})
-            } else {
-              this.$message.info({
-                content: response.data.message
-              })
-            }
-          }
-        )
-      },
-      queryAdjustPrice: debounce(500, function () {
-        this.$http.get('continue/countMoneyByUpPublicBandwith.do', {
-          params: {
-            brandwith: this.adjustForm.brand,
-            publicIpId: this.hostInfo.publicId
-          }
-        }).then(response => {
-          if (response.status == 200) {
-            this.adjustForm.cost = response.data.result
-          } else {
-            this.adjustForm.cost = '正在计算'
-          }
-        })
-      }),
-      changAutoRenew() {
-        if (this.hostInfo.case_type != 2 && this.hostInfo.case_type != 1) {
-          this.getHostInfo()
-          return
-        }
-        let url = 'information/setAutoRenew.do'
-        this.$http.get(url, {
-          params: {
-            type: 'host',
-            id: this.hostInfo.id,
-            flag: this.isAutoRenew ? '1' : '0'
-          }
-        }).then(res => {
-          if (res.data.status == 1 && res.status == 200) {
-            this.$Message.info(res.data.message)
-          } else {
-            this.$message.info({
-              content: res.data.message
-            })
-          }
-        })
-      },
-
       getComputerMonitor() {
         this.$http.get('alarm/getVmAlarmByHour.do', {
           params: {
@@ -1401,133 +1100,6 @@
       getCurrentDate() {
         return new Date().getFullYear().toString() + '.' + (new Date().getMonth() + 1).toString() + '.' + new Date().getDate().toString()
       },
-
-      // 获取安全组
-      getAclList() {
-        this.tab3.firewalLoading = true;
-        this.$http.get('network/listaclListItem.do', {
-          params: {
-            aclListId: this.hostInfo.firewallId
-          }
-        }).then(response => {
-          if (response.status == 200 && response.data.status == 1) {
-            if (this.tab3.rule == '出站规则') {
-              this.tab3.selectLenght = 0;
-              this.tab3.firewalData = response.data.result.down;
-              this.tab3.totalLenght = response.data.result.down.length;
-              this.tab3.firewalLoading = false;
-            }
-            if (this.tab3.rule == '入站规则') {
-              this.tab3.selectLenght = 0;
-              this.tab3.firewalData = response.data.result.up;
-              this.tab3.totalLenght = response.data.result.up.length;
-              this.tab3.firewalLoading = false;
-            }
-          } else {
-            this.$Message.info({
-              content: response.data.message,
-              duration: 5
-            })
-            this.tab3.firewalLoading = false;
-          }
-        }).catch(err => {
-          if (err)
-            this.tab3.firewalLoading = false;
-        })
-      },
-      tab3RadioChange() {
-        this.getAclList();
-      },
-      firewalSelectionChange(selection) {
-        this.tab3.selectLenght = selection.length;
-        selection.forEach(item => {
-          this.tab3.id += item.id + ','
-        })
-      },
-      handleSubmit() {
-        this.$refs.newRuleFormValidate.validate(validate => {
-            if (validate) {
-              if (this.newRuleForm.protocol == 'ALL' || this.newRuleForm.protocol == 'ICMP') {
-                this.newRuleForm.startPort = 1
-                this.newRuleForm.endPort = 65535
-              }
-              this.showModal.createRule = false
-              let data = {
-                acllistitemname: this.newRuleForm.name,
-                //itemid: this.newRuleForm.itemid,
-                agreement: this.newRuleForm.protocol,
-                operation: this.newRuleForm.access == 'Allow' ? '接受' : '拒绝',
-                _status: 1
-              }
-              if (this.newRuleForm.way != 'Egress') {
-                this.tab3.firewalData.push(data);
-                this.tab3.rule = '入站规则';
-              } else {
-                this.tab3.firewalData.push(data);
-                this.tab3.rule = '出站规则';
-              }
-              this.$http.get('network/createNetworkACL.do', {
-                params: {
-                  name: this.newRuleForm.name,
-                  way: this.newRuleForm.way,
-                  protocol: this.newRuleForm.protocol,
-                  //itemid: this.newRuleForm.itemid,
-                  cdir: this.newRuleForm.cidr,
-                  startport: this.newRuleForm.startPort,
-                  endport: this.newRuleForm.endPort,
-                  acllistid: this.hostInfo.firewallId,
-                  access: this.newRuleForm.access
-                }
-              }).then(response => {
-                if (response.status == 200 && response.data.status == 1) {
-                  this.$Message.success({
-                    content: response.data.message
-                  })
-                  this.getAclList();
-                } else {
-                  this.getAclList();
-                  this.$message.info({
-                    content: response.data.message
-                  })
-                }
-              })
-            }
-          }
-        )
-      },
-      del(aclId) {
-        // this.upInformation.tableData.forEach(item => {
-        //   if (item.id == aclId) {
-        //     this.$set(item, '_status', 2)
-        //   }
-        // })
-        // this.downInformation.tableData.forEach(item => {
-        //   if (item.id == aclId) {
-        //     this.$set(item, '_status', 2)
-        //   }
-        // })
-        this.$http.get('network/deleteNetworkACL.do', {
-          params: {
-            id: aclId == '' ? this.tab3.id.substring(0, this.tab3.id.length - 1) : aclId
-          }
-        }).then(response => {
-          if (response.status == 200 && response.data.status == 1) {
-            this.$Message.success({
-              content: response.data.message
-            })
-            this.getAclList();
-          } else {
-            this.getAclList();
-            this.$message.info({
-              content: response.data.message
-            })
-          }
-        })
-      },
-      seeAll() {
-        sessionStorage.setItem('isSeeHint', '1')
-        this.guideStep = 5
-      }
     },
     computed: {
       auth() {
@@ -1538,63 +1110,113 @@
       }
     },
     watch: {
-      'adjustForm.brand'(value, oldValue) {
-        this.adjustForm.cost = '正在计算'
-        this.queryAdjustPrice()
-      },
       '$store.state.zone': {
         handler: function () {
           this.$router.push('host')
         },
         deep: true
       },
-      'modifyPasswordForm.newPassword':{
-        handler: function(val){
-          if(val.length >7 && val.length <31){
-          this.modifyPasswordForm.firstDegree = true
-        } else{
-          this.modifyPasswordForm.firstDegree = false
-        }
-        let len = val.length
-        let reg = /[0-9]/
-        let flag = false
-        // 当用户输入到第6位时，开始校验是否有6位连续字符
-        if(len>5){
-          flag = check(len)
-          function check(index){
-            let count = 0
-            for(let i = index- 5; i < index;i++){
-            let next = reg.test(val[i]) ? val[i] : val[i].charCodeAt() // 检查字符是数字还是字母，数字没转原因是9和：ACSII码连续
-            let current = reg.test(val[i-1]) ? val[i-1] : val[i-1].charCodeAt()
-            if(next-current === 1){ // 字母ACSII 码相差1 则为连续
-              count +=1
-             }
-           }
-            if(count > 4){ // 有6位连续字符
-              return true
-            } else if(count < 5 && index > 6){
-              return check(index - 1) // 递归继续校验
+      'dilatationForm.databaseSize' () {
+      if (this.hostInfo.disksize == this.dilatationForm.databaseSize) {
+        this.dilatationCost = '--'
+      } else {
+        this.queryDatabaseCost()
+      }
+    },
+      'resetPasswordForm.newPassword':{
+         handler(val) {
+           if(val.length >7 && val.length <31){
+              this.passwordForm.firstDegree = true
             } else{
-              return false
+              this.passwordForm.firstDegree = false
             }
-          }
-        }
-        if(flag&&len>5){
-          this.modifyPasswordForm.secondDegree = false
+            let len = val.length
+            let reg = /[0-9]/
+            let flag = false
+            // 当用户输入到第6位时，开始校验是否有6位连续字符
+            if(len>5){
+              flag = check(len)
+              function check(index){
+                let count = 0
+                for(let i = index- 5; i < index;i++){
+                let next = reg.test(val[i]) ? val[i] : val[i].charCodeAt() // 检查字符是数字还是字母
+                let current = reg.test(val[i-1]) ? val[i-1] : val[i-1].charCodeAt()
+                if(next-current === 1){ // ACSII 码相差1则为连续
+                  count +=1
+                }
+              }
+                if(count > 4){ // 有6位连续字符
+                  return true
+                } else if(count < 5 && index > 6){
+                  return check(index - 1) // 递归继续校验
+                } else{
+                  return false
+                }
+              }
+            }
+           if(flag&&len>5){
+          this.passwordForm.secondDegree = false
         } else if(!flag && len>5){
-          this.modifyPasswordForm.secondDegree = true
+          this.passwordForm.secondDegree = true
         }
         if(len === 0) {
-           this.modifyPasswordForm.secondDegree = false
+           this.passwordForm.secondDegree = false
         }
-        if(regExp.hostPassword(val)){
-          this.modifyPasswordForm.thirdDegree = true
-        } else{
-          this.modifyPasswordForm.thirdDegree = false
-        }
+            if(regExp.hostPassword(val)){
+              this.passwordForm.thirdDegree = true
+            } else{
+              this.passwordForm.thirdDegree = false
+            }
+          },
+          deep: true
         },
-        deep: true
-      }
+        'resetPasswordForm.confirmPassword':{ 
+         handler(val) {
+           if(val.length >7 && val.length <31){
+              this.passwordFormTwo.firstDegree = true
+            } else{
+              this.passwordFormTwo.firstDegree = false
+            }
+            let len = val.length
+            let reg = /[0-9]/
+            let flag = false
+            // 当用户输入到第6位时，开始校验是否有6位连续字符
+            if(len>5){
+              flag = check(len)
+              function check(index){
+                let count = 0
+                for(let i = index- 5; i < index;i++){
+                let next = reg.test(val[i]) ? val[i] : val[i].charCodeAt() // 检查字符是数字还是字母
+                let current = reg.test(val[i-1]) ? val[i-1] : val[i-1].charCodeAt()
+                if(next-current === 1){ // ACSII 码相差1则为连续
+                  count +=1
+                }
+              }
+                if(count > 4){ // 有6位连续字符
+                  return true
+                } else if(count < 5 && index > 6){
+                  return check(index - 1) // 递归继续校验
+                } else{
+                  return false
+                }
+              }
+            }
+        if(flag&&len>5){
+          this.passwordFormTwo.secondDegree = false
+        } else if(!flag && len>5){
+          this.passwordFormTwo.secondDegree = true
+        }
+        if(len === 0) {
+           this.passwordFormTwo.secondDegree = false
+        }
+            if(regExp.hostPassword(val)){
+              this.passwordFormTwo.thirdDegree = true
+            } else{
+              this.passwordFormTwo.thirdDegree = false
+            }
+          },
+          deep: true
+        }
     },
     beforeRouteLeave(to, from, next) {
       // 导航离开该组件的对应路由时调用
@@ -1747,7 +1369,8 @@
               div {
                 color:rgba(51,51,51,1);
                 span {
-                  color: #2A99F2
+                  color: #2A99F2;
+                  cursor: pointer;
                 }
               }
             }
@@ -1814,48 +1437,40 @@
     position: absolute;
     background: #FFF;
     border-radius: 8px;
-    -webkit-box-shadow: 0 2px 24px 0 rgba(125, 125, 125, 0.35);
     box-shadow: 0 2px 24px 0 rgba(125, 125, 125, 0.35);
-    right: -250px;
-    bottom: 35px;
+    left: 260px;
+    bottom: -30px;
     z-index: 3;
-            > div {
-              display: flex;
-              > i {
-                display: inline-block;
-                border: 1px solid rgba(151, 151, 151, 1);
-                margin-right: 3px;
-                margin-top: 5px;
-                height: 12px;
-                width: 12px;
-                border-radius: 6px;
-                &.reach {
-                  background: #09BC1D;
-                  border: 1px solid #09BC1D;
-                  &:before {
-                    content: '';
-                    display: inline-block;
-                    background: #FFF;
-                    height: 1px;
-                    width: 10px;
-                    transform: translate(3px, -8px) rotate(-55deg);
-                  }
-                  &:after {
-                    content: '';
-                    display: inline-block;
-                    background: #FFF;
-                    height: 1px;
-                    width: 6px;
-                    transform: translate(0px, -23px) rotate(215deg);
-                  }
-                }
-              }
-              > p {
-                font-size: 14px;
-                font-family: MicrosoftYaHei;
-                color: rgba(51, 51, 51, 1);
-                line-height: 24px;
-              }
-            }
+    > div {
+      display: flex;
+      > i {
+        display: inline-block;
+        border: 1px solid rgba(151, 151, 151, 1);
+        margin-right: 3px;
+        margin-top: 5px;
+        height: 12px;
+        width: 12px;
+        border-radius: 6px;
+        &.reach {
+          background: #09BC1D;
+          border: 1px solid #09BC1D;
+          color: #fff;
+          position: relative;
+          &:before {
+            content: '✓';
+            display: inline-block;
+            position: absolute;
+            top: -11px;
+            color: #fff;
           }
+        }
+      }
+      > p {
+        font-size: 14px;
+        font-family: MicrosoftYaHei;
+        color: rgba(51, 51, 51, 1);
+        line-height: 24px;
+      }
+    }
+  }
 </style>

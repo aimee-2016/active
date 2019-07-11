@@ -242,14 +242,14 @@ export default {
                 if (response.status == 200 && response.data.status == 1) {
                   this.$Message.success("订单删除成功");
                   sessionStorage.removeItem("orderid");
-                  this.$router.push("expenses?tabs=applyInvoice");
+                  this.$router.push("expenses?tabs=orderManage");
                 }
               })
     },
     cancelOrder() {},
     ReturnPage() {
       sessionStorage.removeItem("orderid");
-      this.$router.push("expenses?tabs=applyInvoice");
+      this.$router.push("expenses?tabs=orderManage");
     },
     payorder(){
       axios.get('information/payOrder.do', {
