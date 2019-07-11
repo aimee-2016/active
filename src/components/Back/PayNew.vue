@@ -282,7 +282,7 @@
               this.zfbNum = res.data.serialNum;
               localStorage.setItem('serialNum',res.data.serialNum);
               this.showModal.paymentCofirm = true;
-              window.open('https://zschj.xrcloud.net/yl/openYlb2cPay.do'); // 创建一个新窗口
+              window.open('https://kaifa.xrcloud.net/yl/openYlb2cPay.do'); // 创建一个新窗口
             }
           })
       },
@@ -300,7 +300,7 @@
                this.zfbNum = res.data.serialNum;
               localStorage.setItem('serialNum',res.data.serialNum);
               this.showModal.paymentCofirm = true;
-              window.open('https://zschj.xrcloud.net/yl/openYlb2bPay.do'); // 创建一个新窗口
+              window.open('https://kaifa.xrcloud.net/yl/openYlb2bPay.do'); // 创建一个新窗口
             }
           })
       },
@@ -331,7 +331,7 @@
           if (response.data.status === 1 && response.status == 200) {
             this.zfbNum = response.data.serialNum
             localStorage.setItem('serialNum', this.zfbNum)
-            window.open(null,'alipay').location.href = `https://zschj.xrcloud.net/zfb/alipaypage.do?serialNum=${this.zfbNum}&route=resultNew`
+            window.open(null,'alipay').location.href = `https://kaifa.xrcloud.net/zfb/alipaypage.do?serialNum=${this.zfbNum}&route=resultNew`
             this.showModal.paymentCofirm = true
           } else {
             this.$message.info({
