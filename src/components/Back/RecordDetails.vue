@@ -343,7 +343,8 @@
               <ul class="nav_list">
                 <li class="nav_item">
                   <p>{{hostUnitList.webserveraddress}}</p>
-                  <div v-if="webServerAddressHide" class="text_block"><span
+                  <!-- v-if="webServerAddressHide" -->
+                  <div  class="text_block"><span 
                     style="color:red">信息有误</span> <span style="color:#2a99f2;cursor:pointer;" @click="webIsp = true">重新输入</span>
                   </div>
                 </li>
