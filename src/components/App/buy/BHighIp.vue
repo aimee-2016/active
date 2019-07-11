@@ -109,7 +109,7 @@
               <div class="b-meal">
                 <div class="bm-rg">购买数量</div>
                <div>
-                   <InputNumber v-model="port" :step='1' :min='1' :editable="false"></InputNumber><span style="margin-left:5px;color:#999">个</span>
+                   <InputNumber v-model="buyNumber" :step='1' :min='1' :editable="false"></InputNumber><span style="margin-left:5px;color:#999">个</span>
                 </div>
              </div>
              <div class="b-meal">
@@ -118,28 +118,29 @@
                     300元/月
                 </div>
              </div>
-               <!-- <div style="margin-top: 20px"> -->
-                <!--<p style="text-align: left;font-size: 14px;color: #2A99F2;cursor: pointer"
-                  @click="$router.push('computed/3-1')">查看计价详情</p>-->
-                <!-- <p style="text-align: right;font-size: 14px;color: #666666;margin-bottom: 10px;">
-                  <span v-if="timeForm.currentTimeType == 'annual'&&timeForm.currentTimeValue.type == 'year'">折后费用：</span><span v-else>费用：</span><span style="font-size: 24px;color: #EE6723;">{{dataDiskCost.toFixed(2)}}元</span><span
+         </div>
+            
+      </div>
+      <div style="margin-top: 20px">
+                <p style="text-align: left;font-size: 14px;color: #2A99F2;cursor: pointer"
+                  @click="$router.push('computed/3-1')">查看计价详情</p>
+                <p style="text-align: right;font-size: 14px;color: #666666;margin-bottom: 10px;">
+                  <span v-if="timeForm.currentTimeType == 'annual'&&timeForm.currentTimeValue.type == 'year'">折后费用：</span><span v-else>费用：</span><span style="font-size: 24px;color: #EE6723;">{{price.toFixed(2)}}元</span><span
                   v-show="timeForm.currentTimeType == 'current'">/小时</span>
                 </p>
-                <p style="text-align: right;font-size: 14px;color: #666666;" v-if="coupon!=0">已省：<span
-                  style="font-size: 14px;color: #EE6723;">{{coupon.toFixed(2)}}元</span></p>
+                <!-- <p style="text-align: right;font-size: 14px;color: #666666;" v-if="coupon!=0">已省：<span
+                  style="font-size: 14px;color: #EE6723;">{{coupon.toFixed(2)}}元</span></p> -->
                 <div style="text-align: right;margin-top: 20px;">
                   <Button size="large"
-                          class="btn" @click="addDiskCart">
+                          class="btn" @click="addIPCart">
                     加入预算清单
                   </Button>
-                  <Button @click="buyDisk" type="primary"
+                  <Button  type="primary"
                           style="border-radius: 10px;width: 128px;height: 39px;font-size: 16px;color: #FFFFFF;background-color: #377DFF;border: 1px solid #377DFF;">
                     立即购买
                   </Button>
                 </div>
-              </div> -->
-         </div>
-      </div>
+              </div>
     </div>
       <!-- 当前区域没有主机提示 -->
     <!-- <Modal v-model="showModal.withoutHost" :scrollable="true" :closable="false" :width="390">
@@ -224,16 +225,16 @@
           {label: '4月', value: '4', type: 'month'},
           {label: '5月', value: '5', type: 'month'},
           {label: '6月', value: '6', type: 'month'},
-          {label: '1年', value: '1', type: 'year'},
-          {label: '2年', value: '2', type: 'year'},
-          {label: '3年', value: '3', type: 'year'}
+          {label: '1年', value: '12', type: 'year'},
+          {label: '2年', value: '24', type: 'year'},
+          {label: '3年', value: '36', type: 'year'}
         ],
         // 计费方式
         timeForm: {
           currentTimeType: 'annual',
           currentTimeValue: {label: '1月', value: '1', type: 'month'}
         },
-
+        buyNumber:1,
         
         // 带宽大小
         bandWidth: 1,
@@ -280,8 +281,8 @@
             elasticband:this.bandwidths.bandwidthIndex,
             packageName:this.selectList.packagename,
             zoneId:this.selectList.zoneid,
-            timeVlue:'1',
-            count:'1'
+            timeVlue:this.timeForm.currentTimeValue,
+            count:this.buyNumber
           }
         }).then(res =>{
           if(res.status == 200 && res.data.status == 1){
@@ -300,8 +301,8 @@
             elasticband:this.bandWidth,
             zoneId:this.selectList.zoneid,
             packagename:this.selectList.packagename,
-            timeVlue:'1',
-            count:'1'
+            timeVlue:this.timeForm.currentTimeValue,
+            count:this.buyNumber
           }
         }).then(res =>{
           if(res.status == 200 && res.data.status == 1){
@@ -310,6 +311,33 @@
             this.$Message.info(res.data.message);
           }
         }).catch(err =>{})
+      },
+
+      changeTime(){
+        let params = {
+            elasticband:this.bandWidth,
+            zoneId:this.selectList.zoneid,
+            packagename:this.selectList.packagename,
+            timeVlue:'1',
+            count:'1'
+        },
+        params2 ={
+            elasticband:this.bandwidths.bandwidthIndex,
+            zoneId:this.selectList.zoneid,
+            packagename:this.selectList.packagename,
+            timeVlue:'1',
+            count:'1'
+        }
+            url1 = axios.get('ddosImitationIp/elasticbandprice.do',{params2}),
+            url2 = axios.get('ddosImitationIp/packagePrice.do',{params});
+            Promise.all([url1,url2]).then(res => {
+              if(res[0].data.status == 1){
+                this.businessPrice = res[1].data.price;
+                this.elasticIpPrice = res[0].data.price;
+              }else{
+                this.$Message.info('查询价格出错');
+              }
+            })
       },
 
       // 公网IP加入购物车
@@ -377,7 +405,7 @@
         return this.$store.state.userInfo
       },
       price(){
-        return this.elasticIpPrice;
+        return this.elasticIpPrice +  this.businessPrice;
       }
     },
     watch: {

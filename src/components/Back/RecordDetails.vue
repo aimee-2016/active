@@ -1023,10 +1023,7 @@
         </FormItem>
         <FormItem prop="webserveraddress">
           <p style="margin:10px">服务器放置地</p>
-          <Select v-model="updateHostUnitList.webserveraddress">
-            <Option v-for="item in webserveraddressList" :value="item.zonename" :key="item.zoneid">{{ item.zonename }}</Option>
-          </Select>
-          <Input :readonly="true" type="text" v-model="updateHostUnitList.webserveraddress"></Input>
+          <Input :disabled="true" type="text" v-model="updateHostUnitList.webserveraddress"></Input>
         </FormItem>
       </Form>
       <div slot="footer">
@@ -1191,7 +1188,6 @@ export default {
       id: "",
       //网站核验单大图
       visibleWeb: false,
-      webserveraddressList:this.$store.state.zoneList,
       //营业执照大图
       visible: false,
       //是否显示重新输入
