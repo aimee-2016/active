@@ -1690,7 +1690,6 @@
           }
         }).then(response => {
           if (response.status == 200 && response.data.status == 1) {
-             this.$router.push('gpuList');
             this.publicIPList = response.data.result
             if (this.publicIPList == '') {
               this.showWindow.publicIPHint = true
@@ -1703,7 +1702,7 @@
       bindIp_ok(name) {
         this.$refs[name].validate((valid) => {
             if (valid) {
-              this.showWindow.bindIP = false
+              this.showWindow.bindIP = false;
               this.$http.get('network/enableStaticNat.do', {
                 params: {
                   ipId: this.bindForm.publicIP,
@@ -1712,7 +1711,7 @@
               }).then(response => {
                 if (response.status == 200 && response.data.status == 1) {
                   this.$Message.info(response.data.message);
-                   this.$router.push('gpuList');
+                    this.$router.push('gpuList');
                   this.bindForm.bindIpText = '绑定中'
                 } else {
                   this.$message.info({
@@ -1731,7 +1730,7 @@
         this.showWindow.unbindIP = true
       },
       unbind_ok() {
-        this.showWindow.unbindIP = false
+        this.showWindow.unbindIP = false;
         this.$http.get('network/disableStaticNat.do', {
           params: {
             ipId: this.gpuDetail.publicIpId,
@@ -1739,8 +1738,8 @@
           }
         }).then(response => {
           if (response.status == 200 && response.data.status == 1) {
+            this.$router.push('gpuList');
             this.$Message.info(response.data.message);
-             this.$router.push('gpuList');
             this.bindForm.unbindText = '解绑中'
           } else {
             this.$message.info({
