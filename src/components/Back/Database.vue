@@ -396,7 +396,6 @@ export default {
       }
     }
     return {
-      current: null,
       dilatationCost: '--',
       dilatationForm: {
         databaseSize: 0,
@@ -598,17 +597,7 @@ export default {
                 if (params.row.dbStatus == 1) {
                   return h('div', {
                     style: {
-                      display: 'flex',
-                      cursor: 'pointer',
-                    },
-                    on: {
-                      click: () => {
-                        if (this.$refs.monitor.style.width != '600px') {
-                          this.showMonitor(params.row.instancename)
-                        } else {
-                          this.closeMonitor()
-                        }
-                      }
+                      display: 'flex'
                     }
                   }, [
                       h('div', [
@@ -625,17 +614,7 @@ export default {
                 } else if (params.row.dbStatus == 0) {
                   return h('div', {
                     style: {
-                      display: 'flex',
-                      cursor: 'pointer',
-                    },
-                    on: {
-                      click: () => {
-                        if (this.$refs.monitor.style.width != '600px') {
-                          this.showMonitor(params.row.instancename)
-                        } else {
-                          this.closeMonitor()
-                        }
-                      }
+                      display: 'flex'
                     }
                   }, [
                       h('div', [
@@ -649,7 +628,10 @@ export default {
                         style: styleInfo
                       }, '关机')
                     ])
-                } else if (params.row.dbStatus == 4) {
+                }
+                break
+              case 2:
+                if (params.row.dbStatus == 4) {
                   return h('div', {}, [h('Spin', {
                     style: {
                       display: 'inline-block'
@@ -679,27 +661,8 @@ export default {
                       display: 'inline-block'
                     }
                   }), h('span', { style: styleInfo }, '开机中')])
-                } else if (params.row.status) {
-                  return h('div', {
-                    style: {
-                      display: 'flex'
-                    }
-                  }, [
-                      h('div', [
-                        h('img', {
-                          attrs: {
-                            src: icon_1
-                          }
-                        }, ''),
-                      ]),
-                      h('span', {
-                        style: styleInfo
-                      }, '正常')
-                    ])
                 }
-                break
-              case 2:
-                if (params.row.dbStatus == 6) {
+                else if (params.row.dbStatus == 6) {
                   return h('div', {}, [h('Spin', {
                     style: {
                       display: 'inline-block'
@@ -711,6 +674,12 @@ export default {
                       display: 'inline-block'
                     }
                   }), h('span', { style: styleInfo }, '解绑中')])
+                } else if (params.row.dbStatus == 9) {
+                  return h('div', {}, [h('Spin', {
+                    style: {
+                      display: 'inline-block'
+                    }
+                  }), h('span', { style: styleInfo }, '升级中')])
                 } else {
                   return h('div', {}, [h('Spin', {
                     style: {
@@ -719,6 +688,7 @@ export default {
                   }), h('span', { style: styleInfo }, '创建中')])
                 }
                 break
+
             }
           }
         },
@@ -848,7 +818,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.current = params.row
+                    this.hostCurrentSelected = params.row
                     this.showModal.beforePortModify = true
                     this.portModifyForm.currentPorts = params.row.dbPort
                   }
@@ -920,8 +890,8 @@ export default {
           title: '操作',
           render: (h, params) => {
             // 全部状态值
-            // dbStatus  数据库开启或关闭状态   1开启  0关闭  2开启中  3关闭中   4重启中 5修改端口中 6绑定IP中 7解绑IP中 8数据库扩容中
-            // Status 1: 正常   0:余额不足 -1:扣费时除余额不足的其他原因   -2:用户删除实时虚拟机   2创建中   3删除中   5数据库扩容中   6数据库升级中
+            // dbStatus  数据库开启或关闭状态   1开启  0关闭  2开启中  3关闭中   4重启中 5修改端口中 6绑定IP中 7解绑IP中 8数据库扩容中 9升级中
+            // Status 1: 正常   0:余额不足 -1:扣费时除余额不足的其他原因   -2:用户删除实时虚拟机   2创建中   3删除中 
             if ((!this.auth) || (this.auth && this.auth.authtype == 0 && this.auth.checkstatus != 0) || (!this.authInfoPersion && this.auth && this.auth.authtype == 1 && this.auth.checkstatus != 0) || (this.authInfoPersion && this.authInfoPersion.checkstatus != 0 && this.auth && this.auth.checkstatus != 0)) {
               return h('div', {}, [
                 h('p', {
@@ -1196,11 +1166,13 @@ export default {
     // 重启数据库
     restart () {
       this.showModal.restart = false
-      // this.dataBaseData.forEach(item => {
-      //   if (item.computerid == this.current.computerid) {
-      //     item.status = 4
-      //   }
-      // })
+      this.hostListData.forEach(host => {
+        if (host.id == this.hostCurrentSelected.id) {
+          host.status = 2
+          host.dbStatus = 4
+          host._disabled = true
+        }
+      })
       this.$http.get('database/rebooteDB.do', {
         params: {
           DBId: this.hostCurrentSelected.computerid
@@ -1302,17 +1274,23 @@ export default {
     portModify_ok (name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
+          this.hostListData.forEach(host => {
+                if (host.id == this.hostCurrentSelected.id) {
+                  host.status = 2
+                  host.dbStatus = 5
+                  host._disabled = true
+                }
+              })
           this.showModal.portModify = false
           this.$http.get('database/updateDBPort.do', {
             params: {
-              DBId: this.current.computerid, //(数据库的UUID),
+              DBId: this.hostCurrentSelected.computerid, //(数据库的UUID),
               port: this.portModifyForm.newPorts //(需要更改的端口)
             }
           }).then(res => {
             if (res.status === 200 && res.data.status === 1) {
               this.$Message.success(res.data.message)
-              this.showModal.portModify = false
-              this.timingRefresh(this.current.id)
+              this.timingRefresh(this.hostCurrentSelected.id)
             } else {
               this.$message.info({
                 content: res.data.message
@@ -1372,8 +1350,6 @@ export default {
     },
     /* 局部刷新 */
     timingRefresh (ids) {
-      console.log('id')
-      console.log(ids)
       this.hostTimer = setInterval(() => {
         let url = 'database/listDB.do'
         this.$http.get(url, {
@@ -1384,7 +1360,7 @@ export default {
           if (res.data.status == 1 && res.status == 200) {
             let locality = res.data.result.info
             let flag = locality.some(item => {
-              return (item.dbStatus != 1 && item.dbStatus != 0) || item.status == 2
+              return item.status == 2 || item.status == -2
             }) // 操作的主机中是否有过渡状态，没有就清除定时器，取消刷新
             if (!flag) {
               this.hostListData.forEach((host, index) => {
@@ -1412,11 +1388,13 @@ export default {
       if (this.hostCurrentSelected.dbStatus == '1') {
         this.$Message.info('数据库已处于开启状态')
       } else {
-        // this.dataBaseData.forEach(item => {
-        //   if (item.computerid == params.row.computerid) {
-        //     item.dbStatus = '2'
-        //   }
-        // })
+        this.hostListData.forEach(host => {
+          if (host.id == this.hostCurrentSelected.id) {
+            host.status = 2
+            host.dbStatus = 2
+            host._disabled = true
+          }
+        })
         let url = 'database/startDB.do'
         this.$http.get(url, {
           params: {
@@ -1438,11 +1416,13 @@ export default {
       if (this.hostCurrentSelected.dbStatus == '0') {
         this.$Message.info('数据库已处于关闭状态')
       } else {
-        // this.dataBaseData.forEach(item => {
-        //   if (item.computerid == params.row.computerid) {
-        //     item.dbStatus = '3'
-        //   }
-        // })
+        this.hostListData.forEach(host => {
+          if (host.id == this.hostCurrentSelected.id) {
+            host.status = 2
+            host.dbStatus = 3
+            host._disabled = true
+          }
+        })
         let url = 'database/stopDB.do'
         this.$http.get(url, {
           params: {
@@ -1535,14 +1515,15 @@ export default {
       }
     },
     bindIpSubmit (name) {
-      console.log(name)
       this.$refs[name].validate((valid) => {
         if (valid) {
           this.hostListData.forEach(host => {
-            if (host.id == this.hostCurrentSelected.id) {
-              host._disabled = true
-            }
-          })
+                if (host.id == this.hostCurrentSelected.id) {
+                  host.status = 2
+                  host.dbStatus = 6
+                  host._disabled = true
+                }
+              })
           this.showModal.bindIP = false
           this.$Message.info({
             content: `<span style="color:#2A99F2">${this.hostCurrentSelected.computername}</span>云主机,正在绑定公网IP`
@@ -1567,13 +1548,13 @@ export default {
       )
     },
     unbind () {
-      // this.hostListData.forEach(host => {
-      //   if (host.id == this.hostCurrentSelected.id) {
-      //     host.status = 2
-      //     // host.bindip = 2
-      //     host._disabled = true
-      //   }
-      // })
+      this.hostListData.forEach(host => {
+        if (host.id == this.hostCurrentSelected.id) {
+          host.status = 2
+          host.dbStatus = 7
+          host._disabled = true
+        }
+      })
       this.showModal.unbindIP = false
       this.$http.get('network/disableStaticNat.do', {
         params: {
@@ -1687,53 +1668,6 @@ export default {
       },
       deep: true
     },
-    'resetPasswordForm.password': {
-      handler: function (val) {
-        if (val.length > 7 && val.length < 31) {
-          this.resetPasswordForm.firstDegree = true
-        } else {
-          this.resetPasswordForm.firstDegree = false
-        }
-        let len = val.length
-        let reg = /[0-9]/
-        let flag = false
-        // 当用户输入到第6位时，开始校验是否有6位连续字符
-        if (len > 5) {
-          flag = check(len)
-          function check (index) {
-            let count = 0
-            for (let i = index - 5; i < index; i++) {
-              let next = reg.test(val[i]) ? val[i] : val[i].charCodeAt() // 检查字符是数字还是字母，数字没转原因是9和：ACSII码连续
-              let current = reg.test(val[i - 1]) ? val[i - 1] : val[i - 1].charCodeAt()
-              if (next - current === 1) { // 字母ACSII 码相差1 则为连续
-                count += 1
-              }
-            }
-            if (count > 4) { // 有6位连续字符
-              return true
-            } else if (count < 5 && index > 6) {
-              return check(index - 1) // 递归继续校验
-            } else {
-              return false
-            }
-          }
-        }
-        if (flag && len > 5) {
-          this.resetPasswordForm.secondDegree = false
-        } else if (!flag && len > 5) {
-          this.resetPasswordForm.secondDegree = true
-        }
-        if (len === 0) {
-          this.resetPasswordForm.secondDegree = false
-        }
-        if (regExp.hostPassword(val)) {
-          this.resetPasswordForm.thirdDegree = true
-        } else {
-          this.resetPasswordForm.thirdDegree = false
-        }
-      },
-      deep: true
-    }
   },
   beforeRouteLeave (to, from, next) {
     // 导航离开该组件的对应路由时调用
