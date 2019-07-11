@@ -211,14 +211,13 @@
   import axios from '../../util/axiosInterceptor'
   export default {
     data() {
-      // 匹配中文
       const validChinese = (rule, value, callback) => {
-        if (/[\u4e00-\u9fa5]/.test(value)) {
-          return callback(new Error("不能输入中文"))
-        } else if (value == '') {
-          return callback(new Error("备份名称不能为空"))
-        } else {
+      if (value == '') {
+          return callback(new Error("数据库名称不能为空"))
+        } else if (/^[0-9a-zA-Z]{1,}$/.test(value)) {
           callback()
+        } else {
+          return callback(new Error("名称输入有误，只能输入字母与数字"))
         }
       }
       return {
@@ -596,7 +595,7 @@
         }
       }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          this.newStrategyForm.applyDatabaseGroup = response.data.result
+          this.newStrategyForm.applyDatabaseGroup = response.data.result.info
         }
       })
     },
@@ -669,7 +668,7 @@
           }
         }).then(response => {
           if (response.status == 200 && response.data.status == 1) {
-            this.databaseList = response.data.result
+            this.databaseList = response.data.result.info
             this.showModal.newSnapshot = true
           }
         })
@@ -736,7 +735,7 @@
         this.$http.get(`database/listDB.do`)
           .then(response => {
             if (response.status == 200 && response.data.status == 1) {
-              this.databaselist = response.data.result
+              this.databaselist = response.data.result.info
               this.databaselist.forEach((item) => {
                 if (item.status === 1 && item.dbBackstrategyId != data.id) {
                   leftData.push(item)
