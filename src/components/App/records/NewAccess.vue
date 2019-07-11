@@ -11,10 +11,10 @@
               :label-width="120">
           <FormItem label="当前备案主体" v-if="filingInformation.mainRecord !== ''">
             <RadioGroup v-model="filingInformation.mainRecord">
-              <Radio label="our" :disabled="!recordInfo">
+              <Radio label="our">
                 <span>已在新睿云备案</span>
               </Radio>
-              <Radio label="other" :disabled="recordInfo">
+              <Radio label="other">
                 <span>在其他接入商备案</span>
               </Radio>
             </RadioGroup>
@@ -40,7 +40,7 @@
               </Option>
             </Select>
           </FormItem>
-          <FormItem label="网站域名" prop="websiteDomain">
+          <!-- <FormItem label="网站域名" prop="websiteDomain">
             <Input @on-focus="isToolHide = 1" @on-blur="isToolHide = 0" v-model="filingInformation.websiteDomain" placeholder="请输入网站域名" style="width: 500px"></Input>
             <transition name="fade">
               <div class="tooltip-popper" v-if="isToolHide == 1">
@@ -50,9 +50,12 @@
                 </div>
               </div>
             </transition>
-          </FormItem>
+          </FormItem> -->
           <FormItem label="主体备案号" prop="websiteRecordNumber">
             <Input v-model="filingInformation.websiteRecordNumber" placeholder="请输入网站备案号" style="width: 500px"></Input>
+          </FormItem>
+          <FormItem label="">
+            <p class="formP" style="margin: 0">您所填写备案号不能存在<Tooltip content="所备案网站域名已被注销或域名持有者不再是备案主体" placement="top"><span>空壳主体</span></Tooltip>，否则会导致审核失败</p>
           </FormItem>
           <FormItem label="ICP备案密码" prop="IPCPassword">
             <Input v-model="filingInformation.IPCPassword" placeholder="请输入ICP备案密码" style="width: 500px;position: relative" :type="inputType"
@@ -70,6 +73,40 @@
         <button v-else @click="nextMain">下一步，填写主体信息</button>
       </div>
     </div>
+    <!--  用户选择已在平台备案但实际上没有提示框 -->
+    <Modal v-model="showModal.hint_1" :scrollable="true" :closable="false" :width="390">
+      <p slot="header" class="modal-header-border">
+        <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
+        <span class="universal-modal-title">提示信息</span>
+      </p>
+      <div class="modal-content-s">
+        <div>
+          <p class="lh24">您的账号下未检测到主体，请选择“已在其他接入商进行备案”
+          </p>
+        </div>
+      </div>
+      <p slot="footer" class="modal-footer-s">
+        <Button @click="showModal.hint_1 = false">取消</Button>
+        <Button type="primary" @click="filingInformation.mainRecord = 'other',showModal.hint_1 = false">确认</Button>
+      </p>
+    </Modal>
+        <!--  用户选择未在平台备案但实际上备过案提示框 -->
+    <Modal v-model="showModal.hint_2" :scrollable="true" :closable="false" :width="390">
+      <p slot="header" class="modal-header-border">
+        <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
+        <span class="universal-modal-title">提示信息</span>
+      </p>
+      <div class="modal-content-s">
+        <div>
+          <p class="lh24">您的账号下面已有主体，请选择“已在新睿云提交备案”
+          </p>
+        </div>
+      </div>
+      <p slot="footer" class="modal-footer-s">
+        <Button @click="showModal.hint_2 = false">取消</Button>
+        <Button type="primary" @click="filingInformation.mainRecord = 'our',showModal.hint_2 = false">确认</Button>
+      </p>
+    </Modal>
   </div>
 </template>
 
@@ -117,6 +154,10 @@
         }
       }
       return {
+        showModal: {
+          hint_1: false,
+          hint_2: false
+        },
         isToolHide: 0,
         // 备案区域
         area: '',
@@ -221,14 +262,27 @@
       nextMain() {
         this.$refs.filingInformation.validate((valid) => {
           if (valid) {
-            this.$router.push('/newRecordStepOne')
-            let accessInfo = {
-              mainBelongArea: this.filingInformation.province + '-' + this.filingInformation.city + '-' + this.filingInformation.district,
-              webDomainName: this.filingInformation.websiteDomain,
-              mainRecordNumber: this.filingInformation.websiteRecordNumber,
-              ICPRecordPassword: this.filingInformation.IPCPassword
-            }
-            sessionStorage.setItem('accessInfo',JSON.stringify(accessInfo))
+            this.$http.get('recode/listMainWeb.do').then(res => {
+            if (res.data.status == 1) {
+              if(res.data.result.length ===0){
+                  this.$router.push('/newRecordStepOne')
+                  let accessInfo = {
+                    mainBelongArea: this.filingInformation.province + '-' + this.filingInformation.city + '-' + this.filingInformation.district,
+                    webDomainName: this.filingInformation.websiteDomain,
+                    mainRecordNumber: this.filingInformation.websiteRecordNumber,
+                    ICPRecordPassword: this.filingInformation.IPCPassword
+                  }
+                  sessionStorage.setItem('accessInfo',JSON.stringify(accessInfo))
+              }else {
+                  this.showModal.hint_2 = true
+                  }
+
+               } else {
+                this.$message.info({
+                  content: res.data.message
+                })
+              }
+            })
           }
         })
       },
@@ -236,14 +290,26 @@
       nextSite() {
         this.$refs.filingInformation.validate((valid) => {
           if (valid) {
-            this.$router.push('/newRecordStepTwo')
-              let accessInfo = {
-              mainBelongArea: this.filingInformation.province + '-' + this.filingInformation.city + '-' + this.filingInformation.district,
-              webDomainName: this.filingInformation.websiteDomain,
-              mainRecordNumber: this.filingInformation.websiteRecordNumber,
-              ICPRecordPassword: this.filingInformation.IPCPassword
-            }
-            sessionStorage.setItem('accessInfo',JSON.stringify(accessInfo))            
+            this.$http.get('recode/listMainWeb.do').then(res => {
+          if (res.data.status == 1) {
+             if(res.data.result.length !==0){
+                    this.$router.push('/newRecordStepTwo')
+                    let accessInfo = {
+                    mainBelongArea: this.filingInformation.province + '-' + this.filingInformation.city + '-' + this.filingInformation.district,
+                    webDomainName: this.filingInformation.websiteDomain,
+                    mainRecordNumber: this.filingInformation.websiteRecordNumber,
+                    ICPRecordPassword: this.filingInformation.IPCPassword
+                  }
+                  sessionStorage.setItem('accessInfo',JSON.stringify(accessInfo))   
+                } else {
+                  this.showModal.hint_1 = true
+                  }
+              } else {
+                this.$message.info({
+                  content: res.data.message
+                })
+              }
+            })         
           }
         })
       },
@@ -308,6 +374,10 @@
         color: rgba(153, 153, 153, 1);
         line-height: 19px;
         margin-top: 10px;
+        span{
+          cursor: pointer;
+          color: rgba(55, 125, 255, 1);
+        }
       }
     }
   }

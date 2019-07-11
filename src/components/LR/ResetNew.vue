@@ -455,7 +455,7 @@ export default {
       }
     }
     return {
-      imgSrc: "https://www.xrcloud.net/ruicloud/user/getKaptchaImage.do",
+      imgSrc: "https://kaifa.xrcloud.net/ruicloud/user/getKaptchaImage.do",
       idCardShow:false,
       //步骤集合
       stepList: [
@@ -1134,7 +1134,7 @@ export default {
     },
 
     changePictureVerification(){
-            this.imgSrc = `https://www.xrcloud.net/user/getKaptchaImage.do?t=${new Date().getTime()}`
+            this.imgSrc = `https://kaifa.xrcloud.net/user/getKaptchaImage.do?t=${new Date().getTime()}`
     },
 
   },

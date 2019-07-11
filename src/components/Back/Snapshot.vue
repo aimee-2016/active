@@ -2003,6 +2003,7 @@
                 content: response.data.message,
                 duration: 5
               })
+              this.inter()
             } else{
               this.listsnaps()
               this.$message.info({
@@ -2076,7 +2077,7 @@
           .then(response => {
             this.snapsSelection = null
             if (response.status == 200 && response.data.status == 1) {
-              this.listsnaps()
+              this.inter()
             } else{
               this.$message.info({
                 content: response.data.message
@@ -2101,7 +2102,7 @@
               .then(response => {
                 if (response.status == 200 && response.data.status == 1) {
                   this.showModal.newSnapshot = false
-                  this.listsnaps()
+                  this.inter()
                 } else {
                   this.$message.info({
                     content: response.data.message

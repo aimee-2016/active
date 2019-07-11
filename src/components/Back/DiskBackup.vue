@@ -663,10 +663,16 @@
         })
       })
     },
+    beforeRouteLeave(to, from, next) {
+      // 导航离开该组件的对应路由时调用
+      clearInterval(this.diskBackupTimer)
+      next()
+    },
     created() {
       this.getMonthCongigDate()
       this.getWeekTimeData()
       this.getResourceAllocation()
+      this.listDiskSnapshots()
     },
     computed: {
       // 该计算属性用于解决观测对象时currentValue与oldValue指向同一对象的问题，没有其他用处
@@ -1038,8 +1044,8 @@
             if (response.status == 200 && response.data.status == 1) {
               this.diskBackupsData = response.data.result
               this.diskBackupsTotal = response.data.total
-              let flag = response.data.result.some(item => {
-                return  item.status == 2
+              let flag = this.diskBackupsData.some(item => {
+                return  item.status == 2 || item.status == 3
               }) // 操作的备份中是否有过渡状态，没有就清除定时器，取消刷新
              if (!flag) {
                clearInterval(this.diskBackupTimer)

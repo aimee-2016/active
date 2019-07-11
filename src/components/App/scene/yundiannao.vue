@@ -270,7 +270,7 @@
               <Input v-model="quicklyAuthForm.pictureCode" placeholder="请输入图片验证码"
                      style="width:250px;margin-right: 10px"></Input>
               <img :src="imgSrc" style="height:33px;"
-                   @click="imgSrc=`https://www.xrcloud.net/user/getKaptchaImage.do?t=${new Date().getTime()}`" alt="验证码">
+                   @click="imgSrc=`https://kaifa.xrcloud.net/user/getKaptchaImage.do?t=${new Date().getTime()}`" alt="验证码">
             </div>
           </FormItem>
           <FormItem label="手机号码" prop="phone" style="width: 100%">
@@ -498,7 +498,7 @@
             {required: true, message: '请输入验证码'}
           ]
         },
-        imgSrc: `https://www.xrcloud.net/user/getKaptchaImage.do?t=${new Date().getTime()}`,
+        imgSrc: `https://kaifa.xrcloud.net/user/getKaptchaImage.do?t=${new Date().getTime()}`,
         //定时器
         pageTimer: null,
         serialNum: ''
@@ -601,7 +601,9 @@
         let title = '云服务器'
         // 判断新老用户
         axios.get('activity/jdugeTeam.do', {
-          params: {sign: 'freeReceive'}
+          params: {
+            sign: 'freeReceive',
+            vmConfigId: this.currentSceneGroup.configGroup[this.index1].id}
         }).then(response => {
           if (response.status == 200 && response.data.status == 1) {
             if (response.data.result.flag) {

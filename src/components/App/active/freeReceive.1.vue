@@ -677,7 +677,7 @@
               <img
                 :src="imgSrc"
                 style="height:33px;"
-                @click="imgSrc=`https://www.xrcloud.net/user/getKaptchaImage.do?t=${new Date().getTime()}`"
+                @click="imgSrc=`https://kaifa.xrcloud.net/user/getKaptchaImage.do?t=${new Date().getTime()}`"
               >
             </div>
           </FormItem>
@@ -1257,7 +1257,7 @@ export default {
           { required: true, message: '请输入验证码' }
         ]
       },
-      imgSrc: 'https://www.xrcloud.net/user/getKaptchaImage.do',
+      imgSrc: 'https://kaifa.xrcloud.net/user/getKaptchaImage.do',
       index1: '',
       stepsList: [
         {
