@@ -68,7 +68,7 @@
             <li @mouseenter="ME(1,$event)">
               <div class="menu-dropdown">
                 <div class="menu-dropdown-rel">
-                  <a href="https://kaifa.xrcloud.net/overview" rel="nofollow"><span>控制台</span>
+                  <a href="https://www.xrcloud.net/overview" rel="nofollow"><span>控制台</span>
                   </a>
                 </div>
               </div>
@@ -84,7 +84,7 @@
               <div class="menu-dropdown">
                 <div class="menu-dropdown-rel">
                    <!-- <a href="#" rel="nofollow"><span @click="login">登录</span></a> -->
-                  <a href="https://kaifa.xrcloud.net/login" rel="nofollow"><span>登录</span>
+                  <a href="https://www.xrcloud.net/login" rel="nofollow"><span>登录</span>
                   </a>
                 </div>
               </div>
@@ -92,7 +92,7 @@
             <li @mouseenter="ME(1,$event)" style="background:#387Dff;width:100px;text-align:center;">
               <div class="menu-dropdown">
                 <div class="menu-dropdown-rels">
-                  <a href="https://kaifa.xrcloud.net/register" rel="nofollow"><span>注册</span>
+                  <a href="https://www.xrcloud.net/register" rel="nofollow"><span>注册</span>
                   </a>
                 </div>
               </div>
@@ -361,7 +361,7 @@
         <Button type="ghost" @click="showModal.complaintModal = false">取消</Button>
         <Button type="primary" @click="sumbitComplaint('complaintForm')" v-show="complaintForm.step==1">提交反馈
         </Button>
-        <Button type="primary" @click="showModal.complaintModal = false"v-show="complaintForm.step==2">确定
+        <Button type="primary" @click="showModal.complaintModal = false" v-show="complaintForm.step==2">确定
         </Button>
       </div>
     </Modal>

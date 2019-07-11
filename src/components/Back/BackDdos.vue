@@ -458,7 +458,7 @@
           <li>主机名</li>
           <li>当前密码</li>
         </ul>
-        <ul class="resetModal-table data" v-for="(item,index) in resetPasswordHostData">
+        <ul class="resetModal-table data" v-for="(item,index) in resetPasswordHostData" :key="(index+4)*66">
           <li>{{ index + 1 }}</li>
           <li>{{ item.computername}}</li>
           <li @click="toManage(item)">{{ item.instancename}}</li>
