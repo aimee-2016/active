@@ -663,6 +663,11 @@
         })
       })
     },
+    beforeRouteLeave(to, from, next) {
+      // 导航离开该组件的对应路由时调用
+      clearInterval(this.diskBackupTimer)
+      next()
+    },
     created() {
       this.getMonthCongigDate()
       this.getWeekTimeData()
@@ -1038,8 +1043,8 @@
             if (response.status == 200 && response.data.status == 1) {
               this.diskBackupsData = response.data.result
               this.diskBackupsTotal = response.data.total
-              let flag = response.data.result.some(item => {
-                return  item.status == 2
+              let flag = this.diskBackupsData.some(item => {
+                return  item.status == 2 || item.status == 3
               }) // 操作的备份中是否有过渡状态，没有就清除定时器，取消刷新
              if (!flag) {
                clearInterval(this.diskBackupTimer)

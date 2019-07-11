@@ -263,7 +263,7 @@
                             class="my-upload"
                             type="drag"
                             :format="['jpg','jpeg','png']"
-                            :on-format-error="handleFormatError"
+                            :on-format-error="handleFormatJpg"
                             :with-credentials="true"
                             :show-upload-list="false"
                             :max-size="4096"
@@ -364,7 +364,7 @@
                           class="my-upload"
                           type="drag"
                           :format="['jpg','jpeg','png']"
-                          :on-format-error="handleFormatError"
+                          :on-format-error="handleFormatJpg"
                           :with-credentials="true"
                           :show-upload-list="false"
                           :max-size="4096"
@@ -921,7 +921,7 @@
       // 校验用户上传的文件类型
       handleFormatError() {
         this.$Message.info({
-          content: '请选择jpg、png、jpeg类型的文件进行上传'
+          content: '请选择jpg,jpeg,png,doc,pdf,docx,gif类型的文件进行上传'
         });
       },
       handleFormatJpg() {

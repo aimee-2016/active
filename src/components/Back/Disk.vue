@@ -802,9 +802,10 @@
       /* 刷新页面 */
       refreshPage() {
         this.$router.go(0)
-        this.listDisk()
+        this.refresh()
       },
       refresh() {
+        this.listDisk();
         this.diskAreaList = this.$store.state.zoneList
         this.diskTimer = setInterval(()=>{
         this.$http.get('Disk/listDisk.do',{params:{
@@ -815,9 +816,11 @@
             if (item.status != 1 && item.status != -1 && item.status != 0) {
                        item._disabled = true
                      }
+            if(this.diskSelection && this.diskSelection.id == item.id){
+                       item._checked = true
+                     }
                    })
             this.diskData = response.data.result
-            this.diskSelection = null
             let flag = response.data.result.some(item => {
                 return  item.status == 2 ||item.status == 3 || item.status == 4 || item.status == 6 || item.status == 8
               }) // 操作的磁盘中是否有过渡状态，没有就清除定时器，取消刷新
@@ -830,7 +833,7 @@
             })
           }
         })
-        },6000)
+        },1000)
       },
       // 验证新建磁盘的表单
       _checkNewForm() {
@@ -877,9 +880,11 @@
                      if (item.status != 1 && item.status != -1 && item.status != 0) {
                        item._disabled = true
                      }
+                     if(this.diskSelection && this.diskSelection.id == item.id){
+                       item._checked = true
+                     }
                    })
             this.diskData = response.data.result
-            this.diskSelection = null
           } else {
             this.$message.info({
               content: response.data.message
