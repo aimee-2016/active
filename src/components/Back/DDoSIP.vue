@@ -152,7 +152,14 @@
                             <div class="dp-row">
                                 <div>
                                     <Button type="primary" style="margin-right:10px;" @click="showModal.addDomain = true">添加域名</Button>
-                                    <Button type="primary">删除</Button>
+                                    <Poptip
+                                    confirm
+                                    width="230"
+                                    placement="right"
+                                    @on-ok="deleteList('domain')"
+                                    title="您确认重启选中的主机吗？" style="margin: 0 10px">
+                                    <Button type="primary" :disabled='renewDisabled'>删除</Button>
+                                    </Poptip>
                                 </div>
                                 <div>
                                     <Select v-model="domain" style="width:100px">
@@ -166,10 +173,10 @@
                                     <img src="../../assets/img/host/h-icon10.png"/>
                                     <span>共 {{ businessData.length }} 项 | 已选择 <span style="color:#FF624B;">{{ overviewSelect.length }} </span>项</span><span style="margin-left:10px;">总价:</span><span style="color:#FF624B;">￥0.00</span>
                             </div>
-                            <Table :columns="businessList" :data="businessData"></Table>
+                            <Table :columns="businessList" :data="businessData"  @on-selection-change='overviewTableChange'></Table>
                             <div class="dp-page">
                                 <span>总共{{businessData.length}}个项目</span>
-                                <Page :total="100"  style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
+                                <Page :total="businessData.length"  @on-change='getDomainList' style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
                             </div>
                            
                         </div>
@@ -441,6 +448,26 @@
             </div>
         </Modal>
 
+         <!-- 网站换IP  -->
+        <Modal :mask-closable="false" v-model="showModal.changeIp">
+            <p slot="header" class="modal-header-border">
+                <span class="universal-modal-title">关联证书</span>
+            </p>
+            <div class="dp-er" v-if="renewPrice.status != 1 && renewPrice.status !== undefined">
+                 <Icon type="close-circled" color='#ED4014' size='12px'></Icon>
+                 <span style="margin-left:4px;">{{renewPrice.message}}</span>
+             </div>
+            <div class="md-cer">
+                <span>源站IP/域名</span>
+                <Input type="textarea"></Input>
+                <p class='dp-bf'>如果源站暴露，请参考使用 <span>高防后源站IP暴露的解决方法</span></p>
+            </div>
+            <div slot="footer" class="modal-footer-border">
+                <Button type="ghost" @click="showModal.changeIp = false">取消</Button>
+                <Button type="primary" @click="updateDomain">确定</Button>
+            </div>
+        </Modal>
+
         <!-- 添加域名 -->
         <Modal :mask-closable="false" v-model="showModal.addDomain">
             <p slot="header" class="modal-header-border">
@@ -500,6 +527,7 @@ components: { expandRow },
         certificate:false,
         meal:false,
         changeSource:false,
+        changeIp:false,
         nameList:false,
         addDomain:false,
       },  
@@ -788,7 +816,11 @@ components: { expandRow },
                               color:'#2A99F2',
                               marginLeft:'19px'
                           },
-                          
+                         on:{
+                             click:()=>{
+                                 this.showModal.changeIp = true;
+                             }
+                         } 
                       },'换源')
                   ])
               }
@@ -854,6 +886,11 @@ components: { expandRow },
                     style: {
                     color: "#2A99F2",
                     cursor: "pointer"
+                    },
+                    on:{
+                        click:()=>{
+                            this.showModal.addDomain = true;
+                        }
                     }
                 },
                 "修改"
@@ -1096,7 +1133,7 @@ components: { expandRow },
   },
   created(){
       this.getDdosOverview(1);
-      this.getDomainList();
+      this.getDomainList(1);
       this.getCertificate(1);
 
       this.getLog(1);
@@ -1155,9 +1192,10 @@ components: { expandRow },
             }
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
-                this.renewPrice = res.data;
+
             }else{
                 this.$Message.info(res.data.messgae);
+                 this.renewPrice = res.data;
             }
         }).catch(err =>{
 
@@ -1182,10 +1220,10 @@ components: { expandRow },
     },
 
     // 获取网站业务
-    getDomainList(){
+    getDomainList(page){
         this.$http.get('ddosImitationIp/QueryAlldomain.do',{
             params:{
-                page:'1',
+                page:page,
                 pageSize:'10'
             }
         }).then(res => {
@@ -1197,6 +1235,7 @@ components: { expandRow },
         })
     },
 
+    // 换源
     updateDomain(){
         this.$http.get('ddosImitationIp/UpdateDomain.do',{
             params:{
@@ -1211,12 +1250,19 @@ components: { expandRow },
             }
         }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
-
+                this.$Message.success('关联成功');
+                this.showModal.changeSource = false;
             }else{
-                this.$Message.info(res.data.message);
+                // this.$Message.info(res.data.message);
+                 this.renewPrice = res.data;
             }   
         }).catch(err =>{})
     },
+
+    updateDomainTable(){
+
+    },
+
     addDomain(){
         this.$http.get('ddosImitationIp/AddDomain.do',{
             params:{
@@ -1378,6 +1424,29 @@ components: { expandRow },
                   this.$Message.info(res.data.message);
             }
         })
+    },
+
+    deleteList(name){
+        let url = '',
+        params  = {
+            domain:this.overviewSelect.domainname,
+            Id:this.overviewSelect.id
+        };
+        if(name == 'domain'){
+            url = 'ddosImitationIp/deletedomain.do'
+        }else if(name == 'certificate'){
+            url = 'ddosImitationIp/DeleteCertificate.do'
+        }else if(name == 'forwardrule'){
+            url = 'ddosImitationIp/deleteforwardrule.do'
+        }
+        if(this.overviewSelect)
+        this.$http.get(url,{params}).then(res =>{
+            if(res.status == 200 && res.data.status == 1){
+                this.$Message.success(res.data.message);
+            }else{
+                this.$Message.info(res.data.message);
+            }
+        }).catch(err => {})
     }
 
   },

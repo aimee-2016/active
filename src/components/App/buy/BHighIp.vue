@@ -50,7 +50,7 @@
                     <div class="item-wrapper" style="width:77%;margin-top:0;">
                             <div v-for="(item,index) in mealList" :key="index" class="timeType"
                                 :class="{zoneSelect:bandwidths.bandwidthIndex==item.ddosprotectnumber}"
-                                @click="bandwidths.bandwidthIndex=item.ddosprotectnumber;"
+                                @click="bandwidths.bandwidthIndex=item.ddosprotectnumber;queryElasticbandprice()"
                             :style="item.ddosprotectnumber == 60 ||  item.ddosprotectnumber == 300 ?'border-right:1px solid #d9d9d9;':''">
                                 {{item.ddosprotectnumber+'GB'}}
                                 <!-- <span v-if="item.type=='year'" class="discount-icon">惠</span> -->
@@ -83,7 +83,6 @@
                         :max=400
                         :step=1
                         :points="[50,100,150,200,300]"
-                        @on-change='queryPackagePrice'
                         style="margin-right:30px;vertical-align: middle;">
                     </i-slider>
                     <InputNumber :max="400" :min="1" v-model="bandWidth" size="large"
@@ -299,7 +298,7 @@
       },
 
       // 查询业务带宽价格
-      queryPackagePrice(){
+      queryPackagePrice: debounce(500, function (){
         axios.get('ddosImitationIp/packagePrice.do',{
           params:{
             elasticband:this.bandWidth,
@@ -314,7 +313,7 @@
             this.$Message.info(res.data.message);
           }
         }).catch(err =>{})
-      },
+      }),
 
       changeTime(){
        axios.get('ddosImitationIp/packageprice.do',{
@@ -447,6 +446,12 @@
       'timeForm': {
         handler(){
           this.changeTime()
+        },
+        deep: true
+      },
+      'bandWidth':{
+          handler(){
+          this.queryPackagePrice()
         },
         deep: true
       }
