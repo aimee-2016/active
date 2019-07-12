@@ -125,7 +125,7 @@
                 <div>
                   <div v-for="item in mirrorType" class="zoneItem"
                        :class="{zoneSelect:currentType==item.value}"
-                       @click="currentType=item.value">{{item.label}}
+                       @click="selectMirror(item)" :key="item.value">{{item.label}} 
                   </div>
                   <!--镜像+应用 列表-->
                   <div v-if="currentType=='app'">
@@ -822,7 +822,7 @@
         cost: 0,
         // 快速创建优惠价格
         fastCoupon: 0,
-        mirrorQuery: this.$route.query.mirror,
+        mirrorQuery: null,
         mirrorListQ: [],
         passwordForm: {
           passwordHint: false,
@@ -837,6 +837,9 @@
       }
     },
     created() {
+      this.createType = sessionStorage.getItem('mirrorType') ? sessionStorage.getItem('mirrorType') : 'fast'
+      this.currentType = sessionStorage.getItem('mirrorType') ? sessionStorage.getItem('mirrorType') : 'public'
+      this.mirrorQuery = sessionStorage.getItem('ownMirror') ? JSON.parse(sessionStorage.getItem('ownMirror')) : null
       this.setTemplate()
       this.getFastMirror()
       this.queryQuick()
@@ -844,13 +847,6 @@
       this.queryVpc()
       this.queryIPPrice()
       this.queryDiskPrice()
-      if (this.$route.query.mirrorType) {
-        this.currentType = this.$route.query.mirrorType;
-        this.createType = 'custom'
-        setTimeout(() => {
-          this.publicList[0].selectSystem = this.mirrorQuery.templatename
-        }, 200)
-      }
       // this.$store.dispatch('getZoneList')
     },
     methods: {
@@ -906,31 +902,19 @@
         }).then(response => {
           if (response.status == 200 && response.data.status == 1) {
             this.publicList = [];
-            if (this.mirrorQuery) {
-              var system = '';
-              if (this.mirrorQuery.templatename.substr(0, 1) == 'w') {
-                system = 'windows';
-                this.publicList.push({system, systemList: [this.mirrorQuery], selectSystem: ''});
-              } else if (this.mirrorQuery.templatename.substr(0, 1) == 'c') {
-                system = 'centos';
-                this.publicList.push({system, systemList: [this.mirrorQuery], selectSystem: ''});
-              } else if (this.mirrorQuery.templatename.substr(0, 1) == 'u') {
-                system = 'ubuntu';
-                this.publicList.push({system, systemList: [this.mirrorQuery], selectSystem: ''});
-              } else if (this.mirrorQuery.templatename.substr(0, 1) == 'd') {
-                system = 'debian';
-                this.publicList.push({system, systemList: [this.mirrorQuery], selectSystem: ''});
-              }
-            } else {
-              for (let system in response.data.result) {
+            for (let system in response.data.result) {
                 this.publicList.push({system, systemList: response.data.result[system], selectSystem: ''})
               }
-            }
             this.system = {}
           }
         })
         // 自定义镜像
         if (this.userInfo != null) {
+          if (this.mirrorQuery) {
+              this.customList.push(this.mirrorQuery);
+              this.customMirror = this.mirrorQuery;
+              return
+            }
           this.customList = []
           this.customMirror = {}
           axios.get('information/listTemplates.do', {
@@ -941,19 +925,12 @@
           }).then(response => {
             if (response.status == 200 && response.data.status == 1) {
               var cusList = response.data.result.window.concat(response.data.result.centos, response.data.result.debian, response.data.result.ubuntu);
-              if (this.mirrorQuery) {
-                if (this.mirrorQuery) {
-                  this.customList.push(this.mirrorQuery);
-                  this.customMirror = this.mirrorQuery;
-                }
-              } else {
-                for (let i = 0; i < cusList.length; i++) {
+              for (let i = 0; i < cusList.length; i++) {
                   if (cusList[i].status != -1) {
                     this.customList.push(cusList[i]);
                     this.customMirror = {};
                   }
                 }
-              }
             }
           })
         }
@@ -962,13 +939,7 @@
       setOS(name) {
         this.mirrorShow = false
         var arg = [];
-        if (this.mirrorQuery) {
-          arg.push(this.mirrorQuery.templatename);
-          arg.push(this.mirrorQuery.systemtemplateid);
-        } else {
-          arg = name.split('#');
-        }
-
+        arg = name.split('#');
         for (var item of this.publicList) {
           item.selectSystem = ''
         }
@@ -983,16 +954,7 @@
         } else {
           this.systemUsername = 'root'
         }
-        if (this.mirrorQuery) {
-          for (let i = 0; i < this.publicList.length; i++) {
-            if (this.publicList[i].systemList[i].ostypeid == this.mirrorQuery.ostypeid) {
-              this.publicList[i].selectSystem = arg[0];
-              break;
-            }
-          }
-        } else {
-          this.publicList[arg[2]].selectSystem = arg[0]
-        }
+        this.publicList[arg[2]].selectSystem = arg[0]
       },
       setOSQ(item,index) {
         this.FastMirrorIndex=index
@@ -1401,13 +1363,10 @@
       }),
       //选择镜像类型
       selectMirror(item) {
-        if (this.$route.query.mirrorType == 'custom') {
-          this.currentType = 'custom'
-        } else if (this.$route.query.mirrorType == 'public') {
-          this.currentType = 'public'
-        } else {
-          this.currentType = item.value;
-        }
+        // if(this.mirrorQuery){
+        //   return
+        // }
+        this.currentType = item.value;
       },
       fireList() {
         axios.get('network/listAclList.do', {
@@ -1600,6 +1559,12 @@
         },
         deep: true
       },
+    },
+    beforeRouteLeave(to, from, next) {
+      // 导航离开该组件的对应路由时调用
+      sessionStorage.removeItem('ownMirror')
+      sessionStorage.removeItem('mirrorType')
+      next()
     }
   }
 </script>
