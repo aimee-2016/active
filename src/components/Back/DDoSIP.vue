@@ -152,7 +152,14 @@
                             <div class="dp-row">
                                 <div>
                                     <Button type="primary" style="margin-right:10px;" @click="showModal.addDomain = true">添加域名</Button>
-                                    <Button type="primary">删除</Button>
+                                    <Poptip
+                                    confirm
+                                    width="230"
+                                    placement="right"
+                                    @on-ok="deleteList('domain')"
+                                    title="您确认重启选中的主机吗？" style="margin: 0 10px">
+                                    <Button type="primary" :disabled='renewDisabled'>删除</Button>
+                                    </Poptip>
                                 </div>
                                 <div>
                                     <Select v-model="domain" style="width:100px">
@@ -166,10 +173,10 @@
                                     <img src="../../assets/img/host/h-icon10.png"/>
                                     <span>共 {{ businessData.length }} 项 | 已选择 <span style="color:#FF624B;">{{ overviewSelect.length }} </span>项</span><span style="margin-left:10px;">总价:</span><span style="color:#FF624B;">￥0.00</span>
                             </div>
-                            <Table :columns="businessList" :data="businessData"></Table>
+                            <Table :columns="businessList" :data="businessData"  @on-selection-change='overviewTableChange'></Table>
                             <div class="dp-page">
                                 <span>总共{{businessData.length}}个项目</span>
-                                <Page :total="100"  style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
+                                <Page :total="businessData.length"  @on-change='getDomainList' style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
                             </div>
                            
                         </div>
@@ -178,7 +185,14 @@
                             <div class="dp-row">
                                 <div>
                                     <Button type="primary" style="margin-right:10px;" @click="showModal. certificate = true">添加证书</Button>
+                                    <Poptip
+                                    confirm
+                                    width="230"
+                                    placement="right"
+                                    @on-ok="deleteList('certificate')"
+                                    title="您确认重启选中的主机吗？" style="margin: 0 10px">
                                     <Button type="primary">删除</Button>
+                                     </Poptip>
                                 </div>
                                 <div>
                                     <Input placeholder="证书名称" v-model="crtName" style="width:180px;margin-right:10px;"></Input>
@@ -197,7 +211,14 @@
                             <div class="dp-row">
                                 <div>
                                     <Button type="primary" style="margin-right:10px;" @click="$router.push('ddosipruleadd')">添加规则</Button>
+                                    <Poptip
+                                    confirm
+                                    width="230"
+                                    placement="right"
+                                    @on-ok="deleteList('forwardrule')"
+                                    title="您确认重启选中的主机吗？" style="margin: 0 10px">
                                     <Button type="primary">删除</Button>
+                                    </Poptip>
                                     <span class="dp-cn">CNAME：sectest564as65d4a65s4d5as4d5a6s4d6</span>
                                 </div>
                                 <div>
@@ -355,15 +376,15 @@
                     <FormItem label="证书文件" prop="file">
                         <Input type="textarea" v-model="certificateValidate.file" placeholder="Enter your name">
                         </Input>
-                        <span class="f-p">0/500</span>
+                     
                     </FormItem>
                     <FormItem label="秘钥内容" prop="secret">
                         <Input type="textarea" v-model="certificateValidate.secret" placeholder="Enter your name"></Input>
-                        <span class="f-p">0/500</span>
+                      
                     </FormItem>
                     <FormItem label="CA内容" prop="ca">
                         <Input type="textarea" v-model="certificateValidate.ca" placeholder="Enter your name"></Input>
-                        <span class="f-p">0/500</span>
+                     
                     </FormItem>
                     <FormItem label="加密方式" prop="pawMode">
                         <Input v-model="certificateValidate.pawMode" placeholder="Enter your name"></Input>
@@ -396,15 +417,15 @@
                     <FormItem label="证书文件" prop="file">
                         <Input type="textarea" v-model="certificateValidate.file" placeholder="Enter your name">
                         </Input>
-                        <span class="f-p">0/500</span>
+                        
                     </FormItem>
                     <FormItem label="秘钥内容" prop="secret">
                         <Input type="textarea" v-model="certificateValidate.secret" placeholder="Enter your name"></Input>
-                        <span class="f-p">0/500</span>
+                        
                     </FormItem>
                     <FormItem label="CA内容" prop="ca">
                         <Input type="textarea" v-model="certificateValidate.ca" placeholder="Enter your name"></Input>
-                        <span class="f-p">0/500</span>
+                        
                     </FormItem>
                     <FormItem label="加密方式" prop="name">
                         <Input v-model="certificateValidate.name" placeholder="Enter your name"></Input>
@@ -437,6 +458,26 @@
             </div>
             <div slot="footer" class="modal-footer-border">
                 <Button type="ghost" @click="showModal.changeSource = false">取消</Button>
+                <Button type="primary" @click="updateDomain">确定</Button>
+            </div>
+        </Modal>
+
+         <!-- 网站换IP  -->
+        <Modal :mask-closable="false" v-model="showModal.changeIp">
+            <p slot="header" class="modal-header-border">
+                <span class="universal-modal-title">关联证书</span>
+            </p>
+            <div class="dp-er" v-if="renewPrice.status != 1 && renewPrice.status !== undefined">
+                 <Icon type="close-circled" color='#ED4014' size='12px'></Icon>
+                 <span style="margin-left:4px;">{{renewPrice.message}}</span>
+             </div>
+            <div class="md-cer">
+                <span>源站IP/域名</span>
+                <Input type="textarea"></Input>
+                <p class='dp-bf'>如果源站暴露，请参考使用 <span>高防后源站IP暴露的解决方法</span></p>
+            </div>
+            <div slot="footer" class="modal-footer-border">
+                <Button type="ghost" @click="showModal.changeIp = false">取消</Button>
                 <Button type="primary" @click="updateDomain">确定</Button>
             </div>
         </Modal>
@@ -500,6 +541,7 @@ components: { expandRow },
         certificate:false,
         meal:false,
         changeSource:false,
+        changeIp:false,
         nameList:false,
         addDomain:false,
       },  
@@ -788,7 +830,11 @@ components: { expandRow },
                               color:'#2A99F2',
                               marginLeft:'19px'
                           },
-                          
+                         on:{
+                             click:()=>{
+                                 this.showModal.changeIp = true;
+                             }
+                         } 
                       },'换源')
                   ])
               }
@@ -854,6 +900,11 @@ components: { expandRow },
                     style: {
                     color: "#2A99F2",
                     cursor: "pointer"
+                    },
+                    on:{
+                        click:()=>{
+                            this.showModal.addDomain = true;
+                        }
                     }
                 },
                 "修改"
@@ -1096,7 +1147,7 @@ components: { expandRow },
   },
   created(){
       this.getDdosOverview(1);
-      this.getDomainList();
+      this.getDomainList(1);
       this.getCertificate(1);
 
       this.getLog(1);
@@ -1122,6 +1173,7 @@ components: { expandRow },
     overviewTableChange(list){
         this.price = 0;
         this.overviewSelect = list;
+   
         list.forEach(item => {
             this.price += item.totalprice; 
         });
@@ -1155,9 +1207,10 @@ components: { expandRow },
             }
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
-                this.renewPrice = res.data;
+
             }else{
                 this.$Message.info(res.data.messgae);
+                 this.renewPrice = res.data;
             }
         }).catch(err =>{
 
@@ -1182,10 +1235,10 @@ components: { expandRow },
     },
 
     // 获取网站业务
-    getDomainList(){
+    getDomainList(page){
         this.$http.get('ddosImitationIp/QueryAlldomain.do',{
             params:{
-                page:'1',
+                page:page,
                 pageSize:'10'
             }
         }).then(res => {
@@ -1197,6 +1250,7 @@ components: { expandRow },
         })
     },
 
+    // 换源
     updateDomain(){
         this.$http.get('ddosImitationIp/UpdateDomain.do',{
             params:{
@@ -1211,12 +1265,19 @@ components: { expandRow },
             }
         }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
-
+                this.$Message.success('关联成功');
+                this.showModal.changeSource = false;
             }else{
-                this.$Message.info(res.data.message);
+                // this.$Message.info(res.data.message);
+                 this.renewPrice = res.data;
             }   
         }).catch(err =>{})
     },
+
+    updateDomainTable(){
+
+    },
+
     addDomain(){
         this.$http.get('ddosImitationIp/AddDomain.do',{
             params:{
@@ -1230,7 +1291,7 @@ components: { expandRow },
             }
         }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
-
+                 this.getDomainList(1);
             }else{
                 this.$Message.info(res.data.message);
             }
@@ -1259,14 +1320,12 @@ components: { expandRow },
 
     createCertificate(){
         this.$http.post('ddosImitationIp/AddCertificate.do',{
-            // params:{
                 crtName:this.certificateValidate.name,
                 crtRemark:this.certificateValidate.desc,
                 crtDes:this.certificateValidate.file,
                 keyDes:this.certificateValidate.secret,
-                caDes:this.certificateValidate.ca,
-                encryptionWay:'des'
-            // }
+                caDes:'',//this.certificateValidate.ca
+                encryptionWay:''
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
 
@@ -1378,6 +1437,45 @@ components: { expandRow },
                   this.$Message.info(res.data.message);
             }
         })
+    },
+
+    deleteList(name){
+        let url = '',
+        domain = '',
+        id='', 
+        packageId='';
+        this.overviewSelect.forEach(item =>{
+            domain +=item.domainname+',';
+            id +=item.id+',';
+            packageId+=item.packageid+',';
+        })
+        let params  = {
+            domain:domain.substring(0,domain.lastIndexOf(',')),
+            Id:id.substring(0,id.lastIndexOf(',')),
+            packageId:packageId.substring(0,packageId.lastIndexOf(','))
+        };
+        if(name == 'domain'){
+            url = 'ddosImitationIp/deletedomain.do'
+        }else if(name == 'certificate'){
+            url = 'ddosImitationIp/DeleteCertificate.do'
+        }else if(name == 'forwardrule'){
+            url = 'ddosImitationIp/deleteforwardrule.do'
+        }
+        if(this.overviewSelect)
+        this.$http.get(url,{params}).then(res =>{
+            if(res.status == 200 && res.data.status == 1){
+                this.$Message.success(res.data.message);
+                if(name == 'domain'){
+                   this.getDomainList(1);
+                }else if(name == 'certificate'){
+                     this.getCertificate(1);
+                }else if(name == 'forwardrule'){
+                      this.getAllforwardrule(1);
+                }
+            }else{
+                this.$Message.info(res.data.message);
+            }
+        }).catch(err => {})
     }
 
   },
@@ -1388,6 +1486,15 @@ components: { expandRow },
           }else{
               return false;
           }
+      }
+  },
+  watch:{
+      'button1':{
+          handler(){
+              let list =[];
+               this.overviewTableChange(list);
+                
+          },deep:true
       }
   }
 };
