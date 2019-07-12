@@ -131,6 +131,17 @@
                 <a href="/news/"
                       style="color: #2A99F2;margin-top: 10px;display: block;font-size: 14px;cursor: pointer;">查看更多</a>
               </TabPane>
+              <TabPane label="消息中心">
+                <div v-for="(item,index) in msgData" :key="index" style="margin:11px 0px;">
+                  <p class="universal-mini"
+                     style="padding:0px;width:200px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;display: inline-block"
+                     @click="$router.push('msgCenter')">
+                    {{item.content}}</p>
+                  <p style="font-size: 14px;float:right">{{item.publishtime}}</p>
+                </div>
+                <a href="/msgCenter"
+                      style="color: #2A99F2;margin-top: 10px;display: block;font-size: 14px;cursor: pointer;">查看更多</a>
+              </TabPane>
             </Tabs>
             <!--<div>
               <div v-for="(item,index) in noticeData" :key="index" style="margin:11px 0px;">
@@ -209,6 +220,7 @@
         activeData: [],
         // 新闻
         newsData: [],
+        msgData: [],
         // 广告
         ads: [],
         // 资源使用情况
@@ -244,7 +256,13 @@
           zoneId: zoneId
         }
       })
-      Promise.all([accountInfo, adver, source, Announcement]).then(values => {
+      var msg = axios.post('user/getEventNotifyList.do', {
+        isRead: '2',
+        page: 1,
+        rows: 3,
+        zoneId: zoneId
+      })
+      Promise.all([accountInfo, adver, source, Announcement,msg]).then(values => {
         next(vm => {
           vm.setData(values)
         })
@@ -320,6 +338,14 @@
           this.annData = response.data.result.announcement_list
           this.activeData = response.data.result.activity_list
           this.newsData = response.data.result.news_list
+        }
+        response = values[4]
+        if (response.status == 200 && response.data.status == 1) {
+          this.msgData = response.data.result
+          this.msgData.map(item=>{
+            return item.publishtime = item.publishtime.split(' ')[0]
+          })
+          console.log(this.msgData)
         }
       },
       // 区域变更，刷新数据
