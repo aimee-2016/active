@@ -1130,13 +1130,6 @@
                                   this.renameForm.hostName = ''
                                   this.showModal.rename = true
                                   break
-                                case 'ratesChange':
-                                  if (this.hostCurrentSelected.caseType == 3) {
-                                    this.ratesChange()
-                                  } else {
-                                    this.$Message.info('资费变更只适用于实时计费的资源')
-                                  }
-                                  break
                                 case 'hostRenew':
                                   this.renewHost(this.hostCurrentSelected)
                                   break
@@ -1161,6 +1154,9 @@
                                   break
                                 case 'deleteHost':
                                   this.hostDelete(2)
+                                  break
+                                case 'protectUpgrade':
+                                  this.toProtectUpgradePage()
                                   break
                               }
                             }
@@ -1193,11 +1189,6 @@
                           }, '重命名'),
                           h('DropdownItem', {
                             attrs: {
-                              name: 'ratesChange'
-                            }
-                          }, '资费变更'),
-                          h('DropdownItem', {
-                            attrs: {
                               name: 'hostRenew'
                             }
                           }, '主机续费'),
@@ -1206,6 +1197,11 @@
                               name: 'makeSnapshot'
                             }
                           }, '制作快照'),
+                          h('DropdownItem', {
+                            attrs: {
+                              name: 'protectUpgrade'
+                            }
+                          }, '主机扩容'),
                           h('DropdownItem', {
                             attrs: {
                               name: 'shutdown'
@@ -1324,6 +1320,12 @@
                                 case 'deleteHost':
                                   this.hostDelete(2)
                                   break
+                                case 'upgrade':
+                                  this.toHostUpgrad()
+                                  break
+                                case 'protectUpgrade': 
+                                  this.toProtectUpgradePage()
+                                  break;
                               }
                             }
                           }
@@ -1382,6 +1384,16 @@
                               name: 'makeMirror'
                             }
                           }, '制作镜像'),
+                          h('DropdownItem', {
+                            attrs: {
+                              name: 'upgrade'
+                            }
+                          }, '主机升级'),
+                          h('DropdownItem', {
+                            attrs: {
+                              name: 'protectUpgrade'
+                            }
+                          }, '主机扩容'),
                           h('DropdownItem', {
                             attrs: {
                               name: 'startingUp'
@@ -1890,6 +1902,40 @@
           this.showModal.delHost = true
         } else {
           this.showModal.delHost = true
+        }
+      },
+      toHostUpgrad() {
+        if (this.hostCurrentSelected.status == 1 && this.hostCurrentSelected.computerstate == 0) {
+          this.$http.get('network/VMIsHaveSnapshot.do', {
+            params: {
+              VMId: this.hostCurrentSelected.computerid
+            }
+          }).then(response => {
+            if (response.status == 200 && response.data.status == 1) {
+              if (!response.data.result) {
+                this.$Modal.confirm({
+                  title: '提示',
+                  content: '您的主机有快照，无法升级，请删除快照再试',
+                  scrollable: true,
+                  okText: '删除快照',
+                  onOk: () => {
+                    this.$router.push('snapshot')
+                  }
+                })
+              } else {
+                sessionStorage.setItem('upgradeId', this.hostCurrentSelected.computerid)
+                this.$router.push('upgrade')
+              }
+            }
+          })
+        }
+      },
+      toProtectUpgradePage() {
+        if (this.hostCurrentSelected.status == 1) {
+          // 主机正常才能进行防护扩容
+          let protectTemp = {computerId: this.hostCurrentSelected.computerid, id: this.hostCurrentSelected.id}
+          sessionStorage.setItem('ProtectUpgrade', JSON.stringify(protectTemp))
+          this.$router.push('protectUpgrade')
         }
       },
       delHostOkBefore(){

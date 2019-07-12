@@ -343,7 +343,7 @@
               <ul class="nav_list">
                 <li class="nav_item">
                   <p>{{hostUnitList.webserveraddress}}</p>
-                  <div v-if="webServerAddressHide" class="text_block"><span
+                  <div v-if="webServerAddressHide"  class="text_block"><span 
                     style="color:red">信息有误</span> <span style="color:#2a99f2;cursor:pointer;" @click="webIsp = true">重新输入</span>
                   </div>
                 </li>
@@ -1011,8 +1011,8 @@
         </FormItem>
         <FormItem prop="webip">
           <p style="margin:10px">网站IP地址</p>
-          <Select v-model="webip" multiple>
-            <Option v-for="(item,index) in webipList" :value="item" :key="index">{{ item }}</Option>
+          <Select v-model="webip" multiple @on-change='webipChange'>
+            <Option v-for="(item,index) in webipList" :value="item.publicip" :key="index">{{ item.publicip }}</Option>
           </Select>
         </FormItem>
         <FormItem prop="webaccesstype">
@@ -1023,7 +1023,7 @@
         </FormItem>
         <FormItem prop="webserveraddress">
           <p style="margin:10px">服务器放置地</p>
-          <Input :disabled="true" type="text" v-model="updateHostUnitList.webserveraddress"></Input>
+          <Input :readonly="true" type="text" v-model="updateHostUnitList.webserveraddress"></Input>
         </FormItem>
       </Form>
       <div slot="footer">
@@ -1886,9 +1886,12 @@ export default {
         })
         .then(response => {
           if (response.status == 200 && response.data.status == 1) {
-            for (let i = 0; i < response.data.result.length; i++) {
-              this.webipList.push(response.data.result[i].publicip);
-            }
+              this.webipList = response.data.result;
+            // for (let i = 0; i < response.data.result.length; i++) {
+            //   this.webipList.push(response.data.result[i].publicip);
+            // }
+          }else{
+            this.$Message.info(response.data.message);
           }
         });
     },
@@ -2119,6 +2122,19 @@ export default {
         }
       });
     },
+
+    webipChange(val){
+      for(let i = 0; i<this.webipList.length; i++ ){
+         if(this.webipList[i].zonename != this.updateHostUnitList.webserveraddress && val.length !=0 ){
+           if(val.length >2){
+              this.updateHostUnitList.webserveraddress += this.webipList[i].zonename+' '
+           }else{
+              this.updateHostUnitList.webserveraddress = this.webipList[i].zonename
+           }
+        }
+      }
+    },
+
     hostUpdate(name) {
       this.$refs[name].validate(valid => {
         if (valid) {
@@ -2179,7 +2195,7 @@ export default {
         ISPName: this.hostUnitList.ispname,
         webIp: this.hostUnitList.webip,
         webAccessType: this.hostUnitList.webaccesstype,
-        webServerAddress: this.hostUnitList.webserveraddress,
+        webServerAddress: '华南一区',//this.hostUnitList.webserveraddress
         webResponsibilityLinkName: this.hostUnitList.webresponsibilitylinkname,
         webResponsibilityCertificatesType: this.hostUnitList
           .webresponsibilitycertificatestype,
@@ -2256,7 +2272,7 @@ export default {
   mounted() {
     this.details();
     this.getPublicIP();
-  }
+  },
 };
 </script>
 
