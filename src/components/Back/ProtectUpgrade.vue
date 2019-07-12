@@ -46,7 +46,7 @@
               <div class="proConf">
                 <div class="item" v-for="(item, index) in protectList" :class="{'active': item.name == selectItem.name}" :key="(index+2)*31" @click="changeUpgrade(item)">{{item.name}}GB</div>
               </div>
-              <div class="dayAdd">
+              <div class="dayAdd" v-show="selectItem.value >= 400">
                 <div class="countmins">
                   <div class="minusbtn" @click="minusCount"></div>
                   <input class="countNum" type="text" maxlength="2" disabled v-model="purchDay"/>
@@ -63,11 +63,13 @@
             <table cellpadding="0" cellspacing="0">
               <tr>
                 <td>防护配置</td>
-                <td>{{hostInfo.ddosProtectNumber}}GB <span style="margin-left: 20px;" v-show="selectItem.value">=> {{selectItem.value}}GB</span></td>
+                <td><span v-show="selectItem.value">{{selectItem.value}} GB</span></td>
               </tr>
               <tr>
                 <td>防护到期时间</td>
-                <td>{{hostInfo.endTime}} <span v-show="changeEndTime">+ {{changeEndTime}}</span></td>
+                <td><span v-show="changeEndTime && selectItem.value < 400">{{changeEndTime}}</span>
+                <span v-show="selectItem.value >= 400 ">{{selectItem.value}}GB防护到期之后，您的防护将回归至{{hostInfo.ddosProtectNumber}}GB，到期时间为{{changeEndTime}}</span>
+                </td>
               </tr>
             </table>
             <div class="price">
@@ -142,11 +144,14 @@
         axios.get('ddosImitationhost/UpDdosHostPrice.do', {
           params: {
             computerId: this.backData.id,
-            ddosProtectNumber: this.selectItem.value
+            ddosProtectNumber: this.selectItem.value,
+            timeType: this.selectItem.value >= 400 ? 'day': 'month',
+            timeValue: this.selectItem.value >= 400 ? this.purchDay : ''
           }
         }).then(response => {
           if(response.status == 200 && response.data.status == 1){
-            this.interfacePrice = response.data.result
+            this.interfacePrice = response.data.price
+            this.changeEndTime = response.data.endTime
           }
         })
       },
@@ -187,8 +192,8 @@
       // 购买天数 + 
       addCount() {
         let tempAddCount = this.purchDay + 1
-        if(tempAddCount > 1) {
-          this.$Message.info('防护叠加天数不能超过1天');
+        if(this.selectItem.value >= 400 && (new Date(this.changeEndTime) <= new Data(this.hostInfo.ddosProtectNumber))) {
+          this.$Message.info('扩容配置大于等于400GB时，天数选择不能大于防护到期时间');
         }else {
           this.purchDay = tempAddCount
         }
@@ -508,6 +513,7 @@
       .price {
         margin-top: 20px;
         padding-top: 20px;
+        padding-bottom: 20px;
         border-top: 1px solid rgba(233, 233, 233, 1);
         > a {
           font-size: 12px;

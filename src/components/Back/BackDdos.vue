@@ -65,7 +65,6 @@
                 </Tooltip>
               </Dropdown-item>
               <Dropdown-item name="protectionUpgrade" :disabled="protectionUpgrade">防护扩容</Dropdown-item>
-              <!-- <Dropdown-item name="protectiveOverlay" :disabled="protectiveOverlay">防护叠加</Dropdown-item> -->
             </Dropdown-menu>
           </Dropdown>
         </div>
@@ -1651,18 +1650,6 @@
                 this.$router.push('protectUpgrade')
               }
               break
-            /* case 'protectiveOverlay':
-              if (this.hostCurrentSelected.status == 1) {
-                // 叠加
-                if (this.hostCurrentSelected.UpddosProtectNumber) {
-                  this.$Message.info('您已叠加过防护，请在叠加到期时间('+this.hostCurrentSelected.ddosendTime+')后再叠加!');
-                } else {
-                  let protectTemp1 = {computerId: this.hostCurrentSelected.computerid, id: this.hostCurrentSelected.id}
-                  sessionStorage.setItem('ProtectUpgrade', JSON.stringify(protectTemp1))
-                  this.$router.push('protectOverlay')
-                }
-              }
-              break */
           }
         } else {
           if (this.hostSelection.length > 5) {
@@ -2930,16 +2917,7 @@
           return this.hostSelection[0].status != 1
         }
         // return false
-      } /* ,
-      protectiveOverlay() {
-        let len = this.hostSelection.length
-        if (len !== 1) {
-          return true
-        } else {
-          return this.hostSelection[0].status != 1
-        }
-        // return false
-      }*/
+      }
     },
     watch: {
       renewalType(type) {
