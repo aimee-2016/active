@@ -185,7 +185,14 @@
                             <div class="dp-row">
                                 <div>
                                     <Button type="primary" style="margin-right:10px;" @click="showModal. certificate = true">添加证书</Button>
+                                    <Poptip
+                                    confirm
+                                    width="230"
+                                    placement="right"
+                                    @on-ok="deleteList('certificate')"
+                                    title="您确认重启选中的主机吗？" style="margin: 0 10px">
                                     <Button type="primary">删除</Button>
+                                     </Poptip>
                                 </div>
                                 <div>
                                     <Input placeholder="证书名称" v-model="crtName" style="width:180px;margin-right:10px;"></Input>
@@ -204,7 +211,14 @@
                             <div class="dp-row">
                                 <div>
                                     <Button type="primary" style="margin-right:10px;" @click="$router.push('ddosipruleadd')">添加规则</Button>
+                                    <Poptip
+                                    confirm
+                                    width="230"
+                                    placement="right"
+                                    @on-ok="deleteList('forwardrule')"
+                                    title="您确认重启选中的主机吗？" style="margin: 0 10px">
                                     <Button type="primary">删除</Button>
+                                    </Poptip>
                                     <span class="dp-cn">CNAME：sectest564as65d4a65s4d5as4d5a6s4d6</span>
                                 </div>
                                 <div>
@@ -362,15 +376,15 @@
                     <FormItem label="证书文件" prop="file">
                         <Input type="textarea" v-model="certificateValidate.file" placeholder="Enter your name">
                         </Input>
-                        <span class="f-p">0/500</span>
+                     
                     </FormItem>
                     <FormItem label="秘钥内容" prop="secret">
                         <Input type="textarea" v-model="certificateValidate.secret" placeholder="Enter your name"></Input>
-                        <span class="f-p">0/500</span>
+                      
                     </FormItem>
                     <FormItem label="CA内容" prop="ca">
                         <Input type="textarea" v-model="certificateValidate.ca" placeholder="Enter your name"></Input>
-                        <span class="f-p">0/500</span>
+                     
                     </FormItem>
                     <FormItem label="加密方式" prop="pawMode">
                         <Input v-model="certificateValidate.pawMode" placeholder="Enter your name"></Input>
@@ -403,15 +417,15 @@
                     <FormItem label="证书文件" prop="file">
                         <Input type="textarea" v-model="certificateValidate.file" placeholder="Enter your name">
                         </Input>
-                        <span class="f-p">0/500</span>
+                        
                     </FormItem>
                     <FormItem label="秘钥内容" prop="secret">
                         <Input type="textarea" v-model="certificateValidate.secret" placeholder="Enter your name"></Input>
-                        <span class="f-p">0/500</span>
+                        
                     </FormItem>
                     <FormItem label="CA内容" prop="ca">
                         <Input type="textarea" v-model="certificateValidate.ca" placeholder="Enter your name"></Input>
-                        <span class="f-p">0/500</span>
+                        
                     </FormItem>
                     <FormItem label="加密方式" prop="name">
                         <Input v-model="certificateValidate.name" placeholder="Enter your name"></Input>
@@ -1159,6 +1173,7 @@ components: { expandRow },
     overviewTableChange(list){
         this.price = 0;
         this.overviewSelect = list;
+   
         list.forEach(item => {
             this.price += item.totalprice; 
         });
@@ -1276,7 +1291,7 @@ components: { expandRow },
             }
         }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
-
+                 this.getDomainList(1);
             }else{
                 this.$Message.info(res.data.message);
             }
@@ -1305,14 +1320,12 @@ components: { expandRow },
 
     createCertificate(){
         this.$http.post('ddosImitationIp/AddCertificate.do',{
-            // params:{
                 crtName:this.certificateValidate.name,
                 crtRemark:this.certificateValidate.desc,
                 crtDes:this.certificateValidate.file,
                 keyDes:this.certificateValidate.secret,
-                caDes:this.certificateValidate.ca,
-                encryptionWay:'des'
-            // }
+                caDes:'',//this.certificateValidate.ca
+                encryptionWay:''
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
 
@@ -1428,9 +1441,18 @@ components: { expandRow },
 
     deleteList(name){
         let url = '',
-        params  = {
-            domain:this.overviewSelect.domainname,
-            Id:this.overviewSelect.id
+        domain = '',
+        id='', 
+        packageId='';
+        this.overviewSelect.forEach(item =>{
+            domain +=item.domainname+',';
+            id +=item.id+',';
+            packageId+=item.packageid+',';
+        })
+        let params  = {
+            domain:domain.substring(0,domain.lastIndexOf(',')),
+            Id:id.substring(0,id.lastIndexOf(',')),
+            packageId:packageId.substring(0,packageId.lastIndexOf(','))
         };
         if(name == 'domain'){
             url = 'ddosImitationIp/deletedomain.do'
@@ -1443,6 +1465,13 @@ components: { expandRow },
         this.$http.get(url,{params}).then(res =>{
             if(res.status == 200 && res.data.status == 1){
                 this.$Message.success(res.data.message);
+                if(name == 'domain'){
+                   this.getDomainList(1);
+                }else if(name == 'certificate'){
+                     this.getCertificate(1);
+                }else if(name == 'forwardrule'){
+                      this.getAllforwardrule(1);
+                }
             }else{
                 this.$Message.info(res.data.message);
             }
@@ -1457,6 +1486,15 @@ components: { expandRow },
           }else{
               return false;
           }
+      }
+  },
+  watch:{
+      'button1':{
+          handler(){
+              let list =[];
+               this.overviewTableChange(list);
+                
+          },deep:true
       }
   }
 };
