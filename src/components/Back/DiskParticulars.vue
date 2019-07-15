@@ -714,11 +714,11 @@
       },
       // 磁盘状态
       diskState () {
-        return (this.diskInfo.mounton === '' && this.diskInfo.mountonname === '') ? '可挂载' : '已挂载'
+        return (this.diskInfo.mounton&& this.diskInfo.mountonname) ? '已挂载' : '可挂载'
       },
       // 挂载主机名
       mountHost () {
-        return (this.diskInfo.mounton === '' && this.diskInfo.mountonname === '') ? '----' : this.diskInfo.mountonname
+        return (this.diskInfo.mounton && this.diskInfo.mountonname) ? this.diskInfo.mountonname : '----' 
       },
       // 计费类型
       chargeType () {
