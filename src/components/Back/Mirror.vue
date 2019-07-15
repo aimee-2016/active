@@ -623,7 +623,9 @@
             this.ownMirrorList()
             this.$Message.success(response.data.message)
           } else {
-            this.$message.info(response.data.message)
+            this.$message.info({
+              content:response.data.message
+            })
           }
         })
       },
