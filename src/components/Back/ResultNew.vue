@@ -163,8 +163,10 @@
           router = 'BackDdos'
         } else if (name == '26') {
           router = 'BackDdos'
-        }else{
+        }else if(name == '4'){
           router = 'overview';
+        }else{
+           router = 'overview';
         }
         this.$router.push(router)
       }
