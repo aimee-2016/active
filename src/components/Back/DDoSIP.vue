@@ -250,7 +250,8 @@
                          <div v-if="button1 == '网站业务'">
                             <div class="dp-row">
                                 <div>
-                                    <Button type="primary" style="margin-right:10px;" @click="showModal.addDomain = true">添加域名</Button>
+                                    <!-- <Button type="primary" style="margin-right:10px;" @click="showModal.addDomain = true">添加域名</Button> -->
+                                    <Button type="primary" style="margin-right:10px;" @click="$router.push('/DDoSAddDomain')">添加域名</Button>
                                     <Poptip
                                     confirm
                                     width="230"
