@@ -22,19 +22,21 @@
             <table cellpadding="0" cellspacing="0">
               <tr>
                 <td>主机名称</td>
-                <td>{{hostInfo.computerName}}</td>
+                <td colspan="2">{{hostInfo.computerName}}</td>
               </tr>
               <tr>
                 <td>IP地址</td>
-                <td>{{hostInfo.publicIp}}(公)；{{hostInfo.privateIp}}(内)</td>
+                <td colspan="2">{{hostInfo.publicIp}}(公)；{{hostInfo.privateIp}}(内)</td>
               </tr>
               <tr>
                 <td>防护配置</td>
-                <td>{{hostInfo.ddosProtectNumber}}GB</td>
+                <td style="width: 140px;">{{hostInfo.ddosProtectNumber}}GB</td>
+                <td v-show="hostInfo.UpddosProtectNumber" style="color: #FF624B">{{hostInfo.UpddosProtectNumber}}GB</td>
               </tr>
               <tr>
                 <td>防护到期时间</td>
-                <td>{{hostInfo.endTime}}</td>
+                <td style="width: 140px;">{{hostInfo.endTime}}</td>
+                <td v-show="hostInfo.UpddosProtectNumber" style="color: #FF624B">{{hostInfo.ddosendTime}}</td>
               </tr>
             </table>
           </div>
@@ -49,7 +51,7 @@
               <div class="dayAdd" v-show="selectItem.value >= 400">
                 <div class="countmins">
                   <div class="minusbtn" @click="minusCount"></div>
-                  <input class="countNum" type="text" maxlength="2" disabled v-model="purchDay"/>
+                  <input class="countNum" type="text" maxlength="4" disabled v-model="purchDay"/>
                   <div class="addbtn" @click="addCount"></div>
                   <div class="depart">天</div>
                 </div>
@@ -63,12 +65,14 @@
             <table cellpadding="0" cellspacing="0">
               <tr>
                 <td>防护配置</td>
+                <td style="color: #333333;padding-left: 10px;padding-right: 20px;" v-show="hostInfo.UpddosProtectNumber">{{hostInfo.ddosProtectNumber}}GB</td>
                 <td><span v-show="selectItem.value">{{selectItem.value}} GB</span></td>
               </tr>
               <tr>
                 <td>防护到期时间</td>
+                <td style="color: #333333;padding-right: 20px;padding-left: 10px;" v-show="hostInfo.UpddosProtectNumber">{{hostInfo.endTime}}</td>
                 <td><span v-show="changeEndTime && selectItem.value < 400">{{changeEndTime}}</span>
-                <span v-show="selectItem.value >= 400 ">{{selectItem.value}}GB防护到期之后，您的防护将回归至{{hostInfo.ddosProtectNumber}}GB，到期时间为{{changeEndTime}}</span>
+                <span v-show="selectItem.value >= 400 ">{{selectItem.value-hostInfo.ddosProtectNumber}}GB防护到期之后，您的防护将回归至{{hostInfo.ddosProtectNumber}}GB，到期时间为{{changeEndTime}}</span>
                 </td>
               </tr>
             </table>
@@ -80,8 +84,8 @@
           </div>
         </div>
         <div class="footer">
-          <Button style="margin-right: 10px" type="ghost" @click="$router.push('BackDdos')">取消升级</Button>
-          <Button type="primary" :disabled="price == 0" @click="payOrder">确认升级</Button>
+          <Button style="margin-right: 10px" type="ghost" @click="$router.push('BackDdos')">取消扩容</Button>
+          <Button type="primary" :disabled="price == 0" @click="payOrder">确认扩容</Button>
         </div>
       </div>
     </div>
@@ -161,7 +165,9 @@
           axios.get('ddosImitationhost/UpDdosProtectEquipment.do', {
             params: {
               computerId: this.backData.id,
-              ddosProtectNumber: this.selectItem.value
+              ddosProtectNumber: this.selectItem.value,
+              timeType: this.selectItem.value >= 400 ? 'day': 'month',
+              timeValue: this.selectItem.value >= 400 ? this.purchDay : ''
             }
           }).then(res => {
             if(res.status == 200 && res.data.status == 1){
@@ -174,10 +180,17 @@
         }
       },
       changeUpgrade(item) {
-        if(this.hostInfo.ddosProtectNumber<item.value){
+        var tempddos = this.hostInfo.UpddosProtectNumber ? parseInt(this.hostInfo.UpddosProtectNumber): 0
+        if((this.hostInfo.ddosProtectNumber+tempddos)<item.value && (this.hostInfo.ddosProtectNumber+item.value)<=800 ){
           this.selectItem = item
         } else {
-          this.$Message.info('请选择比当前防护配置大的配置')
+          if ((this.hostInfo.ddosProtectNumber + item.value) > 800) {
+            debugger
+            this.$Message.info('总的防护配置不能超过800GB')
+          } else {
+            debugger
+            this.$Message.info('请选择比当前防护配置大的配置')
+          }
         }
       },
       // 购买天数 - 
@@ -192,8 +205,13 @@
       // 购买天数 + 
       addCount() {
         let tempAddCount = this.purchDay + 1
-        if(this.selectItem.value >= 400 && (new Date(this.changeEndTime) <= new Data(this.hostInfo.ddosProtectNumber))) {
-          this.$Message.info('扩容配置大于等于400GB时，天数选择不能大于防护到期时间');
+        if(this.selectItem.value >= 400) {
+          if(new Date(this.changeEndTime) <= new Date(this.hostInfo.ddosProtectNumber)){
+            debugger;
+            this.$Message.info('扩容配置大于等于400GB时，天数选择不能大于防护到期时间');
+          } else {
+            this.purchDay = tempAddCount
+          }
         }else {
           this.purchDay = tempAddCount
         }
@@ -222,6 +240,9 @@
         deep: true
       },
       selectItem() {
+        this.queryProtectPrice()
+      },
+      purchDay() {
         this.queryProtectPrice()
       }
     },
@@ -271,6 +292,7 @@
         tr{
           td{
             padding: 3px 0;
+            padding-left: 10px;
             font-size: 14px;
             color: #666;
             line-height:20px;
