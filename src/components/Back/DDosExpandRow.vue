@@ -45,19 +45,19 @@
 export default {
     data(){
         return{
-            blackList:this.row.blacklist.split(';'),
-            blackValue:this.row.blacklist,
-            whitValue:this.row.whitelist,
+            blackList:this.row.blacklist ?  this.row.blacklist.split(';'):[],
+            blackValue:this.row.blacklist || '',
+            whitValue:this.row.whitelist || '',
             isBlckShow:true,
             isWihtShow:true,
-            whitList:this.row.whitelist.split(';')
+            whitList:this.row.whitelist ? this.row.whitelist .split(';'): []
         }
     },
     props:{
         row:Object
     },
     created(){
-      
+
     },
     methods:{
         isWihtUpdate(){

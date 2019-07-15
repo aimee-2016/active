@@ -133,6 +133,105 @@
                                 </div>
                            </div>
                        </div>
+
+                        <!-- 业务统计  -->
+                       <div v-if="overviewRadio == '业务统计'">
+                           <div class="dp-ds">
+                               <div> 
+                                   <span>套餐选择</span>
+                                    <Select size="small" v-model="attackMeal" style="width:231px;">
+                                        <Option v-for="item in setMealList" :value="item.packageid" :key="item.packageid">{{ item.packageid }}</Option>
+                                    </Select>
+                               </div>
+                              <div>
+                                   <span>按统计时间</span>
+                                   <DatePicker v-model='statisticsTime' format='yyyy-MM-dd' size='small' :transfer='true' type="daterange"  placement="bottom-end" placeholder="Select date" style="width: 231px;"></DatePicker>
+                                   <Button size='small' type="primary" style="width:54px;" @click="getMitigatedBandwidth">查询</Button>
+                               </div>
+                                <div>
+                                   <span>域名选择</span>
+                                   <DatePicker v-model='statisticsTime' format='yyyy-MM-dd' size='small' :transfer='true' type="daterange"  placement="bottom-end" placeholder="Select date" style="width: 231px;"></DatePicker>
+                               </div>
+                           </div>
+                           <div>
+                               <div class="dp-grad dp-row">
+                                    <div>
+                                        <span class="b-font">带宽统计</span>
+                                        <span>统计该套餐下在所选时间段所有域名和转发规则下攻击峰值</span>
+                                    </div>
+                                    <div>
+                                    <span class="l-font">刷新</span> 
+                                    </div>
+                                </div>
+                                <div style="display:flex;">
+                                    <div class="dp-fh" style="width:380px;">
+                                        <div>
+                                            <div>
+                                                <span class="fh-sp">峰值时间</span>
+                                            </div>
+                                            <div class="dp-bt">
+                                                <span class="b-font" style="margin:0px;">2018-10-05 23:45</span>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                    <div class="dp-fh" style="width:380px;">
+                                        <div>
+                                            <div>
+                                                <span class="fh-sp">DDoS攻击带宽峰</span>
+                                            </div>
+                                            <div class="dp-bt">
+                                                <span class="b-font" style="margin:0px;">34.25Gbps</span>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                    <div class="dp-fh" style="width:380px;margin:0;">
+                                        <div>
+                                            <div>
+                                                <span class="fh-sp">已清洗流</span>
+                                            </div>
+                                            <div class="dp-bt">
+                                                <span class="b-font" style="margin:0px;">34.25Gbps</span>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                </div>
+
+                                <div style="border:1px dashed #999999;padding:20px;border-radius:4px;margin-top:20px;">
+                                    <p style="font-size:14px;color:#333333;">清洗流量统计（单位Gbps）</p>
+                                    <chart style="width:100%;" ref="cpu" :options="hightIp"></chart>
+                                </div>
+                           </div>
+                           <div>
+                               <div class="dp-grad dp-row">
+                                    <div>
+                                        <span class="b-font">请求数</span>
+                                        <span>查询指定套餐，及指定时间范围已防护的业务的DDoS的攻击事件</span>
+                                    </div>
+                                    <div>
+                                    <span class="l-font">刷新</span> 
+                                    </div>
+                                </div>
+                               <div style="border:1px dashed #999999;padding:20px;border-radius:4px;margin-top:20px;">
+                                    <p style="font-size:14px;color:#333333;">清洗流量统计（单位Gbps）</p>
+                                    <chart style="width:100%;" ref="cpu" :options="hightIp"></chart>
+                                </div>
+                           </div>
+                            <div>
+                               <div class="dp-grad dp-row">
+                                    <div>
+                                        <span class="b-font">并发连接数</span>
+                                        <span>查询指定套餐，及指定时间范围已防护的业务的遭受DDoS的攻击目标IP的相关信息</span>
+                                    </div>
+                                    <div>
+                                    <span class="l-font">刷新</span> 
+                                    </div>
+                                </div>
+                                <div style="border:1px dashed #999999;padding:20px;border-radius:4px;margin-top:20px;">
+                                    <p style="font-size:14px;color:#333333;">清洗流量统计（单位Gbps）</p>
+                                    <chart style="width:100%;" ref="cpu" :options="hightIp"></chart>
+                                </div>
+                           </div>
+                       </div>
                     </TabPane>
                     <TabPane label="业务管理">
                         <div class="dp-row">
@@ -157,7 +256,7 @@
                                     width="230"
                                     placement="right"
                                     @on-ok="deleteList('domain')"
-                                    title="您确认重启选中的主机吗？" style="margin: 0 10px">
+                                    title="您确认删除选中的域名吗？" style="margin: 0 10px">
                                     <Button type="primary" :disabled='renewDisabled'>删除</Button>
                                     </Poptip>
                                 </div>
@@ -190,7 +289,7 @@
                                     width="230"
                                     placement="right"
                                     @on-ok="deleteList('certificate')"
-                                    title="您确认重启选中的主机吗？" style="margin: 0 10px">
+                                    title="您确认删除选中的证书吗？" style="margin: 0 10px">
                                     <Button type="primary">删除</Button>
                                      </Poptip>
                                 </div>
@@ -216,7 +315,7 @@
                                     width="230"
                                     placement="right"
                                     @on-ok="deleteList('forwardrule')"
-                                    title="您确认重启选中的主机吗？" style="margin: 0 10px">
+                                    title="您确认删除选中的配置吗？" style="margin: 0 10px">
                                     <Button type="primary">删除</Button>
                                     </Poptip>
                                     <span class="dp-cn">CNAME：sectest564as65d4a65s4d5as4d5a6s4d6</span>
@@ -453,7 +552,7 @@
             <div class="md-cer">
                 <span>证书ID</span>
                <Select v-model="operationObject" style="width:230px;margin:0 22px;">
-                    <Option v-for="item in setMealList" :value="item.packageid" :key="item.packageid">{{ item.packageid }}</Option>
+                    <Option v-for="item in certificateData" :value="item.crtid" :key="item.crtid">{{ item.crtid }}</Option>
                 </Select>
             </div>
             <div slot="footer" class="modal-footer-border">
@@ -1252,6 +1351,10 @@ components: { expandRow },
 
     // 换源
     updateDomain(){
+        if(this.operationObject == ''){
+            this.$Message.info('请选择需要关联的证书ID');
+            return;
+        }
         this.$http.get('ddosImitationIp/UpdateDomain.do',{
             params:{
                 domain:this.businessSelect.domainname,
@@ -1448,12 +1551,19 @@ components: { expandRow },
             domain +=item.domainname+',';
             id +=item.id+',';
             packageId+=item.packageid+',';
+
         })
-        let params  = {
-            domain:domain.substring(0,domain.lastIndexOf(',')),
-            Id:id.substring(0,id.lastIndexOf(',')),
-            packageId:packageId.substring(0,packageId.lastIndexOf(','))
+         let params  = {
+            domain:domain,
+            Id:id,
+            packageId:packageId
         };
+        if(name == 'certificate' || name == 'forwardrule'){
+            params = {
+                Id:id
+            }
+        }
+       
         if(name == 'domain'){
             url = 'ddosImitationIp/deletedomain.do'
         }else if(name == 'certificate'){
