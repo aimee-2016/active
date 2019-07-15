@@ -13,7 +13,7 @@ export default {
        }
    },
    legend: {
-        data: ['已清洗流量', '正常业务流量'],
+        data: ['流出带宽'],
         bottom: 0,
         icon: 'circle',
         padding: [20, 0, 0, 0],
@@ -41,7 +41,7 @@ export default {
    },
    series: [
        {
-           name: '正常业务流量',
+           name: '流出带宽',
            type: 'line',
            stack: '总量',
            smooth: true,
@@ -50,7 +50,7 @@ export default {
            lineStyle: {
                normal: {
                    width: 8,
-                   shadowColor: 'rgba(181, 229, 173, 0.5)',
+                   shadowColor: 'rgba(42, 153, 242, 0.5)',
                    shadowBlur: 10,
                    shadowOffsetY: 10,
                    color: {
@@ -60,9 +60,9 @@ export default {
                    x2: 0,
                    y2: 1,
                    colorStops: [{
-                       offset: 0, color: 'rgba(76, 165, 75, 1)' // 0% 处的颜色
+                       offset: 0, color: 'rgba(42, 109, 242, 1)' // 0% 处的颜色
                    }, {
-                       offset: 1, color: 'rgba(181, 229, 173, 1)' // 100% 处的颜色
+                       offset: 1, color: 'rgba(42, 153, 242, 1)' // 100% 处的颜色
                    }],
                    global: false // 缺省为 false
                },
@@ -72,38 +72,7 @@ export default {
                }
            },
            data: [120, 132, 101, 134, 90, 230, 210],
-       },
-        {
-           name: '已清洗流量',
-           type: 'line',
-           stack: '总量',
-           smooth: true,
-           symbol: 'circle',
-           symbolSize: 4, 
-           smoothMonotone: 'x',
-           lineStyle: {
-               normal: {
-                   width: 8,
-                   shadowColor: 'rgba(42, 153, 242, 0.5)',
-                   shadowBlur: 10,
-                   shadowOffsetY: 10,
-                   color: {
-                       type: 'linear',
-                       x: 0,
-                       y: 0,
-                       x2: 0,
-                       y2: 1,
-                       colorStops: [{
-                           offset: 0, color: 'rgba(42, 109, 242, 1)' // 0% 处的颜色
-                       }, {
-                           offset: 1, color: 'rgba(42, 153, 242, 1)' // 100% 处的颜色
-                       }],
-                       global: false // 缺省为 false
-                   },
-               }
-           },
-           data: [120, 132, 101, 134, 90, 230, 210],
-       },
+       }
    ]
 };
 

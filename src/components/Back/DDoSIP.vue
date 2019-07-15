@@ -134,8 +134,8 @@
                            </div>
                        </div>
 
-                        <!-- 业务统计  -->
-                       <div v-if="overviewRadio == '业务统计'">
+                         <!-- CC统计  -->
+                       <div v-if="overviewRadio == 'CC统计'">
                            <div class="dp-ds">
                                <div> 
                                    <span>套餐选择</span>
@@ -143,14 +143,96 @@
                                         <Option v-for="item in setMealList" :value="item.packageid" :key="item.packageid">{{ item.packageid }}</Option>
                                     </Select>
                                </div>
-                              <div>
+                                <div>
+                                   <span>域名选择</span>
+                                   <Select size="small" v-model="attackMeal" style="width:231px;">
+                                        <Option v-for="item in setMealList" :value="item.packageid" :key="item.packageid">{{ item.packageid }}</Option>
+                                    </Select>
+                               </div>
+                                <div>
                                    <span>按统计时间</span>
                                    <DatePicker v-model='statisticsTime' format='yyyy-MM-dd' size='small' :transfer='true' type="daterange"  placement="bottom-end" placeholder="Select date" style="width: 231px;"></DatePicker>
                                    <Button size='small' type="primary" style="width:54px;" @click="getMitigatedBandwidth">查询</Button>
                                </div>
+                           </div>
+                           <div>
+                               <div class="dp-grad dp-row">
+                                    <div>
+                                        <span class="b-font">CC攻击QPS</span>
+                                        <span>查看指定套餐中网站业务的域名，查看CC攻击的QPS，包含CC攻击次数和总请求数。</span>
+                                    </div>
+                                    <div>
+                                    <span class="l-font">刷新</span> 
+                                    </div>
+                                </div>
+                                <div style="border:1px dashed #999999;padding:20px;border-radius:4px;margin-top:20px;">
+                                    <p style="font-size:14px;color:#333333;">CC攻击QPS统计（单位：次）</p>
+                                    <chart style="width:100%;" ref="cpu" :options="hightIp"></chart>
+                                </div>
+                           </div>
+                           <div>
+                               <div class="dp-grad dp-row">
+                                    <div>
+                                        <span class="b-font">CC攻击动态</span>
+                                        <span>查询指定套餐，及指定时间范围已防护网站业务的域名遭受CC攻击的情况</span>
+                                    </div>
+                                    <div>
+                                    <span class="l-font">刷新</span> 
+                                    </div>
+                                </div>
+                                <Table no-data-text='还未收到攻击/未配置域名' :columns="overviewList" :data="overviewData" @on-selection-change='overviewTableChange'></Table>
+                                <div class="dp-page">
+                                    <Page :total="100" style="display:inline-block;vertical-align: middle;margin-left:20px;" show-sizer :page-size-opts=[10,20,50,100]></Page>
+                                </div>
+                           </div>
+                            <div>
+                               <div class="dp-grad dp-row">
+                                    <div>
+                                        <span class="b-font">受攻击域名统计</span>
+                                        <span>查询指定套餐，及指定时间范围已防护网站业务的域名遭受CC攻击的域名，及攻击总数</span>
+                                    </div>
+                                    <div>
+                                    <span class="l-font">刷新</span> 
+                                    </div>
+                                </div>
+                                <Table no-data-text='还未收到攻击/未配置域名' :columns="overviewList" :data="overviewData" @on-selection-change='overviewTableChange'></Table>
+                                <div class="dp-page">
+                                    <Page :total="100" style="display:inline-block;vertical-align: middle;margin-left:20px;" show-sizer :page-size-opts=[10,20,50,100]></Page>
+                                </div>
+                           </div>
+                           <div>
+                               <div class="dp-grad dp-row">
+                                    <div>
+                                        <span class="b-font">Top 100IP分布</span>
+                                    </div>
+                                    <div>
+                                    <span class="l-font">刷新</span> 
+                                    </div>
+                                </div>
+                               <div style="border:1px dashed #999999;padding:20px;border-radius:4px;margin-top:20px;">
+                                    <p style="font-size:14px;color:#333333;">Top 100IP分布</p>
+                                    <chart style="width:100%;" ref="cpu" :options="hightIp"></chart>
+                                </div>
+                           </div>
+                       </div>
+
+                        <!-- 业务统计  -->
+                       <div v-if="overviewRadio == '业务统计'">
+                           <div class="dp-ds">
+                               <div> 
+                                   <span>套餐选择</span>
+                                    <Select size="small" v-model="business.packageId" style="width:231px;">
+                                        <Option v-for="item in setMealList" :value="item.packageid" :key="item.packageid">{{ item.packageid }}</Option>
+                                    </Select>
+                               </div>
+                              <div>
+                                   <span>按统计时间</span>
+                                   <DatePicker v-model='business.date' format='yyyy-MM-dd' size='small' :transfer='true' type="daterange"  placement="bottom-end" placeholder="Select date" style="width: 231px;"></DatePicker>
+                                   <Button size='small' type="primary" style="width:54px;" @click="QueryBusinessBandwidth">查询</Button>
+                               </div>
                                 <div>
                                    <span>域名选择</span>
-                                   <DatePicker v-model='statisticsTime' format='yyyy-MM-dd' size='small' :transfer='true' type="daterange"  placement="bottom-end" placeholder="Select date" style="width: 231px;"></DatePicker>
+                                   <DatePicker v-model='business.domain' format='yyyy-MM-dd' size='small' :transfer='true' type="daterange"  placement="bottom-end" placeholder="Select date" style="width: 231px;"></DatePicker>
                                </div>
                            </div>
                            <div>
@@ -170,35 +252,35 @@
                                                 <span class="fh-sp">峰值时间</span>
                                             </div>
                                             <div class="dp-bt">
-                                                <span class="b-font" style="margin:0px;">2018-10-05 23:45</span>
+                                                <span class="b-font" style="margin:0px;">{{business.peakTime}}</span>
                                             </div>
                                         </div> 
                                     </div>
                                     <div class="dp-fh" style="width:380px;">
                                         <div>
                                             <div>
-                                                <span class="fh-sp">DDoS攻击带宽峰</span>
+                                                <span class="fh-sp">带宽峰值</span>
                                             </div>
                                             <div class="dp-bt">
-                                                <span class="b-font" style="margin:0px;">34.25Gbps</span>
+                                                <span class="b-font" style="margin:0px;">{{business.peakValue}}</span>
                                             </div>
                                         </div> 
                                     </div>
                                     <div class="dp-fh" style="width:380px;margin:0;">
                                         <div>
                                             <div>
-                                                <span class="fh-sp">已清洗流</span>
+                                                <span class="fh-sp">总流量</span>
                                             </div>
                                             <div class="dp-bt">
-                                                <span class="b-font" style="margin:0px;">34.25Gbps</span>
+                                                <span class="b-font" style="margin:0px;">{{business.totalFlow}}</span>
                                             </div>
                                         </div> 
                                     </div>
                                 </div>
 
                                 <div style="border:1px dashed #999999;padding:20px;border-radius:4px;margin-top:20px;">
-                                    <p style="font-size:14px;color:#333333;">清洗流量统计（单位Gbps）</p>
-                                    <chart style="width:100%;" ref="cpu" :options="hightIp"></chart>
+                                    <p style="font-size:14px;color:#333333;">带宽流量统计（单位Gbps）</p>
+                                    <chart style="width:100%;" ref="flow" :options="flowOut"></chart>
                                 </div>
                            </div>
                            <div>
@@ -213,7 +295,7 @@
                                 </div>
                                <div style="border:1px dashed #999999;padding:20px;border-radius:4px;margin-top:20px;">
                                     <p style="font-size:14px;color:#333333;">清洗流量统计（单位Gbps）</p>
-                                    <chart style="width:100%;" ref="cpu" :options="hightIp"></chart>
+                                    <chart style="width:100%;" ref="reque" :options="reque"></chart>
                                 </div>
                            </div>
                             <div>
@@ -228,7 +310,7 @@
                                 </div>
                                 <div style="border:1px dashed #999999;padding:20px;border-radius:4px;margin-top:20px;">
                                     <p style="font-size:14px;color:#333333;">清洗流量统计（单位Gbps）</p>
-                                    <chart style="width:100%;" ref="cpu" :options="hightIp"></chart>
+                                    <chart style="width:100%;" ref="concurrent" :options="concurrent"></chart>
                                 </div>
                            </div>
                        </div>
@@ -265,7 +347,7 @@
                                         <Option v-for="item in domainList" :value="item.value" :key="item.value">{{ item.label }}</Option>
                                     </Select>
                                     <Input placeholder="请输入域名" style="width:180px;margin:0 10px;"></Input>
-                                    <Button type="primary" style="width:84px;">查询</Button>
+                                    <Button type="primary" style="width:84px;" @click="queryDomain">查询</Button>
                                 </div>
                             </div>
                             <div class="selectMark">
@@ -290,7 +372,7 @@
                                     placement="right"
                                     @on-ok="deleteList('certificate')"
                                     title="您确认删除选中的证书吗？" style="margin: 0 10px">
-                                    <Button type="primary">删除</Button>
+                                    <Button type="primary" :disabled='renewDisabled'>删除</Button>
                                      </Poptip>
                                 </div>
                                 <div>
@@ -316,7 +398,7 @@
                                     placement="right"
                                     @on-ok="deleteList('forwardrule')"
                                     title="您确认删除选中的配置吗？" style="margin: 0 10px">
-                                    <Button type="primary">删除</Button>
+                                    <Button type="primary" :disabled='renewDisabled'>删除</Button>
                                     </Poptip>
                                     <span class="dp-cn">CNAME：sectest564as65d4a65s4d5as4d5a6s4d6</span>
                                 </div>
@@ -630,7 +712,11 @@
 <script>
 import expandRow from './DDosExpandRow.vue';
 import hightIp from '@/echarts/hightIp';
+import hightIpBs from '@/echarts/hightIpBs'
 const dIp  = JSON.stringify(hightIp);
+const flow = JSON.stringify(hightIpBs);
+const reque = JSON.stringify(hightIpBs);
+const concurrent = JSON.stringify(hightIpBs)
 export default {
 components: { expandRow },
   data() {
@@ -766,10 +852,21 @@ components: { expandRow },
             }
         ],
         hightIp:JSON.parse(dIp),
+        flowOut:JSON.parse(flow),
+        reque:JSON.parse(reque),
+        concurrent:JSON.parse(concurrent),
         price:0,
         overviewPage:1,
         pageSize:10,
         attackMeal:'',
+        business:{
+            packageId:'',
+            date:'',
+            domain:'',
+            peakTime:'--',
+            peakValue:'--',
+            totalFlow:'--'
+        },
         // 统计时间
         statisticsTime:'',
         renewPrice:{},
@@ -1252,6 +1349,7 @@ components: { expandRow },
       this.getLog(1);
       this.getId();
       this.getAllforwardrule(1);
+      this.changeColor();
   },
   methods:{
 
@@ -1259,13 +1357,28 @@ components: { expandRow },
     getId(){
         this.$http.get('ddosImitationIp/packageIdInfo.do',{}).then(res=>{
             if(res.status == 200 && res.data.status == 1){
-                this.setMealList = res.data.result;
-                this.setMeal = this.attackMeal = res.data.result[0].packageid;
+                for(let i =0; i<res.data.result.length; i++){
+                    for(let key in res.data.result[i]){
+                        this.setMealList.push({'packageusername':key,'packageid':key});
+                    }
+                }
+                console.log(this.setMealList);
+                this.setMeal = this.attackMeal = this.setMealList[0].packageid;
                 this.getProtectCC(this.setMeal);
             }else{
                 this.$Message.info(res.data.message);
             }
         })
+    },
+
+    // 改变统计图线条颜色
+    changeColor(){
+        this.reque.series[0].lineStyle.normal.shadowColor = 'rgba(181, 229, 173, 0.5)';
+        this.reque.series[0].lineStyle.normal.color.colorStops[0].color = 'rgba(76, 165, 75, 1)';
+        this.reque.series[0].lineStyle.normal.color.colorStops[1].color = 'rgba(181, 229, 173, 1)';
+        this.concurrent.series[0].lineStyle.normal.shadowColor = 'rgba(187, 62, 213, 0.5)';
+        this.concurrent.series[0].lineStyle.normal.color.colorStops[0].color = 'rgba(187, 62, 213, 1)';
+        this.concurrent.series[0].lineStyle.normal.color.colorStops[1].color = 'rgba(102, 120, 255, 1)';
     },
 
     //   套餐表格选项切换
@@ -1332,6 +1445,43 @@ components: { expandRow },
                 }
             })
     },
+
+    // 概览-业务统计-请求数
+    QueryRequestNum(){
+        this.$http.get('ddosImitationIp/QueryRequestNum.do',{
+            params:{
+                packageId:this.attackMeal,
+                startdate:this.statisticsTime[0].format('yyyy-MM-dd hh:mm:ss')+'',
+                enddate:this.statisticsTime[1].format('yyyy-MM-dd hh:mm:ss')+'',
+                domains:''
+            }
+        }).then(res => {
+            if(res.status == 200 && res.data.status == 1){
+
+            }else{
+                this.$Message.info(res.data.message);
+            }
+        }).catch(err =>{
+
+        })
+    },
+    QueryBusinessBandwidth(){
+        this.$http.post('ddosImitationIp/QueryBusinessBandwidth.do',{
+                packageId:this.business.packageId,
+                startdate:this.business.date[0].format('yyyy-MM-dd hh:mm:ss')+'',
+                enddate:this.business.date[1].format('yyyy-MM-dd hh:mm:ss')+'',
+                domain:''//this.business.domain
+        }).then(res =>{
+            if(res.status == 200 && res.data.status == 1){
+                this.business.peakTime = res.data.result.peakStat.peakTime;
+                this.business.peakValue = res.data.result.peakStat.peakValue;
+                this.business.totalFlow = res.data.result.peakStat.totalFlow;
+            }else{
+                this.$Message.info(res.data.message);
+            }
+        }).catch(err =>{})
+    },
+
 
     // 获取网站业务
     getDomainList(page){
@@ -1401,6 +1551,19 @@ components: { expandRow },
         }).catch(err =>{})
     },
     
+    queryDomain(){
+        this.$http.get('ddosImitationIp/Querydomain.do',{
+            params:{
+                domain:this.domain
+            }
+        }).then(res => {
+            if(res.status == 200 && res.data.status == 1){
+                
+            }else{
+                this.$Message.info(res.data.message);
+            }
+        })
+    },
 
 
     /**
