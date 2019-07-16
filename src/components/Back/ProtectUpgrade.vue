@@ -185,10 +185,8 @@
           this.selectItem = item
         } else {
           if ((this.hostInfo.ddosProtectNumber + item.value) > 800) {
-            debugger
             this.$Message.info('总的防护配置不能超过800GB')
           } else {
-            debugger
             this.$Message.info('请选择比当前防护配置大的配置')
           }
         }
