@@ -5,7 +5,7 @@
       <!--选择配置方式，快速配置、自定义配置-->
       <div style="height:60px;display: flex">
         <div v-for="item in createTypeList" :key="item.value" @click="setDefault(item)"
-             :class="{'typeSelect':item.value==createType}" class="config-title">{{item.label}}
+          :class="{'typeSelect':item.value==createType}" class="config-title">{{item.label}}
         </div>
       </div>
 
@@ -15,8 +15,8 @@
           <h2>区域选择</h2>
           <div class="item-wrapper">
             <div v-for="item in zoneList" :key="item.zoneid"  class="zoneItem"
-                 :class="{zoneSelect:zone.zoneid==item.zoneid&& item.buyover != 1, zoneDisabled:item.buyover == 1}"
-                 @click="zoneChange(item)">{{item.zonename}}<span v-show="item.buyover == 1">（已售罄）</span>
+              :class="{zoneSelect:zone.zoneid==item.zoneid&& item.buyover != 1, zoneDisabled:item.buyover == 1}"
+              @click="zoneChange(item)">{{item.zonename}}<span v-show="item.buyover == 1">（已售罄）</span>
             </div>
           </div>
           <p style="margin-top: 10px;margin-bottom: 20px;font-size: 12px;color: #999999;line-height: 25px;">
@@ -151,8 +151,8 @@
                         </div>
                         <Dropdown-menu slot="list">
                           <Dropdown-item v-for="(system,index1) in item.systemList" :key="index1"
-                                        :name="`${system.templatedescript}#${system.systemtemplateid}#${index}`"
-                                        style="white-space: pre-wrap;display:block;">
+                            :name="`${system.templatedescript}#${system.systemtemplateid}#${index}`"
+                            style="white-space: pre-wrap;display:block;">
                             <span>{{system.templatedescript}}</span>
                           </Dropdown-item>
                         </Dropdown-menu>
@@ -1122,29 +1122,6 @@
           }
         })
       },
-      // 重新计算主机价格
-      /* calculate() {
-        var params = {
-          cpuNum: this.PecsInfo.vmConfig.kernel.toString(),
-          diskSize: this.PecsInfo.vmConfig.diskSize,
-          diskType: this.PecsInfo.vmConfig.diskType,
-          memory: this.PecsInfo.vmConfig.RAM.toString(),
-          timeType: this.PecsInfo.timeForm.currentTimeValue.type,
-          timeValue: this.PecsInfo.timeForm.currentTimeValue.value,
-          zoneId: this.PecsInfo.zone.zoneid
-        }
-        if (this.PecsInfo.timeForm.currentTimeType === 'current') {
-          params.timeType = 'current'
-        }
-        axios.post('device/QueryBillingPrice.do', params).then(response => {
-          this.PecsInfo.vmConfig.cost = response.data.cost
-          if (response.data.coupon) {
-            this.PecsInfo.vmConfig.coupon = response.data.coupon
-          } else {
-            this.PecsInfo.vmConfig.coupon = 0
-          }
-        })
-      }, */
       // 加入预算清单
       addCart() {
         if (this.zone.buyover == 1) {
@@ -1230,10 +1207,6 @@
           this.$Message.info('请输入主机名称，不能包含空格')
           return
         }
-        /*if (!regExp.hostPassword(this.password)) {
-          this.passwordWarning = '请输入8-30位包含英文大小写与数字的密码'
-          return
-        }*/
         if (!(this.passwordForm.firstDegree&&this.passwordForm.secondDegree&&this.passwordForm.thirdDegree)) {
           this.passwordWarning = '您输入的密码不符合格式要求'
           this.$Message.info('您输入的密码不符合格式要求')
@@ -1509,16 +1482,6 @@
           }
         })
       }),
-      //选择镜像类型
-      /* selectMirror(item) {
-        if (this.$route.query.mirrorType == 'custom') {
-          this.currentType = 'custom'
-        } else if (this.$route.query.mirrorType == 'public') {
-          this.currentType = 'public'
-        } else {
-          this.currentType = item.value;
-        }
-      }, */
       fireList() {
         axios.get('network/listAclList.do', {
           params: {

@@ -552,26 +552,28 @@
             <div class="md-cer">
                  <Form ref="certificateValidate" :model="certificateValidate" :rules="certificateRule" :label-width="80">
                     <FormItem label="证书名称" prop="name">
-                        <Input v-model="certificateValidate.name" placeholder="Enter your name"></Input>
+                        <Input v-model="certificateValidate.name" placeholder="请输入证书名称"></Input>
                     </FormItem>
                     <FormItem label="证书文件" prop="file">
-                        <Input type="textarea" v-model="certificateValidate.file" placeholder="Enter your name">
+                        <Input type="textarea" v-model="certificateValidate.file" placeholder="请输入证书文件">
                         </Input>
                      
                     </FormItem>
                     <FormItem label="秘钥内容" prop="secret">
-                        <Input type="textarea" v-model="certificateValidate.secret" placeholder="Enter your name"></Input>
+                        <Input type="textarea" v-model="certificateValidate.secret" placeholder="输入秘钥内容"></Input>
                       
                     </FormItem>
                     <FormItem label="CA内容" prop="ca">
-                        <Input type="textarea" v-model="certificateValidate.ca" placeholder="Enter your name"></Input>
+                        <Input type="textarea" v-model="certificateValidate.ca" placeholder="请输入加密后的根证书"></Input>
                      
                     </FormItem>
                     <FormItem label="加密方式" prop="pawMode">
-                        <Input v-model="certificateValidate.pawMode" placeholder="Enter your name"></Input>
+                        <Select v-model="certificateValidate.pawMode">
+                            <Option value="des">des</Option>
+                        </Select>
                     </FormItem>
                     <FormItem label="证书备注" prop="desc">
-                        <Input v-model="certificateValidate.desc" placeholder="Enter your name"></Input>
+                        <Input v-model="certificateValidate.desc" placeholder="请输入证书备注"></Input>
                     </FormItem>
                  </Form>   
             </div>
@@ -591,34 +593,33 @@
                  <span style="margin-left:4px;">{{renewPrice.message}}</span>
              </div>
             <div class="md-cer">
-                 <Form ref="certificateValidate" :model="certificateValidate" :rules="certificateRule" :label-width="80">
-                    <FormItem label="证书名称" prop="name">
-                        <Input v-model="certificateValidate.name" placeholder="Enter your name"></Input>
-                    </FormItem>
-                    <FormItem label="证书文件" prop="file">
-                        <Input type="textarea" v-model="certificateValidate.file" placeholder="Enter your name">
-                        </Input>
-                        
-                    </FormItem>
-                    <FormItem label="秘钥内容" prop="secret">
-                        <Input type="textarea" v-model="certificateValidate.secret" placeholder="Enter your name"></Input>
-                        
-                    </FormItem>
-                    <FormItem label="CA内容" prop="ca">
-                        <Input type="textarea" v-model="certificateValidate.ca" placeholder="Enter your name"></Input>
-                        
-                    </FormItem>
-                    <FormItem label="加密方式" prop="name">
-                        <Input v-model="certificateValidate.name" placeholder="Enter your name"></Input>
-                    </FormItem>
-                    <FormItem label="证书备注" prop="name">
-                        <Input v-model="certificateValidate.name" placeholder="Enter your name"></Input>
-                    </FormItem>
-                 </Form>   
+                 <Form style="width:430px;margin:0 auto;text-align:left;" ref="nameValidate" :model="nameValidate" :rules="nameRuleValidate" :label-width="90">
+                        <FormItem label="IP黑名单" prop="black">
+                            <Input v-model="nameValidate.black" type="textarea" :autosize="{minRows: 4,maxRows: 5}" placeholder="如1.1.1.1，多个IP以“；”隔开，暂不支持IP段" style="width:300px;"></Input>
+                            <Poptip placement="top">
+                                <div slot="content" style="width:145px;white-space: normal;line-height:16px;">
+                                    多个使用英文半角分号分隔，不 支持传入 IP 段；最大支持 300 个 IP 
+                                </div>
+                               <Icon type="ios-help-outline" color='#2A99F2' style="font-size:14px;"></Icon>
+                            </Poptip>
+                        </FormItem>
+                        <FormItem label="IP白名单" prop="white">
+                            <Input v-model="nameValidate.white" type="textarea" :autosize="{minRows: 4,maxRows: 5}" placeholder="如1.1.1.1，多个IP以“；”隔开，暂不支持IP段" style="width:300px;"></Input>
+                            <Poptip placement="top">
+                                <div slot="content" style="width:145px;white-space: normal;">
+                                    多个使用英文半角分号分隔，不 支持传入 IP 段；最大支持 300 个 IP 
+                                </div>
+                               <Icon type="ios-help-outline" color='#2A99F2' style="font-size:14px;"></Icon>
+                            </Poptip>
+                        </FormItem>
+                        <FormItem label="生效域名" prop="domain">
+                            <Input v-model="nameValidate.domain" placeholder="www.test.com" style="width:300px;"></Input>
+                        </FormItem>
+                    </Form>
             </div>
             <div slot="footer" class="modal-footer-border">
                 <Button type="ghost" @click="showModal.nameList = false">取消</Button>
-                <Button type="primary" >确定</Button>
+                <Button type="primary" @click="addNameList('nameValidate')">确定</Button>
             </div>
         </Modal>
 
@@ -695,7 +696,7 @@
                         <Input  v-model="addDomainList.agreement" placeholder="请输入协议端口"></Input>
                     </FormItem>
                     <FormItem label="源站IP/域名" prop="ip">
-                        <Input type="textarea" v-model="addDomainList.ip" placeholder="Enter your name"></Input>
+                        <Input type="textarea" v-model="addDomainList.ip" placeholder="多个域名与IP用；隔开"></Input>
                         <p class='dp-bf'>如果源站暴露，请参考使用 <span>高防后源站IP暴露的解决方法</span></p>
                     </FormItem>
                  </Form>   
@@ -729,7 +730,17 @@ components: { expandRow },
         changeIp:false,
         nameList:false,
         addDomain:false,
-      },  
+      }, 
+      nameValidate:{
+        black:'',
+        white:'',
+        domain:''
+    },
+    nameRuleValidate:{
+        black:[{required: true, message: '请输入黑名单', trigger: 'blur'}],
+        white:[{required: true, message: '请输入白名单', trigger: 'blur'}],
+        domain:[{required: true, message: '请输入生效域名', trigger: 'blur'}]
+    }, 
       overviewRadio:'概览',
       button1: "网站业务",
       duration:'',
@@ -998,7 +1009,9 @@ components: { expandRow },
           name:[{required: true, message: '请输入证书名称', trigger: 'blur'}],
           file:[{required: true, message: '请输入证书文件   ', trigger: 'blur'}],
           secret:[{required: true, message: '请输入秘钥内容', trigger: 'blur'}],
-          ca:[{required: true, message: '请输入CA内容', trigger: 'blur'}]
+          ca:[{required: true, message: '请输入CA内容', trigger: 'blur'}],
+          desc:[{required: true, message: '请输入备注', trigger: 'blur'}],
+          pawMode:[{ required: true, message: '请选择一个加密方式', trigger: 'change' }]
       },
 
       // 网站业务
@@ -1138,15 +1151,29 @@ components: { expandRow },
       ],
       businessSelect:{},
       crtName:'',
-      addDomainList:{
-          attackMeal:'',
-          domain:'',
-          http:['https'],
-          agreement:'',
-          ip:'',
-          id:''
+      addDomainList: {
+        attackMeal: '',
+        domain: '',
+        http: ['https'],
+        agreement: '',
+        ip: '',
+        id: ''
       },
-      addDomainListRule:{},
+      addDomainListRule: {
+        attackMeal: [
+          { required: true, message: '请选择一个套餐', trigger: 'change' }],
+        domain: [
+          { required: true, message: '请输入域名', trigger: 'blur' }
+        ],
+        agreement: [
+          { required: true, message: '请输入协议端口', trigger: 'blur' }
+        ],
+        ip: [
+          { required: true, message: '请输入源站IP/域名', trigger: 'blur' }
+        ],
+        id: [
+          { required: true, message: '请选择一个证书id', trigger: 'change' }],
+      },
       
       // 非网站业务
        ruleList:[
@@ -1690,6 +1717,36 @@ components: { expandRow },
         }).catch(err =>{})
     },
 
+
+    },
+    addNameList(name) {
+        this.$refs[name].validate((valid) => {
+        if (valid) {
+
+        }})
+    },
+    addDomain(name){
+        this.$refs[name].validate((valid) => {
+        if (valid) {
+            this.$http.get('ddosImitationIp/AddDomain.do',{
+                params:{
+                    packageId:this.addDomainList.attackMeal,
+                    domain:this.addDomainList.domain,
+                    source:this.addDomainList.ip,
+                    crtId:'',
+                    port:this.addDomainList.agreement,
+                    http:1,//this.addDomainList.http.join(','),
+                    https:1
+                }
+            }).then(res =>{
+                if(res.status == 200 && res.data.status == 1){
+                    this.getDomainList(1);
+                }else{
+                    this.$Message.info(res.data.message);
+                }
+            }).catch(err =>{})
+        }})
+    },
     queryDomain(){
         this.$http.get('ddosImitationIp/Querydomain.do',{
             params:{
@@ -1723,8 +1780,10 @@ components: { expandRow },
         }).catch(err =>{})
     },
 
-    createCertificate(){
-        this.$http.post('ddosImitationIp/AddCertificate.do',{
+    createCertificate(name){
+        this.$refs[name].validate((valid) => {
+        if (valid) {
+            this.$http.post('ddosImitationIp/AddCertificate.do',{
                 crtName:this.certificateValidate.name,
                 crtRemark:this.certificateValidate.desc,
                 crtDes:this.certificateValidate.file,
@@ -1740,6 +1799,7 @@ components: { expandRow },
         }).catch(err => {
 
         })
+        }})
     },
     queryCertificate(){
         this.$http.get('ddosImitationIp/QueryCertificate.do',{
