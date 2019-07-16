@@ -59,7 +59,7 @@
                         </FormItem>
                     </Form>
                     <Button style="margin-right:10px;" @click="$router.push('DDoSIPBack')">返回</Button>
-                    <Button type="primary" @click="addforwardrule">提交，查看下一步</Button>
+                    <Button type="primary" @click="addforwardrule('formValidate')">提交，查看下一步</Button>
                 </div>
 
                 <div class="st-box" v-if="current == 1">
@@ -142,22 +142,26 @@ export default {
 
             })
         },
-        addforwardrule(){
-            this.$http.get('ddosImitationIp/addforwardrule.do',{
-                params:{
-                    packageId:'',
-                    accessProtocol:this.formValidate.agreement,
-                    accessPort:this.formValidate.visitPort,
-                    source:this.formValidate.domain,
-                    sourcePort:this.formValidate.returnPort
-                }
-            }).then(res => {
-                if(res.status == 200 && res.data.status == 1){
-                     this.current += 1;
-                }else{
-                    this.$Message.info(res.data.message);
-                }
-            }).catch(err =>{})
+        addforwardrule(name){
+            this.$refs[name].validate((valid) => {
+                    if (valid) {
+                        this.$http.get('ddosImitationIp/addforwardrule.do',{
+                            params:{
+                                packageId:'',
+                                accessProtocol:this.formValidate.agreement,
+                                accessPort:this.formValidate.visitPort,
+                                source:this.formValidate.domain,
+                                sourcePort:this.formValidate.returnPort
+                            }
+                        }).then(res => {
+                            if(res.status == 200 && res.data.status == 1){
+                                this.current += 1;
+                            }else{
+                                this.$Message.info(res.data.message);
+                            }
+                        }).catch(err =>{})
+                    }})
+            
         }    
     },
     created(){
