@@ -27,9 +27,6 @@ export default {
        containLabel: true,
    },
    toolbox: {
-       feature: {
-           saveAsImage: {}
-       }
    },
    xAxis: {
        type: 'category',

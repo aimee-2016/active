@@ -2180,10 +2180,10 @@ export default {
         this.$Message.info("请上传相关网站核验单");
         return;
       }
-      if (this.otherData.length == 0) {
-        this.$Message.info("请上传委托书等其他相关资料");
-        return;
-      }
+      // if (this.otherData.length == 0) {
+      //   this.$Message.info("请上传委托书等其他相关资料");
+      //   return;
+      // }
 
       let backgroundUrl =
         typeof this.hostUnitList.mark5 == "undefined"
