@@ -719,7 +719,7 @@ const reque = JSON.stringify(hightIpBs);
 const concurrent = JSON.stringify(hightIpBs);
 const ccQps = JSON.stringify(hightIp);
 export default {
-components: { expandRow },
+    components: { expandRow },
   data() {
     return {
       // 弹窗
@@ -736,11 +736,11 @@ components: { expandRow },
         white:'',
         domain:''
     },
-    nameRuleValidate:{
-        black:[{required: true, message: '请输入黑名单', trigger: 'blur'}],
-        white:[{required: true, message: '请输入白名单', trigger: 'blur'}],
-        domain:[{required: true, message: '请输入生效域名', trigger: 'blur'}]
-    }, 
+        nameRuleValidate:{
+            black:[{required: true, message: '请输入黑名单', trigger: 'blur'}],
+            white:[{required: true, message: '请输入白名单', trigger: 'blur'}],
+            domain:[{required: true, message: '请输入生效域名', trigger: 'blur'}]
+        }, 
       overviewRadio:'概览',
       button1: "网站业务",
       duration:'',
@@ -1394,7 +1394,7 @@ components: { expandRow },
          journalData:[            
          ],
          logTime:[]   
-    };
+    }
   },
   beforeCreate(){
      
@@ -1420,11 +1420,10 @@ components: { expandRow },
                 for(let i =0; i<res.data.result.length; i++){
                     for(let key in res.data.result[i]){
                         this.setMealList.push({'packageid':key,domainList});
-                        domainList.push({'domain':res.data.result[i][key][i].domainname||'hhhhh'});
-                        console.log(this.setMealList);
+                        // domainList.push({'domain':res.data.result[i][key][i].domainname||'hhhhh'});
+                        // console.log(this.setMealList);
                     }
                 }
-                console.log(domainList);
                 this.setMeal = this.attackMeal = this.setMealList[0].packageid;
               
                 this.getProtectCC(this.setMeal,1);
@@ -1717,14 +1716,13 @@ components: { expandRow },
         }).catch(err =>{})
     },
 
-
-    },
     addNameList(name) {
         this.$refs[name].validate((valid) => {
         if (valid) {
 
         }})
     },
+
     addDomain(name){
         this.$refs[name].validate((valid) => {
         if (valid) {
@@ -1747,6 +1745,7 @@ components: { expandRow },
             }).catch(err =>{})
         }})
     },
+
     queryDomain(){
         this.$http.get('ddosImitationIp/Querydomain.do',{
             params:{
@@ -2009,161 +2008,169 @@ components: { expandRow },
           },deep:true
       }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
- .ivu-input-wrapper textarea.ivu-input{
-          resize: none;
-  }
-  .ivu-switch-checked{
-      border-color: #19BE6A;
-      background-color: #19BE6A;
-  }
-  .ivu-switch-checked:after {
-    left: 22px;
-  }
-  .ivu-switch:after{
-    width: 16px;
-    height: 16px
-  }
-  .ivu-switch{
-      width: 40px;
-      height: 20px;
-  }
-  .ivu-table-tbody > td.ivu-table-expanded-cell{
-        padding: 20px 20px;
-   }
- .i-sw {
-      border-color: #19BE6A;
-      background-color: #19BE6A;
-  }
+.ivu-input-wrapper textarea.ivu-input {
+  resize: none;
+}
+.ivu-switch-checked {
+  border-color: #19be6a;
+  background-color: #19be6a;
+}
+.ivu-switch-checked:after {
+  left: 22px;
+}
+.ivu-switch:after {
+  width: 16px;
+  height: 16px;
+}
+.ivu-switch {
+  width: 40px;
+  height: 20px;
+}
+.ivu-table-tbody > td.ivu-table-expanded-cell {
+  padding: 20px 20px;
+}
+.i-sw {
+  border-color: #19be6a;
+  background-color: #19be6a;
+}
 .dp-row {
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
-  .dp-cn{
-      margin-left: 40px;
-      color: #333333;
-      font-weight:bold;
+  .dp-cn {
+    margin-left: 40px;
+    color: #333333;
+    font-weight: bold;
   }
 }
-.dp-bt{
-    margin-top: 10px;
-    font-size: 18px;
+.dp-bt {
+  margin-top: 10px;
+  font-size: 18px;
 }
-.dp-page{
-    text-align:right;margin-top:20px;
-  }
-  .md-cer{
-      overflow: auto;
-  }
-  .f-p{
-    position: absolute;
-    right: 11px;
-    top: 30px;
-    color: #B2B2B2;
-  }
-  .dp-box{
-      padding-bottom: 20px;
-      border-bottom:1px solid rgba(233,233,233,1);
-  }
-  .dp-grad{
-      margin-top: 20px;
-      height:40px;
-      background:linear-gradient(270deg,rgba(42,153,242,0) 4%,rgba(42,153,242,0.34) 100%,rgba(42,153,242,0.30) 27%);
-      line-height: 40px;
-      font-size: 14px;
-      color: #666666;
-  }
+.dp-page {
+  text-align: right;
+  margin-top: 20px;
+}
+.md-cer {
+  overflow: auto;
+}
+.f-p {
+  position: absolute;
+  right: 11px;
+  top: 30px;
+  color: #b2b2b2;
+}
+.dp-box {
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(233, 233, 233, 1);
+}
+.dp-grad {
+  margin-top: 20px;
+  height: 40px;
+  background: linear-gradient(
+    270deg,
+    rgba(42, 153, 242, 0) 4%,
+    rgba(42, 153, 242, 0.34) 100%,
+    rgba(42, 153, 242, 0.3) 27%
+  );
+  line-height: 40px;
+  font-size: 14px;
+  color: #666666;
+}
 
-  .b-font{
-      font-size: 18px;
-      color: #333333;
-      font-weight: bold;
-      margin:0 10px;
-  }
+.b-font {
+  font-size: 18px;
+  color: #333333;
+  font-weight: bold;
+  margin: 0 10px;
+}
 
-  .o-font{
-      color: #ED4014;
+.o-font {
+  color: #ed4014;
+}
+.l-font {
+  color: #2a99f2;
+  cursor: pointer;
+  font-size: 14px;
+}
+.dp-more {
+  width: 380px;
+}
+.dp-fh {
+  width: 272px;
+  height: 92px;
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0px 1px 9px -2px rgba(0, 0, 0, 0.2);
+  margin-right: 10px;
+  position: relative;
+  > div {
+    margin: 32px 0 10px 20px;
   }
-  .l-font{
-      color: #2A99F2;
-      cursor: pointer;
-      font-size: 14px;
+  .fh-sp {
+    color: #333333;
+    font-size: 14px;
+    margin-right: 10px;
   }
-  .dp-more{
-      width: 380px;
+}
+.dp-fh::before {
+  content: "";
+  position: absolute;
+  width: inherit;
+  height: 6px;
+  background-color: #666666;
+}
+.dp-cc {
+  margin-top: 18px;
+}
+.selectMark {
+  margin: 10px 0;
+  > img {
+    position: relative;
+    top: 4px;
   }
-  .dp-fh{
-        width:272px;
-        height:92px;
-        background:rgba(255,255,255,1);
-        box-shadow:0px 1px 9px -2px rgba(0,0,0,0.2);
-        margin-right: 10px;
-        position: relative;
-        >div{
-            margin: 32px 0 10px 20px;
-        }
-        .fh-sp{
-            color:#333333;font-size:14px;margin-right:10px;
-        }
+  > span {
+    font-size: 14px;
+    font-family: MicrosoftYaHei;
+    color: rgba(102, 102, 102, 1);
   }
-  .dp-fh::before{
-      content: '';
-      position: absolute;
-      width:inherit;
-      height: 6px;
-      background-color: #666666;
+}
+.dp-er {
+  height: 32px;
+  line-height: 32px;
+  margin-bottom: 20px;
+  padding: 0 20px;
+  border: 1px solid #ed4014;
+  border-radius: 4px;
+  background-color: rgba(237, 64, 20, 0.08);
+}
+.dp-ti {
+  width: 61px;
+  height: 32px;
+  line-height: 32px;
+  text-align: center;
+  border: 1px solid #e1e1e1;
+  display: inline-block;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.dp-ds {
+  height: 48px;
+  background: rgba(245, 245, 245, 1);
+  color: #666666;
+  padding-left: 21px;
+  margin-bottom: 20px;
+  > div {
+    display: inline-block;
+    height: inherit;
+    line-height: 48px;
   }
-    .dp-cc{
-        margin-top: 18px;
-    }
-    .selectMark {
-     margin: 10px 0;
-    > img {
-      position: relative;
-      top: 4px;
-    }
-    > span {
-      font-size: 14px;
-      font-family: MicrosoftYaHei;
-      color: rgba(102, 102, 102, 1);
-    }
-  }
-  .dp-er{
-      height: 32px;
-      line-height: 32px;
-      margin-bottom: 20px;
-      padding:0 20px;
-      border:1px solid #ED4014;
-      border-radius: 4px;
-      background-color:rgba(237, 64, 20, 0.08);
-  }
-  .dp-ti{
-      width: 61px;
-      height: 32px;
-      line-height: 32px;
-      text-align: center;
-      border:1px solid #E1E1E1;
-      display: inline-block;
-      margin-bottom: 10px;
-      cursor: pointer;
-  }
-  .dp-ds{
-    height:48px;
-    background:rgba(245,245,245,1);
-    color: #666666;
-    padding-left: 21px;
-    margin-bottom: 20px;
-    >div{
-        display: inline-block;
-        height: inherit;
-        line-height: 48px;
-    }
-  }
-  .text-box{
-  border:1px solid #2A99F2;
+}
+.text-box {
+  border: 1px solid #2a99f2;
   background-color: RGBA(42, 153, 242, 0.1);
   padding: 7px 10px;
   -webkit-border-radius: 4px;
@@ -2173,38 +2180,43 @@ components: { expandRow },
   color: #666666;
   margin-bottom: 20px;
 }
-.dp-tis{
-    color: #FFFFFF;
-    background-color: #4297F2;
-    border: 1px solid #4297F2;
+.dp-tis {
+  color: #ffffff;
+  background-color: #4297f2;
+  border: 1px solid #4297f2;
 }
-.dp-xfu{
-    margin-bottom:20px;
-    .dp-xfl{
-        margin-bottom: 10px;
-        display:flex;
-        .dp-xfz{
-            width: 84px;
-            margin-right: 10px;
-            text-align: left;
-            color: #333333;
-            font-size: 14px;
-        }
-        .dp-xfy{
-            color: #666666;
-            font-size: 14px;
-        }
+.dp-xfu {
+  margin-bottom: 20px;
+  .dp-xfl {
+    margin-bottom: 10px;
+    display: flex;
+    .dp-xfz {
+      width: 84px;
+      margin-right: 10px;
+      text-align: left;
+      color: #333333;
+      font-size: 14px;
     }
+    .dp-xfy {
+      color: #666666;
+      font-size: 14px;
+    }
+  }
 }
-.dp-ren{
-    text-align:right;font-size:14px;color:#333333;margin-right:10px;
-    span{
-        font-size:18px;color:#FF624B;font-weight:bold;
-    }
+.dp-ren {
+  text-align: right;
+  font-size: 14px;
+  color: #333333;
+  margin-right: 10px;
+  span {
+    font-size: 18px;
+    color: #ff624b;
+    font-weight: bold;
+  }
 }
 
-.dp-rd{
-    text-overflow: -o-ellipsis-lastline;
+.dp-rd {
+  text-overflow: -o-ellipsis-lastline;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -2212,21 +2224,21 @@ components: { expandRow },
   line-clamp: 2;
   -webkit-box-orient: vertical;
 }
-.y-p{
-    margin-top: 5px;
-    color: #FF9801;
+.y-p {
+  margin-top: 5px;
+  color: #ff9801;
 }
-.dp-bf{
-    color: #999999;
-    margin-top: 10px;
-    >span{
-        color:#2A99F2;
-        cursor: pointer;
-    }
+.dp-bf {
+  color: #999999;
+  margin-top: 10px;
+  > span {
+    color: #2a99f2;
+    cursor: pointer;
+  }
 }
-.dp-inmap{
-    width: 620px;
-    height: 270px;
+.dp-inmap {
+  width: 620px;
+  height: 270px;
 }
 </style>
 
