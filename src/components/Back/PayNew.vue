@@ -47,7 +47,7 @@
                   <img style="vertical-align: middle;" src="../../assets/img/payresult/wxpay.png">
                 </Radio>
               </RadioGroup>
-               <p class="p">温馨提示：若您点击【确认支付/充值】之后，页面未正确跳转，请操作浏览器放行此次弹窗。</p>
+               <p class="p p_hint">温馨提示：若您点击【确认支付/充值】之后，页面未正确跳转，请操作浏览器放行此次弹窗。</p>
             </TabPane>
             <TabPane label="个人网银" name="name2">
                 <div class="outLineContent">
@@ -57,7 +57,7 @@
                     </Radio>
                   </RadioGroup>
                 </div>
-                <p class="p">温馨提示：若您点击【确认支付/充值】之后，页面未正确跳转，请操作浏览器放行此次弹窗。</p>
+                <p class="p p_hint">温馨提示：若您点击【确认支付/充值】之后，页面未正确跳转，请操作浏览器放行此次弹窗。</p>
             </TabPane>
             <TabPane label="企业网银" name="name3">
                 <div class="outLineContent" >
@@ -67,7 +67,7 @@
                     </Radio>
                   </RadioGroup>
                 </div>
-                 <p class="p">温馨提示：若您点击【确认支付/充值】之后，页面未正确跳转，请操作浏览器放行此次弹窗。</p>
+                 <p class="p p_hint">温馨提示：若您点击【确认支付/充值】之后，页面未正确跳转，请操作浏览器放行此次弹窗。</p>
             </TabPane>
           </Tabs>
         </div>
@@ -586,6 +586,9 @@
               color: rgba(0, 0, 0, 0.65);
               letter-spacing: 0;
               line-height: 21px;
+              &.p_hint{
+                  color: #999999
+              }
             }
         }
       }
