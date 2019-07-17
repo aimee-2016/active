@@ -1839,7 +1839,7 @@
                 params: {
                   templateName: this.mirrorValidate.name,
                   descript: this.mirrorValidate.descript,
-                  rootDiskId: this.hostSelectList.rootdiskid,
+                  rootDiskId: this.hostSelectList.rootdiskid ||  this.mirrorValidate.rootdiskid,
                   zoneId: this.$store.state.zone.zoneid,
                 }
               }).then(res => {

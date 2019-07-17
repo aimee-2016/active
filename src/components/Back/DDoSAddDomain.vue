@@ -136,9 +136,9 @@
 
 <script type="text/ecmascript-6">
 export default {
-  data () {
+  data() {
     return {
-      steps: 1,
+      steps: 0,
       domainResult: true,
       certificateShow: true,
       addDomainList: {
@@ -151,15 +151,11 @@ export default {
       },
       addDomainListRule: {
         attackMeal: [
-          { required: true, message: '请选择一个套餐', trigger: 'change' }],
-        domain: [
-          { required: true, message: '请输入域名', trigger: 'blur' }
+          { required: true, message: "请选择一个套餐", trigger: "change" }
         ],
+        domain: [{ required: true, message: "请输入域名", trigger: "blur" }],
         agreement: [
-          { required: true, message: '请输入协议端口', trigger: 'blur' }
-        ],
-        ip: [
-          { required: true, message: '请输入源站IP/域名', trigger: 'blur' }
+          { required: true, message: "请输入协议端口", trigger: "blur" }
         ],
         id: [
           { required: true, message: '请选择一个证书id', trigger: 'change' }],
@@ -186,7 +182,7 @@ export default {
       ],
       businessData: [
       ]
-    }
+    };
   },
   created () {
     this.getId()
@@ -195,6 +191,7 @@ export default {
   mounted () {
 
   },
+  mounted() {},
   methods: {
     getDomainList () {
       this.$http.get('ddosImitationIp/QueryAlldomain.do', {
@@ -211,44 +208,57 @@ export default {
       })
     },
     //   获取用户套餐ID
-    getId () {
-      this.$http.get('ddosImitationIp/packageIdInfo.do', {}).then(res => {
+    getId() {
+      this.$http.get("ddosImitationIp/packageIdInfo.do", {}).then(res => {
         if (res.status == 200 && res.data.status == 1) {
-          this.setMealList = res.data.result;
-          this.setMeal = this.attackMeal = res.data.result[0].packageid;
-          // this.getProtectCC(this.setMeal);
+          for (let i = 0; i < res.data.result.length; i++) {
+            for (let key in res.data.result[i]) {
+              this.setMealList.push({ packageid: key});
+            }
+          }
+          this.setMeal = this.attackMeal = this.setMealList[0].packageid;
         } else {
           this.$Message.info(res.data.message);
         }
-      })
+      });
     },
-    addDomain (name) {
-      this.$refs[name].validate((valid) => {
+    addDomain(name) {
+         let http = 0,
+            https = 0;
+        if(this.addDomainList.http.length != 0){
+             http = this.addDomainList.http.join(',').indexOf('http') == -1 ?0 :1;
+             https = this.addDomainList.http.join(',').indexOf('https') == -1 ? 0:1;
+        }
+      this.$refs[name].validate(valid => {
         if (valid) {
-          this.$http.get('ddosImitationIp/AddDomain.do', {
-            params: {
-              packageId: this.addDomainList.attackMeal,
-              domain: this.addDomainList.domain,
-              source: this.addDomainList.ip,
-              crtId: '',
-              port: this.addDomainList.agreement,
-              http: 1,//this.addDomainList.http.join(','),
-              https: 1
-            }
-          }).then(res => {
-            if (res.status == 200 && res.data.status == 1) {
-              //  this.getDomainList(1);
-            } else {
-              this.$Message.info(res.data.message);
-            }
-          }).catch(err => { })
-        }      })
+          this.$http
+            .get("ddosImitationIp/AddDomain.do", {
+              params: {
+                packageId: this.addDomainList.attackMeal,
+                domain: this.addDomainList.domain,
+                source: this.addDomainList.ip,
+                crtId: "",
+                port: this.addDomainList.agreement,
+                http: http,
+                https: https
+              }
+            })
+            .then(res => {
+              if (res.status == 200 && res.data.status == 1) {
+                //  this.getDomainList(1);
+              } else {
+                this.$Message.info(res.data.message);
+              }
+            })
+            .catch(err => {});
+        }
+      });
     },
-    handleReset (name) {
+    handleReset(name) {
       this.$refs[name].resetFields();
     },
-    result () {
-      this.domainResult = false
+    result() {
+      this.domainResult = false;
     }
   },
   computed: {
