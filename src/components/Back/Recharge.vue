@@ -38,6 +38,7 @@
                            style="width: 122px;height: 40px;vertical-align: middle">
                     </Radio>
                   </Radio-group>
+                   <p class="p">温馨提示：若您点击【确认支付/充值】之后，页面未正确跳转，请操作浏览器放行此次弹窗。</p>
                 </div>
                 <div class="pay-right">
                   <div v-if="input >= 10000">
@@ -55,6 +56,7 @@
                       <img style="vertical-align: middle;" src="../../assets/img/payresult/unionPay1.png">
                     </Radio>
                   </RadioGroup>
+                  <p class="p">温馨提示：若您点击【确认支付/充值】之后，页面未正确跳转，请操作浏览器放行此次弹窗。</p>
                 </div>
                 <div class="pay-right">
                   <div v-if="input >= 10000">
@@ -72,6 +74,7 @@
                       <img style="vertical-align: middle;" src="../../assets/img/payresult/unionPay1.png">
                     </Radio>
                   </RadioGroup>
+                  <p class="p">温馨提示：若您点击【确认支付/充值】之后，页面未正确跳转，请操作浏览器放行此次弹窗。</p>
                 </div>
                 <div class="pay-right">
                   <div v-if="input >= 10000">
@@ -311,6 +314,7 @@ import axios from 'axios';
 
        // 个人网银支付
        individualUnionPay(){
+          window.open("about:blank","individualUnionPay")
           axios.get('yl/ylb2cPay.do',{
             params:{
               total_fee:this.input
@@ -319,7 +323,7 @@ import axios from 'axios';
             if(res.status == 200 && res.data.status == 1){
               this.serialNum = res.data.serialNum;
               localStorage.setItem('serialNum',res.data.serialNum);
-              window.open('https://zschj.xrcloud.net/yl/openYlb2cPay.do'); // 创建一个新窗口
+              window.open(null,'individualUnionPay').location.href = `https://zschj.xrcloud.net/yl/openYlb2cPay.do`
               this.showModal.rechargeHint = true;
             }
           })
@@ -327,6 +331,7 @@ import axios from 'axios';
 
       // 企业网银支付
       enterpriseUnionPay(){
+        window.open("about:blank","enterpriseUnionPay")
         axios.get('yl/ylb2bPay.do',{
             params:{
               total_fee:this.input
@@ -335,7 +340,7 @@ import axios from 'axios';
             if(res.status == 200 && res.data.status == 1){
                this.serialNum = res.data.serialNum;
               localStorage.setItem('serialNum',res.data.serialNum);
-              window.open('https://zschj.xrcloud.net/yl/openYlb2bPay.do'); // 创建一个新窗口
+              window.open(null,'enterpriseUnionPay').location.href = `https://zschj.xrcloud.net/yl/openYlb2bPay.do`
               this.showModal.rechargeHint = true;
             }
           })
