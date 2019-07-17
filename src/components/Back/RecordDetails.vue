@@ -2180,10 +2180,10 @@ export default {
         this.$Message.info("请上传相关网站核验单");
         return;
       }
-      // if (this.otherData.length == 0) {
-      //   this.$Message.info("请上传委托书等其他相关资料");
-      //   return;
-      // }
+      if (this.otherData.length == 0 && this.hostUnitList.maincompanynature =='个人') {
+        this.$Message.info("请上传委托书等其他相关资料");
+        return;
+      }
 
       let backgroundUrl =
         typeof this.hostUnitList.mark5 == "undefined"
@@ -2195,7 +2195,7 @@ export default {
         ISPName: this.hostUnitList.ispname,
         webIp: this.hostUnitList.webip,
         webAccessType: this.hostUnitList.webaccesstype,
-        webServerAddress: '华南一区',//this.hostUnitList.webserveraddress
+        webServerAddress: this.hostUnitList.webserveraddress,//
         webResponsibilityLinkName: this.hostUnitList.webresponsibilitylinkname,
         webResponsibilityCertificatesType: this.hostUnitList
           .webresponsibilitycertificatestype,

@@ -1329,6 +1329,7 @@
                                 }else {
                                   this.showModal.mirror  = true;
                                   this.mirrorValidate.rootdiskid = params.row.rootdiskid;
+                                  this.hostSelectList = params.row;
                                 }
                               }else{
                               this.$Message.info('制作镜像前请先关闭主机');
@@ -1839,7 +1840,7 @@
                 params: {
                   templateName: this.mirrorValidate.name,
                   descript: this.mirrorValidate.descript,
-                  rootDiskId: this.hostSelectList.rootdiskid ||  this.mirrorValidate.rootdiskid,
+                  rootDiskId: this.hostSelectList.rootdiskid,
                   zoneId: this.$store.state.zone.zoneid,
                 }
               }).then(res => {

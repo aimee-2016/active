@@ -16,6 +16,15 @@
                  
                 <div class="st-box" v-if="current == 0">
                     <Form style="width:430px;margin:0 auto;text-align:left;" ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="90">
+                         <FormItem label="套餐选择" prop="attackMeal">
+                            <Select v-model="formValidate.attackMeal" style="width:300px;">
+                                <Option
+                                v-for="item in setMealList"
+                                :value="item.packageid"
+                                :key="item.packageid"
+                                >{{ item.packageid }}</Option>
+                            </Select>
+                        </FormItem>
                         <FormItem label="使用协议" prop="agreement">
                             <RadioGroup v-model="formValidate.agreement">
                                 <Radio label="TCP">
@@ -69,7 +78,17 @@
                     <Table :columns="ruleList" :data="ruleData"></Table>
                     <div style="margin-top:40px;text-align:right;">
                         <Button style="margin-right:10px;" @click="current -= 1">上一步</Button>
-                        <Button type="primary" @click="next">下一步</Button>
+                        <Button type="primary" :loading='loading' @click="next">下一步</Button>
+                    </div>
+                </div>
+                <div class="st-box" v-if="current == 2">
+                    <div>
+                        <img src='../../assets/img/payresult/paySuccess.png'>
+                        <p class='st-ok'>添加完成</p>
+                        <p>由于解析需要一定时间，请根据列表“部署状态”查询转发规则添加结果</p>
+                    </div>
+                    <div style="margin-top:40px;">
+                        <Button type="primary" :loading='loading' @click="$router.push('ddosipBack')">返回列表</Button>
                     </div>
                 </div>
                 </div>
@@ -83,11 +102,13 @@ export default {
     data(){
         return{
             current:0,
+            loading:false,
             formValidate:{
                 agreement:'TCP',
                 visitPort:'',
                 returnPort:'',
-                domain:''
+                domain:'',
+                attackMeal:''
             },
             ruleValidate:{
                 visitPort:[{required: true, message: '请输入端口号', trigger: 'blur'}],
@@ -118,7 +139,8 @@ export default {
                     acc:'3333333333',
                     套餐信息:'444444444'
                 }
-            ]
+            ],
+            setMealList:[]
         }
     },
     methods:{
@@ -129,6 +151,21 @@ export default {
                     this.current += 1;
                 }
             },
+             //   获取用户套餐ID
+        getId() {
+            this.$http.get("ddosImitationIp/packageIdInfo.do", {}).then(res => {
+                if (res.status == 200 && res.data.status == 1) {
+                for (let i = 0; i < res.data.result.length; i++) {
+                    for (let key in res.data.result[i]) {
+                    this.setMealList.push({ packageid: key});
+                    }
+                }
+                this.formValidate.attackMeal = this.setMealList[0].packageid;
+                } else {
+                this.$Message.info(res.data.message);
+                }
+            });
+        },
         getAllforwardrule(page){
             this.$http.get('ddosImitationIp/QueryAllforwardrule.do',{
                 params:{
@@ -145,9 +182,10 @@ export default {
         addforwardrule(name){
             this.$refs[name].validate((valid) => {
                     if (valid) {
+                        this.loading = true;
                         this.$http.get('ddosImitationIp/addforwardrule.do',{
                             params:{
-                                packageId:'',
+                                packageId:this.formValidate.attackMeal,
                                 accessProtocol:this.formValidate.agreement,
                                 accessPort:this.formValidate.visitPort,
                                 source:this.formValidate.domain,
@@ -156,8 +194,10 @@ export default {
                         }).then(res => {
                             if(res.status == 200 && res.data.status == 1){
                                 this.current += 1;
+                                this.loading = false;
                             }else{
                                 this.$Message.info(res.data.message);
+                                this.loading = false;
                             }
                         }).catch(err =>{})
                     }})
@@ -166,6 +206,7 @@ export default {
     },
     created(){
         this.getAllforwardrule(1);
+        this.getId();
     }
 }
 </script>
@@ -191,5 +232,11 @@ export default {
     .tp-pt{
         color: #FF392A;
         line-height: 15px;
+    }
+    .st-ok{
+        font-size:18px;
+        color:#333333;
+        font-weight:Bold;
+        margin:24px 0 18px 0;
     }
 </style>
