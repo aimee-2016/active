@@ -60,7 +60,7 @@
           <FormItem label="选择数据库" prop="database">
             <Select v-model="createSnapsForm.database">
                 <Option v-for="item in databaseList" :value="item.computerid" :key="item.computerid">{{ item.computername }}
-                 </Option>
+                </Option>
             </Select>
           </FormItem>
           <FormItem>
@@ -73,7 +73,7 @@
             <Input v-model="createSnapsForm.name" placeholder="请输入数据库名称"></Input>
           </FormItem>
         </Form>
-        <p style="color:#ed3f14;margin-bottom: 10px;">提示：请输入数据库名称，默认名称为：mysql</p>
+        <p style="color:#ed3f14;margin-bottom: 10px;">提示：请输入数据库名称，默认名称为：{{defaultDatabaseTemp}}</p>
         <p class="mb20">备份时间为：{{new Date().format('yyyy-MM-dd hh:mm:ss')}}</p>
       </div>
       <div slot="footer" class="modal-footer-border">
@@ -221,6 +221,7 @@
         }
       }
       return {
+        defaultDatabaseTemp: '',
         strategyName: '',
         strategyId: '',
         databaseList: [],
@@ -1012,7 +1013,17 @@
           })
         },
         deep:true
-      }
+      },
+      'createSnapsForm.database':{
+        handler:function(val){
+          this.databaseList.forEach(item => {
+            if(val==item.computerid){
+              this.defaultDatabaseTemp = item.dbBackupDefaultName
+            }
+          })
+        },
+        deep:true
+      },
     }
   };
 </script>

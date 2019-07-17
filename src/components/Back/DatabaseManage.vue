@@ -164,7 +164,7 @@
         </div>
         <div class="tab-3" v-show="configType == '修改密码'">
           <div class="hide-star-symbol universal-modal-label-14px">
-                <label style="font-size:16px;display: block;padding-bottom: 12px;border-bottom: 1px solid #e9e9e9;">重置密码</label>
+                <label style="font-size:16px;display: block;padding-bottom: 12px;border-bottom: 1px solid #e9e9e9;">重置数据库密码</label>
                 <Form ref="resetPasswordForm" :model="resetPasswordForm" label-position="left" :label-width="100"
                       style="margin-top:20px;"
                       :rules="resetRuleValidate">

@@ -340,6 +340,7 @@
           </FormItem>
         </Form>
         <p class="mb20" style="font-size:14px;">备份时间为：{{new Date().format('yyyy-MM-dd hh:mm:ss')}}</p>
+        <p style="color:#ed3f14">提示：请输入数据库名称，默认名称为：{{this.hostCurrentSelected.dbBackupDefaultName}}</p>
       </div>
       <div slot="footer" class="modal-footer-border">
         <Button type="ghost" @click="cancelSnaps('createSnapsForm')">取消</Button>
@@ -424,12 +425,9 @@ export default {
       },
       showModal: {
         selectAuthType: false,
-        balance: false,
         publicIPHint: false,
         bindIP: false,
-        rename: false,
         renewal: false,
-        Renew: false,
         backup: false,
         mirror: false,
         unbindIP: false,
@@ -437,8 +435,9 @@ export default {
         delHost: false,
         resetPassword: false,
         beforePortModify: false,
+        portModify: false,
         dilatation: false,
-        newSnapshot: false
+        newSnapshot: false,
       },
       hostListColumns: [
         {
@@ -946,12 +945,7 @@ export default {
                     on: {
                       click: () => {
                         this.hostCurrentSelected = params.row
-                        if (this.hostCurrentSelected.freeHostVmConfigId) {
-                          sessionStorage.setItem('unfreezeId', this.hostCurrentSelected.freeHostVmConfigId)
-                          this.$router.push({ path: 'ThawDeposit', query: { from: "host" } })
-                        } else {
-                          this.renewHost(this.hostCurrentSelected)
-                        }
+                        this.showModal.renewal = true
                       }
                     }
                   }, '续费'), h('span', {
