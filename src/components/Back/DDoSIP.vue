@@ -482,7 +482,7 @@
                                 <Select v-model="setMeal" style="width:230px" @on-change='getProtectCC(setMeal)'>
                                     <Option v-for="item in setMealList" :value="item.packageid" :key="item.packageid">{{ item.packageid }}</Option>
                                 </Select>
-                                <Button>保存修改</Button>
+                                <Button @click="saveConfig()">保存修改</Button>
                             </div>
                             <div style="line-height:26px;">
                                 <span>查看域名添加指引</span>
@@ -803,10 +803,12 @@ export default {
         domain:''
     },
     nameRuleValidate:{
-            black:[{required: true, message: '请输入黑名单', trigger: 'blur'}],
-            white:[{required: true, message: '请输入白名单', trigger: 'blur'}],
-            domain:[{required: true, message: '请输入生效域名', trigger: 'blur'}]
+        black:[{required: true, message: '请输入黑名单', trigger: 'blur'}],
+        white:[{required: true, message: '请输入白名单', trigger: 'blur'}],
+        domain:[{required: true, message: '请输入生效域名', trigger: 'blur'}]
     }, 
+    blackName: '',
+    whiteName: '',
       overviewRadio:'概览',
       button1: "网站业务",
       duration:'',
@@ -1392,9 +1394,11 @@ export default {
                         on:{
                             'white':(value)=>{
                                console.log(value);
+                                this.whiteName = value
                             },
                             'black':(value)=>{
                                 console.log(value);
+                                this.blackName = value
                             }
                         }
                     })
@@ -1423,42 +1427,45 @@ export default {
                             props:{
                                 value:params.row.ccprotect == 0 ?true:false,
                             },
+                            on: {
+                                'on-change': (value) => {
+                                    this.ccProtectData[params.index].ccprotect=value?0:1
+                                }
+                            }
                         })
                     ]) 
                 }
             },
             {
-                key:'ccProtectionMode',
+                key:'protecttype',
                 title:'防护模式',
                 render:(h,params)=>{
-                    this.riadosCC = params.row.protecttype == 0 ?'标准':params.row.protecttype == 1 ?'严格':'攻击应急'
                     return h('RadioGroup',
                     {
                         props:{
-                            value: this.riadosCC
+                            value: params.row.protecttype
                         },
                         on:{
                             "on-change":(val)=>{    
-                               val =  val == '标准' ?0:val == '严格' ?1:2
-                              this.$set(this.ccProtectData[params.row._index],'protecttype',val);
+                              this.ccProtectData[params.index].protecttype=val
                             }
                         }
                     },[
                         h('Radio',{
                             props:{
-                                label:'标准',
+                                label:0,
                             }
-                        }),
+                        },'标准'),
                         h('Radio',{
                             props:{
-                                label:'严格',
+                                label:1,
                             }
-                        }),
+                        },'严格'),
                         h('Radio',{
                             props:{
-                                label:'攻击应急',
+                                label:2,
                             }
-                        })
+                        },'攻击应急')
                     ])
                 }
             },
@@ -1470,6 +1477,12 @@ export default {
                         style:{
                             color:'#4297F2',
                             cursor:'pointer'
+                        },
+                        on:{
+                            click:()=>{
+                                this.renewPrice.status = 1
+                                this.showModal.nameList=true
+                            }
                         }
                     },'添加')
                 }
@@ -2204,6 +2217,22 @@ export default {
                 this.$Message.info(res.data.message);
             }
         }).catch(err => {})
+    },
+    saveConfig() {
+         this.$http.get('ddosImitationIp/updateddoSConfig.do',{params:{
+             packageId:this.setMeal,
+             domainName: this.ccProtectData[0].domainname,
+             ccProtect: this.ccProtectData[0].ccprotect,
+             protectType: this.ccProtectData[0].protecttype,
+             blackList: this.blackName,
+             whiteList: this.whiteName
+         }}).then(res =>{
+            if(res.status == 200 && res.data.status == 1){
+                this.$Message.info(res.data.message);
+            } else {
+                this.$Message.info(res.data.message);
+            }
+         })
     }
 
   },
