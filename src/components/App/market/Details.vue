@@ -33,14 +33,14 @@
               </div>
               <Tabs :animated="false" @on-click="getPrice" class="tabType">
                 <div class="tabTitle">计费类型</div>
-                <TabPane v-for="(item, index) in buyWay" :key="index" :label="item.type" @on-click="getPrice(index)">
+                <TabPane v-for="(item, index) in buyWay" :key="index" :label="item.type" @on-click="getPrice(index)" :disabled="buyTypeStatus == 1 ? true : false">
                   <div class="tab-row" v-show="item.dataTime != ''">
                     <div class="title">使用时长</div>
                     <div class="tab-th">
-                      <span v-for="(items, index) in item.dataTime" :key="index" 
+                      <span v-for="(items, index) in item.dataTime" :key="index"
                       @click="getMonth(index,items)"
                       :class="{ timeActive: checkIndex.checkIndex2 == index }" v-if="item.typeNum == 2">{{items.label}}</span>
-                      <span v-for="(items, index) in item.dataTime" :key="index" 
+                      <span v-for="(items, index) in item.dataTime" :key="index"
                       @click="getYear(index,items)"
                       :class="{ timeActive: checkIndex.checkIndex3 == index }" v-if="item.typeNum == 3">{{items.label}}</span>
                     </div>
@@ -50,13 +50,17 @@
               <div class="tab-row">
                 <div class="title">主机规格</div>
                 <div class="th">
-                  <span v-for="(item, index) in sysPecification" :key="index" :class="{sysActive: sysIndex == index }" @click="ches(index,item)">{{item.label}}</span>
+                  <span v-for="(item, index) in sysPecification" :key="index"
+                    :class="{sysActive: sysIndex == index, noCheck: buyTypeStatus == 1 }"
+                    @click="buyTypeStatus == 1 ? '' : ches(index,item)">{{item.label}}</span>
                 </div>
               </div>
               <div class="tab-row">
                 <div class="title">区域选择</div>
                 <div class="th">
-                  <span v-for="(item, index) in area" :key="index" :class="{sysActive: areaIndex == index }" @click="zoneidChange(item,index)">{{item.zonename}}</span>
+                  <span v-for="(item, index) in area" :key="index"
+                    :class="{sysActive: areaIndex == index, noCheck: buyTypeStatus == 1 }"
+                    @click="buyTypeStatus == 1 ? '' : zoneidChange(item,index)">{{item.zonename}}</span>
                 </div>
               </div>
               <div class="tab-row">
@@ -148,7 +152,7 @@
             <FormItem label="主要需求" prop="interest">
               <CheckboxGroup v-model="formValidate.interest">
                 <Checkbox v-for="(item,index) in classList" :key="index" :label="item.id">{{item.name}}</Checkbox>
-              </CheckboxGroup> 
+              </CheckboxGroup>
             </FormItem>
             <FormItem label="您的称呼" prop="name">
               <Input v-model="formValidate.name" placeholder="请输入"></Input>
@@ -195,7 +199,7 @@
               :points="[500,800]"
               style="width:300px;vertical-align: middle;">
             </i-slider>
-            <InputNumber 
+            <InputNumber
               :max="1000" :min="20" v-model="size" :step=10
               :editable="false"
               style="margin-left: 10px;width: 60px;" :precision="0">
@@ -205,16 +209,16 @@
         <div class="ino-box-deploy-item">
           <div class="title">核心数</div>
           <div class="content">
-            <span v-for="item in coreList" :key="item.value" 
-            :class="{active: mainFrame.cpuNum == item.value}" 
+            <span v-for="item in coreList" :key="item.value"
+            :class="{active: mainFrame.cpuNum == item.value}"
             @click="changeNucleus(item)">{{item.name}}</span>
           </div>
         </div>
         <div class="ino-box-deploy-item">
           <div class="title">内存</div>
           <div class="content">
-           <span v-for="item in sizeList" :key="item.value" 
-             :class="{active: mainFrame.memory == item.value }" 
+           <span v-for="item in sizeList" :key="item.value"
+             :class="{active: mainFrame.memory == item.value }"
              @click="mainFrame.memory = item.value">{{item.name}}</span>
           </div>
         </div>
@@ -514,8 +518,10 @@ export default {
       this.$router.push('details')
       this.getProduct()
       window.scrollTo(0,0)
-      // this.reload()
+      this.reload()
+      this.getProductPrice()
       // location.reload()
+      console.log(this.mainFrame)
     },
     // 获取产品详情
     getProduct () {
@@ -681,7 +687,7 @@ export default {
             memory: this.mainFrame.memory,
             networkId: 'no',
             companyId: this.userInfo.companyid,
-            vpcId: this.vpcName,
+            vpcId: 'no',
             cost: this.price
           }
         }).then(res => {
@@ -932,6 +938,17 @@ export default {
                   border: 1px solid #2d8cf0;
                   background: rgba(55, 125, 255, 0.09);
                   color: #2d8cf0;
+                }
+                .noCheck{
+                  border: 1px solid #ccc;
+                  color: #ccc;
+                  background: white;
+                  &:hover {
+                    border: 1px solid #ccc;
+                    color: #ccc;
+                    background: white;
+                    cursor: not-allowed;
+                  }
                 }
               }
             }

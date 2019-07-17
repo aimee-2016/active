@@ -157,6 +157,18 @@
               <span>零成本体验，快速认证与审核通道</span>
               <router-link to="vps" target="_blank">立即体验</router-link>
             </div>-->
+      <!-- 客服支持、意见反馈 -->
+      <div id="foot-support">
+        <div id="wrapper">
+          <div v-for="(support,index) in support" class="flex-item" :key="index">
+            <i class="iconfont" :class="support.img"></i>
+            <div style="display: inline-block;vertical-align: middle">
+              <span>{{support.title}}</span>
+              <span style="display: block">{{support.subTitle}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
       <!--页面尾部-->
       <div id="foot-footer">
         <div class="footer-top">
@@ -825,7 +837,7 @@
           window.open(`https://im.xrcloud.net/im/text/0Jck1w.html?companyId=${this.userInfo.companyid}`)
         } else{
           window.open('https://im.xrcloud.net/im/text/0Jck1w.html')
-        }       
+        }
       }
     },
     computed: mapState({
@@ -926,7 +938,7 @@
           }
         }
         .market {
-          margin-right: 380px;
+          margin-right: 280px;
         }
         .operate {
           > ul {
@@ -1117,12 +1129,17 @@
         }
       }
       #foot-support {
-        padding: 30px 0px;
+        background:rgba(28,26,30,1);
+        // box-shadow: -13px 18px 15px black;
+        // margin-bottom: 3px;
         #wrapper {
-          width: 1100px;
+          width: 1200px;
+          height: 74px;
           margin: 0px auto;
           display: flex;
           justify-content: space-between;
+          padding-top: 8px;
+          box-sizing: border-box;
           .flex-item {
             i {
               vertical-align: middle;
@@ -1140,7 +1157,7 @@
       #foot-footer {
         .footer-top {
           // height: 340px;
-          background-color: #434343;
+          background-color: rgba(28,26,30,1);
           padding: 46px 0 20px 0;
           .description {
             width: 1200px;
@@ -1226,7 +1243,7 @@
             .links-info {
               width: auto;
               margin-left: 86px;
-              line-height: 14px;
+              line-height: 18px;
               a {
                 margin-right: 20px;
                 display: inline-block;
@@ -1319,7 +1336,7 @@
           transition: width .3s;
           box-shadow:0px 2px 16px -5px rgba(130,130,130,0.5);
           border-radius:10px;
-          font-size: 14px;  
+          font-size: 14px;
         }
         & > a {
           width: 100%;

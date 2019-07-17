@@ -48,7 +48,7 @@ export default {
   methods: {
     toCompany (item) {
       this.$router.push('supplier')
-      sessionStorage.setItem('companyId', item.id)  
+      sessionStorage.setItem('companyId', item.id)
     }
   },
   created () {
@@ -163,6 +163,7 @@ export default {
           >div{
             font-size: 18px;
             color: rgba(59,120,255,1);
+            padding-left: 20px;
           }
           button{
             width: 54px;

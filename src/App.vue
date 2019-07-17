@@ -567,10 +567,10 @@
               },
             ]
           },
-          // {
-          //   title: '云市场',
-          //   path: '/market'
-          // }, 
+          {
+            title: '云市场',
+            path: '/market'
+          }, 
           {
             title: '帮助文档',
             path: 'https://www.xrcloud.net/support/products/',
