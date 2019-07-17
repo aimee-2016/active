@@ -1315,37 +1315,35 @@ export default {
                 }
             },
             {
-                key:'ccProtectionMode',
+                key:'protecttype',
                 title:'防护模式',
                 render:(h,params)=>{
-                    this.riadosCC = params.row.protecttype == 0 ?'标准':params.row.protecttype == 1 ?'严格':'攻击应急'
                     return h('RadioGroup',
                     {
                         props:{
-                            value: this.riadosCC
+                            value: params.row.protecttype
                         },
                         on:{
                             "on-change":(val)=>{    
-                               val =  val == '标准' ?0:val == '严格' ?1:2
-                              this.$set(this.ccProtectData[params.row._index],'protecttype',val);
+                              this.ccProtectData[params.index].protecttype=val
                             }
                         }
                     },[
                         h('Radio',{
                             props:{
-                                label:'标准',
+                                label:0,
                             }
-                        }),
+                        },'标准'),
                         h('Radio',{
                             props:{
-                                label:'严格',
+                                label:1,
                             }
-                        }),
+                        },'严格'),
                         h('Radio',{
                             props:{
-                                label:'攻击应急',
+                                label:2,
                             }
-                        })
+                        },'攻击应急')
                     ])
                 }
             },
