@@ -112,9 +112,9 @@
                                     <span class="l-font">刷新</span> 
                                     </div>
                                 </div>
-                                <Table no-data-text='暂无攻击数据' :columns="overviewList" :data="overviewData" @on-selection-change='overviewTableChange'></Table>
+                                <Table no-data-text='暂无攻击数据' :columns="ddosAttEventList" :data="ddosAttEventData"></Table>
                                 <div class="dp-page">
-                                    <Page :total="100" style="display:inline-block;vertical-align: middle;margin-left:20px;" show-sizer :page-size-opts=[10,20,50,100]></Page>
+                                    <Page :total="ddosAttEventData.length" style="display:inline-block;vertical-align: middle;margin-left:20px;" ></Page>
                                 </div>
                            </div>
                             <div>
@@ -127,11 +127,67 @@
                                     <span class="l-font">刷新</span> 
                                     </div>
                                 </div>
-                                <Table no-data-text='暂无攻击数据' :columns="overviewList" :data="overviewData" @on-selection-change='overviewTableChange'></Table>
+                                <Table no-data-text='暂无攻击数据' :columns="ddosAttInfoList" :data="ddosAttInfoData"></Table>
                                 <div class="dp-page">
-                                    <Page :total="100" style="display:inline-block;vertical-align: middle;margin-left:20px;" show-sizer :page-size-opts=[10,20,50,100]></Page>
+                                    <Page :total="ddosAttInfoData.length" style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
                                 </div>
                            </div>
+                           <div style='display:flex;'>
+                            <div class="dp-row">
+                               <div style="border:1px dashed #999999;padding:20px;border-radius:4px;margin-top:20px;margin-right:20px;width:550px;">
+                                    <div class='dp-tp'>
+                                        <span style="font-size:14px;color:#333333;">清洗流量统计（单位Gbps）</span>
+                                         <span class="l-font" style='float:right;'>刷新</span> 
+                                    </div>
+                                    <div style='display:flex;'>
+                                    <div class="dp-th">
+                                        <div>
+                                            <div>
+                                                <span class="fh-sp">清洗流量最多类型</span>
+                                            </div>
+                                            <div class="dp-bts">
+                                                <span class="b-font" style="margin:0px;">ICMP</span>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                    <div class="dp-th">
+                                        <div>
+                                            <div>
+                                                <span class="fh-sp">清洗最大值</span>
+                                            </div>
+                                            <div class="dp-bts">
+                                                <span class="b-font" style="margin:0px;">5672Mbps</span>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                    <div class="dp-th">
+                                        <div>
+                                            <div>
+                                                <span class="fh-sp">峰值时间</span>
+                                            </div>
+                                            <div class="dp-bts">
+                                                <span class="b-font" style="margin:0px;">10-15 24:24</span>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                    </div>
+                                    <chart style="width:100%;" ref="cpu" :options="flowBtm"></chart>
+                                </div>
+                            </div>
+                            <div class="dp-row">
+                               <div style="border:1px dashed #999999;padding:20px;border-radius:4px;margin-top:20px;width:550px;">
+                                    <div class='dp-tp'>
+                                        <span style="font-size:14px;color:#333333;">攻击类型</span>
+                                         <span class="l-font" style='float:right;'>刷新</span> 
+                                    </div>
+                                    <div style='display:flex;'>
+                                   
+                                    </div>
+                                    <chart style="width:100%;" ref="cpu" :options="hightIpBin"></chart>
+                                </div>
+                            </div>
+                           </div>
+                            
                        </div>
 
                          <!-- CC统计  -->
@@ -152,7 +208,7 @@
                                 <div>
                                    <span>按统计时间</span>
                                    <DatePicker v-model='ccStatistics.date' format='yyyy-MM-dd' size='small' :transfer='true' type="daterange"  placement="bottom-end" placeholder="Select date" style="width: 231px;"></DatePicker>
-                                   <Button size='small' type="primary" style="width:54px;" @click="QueryCCAttackQPS">查询</Button>
+                                   <Button size='small' type="primary" style="width:54px;" @click="getAllCCMap">查询</Button>
                                </div>
                            </div>
                            <div>
@@ -177,12 +233,12 @@
                                         <span>查询指定套餐，及指定时间范围已防护网站业务的域名遭受CC攻击的情况</span>
                                     </div>
                                     <div>
-                                    <span class="l-font">刷新</span> 
+                                    <span class="l-font" @click='QueryCCAttackInfo'>刷新</span> 
                                     </div>
                                 </div>
-                                <Table no-data-text='还未收到攻击/未配置域名' :columns="overviewList" :data="overviewData" @on-selection-change='overviewTableChange'></Table>
+                                <Table no-data-text='还未收到攻击/未配置域名' :columns="ccAttackList" :data="ccAttackData"></Table>
                                 <div class="dp-page">
-                                    <Page :total="100" style="display:inline-block;vertical-align: middle;margin-left:20px;" show-sizer :page-size-opts=[10,20,50,100]></Page>
+                                    <Page :total="ccAttackData.length" style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
                                 </div>
                            </div>
                             <div>
@@ -192,12 +248,12 @@
                                         <span>查询指定套餐，及指定时间范围已防护网站业务的域名遭受CC攻击的域名，及攻击总数</span>
                                     </div>
                                     <div>
-                                    <span class="l-font">刷新</span> 
+                                    <span class="l-font" @click='QueryCCAttDomain'>刷新</span> 
                                     </div>
                                 </div>
-                                <Table no-data-text='还未收到攻击/未配置域名' :columns="overviewList" :data="overviewData" @on-selection-change='overviewTableChange'></Table>
+                                <Table no-data-text='还未收到攻击/未配置域名' :columns="ccAttDomainList" :data="ccAttDomainData"></Table>
                                 <div class="dp-page">
-                                    <Page :total="100" style="display:inline-block;vertical-align: middle;margin-left:20px;" show-sizer :page-size-opts=[10,20,50,100]></Page>
+                                    <Page :total="ccAttDomainData.length" style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
                                 </div>
                            </div>
                            <div>
@@ -206,7 +262,7 @@
                                         <span class="b-font">Top 100IP分布</span>
                                     </div>
                                     <div>
-                                    <span class="l-font">刷新</span> 
+                                    <span class="l-font" @click='QueryCCAttIPDistribution'>刷新</span> 
                                     </div>
                                 </div>
                                <div style="border:1px dashed #999999;padding:20px;border-radius:4px;margin-top:20px;">
@@ -232,7 +288,9 @@
                                </div>
                                 <div>
                                    <span>域名选择</span>
-                                   <DatePicker v-model='business.domain' format='yyyy-MM-dd' size='small' :transfer='true' type="daterange"  placement="bottom-end" placeholder="Select date" style="width: 231px;"></DatePicker>
+                                   <Select size="small" v-model="business.domain" style="width:231px;">
+                                        <Option v-for="item in setMealList" :value="item.domain" :key="item.domain">{{ item.domain }}</Option>
+                                    </Select>
                                </div>
                            </div>
                            <div>
@@ -350,10 +408,10 @@
                                     <Button type="primary" style="width:84px;" @click="queryDomain">查询</Button>
                                 </div>
                             </div>
-                            <div class="selectMark">
+                            <!-- <div class="selectMark">
                                     <img src="../../assets/img/host/h-icon10.png"/>
                                     <span>共 {{ businessData.length }} 项 | 已选择 <span style="color:#FF624B;">{{ overviewSelect.length }} </span>项</span><span style="margin-left:10px;">总价:</span><span style="color:#FF624B;">￥0.00</span>
-                            </div>
+                            </div> -->
                             <Table :columns="businessList" :data="businessData"  @on-selection-change='overviewTableChange'></Table>
                             <div class="dp-page">
                                 <span>总共{{businessData.length}}个项目</span>
@@ -424,7 +482,7 @@
                                 <Select v-model="setMeal" style="width:230px" @on-change='getProtectCC(setMeal)'>
                                     <Option v-for="item in setMealList" :value="item.packageid" :key="item.packageid">{{ item.packageid }}</Option>
                                 </Select>
-                                <Button>保存修改</Button>
+                                <Button @click="saveConfig()">保存修改</Button>
                             </div>
                             <div style="line-height:26px;">
                                 <span>查看域名添加指引</span>
@@ -567,12 +625,12 @@
                         <Input type="textarea" v-model="certificateValidate.ca" placeholder="请输入加密后的根证书"></Input>
                      
                     </FormItem>
-                    <FormItem label="加密方式" prop="pawMode">
+                    <FormItem label="加密方式">
                         <Select v-model="certificateValidate.pawMode">
                             <Option value="des">des</Option>
                         </Select>
                     </FormItem>
-                    <FormItem label="证书备注" prop="desc">
+                    <FormItem label="证书备注">
                         <Input v-model="certificateValidate.desc" placeholder="请输入证书备注"></Input>
                     </FormItem>
                  </Form>   
@@ -640,27 +698,31 @@
             </div>
             <div slot="footer" class="modal-footer-border">
                 <Button type="ghost" @click="showModal.changeSource = false">取消</Button>
-                <Button type="primary" @click="updateDomain">确定</Button>
+                <Button type="primary" @click="updateDomain('source')">确定</Button>
             </div>
         </Modal>
 
          <!-- 网站换IP  -->
         <Modal :mask-closable="false" v-model="showModal.changeIp">
             <p slot="header" class="modal-header-border">
-                <span class="universal-modal-title">关联证书</span>
+                <span class="universal-modal-title">域名换源</span>
             </p>
             <div class="dp-er" v-if="renewPrice.status != 1 && renewPrice.status !== undefined">
                  <Icon type="close-circled" color='#ED4014' size='12px'></Icon>
                  <span style="margin-left:4px;">{{renewPrice.message}}</span>
              </div>
             <div class="md-cer">
-                <span>源站IP/域名</span>
-                <Input type="textarea"></Input>
-                <p class='dp-bf'>如果源站暴露，请参考使用 <span>高防后源站IP暴露的解决方法</span></p>
+            <div style='display:flex;'>
+                <div style='margin-right:5px;'><span>源站IP/域名</span></div>
+                <div>
+                    <Input type="textarea" v-model='sourceip' style='width:300px;display:inline-block;'></Input>
+                    <p class='dp-bf'>如果源站暴露，请参考使用 <span>高防后源站IP暴露的解决方法</span></p>
+                </div>
+            </div>
             </div>
             <div slot="footer" class="modal-footer-border">
                 <Button type="ghost" @click="showModal.changeIp = false">取消</Button>
-                <Button type="primary" @click="updateDomain">确定</Button>
+                <Button type="primary" @click="updateDomain('ip')">确定</Button>
             </div>
         </Modal>
 
@@ -713,11 +775,15 @@
 import expandRow from './DDosExpandRow.vue';
 import hightIp from '@/echarts/hightIp';
 import hightIpBs from '@/echarts/hightIpBs';
+import hightIpSl from '@/echarts/hightIpSl';
+import hightIpBin from '@/echarts/hightIpBin';
 const dIp  = JSON.stringify(hightIp);
 const flow = JSON.stringify(hightIpBs);
 const reque = JSON.stringify(hightIpBs);
 const concurrent = JSON.stringify(hightIpBs);
 const ccQps = JSON.stringify(hightIp);
+const flowBtm = JSON.stringify(hightIpSl);
+const bin = JSON.stringify(hightIpBin);
 export default {
     components: { expandRow },
   data() {
@@ -736,11 +802,13 @@ export default {
         white:'',
         domain:''
     },
-        nameRuleValidate:{
-            black:[{required: true, message: '请输入黑名单', trigger: 'blur'}],
-            white:[{required: true, message: '请输入白名单', trigger: 'blur'}],
-            domain:[{required: true, message: '请输入生效域名', trigger: 'blur'}]
-        }, 
+    nameRuleValidate:{
+        black:[{required: true, message: '请输入黑名单', trigger: 'blur'}],
+        white:[{required: true, message: '请输入白名单', trigger: 'blur'}],
+        domain:[{required: true, message: '请输入生效域名', trigger: 'blur'}]
+    }, 
+    blackName: '',
+    whiteName: '',
       overviewRadio:'概览',
       button1: "网站业务",
       duration:'',
@@ -867,6 +935,8 @@ export default {
         reque:JSON.parse(reque),
         concurrent:JSON.parse(concurrent),
         ccQps:JSON.parse(ccQps),
+        flowBtm:JSON.parse(flowBtm),
+        hightIpBin:JSON.parse(bin),
         ccStatistics:{
             packageid:'',
             date:'',
@@ -888,6 +958,50 @@ export default {
         statisticsTime:'',
         renewPrice:{},
 
+        // CC统计图表格
+        ccAttackList:[
+            {
+                key:'attackIP',
+                title:'攻击者IP'
+            },
+            {
+                key:'time',
+                title:'攻击时间'
+            },
+            {
+                key:'attackIP',
+                title:'攻击者IP归属地'
+            },
+            {
+                key:'attackDomain',
+                title:'被攻击域名'
+            },
+            {
+                key:'action',
+                title:'处理动作',
+                render:(h,params)=>{
+                    return h('span',{},params.row.action == 1 ?'监控':'拦截')
+                }
+            }
+        ],
+        ccAttackData:[],
+        ccAttDomainList:[
+            {
+                title:'受攻击域名',
+                key:'domain'
+            },
+            {
+                title:'攻击次数',
+                key:'value'
+            },
+        ],
+        ccAttDomainData:[],    
+
+        // ddos统计图表格
+        ddosAttEventList:[],
+        ddosAttEventData:[],
+        ddosAttInfoList:[],
+        ddosAttInfoData:[],
 
       // 证书管理
       certificateKyeHide: true,
@@ -1002,7 +1116,7 @@ export default {
           secret:'',
           ca:'',
           desc:'',
-          pawMode:'',
+          pawMode:'des',
           crtId:''  
       },
       certificateRule:{
@@ -1010,8 +1124,6 @@ export default {
           file:[{required: true, message: '请输入证书文件   ', trigger: 'blur'}],
           secret:[{required: true, message: '请输入秘钥内容', trigger: 'blur'}],
           ca:[{required: true, message: '请输入CA内容', trigger: 'blur'}],
-          desc:[{required: true, message: '请输入备注', trigger: 'blur'}],
-          pawMode:[{ required: true, message: '请选择一个加密方式', trigger: 'change' }]
       },
 
       // 网站业务
@@ -1021,6 +1133,7 @@ export default {
               label:'域名'
           }
       ],
+      sourceip:'',
       domain:'域名',
       businessList:[
           {
@@ -1054,6 +1167,7 @@ export default {
                          on:{
                              click:()=>{
                                  this.showModal.changeIp = true;
+                                 this.businessSelect = params.row;
                              }
                          } 
                       },'换源')
@@ -1183,32 +1297,41 @@ export default {
               align: "center"
            },
            {
-               key:'协议',
+               key:'accessprotocol',
                title:'协议'
            },
            {
-               key:'访问端口',
+               key:'accessport',
                title:'访问端口'
            },
            {
-               key:'源站端口',
+               key:'sourceport',
                title:'源站端口'
            },
            {
-               key:'回源负载均衡',
-               title:'回源负载均衡'
+               key:'loadbalance',
+               title:'回源负载均衡',
+               render:(h,params)=>{
+                   return h('span',{},params.row.loadbalance == 1 ?'轮询模式':'其他模式')
+               }
            },
            {
-               key:'acc',
+               key:'source',
                title:'源站IP/域名'
            },
            {
-               key:'部署状态',
-               title:'部署状态'
+               key:'deployState',
+               title:'部署状态',
+               render:(h,params)=>{
+                   return h('span',{},params.row.deployState== 1?'部署成功':params.row.deployState== 2 ?'部署中':params.row.deployState== 3?'待部署':'部署失败')
+               }
            },
            {
-               key:'防护状态',
-               title:'防护状态'
+               key:'ddosProtect',
+               title:'防护状态',
+               render:(h,params)=>{
+                   return h('span',{},params.row.ddosProtect == 0?'关闭':'开启')
+               }
            },
            {
                key:'操作',
@@ -1226,23 +1349,24 @@ export default {
                             style:{
                                color:"#2A99F2",
                                cursor:"pointer"
+                           },
+                           on:{
+                               click:()=>{
+                                   this.$Modal.info({
+                                       title:'信息',
+                                       content:'确认删除所选转发规则吗?',
+                                       onOk:()=>{
+                                           this.deleteList('forwardrule');
+                                       }
+                                   })
+                               }
                            }
                        },'删除'),
                    ])
                }
            },
        ],
-       ruleData:[
-           {
-               协议:'tcp',
-               访问端口:'0.0.0.0',
-               源站端口:'0.0.0.0',
-               回源负载均衡:'轮询模式',
-               acc:'192.168.0.0',
-               部署状态:'待部署',
-               防护状态:'DDoS防护：开',
-           }
-       ],
+       ruleData:[],
        visitPort:'访问端口',
        visitPortSelect:[
            {
@@ -1270,9 +1394,11 @@ export default {
                         on:{
                             'white':(value)=>{
                                console.log(value);
+                                this.whiteName = value
                             },
                             'black':(value)=>{
                                 console.log(value);
+                                this.blackName = value
                             }
                         }
                     })
@@ -1301,42 +1427,45 @@ export default {
                             props:{
                                 value:params.row.ccprotect == 0 ?true:false,
                             },
+                            on: {
+                                'on-change': (value) => {
+                                    this.ccProtectData[params.index].ccprotect=value?0:1
+                                }
+                            }
                         })
                     ]) 
                 }
             },
             {
-                key:'ccProtectionMode',
+                key:'protecttype',
                 title:'防护模式',
                 render:(h,params)=>{
-                    this.riadosCC = params.row.protecttype == 0 ?'标准':params.row.protecttype == 1 ?'严格':'攻击应急'
                     return h('RadioGroup',
                     {
                         props:{
-                            value: this.riadosCC
+                            value: params.row.protecttype
                         },
                         on:{
                             "on-change":(val)=>{    
-                               val =  val == '标准' ?0:val == '严格' ?1:2
-                              this.$set(this.ccProtectData[params.row._index],'protecttype',val);
+                              this.ccProtectData[params.index].protecttype=val
                             }
                         }
                     },[
                         h('Radio',{
                             props:{
-                                label:'标准',
+                                label:0,
                             }
-                        }),
+                        },'标准'),
                         h('Radio',{
                             props:{
-                                label:'严格',
+                                label:1,
                             }
-                        }),
+                        },'严格'),
                         h('Radio',{
                             props:{
-                                label:'攻击应急',
+                                label:2,
                             }
-                        })
+                        },'攻击应急')
                     ])
                 }
             },
@@ -1348,6 +1477,12 @@ export default {
                         style:{
                             color:'#4297F2',
                             cursor:'pointer'
+                        },
+                        on:{
+                            click:()=>{
+                                this.renewPrice.status = 1
+                                this.showModal.nameList=true
+                            }
                         }
                     },'添加')
                 }
@@ -1414,17 +1549,22 @@ export default {
 
     //   获取用户套餐ID
     getId(){
-        let domainList = [];
+        let domainList = '';
         this.$http.get('ddosImitationIp/packageIdInfo.do',{}).then(res=>{
             if(res.status == 200 && res.data.status == 1){
                 for(let i =0; i<res.data.result.length; i++){
                     for(let key in res.data.result[i]){
-                        this.setMealList.push({'packageid':key,domainList});
-                        // domainList.push({'domain':res.data.result[i][key][i].domainname||'hhhhh'});
-                        // console.log(this.setMealList);
+                        if(res.data.result[i][key].length != 0){
+                          domainList = res.data.result[i][key][i].domainname;
+                        }else{
+                            domainList = null;
+                        }
+                        this.setMealList.push({'packageid':key,domain:domainList});
+                        
+                        console.log(this.setMealList);
                     }
                 }
-                this.setMeal = this.attackMeal = this.setMealList[0].packageid;
+                this.setMeal = this.ccStatistics.packageid = this.business.packageId =  this.attackMeal = this.setMealList[0].packageid;
               
                 this.getProtectCC(this.setMeal,1);
             }else{
@@ -1441,6 +1581,17 @@ export default {
         this.concurrent.series[0].lineStyle.normal.shadowColor = 'rgba(187, 62, 213, 0.5)';
         this.concurrent.series[0].lineStyle.normal.color.colorStops[0].color = 'rgba(187, 62, 213, 1)';
         this.concurrent.series[0].lineStyle.normal.color.colorStops[1].color = 'rgba(102, 120, 255, 1)';
+        this.reque.series[0].name = '请求次数';
+        this.reque.series[0].stack = '请求次数';
+        this.reque.legend.data  =['请求次数'];
+        this.concurrent.series[0].name = '并发连接数';
+        this.concurrent.series[0].stack = '并发连接数';
+        this.concurrent.legend.data  = ['并发连接数'];
+        this.ccQps.series[1].name = '总请求次数';
+        this.ccQps.series[0].name = 'CC攻击次数';
+        this.ccQps.series[1].stack= '总请求次数';
+        this.ccQps.series[0].stack= 'CC攻击次数';
+        this.ccQps.legend.data = ['总请求次数','CC攻击次数'];
     },
 
     //   套餐表格选项切换
@@ -1550,7 +1701,7 @@ export default {
                 packageId:this.business.packageId,
                 startdate:this.business.date[0].format('yyyy-MM-dd hh:mm:ss')+'',
                 enddate:this.business.date[1].format('yyyy-MM-dd hh:mm:ss')+'',
-                domains:''//this.business.domain
+                domains:this.business.domain
         }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
                 this.flowOut.xAxis.data = res.data.time;
@@ -1567,7 +1718,7 @@ export default {
             packageId:this.business.packageId,
             startdate:this.business.date[0].format('yyyy-MM-dd hh:mm:ss')+'',
             enddate:this.business.date[1].format('yyyy-MM-dd hh:mm:ss')+'',
-            domains:''//this.business.domain
+            domains:this.business.domain
         }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
                 this.reque.xAxis.data = res.data.time;
@@ -1579,11 +1730,11 @@ export default {
     },
 
     QueryConnectionNum(){
-       this.$http.post('ddosImitationIp/QueryRequestNum.do',{
+       this.$http.post('ddosImitationIp/QueryConnectionNum.do',{
             packageId:this.business.packageId,
             startdate:this.business.date[0].format('yyyy-MM-dd hh:mm:ss')+'',
             enddate:this.business.date[1].format('yyyy-MM-dd hh:mm:ss')+'',
-            domains:''//this.business.domain
+            domains:this.business.domain
         }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
                 this.concurrent.xAxis.data = res.data.time;
@@ -1594,21 +1745,80 @@ export default {
         }).catch(err =>{}) 
     },
 
+    
+
+    //  // ……CC统计图开始……
     QueryCCAttackQPS(){
         this.$http.post('ddosImitationIp/QueryCCAttackQPS.do',{
-                packageId:this.ccStatistics.packageid,
-                startdate:this.ccStatistics.date[0].format('yyyy-MM-dd hh:mm:ss')+'',
-                enddate:this.ccStatistics.date[1].format('yyyy-MM-dd hh:mm:ss')+''
+            packageId:this.ccStatistics.packageid,
+            startdate:this.ccStatistics.date[0].format('yyyy-MM-dd hh:mm:ss')+'',
+            enddate:this.ccStatistics.date[1].format('yyyy-MM-dd hh:mm:ss')+'',
+            domains:this.ccStatistics.domain
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
                 this.ccQps.xAxis.data = res.data.time;
                 this.ccQps.series[0].data = res.data.hitdeny;
                 this.ccQps.series[1].data = res.data.hit;
             }else{
-                this.$Message.info(res.data.message);
+                this.$Messgae.info(res.data.messae);
             }
         })
     },
+
+    QueryCCAttackInfo(){
+        this.$http.post('ddosImitationIp/QueryCCAttackInfo.do',{
+            packageId:this.ccStatistics.packageid,
+            startdate:this.ccStatistics.date[0].format('yyyy-MM-dd hh:mm:ss')+'',
+            enddate:this.ccStatistics.date[1].format('yyyy-MM-dd hh:mm:ss')+'',
+            domains:this.ccStatistics.domain
+        }).then(res => {
+            if(res.status == 200 && res.data.status == 1){
+                this.ccAttackData = res.data.result;
+            }else{
+                this.$Messgae.info(res.data.messae);
+            }
+        })
+    },
+
+    QueryCCAttDomain(){
+         this.$http.post('ddosImitationIp/QueryCCAttDomain.do',{
+             packageId:this.ccStatistics.packageid,
+            startdate:this.ccStatistics.date[0].format('yyyy-MM-dd hh:mm:ss')+'',
+            enddate:this.ccStatistics.date[1].format('yyyy-MM-dd hh:mm:ss')+'',
+            domains:this.ccStatistics.domain
+        }).then(res => {
+            if(res.status == 200 && res.data.status == 1){
+                 this.ccAttDomainData = res.data.result;
+            }else{
+                this.$Messgae.info(res.data.messae);
+            }
+        })
+    },
+
+    QueryCCAttIPDistribution(){
+         this.$http.post('ddosImitationIp/QueryCCAttIPDistribution.do',{
+             packageId:this.ccStatistics.packageid,
+            startdate:this.ccStatistics.date[0].format('yyyy-MM-dd hh:mm:ss')+'',
+            enddate:this.ccStatistics.date[1].format('yyyy-MM-dd hh:mm:ss')+'',
+            domains:this.ccStatistics.domain
+        }).then(res => {
+            if(res.status == 200 && res.data.status == 1){
+
+            }else{
+                this.$Messgae.info(res.data.messae);
+            }
+        })
+    },
+
+    getAllCCMap(){
+        this.QueryCCAttackQPS();
+        this.QueryCCAttackInfo();
+        this.QueryCCAttDomain();
+        this.QueryCCAttIPDistribution();
+    },
+    // ……CC统计图结束……
+
+
 
     getAllBusinessMap(){
         this.QueryRequestNum();
@@ -1662,17 +1872,17 @@ export default {
     },
 
     // 换源
-    updateDomain(){
-        if(this.operationObject == ''){
+    updateDomain(name){
+        if(this.operationObject == '' && name == 'source'){
             this.$Message.info('请选择需要关联的证书ID');
             return;
         }
         this.$http.get('ddosImitationIp/UpdateDomain.do',{
             params:{
                 domain:this.businessSelect.domainname,
-                source:this.businessSelect.sourceip,
+                source: name == 'ip' ? this.sourceip : this.businessSelect.sourceip,
                 port:this.businessSelect.port,
-                crtId:this.operationObject,
+                crtId:name == 'source' ?this.operationObject : this.businessSelect.crtId,
                 http:this.businessSelect.httpstate,
                 https:this.businessSelect.httpsstate,
                 Id:this.businessSelect.id,
@@ -1680,8 +1890,14 @@ export default {
             }
         }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
-                this.$Message.success('关联成功');
-                this.showModal.changeSource = false;
+                if(name == 'source'){
+                    this.$Message.success('关联成功');
+                    this.showModal.changeSource = false;
+                }else{
+                     this.$Message.success('源站ip修改成功');
+                    this.showModal.changeIp = false;
+                }
+                
             }else{
                  this.renewPrice = res.data;
             }   
@@ -1780,7 +1996,7 @@ export default {
     },
 
     createCertificate(name){
-        this.$refs[name].validate((valid) => {
+        this.$refs.certificateValidate.validate((valid) => {
         if (valid) {
             this.$http.post('ddosImitationIp/AddCertificate.do',{
                 crtName:this.certificateValidate.name,
@@ -1788,7 +2004,7 @@ export default {
                 crtDes:this.certificateValidate.file,
                 keyDes:this.certificateValidate.secret,
                 caDes:this.certificateValidate.ca,
-                encryptionWay:''
+                encryptionWay:this.certificateValidate.encryptionway
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
 
@@ -1876,7 +2092,21 @@ export default {
             }).catch(err => {
 
             })
-    },    
+    },   
+
+    // deleteForwardrule(){
+    //     this.$http.get('ddosImitationIp/deleteforwardrule.do',{
+    //         params:{
+    //             Id:this.businessSelect.id
+    //         }
+    //     }).then(res => {
+    //         if(res.status == 200 && res.data.status == 1){
+    //             this.$Message.success('删除成功');
+    //         }else{
+    //             this.$Message.info(res.data.messae);
+    //         }
+    //     }).catch(err =>{})
+    // }, 
 
     /**
      * 防护管理
@@ -1972,9 +2202,9 @@ export default {
         }else if(name == 'forwardrule'){
             url = 'ddosImitationIp/deleteforwardrule.do'
         }
-        if(this.overviewSelect)
         this.$http.get(url,{params}).then(res =>{
             if(res.status == 200 && res.data.status == 1){
+                this.overviewSelect = [];
                 this.$Message.success(res.data.message);
                 if(name == 'domain'){
                    this.getDomainList(1);
@@ -1987,6 +2217,22 @@ export default {
                 this.$Message.info(res.data.message);
             }
         }).catch(err => {})
+    },
+    saveConfig() {
+         this.$http.get('ddosImitationIp/updateddoSConfig.do',{params:{
+             packageId:this.setMeal,
+             domainName: this.ccProtectData[0].domainname,
+             ccProtect: this.ccProtectData[0].ccprotect,
+             protectType: this.ccProtectData[0].protecttype,
+             blackList: this.blackName,
+             whiteList: this.whiteName
+         }}).then(res =>{
+            if(res.status == 200 && res.data.status == 1){
+                this.$Message.info(res.data.message);
+            } else {
+                this.$Message.info(res.data.message);
+            }
+         })
     }
 
   },
@@ -2051,12 +2297,16 @@ export default {
   margin-top: 10px;
   font-size: 18px;
 }
+.dp-bts {
+  margin-top: 10px;
+  font-size: 14px;
+}
 .dp-page {
   text-align: right;
   margin-top: 20px;
 }
 .md-cer {
-  overflow: auto;
+//   overflow: auto;
 }
 .f-p {
   position: absolute;
@@ -2239,6 +2489,20 @@ export default {
 .dp-inmap {
   width: 620px;
   height: 270px;
+}
+.dp-tp{
+   padding-bottom: 10px;
+    border-bottom: 1px solid #E9E9E9;
+    margin-bottom: 18px; 
+}
+.dp-th{
+    width: 272px;
+  background: rgba(255, 255, 255, 1);
+  margin-right: 10px;
+  position: relative;
+  > div {
+    margin: 0 0 10px 20px;
+  }
 }
 </style>
 

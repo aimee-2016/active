@@ -3,6 +3,13 @@ export default {
   
     tooltip: {
     trigger: 'axis',
+    backgroundColor:'rgba(255,255,255,1)',
+    padding:10,
+    textStyle:{
+        color:'#333333',
+        fontFamily:'MicrosoftYaHei',
+        fontSize:'12'
+    },
        axisPointer: {
          type: 'line',
          lineStyle: {
@@ -30,7 +37,7 @@ export default {
    xAxis: {
        type: 'category',
        boundaryGap: false,
-       data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+       data: [],
    },
    yAxis: {
        type: 'value'
@@ -67,7 +74,7 @@ export default {
                    color: '#fff'
                }
            },
-           data: [120, 132, 101, 134, 90, 230, 210],
+           data: [],
        }
    ]
 };

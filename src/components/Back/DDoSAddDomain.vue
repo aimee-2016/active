@@ -72,9 +72,7 @@
                 </FormItem>
                 <FormItem label="证书ID" prop="id" v-if="certificateShow">
                   <Select v-model="addDomainList.id" style="width:394px;">
-                      <Option value="beijing">New York</Option>
-                      <Option value="shanghai">London</Option>
-                      <Option value="shenzhen">Sydney</Option>
+                      <Option v-for='item in cerIdList' :value="item.crtid" :key='item.crtid'>{{item.crtid}}</Option>
                   </Select>
                 </FormItem>
                 <FormItem>
@@ -157,8 +155,7 @@ export default {
         agreement: [
           { required: true, message: "请输入协议端口", trigger: "blur" }
         ],
-        id: [
-          { required: true, message: '请选择一个证书id', trigger: 'change' }],
+        ip: [{required:true, message:'请输入源站IP',trigger:'blur'}],
       },
       setMealList: [
       ],
@@ -181,12 +178,14 @@ export default {
         }
       ],
       businessData: [
-      ]
+      ],
+      cerIdList:[],
     };
   },
   created () {
-    this.getId()
-    this.getDomainList()
+    this.getId();
+    this.getDomainList();
+    this.QuerycrtId();
   },
   mounted () {
 
@@ -237,7 +236,7 @@ export default {
                 packageId: this.addDomainList.attackMeal,
                 domain: this.addDomainList.domain,
                 source: this.addDomainList.ip,
-                crtId: "",
+                crtId: this.addDomainList.id,
                 port: this.addDomainList.agreement,
                 http: http,
                 https: https
@@ -257,6 +256,18 @@ export default {
     handleReset(name) {
       this.$refs[name].resetFields();
     },
+
+    QuerycrtId(){
+      this.$http.get('ddosImitationIp/QuerycrtId.do',{}).then(res => {
+        if(res.status == 200 && res.data.status == 1){
+          this.cerIdList = res.data.result;
+        }else{
+          this.$Message.info(res.data.message);
+        }
+      })
+    },
+    
+
     result() {
       this.domainResult = false;
     }
@@ -290,6 +301,7 @@ export default {
   border: 1px solid rgba(225, 225, 225, 1);
   color: #999999;
   text-align: center;
+  cursor:pointer;
   line-height: 24px;
 }
 .box {
