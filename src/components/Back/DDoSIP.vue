@@ -424,7 +424,7 @@
                                 <Select v-model="setMeal" style="width:230px" @on-change='getProtectCC(setMeal)'>
                                     <Option v-for="item in setMealList" :value="item.packageid" :key="item.packageid">{{ item.packageid }}</Option>
                                 </Select>
-                                <Button>保存修改</Button>
+                                <Button @click="saveConfig()">保存修改</Button>
                             </div>
                             <div style="line-height:26px;">
                                 <span>查看域名添加指引</span>
@@ -736,11 +736,13 @@ export default {
         white:'',
         domain:''
     },
-        nameRuleValidate:{
-            black:[{required: true, message: '请输入黑名单', trigger: 'blur'}],
-            white:[{required: true, message: '请输入白名单', trigger: 'blur'}],
-            domain:[{required: true, message: '请输入生效域名', trigger: 'blur'}]
-        }, 
+    nameRuleValidate:{
+        black:[{required: true, message: '请输入黑名单', trigger: 'blur'}],
+        white:[{required: true, message: '请输入白名单', trigger: 'blur'}],
+        domain:[{required: true, message: '请输入生效域名', trigger: 'blur'}]
+    }, 
+    blackName: '',
+    whiteName: '',
       overviewRadio:'概览',
       button1: "网站业务",
       duration:'',
@@ -1270,9 +1272,11 @@ export default {
                         on:{
                             'white':(value)=>{
                                console.log(value);
+                                this.whiteName = value
                             },
                             'black':(value)=>{
                                 console.log(value);
+                                this.blackName = value
                             }
                         }
                     })
@@ -1301,6 +1305,11 @@ export default {
                             props:{
                                 value:params.row.ccprotect == 0 ?true:false,
                             },
+                            on: {
+                                'on-change': (value) => {
+                                    this.ccProtectData[params.index].ccprotect=value?0:1
+                                }
+                            }
                         })
                     ]) 
                 }
@@ -1348,6 +1357,12 @@ export default {
                         style:{
                             color:'#4297F2',
                             cursor:'pointer'
+                        },
+                        on:{
+                            click:()=>{
+                                this.renewPrice.status = 1
+                                this.showModal.nameList=true
+                            }
                         }
                     },'添加')
                 }
@@ -1987,6 +2002,22 @@ export default {
                 this.$Message.info(res.data.message);
             }
         }).catch(err => {})
+    },
+    saveConfig() {
+         this.$http.get('ddosImitationIp/updateddoSConfig.do',{params:{
+             packageId:this.setMeal,
+             domainName: this.ccProtectData[0].domainname,
+             ccProtect: this.ccProtectData[0].ccprotect,
+             protectType: this.ccProtectData[0].protecttype,
+             blackList: this.blackName,
+             whiteList: this.whiteName
+         }}).then(res =>{
+            if(res.status == 200 && res.data.status == 1){
+                this.$Message.info(res.data.message);
+            } else {
+                this.$Message.info(res.data.message);
+            }
+         })
     }
 
   },
