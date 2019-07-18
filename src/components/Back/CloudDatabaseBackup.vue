@@ -60,7 +60,7 @@
           <FormItem label="选择数据库" prop="database">
             <Select v-model="createSnapsForm.database">
                 <Option v-for="item in databaseList" :value="item.computerid" :key="item.computerid">{{ item.computername }}
-                 </Option>
+                </Option>
             </Select>
           </FormItem>
           <FormItem>
@@ -73,7 +73,7 @@
             <Input v-model="createSnapsForm.name" placeholder="请输入数据库名称"></Input>
           </FormItem>
         </Form>
-        <p style="color:#ed3f14;margin-bottom: 10px;">提示：请输入数据库名称，默认名称为：mysql</p>
+        <p style="color:#ed3f14;margin-bottom: 10px;">提示：请输入数据库名称，默认名称为：{{defaultDatabaseTemp}}</p>
         <p class="mb20">备份时间为：{{new Date().format('yyyy-MM-dd hh:mm:ss')}}</p>
       </div>
       <div slot="footer" class="modal-footer-border">
@@ -211,17 +211,17 @@
   import axios from '../../util/axiosInterceptor'
   export default {
     data() {
-      // 匹配中文
       const validChinese = (rule, value, callback) => {
-        if (/[\u4e00-\u9fa5]/.test(value)) {
-          return callback(new Error("不能输入中文"))
-        } else if (value == '') {
-          return callback(new Error("备份名称不能为空"))
-        } else {
+      if (value == '') {
+          return callback(new Error("数据库名称不能为空"))
+        } else if (/^[0-9a-zA-Z]{1,}$/.test(value)) {
           callback()
+        } else {
+          return callback(new Error("名称输入有误，只能输入字母与数字"))
         }
       }
       return {
+        defaultDatabaseTemp: '',
         strategyName: '',
         strategyId: '',
         databaseList: [],
@@ -596,7 +596,7 @@
         }
       }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          this.newStrategyForm.applyDatabaseGroup = response.data.result
+          this.newStrategyForm.applyDatabaseGroup = response.data.result.info
         }
       })
     },
@@ -669,7 +669,7 @@
           }
         }).then(response => {
           if (response.status == 200 && response.data.status == 1) {
-            this.databaseList = response.data.result
+            this.databaseList = response.data.result.info
             this.showModal.newSnapshot = true
           }
         })
@@ -736,7 +736,7 @@
         this.$http.get(`database/listDB.do`)
           .then(response => {
             if (response.status == 200 && response.data.status == 1) {
-              this.databaselist = response.data.result
+              this.databaselist = response.data.result.info
               this.databaselist.forEach((item) => {
                 if (item.status === 1 && item.dbBackstrategyId != data.id) {
                   leftData.push(item)
@@ -1013,7 +1013,17 @@
           })
         },
         deep:true
-      }
+      },
+      'createSnapsForm.database':{
+        handler:function(val){
+          this.databaseList.forEach(item => {
+            if(val==item.computerid){
+              this.defaultDatabaseTemp = item.dbBackupDefaultName
+            }
+          })
+        },
+        deep:true
+      },
     }
   };
 </script>
