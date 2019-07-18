@@ -195,14 +195,14 @@
                            <div class="dp-ds">
                                <div> 
                                    <span>套餐选择</span>
-                                    <Select size="small" v-model="ccStatistics.packageid" style="width:231px;">
-                                        <Option v-for="item in setMealList" :value="item.packageid" :key="item.packageid">{{ item.packageid }}</Option>
+                                    <Select size="small" v-model="ccStatistics.packageid" style="width:231px;" @on-change='domainChange'>
+                                        <Option v-for="(item,index) in setMealList" :value="item.packageid" :key="item.packageid" >{{ item.packageid }}</Option>
                                     </Select>
                                </div>
                                 <div>
                                    <span>域名选择</span>
                                    <Select size="small" v-model="ccStatistics.domain" style="width:231px;">
-                                        <Option v-for="item in setMealList" :value="item.domain" :key="item.domain">{{ item.domain }}</Option>
+                                        <Option v-for="item in domainAllList" :value="item" :key="item">{{ item }}</Option>
                                     </Select>
                                </div>
                                 <div>
@@ -277,8 +277,8 @@
                            <div class="dp-ds">
                                <div> 
                                    <span>套餐选择</span>
-                                    <Select size="small" v-model="business.packageId" style="width:231px;">
-                                        <Option v-for="item in setMealList" :value="item.packageid" :key="item.packageid">{{ item.packageid }}</Option>
+                                    <Select size="small" v-model="business.packageId" style="width:231px;" @on-change='domainChange'>
+                                        <Option v-for="(item,index) in setMealList" :value="item.packageid" :key="item.packageid" >{{ item.packageid }}</Option>
                                     </Select>
                                </div>
                               <div>
@@ -289,7 +289,7 @@
                                 <div>
                                    <span>域名选择</span>
                                    <Select size="small" v-model="business.domain" style="width:231px;">
-                                        <Option v-for="item in setMealList" :value="item.domain" :key="item.domain">{{ item.domain }}</Option>
+                                        <Option v-for="item in domainAllList" :value="item" :key="item">{{ item }}</Option>
                                     </Select>
                                </div>
                            </div>
@@ -352,7 +352,7 @@
                                     </div>
                                 </div>
                                <div style="border:1px dashed #999999;padding:20px;border-radius:4px;margin-top:20px;">
-                                    <p style="font-size:14px;color:#333333;">清洗流量统计（单位Gbps）</p>
+                                    <p style="font-size:14px;color:#333333;">请求次数（单位：次）</p>
                                     <chart style="width:100%;" ref="reque" :options="reque"></chart>
                                 </div>
                            </div>
@@ -366,8 +366,30 @@
                                     <span class="l-font" @click="QueryConnectionNum">刷新</span> 
                                     </div>
                                 </div>
+                                <div style="display:flex;">
+                                    <div class="dp-fh" style="width:575px;">
+                                        <div>
+                                            <div>
+                                                <span class="fh-sp">峰值时间</span>
+                                            </div>
+                                            <div class="dp-bt">
+                                                <span class="b-font" style="margin:0px;">2018-10-05 23:45</span>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                    <div class="dp-fh" style="width:575px;">
+                                        <div>
+                                            <div>
+                                                <span class="fh-sp">最大并发数</span>
+                                            </div>
+                                            <div class="dp-bt">
+                                                <span class="b-font" style="margin:0px;">34.25Gbps</span>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                </div>
                                 <div style="border:1px dashed #999999;padding:20px;border-radius:4px;margin-top:20px;">
-                                    <p style="font-size:14px;color:#333333;">清洗流量统计（单位Gbps）</p>
+                                    <p style="font-size:14px;color:#333333;">并发连接数统计</p>
                                     <chart style="width:100%;" ref="concurrent" :options="concurrent"></chart>
                                 </div>
                            </div>
@@ -921,15 +943,7 @@ export default {
                 }
             },
         ],
-        overviewData:[
-            {
-                套餐ID:'2019023101240915',
-                套餐类型:'DMS-50GB',
-                有效期:'2019/3/25 21:29',
-                购买日期:'2019/3/25 21:29',
-                攻击事件:'次数'
-            }
-        ],
+        overviewData:[],
         hightIp:JSON.parse(dIp),
         flowOut:JSON.parse(flow),
         reque:JSON.parse(reque),
@@ -1528,7 +1542,9 @@ export default {
          ],
          journalData:[            
          ],
-         logTime:[]   
+         logTime:[],
+         domainAllList:[],
+
     }
   },
   beforeCreate(){
@@ -1540,39 +1556,42 @@ export default {
       this.getDomainList(1);
       this.getCertificate(1);
       this.getLog(1);
-        this.getId();
+    this.getId();
       this.getAllforwardrule(1);
       this.changeColor();
-       this.inmapVoid();
+    this.inmapVoid();
   },
   methods:{
 
     //   获取用户套餐ID
     getId(){
-        let domainList = '';
+        let domainList = [];
         this.$http.get('ddosImitationIp/packageIdInfo.do',{}).then(res=>{
             if(res.status == 200 && res.data.status == 1){
                 for(let i =0; i<res.data.result.length; i++){
                     for(let key in res.data.result[i]){
                         if(res.data.result[i][key].length != 0){
-                          domainList = res.data.result[i][key][i].domainname;
+                          domainList.push(res.data.result[i][key][i].domainname);
                         }else{
-                            domainList = null;
+                            domainList = [];
                         }
-                        this.setMealList.push({'packageid':key,domain:domainList});
-                        
-                        console.log(this.setMealList);
+                        this.setMealList.push({'packageid':key,'domainList':domainList});
                     }
                 }
                 this.setMeal = this.ccStatistics.packageid = this.business.packageId =  this.attackMeal = this.setMealList[0].packageid;
-              
+                this.domainChange( this.setMeal);
                 this.getProtectCC(this.setMeal,1);
             }else{
                 this.$Message.info(res.data.message);
             }
         })
     },
-
+    domainChange(index){
+      let num =   this.setMealList.findIndex(item =>{
+            return index == item.packageid
+        })
+        this.domainAllList = this.setMealList[num].domainList;
+    },
     // 改变统计图线条颜色
     changeColor(){
         this.reque.series[0].lineStyle.normal.shadowColor = 'rgba(181, 229, 173, 0.5)';
@@ -1745,6 +1764,12 @@ export default {
         }).catch(err =>{}) 
     },
 
+      getAllBusinessMap(){
+        this.QueryRequestNum();
+        this.QueryBusinessBandwidth();
+        this.QueryConnectionNum();
+    },
+
     
 
     //  // ……CC统计图开始……
@@ -1820,11 +1845,7 @@ export default {
 
 
 
-    getAllBusinessMap(){
-        this.QueryRequestNum();
-        this.QueryBusinessBandwidth();
-        this.QueryConnectionNum();
-    },
+  
 
     inmapVoid(){
         let inMaps = this.inMap;
@@ -2094,19 +2115,6 @@ export default {
             })
     },   
 
-    // deleteForwardrule(){
-    //     this.$http.get('ddosImitationIp/deleteforwardrule.do',{
-    //         params:{
-    //             Id:this.businessSelect.id
-    //         }
-    //     }).then(res => {
-    //         if(res.status == 200 && res.data.status == 1){
-    //             this.$Message.success('删除成功');
-    //         }else{
-    //             this.$Message.info(res.data.messae);
-    //         }
-    //     }).catch(err =>{})
-    // }, 
 
     /**
      * 防护管理
@@ -2121,11 +2129,25 @@ export default {
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
                 this.ccProtectData = res.data.result;
-                this.emptyLink = res.data.result[0].ddosprotect;
+                this.getEmptyLink(id);
             }else{
                 this.$Message.info(res.data.message);
             }
         }).catch(err => {})
+    },
+
+    getEmptyLink(id){
+        this.$http.get('ddosImitationIp/QueryL4DDosConfig.do',{
+            params:{
+                packageId:id
+            }
+        }).then(res =>{
+            if(res.status == 200 && res.data.status == 1){
+                this.emptyLink = res.data.ddosProtect;
+            }else{
+                this.$Message.info(res.data.message);
+            }
+        })
     },
 
     updateL4DDoSConfig(val){
