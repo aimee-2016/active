@@ -906,7 +906,7 @@
             width: 100,
             render: (h, params) => {
               let text_l1 = params.row.ddosprotectnumber ? params.row.ddosprotectnumber + 'GB' : '----'
-              let text_l2 = params.row.UpddosProtectNumber ? params.row.UpddosProtectNumber + 'GB' : ''
+              let text_l2 = params.row.UpddosProtectNumber != 0 ? params.row.UpddosProtectNumber + 'GB' : ''
               return h('ul', {}, [
                 h('li', {}, text_l1),
                 h('li', {

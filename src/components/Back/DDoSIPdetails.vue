@@ -54,8 +54,28 @@
                             <p>{{ddosipDetails.buyTime}}</p>
                         </div>
                         <div class="ds-ct">
-                            <p>到期时间<span>续费</span></p>
+                            <p>到期时间<span class="ds-blf">续费</span></p>
                             <p>{{ddosipDetails.endTime}}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ds-box">
+                    <p class="t-psize">应用信息</p>
+                    <div class='ds-row'>
+                        <div class="ds-ct">
+                            <p>套餐下网站业务 <span class="ds-blf" >查看详情</span></p>
+                            <div>
+                                <p v-for="(item,index) in ddosipDetails.domainName" :key="index">{{item.domainname}}</p>
+                            </div>
+                            
+                        </div>
+                        <div class="ds-ct">
+                            <p>套餐下非网站业务 <span class="ds-blf" >查看详情</span></p>
+                            <p>{{ddosipDetails.count}}条转发规则</p>
+                        </div>
+                        <div class="ds-ct">
+                            <p><span class="ds-blf" >查看业务监控统计</span></p>
                         </div>
                     </div>
                 </div>
@@ -142,5 +162,8 @@ export default {
           height: 48px;
           background-color: #CBD0D5;
       }
+  }
+  .ds-blf{
+      margin-left:10px;color:#4297F2;cursor:pointer;
   }
 </style>
