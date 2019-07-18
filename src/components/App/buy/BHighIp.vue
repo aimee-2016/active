@@ -433,7 +433,7 @@
         return this.$store.state.userInfo
       },
       price(){
-        return this.elasticIpPrice +  this.businessPrice + this.protPirce;
+        return this.elasticIpPrice +  this.businessPrice + this.protPirce + this.selectList.price;
       }
     },
     watch: {
