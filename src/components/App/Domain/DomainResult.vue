@@ -11,8 +11,16 @@
             </Input>
             <transition name="showChosse">
               <div v-show="choose" class="change" @mouseleave="choose=!choose">
-              <span v-for="(item,index) in suffixChange" :key="index"
-                    style="width:70px;display:inline-block;height: 30px;padding: 5px 0;" @click="addAppend(item)">{{item}}</span>
+                  <RadioGroup v-model="radioSingle" @on-change="singleChange">
+                      <Radio label="english">英文域名</Radio>
+                      <Radio label="chinese">中文域名</Radio>
+                      <Radio label="administrative">行政域名</Radio>
+                  </RadioGroup>
+                  <div class="addSin">
+                      <p></p>
+                      <span v-for="(item,index) in suffixSingle" :key="(index+3)*2"
+                            style="width:60px;display:inline-block;height: 30px;padding: 7px 0;" @click="addAppend(item)">{{item}}</span>
+                  </div>
               </div>
             </transition>
           </div>
@@ -30,14 +38,21 @@
             </button>
           </div>
           <div class="show" v-show="showValue">
-            <Checkbox v-model="showButton" @on-change="showBtn" :disabled="cancel">所有后缀</Checkbox>
+            <div class="change-top">
+                <RadioGroup v-model="radio" @on-change="radioChange">
+                      <Radio label="english">英文域名</Radio>
+                      <Radio label="chinese">中文域名</Radio>
+                      <Radio label="administrative">行政域名</Radio>
+                  </RadioGroup>
+                <Checkbox v-model="showButton" @on-change="showBtn" :disabled="cancel">所有后缀</Checkbox>
+              </div>
             <CheckboxGroup v-model="singles"
                            style="display: flex;flex-wrap: wrap;justify-content: flex-start;margin-top: 20px;">
-              <Checkbox v-for="(item,index) in suffixChange" :key="index" :label="item" style="width:108px;">{{item}}
+              <Checkbox v-for="(item,index) in suffixChange" :key="(index+2)*5" :label="item" style="width:108px;">{{item}}
               </Checkbox>
             </CheckboxGroup>
           </div>
-          <li v-for="(item,index) in Results" :key="item.name">
+          <li v-for="(item,index) in Results" :key="(index+7)*4">
             <p>
               <Tooltip :content="item.name" placement="top">
                     <span class="dname">{{item.name}}</span>
@@ -99,7 +114,7 @@
                 <button @click="removeAll">全部移除</button>
               </p>
               <ul class="all-data" v-show="buyLists.length!=0">
-                <li v-for="(item,index) in buyLists">
+                <li v-for="(item,index) in buyLists" :key="(index+5)*6">
                     <Tooltip :content="item.domainName" placement="top">
                         <h2>{{item.domainName}}</h2>
                     </Tooltip>
@@ -133,17 +148,7 @@
   import $store from '@/vuex'
   export default{
     beforeRouteEnter(to, from, next){
-      next(vm => {
-        let len = JSON.parse(sessionStorage.getItem("suffix")).length
-        if (len !== 0) {
-          vm.singles = JSON.parse(sessionStorage.getItem("suffix"))
-          vm.append = vm.singles[0]
-        } else {
-          vm.singles = JSON.parse(sessionStorage.getItem('suffixChange')).en
-          vm.showButton = true
-          vm.append = '.com'
-        }
-      })
+      next()
     },
     data(){
       window.scrollTo(0, 0);
@@ -151,7 +156,11 @@
         append: '',
         searchText: sessionStorage.getItem('name'),
         choose: false,
+        showSuffix: [],
+        suffixSingle: [],
         suffixChange: [],
+        radio: 'english',
+        radioSingle: 'english',
         showValue: false,
         singles: [],
         Results: [],
@@ -192,17 +201,50 @@
       },
 
       addAppend(name){
+        this.singles = []
+        this.showButton = false
         this.append = name
         this.singles.unshift(name)
       },
 
+      // 筛选
+      radioChange () {
+        switch (this.radio) {
+          case 'english':
+            this.suffixChange = this.showSuffix.en
+            break;
+          case 'chinese':
+            this.suffixChange = this.showSuffix.cn
+            break;
+          case 'administrative':
+            this.suffixChange = this.showSuffix.xz
+            break;
+        }
+        this.singles = []
+        this.showButton = false
+      },
+      // 单个查询
+      singleChange () {
+        switch (this.radioSingle) {
+          case 'english':
+            this.suffixSingle = this.showSuffix.en
+            break;
+          case 'chinese':
+            this.suffixSingle = this.showSuffix.cn
+            break;
+          case 'administrative':
+            this.suffixSingle = this.showSuffix.xz
+            break;
+        }
+      },
+
       //全选
       showBtn(){
+        this.singles = []
         if (this.showButton) {
           this.singles = this.suffixChange
         } else {
           this.Results = []
-          this.singles = []
         }
       },
 
@@ -349,10 +391,9 @@
         })
       },
       singles(){
-        if (this.singles.length == 0 && this.searchText == '') {
+        if (this.singles.length == 0) {
           this.showFix = false
           this.Results = []
-          return this.$Message.info('请输入您要查找的域名')
         }
         var tids = []
         for (var i = 0; i < this.singles.length; i++) {
@@ -386,12 +427,27 @@
       }
     },
     created(){
-      var arry = (JSON.parse(sessionStorage.getItem('suffixChange'))).en
-      for (var i = 0; i < arry.length; i++) {
-        if (this.suffixChange.indexOf(arry[i]) == -1) {
-          this.suffixChange.push(arry[i])
+      axios.post('domain/getSuffix.do', {}).then(res => {
+        if (res.status == 200 && res.data.status == 1) {
+          this.showSuffix = res.data.data
+          var arry = []
+          for (var key in this.showSuffix) {
+            arry = arry.concat(this.showSuffix[key])
+          }
+         // this.suffixSingle = Array.from(new Set(arry))
+          this.suffixSingle = this.showSuffix.en
+          this.suffixChange = this.showSuffix.en
+          let len = JSON.parse(sessionStorage.getItem("suffix")).length
+          if (len != 0) {
+            this.singles = JSON.parse(sessionStorage.getItem("suffix"))
+            this.append = this.singles[0]
+          } else {
+            this.showButton = true
+            this.append = '.com'
+            this.singles = this.showSuffix.en
+          }
         }
-      }
+      })
     }
   }
 </script>
@@ -421,7 +477,6 @@
           .change {
             margin-top: 1px;
             width: 550px;
-            height: 300px;
             position: absolute;
             top: 36px;
             text-align: left;
@@ -432,14 +487,21 @@
             flex-wrap: wrap;
             justify-content: flex-start;
             z-index: 1000;
-            padding: 18px 42px 17px 30px;
-            span {
-              cursor: pointer;
-              text-align: center;
-              &:hover {
-                background: #F5F5F6;
+            padding: 18px 30px;
+              .addSin {
+                  margin-top: 15px;
+                  border-top: 1px solid #D9D9D9;
+                  p{
+                      height: 10px;
+                  }
+                  span {
+                      cursor: pointer;
+                      text-align: center;
+                      &:hover {
+                          background: #F5F5F6;
+                      }
+                  }
               }
-            }
           }
         }
         button {
@@ -494,6 +556,17 @@
         border: 1px solid rgba(230, 230, 230, 1);
         padding: 20px 20px 40px 20px;
         position: relative;
+        .change-top {
+              padding-bottom: 10px;
+              border-bottom: 1px solid #D9D9D9;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              .ivu-radio-group {
+                font-size: 14px;
+                font-weight:400;
+            }
+          }
         button {
           position: absolute;
           right: 95px;

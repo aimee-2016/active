@@ -522,6 +522,7 @@ var router = new Router({
       name: HMarket.name,
       component: HMarket,
       children: [
+          {path: 'mtest', component: mtest},
           {path: 'market', component: market},
           {path: 'details', component: details},
           {path: 'list', component: list},

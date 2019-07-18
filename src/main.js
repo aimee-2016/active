@@ -48,6 +48,7 @@ axios.defaults.withCredentials = true
 //axios.defaults.baseURL = 'https://www.xrcloud.net/'
 
 
+
 // window.eventBus = new Vue();
 
 //axios挂载到Vue原型
