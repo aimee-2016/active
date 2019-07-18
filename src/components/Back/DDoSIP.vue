@@ -24,7 +24,7 @@
                         <!-- 概览 -->
                        <div v-if="overviewRadio == '概览'">
                            <div>
-                               <Button type="primary">购买套餐</Button>
+                               <Button type="primary" @click="$router.push('buy/ddosip')">购买套餐</Button>
                                <Button type="primary" :disabled='renewDisabled' @click="showModal.meal = true">套餐续费</Button>
                            </div>
                            <div>
@@ -99,7 +99,7 @@
 
                                 <div style="border:1px dashed #999999;padding:20px;border-radius:4px;margin-top:20px;">
                                     <p style="font-size:14px;color:#333333;">清洗流量统计（单位Gbps）</p>
-                                    <chart style="width:100%;" ref="cpu" :options="hightIp"></chart>
+                                    <chart style="width:100%;" id='hightIp' :options="hightIp"></chart>
                                 </div>
                            </div>
                            <div>
@@ -171,7 +171,7 @@
                                         </div> 
                                     </div>
                                     </div>
-                                    <chart style="width:100%;" ref="cpu" :options="flowBtm"></chart>
+                                    <chart style="width:100%;" id='flowBtm'  :options="flowBtm"></chart>
                                 </div>
                             </div>
                             <div class="dp-row">
@@ -183,7 +183,7 @@
                                     <div style='display:flex;'>
                                    
                                     </div>
-                                    <chart style="width:100%;" ref="cpu" :options="hightIpBin"></chart>
+                                    <chart style="width:100%;" id='hightIpBin'  :options="hightIpBin"></chart>
                                 </div>
                             </div>
                            </div>
@@ -196,7 +196,7 @@
                                <div> 
                                    <span>套餐选择</span>
                                     <Select size="small" v-model="ccStatistics.packageid" style="width:231px;" @on-change='domainChange'>
-                                        <Option v-for="(item,index) in setMealList" :value="item.packageid" :key="item.packageid" >{{ item.packageid }}</Option>
+                                        <Option v-for="item in setMealList" :value="item.packageid" :key="item.packageid" >{{ item.packageid }}</Option>
                                     </Select>
                                </div>
                                 <div>
@@ -223,7 +223,7 @@
                                 </div>
                                 <div style="border:1px dashed #999999;padding:20px;border-radius:4px;margin-top:20px;">
                                     <p style="font-size:14px;color:#333333;">CC攻击QPS统计（单位：次）</p>
-                                    <chart style="width:100%;" ref="ccQps" :options="ccQps"></chart>
+                                    <chart style="width:100%;" id='ccQps' ref="ccQps" :options="ccQps"></chart>
                                 </div>
                            </div>
                            <div>
@@ -278,7 +278,7 @@
                                <div> 
                                    <span>套餐选择</span>
                                     <Select size="small" v-model="business.packageId" style="width:231px;" @on-change='domainChange'>
-                                        <Option v-for="(item,index) in setMealList" :value="item.packageid" :key="item.packageid" >{{ item.packageid }}</Option>
+                                        <Option v-for="item in setMealList" :value="item.packageid" :key="item.packageid" >{{ item.packageid }}</Option>
                                     </Select>
                                </div>
                               <div>
@@ -338,7 +338,7 @@
 
                                 <div style="border:1px dashed #999999;padding:20px;border-radius:4px;margin-top:20px;">
                                     <p style="font-size:14px;color:#333333;">带宽流量统计（单位Gbps）</p>
-                                    <chart style="width:100%;" ref="flow" :options="flowOut"></chart>
+                                    <chart style="width:100%;" id='flowOut' :options="flowOut"></chart>
                                 </div>
                            </div>
                            <div>
@@ -353,7 +353,7 @@
                                 </div>
                                <div style="border:1px dashed #999999;padding:20px;border-radius:4px;margin-top:20px;">
                                     <p style="font-size:14px;color:#333333;">请求次数（单位：次）</p>
-                                    <chart style="width:100%;" ref="reque" :options="reque"></chart>
+                                    <chart style="width:100%;" id='reque'  :options="reque"></chart>
                                 </div>
                            </div>
                             <div>
@@ -390,7 +390,7 @@
                                 </div>
                                 <div style="border:1px dashed #999999;padding:20px;border-radius:4px;margin-top:20px;">
                                     <p style="font-size:14px;color:#333333;">并发连接数统计</p>
-                                    <chart style="width:100%;" ref="concurrent" :options="concurrent"></chart>
+                                    <chart style="width:100%;" id='concurrent' :options="concurrent"></chart>
                                 </div>
                            </div>
                        </div>
@@ -794,6 +794,7 @@
     </div>
 </template>
 <script>
+const echarts =  require('echarts/lib/echarts');
 import expandRow from './DDosExpandRow.vue';
 import hightIp from '@/echarts/hightIp';
 import hightIpBs from '@/echarts/hightIpBs';
@@ -1588,6 +1589,7 @@ export default {
                 this.setMeal = this.ccStatistics.packageid = this.business.packageId =  this.attackMeal = this.setMealList[0].packageid;
                 this.domainChange( this.setMeal);
                 this.getProtectCC(this.setMeal,1);
+               
             }else{
                 this.$Message.info(res.data.message);
             }
@@ -1740,6 +1742,7 @@ export default {
     },
 
     QueryRequestNum(){
+        this.echartsLodaing('reque').showLoading();
         this.$http.post('ddosImitationIp/QueryRequestNum.do',{
             packageId:this.business.packageId,
             startdate:this.business.date[0].format('yyyy-MM-dd hh:mm:ss')+'',
@@ -1747,15 +1750,18 @@ export default {
             domains:this.business.domain
         }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
+                this.echartsLodaing('reque').hideLoading();
                 this.reque.xAxis.data = res.data.time;
                 this.reque.series[0].data = res.data.value;
             }else{
+                this.echartsLodaing('reque').hideLoading();
                 this.$Message.info(res.data.message);
             }
         }).catch(err =>{})
     },
 
     QueryConnectionNum(){
+        this.echartsLodaing('concurrent').showLoading(); // echarts加载动画
        this.$http.post('ddosImitationIp/QueryConnectionNum.do',{
             packageId:this.business.packageId,
             startdate:this.business.date[0].format('yyyy-MM-dd hh:mm:ss')+'',
@@ -1763,10 +1769,12 @@ export default {
             domains:this.business.domain
         }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
+                this.echartsLodaing('concurrent').hideLoading();
                 this.concurrent.xAxis.data = res.data.time;
                 this.concurrent.series[0].data = res.data.value;
             }else{
                 this.$Message.info(res.data.message);
+                this.echartsLodaing('concurrent').hideLoading();
             }
         }).catch(err =>{}) 
     },
@@ -1781,6 +1789,7 @@ export default {
 
     //  // ……CC统计图开始……
     QueryCCAttackQPS(){
+        this.echartsLodaing('ccQps').showLoading();
         this.$http.post('ddosImitationIp/QueryCCAttackQPS.do',{
             packageId:this.ccStatistics.packageid,
             startdate:this.ccStatistics.date[0].format('yyyy-MM-dd hh:mm:ss')+'',
@@ -1791,7 +1800,9 @@ export default {
                 this.ccQps.xAxis.data = res.data.time;
                 this.ccQps.series[0].data = res.data.hitdeny;
                 this.ccQps.series[1].data = res.data.hit;
+               this.echartsLodaing('ccQps').hideLoading();
             }else{
+                this.echartsLodaing('ccQps').hideLoading();
                 this.$Messgae.info(res.data.messae);
             }
         })
@@ -2133,6 +2144,7 @@ export default {
      * 防护管理
      */
     getProtectCC(id,page){
+        this.getEmptyLink(id);
         this.$http.get('ddosImitationIp/QueryAlldomain.do',{
             params:{
                 packageId:id,
@@ -2142,7 +2154,6 @@ export default {
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
                 this.ccProtectData = res.data.result;
-                this.getEmptyLink(id);
             }else{
                 this.$Message.info(res.data.message);
             }
@@ -2269,7 +2280,12 @@ export default {
                 this.$Message.info(res.data.message);
             }
          })
-    }
+    },
+
+    echartsLodaing(name){
+        let map =  echarts.init(document.getElementById(name));
+        return map;
+    },
 
   },
   computed:{
