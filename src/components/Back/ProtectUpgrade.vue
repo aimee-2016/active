@@ -42,8 +42,18 @@
         <div class="config-selected">
           <div class="config-group">
             <p class="upgradeInfo">可扩容配置</p>
-            <div class="proConf">
-              <div class="item" v-for="(item, index) in protectList" :class="{'active': item.name == selectItem.name}" :key="(index+2)*31" @click="changeUpgrade(item)">{{item.name}}GB</div>
+            <div class="confBox">
+              <div class="proConf">
+                <div class="item" v-for="(item, index) in protectList" :class="{'active': item.name == selectItem.name}" :key="(index+2)*31" @click="changeUpgrade(item)">{{item.name}}GB</div>
+              </div>
+              <div class="dayAdd" v-show="selectItem.value >= 400">
+                <div class="countmins">
+                  <div class="minusbtn" @click="minusCount"></div>
+                  <input class="countNum" type="text" maxlength="2" disabled v-model="purchDay"/>
+                  <div class="addbtn" @click="addCount"></div>
+                  <div class="depart">天</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -53,11 +63,13 @@
             <table cellpadding="0" cellspacing="0">
               <tr>
                 <td>防护配置</td>
-                <td>{{upgradeProtect}}GB</td>
+                <td><span v-show="selectItem.value">{{selectItem.value}} GB</span></td>
               </tr>
               <tr>
                 <td>防护到期时间</td>
-                <td>{{hostInfo.endTime}}</td>
+                <td><span v-show="changeEndTime && selectItem.value < 400">{{changeEndTime}}</span>
+                <span v-show="selectItem.value >= 400 ">{{selectItem.value}}GB防护到期之后，您的防护将回归至{{hostInfo.ddosProtectNumber}}GB，到期时间为{{changeEndTime}}</span>
+                </td>
               </tr>
             </table>
             <div class="price">
@@ -104,7 +116,9 @@
         ],
         selectItem: {},
         interfacePrice: 0,
-        backData: {}
+        backData: {},
+        purchDay: 1,
+        changeEndTime: ''
       }
     },
     created() {
@@ -130,11 +144,14 @@
         axios.get('ddosImitationhost/UpDdosHostPrice.do', {
           params: {
             computerId: this.backData.id,
-            ddosProtectNumber: this.selectItem.value
+            ddosProtectNumber: this.selectItem.value,
+            timeType: this.selectItem.value >= 400 ? 'day': 'month',
+            timeValue: this.selectItem.value >= 400 ? this.purchDay : ''
           }
         }).then(response => {
           if(response.status == 200 && response.data.status == 1){
-            this.interfacePrice = response.data.result
+            this.interfacePrice = response.data.price
+            this.changeEndTime = response.data.endTime
           }
         })
       },
@@ -155,72 +172,30 @@
             }
           })
         }
-        /* if (this.cpuMemoryCost != 0 && this.rootDiskCost == 0) {
-          this.$http.get('information/UpVMConfig.do', {
-            params: {
-              cpunum: this.endCPU,
-              memory: this.endMemory,
-              VMId: this.computerId
-            }
-          }).then(response => {
-            if (response.status == 200 && response.data.status == 1) {
-              this.$Message.success('订单提交成功')
-              this.$router.push('order')
-            } else {
-              this.$Message.info(response.data.message)
-            }
-          })
-        } else if (this.cpuMemoryCost == 0 && this.rootDiskCost != 0) {
-          this.$http.get('information/resizeRootVolume.do', {
-            params: {
-              computerId: this.computerId,
-              roodDiskId: this.hostInfo.rootDiskId,
-              rootDiskSize: this.systemDiskSize
-            }
-          }).then(response => {
-            if (response.status == 200 && response.data.status == 1) {
-              this.$Message.success('订单提交成功')
-              this.$router.push('order')
-            } else {
-              this.$Message.info(response.data.message)
-            }
-          })
-        } else if (this.cpuMemoryCost != 0 && this.rootDiskCost != 0) {
-          let countOrder = uuid.v4()
-          let cpuMemoryRsp = this.$http.get('information/UpVMConfig.do', {
-            params: {
-              cpunum: this.endCPU,
-              memory: this.endMemory,
-              VMId: this.computerId,
-              countOrder
-            }
-          })
-          var systemDiskRsp = this.$http.get('information/resizeRootVolume.do', {
-            params: {
-              computerId: this.computerId,
-              roodDiskId: this.hostInfo.rootDiskId,
-              rootDiskSize: this.systemDiskSize,
-              countOrder
-            }
-          })
-
-          Promise.all([cpuMemoryRsp, systemDiskRsp]).then(res => {
-            if (res[0].status == 200 && res[0].data.status == 1 && res[1].status == 200 && res[1].data.status == 1) {
-              this.$Message.success('订单提交成功')
-              this.$router.push({
-                path: '/order', query: {
-                  countOrder
-                }
-              })
-            }
-          })
-        } */
       },
       changeUpgrade(item) {
         if(this.hostInfo.ddosProtectNumber<item.value){
           this.selectItem = item
         } else {
           this.$Message.info('请选择比当前防护配置大的配置')
+        }
+      },
+      // 购买天数 - 
+      minusCount() {
+        let tempCountminus = this.purchDay - 1
+        if(tempCountminus < 1){
+          this.$Message.info('防护叠加天数不能小于1天');
+        } else {
+          this.purchDay = tempCountminus
+        }
+      },
+      // 购买天数 + 
+      addCount() {
+        let tempAddCount = this.purchDay + 1
+        if(this.selectItem.value >= 400 && (new Date(this.changeEndTime) <= new Data(this.hostInfo.ddosProtectNumber))) {
+          this.$Message.info('扩容配置大于等于400GB时，天数选择不能大于防护到期时间');
+        }else {
+          this.purchDay = tempAddCount
         }
       }
     },
@@ -229,8 +204,9 @@
         return this.$store.state.authInfo != null
       },
       upgradeProtect() {
+        // 是扩容到某个配置上，计算不用相加
         if(this.selectItem.value){
-          return this.selectItem.value + this.hostInfo.ddosProtectNumber
+          return this.selectItem.value
         } else {
           return this.hostInfo.ddosProtectNumber
         }
@@ -332,34 +308,148 @@
         color:rgba(51,51,51,1);
         line-height: 24px;
       }
-      .proConf {
-        width: 100%;
-        height: auto;
-        zoom: 1;
-        &:before {
-          content: "";
-          display: table;
-        }
-        &:after {
-          content: "";
-          display: table;
-          clear: both;
-        }
-        .item {
+      .confBox{
+        .proConf {
           float: left;
-          width: 80px;
-          height: 35px;
-          background:rgba(255,255,255,1);
-          border: 1px solid rgba(229,233,237,1);
-          border-radius:2px 0px 0px 2px;
-          text-align: center;
-          line-height: 34px;
-          color: #333333;
-          cursor: pointer;
-          &.active {
-            border-color: #2A99F2!important;
-            background:rgba(237,247,255,1)!important;
-            color: #2A99F2!important;
+          width: auto;
+          height: auto;
+          zoom: 1;
+          &:before {
+            content: "";
+            display: table;
+          }
+          &:after {
+            content: "";
+            display: table;
+            clear: both;
+          }
+          .item {
+            float: left;
+            width: 80px;
+            height: 35px;
+            background:rgba(255,255,255,1);
+            border: 1px solid rgba(229,233,237,1);
+            border-radius:2px 0px 0px 2px;
+            text-align: center;
+            line-height: 34px;
+            color: #333333;
+            cursor: pointer;
+            &.active {
+              border-color: #2A99F2!important;
+              background:rgba(237,247,255,1)!important;
+              color: #2A99F2!important;
+            }
+          }
+        }
+        .dayAdd {
+          float: left;
+          margin-left: 20px;
+          .countmins {
+            width: auto;
+            height: auto;
+            zoom: 1;
+            &::before {
+              content: "";
+              display: table;
+            }
+            &::after {
+              content: "";
+              display: table;
+              clear: both;
+            }
+            .minusbtn {
+              float: left;
+              position: relative;
+              display: block;
+              width:38px;
+              height:35px;
+              cursor: pointer;
+              background:rgba(247,249,250,1);
+              border-radius: 2px 0px 0px 2px;
+              border:1px solid rgba(229,233,237,1);
+              cursor: pointer;
+              &:hover {
+                &::before{
+                  background: #2A99F2;
+                }
+              }
+              &::before {
+                position: absolute;
+                content: "";
+                top: 50%;
+                left: 50%;
+                margin-top: -1px;
+                margin-left: -7px;
+                width: 15px;
+                height: 2px;
+                background: #999999;
+              }
+            }
+            .countNum {
+              float: left;
+              margin-left: -2px;
+              display: block;
+              width: 60px;
+              height: 35px;
+              background:rgba(255,255,255,1);
+              border: none;
+              outline: none;
+              border-top: 1px solid rgba(229,233,237,1);
+              border-bottom: 1px solid rgba(229,233,237,1);
+              line-height: .35rem;
+              text-align: center;
+              font-size: 14px;
+              color:rgba(51,51,51,1);
+            }
+            .addbtn {
+              float: left;
+              position: relative;
+              width:38px;
+              height:35px;
+              cursor: pointer;
+              background:rgba(247,249,250,1);
+              border-radius:2px 0px 0px 2px;
+              border:1px solid rgba(229,233,237,1);
+              cursor: pointer;
+              &:hover {
+                &::before{
+                  background: #2A99F2;
+                }
+                &::after{
+                  background: #2A99F2;
+                }
+              }
+              &::before {
+                position: absolute;
+                content: "";
+                top: 50%;
+                left: 50%;
+                margin-top: -1px;
+                margin-left: -7px;
+                width: 15px;
+                height: 2px;
+                background: #999999;
+              }
+              &::after {
+                position: absolute;
+                content: "";
+                top: 50%;
+                left: 50%;
+                margin-top: -7px;
+                margin-left: -1px;
+                width: 2px;
+                height: 15px;
+                background: #999999;
+              }
+            }
+            .depart {
+              float: left;
+              margin-left: 13px;
+              display: block;
+              font-size: 14px;
+              color:rgba(51,51,51,1);
+              line-height: 34px;
+            }
           }
         }
       }
@@ -407,7 +497,10 @@
             line-height: 20px;
             &:last-child {
               padding-left: 10px;
-              color: #FF624B;
+              color: #666666;
+              span{
+                color: #FF624B;
+              }
             }
           }
         }
@@ -420,6 +513,7 @@
       .price {
         margin-top: 20px;
         padding-top: 20px;
+        padding-bottom: 20px;
         border-top: 1px solid rgba(233, 233, 233, 1);
         > a {
           font-size: 12px;

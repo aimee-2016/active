@@ -601,7 +601,9 @@
         let title = '云服务器'
         // 判断新老用户
         axios.get('activity/jdugeTeam.do', {
-          params: {sign: 'freeReceive'}
+          params: {
+            sign: 'freeReceive',
+            vmConfigId: this.currentSceneGroup.configGroup[this.index1].id}
         }).then(response => {
           if (response.status == 200 && response.data.status == 1) {
             if (response.data.result.flag) {

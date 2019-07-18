@@ -50,7 +50,7 @@
                     <div class="item-wrapper" style="width:77%;margin-top:0;">
                             <div v-for="(item,index) in mealList" :key="index" class="timeType"
                                 :class="{zoneSelect:bandwidths.bandwidthIndex==item.ddosprotectnumber}"
-                                @click="bandwidths.bandwidthIndex=item.ddosprotectnumber;"
+                                @click="bandwidths.bandwidthIndex=item.ddosprotectnumber;queryElasticbandprice()"
                             :style="item.ddosprotectnumber == 60 ||  item.ddosprotectnumber == 300 ?'border-right:1px solid #d9d9d9;':''">
                                 {{item.ddosprotectnumber+'GB'}}
                                 <!-- <span v-if="item.type=='year'" class="discount-icon">惠</span> -->
@@ -62,14 +62,14 @@
             <div class="b-meal">
                 <div class="bm-rg">端口数</div>
                <div>
-                   <InputNumber v-model="port" :step='1' :min='1' :editable="false"></InputNumber><span style="margin-left:5px;color:#999">个</span>
+                   <InputNumber v-model="port" :step='1' :min='50' :editable="false"  @on-change='changeTime'></InputNumber><span style="margin-left:5px;color:#999">个</span>
                    <p class="bm-fn">50个以上，每增加一个，增加200元/个/月</p>
                 </div>
              </div>
              <div class="b-meal">
                 <div class="bm-rg">域名防护数</div>
                <div>
-                   <InputNumber v-model="domainCount" :step='1' :min='1' :editable="false"></InputNumber><span style="margin-left:5px;color:#999">个</span>
+                   <InputNumber v-model="domainCount"  :step='1' :min='100' :editable="false"  @on-change='changeTime'></InputNumber><span style="margin-left:5px;color:#999">个</span>
                    <p class="bm-fn">100个以上，每增加一个，增加200元/个/月</p>
                 </div>
              </div>
@@ -83,7 +83,6 @@
                         :max=400
                         :step=1
                         :points="[50,100,150,200,300]"
-                        @on-change='queryPackagePrice'
                         style="margin-right:30px;vertical-align: middle;">
                     </i-slider>
                     <InputNumber :max="400" :min="1" v-model="bandWidth" size="large"
@@ -93,7 +92,7 @@
              <div class="b-meal">
                 <div class="bm-rg">价格</div>
                 <div class="bm-price">
-                    300元/月
+                    {{price}}元/月
                 </div>
              </div>
               <h2 style="margin-bottom:20px;">购买量</h2>
@@ -109,37 +108,39 @@
               <div class="b-meal">
                 <div class="bm-rg">购买数量</div>
                <div>
-                   <InputNumber v-model="port" :step='1' :min='1' :editable="false"></InputNumber><span style="margin-left:5px;color:#999">个</span>
+                   <InputNumber @on-change='changeTime' v-model="buyNumber" :step='1' :min='1' :max='10' :editable="false"></InputNumber><span style="margin-left:5px;color:#999">个</span>
                 </div>
              </div>
              <div class="b-meal">
                 <div class="bm-rg">价格</div>
                 <div class="bm-price">
-                    300元/月
+                    {{price}}元/月
                 </div>
              </div>
-               <!-- <div style="margin-top: 20px"> -->
-                <!--<p style="text-align: left;font-size: 14px;color: #2A99F2;cursor: pointer"
-                  @click="$router.push('computed/3-1')">查看计价详情</p>-->
-                <!-- <p style="text-align: right;font-size: 14px;color: #666666;margin-bottom: 10px;">
-                  <span v-if="timeForm.currentTimeType == 'annual'&&timeForm.currentTimeValue.type == 'year'">折后费用：</span><span v-else>费用：</span><span style="font-size: 24px;color: #EE6723;">{{dataDiskCost.toFixed(2)}}元</span><span
+         </div>
+            
+      </div>
+      <div style="margin-top: 20px">
+                <p style="text-align: left;font-size: 14px;color: #2A99F2;cursor: pointer"
+                  @click="$router.push('computed/3-1')">查看计价详情</p>
+                <p style="text-align: right;font-size: 14px;color: #666666;margin-bottom: 10px;">
+                   <!-- <span v-if="timeForm.currentTimeType == 'annual'&&timeForm.currentTimeValue.type == 'year'">折后费用：</span> -->
+                 <span >费用：</span><span style="font-size: 24px;color: #EE6723;">{{price.toFixed(2)}}元</span><span
                   v-show="timeForm.currentTimeType == 'current'">/小时</span>
                 </p>
-                <p style="text-align: right;font-size: 14px;color: #666666;" v-if="coupon!=0">已省：<span
-                  style="font-size: 14px;color: #EE6723;">{{coupon.toFixed(2)}}元</span></p>
+                <!-- <p style="text-align: right;font-size: 14px;color: #666666;" v-if="coupon!=0">已省：<span
+                  style="font-size: 14px;color: #EE6723;">{{coupon.toFixed(2)}}元</span></p> -->
                 <div style="text-align: right;margin-top: 20px;">
                   <Button size="large"
-                          class="btn" @click="addDiskCart">
+                          class="btn" @click="addIPCart">
                     加入预算清单
                   </Button>
-                  <Button @click="buyDisk" type="primary"
+                  <Button  type="primary" @click="buyIp"
                           style="border-radius: 10px;width: 128px;height: 39px;font-size: 16px;color: #FFFFFF;background-color: #377DFF;border: 1px solid #377DFF;">
                     立即购买
                   </Button>
                 </div>
-              </div> -->
-         </div>
-      </div>
+              </div>
     </div>
       <!-- 当前区域没有主机提示 -->
     <!-- <Modal v-model="showModal.withoutHost" :scrollable="true" :closable="false" :width="390">
@@ -233,7 +234,7 @@
           currentTimeType: 'annual',
           currentTimeValue: {label: '1月', value: '1', type: 'month'}
         },
-
+        buyNumber:1,
         
         // 带宽大小
         bandWidth: 1,
@@ -247,7 +248,9 @@
         },
         selectList:{},
         elasticIpPrice:0,
-        businessPrice:0
+        businessPrice:0,
+        protPirce:0,
+        wisetPrice:0
       }
     },
     created(){
@@ -264,9 +267,10 @@
         }).then(res => {
           if(res.status == 200 && res.data.status ==1){
             this.mealList = res.data.result;
-            this.zoneChange(res.data.result[0].ddosprotectnumber,1);
+            this.zoneChange(res.data.result[0].ddosprotectnumber,0);
             this.queryElasticbandprice();
-             this.queryPackagePrice();
+            this.queryPackagePrice();
+            this.changeTime();
           }else{
             this.$Message.info(res.data.message);
           }
@@ -280,8 +284,9 @@
             elasticband:this.bandwidths.bandwidthIndex,
             packageName:this.selectList.packagename,
             zoneId:this.selectList.zoneid,
-            timeVlue:'1',
-            count:'1'
+            // timeVlue:this.timeForm.currentTimeValue.value,
+            // timeType: this.timeForm.currentTimeType == 'annual' ? this.timeForm.currentTimeValue.type : 'current',
+            count:this.buyNumber
           }
         }).then(res =>{
           if(res.status == 200 && res.data.status == 1){
@@ -293,15 +298,13 @@
       },
 
       // 查询业务带宽价格
-      queryPackagePrice(){
-        console.log(this.selectList);
+      queryPackagePrice: debounce(500, function (){
         axios.get('ddosImitationIp/packagePrice.do',{
           params:{
             elasticband:this.bandWidth,
             zoneId:this.selectList.zoneid,
             packagename:this.selectList.packagename,
-            timeVlue:'1',
-            count:'1'
+            count:this.buyNumber
           }
         }).then(res =>{
           if(res.status == 200 && res.data.status == 1){
@@ -310,6 +313,26 @@
             this.$Message.info(res.data.message);
           }
         }).catch(err =>{})
+      }),
+
+      changeTime(){
+       axios.get('ddosImitationIp/packageprice.do',{
+         params:{
+          packageName:this.selectList.packagename,
+          zoneId:this.selectList.zoneid,
+          count:this.buyNumber,
+          port:this.port,
+          timeVlue:this.timeForm.currentTimeValue.value,
+          timeType: this.timeForm.currentTimeType == 'annual' ? this.timeForm.currentTimeValue.type : 'current',
+          website:this.domainCount,
+         }
+       }).then(res => {
+         if(res.status == 200 && res.data.status == 1){
+           this.protPirce = res.data.price;
+         }else{
+           this.$Message.info(res.data.message);
+         }
+       }).catch(err =>{})
       },
 
       // 公网IP加入购物车
@@ -326,15 +349,22 @@
           })
         }
         let prod = {
-          typeName: '公网IP',
-          type: 'Peip',
-          zone: this.zone,
+          typeName: 'DDoS高防IP',
+          type: 'Pddosip',
+          zone: this.selectList.zoneid,
+          line:this.selectList.zonename,
           timeForm: this.timeForm,
           bandWidth: this.bandWidth,
           autoRenewal: this.autoRenewal,
-          vpc: this.vpc,
-          cost: this.cost,
-          count: 1
+          cost: this.price,
+           packageName:this.selectList.packagename,
+            elasticband:this.bandwidths.bandwidthIndex,
+            port:this.port,
+            website:this.domainCount,
+            serviceband:this.bandWidth,
+            count:this.buyNumber,
+            isAutoRenew:'1',
+            ddosProtectNumber:this.selectList.ddosProtectNumber
         }
         this.$parent.cart.push(JSON.parse(JSON.stringify(prod)))
       },
@@ -364,9 +394,35 @@
          this.bandwidths.bandwidthList = this.mealList[index];
          this.bandwidths.bandwidthIndex = item;
          this.port = this.mealList[index].porttransnumber;
-         this.domainCount = this.mealList[index].domainnumber;
+         this.domainCount =  this.mealList[index].domainnumber;
          this.bandWidth = this.mealList[index].bandwith;
         // }
+      },
+
+      buyIp(){
+        axios.get('ddosImitationIp/creatDdosIP.do',{
+          params:{
+            packageName:this.selectList.packagename,
+            elasticband:this.bandwidths.bandwidthIndex,
+            port:this.port,
+            website:this.domainCount,
+            serviceband:this.bandWidth,
+            count:this.buyNumber,
+            timeVlue:this.timeForm.currentTimeValue.value,
+            timeType: this.timeForm.currentTimeType == 'annual' ? this.timeForm.currentTimeValue.type : 'current',
+            zoneId:this.selectList.zoneid,
+            cost:this.price,
+            isAutoRenew:'1'
+          }
+        }).then(res => {
+          if(res.status == 200 && res.data.status ==1){
+             this.$router.push('/order')
+          }else{
+             this.$message.info({
+              content: res.data.message
+            })
+          }
+        }).catch(err =>{})
       },
       test(){
         
@@ -377,25 +433,25 @@
         return this.$store.state.userInfo
       },
       price(){
-        return this.elasticIpPrice;
+        return this.elasticIpPrice +  this.businessPrice + this.protPirce;
       }
     },
     watch: {
       'zone': {
         handler(){
-          this.queryVpc()
+           this.changeTime()
         },
         deep: true
       },
       'timeForm': {
         handler(){
-          this.queryIPPrice()
+          this.changeTime()
         },
         deep: true
       },
-      'bandwidths.bandwidthIndex': {
-        handler(){
-          this.queryElasticbandprice();
+      'bandWidth':{
+          handler(){
+          this.queryPackagePrice()
         },
         deep: true
       }

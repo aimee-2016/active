@@ -272,21 +272,21 @@
                     style: {
                       color: '#EE4545'
                     }
-                  }, '正常')
+                  }, '异常')
                 case 2:
                   return h('div', {}, [h('Spin', {
                     style: {
                       display: 'inline-block',
                       marginRight: '10px'
                     }
-                  }), h('span', {}, '删除中')])
+                  }), h('span', {}, '创建中')])
                 case 3:
                   return h('div', {}, [h('Spin', {
                     style: {
                       display: 'inline-block',
                       marginRight: '10px'
                     }
-                  }), h('span', {}, '创建中')])
+                  }), h('span', {}, '删除中')])
               }
             }
           },
@@ -301,24 +301,24 @@
               return h('span', {}, text)
             }
           },
-          {
-            title: '备份间隔',
-            render: (h, params) => {
-              var text = '----'
-              switch (params.row.createway) {
-                case 'day':
-                  text = '每天'
-                  break
-                case 'week':
-                  text = '每周'
-                  break
-                case 'month':
-                  text = '每月'
-                  break
-              }
-              return h('span', {}, text)
-            }
-          },
+          // {
+          //   title: '备份间隔',
+          //   render: (h, params) => {
+          //     var text = '----'
+          //     switch (params.row.createway) {
+          //       case 'day':
+          //         text = '每天'
+          //         break
+          //       case 'week':
+          //         text = '每周'
+          //         break
+          //       case 'month':
+          //         text = '每月'
+          //         break
+          //     }
+          //     return h('span', {}, text)
+          //   }
+          // },
           {
             title: '创建时间',
             key: 'addtime',
@@ -429,6 +429,7 @@
         diskSizeExpenses: '',
         /* 单项磁盘备份选中值 */
         diskBackupsSelection: null,
+        diskBackupTimer: null
       }
     },
     created(){
@@ -603,6 +604,7 @@
       },
       /* 列出磁盘备份 */
       listDiskSnapshots () {
+        this.diskBackupTimer = setInterval(()=>{
         this.$http.get('Snapshot/listDiskSnapshots.do',{
           params: {
             pageSize: 10,
@@ -613,19 +615,26 @@
           if (response.status == 200 && response.data.status == 1) {
             this.diskBackupsData = response.data.result
             this.diskBackupsTotal = response.data.total
+            let flag = this.diskBackupsData.some(item => {
+                return  item.status == 2 || item.status == 3
+              }) // 操作的备份中是否有过渡状态，没有就清除定时器，取消刷新
+             if (!flag) {
+               clearInterval(this.diskBackupTimer)
+             }  
           } else {
             this.$message.info({
               content: response.data.message
             })
           }
         })
+        }, 1000)
       },
       /* 确认创建磁盘备份 */
       createDiskBackup_ok() {
         this.showModal.createDiskBackup = false
         var diskBackup = {
           snapshotname: this.createBackupsForm.backupsName,
-          status: 3,
+          status: 2,
         }
         this.diskBackupsData.push(diskBackup)
         this.$http.get('Snapshot/createDiskSnapshot.do',{
@@ -691,6 +700,11 @@
           }
         })
       }
+    },
+    beforeRouteLeave(to, from, next) {
+      // 导航离开该组件的对应路由时调用
+      clearInterval(this.diskBackupTimer)
+      next()
     },
     computed: {
       /* 磁盘信息数据转文字 */

@@ -1128,6 +1128,7 @@
             this.mirrorModifyForm.consolePassword = ''
             this.$Message.success('系统重装成功')
             this.getHostInfo()
+            this.$router.push('host')
           } else {
             this.mirrorModifyForm.buttonText = '确认重装'
             this.$message.info({
@@ -1349,6 +1350,7 @@
                 if (response.status == 200 && response.data.status == 1) {
                   this.$Message.info(response.data.message)
                   this.bindForm.bindIpText = '绑定中'
+                  this.$router.push('host')
                 } else {
                   this.$message.info({
                     content: response.data.message
@@ -1376,6 +1378,7 @@
           if (response.status == 200 && response.data.status == 1) {
             this.$Message.info(response.data.message)
             this.bindForm.unbindText = '解绑中'
+            this.$router.push('host')
           } else {
             this.$message.info({
               content: response.data.message
