@@ -1329,6 +1329,7 @@
                                 }else {
                                   this.showModal.mirror  = true;
                                   this.mirrorValidate.rootdiskid = params.row.rootdiskid;
+                                  this.hostSelectList = params.row;
                                 }
                               }else{
                               this.$Message.info('制作镜像前请先关闭主机');

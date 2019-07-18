@@ -15,9 +15,9 @@
             <p class="o-fm" v-if="routerName == '系统盘扩容'">若您购买了额外的系统盘，默认为未分区状态，需要自行扩容文件系统之后使用。<a class="blue_font" href="/support_docs/kiRWuMFJd_14u6nDwUP8.html" target="_blank">查看如何扩容windows文件系统、</a><a class="blue_font" href="/support_docs/kiRWuMFJd_14usXqMEji.html" target="_blank">扩容Linux文件系统</a></p>
           </div>
         </div>
-        <div class="order_text" v-if="routerName == '防护升级' || routerName == 'DDoS高防云服务器'">
+        <div class="order_text" v-if="routerName == '防护扩容' || routerName == 'DDoS高防云服务器'">
           <div>
-            <p v-if="routerName == '防护升级' || routerName == 'DDoS高防云服务器'">提示：购买完成之后，需等待30分钟完成升级配置，升级套餐生效时间以服务短信通知为准</p>
+            <p>提示：购买完成之后，需等待30分钟完成升级配置，升级套餐生效时间以服务短信通知为准</p>
           </div>
         </div>
         <div class="selectMark">
@@ -889,7 +889,7 @@ export default {
       } else if (this.goodType == 22) {
         return "SSL证书购买";
       } else if (this.goodType == 25) {
-        return "防护升级";
+        return "防护扩容";
       } else if (this.goodType == 26){
         return "DDoS高防云服务器"
       }

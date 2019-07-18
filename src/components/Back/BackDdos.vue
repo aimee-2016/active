@@ -65,7 +65,6 @@
                 </Tooltip>
               </Dropdown-item>
               <Dropdown-item name="protectionUpgrade" :disabled="protectionUpgrade">防护扩容</Dropdown-item>
-              <!-- <Dropdown-item name="protectiveOverlay" :disabled="protectiveOverlay">防护叠加</Dropdown-item> -->
             </Dropdown-menu>
           </Dropdown>
         </div>
@@ -907,7 +906,7 @@
             width: 100,
             render: (h, params) => {
               let text_l1 = params.row.ddosprotectnumber ? params.row.ddosprotectnumber + 'GB' : '----'
-              let text_l2 = params.row.UpddosProtectNumber ? params.row.UpddosProtectNumber + 'GB' : ''
+              let text_l2 = params.row.UpddosProtectNumber != 0 ? params.row.UpddosProtectNumber + 'GB' : ''
               return h('ul', {}, [
                 h('li', {}, text_l1),
                 h('li', {
@@ -1130,13 +1129,6 @@
                                   this.renameForm.hostName = ''
                                   this.showModal.rename = true
                                   break
-                                case 'ratesChange':
-                                  if (this.hostCurrentSelected.caseType == 3) {
-                                    this.ratesChange()
-                                  } else {
-                                    this.$Message.info('资费变更只适用于实时计费的资源')
-                                  }
-                                  break
                                 case 'hostRenew':
                                   this.renewHost(this.hostCurrentSelected)
                                   break
@@ -1161,6 +1153,9 @@
                                   break
                                 case 'deleteHost':
                                   this.hostDelete(2)
+                                  break
+                                case 'protectUpgrade':
+                                  this.toProtectUpgradePage()
                                   break
                               }
                             }
@@ -1193,11 +1188,6 @@
                           }, '重命名'),
                           h('DropdownItem', {
                             attrs: {
-                              name: 'ratesChange'
-                            }
-                          }, '资费变更'),
-                          h('DropdownItem', {
-                            attrs: {
                               name: 'hostRenew'
                             }
                           }, '主机续费'),
@@ -1206,6 +1196,11 @@
                               name: 'makeSnapshot'
                             }
                           }, '制作快照'),
+                          h('DropdownItem', {
+                            attrs: {
+                              name: 'protectUpgrade'
+                            }
+                          }, '主机扩容'),
                           h('DropdownItem', {
                             attrs: {
                               name: 'shutdown'
@@ -1324,6 +1319,12 @@
                                 case 'deleteHost':
                                   this.hostDelete(2)
                                   break
+                                case 'upgrade':
+                                  this.toHostUpgrad()
+                                  break
+                                case 'protectUpgrade': 
+                                  this.toProtectUpgradePage()
+                                  break;
                               }
                             }
                           }
@@ -1382,6 +1383,16 @@
                               name: 'makeMirror'
                             }
                           }, '制作镜像'),
+                          h('DropdownItem', {
+                            attrs: {
+                              name: 'upgrade'
+                            }
+                          }, '主机升级'),
+                          h('DropdownItem', {
+                            attrs: {
+                              name: 'protectUpgrade'
+                            }
+                          }, '主机扩容'),
                           h('DropdownItem', {
                             attrs: {
                               name: 'startingUp'
@@ -1639,18 +1650,6 @@
                 this.$router.push('protectUpgrade')
               }
               break
-            /* case 'protectiveOverlay':
-              if (this.hostCurrentSelected.status == 1) {
-                // 叠加
-                if (this.hostCurrentSelected.UpddosProtectNumber) {
-                  this.$Message.info('您已叠加过防护，请在叠加到期时间('+this.hostCurrentSelected.ddosendTime+')后再叠加!');
-                } else {
-                  let protectTemp1 = {computerId: this.hostCurrentSelected.computerid, id: this.hostCurrentSelected.id}
-                  sessionStorage.setItem('ProtectUpgrade', JSON.stringify(protectTemp1))
-                  this.$router.push('protectOverlay')
-                }
-              }
-              break */
           }
         } else {
           if (this.hostSelection.length > 5) {
@@ -1890,6 +1889,40 @@
           this.showModal.delHost = true
         } else {
           this.showModal.delHost = true
+        }
+      },
+      toHostUpgrad() {
+        if (this.hostCurrentSelected.status == 1 && this.hostCurrentSelected.computerstate == 0) {
+          this.$http.get('network/VMIsHaveSnapshot.do', {
+            params: {
+              VMId: this.hostCurrentSelected.computerid
+            }
+          }).then(response => {
+            if (response.status == 200 && response.data.status == 1) {
+              if (!response.data.result) {
+                this.$Modal.confirm({
+                  title: '提示',
+                  content: '您的主机有快照，无法升级，请删除快照再试',
+                  scrollable: true,
+                  okText: '删除快照',
+                  onOk: () => {
+                    this.$router.push('snapshot')
+                  }
+                })
+              } else {
+                sessionStorage.setItem('upgradeId', this.hostCurrentSelected.computerid)
+                this.$router.push('upgrade')
+              }
+            }
+          })
+        }
+      },
+      toProtectUpgradePage() {
+        if (this.hostCurrentSelected.status == 1) {
+          // 主机正常才能进行防护扩容
+          let protectTemp = {computerId: this.hostCurrentSelected.computerid, id: this.hostCurrentSelected.id}
+          sessionStorage.setItem('ProtectUpgrade', JSON.stringify(protectTemp))
+          this.$router.push('protectUpgrade')
         }
       },
       delHostOkBefore(){
@@ -2884,16 +2917,7 @@
           return this.hostSelection[0].status != 1
         }
         // return false
-      } /* ,
-      protectiveOverlay() {
-        let len = this.hostSelection.length
-        if (len !== 1) {
-          return true
-        } else {
-          return this.hostSelection[0].status != 1
-        }
-        // return false
-      }*/
+      }
     },
     watch: {
       renewalType(type) {

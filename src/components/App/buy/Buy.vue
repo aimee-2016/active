@@ -33,7 +33,7 @@
               </div>
               <div style="padding-top:20px">
                 <!--公共展示区-->
-                <div class="public" v-if="prod.type!='Pssl'">
+                <div class="public" v-if="prod.type!='Pssl' || prod.type !='Pddosip'">
                   <p class="item"><span class="hidden">$</span><span class="title">区域</span><span
                     class="hidden">#</span>{{prod.zone.zonename}}
                   </p>
@@ -149,6 +149,34 @@
                   <p class="item">
                     <span class="hidden">$</span><span class="title">防护大小</span><span
                     class="hidden">#</span>{{prod.ddosProtectNumber}}GB
+                  </p>
+                </div>
+                 <div v-if="prod.type=='Pddosip'">
+                  <p class="item">
+                    <span class="hidden">$</span><span class="title">套餐类型</span><span
+                    class="hidden">#</span>{{prod.packageName}}GB
+                  </p>
+                  <p class="item">
+                    <span class="hidden">$</span><span class="title">线路</span><span
+                    class="hidden">#</span>{{prod.line}}
+                  </p>
+                  <p class="item">
+                    <span class="hidden">$</span><span class="title">端口数</span><span
+                    class="hidden">#</span>{{prod.port}}
+                  </p>
+                  <p class="item">
+                    <span class="hidden">$</span><span class="title">业务带宽</span><span
+                    class="hidden">#</span>{{prod.bandWidth}}M
+                  </p>
+                  <p class="item">
+                    <span class="hidden"></span>
+                      <span class="title">购买数量</span>
+                      <span class="hidden"></span>{{prod.count}}
+                  </p>
+                  <p class="item">
+                    <span class="hidden"></span>
+                    <span class="title">购买时长</span>
+                    <span class="hidden"></span>{{prod.timeForm.currentTimeValue.label}}
                   </p>
                 </div>
                 <!--ssl证书清单字段-->
@@ -326,8 +354,8 @@
             {label: '对象存储', value: 'objectstorage/'},
             {label: 'GPU服务器', value: 'gpu/'},
             {label: 'SSL证书', value: 'ssl/'},
-            // {label: 'DDoS高防主机', value: 'ddos/'},
-            // {label: 'DDoS高防IP套餐', value: 'ddosip/'}
+            {label: 'DDoS高防主机', value: 'ddos/'},
+            {label: 'DDoS高防IP套餐', value: 'ddosip/'}
           ]
         },
         // 当前可以创建的剩余资源数
@@ -596,6 +624,21 @@
               countOrder
             }
             PromiseList.push(axios.post('ruiradosPrice/createOrder.do', params))
+          } else if(prod.type == 'ddosip') { 
+            let params = {
+              packageName:prod.packagename,
+              elasticband:prod.bandwidthIndex,
+              port:prod.port,
+              website:prod.domainCount,
+              serviceband:prod.bandWidth,
+              count:prod.buyNumber,
+              timeVlue:prod.timeForm.currentTimeValue.value,
+              timeType: prod.timeForm.currentTimeType == 'annual' ? this.timeForm.currentTimeValue.type : 'current',
+              zoneId:prod.selectList.zoneid,
+              cost:prod.price,
+              isAutoRenew:'1'
+            }
+              PromiseList.push(axios.get('ddosImitationIp/creatDdosIP.do', {params}))
           } else if (prod.type == 'PDdosHost') { // 高防主机Ddos
             var params = {
               zoneId: prod.zone.zoneid,

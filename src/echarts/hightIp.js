@@ -3,6 +3,13 @@ export default {
   
     tooltip: {
     trigger: 'axis',
+    backgroundColor:'rgba(255,255,255,1)',
+    padding:10,
+    textStyle:{
+        color:'#333333',
+        fontFamily:'MicrosoftYaHei',
+        fontSize:'12'
+    },
        axisPointer: {
          type: 'line',
          lineStyle: {
@@ -17,8 +24,8 @@ export default {
         bottom: 0,
         icon: 'circle',
         padding: [20, 0, 0, 0],
-        itemWidth: 100,
-        itemHeight: 20
+        // itemWidth: 100,
+        // itemHeight: 20
     },
    grid: {
        left: '3%',
@@ -27,9 +34,6 @@ export default {
        containLabel: true,
    },
    toolbox: {
-       feature: {
-           saveAsImage: {}
-       }
    },
    xAxis: {
        type: 'category',
@@ -41,50 +45,51 @@ export default {
    },
    series: [
        {
-           name: '正常业务流量',
+           name: '已清洗流量',
            type: 'line',
            stack: '总量',
            smooth: true,
            smoothMonotone: 'x',
            symbol: 'circle',
-           lineStyle: {
-               normal: {
-                   width: 8,
-                   shadowColor: 'rgba(181, 229, 173, 1)',
-                   shadowBlur: 10,
-                   shadowOffsetY: 10,
-                   color: {
-                   type: 'linear',
-                   x: 0,
-                   y: 0,
-                   x2: 0,
-                   y2: 1,
-                   colorStops: [{
-                       offset: 0, color: 'rgba(76, 165, 75, 1)' // 0% 处的颜色
-                   }, {
-                       offset: 1, color: 'rgba(181, 229, 173, 1)' // 100% 处的颜色
-                   }],
-                   global: false // 缺省为 false
-               },
-               },
-               itemStyle: {
-                   color: '#fff'
-               }
-           },
-           data: [120, 132, 101, 134, 90, 230, 210],
+                lineStyle: {
+                normal: {
+                    width: 8,
+                    shadowColor: 'rgba(181, 229, 173, 0.5)',
+                    shadowBlur: 10,
+                    shadowOffsetY: 10,
+                    color: {
+                    type: 'linear',
+                    x: 0,
+                    y: 0,
+                    x2: 0,
+                    y2: 1,
+                    colorStops: [{
+                        offset: 0, color: 'rgba(76, 165, 75, 1)' // 0% 处的颜色
+                    }, {
+                        offset: 1, color: 'rgba(181, 229, 173, 1)' // 100% 处的颜色
+                    }],
+                    global: false // 缺省为 false
+                },
+                },
+                itemStyle: {
+                    color: '#fff'
+                }
+            },
+          
+           data: [],
        },
         {
-           name: '已清洗流量',
+           name: '正常业务流量',
            type: 'line',
            stack: '总量',
            smooth: true,
            symbol: 'circle',
            symbolSize: 4, 
            smoothMonotone: 'x',
-           lineStyle: {
+               lineStyle: {
                normal: {
                    width: 8,
-                   shadowColor: 'rgba(42, 153, 242, 1)',
+                   shadowColor: 'rgba(42, 153, 242, 0.5)',
                    shadowBlur: 10,
                    shadowOffsetY: 10,
                    color: {
@@ -102,7 +107,8 @@ export default {
                    },
                }
            },
-           data: [120, 132, 101, 134, 90, 230, 210],
+          
+           data: [],
        },
    ]
 };

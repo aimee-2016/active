@@ -47,6 +47,7 @@
                   <img style="vertical-align: middle;" src="../../assets/img/payresult/wxpay.png">
                 </Radio>
               </RadioGroup>
+               <p class="p p_hint">温馨提示：若您点击【确认支付/充值】之后，页面未正确跳转，请操作浏览器放行此次弹窗。</p>
             </TabPane>
             <TabPane label="个人网银" name="name2">
                 <div class="outLineContent">
@@ -56,6 +57,7 @@
                     </Radio>
                   </RadioGroup>
                 </div>
+                <p class="p p_hint">温馨提示：若您点击【确认支付/充值】之后，页面未正确跳转，请操作浏览器放行此次弹窗。</p>
             </TabPane>
             <TabPane label="企业网银" name="name3">
                 <div class="outLineContent" >
@@ -65,6 +67,7 @@
                     </Radio>
                   </RadioGroup>
                 </div>
+                 <p class="p p_hint">温馨提示：若您点击【确认支付/充值】之后，页面未正确跳转，请操作浏览器放行此次弹窗。</p>
             </TabPane>
           </Tabs>
         </div>
@@ -271,6 +274,7 @@
 
       // 个人网银支付
       individualUnionPay(){
+          window.open("about:blank","individualUnionPay")
           axios.get('yl/ylb2cPay.do',{
             params:{
               total_fee:this.otherPayCount.toFixed(2),
@@ -282,13 +286,14 @@
               this.zfbNum = res.data.serialNum;
               localStorage.setItem('serialNum',res.data.serialNum);
               this.showModal.paymentCofirm = true;
-              window.open('https://kaifa.xrcloud.net/yl/openYlb2cPay.do'); // 创建一个新窗口
+              window.open(null,'individualUnionPay').location.href = `https://zschj.xrcloud.net/yl/openYlb2cPay.do`
             }
           })
       },
 
       // 企业网银支付
       enterpriseUnionPay(){
+        window.open("about:blank","enterpriseUnionPay")
         axios.get('yl/ylb2bPay.do',{
             params:{
               total_fee:this.otherPayCount.toFixed(2),
@@ -300,7 +305,7 @@
                this.zfbNum = res.data.serialNum;
               localStorage.setItem('serialNum',res.data.serialNum);
               this.showModal.paymentCofirm = true;
-              window.open('https://kaifa.xrcloud.net/yl/openYlb2bPay.do'); // 创建一个新窗口
+              window.open(null,'enterpriseUnionPay').location.href = `https://zschj.xrcloud.net/yl/openYlb2bPay.do`
             }
           })
       },
@@ -331,7 +336,7 @@
           if (response.data.status === 1 && response.status == 200) {
             this.zfbNum = response.data.serialNum
             localStorage.setItem('serialNum', this.zfbNum)
-            window.open(null,'alipay').location.href = `https://kaifa.xrcloud.net/zfb/alipaypage.do?serialNum=${this.zfbNum}&route=resultNew`
+            window.open(null,'alipay').location.href = `https://zschj.xrcloud.net/zfb/alipaypage.do?serialNum=${this.zfbNum}&route=resultNew`
             this.showModal.paymentCofirm = true
           } else {
             this.$message.info({
@@ -574,6 +579,17 @@
               line-height: 21px;
             }
           }
+          .p {
+              margin-top: 10px;
+              font-family: Microsoft Yahei, 微软雅黑;
+              font-size: 14px;
+              color: rgba(0, 0, 0, 0.65);
+              letter-spacing: 0;
+              line-height: 21px;
+              &.p_hint{
+                  color: #999999
+              }
+            }
         }
       }
     }

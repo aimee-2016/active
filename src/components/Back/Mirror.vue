@@ -479,13 +479,10 @@
             }
           });
         }else{
+          sessionStorage.setItem('ownMirror',JSON.stringify(item))
+          sessionStorage.setItem('mirrorType','custom')
           this.$router.push({
-            path: 'buy',
-            query: {
-              zoneid: item.zoneid,
-              mirrorType: 'custom',
-              mirror: item
-            }
+            path: 'buy'
           })
         }
       },
@@ -626,7 +623,9 @@
             this.ownMirrorList()
             this.$Message.success(response.data.message)
           } else {
-            this.$message.info(response.data.message)
+            this.$message.info({
+              content:response.data.message
+            })
           }
         })
       },

@@ -256,7 +256,7 @@
     },
     methods: {
       toBuy(){
-        this.$router.push($store.state.userInfo ? '/buy/gpu/' : 'login')
+        this.$router.push($store.state.userInfo ? '/buy/gpu/' : '/login')
       },
     }
   }

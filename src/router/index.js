@@ -228,13 +228,13 @@ const AllRegions = () => import('@/components/Back/AllRegions')
 
 // 高防IP==========================
 const DDoSIP = () => import('@/components/Back/DDoSIP')
+const DDoSAddDomain = () => import('@/components/Back/DDoSAddDomain')
 const DDoSIpRuleAdd = () => import('@/components/Back/DDoSIpRuleAdd')
 const DDoSIPdetails = () => import('@/components/Back/DDoSIPdetails')
 
 // DDOS 高防主机
 const BackDdos = () => import('@/components/Back/BackDdos')
 const protectUpgrade = () => import('@/components/Back/ProtectUpgrade')
-const protectOverlay = () => import('@/components/Back/ProtectOverlay')
 
 const CloudDatabaseBackup = () => import('@/components/Back/CloudDatabaseBackup')
 const CloudDatabase = () => import('@/components/Back/CloudDatabase')
@@ -343,7 +343,7 @@ var router = new Router({
             {path: 'objectstorage', name: 'objectstorage/', component: BObj},
             {path: 'gpu', name: 'gpu/', component: BGpu},
             {path: 'ssl', name: 'ssl/', component: BSsl},
-            {path: 'ddosip', name: 'ddosip/', component: BDDoS},
+            {path: 'ddosip', name: 'ddosip/', component: BDDoS},{path: 'ddosip', name: 'ddosip/', component: BDDoS},
             {path: 'ddos', name: 'ddos/', component: BDdos},
           ]
         },
@@ -495,12 +495,12 @@ var router = new Router({
         {path: 'TelescopicDetails', name: 'TelescopicDetails', component: TelescopicDetails},
         {path: 'ThawDeposit', name: 'ThawDeposit', component: ThawDeposit},
         {path: 'DDoSIPBack', name: 'DDoSIPBack', component: DDoSIP},
+        {path: 'DDoSAddDomain', name: 'DDoSAddDomain', component: DDoSAddDomain},
         {path: 'ddosipruleadd', name: 'ddosipruleadd', component: DDoSIpRuleAdd},
         {path: 'ddosipdetails', name: 'ddosipdetails', component: DDoSIPdetails},
         // DDOS 高防主机
         {path: 'BackDdos', name: 'BackDdos', component: BackDdos},
-        {path: 'protectUpgrade', name: 'ProtectUpgrade', component: protectUpgrade},
-        {path: 'protectOverlay', name: 'ProtectOverlay', component: protectOverlay}
+        {path: 'protectUpgrade', name: 'ProtectUpgrade', component: protectUpgrade}
       ]
     },
     {
