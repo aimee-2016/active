@@ -471,7 +471,7 @@
                         <div v-if="button1 == '非网站业务'">
                             <div class="dp-row">
                                 <div>
-                                    <Button type="primary" style="margin-right:10px;" @click="$router.push('ddosipruleadd')">添加规则</Button>
+                                    <Button type="primary" style="margin-right:10px;" @click="goRuleAdd">添加规则</Button>
                                     <Poptip
                                     confirm
                                     width="230"
@@ -1357,6 +1357,12 @@ export default {
                                color:"#2A99F2",
                                cursor:"pointer",
                                marginRight:'10px'
+                           },
+                           on:{
+                               click:()=>{
+                                   this.$router.push('ddosipruleadd');
+                                   sessionStorage.setItem('ruleList',JSON.stringify(params.row));
+                               }
                            }
                        },'修改'),
                        h('span',{
@@ -1366,11 +1372,12 @@ export default {
                            },
                            on:{
                                click:()=>{
-                                   this.$Modal.info({
+                                   this.$Modal.confirm({
                                        title:'信息',
                                        content:'确认删除所选转发规则吗?',
                                        onOk:()=>{
                                            this.deleteList('forwardrule');
+                                            this.overviewSelect = params.row;
                                        }
                                    })
                                }
@@ -2115,6 +2122,12 @@ export default {
             })
     },   
 
+    goRuleAdd(){
+        this.$router.push('ddosipruleadd');
+        if(sessionStorage.getItem('ruleList') != undefined){
+            sessionStorage.removeItem('ruleList')
+        }
+    },
 
     /**
      * 防护管理
@@ -2240,6 +2253,7 @@ export default {
             }
         }).catch(err => {})
     },
+
     saveConfig() {
          this.$http.get('ddosImitationIp/updateddoSConfig.do',{params:{
              packageId:this.setMeal,

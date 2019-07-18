@@ -17,7 +17,7 @@
                 <div class="st-box" v-if="current == 0">
                     <Form style="width:430px;margin:0 auto;text-align:left;" ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="90">
                          <FormItem label="套餐选择" prop="attackMeal">
-                            <Select v-model="formValidate.attackMeal" style="width:300px;">
+                            <Select v-model="formValidate.attackMeal" :disabled='disNo' style="width:300px;">
                                 <Option
                                 v-for="item in setMealList"
                                 :value="item.packageid"
@@ -108,7 +108,8 @@ export default {
                 visitPort:'',
                 returnPort:'',
                 domain:'',
-                attackMeal:''
+                attackMeal:'',
+                id:''
             },
             ruleValidate:{
                 visitPort:[{required: true, message: '请输入端口号', trigger: 'blur'}],
@@ -140,7 +141,8 @@ export default {
                     套餐信息:'444444444'
                 }
             ],
-            setMealList:[]
+            setMealList:[],
+            disNo:false
         }
     },
     methods:{
@@ -166,47 +168,55 @@ export default {
                 }
             });
         },
-        getAllforwardrule(page){
-            this.$http.get('ddosImitationIp/QueryAllforwardrule.do',{
-                params:{
-                    page:'1',
-                    pageSize:'10',
-                    packageUserId:''
+        addforwardrule(){
+            let url ='ddosImitationIp/addforwardrule.do',
+                params ={
+                    packageId:this.formValidate.attackMeal,
+                    accessProtocol:this.formValidate.agreement,
+                    accessPort:this.formValidate.visitPort,
+                    source:this.formValidate.domain,
+                    sourcePort:this.formValidate.returnPort,
+                };
+            if(sessionStorage.getItem('ruleList')!=undefined){
+                url = 'ddosImitationIp/updateforwardrule.do';
+                params = {
+                    packageId:this.formValidate.attackMeal,
+                    accessProtocol:this.formValidate.agreement,
+                    accessPort:this.formValidate.visitPort,
+                    source:this.formValidate.domain,
+                    sourcePort:this.formValidate.returnPort,
+                    id:this.formValidate.id
                 }
-            }).then(res => {
-
-            }).catch(err => {
-
-            })
-        },
-        addforwardrule(name){
-            this.$refs[name].validate((valid) => {
+            }
+            this.$refs.formValidate.validate((valid) => {
                     if (valid) {
                         this.loading = true;
-                        this.$http.get('ddosImitationIp/addforwardrule.do',{
-                            params:{
-                                packageId:this.formValidate.attackMeal,
-                                accessProtocol:this.formValidate.agreement,
-                                accessPort:this.formValidate.visitPort,
-                                source:this.formValidate.domain,
-                                sourcePort:this.formValidate.returnPort
-                            }
-                        }).then(res => {
+                        this.$http.get(url,{params}).then(res => {
                             if(res.status == 200 && res.data.status == 1){
                                 this.current += 1;
                                 this.loading = false;
+                                this.$Message.info(res.data.message);
                             }else{
                                 this.$Message.info(res.data.message);
                                 this.loading = false;
                             }
                         }).catch(err =>{})
                     }})
-            
-        }    
+        },
+   
     },
     created(){
-        this.getAllforwardrule(1);
         this.getId();
+        if(sessionStorage.getItem('ruleList')!=undefined){
+            this.disNo = true;
+            let list = JSON.parse(sessionStorage.getItem('ruleList'));
+            this.formValidate.attackMeal = list.packageid;
+            this.formValidate.agreement = list.accessprotocol;
+            this.formValidate.visitPort = list.accessport;
+            this.formValidate.returnPort = list.sourceport;
+            this.formValidate.id = list.id;
+            this.formValidate.domain = list.source;
+        }
     }
 }
 </script>

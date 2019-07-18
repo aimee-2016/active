@@ -1672,9 +1672,11 @@
 
       //主机关机
        stopHost(index){
-         if (index == undefined) {
+         console.log(index);
+         if (index != undefined) {
           this.hostData.forEach(host => {
             this.selectHostIds.forEach(item => {
+              console.log(host.id+'>>>>>>>>>>'+item);
               if (host.id == item) {
                 host.bindip = 0
                 host.status = 2
