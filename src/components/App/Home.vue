@@ -700,7 +700,7 @@
               require('../../assets/img/sceneList/sl-icon3.png'),
               require('../../assets/img/sceneList/sl-icon4.png')
             ],
-            configure: ['2核4G1M带宽(1个月)', '2核4G1M带宽(12个月)'],
+            configure: ['2核4G2M带宽(1个月)', '2核4G1M带宽(12个月)'],
             link: 'yundiannao/',
             hint: '免费使用一年'
           },
@@ -713,7 +713,7 @@
               require('../../assets/img/sceneList/sl-icon7.png'),
               require('../../assets/img/sceneList/sl-icon8.png')
             ],
-            configure: ['2核4G1M带宽(1个月)',  '2核4G1M带宽(12个月)'],
+            configure: ['2核4G2M带宽(1个月)',  '2核4G1M带宽(12个月)'],
             link: 'selfhelpbuildingwebsite/',
             hint: '免费使用一年'
           },
@@ -726,7 +726,7 @@
               require('../../assets/img/sceneList/sl-icon28.png'),
               require('../../assets/img/sceneList/sl-icon29.png')
             ],
-            configure: ['2核4G1M带宽(1个月)', '2核4G1M带宽(12个月)'],
+            configure: ['2核4G2M带宽(1个月)', '2核4G1M带宽(12个月)'],
             link: 'storagedisk/',
             hint: '免费使用一年'
           },
@@ -739,7 +739,7 @@
               require('../../assets/img/sceneList/sl-icon13.png'),
               require('../../assets/img/sceneList/sl-icon14.png')
             ],
-            configure: ['2核4G1M带宽(1个月)', '2核4G1M带宽(12个月)'],
+            configure: ['2核4G2M带宽(1个月)', '2核4G1M带宽(12个月)'],
             link: 'softwaredevelopment/',
             hint: '免费使用一年'
           },
