@@ -396,6 +396,7 @@
          this.port = this.mealList[index].porttransnumber;
          this.domainCount =  this.mealList[index].domainnumber;
          this.bandWidth = this.mealList[index].bandwith;
+         this.changeTime();
         // }
       },
 
@@ -433,7 +434,7 @@
         return this.$store.state.userInfo
       },
       price(){
-        return this.elasticIpPrice +  this.businessPrice + this.protPirce + this.selectList.price;
+        return this.elasticIpPrice +  this.businessPrice + this.protPirce;
       }
     },
     watch: {

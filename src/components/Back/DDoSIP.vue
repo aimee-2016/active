@@ -1357,6 +1357,11 @@ export default {
                                color:"#2A99F2",
                                cursor:"pointer",
                                marginRight:'10px'
+                           },
+                           on:{
+                               click:()=>{
+                                   this.$router.push('ddosipruleadd');
+                               }
                            }
                        },'修改'),
                        h('span',{
@@ -1366,11 +1371,12 @@ export default {
                            },
                            on:{
                                click:()=>{
-                                   this.$Modal.info({
+                                   this.$Modal.confirm({
                                        title:'信息',
                                        content:'确认删除所选转发规则吗?',
                                        onOk:()=>{
                                            this.deleteList('forwardrule');
+                                            this.overviewSelect = params.row;
                                        }
                                    })
                                }
