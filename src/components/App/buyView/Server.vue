@@ -17,6 +17,7 @@
         <div class="step-line" v-if="index < 3"></div>
       </div>
     </div>
+    <div class="buy-type"></div>
   </div>
 </template>
 <style lang="less" scoped>
@@ -79,6 +80,13 @@
         }
       }
     }
+  }
+  .buy-type {
+    width: 1200px;
+    margin: 0 auto;
+    height: 276px;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 2px 14px -7px rgba(166, 166, 166, 0.3);
   }
 }
 </style>
