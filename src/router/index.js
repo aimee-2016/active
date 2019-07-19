@@ -33,6 +33,11 @@ const Document1 = () =>import('@/components/App/Document1')
 const Record = () =>import('@/components/App/Record')
 const BDdos = () => import('@/components/App/buy/BDdos')
 
+// 新版购买模块
+
+const buyServer = () =>import('@/components/App/buyView/Server')
+const buyIp = () =>import('@/components/App/buyView/SafelyIp')
+
 //const hostPrice = () => import('@/components/App/Price/Host')
 //const diskPrice = () => import('@/components/App/Price/Disk')
 //const elasticIPPrice = () => import('@/components/App/Price/ElasticIP')
@@ -347,7 +352,8 @@ var router = new Router({
             {path: 'ddos', name: 'ddos/', component: BDdos},
           ]
         },
-
+        {path: 'buyServer', name: 'buyServer', component: buyServer},
+        {path: 'buyIp', name: 'buyIp', component: buyIp},
         //{path: 'active', name: 'active', component: Active},
         {path: 'vps', name: 'vps', component: Vps},
        /*{path: 'newNodes_1', name: 'newNodes_1', component: NewNodes_1},
