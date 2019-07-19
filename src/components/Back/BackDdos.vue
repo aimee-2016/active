@@ -2457,7 +2457,7 @@
           })
         }
       },
-      // 包年/月主机续费
+      // 包年/月主机续费(高防主机续费更改参数)
       renewalOk() {
         var selectIp = ''
         var selectDisk = ''
