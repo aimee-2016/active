@@ -53,32 +53,36 @@
     <!-- 制作备份弹窗 -->
     <Modal v-model="showModal.newSnapshot" width="550" :scrollable="true" class="create-snas-modal">
       <p slot="header" class="modal-header-border">
-        <span class="universal-modal-title">制作备份</span>
+        <span class="universal-modal-title">手动备份</span>
       </p>
-      <div class="universal-modal-content-flex">
-        <Form :model="createSnapsForm" ref="createSnapsForm" :rules="createSnapsRule">
-          <FormItem label="选择数据库" prop="database">
-            <Select v-model="createSnapsForm.database">
+      <div class="universal-modal-label-14px hide-star-symbol">
+        <Form :model="createSnapsForm" ref="createSnapsForm" :rules="createSnapsRule" :label-width="130" label-position="left">
+          <FormItem label="选择数据库实例" prop="database">
+            <Select v-model="createSnapsForm.database" style="width:250px">
                 <Option v-for="item in databaseList" :value="item.computerid" :key="item.computerid">{{ item.computername }}
                 </Option>
             </Select>
-          </FormItem>
-          <FormItem>
-            <span style="color:#2A99F2;font-size:14px;position:absolute;top:36px;">
+            <span style="color:#2A99F2;margin-left:10px;font--size:14px;">
               <span style="font-weight:800;font-size:20px;">+</span>
               <span style="cursor:pointer;" @click="$router.push('/buy/database/')">购买数据库</span>
             </span>
           </FormItem>
-          <FormItem label="数据库名称" prop="name">
+          <FormItem label="云数据库备份" prop="type" style="margin-bottom:10px;">
+            <RadioGroup v-model="createSnapsForm.type">
+              <Radio label="1">整体备份</Radio>
+              <Radio label="0" v-if="defaultDatabaseTemp!='--'">部分备份</Radio>
+            </RadioGroup>
+          </FormItem>
+          <FormItem label="请输入数据库名称" prop="name" v-if="createSnapsForm.type==0">
             <Input v-model="createSnapsForm.name" placeholder="请输入数据库名称"></Input>
           </FormItem>
         </Form>
-        <p style="color:#ed3f14;margin-bottom: 10px;">提示：请输入数据库名称，默认名称为：{{defaultDatabaseTemp}}</p>
         <p class="mb20">备份时间为：{{new Date().format('yyyy-MM-dd hh:mm:ss')}}</p>
+        <p style="color:#ed3f14;margin-bottom: 10px;" v-if="createSnapsForm.type==0">提示：请输入数据库名称，默认名称为：{{defaultDatabaseTemp}}</p>
       </div>
       <div slot="footer" class="modal-footer-border">
         <Button type="ghost" @click="cancelSnaps('createSnapsForm')">取消</Button>
-        <Button type="primary" @click="NewSnaps_ok('createSnapsForm')">制作备份</Button>
+        <Button type="primary" @click="NewSnaps_ok('createSnapsForm')">确认备份</Button>
       </div>
     </Modal>
     <!-- 删除备份弹窗 -->
@@ -324,6 +328,7 @@
         createSnapsForm: {
           database: '',
           name: '',
+          type: 1,
         },
         createSnapsRule: {
           name: [
@@ -685,7 +690,7 @@
             this.$http.get('database/DBBackup.do', {
               params: {
                 DBId: this.createSnapsForm.database,
-                allDataBases: '0',
+                allDataBases: this.createSnapsForm.type,
                 dbName: this.createSnapsForm.name
               }
             }).then(response => {

@@ -85,17 +85,6 @@
           </div>
         </div>
         <div id="right">
-          <div class="warn">
-            <p class="universal-middle" :class="warning" style="padding-bottom: 11px;border-bottom: 1px solid #e9e9e9;">
-              告警</p>
-            <div style="display: flex;justify-content: space-between;cursor:pointer">
-              <div v-for="(item,index) in warnData" :key="index"
-                   @click="togo(item.url.split('#')[0],item.url.split('#')[1])" style="">
-                <p class="universal-mini">{{item.itemName}}</p>
-                <span class="universal-large" :class="{warning:item.value!=0}">{{item.value}}项</span>
-              </div>
-            </div>
-          </div>
           <div class="notice">
             <Tabs type="card" :animated="false">
               <TabPane label="公告">
@@ -143,13 +132,12 @@
                   <div v-for="(item,index) in msgData" :key="index" style="margin:11px 0px;">
                     <p class="universal-mini"
                       style="padding:0px;width:200px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;display: inline-block"
-                      @click="$router.push('msgCenter')">
+                      @click="$router.push({name:'msgCenter',params:{read:0}})">
                       {{item.content}}</p>
                     <p style="font-size: 14px;float:right">{{item.publishtime}}</p>
                   </div>
                 </div>
-                <a href="/msgCenter"
-                      style="color: #2A99F2;margin-top: 10px;display: block;font-size: 14px;cursor: pointer;">查看更多</a>
+                <router-link :to="{ name:'msgCenter',params:{read:0}}" style="color: #2A99F2;margin-top: 10px;display: block;font-size: 14px;cursor: pointer;">查看更多</router-link>
               </TabPane>
             </Tabs>
             <!--<div>
@@ -163,6 +151,17 @@
               <span @click="$router.push('dynamic')"
                     style="color: #2A99F2;margin-top: 10px;display: block;font-size: 14px;cursor: pointer;">查看更多</span>
             </div>-->
+          </div>
+          <div class="warn">
+            <p class="universal-middle" :class="warning" style="padding-bottom: 11px;border-bottom: 1px solid #e9e9e9;">
+              告警</p>
+            <div style="display: flex;justify-content: space-between;cursor:pointer">
+              <div v-for="(item,index) in warnData" :key="index"
+                   @click="togo(item.url.split('#')[0],item.url.split('#')[1])" style="">
+                <p class="universal-mini">{{item.itemName}}</p>
+                <span class="universal-large" :class="{warning:item.value!=0}">{{item.value}}项</span>
+              </div>
+            </div>
           </div>
           <div>
             <Carousel v-model="currentCarouse">
@@ -266,7 +265,7 @@
         }
       })
       var msg = axios.post('user/getEventNotifyList.do', {
-        isRead: '2',
+        isRead: '0',
         page: 1,
         rows: 4,
         zoneId: zoneId

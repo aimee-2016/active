@@ -80,8 +80,8 @@
                  </div>
                </li>
                <li>
-                 <h4>建议最大连接数</h4>
-                 <div>200
+                 <h4>默认最大连接数</h4>
+                 <div>{{hostInfo.maxConnection==0?'无限制':hostInfo.maxConnection}}
                  </div>
                </li>
              </ul>
