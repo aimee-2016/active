@@ -72,7 +72,7 @@ export default {
                     color: "#2A99F2"//折线的颜色
                 }
            },
-           data: [80, 94, 117, 141, 90, 230, 210],
+           data: [],
        },
         {
            name: 'Ack带宽',
@@ -90,7 +90,7 @@ export default {
                     color:'#19BE6A'
                 }
            },
-           data: [160, 99, 140, 130, 90, 230, 210],
+           data: [],
        },
        {
            name: 'Udp带宽',
@@ -108,7 +108,7 @@ export default {
                     color: '#FCCF14'
                 }
            },
-           data: [90, 145, 61, 134, 90, 230, 210],
+           data: [],
        },
        {
            name: 'ICMP带宽',
@@ -126,7 +126,7 @@ export default {
                      color: '#F82B79'
                 }
            },
-           data: [100, 112, 91, 134, 90, 230, 210],
+           data: [],
        },
        {
            name: 'Other带宽',
@@ -144,7 +144,7 @@ export default {
                      color: '#723BCA'
                 }
            },
-           data: [110, 152, 71, 134, 90, 230, 210],
+           data: [],
        },
    ]
 };

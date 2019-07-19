@@ -25,7 +25,7 @@
                        <div v-if="overviewRadio == '概览'">
                            <div>
                                <Button type="primary" @click="$router.push('buy/ddosip')">购买套餐</Button>
-                               <Button type="primary" :disabled='renewDisabled' @click="showModal.meal = true">套餐续费</Button>
+                               <Button type="primary" :disabled='renewDisabled' @click="showModal.meal = true,queryMealRenew(0)">套餐续费</Button>
                            </div>
                            <div>
                                <div class="selectMark">
@@ -97,9 +97,13 @@
                                     </div>
                                 </div>
 
-                                <div style="border:1px dashed #999999;padding:20px;border-radius:4px;margin-top:20px;">
+                                <div class="dp-mbr">
                                     <p style="font-size:14px;color:#333333;">清洗流量统计（单位Gbps）</p>
-                                    <chart style="width:100%;" id='hightIp' :options="hightIp"></chart>
+                                    <div class="no-data" v-if="hightIp.series[0].data.length == 0">
+                                        <p class="no-pfb">暂无数据</p>
+                                        <p class="no-pfs">描述或建议，如导入交易数据以分析</p>
+                                    </div>
+                                    <chart v-else style="width:100%;" id='hightIp' :options="hightIp"></chart>
                                 </div>
                            </div>
                            <div>
@@ -134,7 +138,7 @@
                            </div>
                            <div style='display:flex;'>
                             <div class="dp-row">
-                               <div style="border:1px dashed #999999;padding:20px;border-radius:4px;margin-top:20px;margin-right:20px;width:550px;">
+                               <div class="dp-mbr" style="margin-right:20px;width:550px;">
                                     <div class='dp-tp'>
                                         <span style="font-size:14px;color:#333333;">清洗流量统计（单位Gbps）</span>
                                          <span class="l-font" style='float:right;'>刷新</span> 
@@ -171,19 +175,51 @@
                                         </div> 
                                     </div>
                                     </div>
-                                    <chart style="width:100%;" id='flowBtm'  :options="flowBtm"></chart>
+                                    <div class="no-data" v-if="flowBtm.series[0].data.length == 0">
+                                        <p class="no-pfb">暂无数据</p>
+                                        <p class="no-pfs">描述或建议，如导入交易数据以分析</p>
+                                    </div>
+                                    <chart v-else style="width:100%;" id='flowBtm'  :options="flowBtm"></chart>
                                 </div>
                             </div>
                             <div class="dp-row">
-                               <div style="border:1px dashed #999999;padding:20px;border-radius:4px;margin-top:20px;width:550px;">
+                               <div class="dp-mbr" style="width:550px;">
                                     <div class='dp-tp'>
                                         <span style="font-size:14px;color:#333333;">攻击类型</span>
                                          <span class="l-font" style='float:right;'>刷新</span> 
                                     </div>
                                     <div style='display:flex;'>
-                                   
+                                        <div style="width:260px;height:240px;">   
+                                            <chart style="width:100%;" id='hightIpBin'  :options="hightIpBin"></chart>
+                                        </div>
+                                        <div style="padding-top: 134px;">
+                                            <ul class="dp-list sp" style="margin-right:27px;">
+                                                <li>协议类型</li>
+                                                <li class="itemt">SYN Flood</li>
+                                                <li class="items">Ack Flood</li>
+                                                <li class="itemf">Udp Flood</li>
+                                                <li class="itemw">ICMP Flood</li>
+                                                <li class="iteml">Other</li>
+                                            </ul>
+                                            <ul class="dp-list" style="margin-right:20px;">
+                                                <li class="dp-item">攻击占比</li>
+                                                <li class="dp-item">| 36%</li>
+                                                <li class="dp-item">| 20%</li>
+                                                <li class="dp-item">| 16%</li>
+                                                <li class="dp-item">| 10%</li>
+                                                <li class="dp-item">| 18%</li>
+                                            </ul>
+                                            <ul class="dp-list">
+                                                <li>攻击流量</li>
+                                                <li>4.5Gb</li>
+                                                <li>3.6Gb</li>
+                                                <li>3.2Gb</li>
+                                                <li>2.8Gb</li>
+                                                <li>1.8Gb</li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                    <chart style="width:100%;" id='hightIpBin'  :options="hightIpBin"></chart>
+                                    
                                 </div>
                             </div>
                            </div>
@@ -218,12 +254,16 @@
                                         <span>查看指定套餐中网站业务的域名，查看CC攻击的QPS，包含CC攻击次数和总请求数。</span>
                                     </div>
                                     <div>
-                                    <span class="l-font">刷新</span> 
+                                    <span class="l-font" @click="QueryCCAttackQPS">刷新</span> 
                                     </div>
                                 </div>
-                                <div style="border:1px dashed #999999;padding:20px;border-radius:4px;margin-top:20px;">
+                                <div class="dp-mbr">
                                     <p style="font-size:14px;color:#333333;">CC攻击QPS统计（单位：次）</p>
-                                    <chart style="width:100%;" id='ccQps' ref="ccQps" :options="ccQps"></chart>
+                                    <div class="no-data" v-if="ccQps.series[0].data.length == 0">
+                                        <p class="no-pfb">暂无数据</p>
+                                        <p class="no-pfs">描述或建议，如导入交易数据以分析</p>
+                                    </div>
+                                    <chart v-else style="width:100%;" id='ccQps' ref="ccQps" :options="ccQps"></chart>
                                 </div>
                            </div>
                            <div>
@@ -265,7 +305,7 @@
                                     <span class="l-font" @click='QueryCCAttIPDistribution'>刷新</span> 
                                     </div>
                                 </div>
-                               <div style="border:1px dashed #999999;padding:20px;border-radius:4px;margin-top:20px;">
+                               <div class="dp-mbr">
                                     <p style="font-size:14px;color:#333333;">Top 100IP分布</p>
                                     <div id='topMap' class='dp-inmap'></div>
                                 </div>
@@ -336,9 +376,13 @@
                                     </div>
                                 </div>
 
-                                <div style="border:1px dashed #999999;padding:20px;border-radius:4px;margin-top:20px;">
+                                <div class="dp-mbr">
                                     <p style="font-size:14px;color:#333333;">带宽流量统计（单位Gbps）</p>
-                                    <chart style="width:100%;" id='flowOut' :options="flowOut"></chart>
+                                    <div class="no-data" v-if="flowOut.series[0].data.length == 0">
+                                        <p class="no-pfb">暂无数据</p>
+                                        <p class="no-pfs">描述或建议，如导入交易数据以分析</p>
+                                    </div>
+                                    <chart v-else style="width:100%;" id='flowOut' :options="flowOut"></chart>
                                 </div>
                            </div>
                            <div>
@@ -351,9 +395,13 @@
                                     <span class="l-font" @click="QueryRequestNum">刷新</span> 
                                     </div>
                                 </div>
-                               <div style="border:1px dashed #999999;padding:20px;border-radius:4px;margin-top:20px;">
+                               <div class="dp-mbr">
                                     <p style="font-size:14px;color:#333333;">请求次数（单位：次）</p>
-                                    <chart style="width:100%;" id='reque'  :options="reque"></chart>
+                                    <div class="no-data" v-if="reque.series[0].data.length == 0">
+                                        <p class="no-pfb">暂无数据</p>
+                                        <p class="no-pfs">描述或建议，如导入交易数据以分析</p>
+                                    </div>
+                                    <chart v-else style="width:100%;" id='reque'  :options="reque"></chart>
                                 </div>
                            </div>
                             <div>
@@ -377,7 +425,7 @@
                                             </div>
                                         </div> 
                                     </div>
-                                    <div class="dp-fh" style="width:575px;">
+                                    <div class="dp-fh" style="width:575px;margin:0px;">
                                         <div>
                                             <div>
                                                 <span class="fh-sp">最大并发数</span>
@@ -388,9 +436,13 @@
                                         </div> 
                                     </div>
                                 </div>
-                                <div style="border:1px dashed #999999;padding:20px;border-radius:4px;margin-top:20px;">
+                                <div class="dp-mbr">
                                     <p style="font-size:14px;color:#333333;">并发连接数统计</p>
-                                    <chart style="width:100%;" id='concurrent' :options="concurrent"></chart>
+                                    <div class="no-data" v-if="concurrent.series[0].data.length == 0">
+                                        <p class="no-pfb">暂无数据</p>
+                                        <p class="no-pfs">描述或建议，如导入交易数据以分析</p>
+                                    </div>
+                                    <chart v-else style="width:100%;" id='concurrent' :options="concurrent"></chart>
                                 </div>
                            </div>
                        </div>
@@ -480,7 +532,7 @@
                                     title="您确认删除选中的配置吗？" style="margin: 0 10px">
                                     <Button type="primary" :disabled='renewDisabled'>删除</Button>
                                     </Poptip>
-                                    <span class="dp-cn">CNAME：sectest564as65d4a65s4d5as4d5a6s4d6</span>
+                                    <span class="dp-cn">CNAME：{{ruleData[0].cname||'无'}}</span>
                                 </div>
                                 <div>
                                      <Select v-model="visitPort" style="width:100px">
@@ -571,7 +623,7 @@
                         </div>
                         <Table :columns="journalList" :data="journalData"></Table>
                         <div class="dp-page">
-                            <Page :total="100" @on-change='getLog' style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
+                            <Page :total="journalData.length" @on-change='getLog' style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
                         </div>
                     </TabPane>
                 </Tabs>
@@ -593,7 +645,7 @@
                         <p>续费套餐ID</p>
                      </div>
                      <div class="dp-xfy">
-                        <p>DMS-50GB 5656</p> 
+                        <!-- <p>{{overviewSelect[0].packageid||""}}</p>  -->
                      </div>
                  </li>
                  <li class="dp-xfl">
@@ -616,7 +668,7 @@
             <p class="dp-ren">续费订单费用<span>{{renewPrice.price}}元</span></p>
              <div slot="footer" class="modal-footer-border">
                 <Button type="ghost" @click="showModal.meal = false">取消</Button>
-                <Button type="primary" >确定</Button>
+                <Button type="primary" @click="createMealRenew">确定</Button>
             </div>
          </Modal>   
 
@@ -924,7 +976,10 @@ export default {
             },
             {
                 key:'攻击事件',
-                title:'攻击事件'
+                title:'攻击事件',
+                render:(h,params)=>{
+                    return h('span',{},'暂无攻击事件')
+                }
             },
             {
                 key:'操作',
@@ -1042,44 +1097,47 @@ export default {
         {
           title: "证书key内容",
           render: (h, params) => {
-            if (this.certificateKyeHide) {
-              return h(
-                "div",
-                {
-                  style: {
-                    color: "#2A99F2",
-                    cursor: "pointer"
-                  },
-                  on: {
-                    click: () => {
-                      this.certificateKyeHide = false;
+            if(params.row.keydes !== undefined){
+                if (this.certificateKyeHide) {
+                    return h(
+                        "div",
+                        {
+                        style: {
+                            color: "#2A99F2",
+                            cursor: "pointer"
+                        },
+                        on: {
+                            click: () => {
+                            this.certificateKyeHide = false;
+                            }
+                        }
+                        },
+                        "显示内容"
+                    );
+                    } else {
+                    return h("div", [
+                        h("p", {
+                            'class':'dp-rd'
+                        }, params.row.keydes),
+                        h(
+                        "p",
+                        {
+                            style: {
+                            color: "#2A99F2",
+                            cursor: "pointer"
+                            },
+                            on: {
+                            click: () => {
+                                this.certificateKyeHide = true;
+                            }
+                            }
+                        },
+                        "隐藏内容"
+                        )
+                    ]);
                     }
-                  }
-                },
-                "显示内容"
-              );
-            } else {
-              return h("div", [
-                h("p", {
-                    'class':'dp-rd'
-                }, params.row.keydes),
-                h(
-                  "p",
-                  {
-                    style: {
-                      color: "#2A99F2",
-                      cursor: "pointer"
-                    },
-                    on: {
-                      click: () => {
-                        this.certificateKyeHide = true;
-                      }
-                    }
-                  },
-                  "隐藏内容"
-                )
-              ]);
             }
+            
           }
         },
         {
@@ -1335,17 +1393,17 @@ export default {
                title:'源站IP/域名'
            },
            {
-               key:'deployState',
+               key:'deploystate',
                title:'部署状态',
                render:(h,params)=>{
-                   return h('span',{},params.row.deployState== 1?'部署成功':params.row.deployState== 2 ?'部署中':params.row.deployState== 3?'待部署':'部署失败')
+                   return h('span',{},params.row.deploystate== 1?'部署成功':params.row.deploystate== 2 ?'部署中':params.row.deploystate== 3?'待部署':'部署失败')
                }
            },
            {
-               key:'ddosProtect',
+               key:'ddosprotect',
                title:'防护状态',
                render:(h,params)=>{
-                   return h('span',{},params.row.ddosProtect == 0?'关闭':'开启')
+                   return h('span',{},params.row.ddosprotect == 0?'关闭':'开启')
                }
            },
            {
@@ -1378,7 +1436,7 @@ export default {
                                        content:'确认删除所选转发规则吗?',
                                        onOk:()=>{
                                            this.deleteList('forwardrule');
-                                            this.overviewSelect = params.row;
+                                            this.overviewSelect.push(params.row);
                                        }
                                    })
                                }
@@ -1514,7 +1572,7 @@ export default {
         ccProtectData:[
         ],
         // 操作日志
-         operationObject:'操作对象',
+         operationObject:'',
          operationList:[
              {
                  value:'操作对象',
@@ -1555,19 +1613,20 @@ export default {
 
     }
   },
-  beforeCreate(){
-     
+  beforeRouteEnter(to,from,next){
+      next(vm=>{
+          vm.changeColor()
+      })
   },
   created(){
-    
+      this.changeColor();
       this.getDdosOverview(1);
       this.getDomainList(1);
       this.getCertificate(1);
       this.getLog(1);
-    this.getId();
+      this.getId();
       this.getAllforwardrule(1);
-      this.changeColor();
-    this.inmapVoid();
+      this.inmapVoid();
   },
   methods:{
 
@@ -1586,7 +1645,7 @@ export default {
                         this.setMealList.push({'packageid':key,'domainList':domainList});
                     }
                 }
-                this.setMeal = this.ccStatistics.packageid = this.business.packageId =  this.attackMeal = this.setMealList[0].packageid;
+                this.setMeal = this.operationObject = this.ccStatistics.packageid = this.business.packageId =  this.attackMeal = this.setMealList[0].packageid;
                 this.domainChange( this.setMeal);
                 this.getProtectCC(this.setMeal,1);
                
@@ -1611,9 +1670,11 @@ export default {
         this.concurrent.series[0].lineStyle.normal.color.colorStops[1].color = 'rgba(102, 120, 255, 1)';
         this.reque.series[0].name = '请求次数';
         this.reque.series[0].stack = '请求次数';
+        this.reque.series[0].itemStyle.normal.color = '#4CA54B';
         this.reque.legend.data  =['请求次数'];
         this.concurrent.series[0].name = '并发连接数';
         this.concurrent.series[0].stack = '并发连接数';
+        this.reque.series[0].itemStyle.normal.color = '#BB3ED5';
         this.concurrent.legend.data  = ['并发连接数'];
         this.ccQps.series[1].name = '总请求次数';
         this.ccQps.series[0].name = 'CC攻击次数';
@@ -1626,7 +1687,6 @@ export default {
     overviewTableChange(list){
         this.price = 0;
         this.overviewSelect = list;
-   
         list.forEach(item => {
             this.price += item.totalprice; 
         });
@@ -1660,16 +1720,32 @@ export default {
             }
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
-
+                this.renewPrice = res.data;
+                this.getDdosOverview(1);
             }else{
-                // this.$Message.info(res.data.messgae);
                 this.renewPrice = res.data;
             }
         }).catch(err =>{
 
         })
     },
+    createMealRenew(){
+        this.$http.get('ddosImitationIp/creatPackageRenewal.do',{
+            params:{
+                packageId:this.overviewSelect[0].packageid,
+                timeVlue:this.durationList[index].value,
+                cost:this.renewPrice.price
+            }
+        }).then(res => {
+            if(res.status == 200 && res.data.status == 1){
+                this.getDdosOverview(1);
+            }else{
+                this.renewPrice = res.data;
+            }
+        }).catch(err =>{
 
+        }) 
+    },
 
 
     statisticsChange(value){
@@ -1706,25 +1782,8 @@ export default {
 
 
     // 概览-统计图-请求数
-    QueryRequestNum(){
-        this.$http.get('ddosImitationIp/QueryRequestNum.do',{
-            params:{
-                packageId:this.attackMeal,
-                startdate:this.statisticsTime[0].format('yyyy-MM-dd hh:mm:ss')+'',
-                enddate:this.statisticsTime[1].format('yyyy-MM-dd hh:mm:ss')+'',
-                domains:''
-            }
-        }).then(res => {
-            if(res.status == 200 && res.data.status == 1){
-
-            }else{
-                this.$Message.info(res.data.message);
-            }
-        }).catch(err =>{
-
-        })
-    },
     QueryBusinessBandwidth(){
+         this.echartsLodaing('flowOut').showLoading();
         this.$http.post('ddosImitationIp/QueryBusinessBandwidth.do',{
                 packageId:this.business.packageId,
                 startdate:this.business.date[0].format('yyyy-MM-dd hh:mm:ss')+'',
@@ -1735,6 +1794,7 @@ export default {
                 this.flowOut.xAxis.data = res.data.time;
                 this.flowOut.series[0].data = res.data.value;
                 this.business = res.data.peakStat;
+                this.echartsLodaing('flowOut').hideLoading();
             }else{
                 this.$Message.info(res.data.message);
             }
@@ -1860,10 +1920,6 @@ export default {
         this.QueryCCAttIPDistribution();
     },
     // ……CC统计图结束……
-
-
-
-  
 
     inmapVoid(){
         let inMaps = this.inMap;
@@ -2046,7 +2102,9 @@ export default {
                 encryptionWay:this.certificateValidate.encryptionway
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
-
+                this.$Message.success('新增证书成功');
+                this.showModal.certificate = false;
+                this.getCertificate(0);
             }else{
                 this.$Message.info(res.data.message);
             }
@@ -2074,7 +2132,7 @@ export default {
         this.$http.get('ddosImitationIp/UpdateCertificate.do',{
             params:{
                 crtId:this.certificateValidate.crtId,
-                crtname:this.certificateValidate.name,
+                crtName:this.certificateValidate.name,
                 crtRemark:this.certificateValidate.desc,
                 crtDes:this.certificateValidate.file,
                 keyDes:this.certificateValidate.secret,
@@ -2118,7 +2176,7 @@ export default {
     getAllforwardrule(page){
             this.$http.get('ddosImitationIp/QueryAllforwardrule.do',{
                 params:{
-                    page:'1',
+                    page:page,
                     pageSize:'10',
                     packageUserId:''
                 }
@@ -2206,7 +2264,7 @@ export default {
             params:{
                 page:page,
                 pageSize:'10',
-                packageName:this.operationObject,
+                packageId:this.operationObject,
                 // startTime:this.logTime[0].format('yyyy-MM-dd hh:mm:ss') == undefined ?'':this.logTime[0].format('yyyy-MM-dd hh:mm:ss'),
                 // endTime:this.logTime[1].format('yyyy-MM-dd hh:mm:ss')== undefined ?'':this.logTime[1].format('yyyy-MM-dd hh:mm:ss')
             }
@@ -2295,7 +2353,7 @@ export default {
           }else{
               return false;
           }
-      }
+      },
   },
   watch:{
       'button1':{
@@ -2303,6 +2361,12 @@ export default {
               let list =[];
                this.overviewTableChange(list);
                 
+          },deep:true
+      },
+      'overviewRadio':{
+           handler(){
+              let list =[];
+               this.overviewTableChange(list);
           },deep:true
       }
   }
@@ -2556,5 +2620,106 @@ export default {
     margin: 0 0 10px 20px;
   }
 }
+.dp-list{
+    float: left;
+}
+.dp-list li:first-child{
+        padding: 0px;
+        margin-bottom:20px;
+}
+.dp-item{
+    color: #999999;
+}
+.sp{
+    li{
+        padding-left: 18px;
+    }
+    .itemt{
+        position: relative;
+    }
+    .itemt::before{
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: #2a99f2;
+        position: absolute;
+        top: 4px;
+        left: 0;   
+    }
+     .items{
+        position: relative;
+    }
+    .items::before{
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: #19BE6A;
+        position: absolute;
+        top: 4px;
+        left: 0;   
+    }
+     .itemf{
+        position: relative;
+    }
+    .itemf::before{
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: #FCCF14;
+        position: absolute;
+        top: 4px;
+        left: 0;   
+    }
+    .itemw{
+        position: relative;
+    }
+    .itemw::before{
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: #F82B79;
+        position: absolute;
+        top: 4px;
+        left: 0;   
+    }
+    .iteml{
+        position: relative;
+    }
+    .iteml::before{
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: #723BCA;
+        position: absolute;
+        top: 4px;
+        left: 0;   
+    }
+}
+.dp-mbr{
+    border:1px dashed #999999;padding:20px;border-radius:4px;margin-top:20px;
+    position: relative;
+    height: 470px;
+    .no-data{
+        position: absolute;
+        top: 50%;
+        left: 42%;
+        text-align: center;
+        .no-pfb{
+            font-size: 18px;
+            color: #666666;
+            margin-bottom: 10px;
+        }
+        .no-pfs{
+            font-size: 14px;
+            color: #999999;
+        }
+    }
+}
+
 </style>
 

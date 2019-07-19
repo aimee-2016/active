@@ -62,14 +62,14 @@
             <div class="b-meal">
                 <div class="bm-rg">端口数</div>
                <div>
-                   <InputNumber v-model="port" :step='1' :min='selectList.porttransnumber' :editable="false"  @on-change='changeTime("port")'></InputNumber><span style="margin-left:5px;color:#999">个</span>
+                   <InputNumber v-model="port" :step='1' :min='selectList.porttransnumber'   @on-change='changeTime("port")'></InputNumber><span style="margin-left:5px;color:#999">个</span>
                    <p class="bm-fn">50个以上，每增加一个，增加200元/个/月</p>
                 </div>
              </div>
              <div class="b-meal">
                 <div class="bm-rg">域名防护数</div>
                <div>
-                   <InputNumber v-model="domainCount"  :step='1' :min='selectList.domainnumber' :editable="false"  @on-change='changeTime("doamin")'></InputNumber><span style="margin-left:5px;color:#999">个</span>
+                   <InputNumber v-model="domainCount"  :step='1' :min='selectList.domainnumber'   @on-change='changeTime("domain")'></InputNumber><span style="margin-left:5px;color:#999">个</span>
                    <p class="bm-fn">100个以上，每增加一个，增加200元/个/月</p>
                 </div>
              </div>
@@ -332,18 +332,10 @@
         if(name != undefined){
           switch (name){
             case 'port':
-            if(this.originNum < this.port){
-              this.pPrice +=200;
-            }else{
-              this.pPrice -=200;
-            }
+              this.pPrice =(this.port-50)*200;
             break;
             case 'domain':
-            if(this.origindNum < this.domainCount){
-              this.dPrice += 200;
-            }else{
-              this.dPrice -=200;
-            }
+              this.dPrice = (this.domainCount-100)*200;
           }
           this.originNum = this.port;
           this.origindNum = this.domainCount;

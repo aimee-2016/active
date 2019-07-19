@@ -23,7 +23,7 @@ export default {
         data: ['已清洗流量', '正常业务流量'],
         bottom: 0,
         icon: 'circle',
-        padding: [20, 0, 0, 0],
+        padding: [40, 0, 0, 0],
         // itemWidth: 100,
         // itemHeight: 20
     },
@@ -51,6 +51,11 @@ export default {
            smooth: true,
            smoothMonotone: 'x',
            symbol: 'circle',
+           itemStyle: {
+                normal: {
+                    color: '#2A99F2'
+                }
+            },
                 lineStyle: {
                 normal: {
                     width: 8,
@@ -86,6 +91,11 @@ export default {
            symbol: 'circle',
            symbolSize: 4, 
            smoothMonotone: 'x',
+           itemStyle: {
+                normal: {
+                    color: '#4CA54B'
+                }
+            },
                lineStyle: {
                normal: {
                    width: 8,

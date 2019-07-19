@@ -26,7 +26,7 @@
                             </Select>
                         </FormItem>
                         <FormItem label="使用协议" prop="agreement">
-                            <RadioGroup v-model="formValidate.agreement">
+                            <RadioGroup v-model="formValidate.agreement" :disabled='disNo'>
                                 <Radio label="TCP">
                                     <span>TCP</span>
                                 </Radio>
@@ -36,7 +36,7 @@
                             </RadioGroup>
                         </FormItem>
                         <FormItem label="访问端口" prop="visitPort">
-                            <Input v-model="formValidate.visitPort" placeholder="请输入端口号" style="width:300px;"></Input>
+                            <Input v-model="formValidate.visitPort" placeholder="请输入端口号" style="width:300px;" :disabled='disNo'></Input>
                             <Tooltip placement="right">
                                 <div slot="content" style="width:222px;white-space: normal;">
                                     <p class="tp-po">指定接入新睿云DDoS高防IP使用的转发端口。 </p>

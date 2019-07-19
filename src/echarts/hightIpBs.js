@@ -50,6 +50,11 @@ export default {
            smooth: true,
            smoothMonotone: 'x',
            symbol: 'circle',
+           itemStyle: {
+               normal: {
+                   color: '#2A99F2'
+               }
+           },
            lineStyle: {
                normal: {
                    width: 8,
