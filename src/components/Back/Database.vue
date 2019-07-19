@@ -335,12 +335,18 @@
           :label-width="130"
           label-position="left"
         >
-          <FormItem label="请输入数据库名称" prop="name">
+          <FormItem label="云数据库备份" prop="type" style="margin-bottom:10px;">
+            <RadioGroup v-model="createSnapsForm.type">
+              <Radio label="1">整体备份</Radio>
+              <Radio label="0" v-if="this.hostCurrentSelected.dbBackupDefaultName!='--'">部分备份</Radio>
+            </RadioGroup>
+          </FormItem>
+          <FormItem label="请输入数据库名称" prop="name" v-if="createSnapsForm.type==0">
             <Input v-model="createSnapsForm.name" placeholder="请输入数据库名称" style="width:300px;"></Input>
           </FormItem>
         </Form>
         <p class="mb20" style="font-size:14px;">备份时间为：{{new Date().format('yyyy-MM-dd hh:mm:ss')}}</p>
-        <p style="color:#ed3f14">提示：请输入数据库名称，默认名称为：{{this.hostCurrentSelected.dbBackupDefaultName}}</p>
+        <p style="color:#ed3f14" v-if="createSnapsForm.type==0">提示：请输入数据库名称，默认名称为：{{this.hostCurrentSelected.dbBackupDefaultName}}</p>
       </div>
       <div slot="footer" class="modal-footer-border">
         <Button type="ghost" @click="cancelSnaps('createSnapsForm')">取消</Button>
@@ -413,6 +419,7 @@ export default {
       },
       createSnapsForm: {
         name: '',
+        type: 1,
       },
       createSnapsRule: {
         name: [
@@ -450,7 +457,7 @@ export default {
           width: 120,
           renderHeader: (h, params) => {
             return h('ul', {}, [
-              h('li', {}, '用户名称 / '),
+              h('li', {}, '实例名称 / '),
               h('li', {}, '唯一名称')
             ])
           },
@@ -1190,7 +1197,7 @@ export default {
           this.$http.get('database/DBBackup.do', {
             params: {
               DBId: this.hostCurrentSelected.computerid,
-              allDataBases: '0',
+              allDataBases: this.createSnapsForm.type,
               dbName: this.createSnapsForm.name
             }
           }).then(response => {
