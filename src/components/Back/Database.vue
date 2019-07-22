@@ -445,6 +445,7 @@ export default {
         portModify: false,
         dilatation: false,
         newSnapshot: false,
+        restart: false,
       },
       hostListColumns: [
         {
