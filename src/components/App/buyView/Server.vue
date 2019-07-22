@@ -20,7 +20,12 @@
     <div class="buy-type">
       <h2>类型选择</h2>
       <div class="type-list">
-        <div v-for="(item,index) in typeGroup" :key="index" class="type-item">
+        <div
+          v-for="(item,index) in typeGroup"
+          :key="index"
+          class="type-item"
+          :class="{selected: index === 0,disabled: index === 3}"
+        >
           <div class="type-img">
             <img :src="item.imgurl" alt="buy type" />
           </div>
@@ -117,6 +122,15 @@
         border-radius: 4px;
         border: 1px solid rgba(233, 233, 233, 1);
         padding-bottom: 15px;
+        &.selected {
+          box-shadow: 0px 2px 12px -4px rgba(66, 151, 242, 0.43);
+          border: 1px solid rgba(66, 151, 242, 1);
+        }
+        &.disabled {
+          background: rgba(233, 233, 233, 0.22);
+          border: 1px solid rgba(233, 233, 233, 1);
+          cursor: not-allowed;
+        }
         .type-img {
           padding-top: 15px;
           padding-left: 80px;
