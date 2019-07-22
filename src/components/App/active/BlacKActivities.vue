@@ -1207,7 +1207,7 @@
         freevmconfigs3:'',
         AppointmentStatus:0,
         servicetypeGPU:'',
-        ActivityState:'1',
+        ActivityState:'2',
         nucleus:'1',
         numG:'2',
         nucleusgpu:'8',
@@ -5326,10 +5326,10 @@
 		text-align: center;
     justify-content: center;
     .imgg{
-      margin-top: 180px;
+      margin-top: 80px;
       }
      > h1{
-        margin-top: 80px;
+        margin-top: 0;
       }
       .btn1{
         margin: 50px auto 156px auto;

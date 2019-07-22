@@ -2273,7 +2273,7 @@
             align: 'left',
             width: 120,
             render: (h, params) => {
-                return h('span', params.row.ticketType == 0 ? '满减券' : params.row.ticketType == 1 ? '折扣券' :
+                return h('span', params.row.ticketType == 0||params.row.ticketType == 3 ? '满减券' : params.row.ticketType == 1 ? '折扣券' :
                 params.row.ticketType == 2 ? '现金券' : '')
               }
           },
