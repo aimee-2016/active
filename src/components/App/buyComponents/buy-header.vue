@@ -1,7 +1,7 @@
 <template>
   <div class="head-page">
     <div class="wrap">
-      <h2>{{titleName}}</h2>
+      <h1>{{titleName}}</h1>
       <a @click="toOldVersion">回到旧版</a>
     </div>
   </div>
@@ -16,7 +16,7 @@
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
-    > h2 {
+    > h1 {
       font-size: 18px;
       font-family: MicrosoftYaHei-Bold;
       font-weight: bold;
