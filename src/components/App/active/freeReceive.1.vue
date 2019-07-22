@@ -1,11 +1,11 @@
 <template>
   <div class="deposit-activity">
-    <img
+    <!-- <img
       class="discount-icon"
       src="../../../assets/img/active/freeToReceive.1/discount-1.png"
       alt="一折秒杀"
       @click="$router.push('/activity/BlacKActivities')"
-    >
+    > -->
     <section>
       <div class="free-host">
         <div class="wrap">
@@ -460,17 +460,13 @@
             <i class="ivu-icon ivu-icon-android-alert"></i>
           </div>
           <p class="lh24">
-            您好，您不符合本活动的参与条件，您还可以去看看
-            <span
-              style="color: #FF9700;cursor: pointer"
-              @click="$router.push('/activity/BlacKActivities')"
-            >“低价秒杀，买一赠一”</span>活动。
+           {{inConformityModalMsg}}您还可以去看看其他活动。
           </p>
         </div>
       </div>
       <p slot="footer" class="modal-footer-s">
         <Button @click="showModal.inConformityModal = false">取消</Button>
-        <Button type="primary" @click="$router.push('/activity/BlacKActivities')">现在就去</Button>
+        <Button type="primary" @click="$router.push('/activity/')">现在就去</Button>
       </p>
     </Modal>
     <!-- 领取成功 -->
@@ -761,6 +757,7 @@
               <dd>（1）每个用户只能参与一次，同一手机号对应的多个账号、同一实名认证用户等满足同一条件的均视为一个用户。</dd>
               <dd>（2）免费产品中的资源可随时进行升级，升级费用按新睿云标准收费进行收取。</dd>
               <dd>（3）在各产品免费使用期间，若对免费资源进行了销毁，则视为放弃免费使用权。</dd>
+              <dd>（4）免费主机不能申请备案，若您需要备案，请操作保证金转续，将免费主机转成付费主机之后在进行备案</dd>
             </dl>
             <p>6、活动声明：为保证活动的公平公正，新睿云有权对恶意刷抢（如通过程序等技术手段）活动资源，领取后3天内未使用资源、利用资源从事违法违规行为的用户收回免费套餐使用资格。因此造成任何损失的，由该用户自行负责。</p>
           </div>
@@ -1300,6 +1297,7 @@ export default {
           url: '/activity/objectstorage/',
         }
       ],
+      inConformityModalMsg: '您好！本活动仅限新注册或者一直未使用过平台资源（第三方产品除外）及未参加过其他免费活动用户参与。'
     }
   },
   created () {
@@ -1403,6 +1401,7 @@ export default {
             this.showModal.rechargeHint = false
             this.showModal.orderConfirmationModal = true
           } else {
+            this.inConformityModalMsg = response.data.result.info
             this.showModal.rechargeHint = false
             this.showModal.inConformityModal = true
           }

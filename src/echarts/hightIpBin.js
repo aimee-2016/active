@@ -2,11 +2,19 @@
 export default {
  tooltip: {
         trigger: 'item',
-        formatter: "{a} <br/>{b}: {c} ({d}%)"
+        formatter: "{a} <br/>{b}: {c} ({d}%)",
+        backgroundColor:'rgba(255,255,255,1)',
+        padding:10,
+        textStyle:{
+            color:'#333333',
+            fontFamily:'MicrosoftYaHei',
+            fontSize:'12'
+        },
     },
+    color:[ '#2A99F2', '#19BE6A', '#FCCF14', '#F82B79', '#723BCA'],
     series: [
         {
-            name:'访问来源',
+            name:'攻击类型',
             type:'pie',
             radius: ['50%', '70%'],
             avoidLabelOverlap: false,
@@ -16,7 +24,7 @@ export default {
                     position: 'center'
                 },
                 emphasis: {
-                    show: true,
+                    show: false,
                     textStyle: {
                         fontSize: '30',
                         fontWeight: 'bold'
@@ -28,12 +36,13 @@ export default {
                     show: false
                 }
             },
+          
             data:[
-                {value:335, name:'直接访问'},
-                {value:310, name:'邮件营销'},
-                {value:234, name:'联盟广告'},
-                {value:135, name:'视频广告'},
-                {value:1548, name:'搜索引擎'}
+                {value:335, name:'SYN Flood'},
+                {value:310, name:'Ack Flood'},
+                {value:234, name:'Udp Flood'},
+                {value:135, name:'ICMP Flood'},
+                {value:1548, name:'Other'}
             ]
         }
     ]

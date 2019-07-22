@@ -151,6 +151,7 @@
                     class="hidden">#</span>{{prod.ddosProtectNumber}}GB
                   </p>
                 </div>
+                <!-- DDoS高防IP -->
                  <div v-if="prod.type=='Pddosip'">
                   <p class="item">
                     <span class="hidden">$</span><span class="title">套餐类型</span><span
@@ -166,7 +167,7 @@
                   </p>
                   <p class="item">
                     <span class="hidden">$</span><span class="title">业务带宽</span><span
-                    class="hidden">#</span>{{prod.bandWidth}}M
+                    class="hidden">#</span>{{prod.serviceband}}M
                   </p>
                   <p class="item">
                     <span class="hidden"></span>
@@ -636,7 +637,8 @@
               timeType: prod.timeForm.currentTimeType == 'annual' ? prod.timeForm.currentTimeValue.type : 'current',
               zoneId:prod.zone,
               cost:prod.cost,
-              isAutoRenew:'1'
+              isAutoRenew:'1',
+              countOrder
             }
             PromiseList.push(axios.get('ddosImitationIp/creatDdosIP.do', {params}))
             
@@ -808,8 +810,8 @@
           'gpu/': 'gpu',
           'objectstorage/': 'objectstorage',
           'ssl/': 'ssl',
-          'ddos/': 'ddos'
-          // 'ddosip/':'ddosip'
+          'ddos/': 'ddos',
+          'ddosip/':'ddosip'
         }
         return map[this.product.currentProduct]
       }

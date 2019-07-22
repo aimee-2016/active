@@ -892,6 +892,8 @@ export default {
         return "防护扩容";
       } else if (this.goodType == 26){
         return "DDoS高防云服务器"
+      }else if (this.goodType == 28){
+         return "DDoS高防IP"
       }
     },
     routerPath() {
@@ -939,6 +941,8 @@ export default {
         return "overview";//域名续费
       } else if (this.goodType == 22) {
         return "buy/ssl/";
+      }else if (this.goodType == 28){
+        return "buy/ddosip"
       }else{
          return "overview";
       }

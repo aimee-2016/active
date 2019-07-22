@@ -26,17 +26,17 @@
                             </Select>
                         </FormItem>
                         <FormItem label="使用协议" prop="agreement">
-                            <RadioGroup v-model="formValidate.agreement">
-                                <Radio label="TCP">
+                            <RadioGroup v-model="formValidate.agreement" >
+                                <Radio label="TCP" :disabled='disNo'>
                                     <span>TCP</span>
                                 </Radio>
-                                <Radio label="UDP" style="margin-left:43px;">
+                                <Radio label="UDP" style="margin-left:43px;" :disabled='disNo'>
                                     <span>UDP</span>
                                 </Radio>
                             </RadioGroup>
                         </FormItem>
                         <FormItem label="访问端口" prop="visitPort">
-                            <Input v-model="formValidate.visitPort" placeholder="请输入端口号" style="width:300px;"></Input>
+                            <Input v-model="formValidate.visitPort" placeholder="请输入端口号" style="width:300px;" :disabled='disNo'></Input>
                             <Tooltip placement="right">
                                 <div slot="content" style="width:222px;white-space: normal;">
                                     <p class="tp-po">指定接入新睿云DDoS高防IP使用的转发端口。 </p>
@@ -150,6 +150,7 @@ export default {
                 if (this.current == 2) {
                     this.current = 0;
                 } else {
+                    this.ruleData.push(formValidate);
                     this.current += 1;
                 }
             },
@@ -193,9 +194,13 @@ export default {
                         this.loading = true;
                         this.$http.get(url,{params}).then(res => {
                             if(res.status == 200 && res.data.status == 1){
-                                this.current += 1;
                                 this.loading = false;
                                 this.$Message.info(res.data.message);
+                                if(sessionStorage.getItem('ruleList')!=undefined){
+                                    this.$router.push('ddosipBack');
+                                    return;
+                                }
+                                this.current += 1;
                             }else{
                                 this.$Message.info(res.data.message);
                                 this.loading = false;

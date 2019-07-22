@@ -349,13 +349,13 @@
             title: '策略名称',
             key: 'strategyname',
           },
-          {
-            title: '状态',
-            key: 'status',
-            render: (h, params) => {
-              return h('span', {}, '可用')
-            }
-          },
+          // {
+          //   title: '状态',
+          //   key: 'status',
+          //   render: (h, params) => {
+          //     return h('span', {}, '可用')
+          //   }
+          // },
           {
             title: '自动备份保留个数',
             width: 140,
