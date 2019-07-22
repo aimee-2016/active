@@ -39,7 +39,7 @@
             </div>
           </div>
         </my-carousel-item> -->
-        <my-carousel-item class="carousel-item">
+        <!-- <my-carousel-item class="carousel-item">
           <div @click="push('/activity/BlacKActivities')"
                style="cursor: pointer;background: linear-gradient(90deg, #F7FAFF, #FFE3D9);">
             <div class="free-black">
@@ -49,7 +49,7 @@
             </div>
             </div>
           </div>
-        </my-carousel-item>
+        </my-carousel-item> -->
         <my-carousel-item class="carousel-item">
           <div @click="push('/activity/free/')"
                style="cursor: pointer;background: #F56B23;">
@@ -218,18 +218,18 @@
           //   isStart: true,
           //   weight: '1',
           // },
-          {
-            imgPath: require('../../assets/img/activecenter/blackact.png'),
-            name: '低价秒杀 买一赠一',
-            desc: '云电脑惊喜上市 提前预约 抢先体验',
-            time: '2019.5.29-2019.7.19',
-            activeObj: '新老用户皆可参加',
-            url: '/activity/BlacKActivities',
-            isStart: true,
-            weight: '1',
-            color: '#FFE5C0',
-            colortwo: '#FFBF82'
-          },
+        //   {
+        //     imgPath: require('../../assets/img/activecenter/blackact.png'),
+        //     name: '低价秒杀 买一赠一',
+        //     desc: '云电脑惊喜上市 提前预约 抢先体验',
+        //     time: '2019.5.29-2019.7.19',
+        //     activeObj: '新老用户皆可参加',
+        //     url: '/activity/BlacKActivities',
+        //     isStart: true,
+        //     weight: '1',
+        //     color: '#FFE5C0',
+        //     colortwo: '#FFBF82'
+        //   },
           {
             imgPath: require('../../assets/img/activecenter/bg-card-2.png'),
             name: '免费云主机 不限量领取',
