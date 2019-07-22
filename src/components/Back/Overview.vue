@@ -85,51 +85,59 @@
           </div>
         </div>
         <div id="right">
-          <div class="warn">
-            <p class="universal-middle" :class="warning" style="padding-bottom: 11px;border-bottom: 1px solid #e9e9e9;">
-              告警</p>
-            <div style="display: flex;justify-content: space-between;cursor:pointer">
-              <div v-for="(item,index) in warnData" :key="index"
-                   @click="togo(item.url.split('#')[0],item.url.split('#')[1])" style="">
-                <p class="universal-mini">{{item.itemName}}</p>
-                <span class="universal-large" :class="{warning:item.value!=0}">{{item.value}}项</span>
-              </div>
-            </div>
-          </div>
           <div class="notice">
             <Tabs type="card" :animated="false">
               <TabPane label="公告">
-                <div v-for="(item,index) in annData" :key="index" style="margin:11px 0px;">
-                  <p class="universal-mini"
-                     style="padding:0px;width:200px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;display: inline-block"
-                     @click="goDynamic('ann',item.pageurl)">
-                    {{item.title}}</p>
-                  <p style="font-size: 14px;float:right">{{item.createtime}}</p>
+                <div class="wrap ann">
+                  <div v-for="(item,index) in annData" :key="index" style="margin:11px 0px;">
+                    <p class="universal-mini"
+                      style="padding:0px;width:200px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;display: inline-block"
+                      @click="goDynamic('ann',item.pageurl)">
+                      {{item.title}}</p>
+                    <p style="font-size: 14px;float:right">{{item.createtime}}</p>
+                    <span class="label" v-if="currentDate==item.createtime">新</span>
+                  </div>
                 </div>
                 <a href="/news/huodonggonggao/"
                       style="color: #2A99F2;margin-top: 10px;display: block;font-size: 14px;cursor: pointer;">查看更多</a>
               </TabPane>
               <TabPane label="活动">
-                <div v-for="(item,index) in activeData" :key="index" style="margin:11px 0px;">
-                  <p class="universal-mini"
-                     style="padding:0px;width:200px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;display: inline-block"
-                     @click="goDynamic('active',item.pageurl)">
-                    {{item.title}}</p>
-                  <p style="font-size: 14px;float:right">{{item.createtime}}</p>
+                <div class="wrap">
+                  <div v-for="(item,index) in activeData" :key="index" style="margin:11px 0px;">
+                    <p class="universal-mini"
+                      style="padding:0px;width:200px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;display: inline-block"
+                      @click="goDynamic('active',item.pageurl)">
+                      {{item.title}}</p>
+                    <p style="font-size: 14px;float:right">{{item.createtime}}</p>
+                  </div>
                 </div>
                 <a href="/news/huodonggonggao/"
                       style="color: #2A99F2;margin-top: 10px;display: block;font-size: 14px;cursor: pointer;">查看更多</a>
               </TabPane>
               <TabPane label="新闻">
-                <div v-for="(item,index) in newsData" :key="index" style="margin:11px 0px;">
-                  <p class="universal-mini"
-                     style="padding:0px;width:200px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;display: inline-block"
-                     @click="goDynamic('news',item.pageurl)">
-                    {{item.title}}</p>
-                  <p style="font-size: 14px;float:right">{{item.createtime}}</p>
+                <div class="wrap">
+                  <div v-for="(item,index) in newsData" :key="index" style="margin:11px 0px;">
+                    <p class="universal-mini"
+                      style="padding:0px;width:200px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;display: inline-block"
+                      @click="goDynamic('news',item.pageurl)">
+                      {{item.title}}</p>
+                    <p style="font-size: 14px;float:right">{{item.createtime}}</p>
+                  </div>
                 </div>
                 <a href="/news/"
                       style="color: #2A99F2;margin-top: 10px;display: block;font-size: 14px;cursor: pointer;">查看更多</a>
+              </TabPane>
+              <TabPane label="消息中心">
+                <div class="wrap">
+                  <div v-for="(item,index) in msgData" :key="index" style="margin:11px 0px;">
+                    <p class="universal-mini"
+                      style="padding:0px;width:200px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;display: inline-block"
+                      @click="$router.push({name:'msgCenter',params:{read:0}})">
+                      {{item.content}}</p>
+                    <p style="font-size: 14px;float:right">{{item.publishtime}}</p>
+                  </div>
+                </div>
+                <router-link :to="{ name:'msgCenter',params:{read:0}}" style="color: #2A99F2;margin-top: 10px;display: block;font-size: 14px;cursor: pointer;">查看更多</router-link>
               </TabPane>
             </Tabs>
             <!--<div>
@@ -143,6 +151,17 @@
               <span @click="$router.push('dynamic')"
                     style="color: #2A99F2;margin-top: 10px;display: block;font-size: 14px;cursor: pointer;">查看更多</span>
             </div>-->
+          </div>
+          <div class="warn">
+            <p class="universal-middle" :class="warning" style="padding-bottom: 11px;border-bottom: 1px solid #e9e9e9;">
+              告警</p>
+            <div style="display: flex;justify-content: space-between;cursor:pointer">
+              <div v-for="(item,index) in warnData" :key="index"
+                   @click="togo(item.url.split('#')[0],item.url.split('#')[1])" style="">
+                <p class="universal-mini">{{item.itemName}}</p>
+                <span class="universal-large" :class="{warning:item.value!=0}">{{item.value}}项</span>
+              </div>
+            </div>
           </div>
           <div>
             <Carousel v-model="currentCarouse">
@@ -209,6 +228,7 @@
         activeData: [],
         // 新闻
         newsData: [],
+        msgData: [],
         // 广告
         ads: [],
         // 资源使用情况
@@ -244,7 +264,13 @@
           zoneId: zoneId
         }
       })
-      Promise.all([accountInfo, adver, source, Announcement]).then(values => {
+      var msg = axios.post('user/getEventNotifyList.do', {
+        isRead: '0',
+        page: 1,
+        rows: 4,
+        zoneId: zoneId
+      })
+      Promise.all([accountInfo, adver, source, Announcement,msg]).then(values => {
         next(vm => {
           vm.setData(values)
         })
@@ -320,6 +346,13 @@
           this.annData = response.data.result.announcement_list
           this.activeData = response.data.result.activity_list
           this.newsData = response.data.result.news_list
+        }
+        response = values[4]
+        if (response.status == 200 && response.data.status == 1) {
+          this.msgData = response.data.result
+          this.msgData.map(item=>{
+            return item.publishtime = item.publishtime.split(' ')[0]
+          })
         }
       },
       // 区域变更，刷新数据
@@ -425,6 +458,9 @@
         } else if (this.authInfo&&this.authInfo.authtype == 1 && this.authInfo.checkstatus == 2) {
           return '企业认证中'
         }
+      },
+      currentDate() {
+        return new Date().format('yyyy-MM-dd')
       }
     },
     watch: {
@@ -636,13 +672,32 @@
           }
           .notice {
             padding: 20px;
-            height: 195px;
+            height: 225px;
             .universal-mini {
               padding: 11px 0px;
               font-size: 14px;
               cursor: pointer;
               span {
                 float: right;
+              }
+            }
+            .wrap {
+              height: 110px;
+            }
+            .ann {
+              > div {
+                position: relative;
+              }
+              span {
+                position: absolute;
+                top: -1px;
+                display: inline-block;
+                height: 16px;
+                width: 16px;
+                background: #fc3333;
+                color: #fff;
+                line-height: 16px;
+                text-align: center;
               }
             }
             a {

@@ -234,6 +234,9 @@
       this.getData('all')
       this.getData('notRead')
       this.getData('read')
+      if(this.$route.params.read==0){
+        this.pane='notRead'
+      }
     },
     methods: {
       getData(type){

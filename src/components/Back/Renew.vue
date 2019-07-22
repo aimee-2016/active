@@ -59,6 +59,11 @@
                     </p>
                     <Table :columns="columns" :data="natList" @on-selection-change="select" v-show="natOpened"></Table>
                   </div>
+                  <div class="item-wrapper">
+                    <p>云数据库（{{dbList.length}}）<span :class="{opened:dbOpened}" @click="dbOpened=!dbOpened">{{dbOpened?'收起':'展开'}}</span>
+                    </p>
+                    <Table :columns="columns" :data="dbList" @on-selection-change="select" v-show="dbOpened"></Table>
+                  </div>
                 </div>
                 <div v-else class="no-resource">
                   <div>
@@ -110,6 +115,12 @@
                     </p>
                     <Table :columns="columns" :data="hourNatList" @on-selection-change="select"
                            v-show="natOpened"></Table>
+                  </div>
+                  <div class="item-wrapper">
+                    <p>云数据库（{{dbList.length}}）<span :class="{opened:dbOpened}" @click="dbOpened=!dbOpened">{{dbOpened?'收起':'展开'}}</span>
+                    </p>
+                    <Table :columns="columns" :data="hourDbList" @on-selection-change="select"
+                           v-show="dbOpened"></Table>
                   </div>
                 </div>
                 <div v-else class="no-resource">
@@ -166,6 +177,13 @@
                     <Table :columns="columns" :data="weekNatList" @on-selection-change="select"
                            v-show="weekNatOpened"></Table>
                   </div>
+                  <div class="item-wrapper">
+                    <p>云数据库（{{dbList.length}}）<span :class="{opened:weekDbOpened}"
+                                                      @click="weekDbOpened=!weekDbOpened">{{weekDbOpened?'收起':'展开'}}</span>
+                    </p>
+                    <Table :columns="columns" :data="weekDbList" @on-selection-change="select"
+                           v-show="weekDbOpened"></Table>
+                  </div>
                 </div>
                 <div v-else class="no-resource">
                   <div>
@@ -221,6 +239,13 @@
                     </p>
                     <Table :columns="columns" :data="expiredNatList" @on-selection-change="select"
                            v-show="expiredNatOpened"></Table>
+                  </div>
+                  <div class="item-wrapper">
+                    <p>云数据库（{{dbList.length}}）<span :class="{opened:expiredDbOpened}"
+                                                      @click="expiredDbOpened=!expiredDbOpened">{{expiredDbOpened?'收起':'展开'}}</span>
+                    </p>
+                    <Table :columns="columns" :data="expiredDbList" @on-selection-change="select"
+                           v-show="expiredDbOpened"></Table>
                   </div>
                 </div>
                 <div v-else class="no-resource">
@@ -361,7 +386,8 @@
         natList: [],
         natOpened: true,
         linkRenew: true,
-
+        dbList: [],
+        dbOpened: true,
         // 24 Hours
         hourHostList: [],
         hourHostOpened: true,
@@ -371,6 +397,8 @@
         hourDiskOpened: true,
         hourNatList: [],
         hourNatOpened: true,
+        hourDbList: [],
+        hourDbOpened: true,
         //linkRenew: true,
 
         // week
@@ -382,6 +410,8 @@
         weekDiskOpened: true,
         weekNatList: [],
         weekNatOpened: true,
+        weekDbList: [],
+        weekDbOpened: true,
         //linkRenew: true,
 
         // expired
@@ -393,6 +423,8 @@
         expiredDiskOpened: true,
         expiredNatList: [],
         expiredNatOpened: true,
+        expiredDbList: [],
+        expiredDbOpened: true,
         //linkRenew: true,
 
         selectType: '',
@@ -414,10 +446,10 @@
         },
 
         map: {
-          '全部': ['host', 'ip', 'disk', 'nat'],
-          '24小时之内': ['hourHost', 'hourIp', 'hourDisk', 'hourNat'],
-          '7天内': ['weekHost', 'weekIp', 'weekDisk', 'weekNat'],
-          '已过期': ['expiredHost', 'expiredIp', 'expiredDisk', 'expiredNat']
+          '全部': ['host', 'ip', 'disk', 'nat','db'],
+          '24小时之内': ['hourHost', 'hourIp', 'hourDisk', 'hourNat','db'],
+          '7天内': ['weekHost', 'weekIp', 'weekDisk', 'weekNat','db'],
+          '已过期': ['expiredHost', 'expiredIp', 'expiredDisk', 'expiredNat','db']
         },
 
         selectArray: [],
@@ -426,7 +458,8 @@
           ipArray: [],
           hostArray: [],
           diskArray: [],
-          natArray: []
+          natArray: [],
+          dbArray: [],
         },
 
         cost: '--',
@@ -633,6 +666,17 @@
                     this.weekNatList.push(deepCopy(item))
                   }
                   break;
+                case 'db':
+                  this.dbList.push(item)
+                  if (item.remainingDay < 0) {
+                    this.expiredDbList.push(deepCopy(item))
+                  } else if (item.remainingDay == 0) {
+                    this.hourDbList.push(deepCopy(item))
+                    this.weekDbList.push(deepCopy(item))
+                  } else if (item.remainingDay < 7) {
+                    this.weekDbList.push(deepCopy(item))
+                  }
+                  break;
               }
             })
           }
@@ -644,6 +688,7 @@
         this.requestParam.hostArray = []
         this.requestParam.diskArray = []
         this.requestParam.natArray = []
+        this.requestParam.dbArray = []
         this.map[this.tabLabel].forEach(i => {
           this[`${i}List`].forEach(item => {
             if (item._checked) {
@@ -686,13 +731,14 @@
         this.requestParam.hostArray = []
         this.requestParam.diskArray = []
         this.requestParam.natArray = []
+        this.requestParam.dbArray = []
         this.renewal = true
         this.renewalItem = item
         this.requestParam[`${item.type}Array`].push(item.id)
       },
       ok() {
         let list = [];
-        [{type: 'ip', id: 2}, {type: 'host', id: 0}, {type: 'disk', id: 1}, {type: 'nat', id: 4}].forEach(i => {
+        [{type: 'ip', id: 2}, {type: 'host', id: 0}, {type: 'disk', id: 1}, {type: 'nat', id: 4}, {type: 'db', id: 5}].forEach(i => {
           this.requestParam[`${i.type}Array`].forEach(item => {
             list.push({type: i.id, id: item})
           })
@@ -732,7 +778,8 @@
               ipIdArr: this.requestParam.ipArray.toString(),
               hostIdArr: this.requestParam.hostArray.toString(),
               diskArr: this.requestParam.diskArray.toString(),
-              natArr: this.requestParam.natArray.toString()
+              natArr: this.requestParam.natArray.toString(),
+              dbArr: this.requestParam.dbArray.toString()
             }
           })
             .then((response) => {
@@ -752,10 +799,10 @@
     computed: {
       allShow() {
         return {
-          all: this.hostList.length + this.ipList.length + this.diskList.length + this.natList.length,
-          hour: this.hourHostList.length + this.hourIpList.length + this.hourDiskList.length + this.hourNatList.length,
-          day: this.weekHostList.length + this.weekIpList.length + this.weekDiskList.length + this.weekNatList.length,
-          expired: this.expiredHostList.length + this.expiredIpList.length + this.expiredDiskList.length + this.expiredNatList.length,
+          all: this.hostList.length + this.ipList.length + this.diskList.length + this.natList.length + this.dbList.length,
+          hour: this.hourHostList.length + this.hourIpList.length + this.hourDiskList.length + this.hourNatList.length + this.hourDbList.length,
+          day: this.weekHostList.length + this.weekIpList.length + this.weekDiskList.length + this.weekNatList.length + this.weekDbList.length,
+          expired: this.expiredHostList.length + this.expiredIpList.length + this.expiredDiskList.length + this.expiredNatList.length + this.expiredDbList.length,
         }
       }
     }

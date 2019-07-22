@@ -33,7 +33,7 @@
               </div>
               <div style="padding-top:20px">
                 <!--公共展示区-->
-                <div class="public" v-if="prod.type!='Pssl' || prod.type !='Pddosip'">
+                <div class="public" v-if="prod.type != 'Pddosip'  && prod.type!='Pssl' ">
                   <p class="item"><span class="hidden">$</span><span class="title">区域</span><span
                     class="hidden">#</span>{{prod.zone.zonename}}
                   </p>
@@ -624,21 +624,22 @@
               countOrder
             }
             PromiseList.push(axios.post('ruiradosPrice/createOrder.do', params))
-          } else if(prod.type == 'ddosip') { 
+          } else if(prod.type == 'Pddosip') { 
             let params = {
-              packageName:prod.packagename,
-              elasticband:prod.bandwidthIndex,
+              packageName:prod.packageName,
+              elasticband:prod.elasticband,
               port:prod.port,
-              website:prod.domainCount,
-              serviceband:prod.bandWidth,
-              count:prod.buyNumber,
+              website:prod.website,
+              serviceband:prod.serviceband,
+              count:prod.count,
               timeVlue:prod.timeForm.currentTimeValue.value,
-              timeType: prod.timeForm.currentTimeType == 'annual' ? this.timeForm.currentTimeValue.type : 'current',
-              zoneId:prod.selectList.zoneid,
-              cost:prod.price,
+              timeType: prod.timeForm.currentTimeType == 'annual' ? prod.timeForm.currentTimeValue.type : 'current',
+              zoneId:prod.zone,
+              cost:prod.cost,
               isAutoRenew:'1'
             }
-              PromiseList.push(axios.get('ddosImitationIp/creatDdosIP.do', {params}))
+            PromiseList.push(axios.get('ddosImitationIp/creatDdosIP.do', {params}))
+            
           } else if (prod.type == 'PDdosHost') { // 高防主机Ddos
             var params = {
               zoneId: prod.zone.zoneid,

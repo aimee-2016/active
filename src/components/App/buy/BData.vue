@@ -63,7 +63,7 @@
                       </div>
                       <Dropdown-menu slot="list">
                         <Dropdown-item v-for="(system,index1) in item.systemList" :key="index1"
-                                       :name="`${system.dbname}#${system.systemtemplateid}#${index}#${system.dbloginname}#${system.dbport}`"
+                                       :name="`${system.dbname}#${system.systemtemplateid}#${index}#${system.dbloginname}#${system.dbport}#${system.defaultDbName}`"
                                        style="white-space: pre-wrap;display:block;">
                           <span>{{system.dbname}}</span>
                         </Dropdown-item>
@@ -310,9 +310,19 @@
           <div class="item-wrapper">
             <div style="display: flex">
               <div>
+                <p class="item-title">实例名称</p>
+              </div>
+              <Input v-model="dbName" placeholder="请输入数据库名称" style="width: 300px" @on-change="computerNameWarning=''"></Input>
+              <span style="line-height: 32px;color:red;margin-left:10px">{{computerNameWarning}}</span>
+            </div>
+          </div>
+          <div class="item-wrapper">
+            <div style="display: flex">
+              <div>
                 <p class="item-title">数据库名称</p>
               </div>
-              <Input v-model="dbName" placeholder="请输入数据库名称" style="width: 300px"></Input>
+              <span
+                style="padding: 10px 0px; font-size: 14px; color: rgb(102, 102, 102);">{{defaultDbName}}</span>
             </div>
           </div>
           <div class="item-wrapper">
@@ -600,9 +610,12 @@
         account: '',
         // 开放端口
         port: '',
+        // 实例名称
+        dbName: '',
         // 数据库名称
-        dbName: ''
-
+        defaultDbName: '',
+        // 实例名称提示信息
+        computerNameWarning: '',
       }
     },
     created() {
@@ -649,6 +662,8 @@
         //开放端口
         this.port = arg[4]
         this.publicList[arg[2]].selectSystem = arg[0]
+        //数据库名称
+        this.defaultDbName = arg[5]
       },
       // 切换核心数
       changeKernel(cpu) {
@@ -789,6 +804,10 @@
           this.mirrorShow = true
           return
         }
+        if (!this.dbName||this.dbName.indexOf(" ") != -1) {
+            this.computerNameWarning = '请输入实例名称，不能包含空格'
+            return
+          }
         if (!(this.passwordForm.firstDegree&&this.passwordForm.secondDegree&&this.passwordForm.thirdDegree)) {
             this.passwordWarning = '您输入的密码不符合格式要求'
             return
@@ -830,6 +849,10 @@
           this.mirrorShow = true
           return
         }
+        if (!this.dbName||this.dbName.indexOf(" ") != -1) {
+            this.computerNameWarning = '请输入实例名称，不能包含空格'
+            return
+          }
         if (!(this.passwordForm.firstDegree&&this.passwordForm.secondDegree&&this.passwordForm.thirdDegree)) {
             this.passwordWarning = '您输入的密码不符合格式要求'
             return

@@ -49,8 +49,8 @@
                  <div class="bm-rg">弹性防护宽带 </div>
                     <div class="item-wrapper" style="width:77%;margin-top:0;">
                             <div v-for="(item,index) in mealList" :key="index" class="timeType"
-                                :class="{zoneSelect:bandwidths.bandwidthIndex==item.ddosprotectnumber}"
-                                @click="bandwidths.bandwidthIndex=item.ddosprotectnumber;queryElasticbandprice()"
+                                :class="bandwidths.bandwidthIndex  > item.ddosprotectnumber && item.ddosprotectnumber < meal ? 'dis-no':bandwidths.bandwidthIndex==item.ddosprotectnumber ? 'zoneSelect':''"
+                                @click="elasticClick(item)"
                             :style="item.ddosprotectnumber == 60 ||  item.ddosprotectnumber == 300 ?'border-right:1px solid #d9d9d9;':''">
                                 {{item.ddosprotectnumber+'GB'}}
                                 <!-- <span v-if="item.type=='year'" class="discount-icon">惠</span> -->
@@ -62,14 +62,14 @@
             <div class="b-meal">
                 <div class="bm-rg">端口数</div>
                <div>
-                   <InputNumber v-model="port" :step='1' :min='50' :editable="false"  @on-change='changeTime'></InputNumber><span style="margin-left:5px;color:#999">个</span>
+                   <InputNumber v-model="port" :step='1' :min='selectList.porttransnumber' :editable="false"  @on-change='changeTime("port")'></InputNumber><span style="margin-left:5px;color:#999">个</span>
                    <p class="bm-fn">50个以上，每增加一个，增加200元/个/月</p>
                 </div>
              </div>
              <div class="b-meal">
                 <div class="bm-rg">域名防护数</div>
                <div>
-                   <InputNumber v-model="domainCount"  :step='1' :min='100' :editable="false"  @on-change='changeTime'></InputNumber><span style="margin-left:5px;color:#999">个</span>
+                   <InputNumber v-model="domainCount"  :step='1' :min='selectList.domainnumber' :editable="false"  @on-change='changeTime("doamin")'></InputNumber><span style="margin-left:5px;color:#999">个</span>
                    <p class="bm-fn">100个以上，每增加一个，增加200元/个/月</p>
                 </div>
              </div>
@@ -79,13 +79,13 @@
                    <i-slider
                         v-model="bandWidth"
                         unit="MB"
-                        :min=1
+                        :min='selectList.bandwith'
                         :max=400
                         :step=1
                         :points="[50,100,150,200,300]"
                         style="margin-right:30px;vertical-align: middle;">
                     </i-slider>
-                    <InputNumber :max="400" :min="1" v-model="bandWidth" size="large"
+                    <InputNumber :max="400" :min="selectList.bandwith" v-model="bandWidth" size="large"
                            style="position: relative;bottom: 5px" :precision="0"></InputNumber>
                 </div>
              </div>
@@ -114,7 +114,7 @@
              <div class="b-meal">
                 <div class="bm-rg">价格</div>
                 <div class="bm-price">
-                    {{price}}元/月
+                    {{totalPrice}}元
                 </div>
              </div>
          </div>
@@ -125,7 +125,7 @@
                   @click="$router.push('computed/3-1')">查看计价详情</p>
                 <p style="text-align: right;font-size: 14px;color: #666666;margin-bottom: 10px;">
                    <!-- <span v-if="timeForm.currentTimeType == 'annual'&&timeForm.currentTimeValue.type == 'year'">折后费用：</span> -->
-                 <span >费用：</span><span style="font-size: 24px;color: #EE6723;">{{price.toFixed(2)}}元</span><span
+                 <span >费用：</span><span style="font-size: 24px;color: #EE6723;">{{totalPrice.toFixed(2)}}元</span><span
                   v-show="timeForm.currentTimeType == 'current'">/小时</span>
                 </p>
                 <!-- <p style="text-align: right;font-size: 14px;color: #666666;" v-if="coupon!=0">已省：<span
@@ -213,7 +213,7 @@
         bandwidths:{
             bandwidthList:[
             ],
-            bandwidthIndex:'1'
+            bandwidthIndex:10
         },
 
         // 计费方式
@@ -250,11 +250,15 @@
         elasticIpPrice:0,
         businessPrice:0,
         protPirce:0,
-        wisetPrice:0
+        wisetPrice:0,
+        originNum:0,
+        origindNum:0,
+        dPrice:0,
+        pPrice:0
       }
     },
     created(){
-      this.queryIPPrice();
+      // this.queryIPPrice();
       this.queryVpc();
     
     },
@@ -275,6 +279,15 @@
             this.$Message.info(res.data.message);
           }
         })
+      },
+
+      elasticClick(item){
+        if(this.bandwidths.bandwidthIndex  > item.ddosprotectnumber && item.ddosprotectnumber < this.meal ){
+          return
+        }
+        this.bandwidths.bandwidthIndex=item.ddosprotectnumber;
+     
+        this.queryElasticbandprice();
       },
 
       // 查询弹性防护带宽价格
@@ -315,7 +328,26 @@
         }).catch(err =>{})
       }),
 
-      changeTime(){
+      changeTime(name){
+        if(name != undefined){
+          switch (name){
+            case 'port':
+            if(this.originNum < this.port){
+              this.pPrice +=200;
+            }else{
+              this.pPrice -=200;
+            }
+            break;
+            case 'domain':
+            if(this.origindNum < this.domainCount){
+              this.dPrice += 200;
+            }else{
+              this.dPrice -=200;
+            }
+          }
+          this.originNum = this.port;
+          this.origindNum = this.domainCount;
+        }
        axios.get('ddosImitationIp/packageprice.do',{
          params:{
           packageName:this.selectList.packagename,
@@ -329,6 +361,8 @@
        }).then(res => {
          if(res.status == 200 && res.data.status == 1){
            this.protPirce = res.data.price;
+           this.queryElasticbandprice();
+            this.queryPackagePrice();
          }else{
            this.$Message.info(res.data.message);
          }
@@ -354,9 +388,7 @@
           zone: this.selectList.zoneid,
           line:this.selectList.zonename,
           timeForm: this.timeForm,
-          bandWidth: this.bandWidth,
-          autoRenewal: this.autoRenewal,
-          cost: this.price,
+          cost: this.totalPrice,
            packageName:this.selectList.packagename,
             elasticband:this.bandwidths.bandwidthIndex,
             port:this.port,
@@ -364,38 +396,40 @@
             serviceband:this.bandWidth,
             count:this.buyNumber,
             isAutoRenew:'1',
-            ddosProtectNumber:this.selectList.ddosProtectNumber
+            ddosProtectNumber:this.selectList.ddosprotectnumber
         }
         this.$parent.cart.push(JSON.parse(JSON.stringify(prod)))
       },
-      queryIPPrice: debounce(500, function () {
-        var params = {
-          brand: this.bandWidth,
-          timeType: this.timeForm.currentTimeValue.type,
-          timeValue: this.timeForm.currentTimeValue.value,
-          zoneId: this.zone.zoneid
-        }
-        if (this.timeForm.currentTimeType === 'current') {
-          params.timeType = 'current'
-        }
-        axios.post('device/queryIpPrice.do', params).then(response => {
-          this.cost = response.data.cost
-          if (response.data.coupon) {
-            this.coupon = response.data.coupon
-          } else {
-            this.coupon = 0
-          }
-        })
-      }),
+      // queryIPPrice: debounce(500, function () {
+      //   var params = {
+      //     brand: this.bandWidth,
+      //     timeType: this.timeForm.currentTimeValue.type,
+      //     timeValue: this.timeForm.currentTimeValue.value,
+      //     zoneId: this.zone.zoneid
+      //   }
+      //   if (this.timeForm.currentTimeType === 'current') {
+      //     params.timeType = 'current'
+      //   }
+      //   axios.post('device/queryIpPrice.do', params).then(response => {
+      //     this.cost = response.data.cost
+      //     if (response.data.coupon) {
+      //       this.coupon = response.data.coupon
+      //     } else {
+      //       this.coupon = 0
+      //     }
+      //   })
+      // }),
       zoneChange(item,index){
         // if(item.buyover != 1){
          this.meal = item;
          this.selectList = this.mealList[index];
          this.bandwidths.bandwidthList = this.mealList[index];
          this.bandwidths.bandwidthIndex = item;
-         this.port = this.mealList[index].porttransnumber;
-         this.domainCount =  this.mealList[index].domainnumber;
+         this.port =  this.originNum = this.mealList[index].porttransnumber;
+         this.domainCount = this.origindNum = this.mealList[index].domainnumber;
          this.bandWidth = this.mealList[index].bandwith;
+         this.changeTime();
+         
         // }
       },
 
@@ -433,7 +467,17 @@
         return this.$store.state.userInfo
       },
       price(){
-        return this.elasticIpPrice +  this.businessPrice + this.protPirce;
+        return this.elasticIpPrice +  this.businessPrice + this.pPrice+ this.dPrice +this.selectList.price;
+      },
+      totalPrice(){
+       return this.elasticIpPrice +  this.businessPrice + this.protPirce;
+      },
+      disNo(){
+       if(this.bandwidths.bandwidthIndex  > item.ddosprotectnumber && item.ddosprotectnumber < this.meal ){
+         return true
+       }else{
+         return false;
+       }
       }
     },
     watch: {
@@ -810,5 +854,11 @@
       .bm-price{
           color:#F85E1D;font-size:18px;
       }
+  }
+  .dis-no{
+    color: #bbbec4;
+    background-color: #f7f7f7;
+    border-color: 1px solid #dddee1;
+    cursor: not-allowed !important;
   }
 </style>
