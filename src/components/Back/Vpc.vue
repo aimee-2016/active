@@ -65,7 +65,7 @@
                     </router-link>
                   </div>
                   <div class="item-wrap">
-                    <router-link to="firewall" style="display:inline-block;width:265px;">
+                    <router-link to="firewallList" style="display:inline-block;width:265px;">
                       <div class="item"><p>防火墙：<span>{{item.aclCount}}</span></p></div>
                     </router-link>
                   </div>
