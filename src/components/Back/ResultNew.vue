@@ -165,6 +165,8 @@
           router = 'BackDdos'
         }else if(name == '4'){
           router = 'overview';
+        }else if(name == '28'){
+          router = 'ddosipback'
         }else{
            router = 'overview';
         }

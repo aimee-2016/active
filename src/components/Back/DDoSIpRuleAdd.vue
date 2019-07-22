@@ -26,11 +26,11 @@
                             </Select>
                         </FormItem>
                         <FormItem label="使用协议" prop="agreement">
-                            <RadioGroup v-model="formValidate.agreement" :disabled='disNo'>
-                                <Radio label="TCP">
+                            <RadioGroup v-model="formValidate.agreement" >
+                                <Radio label="TCP" :disabled='disNo'>
                                     <span>TCP</span>
                                 </Radio>
-                                <Radio label="UDP" style="margin-left:43px;">
+                                <Radio label="UDP" style="margin-left:43px;" :disabled='disNo'>
                                     <span>UDP</span>
                                 </Radio>
                             </RadioGroup>
@@ -150,6 +150,7 @@ export default {
                 if (this.current == 2) {
                     this.current = 0;
                 } else {
+                    this.ruleData.push(formValidate);
                     this.current += 1;
                 }
             },
@@ -193,9 +194,13 @@ export default {
                         this.loading = true;
                         this.$http.get(url,{params}).then(res => {
                             if(res.status == 200 && res.data.status == 1){
-                                this.current += 1;
                                 this.loading = false;
                                 this.$Message.info(res.data.message);
+                                if(sessionStorage.getItem('ruleList')!=undefined){
+                                    this.$router.push('ddosipBack');
+                                    return;
+                                }
+                                this.current += 1;
                             }else{
                                 this.$Message.info(res.data.message);
                                 this.loading = false;
