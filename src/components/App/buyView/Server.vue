@@ -24,7 +24,8 @@
           v-for="(item,index) in typeGroup"
           :key="index"
           class="type-item"
-          :class="{selected: index === 0,disabled: index === 3}"
+          :class="{selected: serverType === item.value,disabled: index === 3}"
+          @click="changeServerType(item)"
         >
           <div class="type-img">
             <img :src="item.imgurl" alt="buy type" />
@@ -122,14 +123,30 @@
         border-radius: 4px;
         border: 1px solid rgba(233, 233, 233, 1);
         padding-bottom: 15px;
+        position: relative;
         &.selected {
           box-shadow: 0px 2px 12px -4px rgba(66, 151, 242, 0.43);
           border: 1px solid rgba(66, 151, 242, 1);
+          &::before {
+            content: "";
+            display: inline-block;
+            height: 31px;
+            width: 34px;
+            background: url("../../../assets/img/buy/buy_icon1.png");
+            position: absolute;
+            right: 0;
+            top: 0;
+          }
         }
         &.disabled {
           background: rgba(233, 233, 233, 0.22);
           border: 1px solid rgba(233, 233, 233, 1);
           cursor: not-allowed;
+          .type-title {
+            > h3 {
+              color: rgba(153, 153, 153, 1);
+            }
+          }
         }
         .type-img {
           padding-top: 15px;
@@ -159,22 +176,27 @@ export default {
     return {
       buyStep: 0,
       buyStepGroup: ["主机配置", "网络与带宽", "登陆信息", "订单确认"],
+      serverType: "cloudServer",
       typeGroup: [
         {
           imgurl: require("../../../assets/img/buy/buy_serverType1.png"),
-          title: "云服务器"
+          title: "云服务器",
+          value: "cloudServer"
         },
         {
           imgurl: require("../../../assets/img/buy/buy_serverType2.png"),
-          title: "高防服务器"
+          title: "高防服务器",
+          value: "NOKIAServer"
         },
         {
           imgurl: require("../../../assets/img/buy/buy_serverType3.png"),
-          title: "GPU服务器"
+          title: "GPU服务器",
+          value: "GPUServer"
         },
         {
           imgurl: require("../../../assets/img/buy/buy_serverType4.png"),
-          title: "裸金属服务器"
+          title: "裸金属服务器",
+          value: "bareMetalServer"
         }
       ]
     };
@@ -182,6 +204,9 @@ export default {
   methods: {
     toOldVersion(val) {
       this.$router.push("/buy/host");
+    },
+    changeServerType(item) {
+      this.serverType = item.value;
     }
   }
 };
