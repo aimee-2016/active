@@ -71,6 +71,7 @@ const ProductShare = () =>import('@/components/App/groupbooking/sharePage')
 const GBActivity = () =>import('@/components/App/groupbooking/activityPage')
 // const FrActive1 = () =>import('@/components/App/active/freeReceive')
 const FrActive = () =>import('@/components/App/active/freeReceive.1')
+const ddosActive = () =>import('@/components/App/active/ddos')
 
 const DBActive = () =>import('@/components/App/active/DatabaseActive')
 
@@ -359,6 +360,7 @@ var router = new Router({
         {path: 'activity/free', name: 'activity/free', component: FrActive},
         // {path: 'activity/free1', name: 'activity/free1', component: FrActive1},
         {path: 'wonderfulDay',name: 'wonderfulDay', component:wonderfulDay},
+        {path: 'activity/ddosActive',name: 'activity/ddosActive', component:ddosActive},
 
         {path: 'activity/hotdatabase', name: 'activity/hotdatabase', component: DBActive},
         {path: 'AnniversaryActive', name: 'AnniversaryActive', component: AnniversaryActive},
