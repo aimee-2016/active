@@ -482,7 +482,7 @@ var router = new Router({
         {path: 'cloudDatabase', name: 'cloudDatabase', component: CloudDatabase},
         // {path: 'cloudDatabase', name: 'database', component: Database},
         {path: 'CloudDataManage', name: 'cloudDataManage', component: CloudDataManage},
-        // {path: 'databaseManage', name: 'databaseManage', component: DatabaseManage},
+        {path: 'databaseManage', name: 'databaseManage', component: DatabaseManage},
         {path: 'dataBaseUpgrade', name: 'dataBaseUpgrade', component: dataBaseUpgrade},
         // {path: 'dataBaseUpgrade', name: 'dataBaseUpgrade1', component: dataBaseUpgrade1},
         {path: 'GpuList', name: 'GpuList', component: GpuList},

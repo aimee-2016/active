@@ -417,7 +417,7 @@
                   <div><i :class="{reach: passwordForm.secondDegree}"></i>
                     <p>不能输入连续6位数字或字母，如123456aA</p></div>
                   <div><i :class="{reach: passwordForm.firstDegree}"></i>
-                    <p>长度8~30位，推荐使用12位以上的密码</p></div>
+                    <p>长度8~20位，推荐使用12位以上的密码</p></div>
                   <div><i :class="{reach: passwordForm.thirdDegree}"></i>
                     <p>至少包含：小写字母，大写字母，数字</p></div>
                   <div><p style="color:rgba(102,102,102,1);">可用特殊符号：~:，*_</p></div>
@@ -576,8 +576,8 @@
     data(){
       var regExp = /(?!(^[^a-z]+$))(?!(^[^A-Z]+$))(?!(^[^\d]+$))^[\w`~$_^&*,-?.+=]{8,32}$/
       const validaRegisteredPassWord = (rule, value, callback) => {
-        if (value.length < 8 || value.length > 30) {
-          callback(new Error('密码长度8-30字符'));
+        if (value.length < 8 || value.length > 20) {
+          callback(new Error('密码长度8-20字符'));
         } else if (!regExps.registerPasswordVail(value)) {
           callback(new Error('密码必须包含数字和字母大小写,不限特殊字符和空格'));
         } else {
@@ -595,7 +595,7 @@
         if (!value) {
           callback(new Error('密码不能为空'));
         } else if (!regExps.test(value)) {
-          callback(new Error('新密码由6-23位的字母数字组成，必须包含大小写字母、数字'));
+          callback(new Error('新密码由6-20位的字母数字组成，必须包含大小写字母、数字'));
         } else {
           if (regExps.test(value)) {
             this.$refs.resetPasswordForm.validateField('confirmPassword');

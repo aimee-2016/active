@@ -287,7 +287,7 @@
                   click: () => {
                     if(!this.notAuth){
                       sessionStorage.setItem('databaseInfo', JSON.stringify(params.row))
-                      this.$router.push('CloudDataManage')
+                      this.$router.push('databaseManage')
                     }
                   }
                 }

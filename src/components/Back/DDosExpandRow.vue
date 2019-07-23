@@ -15,7 +15,7 @@
                     <span class="dp-dk"  v-for="(item,index) in blackList" :key="index">{{item}}</span>
                 </div>
                 <div style="margin-top:10px;" v-else>
-                    <Input  type="textarea" v-model="blackValue"> </Input>
+                    <Input  type="textarea" v-model="blackValue" placeholder="请以英文半角分号‘;’分隔"> </Input>
                 </div>
             </div>
         </div>
@@ -34,7 +34,7 @@
                     <span class="dp-dk"  v-for="(item,index) in whitList" :key="index">{{item}}</span>
                 </div>
                 <div style="margin-top:10px;" v-else>
-                    <Input  type="textarea" v-model="whitValue"> </Input>
+                    <Input  type="textarea" v-model="whitValue" placeholder="请以英文半角分号‘;’分隔"> </Input>
                 </div>
             </div>
         </div>

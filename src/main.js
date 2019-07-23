@@ -46,7 +46,7 @@ axios.defaults.withCredentials = true
 
 // axios.defaults.baseURL = 'https://zschj.xrcloud.net/'
  axios.defaults.baseURL = 'https://kaifa.xrcloud.net/'
-//axios.defaults.baseURL = 'https://www.xrcloud.net/'
+// axios.defaults.baseURL = 'https://www.xrcloud.net/'
 
 
 

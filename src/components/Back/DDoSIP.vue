@@ -8,9 +8,9 @@
                     <button id="refresh_button" @click="$router.go(0)" style="margin-top: 10px;">刷新</button>
                 </div>
                  <div class="text-box">
-                    <p></p>
+                    <p>依托于庞大的节点、带宽资源，高达10T的云防护容量，全方位防护各类DDoS和CC攻击，保证您的业务稳定在线。</p>
                 </div>
-                 <Tabs type="card" :animated='false' :value='tabsValue'>
+                 <Tabs type="card" :animated='false' :value='tabsValue' @on-click='tabsChange'>
                     <TabPane label="概览" name='概览'>
                         <div class="dp-row">
                             <RadioGroup v-model="overviewRadio" type="button" @on-change='statisticsChange'>
@@ -24,13 +24,13 @@
                         <!-- 概览 -->
                        <div v-if="overviewRadio == '概览'">
                            <div>
-                               <Button type="primary" @click="$router.push('buy/ddosip')">购买套餐</Button>
+                               <Button type="primary" @click="$router.push('buy/ddosip')" style="margin-right:10px;">购买套餐</Button>
                                <Button type="primary" :disabled='renewDisabled' @click="showModal.meal = true,queryMealRenew(0)">套餐续费</Button>
                            </div>
                            <div>
                                <div class="selectMark">
                                     <img src="../../assets/img/host/h-icon10.png"/>
-                                    <span>共 {{ overviewData.length }} 项 | 已选择 <span style="color:#FF624B;">{{ overviewSelect.length }} </span>项</span><span style="margin-left:10px;">总价:</span><span style="color:#FF624B;">￥{{price}}</span>
+                                    <span>共 {{ overviewData.length }} 项 | 已选择 <span style="color:#FF624B;">{{ overviewSelect.length }} </span>项</span>
                                 </div>
                                  <Table :columns="overviewList" :data="overviewData" @on-selection-change='overviewTableChange'></Table>
                                  <div class="dp-page">
@@ -44,13 +44,13 @@
                            <div class="dp-ds">
                                <div> 
                                    <span>套餐选择</span>
-                                    <Select size="small" v-model="attackMeal" style="width:231px;">
+                                    <Select size="small" v-model="attackMeal" style="width:231px;margin-left:10px;">
                                         <Option v-for="item in setMealList" :value="item.packageid" :key="item.packageid">{{ item.packageid }}</Option>
                                     </Select>
                                </div>
-                              <div>
+                              <div style="margin-left:20px;">
                                    <span>按统计时间</span>
-                                   <DatePicker v-model='statisticsTime' format='yyyy-MM-dd' size='small' :transfer='true' type="daterange" placeholder='选择时间'  placement="bottom-end"  style="width: 231px;"></DatePicker>
+                                   <DatePicker v-model='statisticsTime' format='yyyy-MM-dd' size='small' :transfer='true' type="daterange" placeholder='选择时间'  placement="bottom-end"  style="width: 231px;margin:0 10px;"></DatePicker>
                                    <Button size='small' type="primary" style="width:54px;" @click="getMitigatedBandwidth">查询</Button>
                                </div>
                            </div>
@@ -103,7 +103,7 @@
                                         <p class="no-pfb">暂无数据</p>
                                         <p class="no-pfs">该时段未产生攻击或攻击数据暂未更新，请稍后重试</p>
                                     </div>
-                                    <chart v-else style="width:100%;" id='hightIp' :options="hightIp"></chart>
+                                    <chart v-show="hightIp.series[0].data.length != 0" style="width:100%;" id='hightIp' :options="hightIp"></chart>
                                 </div>
                            </div>
                            <div>
@@ -226,21 +226,21 @@
                          <!-- CC统计  -->
                        <div v-if="overviewRadio == 'CC统计'">
                            <div class="dp-ds">
-                               <div> 
+                               <div style="margin-left:20px;"> 
                                    <span>套餐选择</span>
-                                    <Select size="small" v-model="ccStatistics.packageid" style="width:231px;" @on-change='domainChange'>
+                                    <Select size="small" v-model="ccStatistics.packageid" style="width:231px;margin-left:10px;" @on-change='domainChange'>
                                         <Option v-for="item in setMealList" :value="item.packageid" :key="item.packageid" >{{ item.packageid }}</Option>
                                     </Select>
                                </div>
-                                <div>
+                                <div style="margin-left:20px;">
                                    <span>域名选择</span>
-                                   <Select size="small" v-model="ccStatistics.domain" style="width:231px;">
+                                   <Select size="small" v-model="ccStatistics.domain" style="width:231px;margin-left:10px;">
                                         <Option v-for="item in domainAllList" :value="item" :key="item">{{ item }}</Option>
                                     </Select>
                                </div>
-                                <div>
+                                <div style="margin-left:20px;">
                                    <span>按统计时间</span> 
-                                   <DatePicker v-model='ccStatistics.date' format='yyyy-MM-dd' size='small' :transfer='true' type="daterange" placeholder='选择时间'  placement="bottom-end"  style="width: 231px;"></DatePicker>
+                                   <DatePicker v-model='ccStatistics.date' format='yyyy-MM-dd' size='small' :transfer='true' type="daterange" placeholder='选择时间'  placement="bottom-end"  style="width: 231px;margin:0 10px;"></DatePicker>
                                    <Button size='small' type="primary" style="width:54px;" @click="getAllCCMap">查询</Button>
                                </div>
                            </div>
@@ -312,20 +312,20 @@
                         <!-- 业务统计  -->
                        <div v-if="overviewRadio == '业务统计'">
                            <div class="dp-ds">
-                               <div> 
+                               <div style="margin-left:20px;"> 
                                    <span>套餐选择</span>
-                                    <Select size="small" v-model="business.packageId" style="width:231px;" @on-change='domainChange'>
+                                    <Select size="small" v-model="business.packageId" style="width:231px;margin-left:10px;" @on-change='domainChange'>
                                         <Option v-for="item in setMealList" :value="item.packageid" :key="item.packageid" >{{ item.packageid }}</Option>
                                     </Select>
                                </div>
-                              <div>
+                              <div  style="margin-left:20px;">
                                    <span>按统计时间</span>
-                                   <DatePicker v-model='business.date' format='yyyy-MM-dd' size='small' :transfer='true' type="daterange" placeholder='选择时间'  placement="bottom-end"  style="width: 231px;"></DatePicker>
+                                   <DatePicker v-model='business.date' format='yyyy-MM-dd' size='small' :transfer='true' type="daterange" placeholder='选择时间'  placement="bottom-end"  style="width: 231px;margin:0 10px;"></DatePicker>
                                    <Button size='small' type="primary" style="width:54px;" @click="getAllBusinessMap">查询</Button>
                                </div>
-                                <div>
+                                <div  style="margin-left:20px;">
                                    <span>域名选择</span>
-                                   <Select size="small" v-model="business.domain" style="width:231px;">
+                                   <Select size="small" v-model="business.domain" style="width:231px;margin-left:10px;">
                                         <Option v-for="item in domainAllList" :value="item" :key="item">{{ item }}</Option>
                                     </Select>
                                </div>
@@ -375,11 +375,11 @@
 
                                 <div class="dp-mbr">
                                     <p style="font-size:14px;color:#333333;">带宽流量统计（单位Gbps）</p>
-                                    <div class="no-data" v-if="flowOut.series[0].data.length == 0">
+                                    <div class="no-data" v-if="flowOut.series[0].data.length == 0 ">
                                         <p class="no-pfb">暂无数据</p>
                                         <p class="no-pfs">该时段未产生攻击或攻击数据暂未更新，请稍后重试</p>
                                     </div>
-                                    <chart  style="width:100%;" id='flowOut' :options="flowOut"></chart>
+                                    <chart v-show="flowOut.series[0].data.length != 0 "  style="width:100%;" id='flowOut' :options="flowOut"></chart>
                                 </div>
                            </div>
                            <div>
@@ -398,7 +398,7 @@
                                         <p class="no-pfb">暂无数据</p>
                                         <p class="no-pfs">该时段未产生攻击或攻击数据暂未更新，请稍后重试</p>
                                     </div>
-                                    <chart  style="width:100%;" id='reque'  :options="reque"></chart>
+                                    <chart v-show="reque.series[0].data.length != 0" style="width:100%;" id='reque'  :options="reque"></chart>
                                 </div>
                            </div>
                             <div>
@@ -461,7 +461,7 @@
                          <div v-if="button1 == '网站业务'">
                             <div class="dp-row">
                                 <div>
-                                    <Button type="primary" style="margin-right:10px;" @click="$router.push('/DDoSAddDomain')">添加域名</Button>
+                                    <Button type="primary" @click="$router.push('/DDoSAddDomain')">添加域名</Button>
                                     <Poptip
                                     confirm
                                     width="230"
@@ -494,7 +494,7 @@
                         <div v-if="button1 == '证书管理'">
                             <div class="dp-row">
                                 <div>
-                                    <Button type="primary" style="margin-right:10px;" @click=" addCerShow">添加证书</Button>
+                                    <Button type="primary"  @click=" addCerShow">添加证书</Button>
                                     <Poptip
                                     confirm
                                     width="230"
@@ -520,7 +520,7 @@
                         <div v-if="button1 == '非网站业务'">
                             <div class="dp-row">
                                 <div>
-                                    <Button type="primary" style="margin-right:10px;" @click="goRuleAdd">添加规则</Button>
+                                    <Button type="primary" @click="goRuleAdd">添加规则</Button>
                                     <Poptip
                                     confirm
                                     width="230"
@@ -529,7 +529,7 @@
                                     title="您确认删除选中的配置吗？" style="margin: 0 10px">
                                     <Button type="primary" :disabled='renewDisabled'>删除</Button>
                                     </Poptip>
-                                    <span class="dp-cn">CNAME：{{ruleData[0].cname||'无'}}</span>
+                                    <!-- <span class="dp-cn">CNAME：{{ruleData[0].cname||'无'}}</span> -->
                                 </div>
                                 <div>
                                      <Select v-model="visitPort" style="width:100px">
@@ -610,9 +610,9 @@
                     <TabPane label="操作日志" name='操作日志'>
                         <div style="margin-bottom:21px;">
                             <span>操作时间</span>
-                            <DatePicker v-model="logTime" :transfer='true' format='yyyy-MM-dd' type="daterange" placeholder='选择时间'  placement="bottom-end"  style="width: 200px;margin:0 20px;"></DatePicker>
+                            <DatePicker v-model="logTime" :transfer='true' format='yyyy-MM-dd' type="daterange" placeholder='选择时间'  placement="bottom-end"  style="width: 200px;margin:0 22px 0 10px;"></DatePicker>
                             <span>操作对象</span>
-                            <Select v-model="operationObject" style="width:230px;margin:0 22px;">
+                            <Select v-model="operationObject" style="width:230px;margin:0 22px 0 10px;">
                                 <Option v-for="item in setMealList" :value="item.packageid" :key="item.packageid">{{ item.packageid }}</Option>
                             </Select>
                             <Button type="primary" @click="getLog(1)">查询</Button>    
@@ -740,8 +740,8 @@
                                <Icon type="ios-help-outline" color='#2A99F2' style="font-size:14px;"></Icon>
                             </Poptip>
                         </FormItem>
-                        <FormItem label="生效域名" prop="domain">
-                            <Input v-model="nameValidate.domain" placeholder="www.test.com" style="width:300px;"></Input>
+                        <FormItem label="生效域名">
+                            <Input v-model="nameValidate.domain" disabled placeholder="www.test.com" style="width:300px;"></Input>
                         </FormItem>
                     </Form>
             </div>
@@ -859,6 +859,20 @@ const bin = JSON.stringify(hightIpBin);
 export default {
     components: { expandRow },
   data() {
+    const backList =(rule, value, callback)=>{
+        if(this.blackName.split(';').length>300){
+            return callback(new Error('最大支持300 个 IP'));
+        }else{
+            callback();
+        }
+    }
+    const whiteList =(rule, value, callback)=>{
+        if(this.whiteName.split(';').length>300){
+            return callback(new Error('最大支持300 个 IP'));
+        }else{
+            callback();
+        }
+    }
     return {
       // 弹窗
       showModal:{
@@ -875,9 +889,10 @@ export default {
         domain:''
     },
     nameRuleValidate:{
-        black:[{required: true, message: '请输入黑名单', trigger: 'blur'}],
-        white:[{required: true, message: '请输入白名单', trigger: 'blur'}],
-        domain:[{required: true, message: '请输入生效域名', trigger: 'blur'}]
+        black:[{required: true, message: '请输入黑名单', trigger: 'blur'},
+        {validate:backList}],
+        white:[{required: true, message: '请输入白名单', trigger: 'blur'},
+        {validate:whiteList}],
     }, 
     blackName: '',
     whiteName: '',
@@ -1029,6 +1044,7 @@ export default {
         },
         // 统计时间
         statisticsTime:'',
+        
         renewPrice:{},
 
         // CC统计图表格
@@ -1129,7 +1145,23 @@ export default {
         },
         {
           key: "crtdes",
-          title: "证书crt内容"
+          title: "证书crt内容",
+          render:(h,params)=>{
+              return h('p',{
+                  style:{
+                        textOverflow: '-o-ellipsis-lastline',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis' ,
+                        display: '-webkit-box',
+                        webkitLineClamp: '2',
+                        lineClamp: '2',
+                        webkitBoxOrient: 'vertical',
+                    },
+                   domProps: {
+                       title:params.row.crtdes
+                   }
+              },params.row.crtdes)
+          }
         },
         {
           title: "证书key内容",
@@ -1154,7 +1186,18 @@ export default {
                     } else {
                     return h("div", [
                         h("p", {
-                            'class':'dp-rd'
+                            style:{
+                               textOverflow: '-o-ellipsis-lastline',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis' ,
+                                display: '-webkit-box',
+                                webkitLineClamp: '2',
+                                lineClamp: '2',
+                                webkitBoxOrient: 'vertical',
+                            },
+                            domProps: {
+                                title:params.row.keydes
+                            }
                         }, params.row.keydes),
                         h(
                         "p",
@@ -1182,7 +1225,18 @@ export default {
           title: "证书ca内容",
           render:(h,params)=>{
               return h('p',{
-                    'class':'dp-rd'
+                    style:{
+                        textOverflow: '-o-ellipsis-lastline',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis' ,
+                        display: '-webkit-box',
+                        webkitLineClamp: '2',
+                        lineClamp: '2',
+                        webkitBoxOrient: 'vertical',
+                    },
+                    domProps: {
+                        title:params.row.cades
+                    }
               },params.row.cades)
           }
         },
@@ -1331,8 +1385,8 @@ export default {
               title:'防护状态',
               render:(h,params)=>{
                   return h('div',[
-                      h('p',{},params.row.ccProtect == 0?'CC防护:关':'CC防护:开'),
-                      h('p',{},params.row.ddosProtect == 0?'DDOS防护:关':'DDOS防护:开'),
+                      h('p',{},params.row.ccprotect == 1?'CC防护:关':'CC防护:开'),
+                      h('p',{},params.row.ddosprotect == 0?'DDOS防护:关':'DDOS防护:开'),
                   ])
               }
           },
@@ -1500,6 +1554,8 @@ export default {
         ],
         protectSwicth:true,
         emptyLink:false,
+        ccIndex:0,
+        ccDisabled:true,
         ccProtectList:[
             {
                 type: 'expand',
@@ -1511,11 +1567,9 @@ export default {
                         },
                         on:{
                             'white':(value)=>{
-                               console.log(value);
                                 this.whiteName = value
                             },
                             'black':(value)=>{
-                                console.log(value);
                                 this.blackName = value
                             }
                         }
@@ -1524,11 +1578,25 @@ export default {
             },
             {
                 key:'domainname',
-                title:'域名'
+                title:'域名',
+                render:(h,params)=>{
+                    return h('p',{
+                        style:{
+                            color:this.ccDisabled ?'#999999':''
+                        }
+                    },params.row.domainname)
+                }
             },
             {
                 key:'sourceip',
-                title:'源站IP/域名'
+                title:'源站IP/域名',
+                render:(h,params)=>{
+                    return h('p',{
+                        style:{
+                            color:this.ccDisabled ?'#999999':''
+                        }
+                    },params.row.sourceip)
+                }
             },
             {
                 key:'ccProtectionSwitch',
@@ -1541,27 +1609,38 @@ export default {
                             },
                            
                         },'cc防护'),
-                        h('i-switch',{
+                        h('i-switch',
+                        {
                             props:{
                                 value:params.row.ccprotect == 0 ?true:false,
+                                disabled:this.ccDisabled
                             },
                             on: {
                                 'on-change': (value) => {
-                                    this.ccProtectData[params.index].ccprotect=value?0:1
+                                    this.ccProtectData[params.index].ccprotect=value?0:1;
                                 }
                             }
-                        })
+                        },
+                        [
+                            h('span',{
+                                slot:'open',
+                            },'开'),
+                             h('span',{
+                                slot:'close'
+                            },'关'),
+                        ])
                     ]) 
                 }
             },
             {
                 key:'protecttype',
                 title:'防护模式',
+                width:260,
                 render:(h,params)=>{
                     return h('RadioGroup',
                     {
                         props:{
-                            value: params.row.protecttype
+                            value: params.row.protecttype,
                         },
                         on:{
                             "on-change":(val)=>{    
@@ -1572,40 +1651,79 @@ export default {
                         h('Radio',{
                             props:{
                                 label:0,
+                                disabled:this.ccDisabled
                             }
                         },'标准'),
                         h('Radio',{
                             props:{
                                 label:1,
+                                disabled:this.ccDisabled
                             }
                         },'严格'),
                         h('Radio',{
                             props:{
                                 label:2,
+                                disabled:this.ccDisabled
                             }
                         },'攻击应急')
                     ])
                 }
             },
             {
-                key:'黑白名单',
                 title:'黑白名单',
                 render:(h,params)=>{
                     return h('span',{
                         style:{
-                            color:'#4297F2',
-                            cursor:'pointer'
+                           color:this.ccDisabled ?'#999999':'#4297F2',
+                           cursor:this.ccDisabled ?'':'pointer'
                         },
                         on:{
                             click:()=>{
-                                this.renewPrice.status = 1
-                                this.showModal.nameList=true
+                                if(!this.ccDisabled){
+                                    this.ccIndex = params.row._index;
+                                    this.nameValidate.domain = params.row.domainname;
+                                    this.showModal.nameList=true;
+                                }
                             }
                         }
                     },'添加')
                 }
+            },
+            {
+                title:'操作',
+                width:100,
+                render:(h,params)=>{
+                    if(this.ccShow){
+                        return h('p',{
+                            style:{
+                                color:'#4297F2',
+                                cursor:'pointer'
+                            },
+                            on:{
+                                click:()=>{
+                                    this.ccShow = false;
+                                    this.ccDisabled = false;
+                                }
+                            }
+                        },'修改')
+                    }else{
+                        return h('p',{
+                            style:{
+                                color:'#4297F2',
+                                cursor:'pointer'
+                            },
+                            on:{
+                                click:()=>{
+                                    this.saveConfig(params.row._index);
+                                }
+                            }
+                        },'提交')
+                    }
+                    
+                }
             }
         ],
+        ccShow:true,
         riadosCC:'严格',
         ccProtectData:[
         ],
@@ -1657,7 +1775,6 @@ export default {
       })
   },
   created(){
-    //   this.changeColor();
       this.getDdosOverview(1);
       this.getDomainList(1);
       this.getCertificate(1);
@@ -1698,6 +1815,10 @@ export default {
         })
         this.domainAllList = this.setMealList[num].domainList;
     },
+    tabsChange(item){
+        this.tabsValue = item;
+    },
+
     // 改变统计图样式
     changeColor(){
         this.reque.series[0].lineStyle.normal.shadowColor = 'rgba(181, 229, 173, 0.5)';
@@ -1751,6 +1872,10 @@ export default {
     // 获取续费套餐价格
     queryMealRenew(index){
         this.durationIndex = index;
+        if(this.overviewSelect.length >1){
+            this.$Message.info('一次只能续费一个套餐');
+            return;
+        }
         this.$http.get('ddosImitationIp/PackageRenewalPrice.do',{
             params:{
                 packageId:this.overviewSelect[0].packageid,
@@ -1830,8 +1955,10 @@ export default {
                 domains:this.business.domain
         }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
-                this.flowOut.xAxis.data = res.data.time;
-                this.flowOut.series[0].data = res.data.value;
+                if(res.data.value){
+                    this.flowOut.xAxis.data = res.data.time;
+                    this.flowOut.series[0].data = res.data.value;
+                }
                 this.echartsLodaing('flowOut').hideLoading();
                 this.business.peakTime = res.data.peakStat.peakTime;
                 this.business.peakValue = res.data.peakStat.peakValue;
@@ -1854,8 +1981,10 @@ export default {
         }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
                 this.echartsLodaing('reque').hideLoading();
-                this.reque.xAxis.data = res.data.time;
-                this.reque.series[0].data = res.data.value;
+                if(res.data.value){
+                    this.reque.xAxis.data = res.data.time;
+                    this.reque.series[0].data = res.data.value;
+                }
             }else{
                 this.echartsLodaing('reque').hideLoading();
                 this.$Message.info(res.data.message);
@@ -1873,8 +2002,10 @@ export default {
         }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
                 this.echartsLodaing('concurrent').hideLoading();
-                this.concurrent.xAxis.data = res.data.time;
-                this.concurrent.series[0].data = res.data.value;
+                if(res.data.value){
+                    this.concurrent.xAxis.data = res.data.time;
+                    this.concurrent.series[0].data = res.data.value;
+                }
             }else{
                 this.$Message.info(res.data.message);
                 this.echartsLodaing('concurrent').hideLoading();
@@ -1900,9 +2031,11 @@ export default {
             domains:this.ccStatistics.domain
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
-                this.ccQps.xAxis.data = res.data.time;
-                this.ccQps.series[0].data = res.data.hitdeny;
-                this.ccQps.series[1].data = res.data.hit;
+                if(res.data.hitdeny){
+                    this.ccQps.xAxis.data = res.data.time;
+                    this.ccQps.series[0].data = res.data.hitdeny;
+                    this.ccQps.series[1].data = res.data.hit;
+                }
                this.echartsLodaing('ccQps').hideLoading();
             }else{
                 this.$Message.info(res.data.message);
@@ -2075,7 +2208,9 @@ export default {
     addNameList(name) {
         this.$refs[name].validate((valid) => {
         if (valid) {
-
+              this.ccProtectData[this.ccIndex].blacklist+=this.nameValidate.black;
+              this.ccProtectData[this.ccIndex].whitelist+=this.nameValidate.white;
+              this.showModal.nameList = false;
         }})
     },
 
@@ -2152,8 +2287,8 @@ export default {
     },
 
     updateCertificate(){
-        this.$http.get('ddosImitationIp/UpdateCertificate.do',{
-            params:{
+        this.$http.post('ddosImitationIp/UpdateCertificate.do',{
+            // params:{
                 crtId:this.certificateValidate.crtId,
                 crtName:this.certificateValidate.name,
                 crtRemark:this.certificateValidate.desc,
@@ -2161,9 +2296,9 @@ export default {
                 keyDes:this.certificateValidate.secret,
                 caDes:this.certificateValidate.ca,
                 encryptionWay:this.certificateValidate.pawMode
-            }
+            // }
         }).then(res => {
-            if(res.status == 1 && res.data.status == 1){
+            if(res.status == 200 && res.data.status == 1){
                 this.$Message.success('修改成功');
                 this.showModal.certificate = false;
                 this.getCertificate(1);
@@ -2235,6 +2370,9 @@ export default {
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
                 this.ccProtectData = res.data.result;
+                // this.ccProtectData.forEach(item =>{
+                //     item._disableExpand = true;
+                // })
             }else{
                 this.$Message.info(res.data.message);
             }
@@ -2283,14 +2421,12 @@ export default {
 
     // 获取操作日志
     getLog(page){
-        this.$http.get('ddosImitationIp/queryLog.do',{
-            params:{
+        this.$http.post('ddosImitationIp/queryLog.do',{
                 page:page,
                 pageSize:'10',
                 packageId:this.operationObject,
-                // startTime:this.logTime[0].format('yyyy-MM-dd hh:mm:ss') == undefined ?'':this.logTime[0].format('yyyy-MM-dd hh:mm:ss'),
-                // endTime:this.logTime[1].format('yyyy-MM-dd hh:mm:ss')== undefined ?'':this.logTime[1].format('yyyy-MM-dd hh:mm:ss')
-            }
+                startTime:this.logTime[0] == undefined ?'':this.logTime[0].format('yyyy-MM-dd hh:mm:ss'),
+                endTime:this.logTime[1] == undefined ?'':this.logTime[1].format('yyyy-MM-dd hh:mm:ss')
         }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
                 this.journalData = res.data.result;
@@ -2346,17 +2482,19 @@ export default {
         }).catch(err => {})
     },
 
-    saveConfig() {
+    saveConfig(index) {
          this.$http.get('ddosImitationIp/updateddoSConfig.do',{params:{
              packageId:this.setMeal,
-             domainName: this.ccProtectData[0].domainname,
-             ccProtect: this.ccProtectData[0].ccprotect,
-             protectType: this.ccProtectData[0].protecttype,
+             domainName: this.ccProtectData[index].domainname,
+             ccProtect: this.ccProtectData[index].ccprotect,
+             protectType: this.ccProtectData[index].protecttype,
              blackList: this.blackName,
              whiteList: this.whiteName
          }}).then(res =>{
             if(res.status == 200 && res.data.status == 1){
                 this.$Message.info(res.data.message);
+                this.ccShow = true;
+                this.ccDisabled = true;
             } else {
                 this.$Message.info(res.data.message);
             }
@@ -2371,7 +2509,7 @@ export default {
   },
   computed:{
       renewDisabled(){
-          if(this.overviewSelect.length == 0){
+          if(this.overviewSelect.length == 0 || (this.overviewRadio =='概览' && this.overviewSelect.length > 1)){
               return true;
           }else{
               return false;
@@ -2391,6 +2529,13 @@ export default {
               let list =[];
                this.overviewTableChange(list);
           },deep:true
+      },
+      showModal:{
+          handler(){
+              this.renewPrice.status = 1;
+          },
+           deep:true,
+            immediate:true
       }
   }
 }
@@ -2491,7 +2636,7 @@ export default {
 }
 .dp-fh {
   width: 272px;
-  height: 92px;
+  height: 100px;
   background: rgba(255, 255, 255, 1);
   box-shadow: 0px 1px 9px -2px rgba(0, 0, 0, 0.2);
   margin-right: 10px;

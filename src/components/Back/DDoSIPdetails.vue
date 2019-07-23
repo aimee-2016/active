@@ -259,8 +259,8 @@ export default {
   .ds-row{
       display: flex;
       background-color: rgba(239, 246, 254, 0.7);
-      padding:10px 0px 10px 20px;
-      height: 68px;
+      padding:0 0px 0 20px;
+      height: 58px;
       margin-top:10px;
       line-height: 68px;
   }
@@ -275,6 +275,7 @@ export default {
       .ds-ct{
           width: 367px;
           margin-right: 18px;
+          padding: 10px 0;
           position: relative;
           p{
               font-size: 14px;
