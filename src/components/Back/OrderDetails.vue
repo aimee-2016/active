@@ -114,6 +114,8 @@ export default {
                 ? "高防主机"
                 : params.row.sourceType == 11
                 ? "高防弹性公网IP"
+                : params.row.sourceType == 12
+                ? "DDoS高防IP"
                 : ""
             );
           }
