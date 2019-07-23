@@ -10,8 +10,8 @@
                  <div class="text-box">
                     <p></p>
                 </div>
-                 <Tabs type="card">
-                    <TabPane label="概览">
+                 <Tabs type="card" :animated='false' :value='tabsValue'>
+                    <TabPane label="概览" name='概览'>
                         <div class="dp-row">
                             <RadioGroup v-model="overviewRadio" type="button" @on-change='statisticsChange'>
                                 <Radio label="概览"></Radio>
@@ -50,7 +50,7 @@
                                </div>
                               <div>
                                    <span>按统计时间</span>
-                                   <DatePicker v-model='statisticsTime' format='yyyy-MM-dd' size='small' :transfer='true' type="daterange"  placement="bottom-end" placeholder="Select date" style="width: 231px;"></DatePicker>
+                                   <DatePicker v-model='statisticsTime' format='yyyy-MM-dd' size='small' :transfer='true' type="daterange" placeholder='选择时间'  placement="bottom-end"  style="width: 231px;"></DatePicker>
                                    <Button size='small' type="primary" style="width:54px;" @click="getMitigatedBandwidth">查询</Button>
                                </div>
                            </div>
@@ -71,7 +71,7 @@
                                                 <span class="fh-sp">峰值时间</span>
                                             </div>
                                             <div class="dp-bt">
-                                                <span class="b-font" style="margin:0px;">2018-10-05 23:45</span>
+                                                <span class="b-font" style="margin:0px;">{{ddosFlow.time}}</span>
                                             </div>
                                         </div> 
                                     </div>
@@ -81,7 +81,7 @@
                                                 <span class="fh-sp">DDoS攻击带宽峰</span>
                                             </div>
                                             <div class="dp-bt">
-                                                <span class="b-font" style="margin:0px;">34.25Gbps</span>
+                                                <span class="b-font" style="margin:0px;">{{ddosFlow.flow}}</span>
                                             </div>
                                         </div> 
                                     </div>
@@ -91,7 +91,7 @@
                                                 <span class="fh-sp">已清洗流</span>
                                             </div>
                                             <div class="dp-bt">
-                                                <span class="b-font" style="margin:0px;">34.25Gbps</span>
+                                                <span class="b-font" style="margin:0px;">{{ddosFlow.outFlow}}</span>
                                             </div>
                                         </div> 
                                     </div>
@@ -101,7 +101,7 @@
                                     <p style="font-size:14px;color:#333333;">清洗流量统计（单位Gbps）</p>
                                     <div class="no-data" v-if="hightIp.series[0].data.length == 0">
                                         <p class="no-pfb">暂无数据</p>
-                                        <p class="no-pfs">描述或建议，如导入交易数据以分析</p>
+                                        <p class="no-pfs">该时段未产生攻击或攻击数据暂未更新，请稍后重试</p>
                                     </div>
                                     <chart v-else style="width:100%;" id='hightIp' :options="hightIp"></chart>
                                 </div>
@@ -175,15 +175,14 @@
                                         </div> 
                                     </div>
                                     </div>
-                                    <div class="no-data" v-if="flowBtm.series[0].data.length == 0">
+                                    <div class="no-dataz" v-if="flowBtm.series[0].data.length == 0">
                                         <p class="no-pfb">暂无数据</p>
-                                        <p class="no-pfs">描述或建议，如导入交易数据以分析</p>
+                                        <p class="no-pfs">该时段未产生攻击或攻击数据暂未更新，请稍后重试</p>
                                     </div>
-                                    <chart v-else style="width:100%;" id='flowBtm'  :options="flowBtm"></chart>
+                                    <chart v-show="flowBtm.series[0].data.length != 0" style="width:100%;" id='flowBtm'  :options="flowBtm"></chart>
                                 </div>
                             </div>
-                            <div class="dp-row">
-                               <div class="dp-mbr" style="width:550px;">
+                            <div class="dp-mbr" style="width:570px;">
                                     <div class='dp-tp'>
                                         <span style="font-size:14px;color:#333333;">攻击类型</span>
                                          <span class="l-font" style='float:right;'>刷新</span> 
@@ -219,8 +218,6 @@
                                             </ul>
                                         </div>
                                     </div>
-                                    
-                                </div>
                             </div>
                            </div>
                             
@@ -242,8 +239,8 @@
                                     </Select>
                                </div>
                                 <div>
-                                   <span>按统计时间</span>
-                                   <DatePicker v-model='ccStatistics.date' format='yyyy-MM-dd' size='small' :transfer='true' type="daterange"  placement="bottom-end" placeholder="Select date" style="width: 231px;"></DatePicker>
+                                   <span>按统计时间</span> 
+                                   <DatePicker v-model='ccStatistics.date' format='yyyy-MM-dd' size='small' :transfer='true' type="daterange" placeholder='选择时间'  placement="bottom-end"  style="width: 231px;"></DatePicker>
                                    <Button size='small' type="primary" style="width:54px;" @click="getAllCCMap">查询</Button>
                                </div>
                            </div>
@@ -261,9 +258,9 @@
                                     <p style="font-size:14px;color:#333333;">CC攻击QPS统计（单位：次）</p>
                                     <div class="no-data" v-if="ccQps.series[0].data.length == 0">
                                         <p class="no-pfb">暂无数据</p>
-                                        <p class="no-pfs">描述或建议，如导入交易数据以分析</p>
+                                        <p class="no-pfs">该时段未产生攻击或攻击数据暂未更新，请稍后重试</p>
                                     </div>
-                                    <chart v-else style="width:100%;" id='ccQps' ref="ccQps" :options="ccQps"></chart>
+                                    <chart v-show="ccQps.series[0].data.length != 0" style="width:100%;" id='ccQps' ref="ccQps" :options="ccQps"></chart>
                                 </div>
                            </div>
                            <div>
@@ -323,7 +320,7 @@
                                </div>
                               <div>
                                    <span>按统计时间</span>
-                                   <DatePicker v-model='business.date' format='yyyy-MM-dd' size='small' :transfer='true' type="daterange"  placement="bottom-end" placeholder="Select date" style="width: 231px;"></DatePicker>
+                                   <DatePicker v-model='business.date' format='yyyy-MM-dd' size='small' :transfer='true' type="daterange" placeholder='选择时间'  placement="bottom-end"  style="width: 231px;"></DatePicker>
                                    <Button size='small' type="primary" style="width:54px;" @click="getAllBusinessMap">查询</Button>
                                </div>
                                 <div>
@@ -380,9 +377,9 @@
                                     <p style="font-size:14px;color:#333333;">带宽流量统计（单位Gbps）</p>
                                     <div class="no-data" v-if="flowOut.series[0].data.length == 0">
                                         <p class="no-pfb">暂无数据</p>
-                                        <p class="no-pfs">描述或建议，如导入交易数据以分析</p>
+                                        <p class="no-pfs">该时段未产生攻击或攻击数据暂未更新，请稍后重试</p>
                                     </div>
-                                    <chart v-else style="width:100%;" id='flowOut' :options="flowOut"></chart>
+                                    <chart  style="width:100%;" id='flowOut' :options="flowOut"></chart>
                                 </div>
                            </div>
                            <div>
@@ -399,9 +396,9 @@
                                     <p style="font-size:14px;color:#333333;">请求次数（单位：次）</p>
                                     <div class="no-data" v-if="reque.series[0].data.length == 0">
                                         <p class="no-pfb">暂无数据</p>
-                                        <p class="no-pfs">描述或建议，如导入交易数据以分析</p>
+                                        <p class="no-pfs">该时段未产生攻击或攻击数据暂未更新，请稍后重试</p>
                                     </div>
-                                    <chart v-else style="width:100%;" id='reque'  :options="reque"></chart>
+                                    <chart  style="width:100%;" id='reque'  :options="reque"></chart>
                                 </div>
                            </div>
                             <div>
@@ -440,14 +437,14 @@
                                     <p style="font-size:14px;color:#333333;">并发连接数统计</p>
                                     <div class="no-data" v-if="concurrent.series[0].data.length == 0">
                                         <p class="no-pfb">暂无数据</p>
-                                        <p class="no-pfs">描述或建议，如导入交易数据以分析</p>
+                                        <p class="no-pfs">该时段未产生攻击或攻击数据暂未更新，请稍后重试</p>
                                     </div>
-                                    <chart v-else style="width:100%;" id='concurrent' :options="concurrent"></chart>
+                                    <chart v-show="concurrent.series[0].data.length != 0" style="width:100%;" id='concurrent' :options="concurrent"></chart>
                                 </div>
                            </div>
                        </div>
                     </TabPane>
-                    <TabPane label="业务管理">
+                    <TabPane label="业务管理" name='业务管理'>
                         <div class="dp-row">
                             <div>
                                 <RadioGroup v-model="button1" type="button">
@@ -457,7 +454,7 @@
                                 </RadioGroup>
                             </div>
                             <div style="line-height:26px;">
-                                <span>添加域名帮助文档</span>
+                                <span class="link-te">添加域名帮助文档</span>
                             </div>
                         </div>
                         <!--      网站业务     -->
@@ -549,17 +546,16 @@
                             </div>
                         </div>
                     </TabPane>
-                    <TabPane label="防护管理">
+                    <TabPane label="防护管理" name='防护管理'>
                         <div class="dp-row">
                             <div>
                                 <span style="font-size:14px;color:#333333;">套餐选择</span>
                                 <Select v-model="setMeal" style="width:230px" @on-change='getProtectCC(setMeal)'>
                                     <Option v-for="item in setMealList" :value="item.packageid" :key="item.packageid">{{ item.packageid }}</Option>
                                 </Select>
-                                <Button @click="saveConfig()">保存修改</Button>
                             </div>
                             <div style="line-height:26px;">
-                                <span>查看域名添加指引</span>
+                                <span class='link-te'>查看域名添加指引</span>
                             </div>
                         </div>
                         <div class="dp-box">
@@ -568,16 +564,16 @@
                                     <span class="b-font">DDoS防护</span>
                                     <span >DDoS防护配置，针对该套餐下的所有网站业务的域名和非网站业务的转发规则都生效。</span>
                                 </div>
-                                <div>
-                                <span class="o-font">配置变更之后请点击保存！</span> 
-                                </div>
                             </div>
                             <div style="display:flex;">
                                 <div class="dp-fh">
                                     <div>
                                         <div>
                                             <span class="fh-sp">四层DDoS清洗</span>
-                                            <i-switch :true-value='true' :false-value='true' v-model="protectSwicth"></i-switch>
+                                            <i-switch :true-value='true' :false-value='true' v-model="protectSwicth">
+                                                <span slot="open">开</span>
+                                                <span slot="close">关</span>
+                                            </i-switch>
                                         </div>
                                         <div style="margin-top:10px;">
                                             <span style="color:#FF9801;">默认开启，暂不支持修改</span>
@@ -588,7 +584,10 @@
                                     <div>
                                         <div>
                                             <span class="fh-sp">空连接防护</span>
-                                            <i-switch v-model="emptyLink" @on-change="updateL4DDoSConfig" :true-value='1' :false-value='0'></i-switch>
+                                            <i-switch v-model="emptyLink" @on-change="updateL4DDoSConfig" :true-value='1' :false-value='0'>
+                                                <span slot="open">开</span>
+                                                <span slot="close">关</span>
+                                            </i-switch>
                                         </div>
                                     </div>
                                 </div>
@@ -601,9 +600,6 @@
                                     <span class="b-font">CC防护</span>
                                     <span >选择需要修改防护配置的域名，开启或是关闭防护状态，或是修改防护的模式。</span>
                                 </div>
-                                <div>
-                                <span class="o-font">配置变更之后请点击保存！</span> 
-                                </div>
                             </div>
                             <Table :columns="ccProtectList" :data="ccProtectData"></Table>
                             <div class="dp-page">
@@ -611,10 +607,10 @@
                             </div>
                         </div>    
                     </TabPane>
-                    <TabPane label="操作日志">
+                    <TabPane label="操作日志" name='操作日志'>
                         <div style="margin-bottom:21px;">
                             <span>操作时间</span>
-                            <DatePicker v-model="logTime" :transfer='true' format='yyyy-MM-dd' type="daterange"  placement="bottom-end" placeholder="Select date" style="width: 200px;margin:0 20px;"></DatePicker>
+                            <DatePicker v-model="logTime" :transfer='true' format='yyyy-MM-dd' type="daterange" placeholder='选择时间'  placement="bottom-end"  style="width: 200px;margin:0 20px;"></DatePicker>
                             <span>操作对象</span>
                             <Select v-model="operationObject" style="width:230px;margin:0 22px;">
                                 <Option v-for="item in setMealList" :value="item.packageid" :key="item.packageid">{{ item.packageid }}</Option>
@@ -645,7 +641,7 @@
                         <p>续费套餐ID</p>
                      </div>
                      <div class="dp-xfy">
-                        <!-- <p>{{overviewSelect[0].packageid||""}}</p>  -->
+                        <p v-if="overviewSelect.length != 0">{{overviewSelect[0].packageid||"无"}}</p> 
                      </div>
                  </li>
                  <li class="dp-xfl">
@@ -766,7 +762,7 @@
              </div>
             <div class="md-cer">
                 <span>证书ID</span>
-               <Select v-model="operationObject" style="width:230px;margin:0 22px;">
+               <Select v-model="certificateId" style="width:230px;margin:0 22px;">
                     <Option v-for="item in certificateData" :value="item.crtid" :key="item.crtid">{{ item.crtid }}</Option>
                 </Select>
             </div>
@@ -852,6 +848,7 @@ import hightIp from '@/echarts/hightIp';
 import hightIpBs from '@/echarts/hightIpBs';
 import hightIpSl from '@/echarts/hightIpSl';
 import hightIpBin from '@/echarts/hightIpBin';
+var debounce = require('throttle-debounce/debounce')
 const dIp  = JSON.stringify(hightIp);
 const flow = JSON.stringify(hightIpBs);
 const reque = JSON.stringify(hightIpBs);
@@ -890,51 +887,52 @@ export default {
       durationIndex:0,
       durationList:[
           {
-              value:'30',
+              value:'1',
               label:'1个月',
               isTrue:0
           },
           {
-              value:'60',
+              value:'2',
               label:'2个月',
                isTrue:-1
           },
           {
-              value:'90',
+              value:'3',
               label:'3个月',
                isTrue:-2
           },
           {
-              value:'120',
+              value:'4',
               label:'4个月',
                 isTrue:-3
           },
           {
-              value:'150',
+              value:'5',
               label:'5个月',
               isTrue:-4
           },
           {
-              value:'180',
+              value:'6',
               label:'6个月',
               isTrue:-5
           },
           {
-              value:'360',
+              value:'12',
               label:'1年',
               isTrue:-6
           },
           {
-              value:'720',
+              value:'24',
               label:'2年',
               isTrue:-7
           },
           {
-              value:'1080',
+              value:'36',
               label:'3年',
               isTrue:-8
           },
       ],
+     tabsValue:'概览', 
        
     //   概览
         overviewSelect:'',
@@ -992,7 +990,7 @@ export default {
                         },
                         on:{
                             click:()=>{
-
+                                this.tabsValue = '业务管理';
                             }
                         }
                     },'业务配置')
@@ -1023,6 +1021,11 @@ export default {
             peakTime:'--',
             peakValue:'--',
             totalFlow:'--'
+        },
+        ddosFlow:{
+            time:'--',
+            flow:'0Gbps',
+            outFlow:'0Gbps'
         },
         // 统计时间
         statisticsTime:'',
@@ -1068,9 +1071,43 @@ export default {
         ccAttDomainData:[],    
 
         // ddos统计图表格
-        ddosAttEventList:[],
+        ddosAttEventList:[
+            {
+                key:'starttime',
+                title:'攻击开始时间'
+            },
+            {
+                key:'endtime',
+                title:'攻击结束时间'
+            },
+            {
+                key:'peakvalue',
+                title:'攻击峰值'
+            },
+            {
+                key:'attacktype',
+                title:'攻击类型'
+            },
+        ],
         ddosAttEventData:[],
-        ddosAttInfoList:[],
+        ddosAttInfoList:[
+            {
+                key:'targetIp',
+                title:'被攻击的目标IP'
+            },
+            {
+                key:'time',
+                title:'被攻击的时间'
+            },
+            {
+                key:'attacktype',
+                title:'攻击类型'
+            },
+            {
+                key:'peakvalue',
+                title:'攻击峰值'
+            },
+        ],
         ddosAttInfoData:[],
 
       // 证书管理
@@ -1361,6 +1398,7 @@ export default {
         id: [
           { required: true, message: '请选择一个证书id', trigger: 'change' }],
       },
+      certificateId:'',
       
       // 非网站业务
        ruleList:[
@@ -1619,7 +1657,7 @@ export default {
       })
   },
   created(){
-      this.changeColor();
+    //   this.changeColor();
       this.getDdosOverview(1);
       this.getDomainList(1);
       this.getCertificate(1);
@@ -1645,7 +1683,7 @@ export default {
                         this.setMealList.push({'packageid':key,'domainList':domainList});
                     }
                 }
-                this.setMeal = this.operationObject = this.ccStatistics.packageid = this.business.packageId =  this.attackMeal = this.setMealList[0].packageid;
+                this.setMeal  = this.ccStatistics.packageid = this.operationObject = this.business.packageId =  this.attackMeal = this.setMealList[0].packageid;
                 this.domainChange( this.setMeal);
                 this.getProtectCC(this.setMeal,1);
                
@@ -1660,7 +1698,7 @@ export default {
         })
         this.domainAllList = this.setMealList[num].domainList;
     },
-    // 改变统计图线条颜色
+    // 改变统计图样式
     changeColor(){
         this.reque.series[0].lineStyle.normal.shadowColor = 'rgba(181, 229, 173, 0.5)';
         this.reque.series[0].lineStyle.normal.color.colorStops[0].color = 'rgba(76, 165, 75, 1)';
@@ -1721,7 +1759,6 @@ export default {
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
                 this.renewPrice = res.data;
-                this.getDdosOverview(1);
             }else{
                 this.renewPrice = res.data;
             }
@@ -1733,11 +1770,13 @@ export default {
         this.$http.get('ddosImitationIp/creatPackageRenewal.do',{
             params:{
                 packageId:this.overviewSelect[0].packageid,
-                timeVlue:this.durationList[index].value,
+                timeVlue:this.durationList[this.durationIndex].value,
                 cost:this.renewPrice.price
             }
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
+                this.showModal.meal = false;
+                this.$router.push('order');
                 this.getDdosOverview(1);
             }else{
                 this.renewPrice = res.data;
@@ -1793,10 +1832,14 @@ export default {
             if(res.status == 200 && res.data.status == 1){
                 this.flowOut.xAxis.data = res.data.time;
                 this.flowOut.series[0].data = res.data.value;
-                this.business = res.data.peakStat;
                 this.echartsLodaing('flowOut').hideLoading();
+                this.business.peakTime = res.data.peakStat.peakTime;
+                this.business.peakValue = res.data.peakStat.peakValue;
+                this.business.totalFlow = res.data.peakStat.totalFlow;
+                
             }else{
                 this.$Message.info(res.data.message);
+                this.echartsLodaing('flowOut').hideLoading();
             }
         }).catch(err =>{})
     },
@@ -1862,8 +1905,8 @@ export default {
                 this.ccQps.series[1].data = res.data.hit;
                this.echartsLodaing('ccQps').hideLoading();
             }else{
+                this.$Message.info(res.data.message);
                 this.echartsLodaing('ccQps').hideLoading();
-                this.$Messgae.info(res.data.messae);
             }
         })
     },
@@ -1878,7 +1921,7 @@ export default {
             if(res.status == 200 && res.data.status == 1){
                 this.ccAttackData = res.data.result;
             }else{
-                this.$Messgae.info(res.data.messae);
+                this.$Message.info(res.data.message);
             }
         })
     },
@@ -1893,7 +1936,7 @@ export default {
             if(res.status == 200 && res.data.status == 1){
                  this.ccAttDomainData = res.data.result;
             }else{
-                this.$Messgae.info(res.data.messae);
+                this.$Message.info(res.data.message);
             }
         })
     },
@@ -1908,7 +1951,7 @@ export default {
             if(res.status == 200 && res.data.status == 1){
 
             }else{
-                this.$Messgae.info(res.data.messae);
+                this.$Message.info(res.data.message);
             }
         })
     },
@@ -1968,7 +2011,7 @@ export default {
 
     // 换源
     updateDomain(name){
-        if(this.operationObject == '' && name == 'source'){
+        if(this.certificateId == '' && name == 'source'){
             this.$Message.info('请选择需要关联的证书ID');
             return;
         }
@@ -1977,7 +2020,7 @@ export default {
                 domain:this.businessSelect.domainname,
                 source: name == 'ip' ? this.sourceip : this.businessSelect.sourceip,
                 port:this.businessSelect.port,
-                crtId:name == 'source' ?this.operationObject : this.businessSelect.crtId,
+                crtId:name == 'source' ?this.certificateId : this.businessSelect.crtId,
                 http:this.businessSelect.httpstate,
                 https:this.businessSelect.httpsstate,
                 Id:this.businessSelect.id,
@@ -1988,9 +2031,11 @@ export default {
                 if(name == 'source'){
                     this.$Message.success('关联成功');
                     this.showModal.changeSource = false;
+                    this.getDomainList(1);
                 }else{
                      this.$Message.success('源站ip修改成功');
                     this.showModal.changeIp = false;
+                     this.getDomainList(1);
                 }
                 
             }else{
@@ -2034,28 +2079,6 @@ export default {
         }})
     },
 
-    addDomain(name){
-        this.$refs[name].validate((valid) => {
-        if (valid) {
-            this.$http.get('ddosImitationIp/AddDomain.do',{
-                params:{
-                    packageId:this.addDomainList.attackMeal,
-                    domain:this.addDomainList.domain,
-                    source:this.addDomainList.ip,
-                    crtId:'',
-                    port:this.addDomainList.agreement,
-                    http:1,//this.addDomainList.http.join(','),
-                    https:1
-                }
-            }).then(res =>{
-                if(res.status == 200 && res.data.status == 1){
-                    this.getDomainList(1);
-                }else{
-                    this.$Message.info(res.data.message);
-                }
-            }).catch(err =>{})
-        }})
-    },
 
     queryDomain(){
         this.$http.get('ddosImitationIp/Querydomain.do',{
@@ -2104,7 +2127,7 @@ export default {
             if(res.status == 200 && res.data.status == 1){
                 this.$Message.success('新增证书成功');
                 this.showModal.certificate = false;
-                this.getCertificate(0);
+                this.getCertificate(1);
             }else{
                 this.$Message.info(res.data.message);
             }
@@ -2219,7 +2242,7 @@ export default {
     },
 
     getEmptyLink(id){
-        this.$http.get('ddosImitationIp/QueryL4DDosConfig.do',{
+         this.$http.get('ddosImitationIp/QueryL4DDosConfig.do',{
             params:{
                 packageId:id
             }
@@ -2232,7 +2255,7 @@ export default {
         })
     },
 
-    updateL4DDoSConfig(val){
+    updateL4DDoSConfig:debounce(2000, function(val){
         this.$http.get('ddosImitationIp/UpdateL4DDoSConfig.do',{
             params:{
                 packageId:this.setMeal,
@@ -2252,7 +2275,7 @@ export default {
                 this.$Message.info('网络异常');
             }
         })
-    },
+    }),
 
     updateddoSConfig(){
         this.$http.get('ddosImitationIp/updateddoSConfig.do')
@@ -2704,6 +2727,21 @@ export default {
     border:1px dashed #999999;padding:20px;border-radius:4px;margin-top:20px;
     position: relative;
     height: 470px;
+    .no-dataz{
+       position: absolute;
+        top: 50%;
+        left: 24%;
+        text-align: center;
+        .no-pfb{
+            font-size: 18px;
+            color: #666666;
+            margin-bottom: 10px;
+        }
+        .no-pfs{
+            font-size: 14px;
+            color: #999999;
+        } 
+    }
     .no-data{
         position: absolute;
         top: 50%;
@@ -2720,6 +2758,9 @@ export default {
         }
     }
 }
-
+.link-te{
+    color: #2a99f2;
+    cursor: pointer;
+}
 </style>
 

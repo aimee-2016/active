@@ -111,12 +111,12 @@
                    <InputNumber @on-change='changeTime' v-model="buyNumber" :step='1' :min='1' :max='10' :editable="false"></InputNumber><span style="margin-left:5px;color:#999">个</span>
                 </div>
              </div>
-             <div class="b-meal">
+             <!-- <div class="b-meal">
                 <div class="bm-rg">价格</div>
                 <div class="bm-price">
                     {{totalPrice}}元
                 </div>
-             </div>
+             </div> -->
          </div>
             
       </div>
@@ -459,7 +459,7 @@
         return this.$store.state.userInfo
       },
       price(){
-        return this.elasticIpPrice +  this.businessPrice + this.pPrice+ this.dPrice +this.selectList.price;
+        return this.elasticIpPrice +  this.businessPrice + this.pPrice+ this.dPrice;
       },
       totalPrice(){
        return this.elasticIpPrice +  this.businessPrice + this.protPirce;
