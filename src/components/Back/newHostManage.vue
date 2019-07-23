@@ -340,18 +340,18 @@
             <img class="modal-img" @click="changeLoginPasType(1)" src="../../assets/img/login/lr-icon3.png"/>
           </FormItem>
           <FormItem label="新的密码" prop="newPassword" style="width: 80%;margin-bottom: 10px">
-            <Input :maxlength="32" :type="modifyPasswordForm.newPasswordInput" v-model="modifyPasswordForm.newPassword" @on-focus="modifyPasswordForm.passwordHint = true" @on-blur="modifyPasswordForm.passwordHint = false"></Input>
+            <Input :maxlength="20" :type="modifyPasswordForm.newPasswordInput" v-model="modifyPasswordForm.newPassword" @on-focus="modifyPasswordForm.passwordHint = true" @on-blur="modifyPasswordForm.passwordHint = false"></Input>
             <img class="modal-img" @click="changeLoginPasType(2)" src="../../assets/img/login/lr-icon3.png"/>
           </FormItem>
           <FormItem label="确认密码" prop="confirmPassword" style="width: 80%;margin-bottom: 10px">
-            <Input :maxlength="32" :type="modifyPasswordForm.confirmPasswordInput" v-model="modifyPasswordForm.confirmPassword"></Input>
+            <Input :maxlength="20" :type="modifyPasswordForm.confirmPasswordInput" v-model="modifyPasswordForm.confirmPassword"></Input>
             <img class="modal-img" @click="changeLoginPasType(3)" src="../../assets/img/login/lr-icon3.png"/>
           </FormItem>
           <div class="popTip" v-show="modifyPasswordForm.passwordHint">
                   <div><i :class="{reach: modifyPasswordForm.secondDegree }"></i>
                     <p>不能输入连续6位数字或字母，如123456aA</p></div>
                   <div><i :class="{reach: modifyPasswordForm.firstDegree }"></i>
-                    <p>长度8~30位，推荐使用12位以上的密码</p></div>
+                    <p>长度8~20位，推荐使用12位以上的密码</p></div>
                   <div><i :class="{reach: modifyPasswordForm.thirdDegree }"></i>
                     <p>至少包含：小写字母，大写字母，数字</p></div>
                   <div><p style="color:rgba(102,102,102,1);">可用特殊符号：~:，*_</p></div>
@@ -1838,7 +1838,7 @@
       },
       'modifyPasswordForm.newPassword':{
         handler: function(val){
-          if(val.length >7 && val.length <31){
+          if(val.length >7 && val.length <21){
           this.modifyPasswordForm.firstDegree = true
         } else{
           this.modifyPasswordForm.firstDegree = false
