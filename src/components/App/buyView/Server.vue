@@ -1,6 +1,6 @@
 <template>
   <div class="server-page">
-    <buy-header title="购买云服务器" @toOldVersion="toOldVersion('host')"></buy-header>
+    <buy-header :title="headerTitle" @toOldVersion="toOldVersion('host')"></buy-header>
     <div class="buy-step">
       <div
         v-for="(item,index) in buyStepGroup"
@@ -36,7 +36,12 @@
         </div>
       </div>
     </div>
-    <buy-billing-type></buy-billing-type>
+    <buy-billing-type
+      :billing-type-group="billingTypeGroup"
+      :billing-type="billingType"
+      @changeBillingType="changeBillingType"
+    ></buy-billing-type>
+    <buy-area :area-group="areaGroup" :area="area" @changeArea="changeArea"></buy-area>
   </div>
 </template>
 <style lang="less" scoped>
@@ -168,14 +173,54 @@
 }
 </style>
 <script type="text/ecmascript-6">
+import axios from "axios";
+import $store from "@/vuex";
 import buyHeader from "../buyComponents/buy-header";
 import buyBillingType from "../buyComponents/buy-billing-type";
+import buyArea from "../buyComponents/buy-area";
 export default {
   components: {
-    buyHeader,buyBillingType
+    buyHeader,
+    buyBillingType,
+    buyArea
+  },
+  // 以前统一写在app里，由于静态打包与写在app里冲突，所以vuex必须先在这里获取到区域信息,不然区域信息是null,
+  beforeRouteEnter(to, from, next) {
+    // 获取用户信息
+    let userInfo = axios.get("user/GetUserInfo.do", {
+      params: { t: new Date().getTime() }
+    });
+    // 获取zone信息
+    let zoneList = axios.get("information/zone.do", {
+      params: { t: new Date().getTime(), buy: "1" }
+    });
+    Promise.all([userInfo, zoneList]).then(
+      values => {
+        if (values[0].data.status == 1 && values[0].status == 200) {
+          $store.commit("setAuthInfo", {
+            authInfo: values[0].data.authInfo,
+            userInfo: values[0].data.result,
+            authInfoPersion: values[0].data.authInfo_persion
+          });
+          localStorage.setItem("realname", values[0].data.result.realname);
+        }
+        if (values[1].data.status == 1 && values[1].status == 200) {
+          $store.commit("setZoneList", values[1].data.result);
+        }
+        next();
+      },
+      value => {
+        next(vm => {
+          vm.$message.info({
+            content: "获取区域信息失败，请稍候再试"
+          });
+        });
+      }
+    );
   },
   data() {
     return {
+      headerTitle: "购买云服务器",
       buyStep: 0,
       buyStepGroup: ["主机配置", "网络与带宽", "登陆信息", "订单确认"],
       serverType: "cloudServer",
@@ -200,15 +245,46 @@ export default {
           title: "裸金属服务器",
           value: "bareMetalServer"
         }
-      ]
+      ],
+      billingTypeGroup: [
+        { text: "包年包月", value: "monthly" },
+        { text: "实时计费", value: "timely" }
+      ],
+      billingType: "monthly",
+      areaGroup: [],
+      area: {}
     };
   },
+  created() {
+    this.setAreaData();
+  },
   methods: {
+    setAreaData() {
+      this.areaGroup = this.$store.state.zoneList.filter(zone => {
+        return zone.gpuserver == 0;
+      });
+      this.area = this.$store.state.zone;
+      // 如果默认区域在该资源下不存在
+      if (
+        !this.areaGroup.some(i => {
+          return i.zoneid == this.area.zoneid;
+        })
+      ) {
+        // 默认选中zoneList中第一个区域
+        this.area = this.areaGroup[0];
+      }
+    },
     toOldVersion(val) {
       this.$router.push("/buy/host");
     },
     changeServerType(item) {
       this.serverType = item.value;
+    },
+    changeBillingType(item) {
+      this.billingType = item.value;
+    },
+    changeArea(item) {
+      this.area = item;
     }
   }
 };

@@ -1,38 +1,35 @@
 <template>
-  <div class="buy-billing-type">
+  <div class="buy-area">
     <div class="wrap">
-      <h2>计费方式选择</h2>
-      <div class="billing-types">
+      <h2>区域选择</h2>
+      <div class="area-groups">
         <span
-          v-for="(item,index) in billingTypeGroup"
+          v-for="(item,index) in areaGroup"
           :key="index"
-          :class="{selected: billingType === item.value}"
-          @click="changeBillingType(item)"
-        >{{ item.text }}</span>
+          :class="{selected: area.zoneid === item.zoneid}"
+          @click="changeArea(item)"
+        >{{ item.zonename }}</span>
       </div>
+      <p>不同区域的资源内网互不相通；请选择与您相近的区域，可降低网络时延、提高您客户的访问速度。</p>
     </div>
   </div>
 </template>
 <style lang="less" scoped>
-.buy-billing-type {
+.buy-area {
   margin-top: 10px;
   .wrap {
     width: 1200px;
-    padding: 30px;
     margin: 0 auto;
+    padding: 30px;
     background: rgba(255, 255, 255, 1);
     box-shadow: 0px 2px 14px -7px rgba(166, 166, 166, 0.3);
-    > h2 {
-      font-size: 18px;
-      font-family: MicrosoftYaHei-Bold;
-      font-weight: bold;
-      color: rgba(51, 51, 51, 1);
-    }
-    .billing-types {
+    .area-groups {
       display: flex;
-      margin-top: 20px;
+      flex-wrap: wrap;
+      margin-top: 10px;
       > span {
         margin-right: 10px;
+        margin-top: 10px;
         font-size: 14px;
         font-family: MicrosoftYaHei;
         color: rgba(102, 102, 102, 1);
@@ -47,6 +44,12 @@
         }
       }
     }
+    > p {
+      margin-top: 10px;
+      font-size: 12px;
+      font-family: MicrosoftYaHei;
+      color: rgba(153, 153, 153, 1);
+    }
   }
 }
 </style>
@@ -56,20 +59,22 @@ export default {
     return {};
   },
   props: {
-    billingTypeGroup: {
+    areaGroup: {
       type: Array,
       default: () => {
         return new Array();
       }
     },
-    billingType: {
-      type: String,
-      default: ""
+    area: {
+      type: Object,
+      default: () => {
+        return new Object();
+      }
     }
   },
   methods: {
-    changeBillingType(item) {
-      this.$emit("changeBillingType", item);
+    changeArea(item) {
+      this.$emit("changeArea", item);
     }
   }
 };
