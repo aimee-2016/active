@@ -1806,7 +1806,7 @@
                 })
               }
             })
-        }, 1000 * 10)
+        }, 1000 * 5)
       },
       // 获取资源配额
       getResourceAllocation() {
@@ -2078,6 +2078,10 @@
             this.snapsSelection = null
             if (response.status == 200 && response.data.status == 1) {
               this.inter()
+              this.$Message.success({
+                content: response.data.message,
+                duration: 5
+              })
             } else{
               this.$message.info({
                 content: response.data.message
