@@ -17,7 +17,7 @@
         <div class="step-line" v-if="index < 3"></div>
       </div>
     </div>
-    <div class="buy-type">
+    <div class="buy-server-type">
       <h2>类型选择</h2>
       <div class="type-list">
         <div
@@ -36,6 +36,7 @@
         </div>
       </div>
     </div>
+    <buy-billing-type></buy-billing-type>
   </div>
 </template>
 <style lang="less" scoped>
@@ -99,7 +100,7 @@
       }
     }
   }
-  .buy-type {
+  .buy-server-type {
     width: 1200px;
     margin: 0 auto;
     padding: 30px;
@@ -168,9 +169,10 @@
 </style>
 <script type="text/ecmascript-6">
 import buyHeader from "../buyComponents/buy-header";
+import buyBillingType from "../buyComponents/buy-billing-type";
 export default {
   components: {
-    buyHeader
+    buyHeader,buyBillingType
   },
   data() {
     return {
