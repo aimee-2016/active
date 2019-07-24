@@ -36,9 +36,10 @@
         font-size: 14px;
         font-family: MicrosoftYaHei;
         color: rgba(102, 102, 102, 1);
-        padding: 5px 25px;
+        width: 106px;
+        text-align: center;
         border: 1px solid rgba(217, 217, 217, 1);
-        line-height: 25px;
+        line-height: 33px;
         cursor: pointer;
         &.selected {
           color: rgba(66, 151, 242, 1);

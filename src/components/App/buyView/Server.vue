@@ -1,188 +1,53 @@
 <template>
   <div class="server-page">
     <buy-header :title="headerTitle" @toOldVersion="toOldVersion('host')"></buy-header>
-    <div class="buy-step">
-      <div
-        v-for="(item,index) in buyStepGroup"
-        :key="index"
-        class="step-item"
-        :class="{onStep: buyStep >= index}"
-      >
-        <div class="step-index">
-          <span>{{index + 1}}</span>
-        </div>
-        <div class="step-text">
-          <span>{{ item }}</span>
-        </div>
-        <div class="step-line" v-if="index < 3"></div>
-      </div>
-    </div>
-    <div class="buy-server-type">
-      <h2>类型选择</h2>
-      <div class="type-list">
-        <div
-          v-for="(item,index) in typeGroup"
-          :key="index"
-          class="type-item"
-          :class="{selected: serverType === item.value,disabled: index === 3}"
-          @click="changeServerType(item)"
-        >
-          <div class="type-img">
-            <img :src="item.imgurl" alt="buy type" />
-          </div>
-          <div class="type-title">
-            <h3>{{ item.title}}</h3>
-          </div>
-        </div>
-      </div>
-    </div>
+    <buy-step :buy-step-group="buyStepGroup" :buy-step="buyStep"></buy-step>
+    <buy-server-type
+      :server-type-group="serverTypeGroup"
+      :server-type="serverType"
+      @changeServerType="changeServerType"
+    ></buy-server-type>
     <buy-billing-type
       :billing-type-group="billingTypeGroup"
       :billing-type="billingType"
       @changeBillingType="changeBillingType"
     ></buy-billing-type>
     <buy-area :area-group="areaGroup" :area="area" @changeArea="changeArea"></buy-area>
+    <buy-mirror
+      :mirror-type-group="mirrorTypeGroup"
+      :mirrorType="mirrorType"
+      @changeMirrorType="changeMirrorType"
+    ></buy-mirror>
+    <buy-server-specification
+      :server-specification-group="serverSpecificationGroup"
+      :server-specification="serverSpecification"
+    ></buy-server-specification>
   </div>
 </template>
 <style lang="less" scoped>
 .server-page {
   background: rgba(248, 248, 248, 1);
-  .buy-step {
-    width: 1200px;
-    margin: 20px auto;
-    display: flex;
-    justify-content: space-between;
-    .step-item {
-      position: relative;
-      display: flex;
-      .step-index {
-        width: 28px;
-        height: 28px;
-        border: 1px solid rgba(153, 153, 153, 1);
-        background: #fff;
-        border-radius: 50%;
-        text-align: center;
-        span {
-          font-size: 14px;
-          font-family: HelveticaNeue;
-          color: rgba(153, 153, 153, 1);
-          line-height: 28px;
-        }
-      }
-      .step-text {
-        margin-left: 10px;
-        span {
-          font-size: 16px;
-          font-family: MicrosoftYaHei;
-          color: rgba(153, 153, 153, 1);
-          line-height: 28px;
-        }
-      }
-      .step-line {
-        margin-left: 20px;
-        height: 2px;
-        width: 218px;
-        border: 1px solid rgba(233, 233, 233, 1);
-        position: relative;
-        top: 50%;
-      }
-      &.onStep {
-        .step-index {
-          border: 1px solid rgba(74, 151, 238, 1);
-          background: rgba(74, 151, 238, 1);
-          span {
-            color: #fff;
-          }
-        }
-        .step-text {
-          span {
-            color: #666666;
-          }
-        }
-        .step-line {
-          border: 1px solid rgba(74, 151, 238, 1);
-        }
-      }
-    }
-  }
-  .buy-server-type {
-    width: 1200px;
-    margin: 0 auto;
-    padding: 30px;
-    background: rgba(255, 255, 255, 1);
-    box-shadow: 0px 2px 14px -7px rgba(166, 166, 166, 0.3);
-    > h2 {
-      font-size: 18px;
-      font-family: MicrosoftYaHei-Bold;
-      font-weight: bold;
-      color: rgba(51, 51, 51, 1);
-    }
-    .type-list {
-      margin-top: 20px;
-      display: flex;
-      justify-content: space-between;
-      .type-item {
-        width: 270px;
-        height: 172px;
-        cursor: pointer;
-        background: rgba(255, 255, 255, 1);
-        border-radius: 4px;
-        border: 1px solid rgba(233, 233, 233, 1);
-        padding-bottom: 15px;
-        position: relative;
-        &.selected {
-          box-shadow: 0px 2px 12px -4px rgba(66, 151, 242, 0.43);
-          border: 1px solid rgba(66, 151, 242, 1);
-          &::before {
-            content: "";
-            display: inline-block;
-            height: 31px;
-            width: 34px;
-            background: url("../../../assets/img/buy/buy_icon1.png");
-            position: absolute;
-            right: 0;
-            top: 0;
-          }
-        }
-        &.disabled {
-          background: rgba(233, 233, 233, 0.22);
-          border: 1px solid rgba(233, 233, 233, 1);
-          cursor: not-allowed;
-          .type-title {
-            > h3 {
-              color: rgba(153, 153, 153, 1);
-            }
-          }
-        }
-        .type-img {
-          padding-top: 15px;
-          padding-left: 80px;
-        }
-        .type-title {
-          > h3 {
-            text-align: center;
-            font-size: 16px;
-            font-family: MicrosoftYaHei;
-            color: rgba(51, 51, 51, 1);
-            font-weight: normal;
-          }
-        }
-      }
-    }
-  }
 }
 </style>
 <script type="text/ecmascript-6">
 import axios from "axios";
 import $store from "@/vuex";
 import buyHeader from "../buyComponents/buy-header";
+import buyStep from "../buyComponents/buy-step";
+import buyServerType from "../buyComponents/buy-server-type";
 import buyBillingType from "../buyComponents/buy-billing-type";
 import buyArea from "../buyComponents/buy-area";
+import buyMirror from "../buyComponents/buy-mirror";
+import buyServerSpecification from "../buyComponents/buy-server-specification";
 export default {
   components: {
     buyHeader,
+    buyStep,
+    buyServerType,
     buyBillingType,
-    buyArea
+    buyArea,
+    buyMirror,
+    buyServerSpecification
   },
   // 以前统一写在app里，由于静态打包与写在app里冲突，所以vuex必须先在这里获取到区域信息,不然区域信息是null,
   beforeRouteEnter(to, from, next) {
@@ -224,7 +89,7 @@ export default {
       buyStep: 0,
       buyStepGroup: ["主机配置", "网络与带宽", "登陆信息", "订单确认"],
       serverType: "cloudServer",
-      typeGroup: [
+      serverTypeGroup: [
         {
           imgurl: require("../../../assets/img/buy/buy_serverType1.png"),
           title: "云服务器",
@@ -252,7 +117,41 @@ export default {
       ],
       billingType: "monthly",
       areaGroup: [],
-      area: {}
+      area: {},
+      mirrorType: "mirrorMarket",
+      mirrorTypeGroup: [
+        {
+          text: "镜像市场",
+          value: "mirrorMarket"
+        },
+        {
+          text: "公共镜像",
+          value: "piblicMirror"
+        },
+        {
+          text: "自制镜像",
+          value: "customMirror"
+        }
+      ],
+      // 当前服务器规格
+      serverSpecification: {
+        CPU: "",
+        memoryGroup: [],
+        memory: "",
+        rootDiskTypeGroup: [
+          {
+            name: "SSD",
+            value: "ssd"
+          },
+          {
+            name: "SAS",
+            value: "sas"
+          }
+        ],
+        rootDiskSize: "ssd"
+      },
+      // 每个区域对应的服务器规格配置
+      serverSpecificationGroup: {}
     };
   },
   created() {
@@ -273,6 +172,31 @@ export default {
         // 默认选中zoneList中第一个区域
         this.area = this.areaGroup[0];
       }
+      if (this.area) {
+        this.setSpecification();
+      }
+    },
+    setSpecification() {
+      axios.get("information/getServiceoffers.do").then(res => {
+        if (res.status === 200 && res.data.status === 1) {
+          res.data.info.length > 0
+            ? res.data.info.forEach(item => {
+                if (this.area.zoneid === item.zoneId) {
+                  this.serverSpecificationGroup = item;
+                  this.serverSpecification.CPU = item.kernelList[0].value;
+                  this.serverSpecification.memoryGroup =
+                    item.kernelList[0].RAMList;
+                  this.serverSpecification.memory =
+                    item.kernelList[0].RAMList[0].value;
+                }
+              })
+            : false;
+        } else {
+          this.$message.info({
+            content: res.data.message
+          });
+        }
+      });
     },
     toOldVersion(val) {
       this.$router.push("/buy/host");
@@ -285,6 +209,9 @@ export default {
     },
     changeArea(item) {
       this.area = item;
+    },
+    changeMirrorType(item) {
+      this.mirrorType = item.value;
     }
   }
 };

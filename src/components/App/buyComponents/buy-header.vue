@@ -1,5 +1,5 @@
 <template>
-  <div class="head-page">
+  <div class="buy-header">
     <div class="wrap">
       <h1>{{titleName}}</h1>
       <a @click="toOldVersion">回到旧版</a>
@@ -7,7 +7,7 @@
   </div>
 </template>
 <style lang="less" scoped>
-.head-page {
+.buy-header {
   height: 44px;
   background: rgba(255, 255, 255, 1);
   box-shadow: 0px -2px 8px 0px rgba(193, 193, 193, 0.3);
