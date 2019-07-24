@@ -64,7 +64,7 @@
               <span v-if="item.hot" class="hot">爆款</span>
               <span v-if="item.new" class="new">限新用户</span>
             </div>
-            <div class="configs">
+            <div class="body">
               <div class="configure">
                 <ul>
                   <li>
@@ -88,8 +88,6 @@
                   </li>
                 </ul>
               </div>
-            </div>
-            <div class="body">
               <div>
                 <span class="label">区域：</span>
                 <Select
@@ -106,17 +104,21 @@
               </div>
               <div>
                 <span class="label">系统：</span>
-                <Cascader :data="item.systemList" v-model="item.system" style="width:142px;display:inline-block"></Cascader>
+                <Cascader
+                  :data="item.systemList"
+                  v-model="item.system"
+                  style="width:142px;display:inline-block"
+                ></Cascader>
               </div>
               <div class="price">
-               ￥
+                ￥
                 <span>{{item.price}}</span>/月
               </div>
               <div class="origin-price">
                 原价：￥
                 <span>{{item.originPrice+'/'+month(item.time)}}</span>
               </div>
-              <Button @click="pushOrderHot(item)">立即购买</Button>
+              <Button class="btn" @click="pushOrderHot(item)">立即购买</Button>
               <div class="percentage">
                 <span>已抢购100%</span>
               </div>
@@ -127,82 +129,195 @@
       </div>
     </div>
     <div class="first-month">
-      <div class="wrap">
-        <div class="headline">
-          <div>
-            <img src="../../../assets/img/active/ddos/text-left.png" alt="icon">
-            <img src="../../../assets/img/active/ddos/text-3.png" alt="icon">
-            <img src="../../../assets/img/active/ddos/text-right.png" alt="icon">
-          </div>
-          <p>
-            <span
-              style="color:#EED292;cursor:pointer"
-              @click="showModal.ruleHost=true"
-            >活动规则></span>
-          </p>
+      <div class="headline">
+        <div>
+          <img src="../../../assets/img/active/ddos/text-left.png" alt="icon">
+          <img src="../../../assets/img/active/ddos/text-3.png" alt="icon">
+          <img src="../../../assets/img/active/ddos/text-right.png" alt="icon">
         </div>
-        <div class="product">
-          <!-- <ul>
-            <li
-              v-for="(item,index) in configureList"
-              :key="index"
-              :class="{'selected':selectConfig==item.cpu+','+item.mem}"
-              @click="changConfigHost(item.cpu+','+item.mem)"
-            >{{ item.cpu+'核'+item.mem+'G'}}</li>
-          </ul>-->
+        <p>
+          <span style="color:#EED292;" @click="showModal.ruleHost=true">活动规则></span>
+        </p>
+      </div>
+      <div class="product">
+        <div class="wrap">
           <ul>
-            <li>
-              
+            <li v-for="(item,index) in ddosList" :key="index">
+              <div class="title">
+                <p>高防云服务器 {{item.config}}</p>
+              </div>
+              <div class="content">
+                <div class="left">
+                  <dl>
+                    <dt>带宽</dt>
+                    <dd>{{item.bandwith}}M</dd>
+                  </dl>
+                  <dl>
+                    <dt>区域</dt>
+                    <dd>{{item.zone}}</dd>
+                  </dl>
+                  <dl>
+                    <dt>系统</dt>
+                    <dd>
+                      <Cascader
+                        :data="systemList1"
+                        v-model="system1"
+                        style="width:142px;display:inline-block"
+                      ></Cascader>
+                    </dd>
+                  </dl>
+                  <dl>
+                    <dt>防御</dt>
+                    <dd>
+                      <span
+                        :class="{select:item.disk==item1}"
+                        v-for="(item1,index) in item.diskList"
+                        :key="index"
+                      >{{item1}}G</span>
+                    </dd>
+                  </dl>
+                </div>
+                <div class="right">
+                  <div>
+                    <span class="text">首月优惠价</span>
+                    <p>
+                      ¥
+                      <span>{{item.price}}</span>/首月
+                    </p>
+                    <i>原价：¥{{item.originPrice}}/月</i>
+                  </div>
+                  <Button class="btn">立即购买</Button>
+                </div>
+              </div>
             </li>
           </ul>
+          <div class="tips">
+            以上配置皆包含40G SSD系统盘
+            <span>查看更多配置>></span>
+          </div>
         </div>
       </div>
     </div>
     <div class="super-discount">
       <div class="wrap">
         <div class="headline">
-          <h2>热销云服务器</h2>
-          <p>
-            购买时长越长越便宜，年付低至3折
-            <span
-              style="color:#387dff;cursor:pointer;text-decoration: underline;"
-              @click="showModal.ruleHost=true"
-            >活动规则></span>
-          </p>
+          <div>
+            <img src="../../../assets/img/active/ddos/text-left-black.png" alt="icon">
+            <img src="../../../assets/img/active/ddos/text-4.png" alt="icon">
+            <img src="../../../assets/img/active/ddos/text-right-black.png" alt="icon">
+          </div>
+          <p style="color:#666666">高防云服务器买3/6/12个月赠送188元域名无门槛抵用券</p>
         </div>
         <div class="product">
-          <!-- <ul>
-            <li
-              v-for="(item,index) in configureList"
-              :key="index"
-              :class="{'selected':selectConfig==item.cpu+','+item.mem}"
-              @click="changConfigHost(item.cpu+','+item.mem)"
-            >{{ item.cpu+'核'+item.mem+'G'}}</li>
-          </ul>-->
+          <div v-for="(item,index) in hotHostList1" :key="index">
+            <div class="head">
+              <h3>{{item.headline}}</h3>
+            </div>
+            <div class="body">
+              <div class="configure">
+                <ul>
+                  <li>
+                    <i>系统盘:</i>
+                    <span>
+                      {{item.config.disksize}}G
+                      <span>SSD</span>
+                    </span>
+                  </li>
+                  <li>
+                    <i>宽带:</i>
+                    <span>{{item.config.bandwith}}M</span>
+                  </li>
+                  <li>
+                    <i>区域:</i>
+                    <span>{{item.zone}}</span>
+                  </li>
+                  <li>
+                    <i>防护等级:</i>
+                    <span>{{item.config.mem}}G</span>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <span class="label">系统：</span>
+                <Cascader :data="item.systemList" v-model="item.system" style="width:237px;"></Cascader>
+              </div>
+              <div class="time">
+                <span class="label">时长：</span>
+                <ul>
+                  <li
+                    v-for="(item1,index1) in item.timeList"
+                    :key="index1"
+                    :class="{'selected':item.configId==item1.id}"
+                    @click="changgeTimeHot(item,item1)"
+                  >
+                    {{month(item1.days)}}
+                    <span>{{item1.discount*10}}折</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="price">
+                ￥
+                <span>{{item.price}}</span>
+              </div>
+              <div class="origin-price">
+                原价：￥
+                <span>{{item.originPrice+'/'+month(item.time)}}</span>
+              </div>
+              <Button class="btn" @click="pushOrderHot(item)">立即购买</Button>
+              <p class="text">购买即赠送188元域名无门槛抵用券</p>
+            </div>
+          </div>
+        </div>
+        <div class="tips">
+          <span>查看更多配置>></span>
         </div>
       </div>
     </div>
     <div class="give-time">
       <div class="wrap">
         <div class="headline">
-          <h2>热销云服务器</h2>
-          <p>
-            购买时长越长越便宜，年付低至3折
-            <span
-              style="color:#387dff;cursor:pointer;text-decoration: underline;"
-              @click="showModal.ruleHost=true"
-            >活动规则></span>
-          </p>
+          <div>
+            <img src="../../../assets/img/active/ddos/text-left.png" alt="icon">
+            <img src="../../../assets/img/active/ddos/text-5.png" alt="icon">
+            <img src="../../../assets/img/active/ddos/text-right.png" alt="icon">
+          </div>
+          <p style="color:#fff;">此活动长期有效 新老用户皆可参与</p>
         </div>
         <div class="product">
-          <!-- <ul>
-            <li
-              v-for="(item,index) in configureList"
-              :key="index"
-              :class="{'selected':selectConfig==item.cpu+','+item.mem}"
-              @click="changConfigHost(item.cpu+','+item.mem)"
-            >{{ item.cpu+'核'+item.mem+'G'}}</li>
-          </ul>-->
+          <ul>
+            <li>
+              <div class="top">
+                <div class="left">
+                  <p>
+                    购
+                    <span>6个月</span>高防云服务器
+                  </p>
+                  <p>免费再送一个月</p>
+                </div>
+                <div class="right">
+                  <span>9</span>.5
+                  <i>折</i>
+                </div>
+              </div>
+              <Button class="btn" @click="$router.push('/buy')">立即选购</Button>
+            </li>
+            <li>
+              <div class="top">
+                <div class="left">
+                  <p>
+                    购
+                    <span>6个月</span>高防云服务器
+                  </p>
+                  <p>免费再送一个月</p>
+                </div>
+                <div class="right">
+                  <span>9</span>.5
+                  <i>折</i>
+                </div>
+              </div>
+              <Button class="btn" @click="$router.push('/buy')">立即选购</Button>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -217,6 +332,26 @@ import $ from 'jquery'
 export default {
   data () {
     return {
+      systemList1: [{
+        value: 'window',
+        label: 'Windows',
+        children: []
+      }, {
+        value: 'centos',
+        label: 'Centos',
+        children: [],
+      },
+      {
+        value: 'debian',
+        label: 'Debian',
+        children: [],
+      },
+      {
+        value: 'ubuntu',
+        label: 'Ubuntu',
+        children: [],
+      }],
+      system1: [],
       navs: [
         { title: '活动一', text: '高防云产品超低折扣 专属秒杀', distance: 1400, },
         { title: '活动二', text: '高防云服务器首月8折优惠', distance: 2200, },
@@ -412,6 +547,214 @@ export default {
         }
       ],
       zoneListHot: [],
+      ddosList: [
+        {
+          config: '2核4G',
+          bandwith: 5,
+          zone: '华东一区',
+          systemList: [],
+          system: [],
+          diskList: [60, 100, 200],
+          disk: 60,
+          price: 707.23,
+          originPrice: 852.12
+        },
+        {
+          config: '2核8G',
+          bandwith: 5,
+          zone: '华东一区',
+          systemList: [],
+          system: [],
+          diskList: [60, 100, 200],
+          disk: 60,
+          price: 790.26,
+          originPrice: 852.12
+        },
+        {
+          config: '4核8G',
+          bandwith: 5,
+          zone: '华东一区',
+          systemList: [],
+          system: [],
+          diskList: [60, 100, 200],
+          disk: 60,
+          price: 895.67,
+          originPrice: 852.12
+        },
+        {
+          config: '4核16G',
+          bandwith: 5,
+          zone: '华东一区',
+          systemList: [],
+          system: [],
+          diskList: [60, 100, 200],
+          disk: 60,
+          price: 995.27,
+          originPrice: 852.12
+        }
+      ],
+      hotHostList1: [
+        {
+          headline: '高防云服务器2核4G',
+          subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
+          config: {
+            cpu: 1,
+            mem: 2,
+            bandwith: 3,
+            disksize: 40
+          },
+          timeList: [
+            { days: 3, discount: 0.8 },
+            { days: 6, discount: 0.75 },
+            { days: 12, discount: 0.7 }
+          ],
+          time: 180,
+          systemList: [{
+            value: 'window',
+            label: 'Windows',
+            children: []
+          }, {
+            value: 'centos',
+            label: 'Centos',
+            children: [],
+          },
+          {
+            value: 'debian',
+            label: 'Debian',
+            children: [],
+          },
+          {
+            value: 'ubuntu',
+            label: 'Ubuntu',
+            children: [],
+          }],
+          system: [],
+          zone: '华东一区',
+          price: '69',
+          originPrice: '176.72',
+          configId: ''
+        },
+        {
+          headline: '高防云服务器2核8G',
+          subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
+          config: {
+            cpu: 1,
+            mem: 2,
+            bandwith: 3,
+            disksize: 40
+          },
+          timeList: [
+            { days: 3, discount: 0.8 },
+            { days: 6, discount: 0.75 },
+            { days: 12, discount: 0.7 }
+          ],
+          time: 180,
+          systemList: [{
+            value: 'window',
+            label: 'Windows',
+            children: []
+          }, {
+            value: 'centos',
+            label: 'Centos',
+            children: [],
+          },
+          {
+            value: 'debian',
+            label: 'Debian',
+            children: [],
+          },
+          {
+            value: 'ubuntu',
+            label: 'Ubuntu',
+            children: [],
+          }],
+          system: [],
+          zone: '华东一区',
+          price: '69',
+          originPrice: '176.72',
+          configId: ''
+        },
+        {
+          headline: '高防云服务器4核8G',
+          subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
+          config: {
+            cpu: 1,
+            mem: 2,
+            bandwith: 3,
+            disksize: 40
+          },
+          timeList: [
+            { days: 3, discount: 0.8 },
+            { days: 6, discount: 0.75 },
+            { days: 12, discount: 0.7 }
+          ],
+          time: 180,
+          systemList: [{
+            value: 'window',
+            label: 'Windows',
+            children: []
+          }, {
+            value: 'centos',
+            label: 'Centos',
+            children: [],
+          },
+          {
+            value: 'debian',
+            label: 'Debian',
+            children: [],
+          },
+          {
+            value: 'ubuntu',
+            label: 'Ubuntu',
+            children: [],
+          }],
+          system: [],
+          zone: '华东一区',
+          price: '69',
+          originPrice: '176.72',
+          configId: ''
+        },
+        {
+          headline: '高防云服务器4核16G',
+          subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
+          config: {
+            cpu: 1,
+            mem: 2,
+            bandwith: 3,
+            disksize: 40
+          },
+          timeList: [
+            { days: 3, discount: 0.8 },
+            { days: 6, discount: 0.75 },
+            { days: 12, discount: 0.7 }
+          ],
+          time: 180,
+          systemList: [{
+            value: 'window',
+            label: 'Windows',
+            children: []
+          }, {
+            value: 'centos',
+            label: 'Centos',
+            children: [],
+          },
+          {
+            value: 'debian',
+            label: 'Debian',
+            children: [],
+          },
+          {
+            value: 'ubuntu',
+            label: 'Ubuntu',
+            children: [],
+          }],
+          system: [],
+          zone: '华东一区',
+          price: '69',
+          originPrice: '176.72',
+          configId: ''
+        }
+      ],
     }
   },
   created () {
@@ -496,11 +839,26 @@ export default {
   p {
     margin-top: 20px;
     font-size: 18px;
+    span {
+      cursor: pointer;
+    }
   }
 }
 .wrap {
   margin: 0 auto;
   width: 1200px;
+}
+.btn {
+  height: 40px;
+  background: linear-gradient(
+    128deg,
+    rgba(249, 239, 184, 1) 0%,
+    rgba(227, 183, 111, 1) 100%
+  );
+  border-radius: 2px;
+  border: none;
+  color: #333333;
+  font-size: 18px;
 }
 .banner {
   background: #2a2936;
@@ -586,6 +944,7 @@ export default {
         span {
           font-family: MicrosoftYaHei;
           color: rgba(255, 208, 140, 1);
+          cursor: pointer;
         }
         &:nth-of-type(2) {
           margin-bottom: 0;
@@ -682,10 +1041,14 @@ export default {
         color: #333;
       }
     }
-    .configs {
-      padding: 20px;
+    .body {
       color: #fff0de;
+      padding: 20px 0px 0px 20px;
+      > div {
+        margin-bottom: 10px;
+      }
       .configure {
+        padding: 0 20px 10px 0;
         ul {
           display: flex;
           justify-content: space-between;
@@ -694,17 +1057,10 @@ export default {
               display: block;
               font-style: normal;
               font-size: 12px;
-              font-family:MicrosoftYaHei;
+              font-family: MicrosoftYaHei;
             }
           }
         }
-      }
-    }
-    .body {
-      color: #fff0de;
-      padding: 0px 0px 0px 20px;
-      > div {
-        margin-bottom: 10px;
       }
       .label {
         margin-bottom: 8px;
@@ -727,16 +1083,6 @@ export default {
       button {
         margin-bottom: 10px;
         width: 184px;
-        height: 40px;
-        background: linear-gradient(
-          128deg,
-          rgba(249, 239, 184, 1) 0%,
-          rgba(227, 183, 111, 1) 100%
-        );
-        border-radius: 2px;
-        border: none;
-        color: #333333;
-        font-size: 18px;
       }
     }
   }
@@ -744,13 +1090,304 @@ export default {
     margin-top: 20px;
     text-align: left;
     font-size: 16px;
-    color: #FFD08C;
+    color: #ffd08c;
   }
 }
 .first-month {
-  background:rgba(42,41,54,1);
+  background: rgba(42, 41, 54, 1);
   .product {
-    background:linear-gradient(360deg,rgba(96,102,130,1) 0%,rgba(42,41,54,1) 100%);
+    padding-bottom: 80px;
+    text-align: left;
+    background: linear-gradient(
+      360deg,
+      rgba(96, 102, 130, 1) 0%,
+      rgba(42, 41, 54, 1) 100%
+    );
+    ul {
+      li {
+        display: flex;
+        height: 130px;
+        margin-bottom: 20px;
+      }
+    }
+    .title {
+      width: 220px;
+      background: url(../../../assets/img/active/ddos/background-3-item.png);
+      padding: 39px 0 0 22px;
+      p {
+        width: 120px;
+        font-size: 20px;
+        font-family: MicrosoftYaHei-Bold;
+        font-weight: bold;
+        color: rgba(255, 208, 140, 1);
+        line-height: 26px;
+      }
+    }
+    .content {
+      display: flex;
+      padding: 25px 30px 25px 40px;
+      background: #fff;
+      color: #222222;
+      .left {
+        display: flex;
+        justify-content: space-between;
+        width: 590px;
+        padding: 10px 30px 0 0;
+        border-right: 1px solid #e2e4f0;
+        dl {
+          font-size: 14px;
+          dt {
+            margin-bottom: 12px;
+          }
+          dd {
+            text-align: center;
+            line-height: 35px;
+            span {
+              display: inline-block;
+              width: 60px;
+              height: 35px;
+              line-height: 33px;
+              border: 1px solid rgba(235, 193, 98, 1);
+              border-left: none;
+              cursor: pointer;
+              &:nth-of-type(1) {
+                border-left: 1px solid rgba(235, 193, 98, 1);
+              }
+            }
+            .select {
+              background: linear-gradient(
+                130deg,
+                rgba(249, 239, 184, 1) 0%,
+                rgba(227, 183, 111, 1) 100%
+              );
+            }
+          }
+        }
+      }
+      .right {
+        padding-left: 30px;
+        width: 320px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        div {
+          .text {
+            display: inline-block;
+            width: 70px;
+            height: 21px;
+            background: rgba(88, 85, 112, 1);
+            color: #ffd08c;
+            line-height: 21px;
+            text-align: center;
+          }
+          p {
+            margin: 10px 0 5px 0;
+            color: #ff624b;
+            font-size: 12px;
+            span {
+              font-size: 20px;
+              font-family: MicrosoftYaHei-Bold;
+              font-weight: bold;
+            }
+          }
+          i {
+            font-size: 12px;
+            text-decoration: line-through;
+            font-style: normal;
+          }
+        }
+        button {
+          width: 150px;
+        }
+      }
+    }
+    .tips {
+      text-align: center;
+      font-size: 14px;
+      color: #fff;
+      span {
+        margin-left: 10px;
+        color: #ffd08c;
+        cursor: pointer;
+      }
+    }
+  }
+}
+.super-discount {
+  padding-bottom: 50px;
+  background: #e2e4f0
+    url(../../../assets/img/active/ddos/background-4-right.png) 100% 100%
+    no-repeat;
+  .product {
+    display: flex;
+    justify-content: space-between;
+    text-align: left;
+    > div {
+      width: 285px;
+      box-shadow: 0px 3px 10px -3px rgba(195, 205, 230, 0.7);
+      // border: 1px solid rgba(220, 226, 242, 1);
+    }
+    .head {
+      width: 285px;
+      height: 101px;
+      padding: 39px 0 0 34px;
+      color: #ffd08c;
+      background: url("../../../assets/img/active/ddos/background-4-item.png");
+      h3 {
+        font-size: 24px;
+      }
+    }
+    .body {
+      padding: 30px 20px 20px 20px;
+      background: #fff;
+      > div {
+        margin-bottom: 20px;
+      }
+      .label {
+        display: block;
+        margin-bottom: 10px;
+        width: 70px;
+        font-size: 16px;
+      }
+      .configure {
+        ul {
+          li {
+            margin-bottom: 10px;
+            font-size: 16px;
+            i {
+              margin-bottom: 10px;
+              font-style: normal;
+            }
+          }
+        }
+      }
+      .time {
+        ul {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+          li {
+            position: relative;
+            width: 75px;
+            height: 35px;
+            border-radius: 2px;
+            border: 1px solid rgba(235, 193, 98, 1);
+            line-height: 33px;
+            text-align: center;
+            font-size: 14px;
+            color: #222222;
+            cursor: pointer;
+            &:nth-child(3n + 3) {
+              margin-right: 0;
+            }
+            span {
+              position: absolute;
+              top: -12px;
+              right: -5px;
+              display: inline-block;
+              width: 32px;
+              height: 18px;
+              background: rgba(246, 109, 89, 1);
+              font-size: 12px;
+              color: rgba(255, 255, 255, 1);
+              line-height: 16px;
+            }
+          }
+          .selected {
+            background: linear-gradient(
+              90deg,
+              rgba(249, 239, 184, 1) 0%,
+              rgba(227, 183, 111, 1) 100%
+            );
+            color: #fff;
+          }
+        }
+      }
+      .price {
+        margin-bottom: 5px;
+        color: #ff624b;
+        font-size: 16px;
+        span {
+          font-size: 28px;
+          font-weight: bold;
+        }
+      }
+      .origin-price {
+        font-size: 16px;
+        color: #999999;
+        text-decoration: line-through;
+      }
+      button {
+        width: 100%;
+      }
+      .text {
+        margin-top: 15px;
+        color: #ff624b;
+        font-size: 14px;
+      }
+    }
+  }
+  .tips {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #606682;
+    cursor: pointer;
+  }
+}
+.give-time {
+  padding-bottom: 100px;
+  background: #606682;
+  .product {
+    ul {
+      display: flex;
+      justify-content: space-between;
+      li {
+        width: 590px;
+        box-shadow: 0px 0px 20px -5px rgba(0, 0, 0, 0.5);
+      }
+    }
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 36px 40px;
+      background: #3e3c4d;
+      color: #fff;
+      text-align: left;
+      .left {
+        p {
+          font-size: 20px;
+          &:nth-of-type(1) {
+            margin-bottom: 10px;
+            font-size: 24px;
+            font-family: MicrosoftYaHei-Bold;
+            font-weight: bold;
+            span {
+              color: #ff624b;
+            }
+          }
+        }
+      }
+      .right {
+        color: #ff624b;
+        font-size: 48px;
+        font-family: MicrosoftYaHei-Bold;
+        font-weight: bold;
+        span {
+          font-size: 80px;
+        }
+        i {
+          font-size: 40px;
+          font-style: normal;
+          vertical-align: text-top;
+        }
+      }
+    }
+    button {
+      width: 100%;
+      height: 52px;
+      font-size: 20px;
+    }
   }
 }
 </style>
