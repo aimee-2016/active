@@ -1648,7 +1648,7 @@
                 params.row.sourceType == 9 ? '云市场' :
                 params.row.sourceType == 10 ? '高防主机' : 
                 params.row.sourceType == 11 ? '高防弹性公网IP':
-                params.row.sourceType == 11 ? 'DDoS高防IP' : '' )
+                params.row.sourceType == 12 ? 'DDoS高防IP' : '' )
               },
               //this.columns5[index].filters = res;
               // 0 主机，1 磁盘 2 公网 3 数据库 4 GPU 5 NAT网关  6 对象存储  7 域名  8 ssl证书  9 云市场',
