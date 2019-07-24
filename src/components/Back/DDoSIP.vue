@@ -475,7 +475,7 @@
                                     <Select v-model="domain" style="width:100px">
                                         <Option v-for="item in domainList" :value="item.value" :key="item.value">{{ item.label }}</Option>
                                     </Select>
-                                    <Input placeholder="请输入域名" style="width:180px;margin:0 10px;"></Input>
+                                    <Input placeholder="请输入域名" v-model="domainName" style="width:180px;margin:0 10px;"></Input>
                                     <Button type="primary" style="width:84px;" @click="queryDomain">查询</Button>
                                 </div>
                             </div>
@@ -483,7 +483,7 @@
                                     <img src="../../assets/img/host/h-icon10.png"/>
                                     <span>共 {{ businessData.length }} 项 | 已选择 <span style="color:#FF624B;">{{ overviewSelect.length }} </span>项</span><span style="margin-left:10px;">总价:</span><span style="color:#FF624B;">￥0.00</span>
                             </div> -->
-                            <Table :columns="businessList" :data="businessData"  @on-selection-change='overviewTableChange'></Table>
+                            <Table :loading='busLoading' :columns="businessList" :data="businessData"  @on-selection-change='overviewTableChange'></Table>
                             <div class="dp-page">
                                 <span>总共{{businessData.length}}个项目</span>
                                 <Page :total="businessData.length"  @on-change='getDomainList' style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
@@ -509,7 +509,7 @@
                                     <Button type="primary" style="width:84px;" @click="queryCertificate">查询</Button>
                                 </div>
                             </div>
-                            <Table :columns="certificateList" :data="certificateData" @on-selection-change='overviewTableChange' ></Table>
+                            <Table :loading='cerLoading' :columns="certificateList" :data="certificateData" @on-selection-change='overviewTableChange' ></Table>
                             <div class="dp-page">
                                 <span>总共{{certificateData.length}}个项目</span>
                                 <Page :total="certificateData.length" @on-change='getCertificate'  style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
@@ -536,10 +536,10 @@
                                         <Option v-for="item in visitPortSelect" :value="item.value" :key="item.value">{{ item.label }}</Option>
                                     </Select>
                                     <Input placeholder="请输入端口名称" style="width:180px;margin-right:10px;"></Input>
-                                    <Button type="primary" style="width:84px;">查询</Button>
+                                    <Button type="primary" style="width:84px;" @click="queryRule">查询</Button>
                                 </div>
                             </div>
-                            <Table :columns="ruleList" :data="ruleData" @on-selection-change='overviewTableChange'></Table>
+                            <Table :loading='ruleLoading' :columns="ruleList" :data="ruleData" @on-selection-change='overviewTableChange'></Table>
                             <div class="dp-page">
                                 <span>总共{{ruleData.length}}个项目</span>
                                 <Page :total="ruleData.length" @on-change='getAllforwardrule' :current='ruleDataPage' style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
@@ -1129,6 +1129,7 @@ export default {
       // 证书管理
       certificateKyeHide: true,
       cIsAdd:'add',
+      cerLoading:false,
       certificateList: [
         {
           type: "selection",
@@ -1299,6 +1300,8 @@ export default {
       ],
       sourceip:'',
       domain:'域名',
+      domainName:'',
+      busLoading:false,
       businessList:[
           {
               type: "selection",
@@ -1539,6 +1542,7 @@ export default {
            },
        ],
        ruleData:[],
+       ruleLoading:false,
        visitPort:'访问端口',
        visitPortSelect:[
            {
@@ -2216,15 +2220,19 @@ export default {
 
 
     queryDomain(){
+        this.busLoading = true;
         this.$http.get('ddosImitationIp/Querydomain.do',{
             params:{
-                domain:this.domain
+                domain:this.domainName
             }
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
-                
+                this.businessData = [];
+                this.businessData.push(res.data.result);
+                this.busLoading = false;
             }else{
                 this.$Message.info(res.data.message);
+                this.busLoading = false;
             }
         })
     },
@@ -2272,6 +2280,7 @@ export default {
         }})
     },
     queryCertificate(){
+        this.cerLoading = true;
         this.$http.get('ddosImitationIp/QueryCertificate.do',{
             params:{
                 crtName:this.crtName
@@ -2280,8 +2289,10 @@ export default {
             if(res.status == 200 && res.data.status ==1){
                  this.certificateData = [];
                   this.certificateData.push(res.data.result);
+                  this.cerLoading = false;
             }else{
                 this.$Message.info(res.data.message);
+                this.cerLoading = false;
             }
         }).catch(err =>{})
     },
@@ -2354,6 +2365,31 @@ export default {
         if(sessionStorage.getItem('ruleList') != undefined){
             sessionStorage.removeItem('ruleList')
         }
+    },
+
+    queryRule(){
+        this.ruleLoading = true;
+        this.$http.get('ddosImitationIp/queryforwardrule.do',{
+            params:{
+                packageId:'dms-20190719388840',
+                accessProtocol:'',
+                accessPort:'203'
+            }
+        }).then(res => {
+            if(res.status == 200 && res.data.status == 1){
+                this.ruleData = res.data.result;
+                this.ruleLoading = false;
+            }else{
+                this.ruleLoading = false;
+                this.$Message.info(res.data.messae);
+            }
+        }).catch(err =>{
+            if(err){
+                this.$Message.info('网络异常，请稍后再试');
+                this.ruleLoading = false;
+            }
+              
+        })
     },
 
     /**
