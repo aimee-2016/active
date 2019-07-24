@@ -2597,6 +2597,7 @@ section:nth-of-type(1) {
       font-size: 32px;
       color: rgba(53, 14, 3, 1);
       background: url("../../../assets/img/active/freeToReceive.1/coupon-obj-bg.png");
+      cursor: pointer;
       h3 {
         font-weight: normal;
         font-size: 32px;
