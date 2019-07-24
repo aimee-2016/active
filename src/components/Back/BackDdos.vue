@@ -13,7 +13,7 @@
           <button id="refresh_button" @click="$router.go(0)" style="margin-top: 10px;">刷新</button>
         </div>
         <div class="universal-alert">
-          <p>高防云服务器是一台具备了高防DDoS能力的服务器，它具有DDoS防护与CC攻击防护能力，并能够根据您的业务需求进行弹性升级，包括服务器性能与防护性能</p>
+          <p>高防云服务器是一台具备了高防DDoS能力的服务器，它具有DDoS防护与CC攻击防护能力，并能够根据您的业务需求进行弹性升级</p>
         </div>
         <div class="operator-bar" style="position: relative">
           <Button type="primary" @click="$router.push('/buy/ddos/')">+ 创建</Button>
@@ -2457,7 +2457,7 @@
           })
         }
       },
-      // 包年/月主机续费
+      // 包年/月主机续费(高防主机续费更改参数)
       renewalOk() {
         var selectIp = ''
         var selectDisk = ''

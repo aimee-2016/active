@@ -4,6 +4,9 @@
             <span class="title">云安全 / DDoS高防IP / <span>业务管理</span></span>
              <div id="content">
                 <div id="header">
+                    <i class="back-btn" @click="$router.push('/ddosipback')">
+                        <Icon type="chevron-left" style="font-size:12px;"></Icon>
+                    </i>
                     <span id="title">添加转发规则</span>
                     <button id="refresh_button" @click="$router.go(0)" style="margin-top: 10px;">刷新</button>
                 </div>
@@ -67,7 +70,7 @@
                             </Tooltip>
                         </FormItem>
                     </Form>
-                    <Button style="margin-right:10px;" @click="$router.push('DDoSIPBack')">返回</Button>
+                    <Button style="margin-right:10px;" @click="clearData">取消</Button>
                     <Button type="primary" @click="addforwardrule('formValidate')">提交，查看下一步</Button>
                 </div>
 
@@ -208,7 +211,14 @@ export default {
                         }).catch(err =>{})
                     }})
         },
-   
+        clearData(){
+            for(let key in this.formValidate){
+                if(key != 'agreement' || key != 'attackMeal'){
+                    this.formValidate[key] = '';
+                }
+            }
+            
+        }
     },
     created(){
         this.getId();
@@ -254,4 +264,16 @@ export default {
         font-weight:Bold;
         margin:24px 0 18px 0;
     }
+    .back-btn {
+  margin-top: 8px;
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  border-radius: 4px;
+  border: 1px solid rgba(225, 225, 225, 1);
+  color: #999999;
+  text-align: center;
+  cursor:pointer;
+  line-height: 24px;
+}
 </style>

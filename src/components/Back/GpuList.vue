@@ -323,7 +323,7 @@
           <li>{{ item.computername}}</li>
           <li @click="toManage(item)">{{ item.instancename}}</li>
           <li v-if="item.changepassword">
-            <input :class="{error: item.errorMsg}" v-model="item.currentPassword" @input="item.errorMsg = ''" type="text" placeHolder="请输入当前密码" :maxlength="32"></input>
+            <input :class="{error: item.errorMsg}" v-model="item.currentPassword" @input="item.errorMsg = ''" type="text" placeHolder="请输入当前密码" :maxlength="20"></input>
             <p v-if="item.errorMsg == 'passwordMistake'">您输入的密码有误</p>
             <p v-if="item.errorMsg == 'passwordIsEmpty'">请输入主机密码</p>
           </li>
@@ -337,7 +337,7 @@
           </div>
           <div class="resetModal-hint">
             <p v-show="resetPasswordForm.errorMsg=='passwordUndercapacity'">您输入的密码强度不足</p>
-            <p v-show="resetPasswordForm.errorMsg=='passwordHint'">提醒：密码必须是8-32个包含数字和大小写字母的字符</p>
+            <p v-show="resetPasswordForm.errorMsg=='passwordHint'">提醒：密码必须是8-20个包含数字和大小写字母的字符</p>
             <p v-show="resetPasswordForm.errorMsg=='passwordHintTwo'">注意：您的密码已经符合设置密码规则，但密码需要具备一定的强度，建议您设置12位以上，至少包括4项（：，-（）；）的特殊字符，每种字符大于等于2位</p>
           </div>
           <div class="resetModal-import">
@@ -432,7 +432,7 @@
         if (!value) {
           callback(new Error('密码不能为空'));
         } else if (!regExp.test(value)) {
-          callback(new Error('新密码由6-23位的字母数字组成，必须包含大小写字母、数字'));
+          callback(new Error('新密码由6-20位的字母数字组成，必须包含大小写字母、数字'));
         } else {
           if (regExp.test(value)) {
             this.$refs.resetPasswordForm.validateField('confirmPassword');

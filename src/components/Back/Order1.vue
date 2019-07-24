@@ -523,15 +523,12 @@ export default {
               ticketType: "",
               isuse: 0,
               orderNumber: orderNumber + "",
-              totalCost: this.couponInfo.cost
+              totalCost: this.couponInfo.cost,
+              notOverTime:1
             }
           })
           .then(response => {
-            response.data.result.forEach(item =>{
-              if(item.notOverTime != 1 || item.notOverTime != 2){
-                 this.couponInfo.couponList.push(item);
-              }
-            })
+                 this.couponInfo.couponList = response.data.result;
           });
 
         axios
