@@ -87,7 +87,7 @@
                   </div>
                   <div>
                     <div class="zoneItem" v-for="(item, index) in quickProtectList" :key="((index+11)*22)" 
-                      :class="{'banSeclect': index >= 4, 'selectProtect': item.value == quickProtectSecIndex.value}" @click="changeQuickProtectSelect(item, index)">{{item.name}}</div>
+                      :class="{'selectProtect': item.value == quickProtectSecIndex.value}" @click="changeQuickProtectSelect(item, index)">{{item.name}}</div>
                   </div>
                 </div>
               </div>
@@ -531,9 +531,24 @@
                 <div>
                   <p class="item-title" style="margin-top: 5px;">购买时长</p>
                 </div>
-                <div>
+                <div v-if="createType=='fast'">
+                  <div v-if="quickProtectSecIndex.value < 400">
+                    <div class="zoneItem" v-for="(item, index) in timeValue" :key="(index*21)*6" 
+                      :class="{zoneSelect:timeForm.currentTimeValue.label == item.label}" @click="timeForm.currentTimeValue = item">{{item.label}}</div>
+                  </div>
+                  <div v-else>
+                    <!-- 快速选择大于400GB -->
+                    <div class="countmins">
+                      <div class="minusbtn"></div>
+                      <input class="countNum" type="text" maxlength="2" disabled v-model="bigProtectTime"/>
+                      <div class="addbtn"></div>
+                      <div class="depart">天</div>
+                    </div>
+                  </div>
+                </div>
+                <div v-else>
                   <div class="zoneItem" v-for="(item, index) in timeValue" :key="(index*21)*6" 
-                    :class="{zoneSelect:timeForm.currentTimeValue.label == item.label}" @click="timeForm.currentTimeValue = item">{{item.label}}</div>
+                      :class="{zoneSelect:timeForm.currentTimeValue.label == item.label}" @click="timeForm.currentTimeValue = item">{{item.label}}</div>
                 </div>
               </div>
             </div>
@@ -732,6 +747,7 @@
           currentTimeType: 'annual',
           currentTimeValue: {label: '1月', value: '1', type: 'month'}
         },
+        bigProtectTime: 1,
         // 镜像
         mirrorType: [
           {label: '镜像+应用', value: 'app'},
@@ -1312,14 +1328,10 @@
       },
       // 切换快速选择，防护带宽
       changeQuickProtectSelect(item, num){
-        if (num < 4) {
           this.quickProtectSecIndex = item
-        }
       },
       changeCustomProtectSelect(item, num) {
-        if (num < 4) {
           this.customProtectSecIndex = item
-        }
       },
       // 购买数量 - 
       minusCount() {
@@ -2091,6 +2103,14 @@
                 height: 15px;
                 background: #999999;
               }
+            }
+            .depart {
+              float: left;
+              margin-left: 13px;
+              display: block;
+              font-size: 14px;
+              color:rgba(51,51,51,1);
+              line-height: 34px;
             }
           }
           
