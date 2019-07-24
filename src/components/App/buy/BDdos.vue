@@ -446,7 +446,7 @@
                   <div>
                     <p><span style="color:#2A99F2;cursor:pointer" @click="pushDisk">添加数据盘</span>
                       您还可以添加{{remainDisk}}块数据盘</p>
-                    <div class="tipsWorm">提示：创建完成后，须到主机设置里进行扩容才能使用，详细操作请参照 <span>数据盘扩容文档</span></div>
+                    <div class="tipsWorm">提示：创建完成后，须到主机设置里进行扩容才能使用，详细操作请参照 <a href="/support/products/">数据盘扩容文档</a></div>
                   </div>
                 </div>
               </div>

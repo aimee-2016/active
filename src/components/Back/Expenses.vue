@@ -1647,7 +1647,8 @@
                 params.row.sourceType == 7 ? '域名' :
                 params.row.sourceType == 9 ? '云市场' :
                 params.row.sourceType == 10 ? '高防主机' : 
-                params.row.sourceType == 11 ? '高防弹性公网IP' : '')
+                params.row.sourceType == 11 ? '高防弹性公网IP':
+                params.row.sourceType == 11 ? 'DDoS高防IP' : '' )
               },
               //this.columns5[index].filters = res;
               // 0 主机，1 磁盘 2 公网 3 数据库 4 GPU 5 NAT网关  6 对象存储  7 域名  8 ssl证书  9 云市场',
@@ -1692,6 +1693,18 @@
                     label: '云市场',
                     value: 9
                   },
+                  {
+                    label: '10',
+                    value: '高防主机'
+                  },
+                  {
+                    label: '11',
+                    value: '高防弹性公网IP'
+                  },
+                  {
+                    label: '12',
+                    value: 'DDoS高防IP'
+                  }
                 ],
                 filterMultiple: false,
                 filterRemote:(value,row)=>{

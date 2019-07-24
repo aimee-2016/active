@@ -113,6 +113,7 @@
 
 <script type="text/ecmascript-6">
   import $store from '@/vuex'
+  import axios from '@/util/axiosInterceptor'
   export default{
     metaInfo: {
       title: 'ddos高防云服务器 - ddos防御 - 防护ddos攻击 - 云安全 - 新睿云', // set a title
@@ -125,13 +126,19 @@
           content: '新睿云通过专用硬件，针对DDoS攻击，为用户提供高防IP服务。高防IP为用户已备案的域名提供最高40Gbps的DDoS高级防护。用户在遭遇大流量DDoS攻击的情况下，可以在配置高防IP后将攻击流量引至高防IP，确保源站稳定可用。'
         }]
     },
+    watch: {
+      userInfo () {
+        this.logo.linkRouter = this.userInfo ? '/BackDdos' : '/login'
+      }
+    },
     data(){
       return {
+        userInfo: null,
         logo: {
           img: require('../../../assets/img/product/ddos-logo.png'),
           title: 'DDoS高防主机',
           desc: '针对DDoS攻击，新睿云为用户提供高防IP服务，新睿云高防IP为用户已备案的 域名提供最高40Gbps的DDoS高级防护。用户在遭遇大流量DDoS攻击的情况 下，可以在配置后将攻击流量引至高防IP，确保源站稳定可用。',
-          linkRouter: $store.state.userInfo ? '/firewallList' : '/login'
+          linkRouter: '/login'
         },
         features: [
           {img: 'icon-DDosliuliangqingxi1', title: '低成本、高易用', desc: '弹性防护，灵活计费相较于高防IP，高防主机应用成本价格更低，且更易用，管理方式与云服务器一致，无需任何额外学习成本。'},
@@ -224,6 +231,20 @@
             path: '/natgateway/'
           }
         ]
+      }
+    },
+    mounted () {
+      this.setUserInfo()
+    },
+    methods: {
+      setUserInfo () {
+        // 获取用户信息
+        var userInfo = axios.get('user/GetUserInfo.do', {params: {t: new Date().getTime()}})
+        Promise.all([userInfo]).then(values => {
+          if (values[0].data.status == 1 && values[0].status == 200) {
+            this.userInfo = values[0].data.result
+          }
+        })
       }
     }
   }
