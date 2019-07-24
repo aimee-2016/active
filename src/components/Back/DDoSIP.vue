@@ -50,7 +50,7 @@
                                </div>
                               <div style="margin-left:20px;">
                                    <span>按统计时间</span>
-                                   <DatePicker v-model='statisticsTime' format='yyyy-MM-dd' size='small' :transfer='true' type="daterange" placeholder='选择时间'  placement="bottom-end"  style="width: 231px;margin:0 10px;"></DatePicker>
+                                   <DatePicker :options="options" v-model='statisticsTime' format='yyyy-MM-dd' size='small' :transfer='true' type="daterange" placeholder='选择时间'  placement="bottom-end"  style="width: 231px;margin:0 10px;"></DatePicker>
                                    <Button size='small' type="primary" style="width:54px;" @click="getMitigatedBandwidth">查询</Button>
                                </div>
                            </div>
@@ -240,7 +240,7 @@
                                </div>
                                 <div style="margin-left:20px;">
                                    <span>按统计时间</span> 
-                                   <DatePicker v-model='ccStatistics.date' format='yyyy-MM-dd' size='small' :transfer='true' type="daterange" placeholder='选择时间'  placement="bottom-end"  style="width: 231px;margin:0 10px;"></DatePicker>
+                                   <DatePicker :options="options" v-model='ccStatistics.date' format='yyyy-MM-dd' size='small' :transfer='true' type="daterange" placeholder='选择时间'  placement="bottom-end"  style="width: 231px;margin:0 10px;"></DatePicker>
                                    <Button size='small' type="primary" style="width:54px;" @click="getAllCCMap">查询</Button>
                                </div>
                            </div>
@@ -320,7 +320,7 @@
                                </div>
                               <div  style="margin-left:20px;">
                                    <span>按统计时间</span>
-                                   <DatePicker v-model='business.date' format='yyyy-MM-dd' size='small' :transfer='true' type="daterange" placeholder='选择时间'  placement="bottom-end"  style="width: 231px;margin:0 10px;"></DatePicker>
+                                   <DatePicker :options="options" v-model='business.date' format='yyyy-MM-dd' size='small' :transfer='true' type="daterange" placeholder='选择时间'  placement="bottom-end"  style="width: 231px;margin:0 10px;"></DatePicker>
                                    <Button size='small' type="primary" style="width:54px;" @click="getAllBusinessMap">查询</Button>
                                </div>
                                 <div  style="margin-left:20px;">
@@ -610,7 +610,7 @@
                     <TabPane label="操作日志" name='操作日志'>
                         <div style="margin-bottom:21px;">
                             <span>操作时间</span>
-                            <DatePicker v-model="logTime" :transfer='true' format='yyyy-MM-dd' type="daterange" placeholder='选择时间'  placement="bottom-end"  style="width: 200px;margin:0 22px 0 10px;"></DatePicker>
+                            <DatePicker :options="options" v-model="logTime" :transfer='true' format='yyyy-MM-dd' type="daterange" placeholder='选择时间'  placement="bottom-end"  style="width: 200px;margin:0 22px 0 10px;"></DatePicker>
                             <span>操作对象</span>
                             <Select v-model="operationObject" style="width:230px;margin:0 22px 0 10px;">
                                 <Option v-for="item in setMealList" :value="item.packageid" :key="item.packageid">{{ item.packageid }}</Option>
@@ -882,7 +882,15 @@ export default {
         changeIp:false,
         nameList:false,
         addDomain:false,
-      }, 
+      },
+
+      // 日期选择限制
+      options: {
+            disabledDate (date) {
+                return date &&   date.valueOf() < Date.now() - 86400000*30 || date.valueOf() > Date.now() ;
+            }
+        },
+
       nameValidate:{
         black:'',
         white:'',
@@ -1723,7 +1731,6 @@ export default {
                             }
                         },'提交')
                     }
-                    
                 }
             }
         ],

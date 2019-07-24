@@ -80,12 +80,12 @@
                         v-model="bandWidth"
                         unit="MB"
                         :min='selectList.bandwith'
-                        :max=400
+                        :max=2000
                         :step=1
-                        :points="[50,100,150,200,300]"
+                        :points="[400,600,900,1000,1500]"
                         style="margin-right:30px;vertical-align: middle;">
                     </i-slider>
-                    <InputNumber :max="400" :min="selectList.bandwith" v-model="bandWidth" size="large"
+                    <InputNumber :max="2000" :min="selectList.bandwith" v-model="bandWidth" size="large"
                            style="position: relative;bottom: 5px" :precision="0"></InputNumber>
                 </div>
              </div>
@@ -841,7 +841,7 @@
           font-size: 14px;
       }
       .bm-fn{
-          margin-top: 10px;margin-bottom: 20px;font-size: 12px;color: #999999;line-height: 25px;
+          margin-top: 10px;font-size: 12px;color: #999999;line-height: 25px;
       }
       .bm-price{
           color:#F85E1D;font-size:18px;

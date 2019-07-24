@@ -1495,16 +1495,22 @@
           this.renewalTotalCost = '--'
           this.renewalOriginalCost = '--'
         } else {
-          let url = 'information/getYjPrice.do'
-          let hostArr = this.renewalOther[0] == '续费关联云主机' ? this.renewalConnectionsHost : ''
-          this.$http.get(url, {
-            params: {
-              timeValue: this.renewalTime,
+           let params1 ={
+               timeValue: this.renewalTime,
               timeType: this.renewalType,
               diskArr: this.diskSelection.id,
               hostIdArr: hostArr
-            }
-          })
+            },
+            params2 ={
+                timeValue: this.renewalTime,
+                timeType: this.renewalType,
+                diskArr: this.diskSelection.id,
+                gpuArr: hostArr
+            },
+           params = this.$store.state.zone.gpuserver == 1?params2:params1;
+          let url = 'information/getYjPrice.do'
+          let hostArr = this.renewalOther[0] == '续费关联云主机' ? this.renewalConnectionsHost : ''
+          this.$http.get(url, { params})
             .then((response) => {
               if (response.status == 200 && response.data.status == 1) {
                 this.renewalTotalCost = response.data.result.toFixed(2)
@@ -1521,17 +1527,23 @@
       },
       // 续费关联主机
       renewalOther() {
-        if (this.renewalTime != '') {
-          if (this.renewalOther[0] == '续费关联云主机') {
-            let url = 'information/getYjPrice.do'
-            this.$http.get(url, {
-              params: {
+         let params1 ={
                 timeValue: this.renewalTime,
                 timeType: this.renewalType,
                 diskArr: this.diskSelection.id,
                 hostIdArr: this.renewalConnectionsHost
-              }
-            })
+            },
+            params2 ={
+                timeValue: this.renewalTime,
+                timeType: this.renewalType,
+                diskArr: this.diskSelection.id,
+                gpuArr: this.renewalConnectionsHost
+            },
+           params = this.$store.state.zone.gpuserver == 1?params2:params1;
+        if (this.renewalTime != '') {
+          if (this.renewalOther[0] == '续费关联云主机') {
+            let url = 'information/getYjPrice.do';
+            this.$http.get(url, {params})
               .then((response) => {
                 if (response.status == 200 && response.data.status == 1) {
                   this.renewalTotalCost = response.data.result.toFixed(2)
@@ -1546,13 +1558,7 @@
               })
           } else {
             let url = 'information/getYjPrice.do'
-            this.$http.get(url, {
-              params: {
-                timeValue: this.renewalTime,
-                timeType: this.renewalType,
-                diskArr: this.diskSelection.id
-              }
-            })
+            this.$http.get(url,{params})
               .then((response) => {
                 if (response.status == 200 && response.data.status == 1) {
                   this.renewalTotalCost = response.data.result.toFixed(2)
@@ -1574,20 +1580,27 @@
         this.timeOptions.renewalTime = this.timeOptions[type]
       },
       ratesChangeTime(time) {
+          
         if (time == '') {
           this.ratesChangeCost = '--'
           this.ratesChangeOriginalCost = '--'
         } else {
-          let hostArr = this.ratesChangeOther[0] == '变更关联云主机' ? this.ratesChangeConnectionsHost : ''
+          let hostArr = this.ratesChangeOther[0] == '变更关联云主机' ? this.ratesChangeConnectionsHost : '';
+          let params1 ={
+                timeValue: this.renewalTime,
+                timeType: this.renewalType,
+                diskArr: this.diskSelection.id,
+                hostIdArr: hostArr
+            },
+            params2 ={
+                timeValue: this.ratesChangeTime,
+                timeType: this.ratesChangeType,
+                diskArr: this.diskSelection.id,
+                gpuArr: hostArr
+            },
+            params = this.$store.state.zone.gpuserver == 1?params2:params1;
           let url = 'information/getYjPrice.do'
-          this.$http.get(url, {
-            params: {
-              timeValue: this.ratesChangeTime,
-              timeType: this.ratesChangeType,
-              diskArr: this.diskSelection.id,
-              hostIdArr: hostArr
-            }
-          })
+          this.$http.get(url, {params})
             .then((response) => {
               if (response.status == 200 && response.data.status == 1) {
                 this.ratesChangeCost = response.data.result.toFixed(2)
@@ -1604,16 +1617,23 @@
       },
       // 变更关联主机
       ratesChangeOther() {
-        if (this.ratesChangeTime != '') {
-          if (this.ratesChangeOther[0] == '变更关联云主机') {
-            let url = 'information/getYjPrice.do'
-            this.$http.get(url, {
-              params: {
+         let params1 ={
                 timeValue: this.ratesChangeTime,
                 timeType: this.ratesChangeType,
                 diskArr: this.diskSelection.id,
-                hostIdArr: this.ratesChangeConnectionsHost
-              }
+                hostIdArr: this.renewalConnectionsHost
+            },
+            params2 ={
+                timeValue: this.ratesChangeTime,
+                timeType: this.ratesChangeType,
+                diskArr: this.diskSelection.id,
+                gpuArr: this.ratesChangeConnectionsHost
+            },
+            params = this.$store.state.zone.gpuserver == 1?params2:params1;
+        if (this.ratesChangeTime != '') {
+          if (this.ratesChangeOther[0] == '变更关联云主机') {
+            let url = 'information/getYjPrice.do'
+            this.$http.get(url, {params          
             })
               .then((response) => {
                 if (response.status == 200 && response.data.status == 1) {
