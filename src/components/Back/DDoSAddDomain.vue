@@ -162,19 +162,19 @@ export default {
       businessList: [
         {
           title: '域名',
-          key: 'domainname'
+          key: 'domain'
         },
         {
           title: '端口',
-          key: 'port'
+          key: 'agreement'
         },
         {
           title: '源站IP/域名',
-          key: 'sourceip'
+          key: 'ip'
         },
         {
           title: '套餐信息',
-          key: 'packageusername'
+          key: 'attackMeal'
         }
       ],
       businessData: [
@@ -245,6 +245,7 @@ export default {
             .then(res => {
               if (res.status == 200 && res.data.status == 1) {
                 //  this.getDomainList(1);
+                this.businessData.push(addDomainList);
               } else {
                 this.$Message.info(res.data.message);
               }

@@ -64,7 +64,7 @@
                     <p class="t-psize">应用信息</p>
                     <div class='ds-row'>
                         <div class="ds-ct">
-                            <p>套餐下网站业务 <span class="ds-blf" >查看详情</span></p>
+                            <p>套餐下网站业务 <span class="ds-blf" @click="goDip">查看详情</span></p>
                             <div>
                                 <p v-for="(item,index) in ddosipDetails.domainName" :key="index">{{item.domainname}}</p>
                             </div>
@@ -81,6 +81,8 @@
                 </div>
              </div>
         </div>
+
+        <!-- 套餐续费 -->
          <Modal :mask-closable="false" v-model="showModal.meal">
              <p slot="header" class="modal-header-border">
                 <span class="universal-modal-title">套餐续费</span>
@@ -239,6 +241,10 @@ export default {
             }).catch(err =>{
 
             }) 
+        },
+
+        goDip(){
+            this.$router.push('ddosipback')
         },
     },
     computed:{}

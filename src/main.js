@@ -12,7 +12,7 @@ import '@/assets/css/iviewOverRide.css'
 import '@/assets/css/reset.css'
 import '@/assets/css/universal.less'
 import MetaInfo from 'vue-meta-info'
-// import inMap from 'inmap'
+import inMap from 'inmap'
 
 
 
@@ -115,10 +115,9 @@ function appendMD5(params, type) {
 
 // axios 请求拦截
 Vue.prototype.$http.interceptors.request.use(requestIntercept)
-
+Vue.prototype.$inMap = inMap
 // 使用iview库
 Vue.use(iview)
-
 // 使用轮播组件
 Vue.use(carousel)
 Vue.use(carouselItem)

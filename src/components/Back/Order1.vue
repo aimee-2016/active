@@ -42,7 +42,8 @@
                   <div class="ticketInfo">
                     <div style="margin-right:36px;line-height:58px;">
                       <span style="width:100px;" v-if="item.tickettype == 0">满<strong>{{item.startmoney}}</strong>减<strong>{{item.money}}</strong></span>
-                      <span style="width:100px;" v-else><strong>{{item.money*10}}</strong>折</span>
+                      <span style="width:100px;" v-if="item.tickettype == 1"><strong>{{item.money*10}}</strong>折</span>
+                      <span style="width:100px;" v-if="item.tickettype == 2 || item.tickettype == 3"><strong>{{item.money}}</strong>元</span>
                     </div>
                     <div>
                       <p>适用产品：{{item.ticketdescript}}</p>
@@ -821,6 +822,8 @@ export default {
                 ).toFixed(2);
               } else if (item.tickettype == 0) {
                 money = item.money.toFixed(2);
+              } else if (item.tickettype == 2 || item.tickettype == 3){
+                money =   item.money
               }
             }
           });
