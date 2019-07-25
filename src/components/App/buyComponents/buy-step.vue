@@ -8,7 +8,8 @@
         :class="{onStep: buyStep >= index}"
       >
         <div class="step-index">
-          <span>{{index + 1}}</span>
+          <span v-if="index + 1  > buyStep">{{index + 1}}</span>
+          <span v-else>√</span>
         </div>
         <div class="step-text">
           <span>{{ item }}</span>
