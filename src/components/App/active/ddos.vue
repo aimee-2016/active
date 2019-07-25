@@ -1,5 +1,6 @@
 <template>
   <div class="ddos-active">
+    <img src="../../../assets/img/active/ddos/background-2-left.png" alt="背景图片">
     <div class="banner">
       <div class="wrap">
         <div class="product">
@@ -65,60 +66,108 @@
               <span v-if="item.new" class="new">限新用户</span>
             </div>
             <div class="body">
-              <div class="configure">
-                <ul>
-                  <li>
-                    <i>CPU</i>
-                    <span>{{item.config.cpu}}核</span>
-                  </li>
-                  <li>
-                    <i>内存</i>
-                    <span>{{item.config.mem}}G</span>
-                  </li>
-                  <li>
-                    <i>宽带</i>
-                    <span>{{item.config.bandwith}}M</span>
-                  </li>
-                  <li>
-                    <i>系统盘</i>
-                    <span>
-                      {{item.config.disksize}}G
-                      <span>SSD</span>
-                    </span>
-                  </li>
-                </ul>
+              <div class="params" v-if="index!=4">
+                <div class="configure">
+                  <ul>
+                    <li>
+                      <i>CPU</i>
+                      <span>{{item.cpu}}核</span>
+                    </li>
+                    <li>
+                      <i>内存</i>
+                      <span>{{item.mem}}G</span>
+                    </li>
+                    <li>
+                      <i>宽带</i>
+                      <span>{{item.bandwith}}M</span>
+                    </li>
+                    <li>
+                      <i>系统盘</i>
+                      <span>
+                        {{item.disksize}}G
+                        <span>SSD</span>
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+                <div v-if="item.pronum">
+                  <span class="label">防御：</span>
+                  {{ item.pronum }}G
+                </div>
+                <div v-if="item.gpu">
+                  <span class="label">GPU：</span>
+                  P{{ item.gpu }}
+                </div>
+                <div v-if="index==0||index==1">
+                  <span class="label">区域：</span>
+                  华东一区
+                </div>
+                <div v-else>
+                  <span class="label">区域：</span>
+                  <Select
+                    v-model="item.zone"
+                    style="width:142px;display:inline-block"
+                    @on-change="changeZoneHot(item,index,'hotHostList')"
+                  >
+                    <Option
+                      v-for="item in zoneListHot"
+                      :value="item.value"
+                      :key="item.value"
+                    >{{ item.name }}</Option>
+                  </Select>
+                </div>
+                <div>
+                  <span class="label">系统：</span>
+                  <Cascader
+                    :data="item.systemList"
+                    v-model="item.system"
+                    style="width:142px;display:inline-block"
+                  ></Cascader>
+                </div>
               </div>
-              <div>
-                <span class="label">区域：</span>
-                <Select
-                  v-model="item.zone"
-                  style="width:142px;display:inline-block"
-                  @on-change="changeZoneHot(item,index,'hotHostList')"
-                >
-                  <Option
-                    v-for="item in zoneListHot"
-                    :value="item.value"
-                    :key="item.value"
-                  >{{ item.name }}</Option>
-                </Select>
+              <div class="params" v-else>
+                <div class="configure">
+                  <ul>
+                    <li>
+                      <i>端口数</i>
+                      <span>{{item.ports}}</span>
+                    </li>
+                    <li>
+                      <i>域名数</i>
+                      <span>{{item.domains}}</span>
+                    </li>
+                    <li>
+                      <i>宽带</i>
+                      <span>{{item.bandwith}}M</span>
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <span class="label">DDoS防护：</span>
+                  {{item.ddospros}}
+                </div>
+                <div>
+                  <span class="label">cc防护：</span>
+                  {{item.ccpros}}
+                </div>
+                <div>
+                  <span class="label">区域：</span>
+                  中国大陆
+                </div>
               </div>
-              <div>
-                <span class="label">系统：</span>
-                <Cascader
-                  :data="item.systemList"
-                  v-model="item.system"
-                  style="width:142px;display:inline-block"
-                ></Cascader>
+              <div class="cost">
+                <div class="price">
+                  ￥
+                  <span>{{item.price}}</span>/{{item.time==12?'月':'年'}}
+                </div>
+                <div class="origin-price">
+                  原价：￥
+                  <span>{{item.originPrice}}</span>
+                </div>
+                <div>
+                  <Button class="btn" @click="pushOrderHot(item)">立即购买</Button>
+                </div>
               </div>
-              <div class="price">
-                ￥
-                <span>{{item.price}}</span>/月
-              </div>
-              <div class="origin-price">
-                原价：￥
-                <span>{{item.originPrice+'/'+month(item.time)}}</span>
-              </div>
-              <Button class="btn" @click="pushOrderHot(item)">立即购买</Button>
               <div class="percentage">
                 <span>已抢购100%</span>
               </div>
@@ -364,12 +413,11 @@ export default {
           headline: '高防云服务器',
           new: 0,
           hot: 1,
-          config: {
-            cpu: 1,
-            mem: 2,
-            bandwith: 3,
-            disksize: 40
-          },
+          pronum: 100,
+          cpu: 1,
+          mem: 2,
+          bandwith: 3,
+          disksize: 40,
           timeList: [],
           time: 180,
           systemList: [{
@@ -392,6 +440,7 @@ export default {
             children: [],
           }],
           system: [],
+          zoneList: [],
           zone: '',
           price: '69',
           originPrice: '176.72',
@@ -401,12 +450,11 @@ export default {
           headline: '高防云服务器',
           new: 0,
           hot: 0,
-          config: {
-            cpu: 1,
-            mem: 2,
-            bandwith: 3,
-            disksize: 40
-          },
+          pronum: 100,
+          cpu: 1,
+          mem: 2,
+          bandwith: 3,
+          disksize: 40,
           timeList: [],
           time: 180,
           systemList: [{
@@ -429,6 +477,7 @@ export default {
             children: [],
           }],
           system: [],
+          zoneList: [],
           zone: '',
           price: '69',
           originPrice: '176.72',
@@ -438,12 +487,10 @@ export default {
           headline: '弹性云服务器',
           new: 1,
           hot: 1,
-          config: {
-            cpu: 1,
-            mem: 2,
-            bandwith: 3,
-            disksize: 40
-          },
+          cpu: 1,
+          mem: 2,
+          bandwith: 3,
+          disksize: 40,
           timeList: [],
           time: 180,
           systemList: [{
@@ -466,6 +513,7 @@ export default {
             children: [],
           }],
           system: [],
+          zoneList: [],
           zone: '',
           price: '69',
           originPrice: '176.72',
@@ -475,12 +523,11 @@ export default {
           headline: 'GPU云服务器',
           new: 1,
           hot: 0,
-          config: {
-            cpu: 1,
-            mem: 2,
-            bandwith: 3,
-            disksize: 40
-          },
+          gpu: 100,
+          cpu: 1,
+          mem: 2,
+          bandwith: 3,
+          disksize: 40,
           timeList: [],
           time: 180,
           systemList: [{
@@ -503,6 +550,7 @@ export default {
             children: [],
           }],
           system: [],
+          zoneList: [],
           zone: '',
           price: '69',
           originPrice: '176.72',
@@ -512,12 +560,11 @@ export default {
           headline: 'DDOS高防IP',
           new: 0,
           hot: 0,
-          config: {
-            cpu: 1,
-            mem: 2,
-            bandwith: 3,
-            disksize: 40
-          },
+          bandwith: 50,
+          ports: 50,
+          ddospros: 50,
+          domains: 100,
+          ccpros: 200000,
           timeList: [],
           time: 180,
           systemList: [{
@@ -540,7 +587,8 @@ export default {
             children: [],
           }],
           system: [],
-          zone: '',
+          zoneList: [],
+          zone: '3e483b69-ea57-40c6-9fba-d470d665b238',
           price: '69',
           originPrice: '176.72',
           configId: ''
@@ -758,7 +806,7 @@ export default {
     }
   },
   created () {
-
+    this.getConfigureHot()
   },
   mounted () {
   },
@@ -769,44 +817,87 @@ export default {
     },
     // 获取活动配置,区域
     getConfigureHot () {
-      let url = 'activity/getTemActInfoById.do'
+      let url = 'activity/getActInfoById.do'
       axios.get(url, {
         params: {
-          activityNum: '48'
+          activityNum: '53'
         }
       }).then(res => {
         if (res.data.status == 1 && res.status == 200) {
-          // 处理数组格式
+          //区域赋值
+          this.hotHostList[0].zoneList = this.hotHostList[1].zoneList = res.data.result.optionalAreaHighPrevention
+          this.hotHostList[0].zone = this.hotHostList[1].zone = res.data.result.optionalAreaHighPrevention[0].value
+          this.hotHostList[2].zoneList = res.data.result.optionalArea
+          this.hotHostList[2].zone = res.data.result.optionalArea[0].value
+          this.hotHostList[3].zoneList = res.data.result.optionalAreaGpu
+          this.hotHostList[3].zone = res.data.result.optionalAreaGpu[0].value
+          //参数赋值
           let originArr = res.data.result.freevmconfigs
-          let timeList = []
-          originArr.forEach((item, index) => {
-            if ((index + 1) % 2 != 0) {
-              timeList = []
-            }
-            let rObj = {};
-            rObj['id'] = item.id;
-            rObj['discount'] = item.discount;
-            rObj['days'] = item.days;
-            timeList.push(rObj)
-            if ((index + 1) % 2 == 0) {
-              let num = index - (index + 1) / 2
-              this.hotHostList[num].config = item
-              this.hotHostList[num].timeList = timeList
+          this.hotHostList.forEach((item, index) => {
+            if (index!=4) {
+              item.cpu = originArr[index].cpu
+              item.mem = originArr[index].mem
+              item.bandwith = originArr[index].bandwith
+              item.disksize = originArr[index].disksize
+              item.configId = originArr[index].id
+              item.time = originArr[index].days
+              if (item.pronum) {
+                item.pronum = originArr[index]  .pronum
+              }
+              this.getPriceKill(item)
+            } else {
+              //高仿ip赋值
+              item.ports = originArr[4].ports
+              item.domains = originArr[4].domains
+              item.bandwith = originArr[4].bandwith
+              item.ddospros = originArr[4].ddospros
+              item.ccpros = originArr[4].ccpros
+              item.configId = originArr[4].id
+              item.time = originArr[index].days
+              this.getPriceDDOSIP(item)
             }
           })
-          // 获取区域列表
-          this.zoneListHot = res.data.result.optionalArea
-          // console.log(this.hotHostList)
         }
         //默认选择
-        this.hotHostList.forEach(item => {
-          // console.log(item)
-          item.configId = item.timeList[0].id
-          item.time = item.timeList[0].days
-          item.zone = this.zoneListHot[0].value
-          this.changgeTimeHot(item, item.timeList[0])
-        })
+        // this.hotHostList.forEach(item => {
+        //   // console.log(item)
+        //   item.configId = item.timeList[0].id
+        //   item.time = item.timeList[0].days
+        //   item.zone = this.zoneListHot[0].value
+        //   this.changgeTimeHot(item, item.timeList[0])
+        // })
       })
+    },
+    getPriceKill (item) {
+      axios.get('activity/getOriginalPrice.do', {
+        params: {
+          zoneId: item.zone,
+          vmConfigId: item.configId,
+          month: item.time
+        }
+      }).then(res => {
+        if (res.status == 200 && res.data.status == 1) {
+          item.price = res.data.result.cost;
+          item.originPrice = res.data.result.originalPrice;
+        }
+      })
+    },
+    getPriceDDOSIP (item) {
+      axios.get('activity/getOriginalPriceDDosIP.do', {
+        params: {
+          zoneId: item.zone,
+          vmConfigId: item.configId,
+          month: item.time
+        }
+      }).then(res => {
+        if (res.status == 200 && res.data.status == 1) {
+          item.price = res.data.result.cost;
+          item.originPrice = res.data.result.originalPrice;
+        }
+      })
+    },
+    changeZoneHot() {
+
     },
     month (val) {
       return val >= 360 ? val / 360 + '年' : val / 30 + '个月'
@@ -828,6 +919,15 @@ export default {
 .ddos-active {
   font-family: MicrosoftYaHei;
   text-align: center;
+  > img {
+    position: absolute;
+    z-index: 3;
+    top: 940px;
+    left: 0;
+  }
+}
+.mb10 {
+  margin-bottom: 10px;
 }
 .headline {
   padding: 50px 0;
@@ -927,7 +1027,9 @@ export default {
 }
 .seckill {
   padding: 53px 0 60px;
-  background: #2a2936;
+  background: url(../../../assets/img/active/ddos/background-2-right.png) 100%
+    60% no-repeat;
+  background-color: #2a2936;
   .top {
     display: flex;
     justify-content: space-between;
@@ -999,11 +1101,12 @@ export default {
     justify-content: space-between;
     margin-top: 50px;
     text-align: left;
+    position: relative;
+    z-index: 4;
     > div {
-      // border: 1px solid rgba(220, 226, 242, 1);
       background: #4d4b61;
       width: 224px;
-      // height:390px;
+      // height: 390px;
     }
     .head {
       position: relative;
@@ -1043,9 +1146,18 @@ export default {
     }
     .body {
       color: #fff0de;
-      padding: 20px 0px 0px 20px;
-      > div {
-        margin-bottom: 10px;
+      padding: 20px 0px 15px 20px;
+      font-size: 14px;
+      .params {
+        height: 170px;
+        > div {
+          margin-bottom: 10px;
+        }
+      }
+      .cost {
+        > div {
+          margin-bottom: 10px;
+        }
       }
       .configure {
         padding: 0 20px 10px 0;
@@ -1063,7 +1175,6 @@ export default {
         }
       }
       .label {
-        margin-bottom: 8px;
         width: 70px;
         font-size: 14px;
       }
@@ -1081,12 +1192,13 @@ export default {
         text-decoration: line-through;
       }
       button {
-        margin-bottom: 10px;
         width: 184px;
       }
     }
   }
   .tips {
+    position: relative;
+    z-index: 4;
     margin-top: 20px;
     text-align: left;
     font-size: 16px;
@@ -1216,7 +1328,7 @@ export default {
 .super-discount {
   padding-bottom: 50px;
   background: #e2e4f0
-    url(../../../assets/img/active/ddos/background-4-right.png) 100% 100%
+    url(../../../assets/img/active/ddos/background-4-right.png) 100% 70%
     no-repeat;
   .product {
     display: flex;
