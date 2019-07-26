@@ -17,7 +17,11 @@
       <buy-mirror
         :mirror-type-group="mirrorTypeGroup"
         :mirrorType="mirrorType"
+        :area="area"
+        :mirrorID="mirrorID"
+        :mirrorName="mirrorName"
         @changeMirrorType="changeMirrorType"
+        @changePublicMirror="changePublicMirror"
       ></buy-mirror>
       <buy-server-specification
         :server-specification-group="serverSpecificationGroup"
@@ -38,7 +42,11 @@
       ></buy-network>
     </div>
     <div v-if="buyStep === 2">
-      <buy-login-info :login-info="loginInfo"></buy-login-info>
+      <buy-login-info
+        :login-info="loginInfo"
+        @changeSetType="changeSetType"
+        @changeAutoRenewal="changeAutoRenewal"
+      ></buy-login-info>
     </div>
   </div>
 </template>
@@ -108,7 +116,7 @@ export default {
   data() {
     return {
       headerTitle: "购买云服务器",
-      buyStep: 2,
+      buyStep: 0,
       buyStepGroup: ["主机配置", "网络与带宽", "登陆信息", "订单确认"],
       serverType: "cloudServer",
       serverTypeGroup: [
@@ -155,6 +163,8 @@ export default {
           value: "customMirror"
         }
       ],
+      mirrorID: "",
+      mirrorName: "",
       // 当前服务器规格
       serverSpecification: {
         CPU: "",
@@ -194,7 +204,7 @@ export default {
         ]
       },
       // 每个区域对应的服务器规格配置
-      serverSpecificationGroup: null,
+      serverSpecificationGroup: {},
       serverNetwork: {
         vpcGroup: [],
         vpcId: "",
@@ -232,7 +242,19 @@ export default {
             value: "customSet"
           }
         ],
-        setType: "defaultSet"
+        setType: "defaultSet",
+        loginName: "administrator",
+        autoRenewal: true,
+        serverName: "",
+        serverPassword: "",
+        mirrorName: "u",
+        loginType: "password",
+        loginTypeGroup: [
+          { name: "密码", value: "password" },
+          { name: "SSH密钥", value: "ssh" }
+        ],
+        SSHID: "",
+        SSHIDGroup: []
       }
     };
   },
@@ -294,6 +316,10 @@ export default {
     changeMirrorType(item) {
       this.mirrorType = item.value;
     },
+    changePublicMirror(arr) {
+      this.mirrorID = arr[1];
+      this.mirrorName = arr[0];
+    },
     changeCPU(item) {
       this.serverSpecification.CPU = item.value;
       this.serverSpecification.memoryGroup = item.RAMList;
@@ -329,6 +355,12 @@ export default {
       } else {
         this.serverNetwork.bandwidth = 0;
       }
+    },
+    changeSetType(item) {
+      this.loginInfo.setType = item.value;
+    },
+    changeAutoRenewal(val) {
+      this.loginInfo.autoRenewal = val;
     }
   }
 };
