@@ -71,38 +71,38 @@
                   <ul>
                     <li>
                       <i>CPU</i>
-                      <span>{{item.cpu}}核</span>
+                      <span>{{item.post.cpu}}核</span>
                     </li>
                     <li>
                       <i>内存</i>
-                      <span>{{item.mem}}G</span>
+                      <span>{{item.post.mem}}G</span>
                     </li>
                     <li>
                       <i>宽带</i>
-                      <span>{{item.bandwith}}M</span>
+                      <span>{{item.post.bandwith}}M</span>
                     </li>
                     <li>
                       <i>系统盘</i>
                       <span>
-                        {{item.disksize}}G
+                        {{item.post.disksize}}G
                         <span>SSD</span>
                       </span>
                     </li>
                   </ul>
                 </div>
-                <div v-if="item.pronum">
+                <div v-if="item.post.pronum">
                   <span class="label">防御：</span>
-                  {{ item.pronum }}G
+                  {{ item.post.pronum }}G
                 </div>
-                <div v-if="item.gpu">
+                <div v-if="item.post.gpu">
                   <span class="label">GPU：</span>
-                  P{{ item.gpu }}
+                  P{{ item.post.gpu }}
                 </div>
-                <div v-if="index==0||index==1">
+                <!-- <div v-if="index==0||index==1">
                   <span class="label">区域：</span>
                   华东一区
-                </div>
-                <div v-else>
+                </div>-->
+                <div>
                   <span class="label">区域：</span>
                   <Select
                     v-model="item.zone"
@@ -110,10 +110,10 @@
                     @on-change="changeZoneHot(item,index,'hotHostList')"
                   >
                     <Option
-                      v-for="item in zoneListHot"
-                      :value="item.value"
-                      :key="item.value"
-                    >{{ item.name }}</Option>
+                      v-for="item1 in item.zoneList"
+                      :value="item1.value"
+                      :key="item1.value"
+                    >{{ item1.name }}</Option>
                   </Select>
                 </div>
                 <div>
@@ -130,25 +130,25 @@
                   <ul>
                     <li>
                       <i>端口数</i>
-                      <span>{{item.ports}}</span>
+                      <span>{{item.post.ports}}</span>
                     </li>
                     <li>
                       <i>域名数</i>
-                      <span>{{item.domains}}</span>
+                      <span>{{item.post.domains}}</span>
                     </li>
                     <li>
                       <i>宽带</i>
-                      <span>{{item.bandwith}}M</span>
+                      <span>{{item.post.bandwith}}M</span>
                     </li>
                   </ul>
                 </div>
                 <div>
                   <span class="label">DDoS防护：</span>
-                  {{item.ddospros}}
+                  {{item.post.ddospros}}
                 </div>
                 <div>
                   <span class="label">cc防护：</span>
-                  {{item.ccpros}}
+                  {{item.post.ccpros}}
                 </div>
                 <div>
                   <span class="label">区域：</span>
@@ -158,14 +158,15 @@
               <div class="cost">
                 <div class="price">
                   ￥
-                  <span>{{item.price}}</span>/{{item.time==12?'月':'年'}}
+                  <span>{{item.price}}</span>
+                  /{{item.post.days==12?'月':'年'}}
                 </div>
                 <div class="origin-price">
                   原价：￥
                   <span>{{item.originPrice}}</span>
                 </div>
                 <div>
-                  <Button class="btn" @click="pushOrderHot(item)">立即购买</Button>
+                  <Button class="btn" @click="pushOrderHot(item)">立即购买22</Button>
                 </div>
               </div>
               <div class="percentage">
@@ -193,24 +194,25 @@
           <ul>
             <li v-for="(item,index) in ddosList" :key="index">
               <div class="title">
-                <p>高防云服务器 {{item.config}}</p>
+                <p>高防云服务器 {{item.postOne.cpu+'核'+item.postOne.mem+'G'}}</p>
               </div>
               <div class="content">
                 <div class="left">
                   <dl>
                     <dt>带宽</dt>
-                    <dd>{{item.bandwith}}M</dd>
+                    <!-- <dd>{{configVal(item.post,'bandwith')}}M</dd> -->
+                    <dd>{{item.postOne.bandwith}}M</dd>
                   </dl>
                   <dl>
                     <dt>区域</dt>
-                    <dd>{{item.zone}}</dd>
+                    <dd>{{item.zoneName}}</dd>
                   </dl>
                   <dl>
                     <dt>系统</dt>
                     <dd>
                       <Cascader
                         :data="systemList1"
-                        v-model="system1"
+                        v-model="item.system"
                         style="width:142px;display:inline-block"
                       ></Cascader>
                     </dd>
@@ -219,10 +221,11 @@
                     <dt>防御</dt>
                     <dd>
                       <span
-                        :class="{select:item.disk==item1}"
-                        v-for="(item1,index) in item.diskList"
+                        :class="{select:item.disk==item1.pronum}"
+                        v-for="(item1,index) in item.post"
                         :key="index"
-                      >{{item1}}G</span>
+                        @click="changeDefense(item,item1)"
+                      >{{item1.pronum}}G</span>
                     </dd>
                   </dl>
                 </div>
@@ -235,7 +238,7 @@
                     </p>
                     <i>原价：¥{{item.originPrice}}/月</i>
                   </div>
-                  <Button class="btn">立即购买</Button>
+                  <Button class="btn" @click="pushOrderDDOS(item)">立即购买11</Button>
                 </div>
               </div>
             </li>
@@ -258,9 +261,9 @@
           <p style="color:#666666">高防云服务器买3/6/12个月赠送188元域名无门槛抵用券</p>
         </div>
         <div class="product">
-          <div v-for="(item,index) in hotHostList1" :key="index">
+          <div v-for="(item,index) in listGT" :key="index">
             <div class="head">
-              <h3>{{item.headline}}</h3>
+              <h3>高防云服务器{{item.postOne.cpu+'核'+item.postOne.mem+'G'}}</h3>
             </div>
             <div class="body">
               <div class="configure">
@@ -268,36 +271,36 @@
                   <li>
                     <i>系统盘:</i>
                     <span>
-                      {{item.config.disksize}}G
+                      {{item.postOne.disksize}}G
                       <span>SSD</span>
                     </span>
                   </li>
                   <li>
                     <i>宽带:</i>
-                    <span>{{item.config.bandwith}}M</span>
+                    <span>{{item.postOne.bandwith}}M</span>
                   </li>
                   <li>
                     <i>区域:</i>
-                    <span>{{item.zone}}</span>
+                    <span>{{item.zoneName}}</span>
                   </li>
                   <li>
                     <i>防护等级:</i>
-                    <span>{{item.config.mem}}G</span>
+                    <span>{{item.postOne.pronum}}G</span>
                   </li>
                 </ul>
               </div>
               <div>
                 <span class="label">系统：</span>
-                <Cascader :data="item.systemList" v-model="item.system" style="width:237px;"></Cascader>
+                <Cascader :data="systemList1" v-model="item.system" style="width:237px;"></Cascader>
               </div>
               <div class="time">
                 <span class="label">时长：</span>
                 <ul>
                   <li
-                    v-for="(item1,index1) in item.timeList"
+                    v-for="(item1,index1) in item.post"
                     :key="index1"
-                    :class="{'selected':item.configId==item1.id}"
-                    @click="changgeTimeHot(item,item1)"
+                    :class="{'selected':item.time==item1.days}"
+                    @click="changeTime(item,item1)"
                   >
                     {{month(item1.days)}}
                     <span>{{item1.discount*10}}折</span>
@@ -310,9 +313,9 @@
               </div>
               <div class="origin-price">
                 原价：￥
-                <span>{{item.originPrice+'/'+month(item.time)}}</span>
+                <span>{{item.originPrice}}</span>
               </div>
-              <Button class="btn" @click="pushOrderHot(item)">立即购买</Button>
+              <Button class="btn" @click="pushOrderDDOS(item)">立即购买33</Button>
               <p class="text">购买即赠送188元域名无门槛抵用券</p>
             </div>
           </div>
@@ -348,7 +351,7 @@
                   <i>折</i>
                 </div>
               </div>
-              <Button class="btn" @click="$router.push('/buy')">立即选购</Button>
+              <Button class="btn" @click="$router.push('buy/ddos/')">立即选购</Button>
             </li>
             <li>
               <div class="top">
@@ -364,12 +367,73 @@
                   <i>折</i>
                 </div>
               </div>
-              <Button class="btn" @click="$router.push('/buy')">立即选购</Button>
+              <Button class="btn" @click="$router.push('buy/ddos/')">立即选购</Button>
             </li>
           </ul>
         </div>
       </div>
     </div>
+    <!-- 购买前实名认证 -->
+    <!-- <Modal v-model="showModal.authentication" width="640" :scrollable="true">
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">实名认证</span>
+      </p>
+      <Form
+        :model="quicklyAuthForm"
+        :label-width="100"
+        ref="quicklyAuth"
+        :rules="quicklyAuthFormValidate"
+        style="width:450px;margin-top:20px;"
+      >
+        <FormItem label="真实姓名" prop="name" style="width: 100%">
+          <Input v-model="quicklyAuthForm.name" placeholder="请输入姓名"></Input>
+        </FormItem>
+        <FormItem label="身份证号" prop="IDCard" style="width: 100%">
+          <Input v-model="quicklyAuthForm.IDCard" placeholder="请输入身份证号"></Input>
+        </FormItem>
+        <Form
+          :model="quicklyAuthForm"
+          :rules="quicklyAuthFormValidate"
+          ref="sendCode"
+          :label-width="100"
+        >
+          <FormItem label="图形验证码" prop="pictureCode">
+            <div style="display: flex">
+              <Input
+                v-model="quicklyAuthForm.pictureCode"
+                placeholder="请输入图片验证码"
+                style="width:250px;margin-right: 10px"
+              ></Input>
+              <img
+                :src="imgSrc"
+                style="height:33px;"
+                @click="imgSrc=`https://kaifa.xrcloud.net/user/getKaptchaImage.do?t=${new Date().getTime()}`"
+              >
+            </div>
+          </FormItem>
+          <FormItem label="手机号码" prop="phone" style="width: 100%">
+            <Input v-model="quicklyAuthForm.phone" placeholder="请输入以该身份证开户的手机号码"></Input>
+          </FormItem>
+        </Form>
+        <FormItem label="验证码" prop="validateCode" style="width: 100%">
+          <div style="display: flex;justify-content: space-between">
+            <Input
+              v-model="quicklyAuthForm.validateCode"
+              placeholder="请输入验证码"
+              style="width:260px;margin-right: 10px"
+            ></Input>
+            <Button
+              type="primary"
+              @click="sendCode"
+              :disabled="quicklyAuthForm.sendCodeText!='获取验证码'"
+            >{{quicklyAuthForm.sendCodeText}}</Button>
+          </div>
+        </FormItem>
+      </Form>
+      <div slot="footer" class="modal-footer-border">
+        <Button type="primary" @click="quicklyAuth">提交</Button>
+      </div>
+    </Modal>-->
   </div>
 </template>
 
@@ -381,6 +445,21 @@ import $ from 'jquery'
 export default {
   data () {
     return {
+      showModal: {
+        rechargeHint: false,
+        inConformityModal: false,
+        getSuccessModal: false,
+        payDefeatedModal: false,
+        paySuccessModal: false,
+        weChatRechargeModal: false,
+        orderConfirmationModal: false,
+        authentication: false,
+        authenticationSuccess: false,
+        authenticationError: false,
+        rule: false,
+        ruleHost: false,
+        ruleCoupon: false,
+      },
       systemList1: [{
         value: 'window',
         label: 'Windows',
@@ -413,6 +492,7 @@ export default {
           headline: '高防云服务器',
           new: 0,
           hot: 1,
+          post: {},
           pronum: 100,
           cpu: 1,
           mem: 2,
@@ -450,6 +530,7 @@ export default {
           headline: '高防云服务器',
           new: 0,
           hot: 0,
+          post: {},
           pronum: 100,
           cpu: 1,
           mem: 2,
@@ -487,6 +568,7 @@ export default {
           headline: '弹性云服务器',
           new: 1,
           hot: 1,
+          post: {},
           cpu: 1,
           mem: 2,
           bandwith: 3,
@@ -523,6 +605,7 @@ export default {
           headline: 'GPU云服务器',
           new: 1,
           hot: 0,
+          post: {},
           gpu: 100,
           cpu: 1,
           mem: 2,
@@ -560,6 +643,7 @@ export default {
           headline: 'DDOS高防IP',
           new: 0,
           hot: 0,
+          post: {},
           bandwith: 50,
           ports: 50,
           ddospros: 50,
@@ -597,9 +681,12 @@ export default {
       zoneListHot: [],
       ddosList: [
         {
+          post: [],
+          postOne: {},
           config: '2核4G',
           bandwith: 5,
           zone: '华东一区',
+          zoneName: '',
           systemList: [],
           system: [],
           diskList: [60, 100, 200],
@@ -608,9 +695,12 @@ export default {
           originPrice: 852.12
         },
         {
+          post: [],
+          postOne: {},
           config: '2核8G',
           bandwith: 5,
           zone: '华东一区',
+          zoneName: '',
           systemList: [],
           system: [],
           diskList: [60, 100, 200],
@@ -619,9 +709,12 @@ export default {
           originPrice: 852.12
         },
         {
+          post: [],
+          postOne: {},
           config: '4核8G',
           bandwith: 5,
           zone: '华东一区',
+          zoneName: '',
           systemList: [],
           system: [],
           diskList: [60, 100, 200],
@@ -630,9 +723,12 @@ export default {
           originPrice: 852.12
         },
         {
+          post: [],
+          postOne: {},
           config: '4核16G',
           bandwith: 5,
           zone: '华东一区',
+          zoneName: '',
           systemList: [],
           system: [],
           diskList: [60, 100, 200],
@@ -641,179 +737,93 @@ export default {
           originPrice: 852.12
         }
       ],
-      hotHostList1: [
+      listGT: [
         {
-          headline: '高防云服务器2核4G',
-          subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
-          config: {
-            cpu: 1,
-            mem: 2,
-            bandwith: 3,
-            disksize: 40
-          },
-          timeList: [
-            { days: 3, discount: 0.8 },
-            { days: 6, discount: 0.75 },
-            { days: 12, discount: 0.7 }
-          ],
-          time: 180,
-          systemList: [{
-            value: 'window',
-            label: 'Windows',
-            children: []
-          }, {
-            value: 'centos',
-            label: 'Centos',
-            children: [],
-          },
-          {
-            value: 'debian',
-            label: 'Debian',
-            children: [],
-          },
-          {
-            value: 'ubuntu',
-            label: 'Ubuntu',
-            children: [],
-          }],
+          post: [],
+          postOne: {},
+          time: 90,
+          systemList: [],
           system: [],
-          zone: '华东一区',
+          zone: '',
+          zoneName: '华东一区',
           price: '69',
           originPrice: '176.72',
-          configId: ''
         },
         {
-          headline: '高防云服务器2核8G',
-          subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
-          config: {
-            cpu: 1,
-            mem: 2,
-            bandwith: 3,
-            disksize: 40
-          },
-          timeList: [
-            { days: 3, discount: 0.8 },
-            { days: 6, discount: 0.75 },
-            { days: 12, discount: 0.7 }
-          ],
-          time: 180,
-          systemList: [{
-            value: 'window',
-            label: 'Windows',
-            children: []
-          }, {
-            value: 'centos',
-            label: 'Centos',
-            children: [],
-          },
-          {
-            value: 'debian',
-            label: 'Debian',
-            children: [],
-          },
-          {
-            value: 'ubuntu',
-            label: 'Ubuntu',
-            children: [],
-          }],
+          post: [],
+          postOne: {},
+          time: 90,
+          systemList: [],
           system: [],
-          zone: '华东一区',
+          zoneName: '华东一区',
           price: '69',
           originPrice: '176.72',
-          configId: ''
         },
         {
-          headline: '高防云服务器4核8G',
-          subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
-          config: {
-            cpu: 1,
-            mem: 2,
-            bandwith: 3,
-            disksize: 40
-          },
-          timeList: [
-            { days: 3, discount: 0.8 },
-            { days: 6, discount: 0.75 },
-            { days: 12, discount: 0.7 }
-          ],
-          time: 180,
-          systemList: [{
-            value: 'window',
-            label: 'Windows',
-            children: []
-          }, {
-            value: 'centos',
-            label: 'Centos',
-            children: [],
-          },
-          {
-            value: 'debian',
-            label: 'Debian',
-            children: [],
-          },
-          {
-            value: 'ubuntu',
-            label: 'Ubuntu',
-            children: [],
-          }],
+          post: [],
+          postOne: {},
+          time: 90,
+          systemList: [],
           system: [],
-          zone: '华东一区',
+          zone: '',
+          zoneName: '华东一区',
           price: '69',
           originPrice: '176.72',
-          configId: ''
         },
         {
-          headline: '高防云服务器4核16G',
-          subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
-          config: {
-            cpu: 1,
-            mem: 2,
-            bandwith: 3,
-            disksize: 40
-          },
-          timeList: [
-            { days: 3, discount: 0.8 },
-            { days: 6, discount: 0.75 },
-            { days: 12, discount: 0.7 }
-          ],
-          time: 180,
-          systemList: [{
-            value: 'window',
-            label: 'Windows',
-            children: []
-          }, {
-            value: 'centos',
-            label: 'Centos',
-            children: [],
-          },
-          {
-            value: 'debian',
-            label: 'Debian',
-            children: [],
-          },
-          {
-            value: 'ubuntu',
-            label: 'Ubuntu',
-            children: [],
-          }],
+          post: [],
+          postOne: {},
+          time: 90,
+          systemList: [],
           system: [],
-          zone: '华东一区',
+          zone: '',
+          zoneName: '华东一区',
           price: '69',
           originPrice: '176.72',
-          configId: ''
         }
       ],
     }
   },
   created () {
     this.getConfigureHot()
+    this.getActivitystatus()
+    this.activityForecast()
+    this.getConfigureDDOS('55','listGT')
+    this.getConfigureDDOS('54','ddosList')
+    this.getSystemDDOS()
   },
   mounted () {
   },
   methods: {
-    roll (val, index) {
-      this.selectedNav = index
-      $('html, body').animate({ scrollTop: val }, 300)
+    getActivitystatus () {
+      // 53    高防云服务器，限时秒杀
+      // 54    高防服务器首月8折优惠
+      // 55    超低折扣 买时长送域名
+      // 56    自选配置，打折再送时长
+      axios.get('activity/activityTime.do', {
+        params: {
+          activityId: '53'
+        }
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+
+        } else {
+          // this.ActivityState=response.data.status
+        }
+      })
+    },
+    activityForecast () {
+      axios.get('activity/getActivityTrailer.do', {
+        params: {
+          activityNum: '53'
+        }
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+
+        } else {
+          // this.ActivityState=response.data.status
+        }
+      })
     },
     // 获取活动配置,区域
     getConfigureHot () {
@@ -834,46 +844,22 @@ export default {
           //参数赋值
           let originArr = res.data.result.freevmconfigs
           this.hotHostList.forEach((item, index) => {
-            if (index!=4) {
-              item.cpu = originArr[index].cpu
-              item.mem = originArr[index].mem
-              item.bandwith = originArr[index].bandwith
-              item.disksize = originArr[index].disksize
-              item.configId = originArr[index].id
-              item.time = originArr[index].days
-              if (item.pronum) {
-                item.pronum = originArr[index]  .pronum
-              }
-              this.getPriceKill(item)
-            } else {
-              //高仿ip赋值
-              item.ports = originArr[4].ports
-              item.domains = originArr[4].domains
-              item.bandwith = originArr[4].bandwith
-              item.ddospros = originArr[4].ddospros
-              item.ccpros = originArr[4].ccpros
-              item.configId = originArr[4].id
-              item.time = originArr[index].days
-              this.getPriceDDOSIP(item)
-            }
+            item.post = originArr[index]
+            // if (index != 4) {
+            //   this.getPriceKill(item)
+            // } else {
+            //   this.getPriceDDOSIP(item)
+            // }
           })
         }
-        //默认选择
-        // this.hotHostList.forEach(item => {
-        //   // console.log(item)
-        //   item.configId = item.timeList[0].id
-        //   item.time = item.timeList[0].days
-        //   item.zone = this.zoneListHot[0].value
-        //   this.changgeTimeHot(item, item.timeList[0])
-        // })
       })
     },
     getPriceKill (item) {
       axios.get('activity/getOriginalPrice.do', {
         params: {
           zoneId: item.zone,
-          vmConfigId: item.configId,
-          month: item.time
+          vmConfigId: item.post.id,
+          month: item.post.days
         }
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
@@ -886,8 +872,8 @@ export default {
       axios.get('activity/getOriginalPriceDDosIP.do', {
         params: {
           zoneId: item.zone,
-          vmConfigId: item.configId,
-          month: item.time
+          vmConfigId: item.post.id,
+          month: item.post.days
         }
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
@@ -896,15 +882,228 @@ export default {
         }
       })
     },
-    changeZoneHot() {
-
+    changeZoneHot (item, index, name) {
+      this.getSystem(item, index, name)
+      if (index != 4) {
+        this.getPriceKill(item)
+      } else {
+        this.getPriceDDOSIP(item)
+      }
+    },
+    // 根据区域获得不同系统
+    getSystem (item, index, name) {
+      axios.get('information/listTemplates.do', {
+        params: {
+          zoneId: item.zone,
+        }
+      }).then(res => {
+        if (res.status == 200 && res.data.status == 1) {
+          var x
+          for (x in res.data.result) {
+            this[name][index].systemList.forEach(item => {
+              if (item.value == x) {
+                item.children = res.data.result[x]
+              }
+            })
+          }
+          this[name][index].systemList.forEach(item => {
+            item.children.forEach(item => {
+              item.value = item.systemtemplateid
+              item.label = item.templatedescript
+            })
+          })
+          this[name][index].systemList.forEach((item, index) => {
+            if (item.children.length == 0) {
+              item.disabled = true
+            }
+          })
+          // 设置默认系统
+          this[name][index].system = ['window', res.data.result.window[0].systemtemplateid]
+        }
+      })
+    },
+    pushOrderHot (item) {
+      if (!this.$store.state.userInfo) {
+        this.$LR({ type: 'register' })
+        return
+      }
+      // if ((!this.authInfo) || (this.authInfo && this.authInfo.authtype == 0 && this.authInfo.checkstatus != 0) || (!this.authInfoPersion && this.authInfo && this.authInfo.authtype == 1 && this.authInfo.checkstatus != 0) || (this.authInfoPersion && this.authInfoPersion.checkstatus != 0 && this.authInfo && this.authInfo.checkstatus != 0)) {
+      //   this.showModal.authentication = true
+      //   return
+      // }
+      console.log(item)
+      console.log(item.system)
+      console.log(item.zone)
+      let url = 'information/getDiskcountMv.do'
+      if (item.post.servicetype == 'high_host') {
+        url = 'activity/getDiskcountHighPreventionMv.do'
+      } else if (item.post.servicetype == 'high_ip') {
+        url = 'activity/getDiskcountHighIP.do'
+      }
+      axios.get(url, {
+        params: {
+          defzoneid: item.zone,
+          vmConfigId: item.post.id,
+          osType: item.system[1] ? item.system[1] : ''
+        }
+      }).then(res => {
+        if (res.status == 200 && res.data.status == 1) {
+          this.$Message.success('创建订单成功')
+          this.$router.push('/order')
+        } else {
+          this.$message.info({
+            content: res.data.message
+          })
+        }
+      })
+    },
+    // 获取高仿主机的系统
+    getSystemDDOS () {
+      let url = 'activity/getTemActInfoById.do'
+      axios.get(url, {
+        params: {
+          activityNum: '54'
+        }
+      }).then(res => {
+        axios.get('information/listTemplates.do', {
+          params: {
+            zoneId: res.data.result.optionalAreaHighPrevention[0].value,
+          }
+        }).then(res => {
+          if (res.status == 200 && res.data.status == 1) {
+            var x
+            for (x in res.data.result) {
+              this.systemList1.forEach(item => {
+                if (item.value == x) {
+                  item.children = res.data.result[x]
+                }
+              })
+            }
+            this.systemList1.forEach(item => {
+              item.children.forEach(item => {
+                item.value = item.systemtemplateid
+                item.label = item.templatedescript
+              })
+            })
+            this.systemList1.forEach((item, index) => {
+              if (item.children.length == 0) {
+                item.disabled = true
+              }
+            })
+            // 设置默认系统和价格
+            this.ddosList.forEach((item, index) => {
+              item.system = ['window', res.data.result.window[0].systemtemplateid]
+              this.changeDefense(item, item.post[0])
+            })
+            this.listGT.forEach((item, index) => {
+              item.system = ['window', res.data.result.window[0].systemtemplateid]
+              this.changeTime(item, item.post[0])
+            })
+          }
+        })
+      })
+    },
+    getConfigureDDOS(activityNum,arrayName) {
+      let url = 'activity/getTemActInfoById.do'
+      axios.get(url, {
+        params: {
+          activityNum: activityNum
+        }
+      }).then(res => {
+        if (res.data.status == 1 && res.status == 200) {
+          this[arrayName].forEach((item, index) => {
+            item.zone = res.data.result.optionalAreaHighPrevention[0].value
+            item.zoneName = res.data.result.optionalAreaHighPrevention[0].name
+            if (index == 0) {
+              item.post = res.data.result.freevmconfigs.filter(item => {
+                return item.cpu == 2 && item.mem == 4
+              })
+              item.postOne = item.post[0]
+            } else if (index == 1) {
+              item.post = res.data.result.freevmconfigs.filter(item => {
+                return item.cpu == 2 && item.mem == 8
+              })
+              item.postOne = item.post[0]
+            } else if (index == 2) {
+              item.post = res.data.result.freevmconfigs.filter(item => {
+                return item.cpu == 4 && item.mem == 8
+              })
+              item.postOne = item.post[0]
+            } else if (index == 3) {
+              item.post = res.data.result.freevmconfigs.filter(item => {
+                return item.cpu == 4 && item.mem == 16
+              })
+              item.postOne = item.post[0]
+            }
+          })
+        }
+      })
+    },
+    changeDefense (item, item1) {
+      item.disk = item1.pronum
+      item.postOne = item1
+      this.getPriceDDOS(item)
+    },
+    getPriceDDOS (item) {
+      axios.get('activity/getOriginalPrice.do', {
+        params: {
+          zoneId: item.zone,
+          vmConfigId: item.postOne.id,
+          month: item.postOne.days / 30
+        }
+      }).then(res => {
+        if (res.status == 200 && res.data.status == 1) {
+          item.price = res.data.result.cost;
+          item.originPrice = res.data.result.originalPrice;
+        }
+      })
+    },
+    pushOrderDDOS (item) {
+      if (!this.$store.state.userInfo) {
+        this.$LR({ type: 'register' })
+        return
+      }
+      // if ((!this.authInfo) || (this.authInfo && this.authInfo.authtype == 0 && this.authInfo.checkstatus != 0) || (!this.authInfoPersion && this.authInfo && this.authInfo.authtype == 1 && this.authInfo.checkstatus != 0) || (this.authInfoPersion && this.authInfoPersion.checkstatus != 0 && this.authInfo && this.authInfo.checkstatus != 0)) {
+      //   this.showModal.authentication = true
+      //   return
+      // }
+      axios.get('activity/getDiskcountHighPreventionMv.do', {
+        params: {
+          defzoneid: item.zone,
+          vmConfigId: item.postOne.id,
+          osType: item.system[1]
+        }
+      }).then(res => {
+        if (res.status == 200 && res.data.status == 1) {
+          this.$Message.success('创建订单成功')
+          this.$router.push('/order')
+        } else {
+          this.$message.info({
+            content: res.data.message
+          })
+        }
+      })
+    },
+    changeTime (item, item1) {
+      item.time = item1.days
+      item.postOne = item1
+      this.getPriceDDOS(item)
+    },
+    roll (val, index) {
+      this.selectedNav = index
+      $('html, body').animate({ scrollTop: val }, 300)
+    },
+    configVal (val, name) {
+      return val[0][name]
     },
     month (val) {
       return val >= 360 ? val / 360 + '年' : val / 30 + '个月'
     },
   },
   computed: {
-
+    authInfo () {
+      return this.$store.state.authInfo ? this.$store.state.authInfo : null
+    },
   },
   watch: {
 
@@ -1411,7 +1610,6 @@ export default {
               rgba(249, 239, 184, 1) 0%,
               rgba(227, 183, 111, 1) 100%
             );
-            color: #fff;
           }
         }
       }
