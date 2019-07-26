@@ -418,7 +418,7 @@
                                                 <span class="fh-sp">峰值时间</span>
                                             </div>
                                             <div class="dp-bt">
-                                                <span class="b-font" style="margin:0px;">2018-10-05 23:45</span>
+                                                <span class="b-font" style="margin:0px;">{{concurrentLink.peakTime}}</span>
                                             </div>
                                         </div> 
                                     </div>
@@ -428,7 +428,7 @@
                                                 <span class="fh-sp">最大并发数</span>
                                             </div>
                                             <div class="dp-bt">
-                                                <span class="b-font" style="margin:0px;">34.25Gbps</span>
+                                                <span class="b-font" style="margin:0px;">{{concurrentLink.peakValue}}</span>
                                             </div>
                                         </div> 
                                     </div>
@@ -439,7 +439,7 @@
                                         <p class="no-pfb">暂无数据</p>
                                         <p class="no-pfs">该时段未产生攻击或攻击数据暂未更新，请稍后重试</p>
                                     </div>
-                                    <chart v-show="concurrent.series[0].data.length != 0" style="width:100%;" id='concurrent' :options="concurrent"></chart>
+                                    <chart  style="width:100%;" id='concurrent' :options="concurrent"></chart>
                                 </div>
                            </div>
                        </div>
@@ -680,7 +680,7 @@
             <div class="md-cer">
                  <Form ref="certificateValidate" :model="certificateValidate" :rules="certificateRule" :label-width="80">
                     <FormItem label="证书名称" prop="name">
-                        <Input v-model="certificateValidate.name" placeholder="请输入证书名称"></Input>
+                        <Input v-model="certificateValidate.name" placeholder="请输入证书名称" :disabled='cIsAdd == "update"?true:false'></Input>
                     </FormItem>
                     <FormItem label="证书文件" prop="file">
                         <Input type="textarea" v-model="certificateValidate.file" placeholder="请输入证书文件">
@@ -1058,6 +1058,12 @@ export default {
         
         renewPrice:{},
 
+        // 业务统计
+        concurrentLink:{
+            peakTime:'--',
+            peakValue:'--'
+        },
+
         // CC统计图表格
         ccAttackList:[
             {
@@ -1280,6 +1286,7 @@ export default {
                         this.certificateValidate.desc = params.row.crtremark;
                         this.certificateValidate.pawMode = params.row.encryptionway;
                         this.certificateValidate.crtId = params.row.crtid;
+                        this.certificateValidate.id = params.row.id;
                     }
                 }
               },
@@ -1296,7 +1303,8 @@ export default {
           ca:'',
           desc:'',
           pawMode:'des',
-          crtId:''  
+          crtId:'',
+          id:'' 
       },
       certificateRule:{
           name:[{required: true, message: '请输入证书名称', trigger: 'blur'}],
@@ -2019,6 +2027,7 @@ export default {
                 if(res.data.value){
                     this.concurrent.xAxis.data = res.data.time;
                     this.concurrent.series[0].data = res.data.value;
+                    this.concurrentLink = res.data.peakStat;
                 }
             }else{
                 this.$Message.info(res.data.message);
@@ -2323,7 +2332,8 @@ export default {
                 crtDes:this.certificateValidate.file,
                 keyDes:this.certificateValidate.secret,
                 caDes:this.certificateValidate.ca,
-                encryptionWay:this.certificateValidate.pawMode
+                encryptionWay:this.certificateValidate.pawMode,
+                id:this.certificateValidate.id
             // }
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
