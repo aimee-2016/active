@@ -421,6 +421,7 @@ export default {
   created() {
     this.getSpentCost();
     this.getWalletsBalance();
+    this.changeCashbox('cash')
   },
   methods: {
     getSpentCost() {
@@ -580,9 +581,9 @@ export default {
       if (selection.length == 0) {
         this.couponInfo.totalCost = 0;
       } else {
-        if(this.groupList[0] == 'coupon' || this.groupList[1] == 'coupon'){
+        // if(this.groupList[0] == 'coupon' || this.groupList[1] == 'coupon'){
           this.couponInfo.totalCost = cost;
-        }
+        // }
       }
       let orderNumber = this.orderData.map(item => {
         return item.orderId;
@@ -602,7 +603,6 @@ export default {
     },
     changeCashbox(bol) {
       if (this.couponInfo.cash > 0) {
-        
         if (this.orderPay.isUseVoucher == 1 && bol.indexOf("cash") == -1) {
           this.groupList.push("cash");
           this.$message.info({
@@ -621,7 +621,7 @@ export default {
         });
       }
       if (this.vipName == "" || this.vipName == undefined) {
-        if (bol.indexOf("coupon") > -1 && this.couponInfo.cash > 0) {
+        if (bol.indexOf("coupon") > -1 && this.couponInfo.cash > 0 ) {
           this.groupList.splice(bol.indexOf("coupon"), 1);
           this.$message.info({
             title: "提示",

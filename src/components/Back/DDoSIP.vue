@@ -61,7 +61,7 @@
                                         <span>统计该套餐下在所选时间段所有域名和转发规则下攻击峰值</span>
                                     </div>
                                     <div>
-                                    <span class="l-font">刷新</span> 
+                                    <span class="l-font" @click="QueryMitigatedBandwidth">刷新</span> 
                                     </div>
                                 </div>
                                 <div style="display:flex;">
@@ -113,7 +113,7 @@
                                         <span>查询指定套餐，及指定时间范围已防护的业务的DDoS的攻击事件</span>
                                     </div>
                                     <div>
-                                    <span class="l-font">刷新</span> 
+                                    <span class="l-font" @click="QueryAttEvent">刷新</span> 
                                     </div>
                                 </div>
                                 <Table no-data-text='暂无攻击数据' :columns="ddosAttEventList" :data="ddosAttEventData"></Table>
@@ -128,7 +128,7 @@
                                         <span>查询指定套餐，及指定时间范围已防护的业务的遭受DDoS的攻击目标IP的相关信息</span>
                                     </div>
                                     <div>
-                                    <span class="l-font">刷新</span> 
+                                    <span class="l-font" @click="QueryAttInfoDetail">刷新</span> 
                                     </div>
                                 </div>
                                 <Table no-data-text='暂无攻击数据' :columns="ddosAttInfoList" :data="ddosAttInfoData"></Table>
@@ -141,7 +141,7 @@
                                <div class="dp-mbr" style="margin-right:20px;width:570px;">
                                     <div class='dp-tp'>
                                         <span style="font-size:14px;color:#333333;">清洗流量统计（单位Gbps）</span>
-                                         <span class="l-font" style='float:right;'>刷新</span> 
+                                         <span class="l-font" style='float:right;' @click="QueryAttCleanBandWidthType">刷新</span> 
                                     </div>
                                     <div style='display:flex;'>
                                     <div class="dp-th">
@@ -185,7 +185,7 @@
                             <div class="dp-mbr" style="width:570px;">
                                     <div class='dp-tp'>
                                         <span style="font-size:14px;color:#333333;">攻击类型</span>
-                                         <span class="l-font" style='float:right;'>刷新</span> 
+                                         <span class="l-font" style='float:right;' @click="QueryAttTypeDistribution">刷新</span> 
                                     </div>
                                     <div style='display:flex;'>
                                         <div style="width:260px;height:240px;">   
@@ -671,7 +671,7 @@
         <!-- 新增证书  -->
         <Modal :mask-closable="false" v-model="showModal.certificate">
             <p slot="header" class="modal-header-border">
-                <span class="universal-modal-title">新增证书</span>
+                <span class="universal-modal-title">{{cIsAdd == 'add'?'新增':'修改'}}证书</span>
             </p>
             <div class="dp-er" v-if="renewPrice.status != 1 && renewPrice.status !== undefined">
                  <Icon type="close-circled" color='#ED4014' size='12px'></Icon>
@@ -680,7 +680,7 @@
             <div class="md-cer">
                  <Form ref="certificateValidate" :model="certificateValidate" :rules="certificateRule" :label-width="80">
                     <FormItem label="证书名称" prop="name">
-                        <Input v-model="certificateValidate.name" placeholder="请输入证书名称" :disabled='cIsAdd == "update"?true:false'></Input>
+                        <Input v-model="certificateValidate.name" placeholder="请输入证书名称"></Input>
                     </FormItem>
                     <FormItem label="证书文件" prop="file">
                         <Input type="textarea" v-model="certificateValidate.file" placeholder="请输入证书文件">
@@ -761,9 +761,9 @@
                  <span style="margin-left:4px;">{{renewPrice.message}}</span>
              </div>
             <div class="md-cer">
-                <span>证书ID</span>
+                <span>证书名称</span>
                <Select v-model="certificateId" style="width:230px;margin:0 22px;">
-                    <Option v-for="item in certificateData" :value="item.crtid" :key="item.crtid">{{ item.crtid }}</Option>
+                    <Option v-for="item in certificateData" :value="item.crtid" :key="item.crtid">{{ item.crtname }}</Option>
                 </Select>
             </div>
             <div slot="footer" class="modal-footer-border">
@@ -1016,6 +1016,7 @@ export default {
                             click:()=>{
                                 this.tabsValue = '业务管理';
                                 this.tabsId = params.row.packageid;
+                                this.getDomainList(1);
                             }
                         }
                     },'业务配置')
@@ -1144,7 +1145,6 @@ export default {
         ddosAttInfoData:[],
 
       // 证书管理
-      certificateKyeHide: true,
       cIsAdd:'add',
       cerLoading:false,
       certificateList: [
@@ -1185,7 +1185,7 @@ export default {
           title: "证书key内容",
           render: (h, params) => {
             if(params.row.keydes !== undefined){
-                if (this.certificateKyeHide) {
+                if (params.row.certificateKyeHide) {
                     return h(
                         "div",
                         {
@@ -1195,7 +1195,7 @@ export default {
                         },
                         on: {
                             click: () => {
-                            this.certificateKyeHide = false;
+                            params.row.certificateKyeHide = false;
                             }
                         }
                         },
@@ -1226,7 +1226,7 @@ export default {
                             },
                             on: {
                             click: () => {
-                                this.certificateKyeHide = true;
+                                params.row.certificateKyeHide = true;
                             }
                             }
                         },
@@ -1588,19 +1588,28 @@ export default {
                 type: 'expand',
                 width: 50,
                 render: (h, params) => {
-                    return h(expandRow, {
-                        props: {
-                            row: params.row
-                        },
-                        on:{
-                            'white':(value)=>{
-                                this.whiteName = value
-                            },
-                            'black':(value)=>{
-                                this.blackName = value
+                    if(this.ccDisabled){
+                        return h('span',{
+                            style:{
+                                color:'#999999',
+                                cursor: 'not-allowed'
                             }
-                        }
-                    })
+                        },'>')
+                    }else{
+                      return h(expandRow, {
+                            props: {
+                                row: params.row
+                            },
+                            on:{
+                                'white':(value)=>{
+                                    this.whiteName = value
+                                },
+                                'black':(value)=>{
+                                    this.blackName = value
+                                }
+                            }
+                        })
+                    }
                 }
             },
             {
@@ -1801,6 +1810,7 @@ export default {
       })
   },
   created(){
+      this.changeColor();
       this.getDdosOverview(1);
       this.getDomainList(1);
       this.getCertificate(1);
@@ -1819,7 +1829,9 @@ export default {
                 for(let i =0; i<res.data.result.length; i++){
                     for(let key in res.data.result[i]){
                         if(res.data.result[i][key].length != 0){
-                          domainList.push(res.data.result[i][key][i].domainname);
+                            for(let j = 0; j<res.data.result[i][key].length;j++){
+                                  domainList.push(res.data.result[i][key][j].domainname);
+                            }
                         }else{
                             domainList = [];
                         }
@@ -1859,7 +1871,7 @@ export default {
         this.reque.legend.data  =['请求次数'];
         this.concurrent.series[0].name = '并发连接数';
         this.concurrent.series[0].stack = '并发连接数';
-        this.reque.series[0].itemStyle.normal.color = '#BB3ED5';
+        this.concurrent.series[0].itemStyle.normal.color = '#BB3ED5';
         this.concurrent.legend.data  = ['并发连接数'];
         this.ccQps.series[1].name = '总请求次数';
         this.ccQps.series[0].name = 'CC攻击次数';
@@ -1946,24 +1958,99 @@ export default {
 
     // DDOS清洗流量
     getMitigatedBandwidth(){
-        let params = {
+       this.QueryMitigatedBandwidth();
+       this.QueryAttEvent();
+       this.QueryAttInfoDetail();
+       this.QueryAttCleanBandWidthType();
+       this.QueryAttTypeDistribution();
+    },
+
+    // DDOS清洗流量
+    QueryMitigatedBandwidth(){
+        this.echartsLodaing('hightIp').showLoading();
+        this.$http.get('ddosImitationIp/QueryMitigatedBandwidth.do',{
+            params:{
                 packageId:this.attackMeal,
                 startdate:this.statisticsTime[0].format('yyyy-MM-dd hh:mm:ss')+'',
-                enddate:this.statisticsTime[1].format('yyyy-MM-dd hh:mm:ss')+''
-            },
-            url1 = this.$http.post('ddosImitationIp/QueryMitigatedBandwidth.do',params),
-            url2 = this.$http.post('ddosImitationIp/QueryAttInfoDetail.do',params),
-            url3 = this.$http.post('ddosImitationIp/QueryAttEvent.do',params),
-            url4 = this.$http.post('ddosImitationIp/queryAttCleanBandWidthType.do',params),
-            url5 = this.$http.post('ddosImitationIp/QueryAttTypeDistribution.do',params),
-            url6 = this.$http.post('ddosImitationIp/QueryAttInfoDetail.do',params),
-            url7 = this.$http.post('ddosImitationIp/QueryAttEvent.do',params);
-            Promise.all([url1,url2,url3,url4,url5,url6,url7]).then(res => {
-                if(res[0].status == 200 && res[0].data.status == 1){
-                    
-                }
-            })
+                enddate:this.statisticsTime[1].format('yyyy-MM-dd hh:mm:ss')+'' 
+            }
+        }).then(res => {
+            if(res.status == 200 && res.data.status == 1){
+                this.echartsLodaing('hightIp').hideLoading();
+            }else{
+                this.echartsLodaing('hightIp').hideLoading();
+            }
+        })
     },
+
+    // 攻击事件统计
+    QueryAttEvent(){
+        this.$http.get('ddosImitationIp/QueryAttEvent.do',{
+            params:{
+                packageId:this.attackMeal,
+                startdate:this.statisticsTime[0].format('yyyy-MM-dd hh:mm:ss')+'',
+                enddate:this.statisticsTime[1].format('yyyy-MM-dd hh:mm:ss')+'' 
+            }
+        }).then(res => {
+            if(res.status == 200 && res.data.status == 1){
+                this.ddosAttEventList = res.data.result;
+            }else{
+                this.$Message.info(res.data.message);
+            }
+        })
+    },
+
+    QueryAttInfoDetail(){
+        this.$http.get('ddosImitationIp/QueryAttInfoDetail.do',{
+            params:{
+                packageId:this.attackMeal,
+                startdate:this.statisticsTime[0].format('yyyy-MM-dd hh:mm:ss')+'',
+                enddate:this.statisticsTime[1].format('yyyy-MM-dd hh:mm:ss')+'' 
+            }
+        }).then(res => {
+            if(res.status == 200 && res.data.status == 1){
+                this.ddosAttInfoList = res.data.result;
+            }else{
+
+            }
+        })
+    },
+
+    QueryAttCleanBandWidthType(){
+       
+        this.$http.get('ddosImitationIp/queryAttCleanBandWidthType.do',{
+            params:{
+                packageId:this.attackMeal,
+                startdate:this.statisticsTime[0].format('yyyy-MM-dd hh:mm:ss')+'',
+                enddate:this.statisticsTime[1].format('yyyy-MM-dd hh:mm:ss')+'' 
+            }
+        }).then(res => {
+            if(res.status == 200 && res.data.status == 1){
+                 this.echartsLodaing('flowBtm').hideLoading();
+            }else{
+                 this.echartsLodaing('flowBtm').hideLoading();
+            }
+        })
+    },
+
+    QueryAttTypeDistribution(){
+        this.$http.get('ddosImitationIp/QueryAttTypeDistribution.do',{
+            params:{
+                packageId:this.attackMeal,
+                startdate:this.statisticsTime[0].format('yyyy-MM-dd hh:mm:ss')+'',
+                enddate:this.statisticsTime[1].format('yyyy-MM-dd hh:mm:ss')+'' 
+            }
+        }).then(res => {
+            if(res.status == 200 && res.data.status == 1){
+                this.echartsLodaing('hightIpBin').hideLoading();
+            }else{
+                this.echartsLodaing('hightIpBin').hideLoading();
+            }
+        })
+    },
+
+
+
 
 
 
@@ -2121,7 +2208,6 @@ export default {
     // ……CC统计图结束……
 
     inmapVoid(){
-        console.log(this.$inMap);
         let iMap = this.$inMap;
         var data =[
             {   geometry: {type: 'Point', coordinates: [123, 23]},
@@ -2276,6 +2362,9 @@ export default {
         }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
                 this.certificateData = res.data.result;
+                this.certificateData.forEach(item => {
+                    item.certificateKyeHide = false;
+                })
             }else{
                   this.$Message.info(res.data.message);
             }
@@ -2477,10 +2566,6 @@ export default {
         })
     }),
 
-    updateddoSConfig(){
-        this.$http.get('ddosImitationIp/updateddoSConfig.do')
-    },
-
     // 获取操作日志
     getLog(page){
         this.$http.post('ddosImitationIp/queryLog.do',{
@@ -2545,14 +2630,15 @@ export default {
     },
 
     saveConfig(index) {
-         this.$http.get('ddosImitationIp/updateddoSConfig.do',{params:{
+         this.$http.post('ddosImitationIp/updateddoSConfig.do',{
              packageId:this.setMeal,
              domainName: this.ccProtectData[index].domainname,
              ccProtect: this.ccProtectData[index].ccprotect,
              protectType: this.ccProtectData[index].protecttype,
              blackList: this.blackName,
-             whiteList: this.whiteName
-         }}).then(res =>{
+             whiteList: this.whiteName,
+             id:this.ccProtectData[index].id
+         }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
                 this.$Message.info(res.data.message);
                 this.ccShow = true;

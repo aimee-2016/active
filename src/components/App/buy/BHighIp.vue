@@ -18,7 +18,7 @@
          <div>
              <div class="b-meal">
                 <div class="bm-rg">套餐说明  </div>
-                <div>
+                <div class="bm-tx">
                     <p>DDoS防护能力：{{selectList.ddosprotectnumber}}Gbps </p>
                     <p>CC防护能力：{{selectList.ccprotectnumber}}QPS </p>
                     <p>套餐包含的正常业务带宽：{{selectList.bandwith}}M </p>
@@ -57,6 +57,7 @@
                             </div>
                          <p class="bm-fn">
          弹性防护带宽为最高防护带宽，如果弹性防护带宽值跟保底防护带宽值设置一样，则不会产生后付费且最高防护带宽为保底防护带宽值，如果弹性带宽值设置高于保底带宽值，则超过保底带宽值但不大于弹性带宽值的攻击仍然可以进行有效防护，超出部分按天计费 ，如超过封顶抗攻击量，则回源，2小时后自动解封。</p>
+          <p class="b-font">点击查看弹性防护带宽计费详情</p>
                     </div>
              </div>
             <div class="b-meal">
@@ -75,19 +76,24 @@
              </div>
              <div class="b-meal">
                 <div class="bm-rg">业务带宽</div>
-               <div style="width:500px;display: flex;align-items:center">
-                   <i-slider
-                        v-model="bandWidth"
-                        unit="MB"
-                        :min='selectList.bandwith'
-                        :max=2000
-                        :step=1
-                        :points="[400,600,900,1000,1500]"
-                        style="margin-right:30px;vertical-align: middle;">
-                    </i-slider>
-                    <InputNumber :max="2000" :min="selectList.bandwith" v-model="bandWidth" size="large"
-                           style="position: relative;bottom: 5px" :precision="0"></InputNumber>
+                <div style="width:500px;">
+                  <div style="display: flex;align-items:center">
+                    <i-slider
+                          v-model="bandWidth"
+                          unit="MB"
+                          :min='selectList.bandwith'
+                          :max=2000
+                          :step=1
+                          :points="[400,600,900,1200,1500]"
+                          style="margin-right:30px;vertical-align: middle;">
+                      </i-slider>
+                      <InputNumber :max="2000" :min="selectList.bandwith" v-model="bandWidth" size="large"
+                            style="position: relative;bottom: 5px" :precision="0"></InputNumber>
+                  </div>
+                  <p class="bm-fn">无封顶值，超出部分的计费按预购买的业务带宽所在梯度对应标准按天收费。当前预购买带宽为5M，按2.67M/元/天计费。</p>
                 </div>
+               
+                
              </div>
              <div class="b-meal">
                 <div class="bm-rg">价格</div>
@@ -835,13 +841,15 @@
           color: #333333;
           font-size: 16px;
       }
-      p{
+      .bm-tx{
+        p{
           line-height: 22px;
           color:#999999;
           font-size: 14px;
+        }
       }
       .bm-fn{
-          margin-top: 10px;font-size: 12px;color: #999999;line-height: 25px;
+          margin-top: 10px;font-size: 12px;color: #999999;line-height: 20px;
       }
       .bm-price{
           color:#F85E1D;font-size:18px;
@@ -852,5 +860,10 @@
     background-color: #f7f7f7;
     border-color: 1px solid #dddee1;
     cursor: not-allowed !important;
+  }
+  .b-font{
+    color: #2A99F2;
+    font-size: 12px;
+    cursor: pointer;
   }
 </style>

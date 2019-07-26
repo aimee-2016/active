@@ -23,9 +23,8 @@ export default {
         data: ['流出带宽'],
         bottom: 0,
         icon: 'circle',
-        padding: [20, 0, 0, 0],
-        itemWidth: 100,
-        itemHeight: 20
+        padding: [60, 0, 0, 0],
+       
     },
    grid: {
        left: '3%',
@@ -37,7 +36,7 @@ export default {
    xAxis: {
        type: 'category',
        boundaryGap: false,
-       data: [],
+       data: ['周一','周二','周三','周四','周五'],
    },
    yAxis: {
        type: 'value'

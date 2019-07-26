@@ -70,7 +70,7 @@
                             </Tooltip>
                         </FormItem>
                     </Form>
-                    <Button style="margin-right:10px;" @click="clearData">取消</Button>
+                    <Button style="margin-right:10px;" @click="clearD">取消</Button>
                     <Button type="primary" @click="addforwardrule('formValidate')">提交，查看下一步</Button>
                 </div>
 
@@ -148,7 +148,6 @@ export default {
                 if (this.current == 2) {
                     this.current = 0;
                 } else {
-                    this.ruleData.push(formValidate);
                     this.current += 1;
                 }
             },
@@ -210,11 +209,21 @@ export default {
         },
         clearData(){
             for(let key in this.formValidate){
-                if(key != 'agreement' || key != 'attackMeal'){
+                if(key != 'agreement' && key != 'attackMeal'){
                     this.formValidate[key] = '';
                 }
             }
-            
+        },
+        clearD(){
+            if(sessionStorage.getItem('ruleList')!=undefined){
+                for(let key in this.formValidate){
+                if(key != 'agreement' && key != 'attackMeal' && key != 'visitPort'){
+                    this.formValidate[key] = '';
+                }
+            }
+            }else{
+               this.clearData(); 
+            }
         }
     },
     created(){

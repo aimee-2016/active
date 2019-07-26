@@ -72,7 +72,7 @@
                 </FormItem>
                 <FormItem label="证书ID" prop="id" v-if="certificateShow">
                   <Select v-model="addDomainList.id" style="width:394px;">
-                      <Option v-for='item in cerIdList' :value="item.crtid" :key='item.crtid'>{{item.crtid}}</Option>
+                      <Option v-for='item in cerIdList' :value="item.crtid" :key='item.crtid'>{{item.crtname}}</Option>
                   </Select>
                 </FormItem>
                 <FormItem>
@@ -259,7 +259,11 @@ export default {
     },
 
     QuerycrtId(){
-      this.$http.get('ddosImitationIp/QuerycrtId.do',{}).then(res => {
+      this.$http.get('ddosImitationIp/QuerycrtId.do',{
+        params:{
+          packageid:this.setMeal
+        }
+      }).then(res => {
         if(res.status == 200 && res.data.status == 1){
           this.cerIdList = res.data.result;
         }else{

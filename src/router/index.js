@@ -116,7 +116,7 @@ const Pnat = () =>import('@/components/App/product/NATgateway.vue')
 const Pdisk = () =>import('@/components/App/product/CloudDisk.vue')
 const Pbackupdisk = () =>import('@/components/App/product/CloudDiskBackup.vue')
 const Pfirewall = () =>import('@/components/App/product/Firewall.vue')
-const Pddos = () =>import('@/components/App/product/DDOShighIP.vue')
+const Pddosip = () =>import('@/components/App/product/DDOShighIP.vue')
 const Pmonitor = () =>import('@/components/App/product/CloudMonitoring.vue')
 const PobjStorage = () =>import('@/components/App/product/PobjStorage.vue')
 const PdataBase = () =>import('@/components/App/product/PdataBase.vue')
@@ -399,7 +399,7 @@ var router = new Router({
         {path: 'disk', component: Pdisk},
         {path: 'diskbackup', component: Pbackupdisk},
         {path: 'firewall', component: Pfirewall},
-        {path: 'ddosip', component: Pddos},
+        {path: 'ddosip', component: Pddosip},
         {path: 'monitor', component: Pmonitor},
         {path: 'objectstorage', component: PobjStorage},
         {path: 'database', component: PdataBase},
