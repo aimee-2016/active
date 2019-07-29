@@ -444,10 +444,10 @@
           this.$router.push('/BRecords')
           return
         }
-        if (this.isRecords.length !== 0) {
-          this.showModal.hasRecord = true
-          return
-        }
+        // if (this.isRecords.length !== 0) {
+        //   this.showModal.hasRecord = true
+        //   return
+        // }
         if ((this.type == 1 && this.recordInfo.length !== 0) || (this.type == 2 && this.recordInfo.length !== 0)) {
           this.showModal.hint = true
           return
