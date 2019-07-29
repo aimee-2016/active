@@ -61,9 +61,9 @@
                 <span style="margin-top:40px;">配合使用</span>
                 <div style="display: flex">
                   <div v-for="pimg in stageInfo.pImg" style="margin-right: 10px;">
-                    <div style="width: 90px;height: 90px;background-color: #ffffff;text-align: center;padding:24px">
+                    <div style="width: 100px;height: 90px;background-color: #ffffff;text-align: center;padding:24px 0">
                       <i class="iconfont" :class="pimg.img" style="font-size:40px;color:#2A99F2;"></i>
-                      <span style="font-size: 14px; color:#666666;">{{pimg.isc}}</span>
+                      <span style="font-size: 14px; color:#666666;margin-top:11px;">{{pimg.isc}}</span>
                     </div>
                   </div>
                 </div>
@@ -133,10 +133,10 @@
           linkRouter: $store.state.userInfo ? '/firewallList' : '/login'
         },
         features: [
-          {img: 'icon-DDOSliuliangqingxi', title: 'DDOS流量清洗', desc: '支持畸形报文过滤，对SYN flood、ACK flood、UDP flood、ICMP flood、RST flood等攻击类型进行清洗。'},
-          {img: 'icon-jiyuyingyongcengdejichufanghu', title: '基于应用层的基础防护', desc: '有效抵御HTTP get/post flood攻击；CC 攻击；HTTP slow header/post攻击等。'},
-          {img: 'icon-jiyuwangluochuanshudegongjifanghu', title: '基于网络传输的攻击防护', desc: '有效抵御SYN flood攻击；ACK flood攻击；FIN/RST flood攻击；UDP flood攻击；TCP连接耗尽攻击等。'},
-          {img: 'icon-linghuoguanli', title: '灵活管理', desc: '可以使用界面进行管理配置，操作简单易用。'}
+          {img: 'icon-DDOSliuliangqingxi', title: 'DDOS攻击防护', desc: '防护多种类型的DDoS攻击包括但不限于SYN Flood、ACK Flood 、ICMP Flood、UDP Flood、TCP Flood、CC等攻击，并提供黑白名单等精准防御机制。'},
+          {img: 'icon-jiyuyingyongcengdejichufanghu', title: '源站隐藏', desc: '不再直接暴露在攻击者面前开启IP高防服务后，将自动隐藏源站，使您的源站IP将不再暴露。解析您的网站返回的将是高防的防护节点IP，从而使攻击者无法直接对您的源站服务器发起攻击。'},
+          {img: 'icon-jiyuwangluochuanshudegongjifanghu', title: '精准防护报表', desc: '提供精准的防护报表，帮您及时了解攻击情况，提供实时精准的防护相关报表及日志详情，使您及时、准确了解IP高防的防护效果。 '},
+          {img: 'icon-linghuoguanli', title: '弹性防护', desc: '弹性防护，灵活计费。开启弹性防护后，当您受到的攻击超过购买套餐的峰值时，您的业务仍可继续得到新睿云的防护。使用弹性防护功能，您无需再担心因为攻击超过套餐峰值导致服务中断的问题。 '}
         ],
         advantages: [
           {
@@ -164,30 +164,38 @@
         stageInfo: {
           stages: [
             {
-              title: '互联网金融',
+              title: '互联网',
 //              activeIcon: require('../../../assets/img/product/ddos-stage-1-blue.png'),
               icon: 'icon-menhuwangzhan',
-              img: require('../../../assets/img/product/ddos-stage-1-background.png'),
-              desc: ['为互联网金融用户提供高稳定、高带宽、低时延的DDoS防护，保障业务在大流量突发攻击时的稳定性。']
+              img: require('../../../assets/img/product/ddos_fang.png'),
+              desc: ['DDoS攻击导致网页无法访问，或访问变慢，用户流失。营销/推广活动重要时间段被针对性攻击，白白浪费营销投入。']
             },
             {
-              title: '电商网站',
+              title: '金融',
 //              activeIcon: require('../../../assets/img/product/ddos-stage-2-blue.png'),
               icon: 'icon-dianshangwangzhan',
-              img: require('../../../assets/img/product/ddos-stage-2-background.png'),
-              desc: ['为电商行业提供高稳定、高带宽、低时延的DDoS防护，保障业务在高峰时段大流量突发攻击时的稳定性。']
+              img: require('../../../assets/img/product/ddos_fang.png'),
+              desc: ['涉及资金交易，安全稳定性要求高。如遇到DDoS攻击导致业务不可用，交易失败，直接造成经济损失']
             },
             {
               title: '游戏',
 //              activeIcon: require('../../../assets/img/product/ddos-stage-3-icon-blue.png'),
               icon: 'icon-youxi',
-              img: require('../../../assets/img/product/ddos-stage-3-background.png'),
-              desc: ['采用专用防护硬件为游戏行业用户提供高稳定、高带宽、低时延的DDoS防护，保障游戏业务的流畅与稳定。']
+              img: require('../../../assets/img/product/ddos_fang.png'),
+              desc: ['频繁遭受黑客勒索，竞争对手恶意DDoS攻击，营收损失极大被攻击时往往会遇到DDoS攻击导致带宽堵塞，或因流量过大被云主机厂商强制黑洞；登录、游戏端口被CC攻击，导致服务器连接数暴涨，服务不可用；']
+            },
+            {
+              title: '其他',
+//              activeIcon: require('../../../assets/img/product/ddos-stage-3-icon-blue.png'),
+              icon: 'icon-youxi',
+              img: require('../../../assets/img/product/ddos_fang.png'),
+              desc: ['企业门户网站遭受DDoS攻击无法访问，损害企业声誉；新业务上线，容易被竞争对手盯上，针对性打压。']
             }
           ],
           pImg: [
-            {img: 'icon-danxingyunfuwuqiECS', isc: '云主机'},
-            {img: 'icon-xunisiyouyunVPC', isc: 'VPC'}
+            {img: 'icon-danxingyunfuwuqiECS', isc: 'DDoS高防主机'},
+            {img: 'icon-vpn', isc: 'DDoS高防IP'},
+            {img: 'icon-yuming', isc: '域名'}
           ],
           selectIndex: 0
         },

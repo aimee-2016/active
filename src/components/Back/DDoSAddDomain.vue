@@ -72,7 +72,7 @@
                 </FormItem>
                 <FormItem label="证书ID" prop="id" v-if="certificateShow">
                   <Select v-model="addDomainList.id" style="width:394px;">
-                      <Option v-for='item in cerIdList' :value="item.crtid" :key='item.crtid'>{{item.crtid}}</Option>
+                      <Option v-for='item in cerIdList' :value="item.crtid" :key='item.crtid'>{{item.crtname}}</Option>
                   </Select>
                 </FormItem>
                 <FormItem>
@@ -91,7 +91,7 @@
                 <p>记录值：xxxx.cdn30.com</p>
                 <p>
                   若您在新睿云购买的域名，点击跳转
-                  <span>域名解析</span>
+                  <a href="https://test-domain.xrcloud.net/xrdomain/domainGroup">域名解析</a>
                 </p>
               </div>
               <Table :columns="businessList" :data="businessData" style="margin-top:10px;"></Table>
@@ -162,19 +162,19 @@ export default {
       businessList: [
         {
           title: '域名',
-          key: 'domainname'
+          key: 'domain'
         },
         {
           title: '端口',
-          key: 'port'
+          key: 'agreement'
         },
         {
           title: '源站IP/域名',
-          key: 'sourceip'
+          key: 'ip'
         },
         {
           title: '套餐信息',
-          key: 'packageusername'
+          key: 'attackMeal'
         }
       ],
       businessData: [
@@ -245,6 +245,7 @@ export default {
             .then(res => {
               if (res.status == 200 && res.data.status == 1) {
                 //  this.getDomainList(1);
+                this.businessData.push(addDomainList);
               } else {
                 this.$Message.info(res.data.message);
               }
@@ -258,7 +259,11 @@ export default {
     },
 
     QuerycrtId(){
-      this.$http.get('ddosImitationIp/QuerycrtId.do',{}).then(res => {
+      this.$http.get('ddosImitationIp/QuerycrtId.do',{
+        params:{
+          packageid:this.setMeal
+        }
+      }).then(res => {
         if(res.status == 200 && res.data.status == 1){
           this.cerIdList = res.data.result;
         }else{

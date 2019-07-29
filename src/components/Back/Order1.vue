@@ -42,7 +42,8 @@
                   <div class="ticketInfo">
                     <div style="margin-right:36px;line-height:58px;">
                       <span style="width:100px;" v-if="item.tickettype == 0">满<strong>{{item.startmoney}}</strong>减<strong>{{item.money}}</strong></span>
-                      <span style="width:100px;" v-else><strong>{{item.money*10}}</strong>折</span>
+                      <span style="width:100px;" v-if="item.tickettype == 1"><strong>{{item.money*10}}</strong>折</span>
+                      <span style="width:100px;" v-if="item.tickettype == 2 || item.tickettype == 3"><strong>{{item.money}}</strong>元</span>
                     </div>
                     <div>
                       <p>适用产品：{{item.ticketdescript}}</p>
@@ -420,6 +421,7 @@ export default {
   created() {
     this.getSpentCost();
     this.getWalletsBalance();
+    this.changeCashbox('cash')
   },
   methods: {
     getSpentCost() {
@@ -579,9 +581,9 @@ export default {
       if (selection.length == 0) {
         this.couponInfo.totalCost = 0;
       } else {
-        if(this.groupList[0] == 'coupon' || this.groupList[1] == 'coupon'){
+        // if(this.groupList[0] == 'coupon' || this.groupList[1] == 'coupon'){
           this.couponInfo.totalCost = cost;
-        }
+        // }
       }
       let orderNumber = this.orderData.map(item => {
         return item.orderId;
@@ -601,7 +603,6 @@ export default {
     },
     changeCashbox(bol) {
       if (this.couponInfo.cash > 0) {
-        
         if (this.orderPay.isUseVoucher == 1 && bol.indexOf("cash") == -1) {
           this.groupList.push("cash");
           this.$message.info({
@@ -620,7 +621,7 @@ export default {
         });
       }
       if (this.vipName == "" || this.vipName == undefined) {
-        if (bol.indexOf("coupon") > -1 && this.couponInfo.cash > 0) {
+        if (bol.indexOf("coupon") > -1 && this.couponInfo.cash > 0 ) {
           this.groupList.splice(bol.indexOf("coupon"), 1);
           this.$message.info({
             title: "提示",
@@ -821,6 +822,8 @@ export default {
                 ).toFixed(2);
               } else if (item.tickettype == 0) {
                 money = item.money.toFixed(2);
+              } else if (item.tickettype == 2 || item.tickettype == 3){
+                money =   item.money
               }
             }
           });
