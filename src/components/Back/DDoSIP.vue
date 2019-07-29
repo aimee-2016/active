@@ -226,7 +226,7 @@
                          <!-- CC统计  -->
                        <div v-if="overviewRadio == 'CC统计'">
                            <div class="dp-ds">
-                               <div style="margin-left:20px;"> 
+                               <div > 
                                    <span>套餐选择</span>
                                     <Select size="small" v-model="ccStatistics.packageid" style="width:231px;margin-left:10px;" @on-change='domainChange'>
                                         <Option v-for="item in setMealList" :value="item.packageid" :key="item.packageid" >{{ item.packageid }}</Option>
@@ -312,7 +312,7 @@
                         <!-- 业务统计  -->
                        <div v-if="overviewRadio == '业务统计'">
                            <div class="dp-ds">
-                               <div style="margin-left:20px;"> 
+                               <div> 
                                    <span>套餐选择</span>
                                     <Select size="small" v-model="business.packageId" style="width:231px;margin-left:10px;" @on-change='domainChange'>
                                         <Option v-for="item in setMealList" :value="item.packageid" :key="item.packageid" >{{ item.packageid }}</Option>
@@ -320,14 +320,14 @@
                                </div>
                               <div  style="margin-left:20px;">
                                    <span>按统计时间</span>
-                                   <DatePicker :options="options" v-model='business.date' format='yyyy-MM-dd' size='small' :transfer='true' type="daterange" placeholder='选择时间'  placement="bottom-end"  style="width: 231px;margin:0 10px;"></DatePicker>
-                                   <Button size='small' type="primary" style="width:54px;" @click="getAllBusinessMap">查询</Button>
+                                   <DatePicker :options="options" v-model='business.date' format='yyyy-MM-dd' size='small' :transfer='true' type="daterange" placeholder='选择时间'  placement="bottom-end"  style="width: 231px;margin-left:10px;"></DatePicker>
                                </div>
                                 <div  style="margin-left:20px;">
                                    <span>域名选择</span>
-                                   <Select size="small" v-model="business.domain" style="width:231px;margin-left:10px;">
+                                   <Select size="small" v-model="business.domain" style="width:231px;margin:0 10px;">
                                         <Option v-for="item in domainAllList" :value="item" :key="item">{{ item }}</Option>
                                     </Select>
+                                    <Button size='small' type="primary" style="width:54px;" @click="getAllBusinessMap">查询</Button>
                                </div>
                            </div>
                            <div>
