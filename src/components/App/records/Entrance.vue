@@ -172,9 +172,9 @@
       records
     },
     beforeRouteEnter(to, from, next) {
-      if ($store.state.userInfo && $store.state.userInfo.recordFlag) {
-        next({path: '/waitSecondTrial'})
-      } else {
+      // if ($store.state.userInfo && $store.state.userInfo.recordFlag) {
+      //   next({path: '/waitSecondTrial'})
+      // } else {
         // 获取用户信息
         var userInfo = axios.get('user/GetUserInfo.do', {params: {t: new Date().getTime()}})
         // 获取zone信息
@@ -192,7 +192,7 @@
           value => {
             next()
           })
-      }
+      // }
     },
     data() {
       return {

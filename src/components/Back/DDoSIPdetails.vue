@@ -132,7 +132,7 @@ export default {
             ddosipDetails:{},
             showModal:{meal:false},
             durationIndex:0,
-             duration:'',
+            duration:'',
             durationIndex:0,
             durationList:[
                 {

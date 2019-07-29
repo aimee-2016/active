@@ -132,7 +132,7 @@ export default {
                     title:'源站IP/域名'
                 },
                 {
-                    key:'id',
+                    key:'attackMeal',
                     title:'套餐信息'
                 },
             ],

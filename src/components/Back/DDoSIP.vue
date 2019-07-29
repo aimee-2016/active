@@ -118,7 +118,7 @@
                                 </div>
                                 <Table no-data-text='暂无攻击数据' :columns="ddosAttEventList" :data="ddosAttEventData"></Table>
                                 <div class="dp-page">
-                                    <Page :total="ddosAttEventData.length" style="display:inline-block;vertical-align: middle;margin-left:20px;" ></Page>
+                                    <Page :total="ddosAttInfoTotal" style="display:inline-block;vertical-align: middle;margin-left:20px;" ></Page>
                                 </div>
                            </div>
                             <div>
@@ -133,7 +133,7 @@
                                 </div>
                                 <Table no-data-text='暂无攻击数据' :columns="ddosAttInfoList" :data="ddosAttInfoData"></Table>
                                 <div class="dp-page">
-                                    <Page :total="ddosAttInfoData.length" style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
+                                    <Page :total="ddosAttTotal" style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
                                 </div>
                            </div>
                            <div style='display:flex;justify-content: space-between;'>
@@ -260,7 +260,7 @@
                                         <p class="no-pfb">暂无数据</p>
                                         <p class="no-pfs">该时段未产生攻击或攻击数据暂未更新，请稍后重试</p>
                                     </div>
-                                    <chart v-show="ccQps.series[0].data.length != 0" style="width:100%;" id='ccQps' ref="ccQps" :options="ccQps"></chart>
+                                    <chart v-show="ccQps.series[0].data.length != 0" style="width:100%;" id='ccQps' :options="ccQps"></chart>
                                 </div>
                            </div>
                            <div>
@@ -275,7 +275,7 @@
                                 </div>
                                 <Table no-data-text='还未收到攻击/未配置域名' :columns="ccAttackList" :data="ccAttackData"></Table>
                                 <div class="dp-page">
-                                    <Page :total="ccAttackData.length" style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
+                                    <Page :total="ccAttinfoData" style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
                                 </div>
                            </div>
                             <div>
@@ -290,7 +290,7 @@
                                 </div>
                                 <Table no-data-text='还未收到攻击/未配置域名' :columns="ccAttDomainList" :data="ccAttDomainData"></Table>
                                 <div class="dp-page">
-                                    <Page :total="ccAttDomainData.length" style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
+                                    <Page :total="ccAttTotal" style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
                                 </div>
                            </div>
                            <div>
@@ -479,14 +479,10 @@
                                     <Button type="primary" style="width:84px;" @click="queryDomain">查询</Button>
                                 </div>
                             </div>
-                            <!-- <div class="selectMark">
-                                    <img src="../../assets/img/host/h-icon10.png"/>
-                                    <span>共 {{ businessData.length }} 项 | 已选择 <span style="color:#FF624B;">{{ overviewSelect.length }} </span>项</span><span style="margin-left:10px;">总价:</span><span style="color:#FF624B;">￥0.00</span>
-                            </div> -->
                             <Table :loading='busLoading' :columns="businessList" :data="businessData"  @on-selection-change='overviewTableChange'></Table>
                             <div class="dp-page">
-                                <span>总共{{businessData.length}}个项目</span>
-                                <Page :total="businessData.length"  @on-change='getDomainList' style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
+                                <span>总共{{businessTotal}}个项目</span>
+                                <Page :total="businessTotal"  @on-change='getDomainList' style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
                             </div>
                            
                         </div>
@@ -511,8 +507,8 @@
                             </div>
                             <Table :loading='cerLoading' :columns="certificateList" :data="certificateData" @on-selection-change='overviewTableChange' ></Table>
                             <div class="dp-page">
-                                <span>总共{{certificateData.length}}个项目</span>
-                                <Page :total="certificateData.length" @on-change='getCertificate'  style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
+                                <span>总共{{cerTotal}}个项目</span>
+                                <Page :total="cerTotal" @on-change='getCertificate'  style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
                             </div>
                         </div>
 
@@ -532,6 +528,13 @@
                                     <!-- <span class="dp-cn">CNAME：{{ruleData[0].cname||'无'}}</span> -->
                                 </div>
                                 <div>
+                                    <Select v-model="attackMeal"  style="width:300px;">
+                                        <Option
+                                            v-for="item in setMealList"
+                                            :value="item.packageid"
+                                            :key="item.packageid"
+                                            >{{ item.packageid }}</Option>
+                                    </Select>
                                      <Select v-model="visitPort" style="width:100px">
                                         <Option v-for="item in visitPortSelect" :value="item.value" :key="item.value">{{ item.label }}</Option>
                                     </Select>
@@ -541,8 +544,8 @@
                             </div>
                             <Table :loading='ruleLoading' :columns="ruleList" :data="ruleData" @on-selection-change='overviewTableChange'></Table>
                             <div class="dp-page">
-                                <span>总共{{ruleData.length}}个项目</span>
-                                <Page :total="ruleData.length" @on-change='getAllforwardrule' :current='ruleDataPage' style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
+                                <span>总共{{ruleTotal}}个项目</span>
+                                <Page :total="ruleTotal" @on-change='getAllforwardrule' :current='ruleDataPage' style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
                             </div>
                         </div>
                     </TabPane>
@@ -603,7 +606,7 @@
                             </div>
                             <Table :columns="ccProtectList" :data="ccProtectData"></Table>
                             <div class="dp-page">
-                                <Page :total="ccProtectData.length"  @on-change='getProtectCC(setMeal,1)'   style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
+                                <Page :total="ccTotal"  @on-change='getProtectCC(setMeal,1)'   style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
                             </div>
                         </div>    
                     </TabPane>
@@ -619,7 +622,7 @@
                         </div>
                         <Table :columns="journalList" :data="journalData"></Table>
                         <div class="dp-page">
-                            <Page :total="journalData.length" @on-change='getLog' style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
+                            <Page :total="journalTotal" @on-change='getLog' style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
                         </div>
                     </TabPane>
                 </Tabs>
@@ -1092,6 +1095,7 @@ export default {
             }
         ],
         ccAttackData:[],
+        ccAttinfoData:0,
         ccAttDomainList:[
             {
                 title:'受攻击域名',
@@ -1102,7 +1106,8 @@ export default {
                 key:'value'
             },
         ],
-        ccAttDomainData:[],    
+        ccAttDomainData:[],  
+        ccAttTotal:0,  
 
         // ddos统计图表格
         ddosAttEventList:[
@@ -1124,6 +1129,7 @@ export default {
             },
         ],
         ddosAttEventData:[],
+        ddosAttInfoTotal:0,
         ddosAttInfoList:[
             {
                 key:'targetIp',
@@ -1143,6 +1149,7 @@ export default {
             },
         ],
         ddosAttInfoData:[],
+        ddosAttTotal:0,
 
       // 证书管理
       cIsAdd:'add',
@@ -1295,6 +1302,7 @@ export default {
           }
         }
       ],
+      cerTotal:0,
       certificateData: [],
       certificateValidate:{
           name:'',
@@ -1452,6 +1460,7 @@ export default {
       ],
       businessData:[
       ],
+      businessTotal:0,
       businessSelect:{},
       crtName:'',
       addDomainList: {
@@ -1564,6 +1573,7 @@ export default {
            },
        ],
        ruleData:[],
+       ruleTotal:0,
        ruleLoading:false,
        visitPort:'访问端口',
        visitPortNum:'',
@@ -1588,14 +1598,8 @@ export default {
                 type: 'expand',
                 width: 50,
                 render: (h, params) => {
-                    if(this.ccDisabled){
-                        return h('span',{
-                            style:{
-                                color:'#999999',
-                                cursor: 'not-allowed'
-                            }
-                        },'>')
-                    }else{
+                    this.blackName = params.row.blacklist;
+                    this.whiteName = params.row.whitelist;
                       return h(expandRow, {
                             props: {
                                 row: params.row
@@ -1609,7 +1613,6 @@ export default {
                                 }
                             }
                         })
-                    }
                 }
             },
             {
@@ -1758,6 +1761,7 @@ export default {
                 }
             }
         ],
+        ccTotal:0,
         ccShow:true,
         riadosCC:'严格',
         ccProtectData:[
@@ -1801,6 +1805,7 @@ export default {
          ],
          logTime:[],
          domainAllList:[],
+         journalTotal:0,
 
     }
   },
@@ -1968,14 +1973,19 @@ export default {
     // DDOS清洗流量
     QueryMitigatedBandwidth(){
         this.echartsLodaing('hightIp').showLoading();
-        this.$http.get('ddosImitationIp/QueryMitigatedBandwidth.do',{
-            params:{
+        this.$http.post('ddosImitationIp/QueryMitigatedBandwidth.do',{
+            // params:{
                 packageId:this.attackMeal,
                 startdate:this.statisticsTime[0].format('yyyy-MM-dd hh:mm:ss')+'',
                 enddate:this.statisticsTime[1].format('yyyy-MM-dd hh:mm:ss')+'' 
-            }
+            // }
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
+                this.ddosFlow.time = res.data.Time;
+                this.ddosFlow.flow = res.data.mitigatedTraffic;
+                this.ddosFlow.outFlow = res.data.atFlow;
+                this.hightIp.xAxis.data = res.data.peakTime;
+                this.hightIp.series[0].data = res.data.peakValue;
                 this.echartsLodaing('hightIp').hideLoading();
             }else{
                 this.echartsLodaing('hightIp').hideLoading();
@@ -1985,15 +1995,16 @@ export default {
 
     // 攻击事件统计
     QueryAttEvent(){
-        this.$http.get('ddosImitationIp/QueryAttEvent.do',{
-            params:{
+        this.$http.post('ddosImitationIp/QueryAttEvent.do',{
+            // params:{
                 packageId:this.attackMeal,
                 startdate:this.statisticsTime[0].format('yyyy-MM-dd hh:mm:ss')+'',
                 enddate:this.statisticsTime[1].format('yyyy-MM-dd hh:mm:ss')+'' 
-            }
+            // }
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
-                this.ddosAttEventList = res.data.result;
+                this.ddosAttEventData = res.data.result;
+                this.ddosAttInfoTotal = res.data.count;
             }else{
                 this.$Message.info(res.data.message);
             }
@@ -2001,31 +2012,37 @@ export default {
     },
 
     QueryAttInfoDetail(){
-        this.$http.get('ddosImitationIp/QueryAttInfoDetail.do',{
-            params:{
+        this.$http.post('ddosImitationIp/QueryAttInfoDetail.do',{
+            // params:{
                 packageId:this.attackMeal,
                 startdate:this.statisticsTime[0].format('yyyy-MM-dd hh:mm:ss')+'',
                 enddate:this.statisticsTime[1].format('yyyy-MM-dd hh:mm:ss')+'' 
-            }
+            // }
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
-                this.ddosAttInfoList = res.data.result;
+                this.ddosAttInfoData = res.data.result;
+                this.ddosAttTotal = res.data.count;
             }else{
-
+                this.$Message.info(res.data.message);
             }
         })
     },
 
     QueryAttCleanBandWidthType(){
-       
-        this.$http.get('ddosImitationIp/queryAttCleanBandWidthType.do',{
-            params:{
+        this.$http.post('ddosImitationIp/queryAttCleanBandWidthType.do',{
+            // params:{
                 packageId:this.attackMeal,
                 startdate:this.statisticsTime[0].format('yyyy-MM-dd hh:mm:ss')+'',
                 enddate:this.statisticsTime[1].format('yyyy-MM-dd hh:mm:ss')+'' 
-            }
+            // }
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
+                this.flowBtm.xAxis.data = res.data.peakTime;
+                this.flowBtm.series[0].data = res.data.syn;
+                this.flowBtm.series[1].data = res.data.ack;
+                this.flowBtm.series[2].data = res.data.udp;
+                this.flowBtm.series[3].data = res.data.icmp;
+                this.flowBtm.series[4].data = res.data.other;
                  this.echartsLodaing('flowBtm').hideLoading();
             }else{
                  this.echartsLodaing('flowBtm').hideLoading();
@@ -2034,12 +2051,12 @@ export default {
     },
 
     QueryAttTypeDistribution(){
-        this.$http.get('ddosImitationIp/QueryAttTypeDistribution.do',{
-            params:{
+        this.$http.post('ddosImitationIp/QueryAttTypeDistribution.do',{
+            // params:{
                 packageId:this.attackMeal,
                 startdate:this.statisticsTime[0].format('yyyy-MM-dd hh:mm:ss')+'',
                 enddate:this.statisticsTime[1].format('yyyy-MM-dd hh:mm:ss')+'' 
-            }
+            // }
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
                 this.echartsLodaing('hightIpBin').hideLoading();
@@ -2163,6 +2180,7 @@ export default {
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
                 this.ccAttackData = res.data.result;
+                this.ccAttinfoData = res.data.count;
             }else{
                 this.$Message.info(res.data.message);
             }
@@ -2178,6 +2196,7 @@ export default {
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
                  this.ccAttDomainData = res.data.result;
+                 this.ccAttTotal = res.data.count;
             }else{
                 this.$Message.info(res.data.message);
             }
@@ -2252,6 +2271,7 @@ export default {
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
                 this.businessData = res.data.result;
+                this.businessTotal = res.data.count;
             }else{
                 this.$Message.info(res.data.message);
             }
@@ -2293,6 +2313,10 @@ export default {
         }).catch(err =>{})
     },
 
+    dataToUpdate(name){
+        this[name].splice(1,data);
+    },
+
     updateDomainTable(){
         let http = 0,
             https = 0;
@@ -2300,6 +2324,8 @@ export default {
              http = this.addDomainList.http.join(',').indexOf('http') == -1 ?0 :1;
              https = this.addDomainList.http.join(',').indexOf('https') == -1 ? 0:1;
         }
+        this.dataToUpdate('businessData');
+        return;
        this.$http.get('ddosImitationIp/UpdateDomain.do',{
             params:{
                 domain:this.addDomainList.domain,
@@ -2324,14 +2350,30 @@ export default {
     addNameList(name) {
         this.$refs[name].validate((valid) => {
         if (valid) {
-              this.ccProtectData[this.ccIndex].blacklist+=this.nameValidate.black;
-              this.ccProtectData[this.ccIndex].whitelist+=this.nameValidate.white;
+            let bN = '',
+                bN1 = '',
+                wN =  '' ,
+                wN1 = '';
+                bN +=';'+this.nameValidate.black;
+                bN1 +=this.nameValidate.black;
+                wN +=';'+this.nameValidate.white;
+                wN1 +=this.nameValidate.white;
+            
+             this.ccProtectData[this.ccIndex].blacklist = this.ccProtectData[this.ccIndex].blacklist != '' ?bN:bN1;
+            //   this.ccProtectData[this.ccIndex].blacklist+=';'+this.nameValidate.black;
+            this.ccProtectData[this.ccIndex].whitelist =  this.ccProtectData[this.ccIndex].whitelist != ''?wN : wN1;
               this.showModal.nameList = false;
+              this.nameValidate.black = '';
+              this.nameValidate.white = '';
         }})
     },
 
 
     queryDomain(){
+        if(this.domainName == ''){
+            this.$Message.info('请输入要查询的域名');
+            return;
+        }
         this.busLoading = true;
         this.$http.get('ddosImitationIp/Querydomain.do',{
             params:{
@@ -2362,6 +2404,7 @@ export default {
         }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
                 this.certificateData = res.data.result;
+                this.cerTotal = res.data.count;
                 this.certificateData.forEach(item => {
                     item.certificateKyeHide = false;
                 })
@@ -2380,7 +2423,7 @@ export default {
                 crtDes:this.certificateValidate.file,
                 keyDes:this.certificateValidate.secret,
                 caDes:this.certificateValidate.ca,
-                encryptionWay:this.certificateValidate.encryptionway
+                encryptionWay:this.certificateValidate.pawMode
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
                 this.$Message.success('新增证书成功');
@@ -2395,6 +2438,10 @@ export default {
         }})
     },
     queryCertificate(){
+        if(this.crtName == ''){
+            this.$Message.info('请输入要查询的证书');
+            return;
+        }
         this.cerLoading = true;
         this.$http.get('ddosImitationIp/QueryCertificate.do',{
             params:{
@@ -2414,7 +2461,6 @@ export default {
 
     updateCertificate(){
         this.$http.post('ddosImitationIp/UpdateCertificate.do',{
-            // params:{
                 crtId:this.certificateValidate.crtId,
                 crtName:this.certificateValidate.name,
                 crtRemark:this.certificateValidate.desc,
@@ -2423,7 +2469,6 @@ export default {
                 caDes:this.certificateValidate.ca,
                 encryptionWay:this.certificateValidate.pawMode,
                 id:this.certificateValidate.id
-            // }
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
                 this.$Message.success('修改成功');
@@ -2468,6 +2513,7 @@ export default {
             }).then(res => {
                 if(res.status == 200 && res.data.status == 1){
                     this.ruleData = res.data.result;
+                    this.ruleTotal = res.data.count;
                 }else{
                     this.$Message.info(res.data.messae);
                 }
@@ -2484,6 +2530,10 @@ export default {
     },
 
     queryRule(){
+        if(this.visitPortNum == ''){
+            this.$Message.info('请输入要查询的端口');
+            return;
+        }
         this.ruleLoading = true;
         this.$http.get('ddosImitationIp/queryforwardrule.do',{
             params:{
@@ -2500,7 +2550,6 @@ export default {
             }
         }).catch(err =>{
             if(err){
-                this.$Message.info('网络异常，请稍后再试');
                 this.ruleLoading = false;
             }
               
@@ -2521,9 +2570,10 @@ export default {
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
                 this.ccProtectData = res.data.result;
-                // this.ccProtectData.forEach(item =>{
-                //     item._disableExpand = true;
-                // })
+                this.ccTotal = res.data.count;
+                this.ccProtectData.forEach(item =>{
+                    item._disableExpand = true;
+                })
             }else{
                 this.$Message.info(res.data.message);
             }
@@ -2577,6 +2627,7 @@ export default {
         }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
                 this.journalData = res.data.result;
+                this.journalTotal = res.data.count;
             }else{
                   this.$Message.info(res.data.message);
             }
