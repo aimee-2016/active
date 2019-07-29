@@ -118,7 +118,7 @@
         <div class="item-label">
           <span>
             价格
-            <Poptip trigger="hover" placement="top-start" content="包含CPU、内存、系统盘与数据盘在内的价格总计">
+            <Poptip trigger="hover" placement="top-start" content="DDOS防护带宽费用">
               <span class="label-hint">?</span>
             </Poptip>
           </span>

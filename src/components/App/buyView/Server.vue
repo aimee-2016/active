@@ -33,6 +33,7 @@
         @changeSystemDiskType="changeSystemDiskType"
         @deleteSystemDisk="deleteSystemDisk"
       ></buy-server-specification>
+      <buy-defend v-if="serverType==='NOKIAServer'"></buy-defend>
     </div>
     <div v-if="buyStep === 1">
       <buy-network
@@ -48,6 +49,7 @@
         @changeAutoRenewal="changeAutoRenewal"
       ></buy-login-info>
     </div>
+    <buy-footer :buyStep="buyStep" @nextStep="nextStep"></buy-footer>
   </div>
 </template>
 <style lang="less" scoped>
@@ -67,6 +69,8 @@ import buyMirror from "../buyComponents/buy-mirror";
 import buyServerSpecification from "../buyComponents/buy-server-specification";
 import buyNetwork from "../buyComponents/buy-network";
 import buyLoginInfo from "../buyComponents/buy-login-info";
+import buyFooter from "../buyComponents/buy_footer";
+import buyDefend from "../buyComponents/buy-defend";
 export default {
   components: {
     buyHeader,
@@ -76,8 +80,10 @@ export default {
     buyArea,
     buyMirror,
     buyServerSpecification,
+    buyDefend,
     buyNetwork,
-    buyLoginInfo
+    buyLoginInfo,
+    buyFooter
   },
   // 以前统一写在app里，由于静态打包与写在app里冲突，所以vuex必须先在这里获取到区域信息,不然区域信息是null,
   beforeRouteEnter(to, from, next) {
@@ -361,6 +367,9 @@ export default {
     },
     changeAutoRenewal(val) {
       this.loginInfo.autoRenewal = val;
+    },
+    nextStep() {
+      this.buyStep += 1;
     }
   }
 };
