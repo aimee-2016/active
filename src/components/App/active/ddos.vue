@@ -38,7 +38,6 @@
           </div>
         </div>
       </div>
-      <img src="../../../assets/img/active/ddos/background-2-left.png" alt="背景图片">
       <div class="banner">
         <div class="wrap">
           <div class="product">
@@ -1523,12 +1522,8 @@ export default {
 .ddos-active {
   font-family: MicrosoftYaHei;
   text-align: center;
-  > img {
-    position: absolute;
-    z-index: 3;
-    top: 940px;
-    left: 0;
-  }
+  background: url(../../../assets/img/active/ddos/background-2-left.png) 0 700px no-repeat;
+  background-color: rgba(42, 41, 54, 1);
 }
 .mb10 {
   margin-bottom: 10px;
@@ -1639,39 +1634,10 @@ export default {
     position: absolute;
     top: 0px;
     left: 36px;
-    // font-size: 14px;
-    // color: #ffe0a3;
-    // ul {
-    //   li {
-    //     width: 120px;
-    //     height: 60px;
-    //     padding-top: 10px;
-    //     background: linear-gradient(
-    //       180deg,
-    //       rgba(96, 102, 130, 1) 0%,
-    //       rgba(54, 55, 71, 1) 100%
-    //     );
-    //     color: #ffe0a3;
-    //     cursor: pointer;
-    //     &:hover,
-    //     &.select {
-    //       background: linear-gradient(
-    //         180deg,
-    //         rgba(254, 231, 190, 1) 0%,
-    //         rgba(252, 202, 138, 1) 100%
-    //       );
-    //       color: #222222;
-    //     }
-    //     span {
-    //       display: inline-block;
-    //       margin-bottom: 4px;
-    //     }
-    //   }
   }
 }
 
 .banner {
-  background: #2a2936;
   .product {
     .content {
       .text {
@@ -1684,7 +1650,6 @@ export default {
   padding: 50px 0 60px;
   background: url(../../../assets/img/active/ddos/background-2-right.png) 100%
     60% no-repeat;
-  background-color: #2a2936;
   .top {
     display: flex;
     justify-content: space-between;
@@ -1744,8 +1709,6 @@ export default {
     justify-content: space-between;
     margin-top: 20px;
     text-align: left;
-    position: relative;
-    z-index: 4;
     > div {
       background: #4d4b61;
       width: 224px;
@@ -1840,8 +1803,6 @@ export default {
     }
   }
   .tips {
-    position: relative;
-    z-index: 4;
     margin-top: 20px;
     text-align: left;
     font-size: 16px;
@@ -1849,7 +1810,7 @@ export default {
   }
 }
 .first-month {
-  background: rgba(42, 41, 54, 1);
+  // background: rgba(42, 41, 54, 1);
   .product {
     padding-bottom: 80px;
     text-align: left;
