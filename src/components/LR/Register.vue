@@ -17,6 +17,10 @@
               </div>
             </my-carousel-item> -->
             <my-carousel-item class="carousel-item">
+              <div @click="$router.push('/activity/ddosActive')" class="ddos">
+              </div>
+            </my-carousel-item>
+            <my-carousel-item class="carousel-item">
               <div @click="$router.push('activity/BlacKActivities')" class="black-active">
               </div>
             </my-carousel-item>
@@ -546,6 +550,10 @@
       .fr-active {
         height: 100%;
         background: #FFF url("../../assets/img/login/fr-banner.png") no-repeat;
+      }
+      .ddos {
+        height: 100%;
+        background: #FFF url("../../assets/img/active/ddos/ddos-login.png") no-repeat;
       }
       .black-active {
         height: 100%;

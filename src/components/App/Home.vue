@@ -4,6 +4,20 @@
     <!-- banner 轮播图 -->
     <div class="banner">
       <my-carousel :interval=5000 class="carousel" @on-change="change">
+        <my-carousel-item class="carousel-item">
+          <div @click="push('/activity/ddosActive')"
+               style="cursor: pointer;">
+            <div class="ddos">
+              <div class="wrap">
+                <div class="text">
+                  <p>07/25–09/25</p>
+                  <img src="../../assets/img/active/ddos/ddos-home-text.png" />
+                  <p>更有首月8折等超多优惠</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </my-carousel-item>
         <!-- <my-carousel-item class="carousel-item">
           <div class="ss-active" @click="push('/activity/2019spring/')">
             <div class="wrap">
@@ -3198,7 +3212,32 @@
       }
     }
   }
-
+  .ddos {
+    height: 400px;
+    background:  url("../../assets/img/active/ddos/ddos-home-bg.png") center no-repeat;
+      .wrap{
+        width: 1200px;
+        margin:0 auto;
+        display: flex;
+        justify-content: space-between;
+        .text{
+          p:nth-of-type(1){
+            margin-top: 96px;
+            font-size:28px;
+            color:#5B5D6D;
+            line-height:37px;
+          }
+          p:nth-of-type(2){
+            font-size:24px;
+            color:#1F4A9A;
+            line-height:31px;
+          }
+          img {
+            margin: 15px 0 20px 0;
+          }
+        }
+      }
+  }
   .blackact{
     height: 400px;
     overflow: hidden;

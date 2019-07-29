@@ -3,6 +3,20 @@
     <h1 id="hide-h1">活动中心</h1>
     <div class="banner">
       <my-carousel :interval=5000 class="carousel" @on-change="change">
+        <my-carousel-item class="carousel-item">
+          <div @click="push('/activity/ddosActive')"
+               style="cursor: pointer;">
+            <div class="ddos">
+              <div class="wrap">
+                <div class="text">
+                  <p>07/25–09/25</p>
+                  <img src="../../assets/img/active/ddos/ddos-ac-text.png" />
+                  <p>更有首月8折等超多优惠</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </my-carousel-item>
         <!-- <my-carousel-item class="carousel-item">
           <div class="ss-active" @click="push('/activity/2019spring/')">
             <div class="wrap">
@@ -202,6 +216,18 @@
       return {
         active: [],
         activedata: [
+          {
+            imgPath: require('../../assets/img/active/ddos/ddos-ac.png'),
+            name: '高防云服务器限时秒杀',
+            desc: '更有首月8折等超多优惠',
+            time: '019.7.25-2019.9.25',
+            activeObj: '新老用户皆可参与',
+            url: '/activity/ddosActive',
+            isStart: true,
+            weight: '1',
+            color: 'rgba(252,202,138,1)',
+            colortwo: '#FFEDD2'
+          },
          /* {
             imgPath: require('../../assets/img/activecenter/bg-card-kaixue.png'),
             time: '2019.3.1-2019.4.30',
@@ -358,6 +384,32 @@
             .w_button:hover{
               box-shadow: 0px 2px 2px 1px #881411;
             }
+          }
+          .ddos {
+            height: 400px;
+            background:  url("../../assets/img/active/ddos/ddos-ac-bg.png") center no-repeat;
+              .wrap{
+                width: 1200px;
+                margin:0 auto;
+                display: flex;
+                justify-content: space-between;
+                .text{
+                  p:nth-of-type(1){
+                    margin-top: 96px;
+                    font-size:28px;
+                    color:rgba(139,87,42,1);
+                    line-height:37px;
+                  }
+                  p:nth-of-type(2){
+                    font-size:24px;
+                    color:rgba(255,98,75,1);
+                    line-height:31px;
+                  }
+                  img {
+                    margin: 15px 0 20px 0;
+                  }
+                }
+              }
           }
           .free-black {
             height: 400px;
