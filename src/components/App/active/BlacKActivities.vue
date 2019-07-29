@@ -1,7 +1,7 @@
 <template>
 
   <div id="schoolseason">
-    <div class="active404" v-if="ActivityState=='2'">
+    <div class="active404" v-if="ActivityState=='1'">
       <div id="wrapper">
         <img src="../../../assets/img/active/blackactive/active404.png" class="imgg" />
         <h1>活动已经结束咯，去活动中心看看其它活动吧！</h1>
