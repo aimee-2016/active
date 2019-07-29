@@ -39,7 +39,7 @@
                       @click="modifyEmail">修改</span></li>
                     <li v-if="!userInfo.phone && !authInfo"><span>手机号码</span><span>尚未绑定</span><span
                       @click="modifyTelphone">去绑定</span></li>
-                    <li v-else><span>手机号码</span><span>{{ userInfo.phone?userInfo.phone.substr(0,3) + '****' + userInfo.phone.substr(7): authInfoPersion.phone?authInfoPersion.phone.substr(0,3) + '****' + authInfoPersion.phone.substr(7):''}}</span><span
+                    <li v-else><span>手机号码</span><span>{{ userInfo.phone?userInfo.phone.substr(0,3) + '****' + userInfo.phone.substr(7): (authInfoPersion&&authInfoPersion.phone)?authInfoPersion.phone.substr(0,3) + '****' + authInfoPersion.phone.substr(7):''}}</span><span
                       @click="telModify_btn()">修改</span></li>
                     <!--<li><span>账号密码</span><span>尚未设置</span><span @click="showModal.setNewPassword = true">去设置</span></li>-->
                     <li><span>账号密码</span><span>************</span><span @click="showModal.modifyPassword = true">修改</span></li>
@@ -339,7 +339,7 @@
                 </div>
                 <li>真实姓名<span>{{ authInfoPersion.name}}</span></li>
                 <li>证件类型<span>中华人民共和国居民身份证</span></li>
-                <li>手机号码<span>{{ authInfoPersion.phone?authInfoPersion.phone.substr(0,3) + '****' + authInfoPersion.phone.substr(7):''}}</span></li>
+                <li>手机号码<span>{{ (authInfoPersion&&authInfoPersion.phone)?authInfoPersion.phone.substr(0,3) + '****' + authInfoPersion.phone.substr(7):''}}</span></li>
                 <li>身份证号<span>{{ authInfoPersion.personalnumber?authInfoPersion.personalnumber.substr(0,4) + '****' + authInfoPersion.personalnumber.substring(authInfoPersion.personalnumber.length-4,authInfoPersion.personalnumber.length): ''}}</span></li>
                 <li>认证时间<span>{{authInfoPersion.createtime}}</span></li>
               </ol>
