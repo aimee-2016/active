@@ -34,6 +34,10 @@
         @deleteSystemDisk="deleteSystemDisk"
       ></buy-server-specification>
       <buy-defend v-if="serverType==='NOKIAServer'"></buy-defend>
+      <buy-gpu-specification
+        :gpu-specification="gpuSpecification"
+        :gpu-specificationGroup="gpuSpecificationGroup"
+      ></buy-gpu-specification>
     </div>
     <div v-if="buyStep === 1">
       <buy-network
@@ -67,9 +71,10 @@ import buyBillingType from "../buyComponents/buy-billing-type";
 import buyArea from "../buyComponents/buy-area";
 import buyMirror from "../buyComponents/buy-mirror";
 import buyServerSpecification from "../buyComponents/buy-server-specification";
+import buyGpuSpecification from "../buyComponents/buy-gpu-specification";
 import buyNetwork from "../buyComponents/buy-network";
 import buyLoginInfo from "../buyComponents/buy-login-info";
-import buyFooter from "../buyComponents/buy_footer";
+import buyFooter from "../buyComponents/buy-footer";
 import buyDefend from "../buyComponents/buy-defend";
 export default {
   components: {
@@ -80,6 +85,7 @@ export default {
     buyArea,
     buyMirror,
     buyServerSpecification,
+    buyGpuSpecification,
     buyDefend,
     buyNetwork,
     buyLoginInfo,
@@ -211,6 +217,10 @@ export default {
       },
       // 每个区域对应的服务器规格配置
       serverSpecificationGroup: {},
+      // 当前GPU服务器规格
+      gpuSpecification: {},
+      // 每个区域对应的GPU服务器规格配置
+      gpuSpecificationGroup: {},
       serverNetwork: {
         vpcGroup: [],
         vpcId: "",

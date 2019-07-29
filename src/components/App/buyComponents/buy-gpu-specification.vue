@@ -4,39 +4,13 @@
       <h2>主机规格选择</h2>
       <div class="specification-item">
         <div class="item-label">
-          <span>核心数</span>
-        </div>
-        <div class="item-text">
-          <span
-            v-for="(item,index) in serverSpecificationGroup.kernelList"
-            :key="index"
-            :class="{selected: serverSpecification.CPU === item.value}"
-            @click="changeCPU(item)"
-          >{{ item.name }}</span>
-        </div>
-      </div>
-      <div class="specification-item">
-        <div class="item-label">
-          <span>内存</span>
-        </div>
-        <div class="item-text">
-          <span
-            v-for="(item,index) in serverSpecification.memoryGroup"
-            :key="index"
-            :class="{selected: serverSpecification.memory === item.value}"
-            @click="changeMemory(item)"
-          >{{ item.name }}</span>
-        </div>
-      </div>
-      <div class="specification-item">
-        <div class="item-label">
           <span>系统盘类型</span>
         </div>
         <div class="item-text">
           <span
-            v-for="(item,index) in serverSpecification.rootDiskTypeGroup"
+            v-for="(item,index) in gpuSpecification.rootDiskTypeGroup"
             :key="index"
-            :class="{selected: serverSpecification.rootDiskType === item.value}"
+            :class="{selected: gpuSpecification.rootDiskType === item.value}"
             @click="changeRootDiskType(item)"
           >{{ item.name }}</span>
         </div>
@@ -44,25 +18,6 @@
       <div class="specification-item">
         <div class="item-label">
           <span>系统盘容量</span>
-        </div>
-        <div class="item-slider">
-          <i-slider
-            v-model="serverSpecification.rootDiskSize"
-            unit="GB"
-            :min="40"
-            :max="1000"
-            :step="10"
-            :points="[300,500,800]"
-            style="margin-right:30px;vertical-align: middle;"
-          ></i-slider>
-          <InputNumber
-            :max="1000"
-            :min="40"
-            v-model="serverSpecification.rootDiskSize"
-            size="large"
-            :step="10"
-            :precision="0"
-          ></InputNumber>
         </div>
       </div>
       <div class="specification-item text-hint">
@@ -74,7 +29,7 @@
           </p>
         </div>
       </div>
-      <div v-for="(diskitem,diskindex) in serverSpecification.systemDisk" :key="diskindex">
+      <div v-for="(diskitem,diskindex) in gpuSpecification.systemDisk" :key="diskindex">
         <div class="specification-item">
           <div class="item-label">
             <span>数据盘类型</span>
@@ -118,7 +73,7 @@
         <div class="item-label">
           <span>
             价格
-            <Poptip trigger="hover" placement="top-start" content="包含CPU、内存、系统盘与数据盘在内的价格总计">
+            <Poptip trigger="hover" placement="top-start" content="DDOS防护带宽费用">
               <span class="label-hint">?</span>
             </Poptip>
           </span>
@@ -214,11 +169,6 @@
           line-height: 33px;
         }
       }
-      .item-slider {
-        width: 500px;
-        display: flex;
-        align-items: center;
-      }
     }
     .text-hint {
       margin-top: 10px;
@@ -232,13 +182,13 @@ export default {
     return {};
   },
   props: {
-    serverSpecification: {
+    gpuSpecification: {
       type: Object,
       default: () => {
         return new Object();
       }
     },
-    serverSpecificationGroup: {
+    gpuSpecificationGroup: {
       type: Object,
       default: () => {
         return new Object();
@@ -246,12 +196,6 @@ export default {
     }
   },
   methods: {
-    changeCPU(item) {
-      this.$emit("changeCPU", item);
-    },
-    changeMemory(item) {
-      this.$emit("changeMemory", item);
-    },
     changeRootDiskType(item) {
       this.$emit("changeRootDiskType", item);
     },
