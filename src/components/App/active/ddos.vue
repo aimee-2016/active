@@ -80,9 +80,9 @@
           <div class="product">
             <div v-for="(item,index) in killHostList" :key="index">
               <div class="head">
-                <h3>{{item.headline}}</h3>
-                <span v-if="item.hot" class="hot">爆款</span>
-                <span v-if="item.new" class="new">限新用户</span>
+                <h3>{{killTitle(item.post.servicetype)}}</h3>
+                <span class="discount" v-if="item.post.servicetype=='high_ip'">多线防护</span>
+                <span v-if="item.post.newusers" class="new">限新用户</span>
               </div>
               <div class="body">
                 <div class="params" v-if="item.post.servicetype!='high_ip'">
@@ -109,11 +109,11 @@
                       </li>
                     </ul>
                   </div>
-                  <div v-if="item.post.pronum">
+                  <div v-if="item.post.pronum" class="s"> 
                     <span class="label">防御：</span>
                     {{ item.post.pronum }}G
                   </div>
-                  <div v-if="item.post.gpu">
+                  <div v-if="item.post.gpu" class="s">
                     <span class="label">GPU：</span>
                     P{{ item.post.gpu }}
                   </div>
@@ -122,17 +122,17 @@
                       <span class="label">区域：</span>
                       {{item.zoneName}}
                     </div>
-                    <div>
+                    <div class="ddos-system">
                       <span class="label">系统：</span>
                       <Cascader
-                          :data="systemDDOSHList"
-                          v-model="item.system"
-                          style="width:142px;display:inline-block"
-                        ></Cascader>
+                        :data="systemDDOSHList"
+                        v-model="item.system"
+                        style="width:142px;display:inline-block;background:blue"
+                      ></Cascader>
                     </div>
                   </div>
                   <div v-else>
-                    <div style="margin-bottom:10px;"> 
+                    <div style="margin-bottom:10px;" class="ddos-zone">
                       <span class="label">区域：</span>
                       <Select
                         v-model="item.zone"
@@ -146,7 +146,7 @@
                         >{{ item1.name }}</Option>
                       </Select>
                     </div>
-                    <div>
+                    <div class="ddos-system">
                       <span class="label">系统：</span>
                       <Cascader
                         :data="item.systemList"
@@ -173,28 +173,30 @@
                       </li>
                     </ul>
                   </div>
-                  <div>
+                  <div class="s">
                     <span class="label">DDoS防护：</span>
-                    {{item.post.ddospros}}
+                    {{item.post.ddospros}}Gbps
                   </div>
                   <div>
                     <span class="label">cc防护：</span>
-                    {{item.post.ccpros}}
+                    {{item.post.ccpros}}QPS
                   </div>
-                  <div>
+                  <!-- <div>
                     <span class="label">区域：</span>
                     中国大陆
-                  </div>
+                  </div>-->
                 </div>
                 <div class="cost">
                   <div class="price">
                     ￥
                     <span>{{item.price}}</span>
-                    /{{item.post.days==12?'月':'年'}}
+                    /{{item.post.days==12?'年':'月'}}
+                    <i v-if="item.post.explosives==1">爆款</i>
+                    <i v-if="item.post.highdist==1">高配</i>
                   </div>
                   <div class="origin-price">
                     原价：￥
-                    <span>{{item.originPrice}}</span>
+                    <span>{{item.originPrice}}</span>/{{item.post.days==12?'年':'月'}}
                   </div>
                   <div>
                     <Button
@@ -245,7 +247,7 @@
                     </dl>
                     <dl>
                       <dt>系统</dt>
-                      <dd>
+                      <dd class="ddos-system-b">
                         <Cascader
                           :data="systemDDOSHList"
                           v-model="item.system"
@@ -331,12 +333,12 @@
                     </li>
                   </ul>
                 </div>
-                <div>
-                  <span class="label">系统：</span>
+                <div class="ddos-system-b">
+                  <span class="label">系统选择：</span>
                   <Cascader :data="systemDDOSHList" v-model="item.system" style="width:237px;"></Cascader>
                 </div>
                 <div class="time">
-                  <span class="label">时长：</span>
+                  <span class="label" style="margin-bottom:15px;">购买时长：</span>
                   <ul>
                     <li
                       v-for="(item1,index1) in item.post"
@@ -400,12 +402,12 @@
                   <div class="left">
                     <p>
                       购
-                      <span>6个月</span>高防云服务器
+                      <span>1年</span>高防云服务器
                     </p>
-                    <p>免费再送一个月</p>
+                    <p>免费再送三个月</p>
                   </div>
                   <div class="right">
-                    <span>9</span>.5
+                    <span>8</span>.5
                     <i>折</i>
                   </div>
                 </div>
@@ -1129,16 +1131,16 @@ export default {
             if (item.post.servicetype == 'high_host') {
               item.zoneName = res.data.result.optionalAreaHighPrevention[0].name
               item.zone = res.data.result.optionalAreaHighPrevention[0].value
-              this.getPriceKill (item)
-            } else if(item.post.servicetype == 'host') {
+              this.getPriceKill(item)
+            } else if (item.post.servicetype == 'host') {
               item.zoneList = res.data.result.optionalArea
               item.zone = res.data.result.optionalArea[0].value
-            } else if(item.post.servicetype == 'G5500') {
+            } else if (item.post.servicetype == 'G5500') {
               item.zoneList = res.data.result.optionalAreaGpu
               item.zone = res.data.result.optionalAreaGpu[0].value
-            } else if(item.post.servicetype == 'high_ip') {
+            } else if (item.post.servicetype == 'high_ip') {
               this.getPriceDDOSIP(item)
-            } 
+            }
           })
         }
       })
@@ -1298,7 +1300,7 @@ export default {
               this.changeTime(item, item.post[0])
             })
             this.killHostList.forEach((item, index) => {
-              if(item.post.servicetype == 'high_host') {
+              if (item.post.servicetype == 'high_host') {
                 item.system = ['window', res.data.result.window[0].systemtemplateid]
               }
             })
@@ -1403,6 +1405,26 @@ export default {
     month (val) {
       return val >= 360 ? val / 360 + '年' : val / 30 + '个月'
     },
+    killTitle (val) {
+      let result = ''
+      switch (val) {
+        case 'host':
+          result = '弹性云服务器'
+          break
+        case 'high_host':
+          result = '高防云服务器'
+          break
+        case 'high_ip':
+          result = 'DDOS高防IP'
+          break
+        case 'G5500':
+          result = 'GPU云服务器'
+          break
+        default:
+          result = ''
+      }
+      return result
+    },
     getTime () {
       axios.get('network/getTime.do').then(res => {
         if (res.status == 200 && res.data.status == 1) {
@@ -1415,12 +1437,19 @@ export default {
           for (let i = 0; i < hourArray.length - 1; i++) {
             if (h >= hourArray[i] && h < hourArray[i + 1]) {
               hourPoint = hourArray[i + 1]
-            } else if (h == 22 || h == 23 || h == 0 || h == 1) {
+            } else if (h == 22 || h == 23 ) {
+              hourPoint = 24
+            } else if (h == 0 || h == 1) {
               hourPoint = 2
             }
           }
           let nowb = new Date(res.data.result)
-          let endTime = nowb.setHours(hourPoint, 0, 0, 0)
+          let endTime = ''
+          if(hourPoint==24) {
+            endTime = nowb.setHours(hourPoint, 0, 0, 0) + 2*60*60*1000
+          } else {
+            endTime = nowb.setHours(hourPoint, 0, 0, 0)
+          }
           let leftTime = endTime - now.getTime()
           if (leftTime > 0) {
             this.formatTime(leftTime)
@@ -1522,7 +1551,8 @@ export default {
 .ddos-active {
   font-family: MicrosoftYaHei;
   text-align: center;
-  background: url(../../../assets/img/active/ddos/background-2-left.png) 0 700px no-repeat;
+  background: url(../../../assets/img/active/ddos/background-2-left.png) 0 700px
+    no-repeat;
   background-color: rgba(42, 41, 54, 1);
 }
 .mb10 {
@@ -1727,7 +1757,6 @@ export default {
       }
       span {
         display: inline-block;
-        padding: 0 6px;
         line-height: 20px;
         font-size: 12px;
         &:nth-of-type(1) {
@@ -1737,15 +1766,17 @@ export default {
         }
         &:nth-of-type(2) {
           position: absolute;
-          left: 36px;
+          left: 56px;
           top: 0;
         }
       }
-      .hot {
+      .discount {
+        width: 56px;
         background: #ff624b;
         color: #fff;
       }
       .new {
+        padding: 0 6px;
         background: #ffd08c;
         color: #333;
       }
@@ -1780,6 +1811,17 @@ export default {
           }
         }
       }
+      .s {
+        font-size: 16px;
+        font-family:Arial-BoldItalicMT;
+        font-weight: bold;
+        font-style: italic;
+        color: #FFD08C;
+        span {
+          font-size: 16px;
+          font-family:Arial-BoldItalicMT;
+        }
+      }
       .label {
         width: 70px;
         font-size: 14px;
@@ -1790,6 +1832,17 @@ export default {
         span {
           font-size: 24px;
           font-weight: bold;
+        }
+        i{
+          display: inline-block;
+          width:36px;
+          height:20px;
+          background: #FF624B;
+          border-radius:10px 10px 10px 0px;
+          color: #fff;
+          font-style: normal;
+          vertical-align: super;
+          text-align: center;
         }
       }
       .origin-price {
@@ -1962,7 +2015,7 @@ export default {
       .label {
         display: block;
         margin-bottom: 10px;
-        width: 70px;
+        width: 80px;
         font-size: 16px;
       }
       .configure {
@@ -2102,6 +2155,7 @@ export default {
       width: 100%;
       height: 52px;
       font-size: 20px;
+      background:rgba(250,221,152,1);
     }
   }
 }
