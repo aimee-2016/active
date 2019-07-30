@@ -232,6 +232,7 @@ const DDoSIP = () => import('@/components/Back/DDoSIP')
 const DDoSAddDomain = () => import('@/components/Back/DDoSAddDomain')
 const DDoSIpRuleAdd = () => import('@/components/Back/DDoSIpRuleAdd')
 const DDoSIPdetails = () => import('@/components/Back/DDoSIPdetails')
+const DDoSUpgrade   = () => import('@/components/Back/DDoSUpgrade')
 
 // DDOS 高防主机
 const BackDdos = () => import('@/components/Back/BackDdos')
@@ -500,6 +501,7 @@ var router = new Router({
         {path: 'DDoSAddDomain', name: 'DDoSAddDomain', component: DDoSAddDomain},
         {path: 'ddosipruleadd', name: 'ddosipruleadd', component: DDoSIpRuleAdd},
         {path: 'ddosipdetails', name: 'ddosipdetails', component: DDoSIPdetails},
+        {path: 'ddosupgrade', name: 'DDoSUpgrade', component: DDoSUpgrade},
         // DDOS 高防主机
         {path: 'BackDdos', name: 'BackDdos', component: BackDdos},
         {path: 'protectUpgrade', name: 'ProtectUpgrade', component: protectUpgrade}

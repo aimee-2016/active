@@ -12,7 +12,6 @@ import '@/assets/css/iviewOverRide.css'
 import '@/assets/css/reset.css'
 import '@/assets/css/universal.less'
 import MetaInfo from 'vue-meta-info'
-// import inMap from 'inmap'
 
 
 
@@ -45,8 +44,8 @@ Vue.config.productionTip = false
 axios.defaults.withCredentials = true
 
 // axios.defaults.baseURL = 'https://zschj.xrcloud.net/'
-//axios.defaults.baseURL = 'https://kaifa.xrcloud.net/'
- axios.defaults.baseURL = 'https://www.xrcloud.net/'
+axios.defaults.baseURL = 'https://kaifa.xrcloud.net/'
+//  axios.defaults.baseURL = 'https://www.xrcloud.net/'
 
 
 
@@ -115,7 +114,6 @@ function appendMD5(params, type) {
 
 // axios 请求拦截
 Vue.prototype.$http.interceptors.request.use(requestIntercept)
-// Vue.prototype.$inMap = inMap
 // 使用iview库
 Vue.use(iview)
 // 使用轮播组件
