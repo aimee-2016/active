@@ -3,6 +3,25 @@
     <div class="wrap">
       <h2>主机规格选择</h2>
       <div class="specification-item">
+        <div class="item-search">
+          <span>vCPU</span>
+          <Select placeholder="请选择" v-model="vCPU" style="width:200px;margin-right:40px">
+            <Option v-for="item in vCPUGroup" :value="item.value" :key="item.value">{{ item.label }}</Option>
+          </Select>
+          <span>内存容量</span>
+          <Select placeholder="请选择" v-model="mem" style="width:200px;margin-right:40px">
+            <Option v-for="item in vCPUGroup" :value="item.value" :key="item.value">{{ item.label }}</Option>
+          </Select>
+          <span>GPU/FPGA</span>
+          <Select placeholder="请选择" v-model="gpu" style="width:200px;margin-right:40px">
+            <Option v-for="item in vCPUGroup" :value="item.value" :key="item.value">{{ item.label }}</Option>
+          </Select>
+        </div>
+      </div>
+      <div class="specification-item">
+        <Table :columns="serverOfferColumns" :data="serverOfferList" style="width: 700px"></Table>
+      </div>
+      <div class="specification-item">
         <div class="item-label">
           <span>系统盘类型</span>
         </div>
@@ -11,7 +30,6 @@
             v-for="(item,index) in gpuSpecification.rootDiskTypeGroup"
             :key="index"
             :class="{selected: gpuSpecification.rootDiskType === item.value}"
-            @click="changeRootDiskType(item)"
           >{{ item.name }}</span>
         </div>
       </div>
@@ -19,12 +37,19 @@
         <div class="item-label">
           <span>系统盘容量</span>
         </div>
+        <div class="item-text">
+          <span
+            v-for="(item,index) in gpuSpecification.rootDiskSizeGroup"
+            :key="index"
+            :class="{selected: gpuSpecification.rootDiskSize === item.value}"
+          >{{ item.name }}</span>
+        </div>
       </div>
       <div class="specification-item text-hint">
         <div class="item-label"></div>
         <div class="item-text">
           <p>
-            <span @click="addSystemDisk">添加数据盘</span>你还可以添加
+            <span @click="addGpuSystemDisk">添加数据盘</span>你还可以添加
             <span>{{diskCountLimit}}块</span>数据盘
           </p>
         </div>
@@ -36,12 +61,12 @@
           </div>
           <div class="item-text">
             <span
-              v-for="(item,index) in serverSpecification.systemDiskTypeGroup"
+              v-for="(item,index) in gpuSpecification.systemDiskTypeGroup"
               :key="index"
               :class="{selected: diskitem.type === item.value}"
-              @click="changeSystemDiskType(item,diskindex)"
+              @click="changeGpuSystemDiskType(item,diskindex)"
             >{{ item.name }}</span>
-            <span class="cancel" @click="deleteSystemDisk(diskindex)">取消</span>
+            <span class="cancel" @click="deleteGpuSystemDisk(diskindex)">取消</span>
           </div>
         </div>
         <div class="specification-item">
@@ -73,7 +98,7 @@
         <div class="item-label">
           <span>
             价格
-            <Poptip trigger="hover" placement="top-start" content="DDOS防护带宽费用">
+            <Poptip trigger="hover" placement="top-start" content="包含CPU、内存、系统盘与数据盘在内的价格总计">
               <span class="label-hint">?</span>
             </Poptip>
           </span>
@@ -169,6 +194,21 @@
           line-height: 33px;
         }
       }
+      .item-slider {
+        width: 500px;
+        display: flex;
+        align-items: center;
+      }
+      .item-search {
+        display: flex;
+        > span {
+          font-size: 14px;
+          font-family: MicrosoftYaHei;
+          color: rgba(51, 51, 51, 1);
+          line-height: 33px;
+          margin-right: 20px;
+        }
+      }
     }
     .text-hint {
       margin-top: 10px;
@@ -179,7 +219,42 @@
 <script type="text/ecmascript-6">
 export default {
   data() {
-    return {};
+    return {
+      vCPU: "",
+      vCPUGroup: [],
+      mem: "",
+      gpu: "",
+      serverOfferList: [],
+      serverOfferColumns: [
+        {
+          type: "radio",
+          width: 60,
+          align: "center"
+        },
+        {
+          title: "型号",
+          key: "gpunumber"
+        },
+        {
+          title: "vCPU",
+          render: (h, params) => {
+            return h("span", {}, params.row.cpunum + "核");
+          }
+        },
+        {
+          title: "内存",
+          render: (h, params) => {
+            return h("span", {}, params.row.memory + "G");
+          }
+        },
+        {
+          title: "GPU/FPGA",
+          render: (h, params) => {
+            return h("span", `${params.row.gpusize}*${params.row.gputype}`);
+          }
+        }
+      ]
+    };
   },
   props: {
     gpuSpecification: {
@@ -196,22 +271,19 @@ export default {
     }
   },
   methods: {
-    changeRootDiskType(item) {
-      this.$emit("changeRootDiskType", item);
+    addGpuSystemDisk() {
+      this.$emit("addGpuSystemDisk");
     },
-    addSystemDisk() {
-      this.$emit("addSystemDisk");
+    changeGpuSystemDiskType(item, index) {
+      this.$emit("changeGpuSystemDiskType", item, index);
     },
-    changeSystemDiskType(item, index) {
-      this.$emit("changeSystemDiskType", item, index);
-    },
-    deleteSystemDisk(diskindex) {
-      this.$emit("deleteSystemDisk");
+    deleteGpuSystemDisk(diskindex) {
+      this.$emit("deleteGpuSystemDisk", diskindex);
     }
   },
   computed: {
     diskCountLimit() {
-      return 5 - this.serverSpecification.systemDisk.length;
+      return 5 - this.gpuSpecification.systemDisk.length;
     }
   },
   watch: {}

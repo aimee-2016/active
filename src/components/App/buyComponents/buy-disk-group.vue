@@ -1,93 +1,43 @@
 <template>
-  <div class="buy-server-specification">
+  <div class="buy-disk">
     <div class="wrap">
       <div class="content" :class="{narrow: isNotServer}">
-        <h2>主机规格选择</h2>
+        <h2>云硬盘</h2>
         <div class="specification-item">
           <div class="item-label">
-            <span>核心数</span>
+            <span>磁盘名称</span>
           </div>
           <div class="item-text">
-            <span
-              v-for="(item,index) in serverSpecificationGroup.kernelList"
-              :key="index"
-              :class="{selected: serverSpecification.CPU === item.value}"
-              @click="changeCPU(item)"
-            >{{ item.name }}</span>
-          </div>
-        </div>
-        <div class="specification-item">
-          <div class="item-label">
-            <span>内存</span>
-          </div>
-          <div class="item-text">
-            <span
-              v-for="(item,index) in serverSpecification.memoryGroup"
-              :key="index"
-              :class="{selected: serverSpecification.memory === item.value}"
-              @click="changeMemory(item)"
-            >{{ item.name }}</span>
-          </div>
-        </div>
-        <div class="specification-item">
-          <div class="item-label">
-            <span>系统盘类型</span>
-          </div>
-          <div class="item-text">
-            <span
-              v-for="(item,index) in serverSpecification.rootDiskTypeGroup"
-              :key="index"
-              :class="{selected: serverSpecification.rootDiskType === item.value}"
-              @click="changeRootDiskType(item)"
-            >{{ item.name }}</span>
-          </div>
-        </div>
-        <div class="specification-item">
-          <div class="item-label">
-            <span>系统盘容量</span>
-          </div>
-          <div class="item-slider">
-            <i-slider
-              v-model="serverSpecification.rootDiskSize"
-              unit="GB"
-              :min="40"
-              :max="1000"
-              :step="10"
-              :points="[300,500,800]"
-              style="margin-right:30px;vertical-align: middle;"
-            ></i-slider>
-            <InputNumber
-              :max="1000"
-              :min="40"
-              v-model="serverSpecification.rootDiskSize"
-              size="large"
-              :step="10"
-              :precision="0"
-            ></InputNumber>
+            <Input
+              v-model="diskSpecification.systemDiskName"
+              placeholder="请输入磁盘名"
+              style="width: 300px"
+              :maxlength="30"
+            ></Input>
           </div>
         </div>
         <div class="specification-item text-hint">
           <div class="item-label"></div>
           <div class="item-text">
             <p>
-              <span @click="addServerSystemDisk">添加数据盘</span>你还可以添加
+              <span @click="addSystemDisk">添加数据盘</span>你还可以添加
               <span>{{diskCountLimit}}块</span>数据盘
             </p>
           </div>
         </div>
-        <div v-for="(diskitem,diskindex) in serverSpecification.systemDisk" :key="diskindex">
+        <div v-for="(diskitem,diskindex) in diskSpecification.systemDisk" :key="diskindex">
           <div class="specification-item">
             <div class="item-label">
               <span>数据盘类型</span>
             </div>
             <div class="item-text">
               <span
-                v-for="(item,index) in serverSpecification.systemDiskTypeGroup"
+                v-for="(item,index) in diskSpecification.systemDiskTypeGroup"
                 :key="index"
-                :class="{selected: diskitem.type === item.value}"
-                @click="changeServerSystemDiskType(item,diskindex)"
+                :class="{selected: diskitem.type === item.value,disabled: area.gpuserver == 1 && item.value !== 'ssd' }"
+                @click="changeSystemDiskType(item,diskindex)"
               >{{ item.name }}</span>
-              <span class="cancel" @click="deleteServerSystemDisk(diskindex)">取消</span>
+              <span class="cancel" @click="deleteSystemDisk(diskindex)" v-if="diskindex !== 0">取消</span>
             </div>
           </div>
           <div class="specification-item">
@@ -98,18 +48,18 @@
               <i-slider
                 v-model="diskitem.size"
                 unit="GB"
-                :min="20"
+                :min="diskitem.minDiskSize"
                 :max="1000"
-                :step="10"
+                :step="20"
                 :points="[300,500,800]"
                 style="margin-right:30px;vertical-align: middle;"
               ></i-slider>
               <InputNumber
                 :max="1000"
-                :min="20"
+                :min="diskitem.minDiskSize"
                 v-model="diskitem.size"
                 size="large"
-                :step="10"
+                :step="20"
                 :precision="0"
               ></InputNumber>
             </div>
@@ -119,7 +69,7 @@
           <div class="item-label">
             <span>
               价格
-              <Poptip trigger="hover" placement="top-start" content="包含CPU、内存、系统盘与数据盘在内的价格总计">
+              <Poptip trigger="hover" placement="top-start" content="磁盘总价">
                 <span class="label-hint">?</span>
               </Poptip>
             </span>
@@ -128,12 +78,23 @@
             <p class="price">￥750/月</p>
           </div>
         </div>
+        <div class="specification-item short">
+          <div class="item-label">
+            <span>自动续费</span>
+          </div>
+          <div class="item-text">
+            <div class="renewal">
+              <i-switch v-model="diskSpecification.autoRenewal" @on-change="changeAutoRenewal"></i-switch>
+              <span>开启后，资源到期会自动续费，请确保账户内有足够的余额。</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <style lang="less" scoped>
-.buy-server-specification {
+.buy-disk {
   margin-top: 10px;
   .wrap {
     width: 1200px;
@@ -192,6 +153,12 @@
               box-shadow: 0px 2px 10px -3px rgba(66, 151, 242, 0.49);
               border: 1px solid rgba(66, 151, 242, 1);
             }
+            &.disabled {
+              background: #666666;
+              border: 1px solid #666666;
+              cursor: not-allowed;
+              color: #fff;
+            }
           }
           .cancel {
             text-align: left;
@@ -219,6 +186,15 @@
             color: rgba(255, 98, 75, 1);
             line-height: 33px;
           }
+          .renewal {
+            > span {
+              margin-right: 10px;
+              font-size: 12px;
+              font-family: MicrosoftYaHei;
+              color: rgba(153, 153, 153, 1);
+              line-height: 33px;
+            }
+          }
         }
         .item-slider {
           width: 500px;
@@ -239,17 +215,17 @@ export default {
     return {};
   },
   props: {
-    isNotServer: {
-      type: Boolean,
-      default: false
-    },
-    serverSpecification: {
+    area: {
       type: Object,
       default: () => {
         return new Object();
       }
     },
-    serverSpecificationGroup: {
+    isNotServer: {
+      type: String,
+      default: ""
+    },
+    diskSpecification: {
       type: Object,
       default: () => {
         return new Object();
@@ -257,28 +233,22 @@ export default {
     }
   },
   methods: {
-    changeCPU(item) {
-      this.$emit("changeCPU", item);
+    addSystemDisk() {
+      this.$emit("addSystemDisk");
     },
-    changeMemory(item) {
-      this.$emit("changeMemory", item);
+    changeSystemDiskType(item, index) {
+      this.$emit("changeSystemDiskType", item, index);
     },
-    changeRootDiskType(item) {
-      this.$emit("changeRootDiskType", item);
+    deleteSystemDisk(diskindex) {
+      this.$emit("deleteSystemDisk", diskindex);
     },
-    addServerSystemDisk() {
-      this.$emit("addServerSystemDisk");
-    },
-    changeServerSystemDiskType(item, index) {
-      this.$emit("changeServerSystemDiskType", item, index);
-    },
-    deleteServerSystemDisk(diskindex) {
-      this.$emit("deleteServerSystemDisk", diskindex);
+    changeAutoRenewal(val) {
+      this.$emit("changeAutoRenewal", val);
     }
   },
   computed: {
     diskCountLimit() {
-      return 5 - this.serverSpecification.systemDisk.length;
+      return 5 - this.diskSpecification.systemDisk.length;
     }
   },
   watch: {}

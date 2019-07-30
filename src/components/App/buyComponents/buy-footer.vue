@@ -1,5 +1,5 @@
 <template>
-  <div class="buy-footer">
+  <div class="buy-footer" :class="{fixed:isFixed}">
     <div class="wrap">
       <div class="footer-content">
         <div class="buy-info">
@@ -29,8 +29,12 @@
           </div>
         </div>
         <div class="buy-guide">
-          <a>特惠主机</a>
-          <button @click="nextStep">下一步：配置网络</button>
+          <a v-show="buyStep===0">特惠主机</a>
+          <button v-show="buyStep===0" @click="nextStep(1)">下一步：配置网络</button>
+          <button class="left-button" v-show="buyStep===1" @click="nextStep(0)">上一步：主机配置</button>
+          <button v-show="buyStep===1" @click="nextStep(2)">下一步：登录信息</button>
+          <button class="left-button" v-show="buyStep===2" @click="nextStep(1)">上一步：网络与带宽</button>
+          <button v-show="buyStep===2" @click="nextStep(3)">下一步：提交订单</button>
         </div>
       </div>
     </div>
@@ -38,11 +42,15 @@
 </template>
 <style lang="less" scoped>
 .buy-footer {
-  margin-top: 20px;
   width: 100%;
   background: rgba(248, 248, 248, 1);
   box-shadow: 0px -3px 12px -9px rgba(166, 166, 166, 0.71);
   border: 1px solid rgba(225, 225, 225, 1);
+  &.fixed {
+    position: fixed;
+    bottom: 0;
+    z-index: 111;
+  }
   .wrap {
     width: 1200px;
     margin: 0 auto;
@@ -146,6 +154,12 @@
           font-family: MicrosoftYaHei;
           color: rgba(255, 255, 255, 1);
         }
+        .left-button {
+          margin-right: 10px;
+          color: rgba(102, 102, 102, 1);
+          background: rgba(247, 249, 250, 1);
+          border: 1px solid rgba(198, 207, 216, 1);
+        }
       }
     }
   }
@@ -164,11 +178,15 @@ export default {
     buyStep: {
       type: Number,
       default: 0
+    },
+    isFixed: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
-    nextStep() {
-      this.$emit("nextStep");
+    nextStep(val) {
+      this.$emit("nextStep", val);
     }
   }
 };

@@ -1,6 +1,6 @@
 <template>
   <div class="server-page">
-    <buy-header :title="headerTitle" @toOldVersion="toOldVersion('host')"></buy-header>
+    <buy-header :title-name="headerTitle" @toOldVersion="toOldVersion('host')"></buy-header>
     <buy-step :buy-step-group="buyStepGroup" :buy-step="buyStep"></buy-step>
     <div v-if="buyStep===0">
       <buy-server-type
@@ -29,14 +29,18 @@
         @changeCPU="changeCPU"
         @changeMemory="changeMemory"
         @changeRootDiskType="changeRootDiskType"
-        @addSystemDisk="addSystemDisk"
-        @changeSystemDiskType="changeSystemDiskType"
-        @deleteSystemDisk="deleteSystemDisk"
+        @addServerSystemDisk="addServerSystemDisk"
+        @changeServerSystemDiskType="changeServerSystemDiskType"
+        @deleteServerSystemDisk="deleteServerSystemDisk"
       ></buy-server-specification>
       <buy-defend v-if="serverType==='NOKIAServer'"></buy-defend>
       <buy-gpu-specification
+        v-if="serverType==='GPUServer'"
         :gpu-specification="gpuSpecification"
         :gpu-specificationGroup="gpuSpecificationGroup"
+        @addGpuSystemDisk="addGpuSystemDisk"
+        @changeGpuSystemDiskType="changeGpuSystemDiskType"
+        @deleteGpuSystemDisk="deleteGpuSystemDisk"
       ></buy-gpu-specification>
     </div>
     <div v-if="buyStep === 1">
@@ -53,12 +57,17 @@
         @changeAutoRenewal="changeAutoRenewal"
       ></buy-login-info>
     </div>
-    <buy-footer :buyStep="buyStep" @nextStep="nextStep"></buy-footer>
+    <div id="footer_page">
+      <buy-footer :buyStep="buyStep" :is-fixed="isFixed" @nextStep="nextStep"></buy-footer>
+    </div>
   </div>
 </template>
 <style lang="less" scoped>
 .server-page {
   background: rgba(248, 248, 248, 1);
+  #footer_page {
+    margin-top: 20px;
+  }
 }
 </style>
 <script type="text/ecmascript-6">
@@ -127,6 +136,8 @@ export default {
   },
   data() {
     return {
+      // 标志购买栏是否固定于底部
+      isFixed: false,
       headerTitle: "购买云服务器",
       buyStep: 0,
       buyStepGroup: ["主机配置", "网络与带宽", "登陆信息", "订单确认"],
@@ -218,7 +229,42 @@ export default {
       // 每个区域对应的服务器规格配置
       serverSpecificationGroup: {},
       // 当前GPU服务器规格
-      gpuSpecification: {},
+      gpuSpecification: {
+        rootDiskTypeGroup: [
+          {
+            name: "SSD",
+            value: "ssd"
+          }
+        ],
+        rootDiskType: "ssd",
+        rootDiskSizeGroup: [
+          {
+            name: "128G",
+            value: 128
+          }
+        ],
+        rootDiskSize: 128,
+        systemDiskTypeGroup: [
+          {
+            name: "SSD",
+            value: "ssd"
+          },
+          {
+            name: "SAS",
+            value: "sas"
+          },
+          {
+            name: "SATA",
+            value: "sata"
+          }
+        ],
+        systemDisk: [
+          {
+            type: "ssd",
+            size: 20
+          }
+        ]
+      },
       // 每个区域对应的GPU服务器规格配置
       gpuSpecificationGroup: {},
       serverNetwork: {
@@ -277,7 +323,27 @@ export default {
   created() {
     this.setAreaData();
   },
+  mounted() {
+    window.addEventListener("scroll", this.handleScroll); // 监听滚动事件
+  },
   methods: {
+    handleScroll() {
+      //获取div距离顶部的偏移量
+      var top = document.getElementById("footer_page").offsetTop;
+      //获取屏幕高度
+      var windowTop =
+        window.innerHeight || document.documentElement.clientHeight;
+      //屏幕卷去的高度
+      var scrollTops =
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop;
+      if (windowTop + scrollTops > top) {
+        this.isFixed = false;
+      } else {
+        this.isFixed = true;
+      }
+    },
     setAreaData() {
       this.areaGroup = this.$store.state.zoneList.filter(zone => {
         return zone.gpuserver == 0;
@@ -347,7 +413,7 @@ export default {
     changeRootDiskType(item) {
       this.serverSpecification.rootDiskType = item.value;
     },
-    addSystemDisk() {
+    addServerSystemDisk() {
       let len = this.serverSpecification.systemDisk.length;
       if (len === 5) {
         return;
@@ -358,11 +424,29 @@ export default {
       };
       this.serverSpecification.systemDisk.push(diskItem);
     },
-    changeSystemDiskType(item, index) {
+    changeServerSystemDiskType(item, index) {
       this.serverSpecification.systemDisk[index].type = item.value;
     },
-    deleteSystemDisk(index) {
+    deleteServerSystemDisk(index) {
       this.serverSpecification.systemDisk.splice(index, 1);
+    },
+    addGpuSystemDisk() {
+      let len = this.gpuSpecification.systemDisk.length;
+      if (len === 5) {
+        return;
+      }
+      let diskItem = {
+        type: "ssd",
+        size: 20
+      };
+      this.gpuSpecification.systemDisk.push(diskItem);
+    },
+    changeGpuSystemDiskType(item, index) {
+      this.gpuSpecification.systemDisk[index].type = item.value;
+    },
+    deleteGpuSystemDisk(index) {
+      console.log(index);
+      this.gpuSpecification.systemDisk.splice(index, 1);
     },
     changepublicIPType(item) {
       this.serverNetwork.publicIPType = item.value;
@@ -378,9 +462,17 @@ export default {
     changeAutoRenewal(val) {
       this.loginInfo.autoRenewal = val;
     },
-    nextStep() {
-      this.buyStep += 1;
+    nextStep(val) {
+      this.buyStep = val;
     }
+  },
+  watch: {
+    buyStep() {
+      this.isFixed = false; // 步骤改变重置浮动
+    }
+  },
+  destroyed() {
+    window.removeEventListener("scroll", this.handleScroll);
   }
 };
 </script>

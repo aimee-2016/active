@@ -125,7 +125,7 @@
       }
       .mirror-items {
         margin-top: 10px;
-        width: 620px;
+        width: 700px;
         max-height: 210px;
         overflow-y: auto;
         border: 1px solid rgba(229, 233, 237, 1);
