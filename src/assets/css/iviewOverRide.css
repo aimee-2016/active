@@ -690,3 +690,12 @@ box-shadow:0px 2px 3px 0px rgba(115,115,115,0.4);
 .ss-anth-modal .ivu-form-item-error-tip {
   margin-left: 80px;
 }
+/* ddos活动 */
+.ddos-system .ivu-input,.ddos-zone .ivu-select-selection{
+  border: 1px solid #FFD08C;
+  background-color: #4d4b61;
+  color: #fff;
+}
+.ddos-system-b .ivu-input {
+  border: 1px solid #FFD08C;
+}
