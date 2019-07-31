@@ -47,7 +47,8 @@
                     <div class='ds-row'>
                         <div class="ds-ct">
                             <p>购买时长<span class="ds-blf" @click="showModal.refund = true">申请退款</span></p>
-                            <p>{{ddosipDetails.buyMounthNumber+'个月'}}</p>
+                            <p v-if="ddosipDetails['类型']=='包月'">{{ddosipDetails.buyMounthNumber+'个月'}}</p>
+                            <p v-else>{{ddosipDetails.buyMounthNumber/12+'年'}}</p>
                         </div>
                         <div class="ds-ct">
                             <p>购买时间</p>
@@ -133,12 +134,12 @@
                  <span style="margin-left:4px;">高防IP退款渠道为退款到余额，您可以到余额中申请提现。</span>
              </div>
             <Table  :columns="refundList" :data="refundData" style="margin:10px 0 20px 0;"></Table>
-            <p style="font-size:14px;">订单总额：<span>￥1700.00</span></p>
-            <p class="dp-tui">退款金额：<span>¥1500.00</span></p>
+            <p style="font-size:14px;">订单总额：<span>￥{{ddosipDetails.cost}}</span></p>
+            <p class="dp-tui">退款金额：<span>¥{{refundPrice}}</span></p>
              <div slot="footer" class="modal-footer-border">
                  <span class="b-lf">查看退款说明</span>
                 <Button type="ghost" @click="showModal.refund = false">取消</Button>
-                <Button type="primary" @click="createMealRenew">确定</Button>
+                <Button type="primary" @click="packageRefund" :loading='loading'>确定</Button>
             </div>
          </Modal>   
     </div>
@@ -200,7 +201,9 @@ export default {
                 },
             ],
             renewPrice:{},
+            refundPrice:0,
             refundData:[],
+            loading:false,
             refundList:[
                 {
                     title:'产品',
@@ -209,12 +212,15 @@ export default {
                     }
                 },
                 {
-                    key:'',
+                    key:'类型',
                     title:'付费类型'
                 },
                 {
                     key:'buyMounthNumber',
                     title:'付费时长',
+                    render:(h,params)=>{
+                        return h('p',{},params.row['类型']=='包月'?params.row.buyMounthNumber+'月':params.row.buyMounthNumber/12+'年')
+                    }
                 }
             ]
         }
@@ -234,6 +240,7 @@ export default {
                     this.ddosipDetails = res.data.result;
                     this.refundData.push(res.data.result);
                      this.queryMealRenew(0);
+                     this.getRefundData();
                 }else{
                     this.$Message.info(res.data.message);
                 }
@@ -284,8 +291,40 @@ export default {
         },
 
         getRefundData(){
-            let data = {};
+           this.$http.get('ddosImitationIp/packageRefundPrice.do',{
+               params:{
+                   packageId:sessionStorage.getItem('ddopId')
+               }
+           }).then(res => {
+               if(res.status == 200 && res.data.status == 1){
+                   this.refundPrice = res.data.price;
+               }else{   
+                   this.$Message.info(res.data.message);
+               }
+           })
             
+        },
+
+        packageRefund(){
+            this.loading = true;
+            this.$http.get('ddosImitationIp/packageRefund.do',{
+                params:{
+                    packageId:sessionStorage.getItem('ddopId')
+                }
+            }).then(res => {
+                if(res.status == 200 && res.data.status == 1){
+                    this.$Message.success('已申请退款成功，请到费用中心查看余额。');
+                     this.$router.push('ddosipback');
+                     this.loading = false;
+                }else{
+                    this.$Message.warning(res.data.message);
+                    this.loading = false;
+                    this.$router.push('ddosipback');
+                }
+            }).catch(err => {
+                if(err)
+                this.loading = false;
+            })
         }
     },
     computed:{}

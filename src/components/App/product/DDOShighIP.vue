@@ -1,6 +1,6 @@
 <template>
   <div class="product">
-    <h1 id="hide-h1">DDOS防护</h1>
+    <h1 id="hide-h1">DDoS高防IP</h1>
     <!-- logo -->
     <div class="logo">
       <div class="logo-wrapper">
@@ -128,7 +128,7 @@
       return {
         logo: {
           img: require('../../../assets/img/product/ddos-logo.png'),
-          title: 'DDOS防护',
+          title: 'DDOS高防IP',
           desc: 'DDoS云清洗是新睿云针对易遭受大流量DDoS攻击的用户推出的付费服务，依托于庞大的节点、带宽资源，高达10T的云防护容量，全方位防护各类DDoS和CC攻击，保证您的业务稳定在线。',
           linkRouter: $store.state.userInfo ? '/ddosipback' : '/login'
         },

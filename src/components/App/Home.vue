@@ -865,6 +865,16 @@
                 useLink: $store.state.userInfo ? '/buy/' : '/buy/',
                 ME: false
               },
+               {
+                title: '高防云服务器',
+                desc: '高可用、可视化、低成本',
+                img: '#icon-DDOSgaofangIP1',
+                detailText: '查看详情',
+                useText: '立即购买',
+                detailLink: '/ddos/',
+                useLink: $store.state.userInfo ? '/buy/ddos' : '/login',
+                ME: true
+              },
               {
                 title: '裸金属服务器',
                 desc: '专属物理服务器',
@@ -1017,13 +1027,13 @@
               },
               {
                 title: 'DDOS高防IP',
-                desc: '硬件防护、40G超大流量',
+                desc: '最高可达10T的云防护容量',
                 img: '#icon-DDOSgaofangIP1',
                 detailText: '查看详情',
-                useText: '敬请期待',
-                detailLink: '/ddos/',
-                useLink: '',
-                ME: false
+                useText: '立即购买',
+                detailLink: '/ddosip/',
+                useLink: $store.state.userInfo ? '/buy/ddosip' : '/login',
+                ME: true
               }
             ],
             desc: '虚拟防火墙与DDOS防护时刻保证您的数据与服务安全，持久稳定，操作简单。',

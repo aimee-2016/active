@@ -304,7 +304,7 @@
                                 </div>
                                <div class="dp-mbr">
                                     <p style="font-size:14px;color:#333333;">Top 100IP分布</p>
-                                    <div id='topMap' class='dp-inmap' style=" overflow: hidden; position: relative; z-index: 0; background-color: rgb(243, 241, 236); color: rgb(0, 0, 0); text-align: left;"></div>
+                                    <div id='topMap' ref='topMap'  class='dp-inmap' style=" overflow: hidden; position: relative; z-index: 0; background-color: rgb(243, 241, 236); color: rgb(0, 0, 0); text-align: left;"></div>
                                 </div>
                            </div>
                        </div>
@@ -844,6 +844,7 @@
 
     </div>
 </template>
+
 <script>
 const echarts =  require('echarts/lib/echarts');
 import expandRow from './DDosExpandRow.vue';
@@ -851,7 +852,8 @@ import hightIp from '@/echarts/hightIp';
 import hightIpBs from '@/echarts/hightIpBs';
 import hightIpSl from '@/echarts/hightIpSl';
 import hightIpBin from '@/echarts/hightIpBin';
-import inMap from 'inmap'
+import inMap from "inmap"
+import point from '@/echarts/point.json';
 var debounce = require('throttle-debounce/debounce')
 
 const dIp  = JSON.stringify(hightIp);
@@ -1827,7 +1829,29 @@ export default {
       this.getLog(1);
       this.getId();
       this.getAllforwardrule(1);
-      this.inmapVoid();
+  },
+  mounted(){
+    //   this.inmapVoid();
+          var inmap = new inMap.Map({
+                id: this.$refs.topMap,
+                skin: "Blueness",
+                center: [105.403119, 38.028658],
+                zoom: {
+                    value: 5,
+                    show: true,
+                    max: 18,
+                    min: 5
+                }
+            });
+            var overlay = new inMap.HeatOverlay({
+                style: {
+                    radius: 10, // 半径
+                    minScope: 0, // 最小区间,小于此区间的不显示
+                    maxScope: 1 // 最大区间,大于此区间的不显示
+                },
+                data: point,
+            });
+            inmap.add(overlay);
   },
   methods:{
 
@@ -2235,13 +2259,6 @@ export default {
     // ……CC统计图结束……
 
     inmapVoid(){
-        var data =[
-            {   geometry: {type: 'Point', coordinates: [123, 23]},
-                style:{}, 
-                name: "",   
-                count: 30  
-            }
-            ]
         var inmap = new inMap.Map({
         id: "topMap",
         skin: "Blueness",
@@ -2253,18 +2270,21 @@ export default {
             min: 5
         }
         });
-         data.forEach(element => {
+         point.forEach(element => {
                 element["style"] = {
                     size: Math.random() * 10
                 }
             });
-        var overlay = new inMap.HeatOverlay({
+        var overlay = new inMap.PointOverlay({
         style: {
-            radius: 10, // 半径
-            minScope: 0, // 最小区间,小于此区间的不显示
-            maxScope: 1 // 最大区间,大于此区间的不显示
+             normal: {
+                    backgroundColor: 'rgba(45, 140, 240, .5)',
+                    borderWidth: 1,
+                    borderColor: "rgba(0,131,238, 1)",
+                    size: 10,
+                    },
         },
-         data: data,
+         data: point,
         });
         inmap.add(overlay);
         // overlay.setData(data);
