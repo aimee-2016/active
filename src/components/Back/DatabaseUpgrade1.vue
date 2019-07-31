@@ -68,7 +68,7 @@
               <span>{{endMemory}}G</span>
             </p>
             <div class="price">
-              <a href="/#/computed/3-1" target="_blank">查看计费说明</a>
+              <a href="https://www.xrcloud.net/support_docs/4LlTC3MYo_yH1rIkkpE.html" target="_blank">查看计费说明</a>
               <p>
                 应付差价：
                 <span>{{ cpuMemoryCost }}</span>元
