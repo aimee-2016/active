@@ -132,7 +132,7 @@
                     </div>
                   </div>
                   <div v-else>
-                    <div style="margin-bottom:10px;" class="ddos-zone">
+                    <div style="margin-bottom:10px;" class="ddos-zone" :style="{marginTop:item.post.servicetype=='host'?'33px':'0'}">
                       <span class="label">区域：</span>
                       <Select
                         v-model="item.zone"
@@ -213,7 +213,7 @@
               </div>
             </div>
           </div>
-          <div class="tips">100%性能可用，内网收发包无限制，使用顶级Intel品牌硬件，40G SSD系统盘（好于高性能盘和高效云盘）</div>
+          <div class="tips">温馨提示，秒杀产品不支持7天无理由退款；购买区域不同，价格会有差异，请确认之后再进行购买。</div>
         </div>
       </div>
       <div class="first-month">
@@ -327,8 +327,8 @@
                       <i>区域:</i>
                       <span>{{item.zoneName}}</span>
                     </li>
-                    <li>
-                      <i>防护等级:</i>
+                    <li style="font-style:italic;color:#FF624B;font-family:Arial-BoldItalicMT;">
+                      <i style="font-style:italic;">防护等级:</i>
                       <span>{{item.postOne.pronum}}G</span>
                     </li>
                   </ul>
@@ -681,7 +681,7 @@ export default {
       }],
       system1: [],
       navs: [
-        { title: '云产品4折', text: '限时秒杀', distance: 300, },
+        { title: '云产品', text: '限时秒杀', distance: 300, },
         { title: '高防云服务器', text: '首月8折优惠', distance: 1000, },
         { title: '超低折扣', text: '买时长送域名', distance: 1900, },
         { title: '自选配置', text: '打折再送时长', distance: 2800, },
@@ -1668,16 +1668,11 @@ export default {
 }
 
 .banner {
-  .product {
-    .content {
-      .text {
-        margin-top: -30px;
-      }
-    }
-  }
+  background: url(../../../assets/img/active/ddos/ddos-banner-bg.png) no-repeat center;
+  
 }
 .seckill {
-  padding: 50px 0 60px;
+  padding: 40px 0 60px;
   background: url(../../../assets/img/active/ddos/background-2-right.png) 100%
     60% no-repeat;
   .top {
@@ -1782,7 +1777,7 @@ export default {
       }
     }
     .body {
-      color: #fff0de;
+      color: #fff;
       padding: 20px 0px 15px 20px;
       font-size: 14px;
       .params {
