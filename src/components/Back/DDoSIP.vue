@@ -103,7 +103,7 @@
                                         <p class="no-pfb">暂无数据</p>
                                         <p class="no-pfs">该时段未产生攻击或攻击数据暂未更新，请稍后重试</p>
                                     </div>
-                                    <chart v-show="hightIp.series[0].data.length != 0" style="width:100%;" id='hightIp' :options="hightIp"></chart>
+                                    <chart style="width:100%;" id='hightIp' :options="hightIp"></chart>
                                 </div>
                            </div>
                            <div>
@@ -179,7 +179,7 @@
                                         <p class="no-pfb">暂无数据</p>
                                         <p class="no-pfs">该时段未产生攻击或攻击数据暂未更新，请稍后重试</p>
                                     </div>
-                                    <chart v-show="flowBtm.series[0].data.length != 0" style="width:100%;" id='flowBtm'  :options="flowBtm"></chart>
+                                    <chart style="width:100%;" id='flowBtm'  :options="flowBtm"></chart>
                                 </div>
                             </div>
                             <div class="dp-mbr" style="width:570px;">
@@ -226,7 +226,7 @@
                          <!-- CC统计  -->
                        <div v-if="overviewRadio == 'CC统计'">
                            <div class="dp-ds">
-                               <div style="margin-left:20px;"> 
+                               <div > 
                                    <span>套餐选择</span>
                                     <Select size="small" v-model="ccStatistics.packageid" style="width:231px;margin-left:10px;" @on-change='domainChange'>
                                         <Option v-for="item in setMealList" :value="item.packageid" :key="item.packageid" >{{ item.packageid }}</Option>
@@ -260,7 +260,7 @@
                                         <p class="no-pfb">暂无数据</p>
                                         <p class="no-pfs">该时段未产生攻击或攻击数据暂未更新，请稍后重试</p>
                                     </div>
-                                    <chart v-show="ccQps.series[0].data.length != 0" style="width:100%;" id='ccQps' :options="ccQps"></chart>
+                                    <chart style="width:100%;" id='ccQps' :options="ccQps"></chart>
                                 </div>
                            </div>
                            <div>
@@ -312,7 +312,7 @@
                         <!-- 业务统计  -->
                        <div v-if="overviewRadio == '业务统计'">
                            <div class="dp-ds">
-                               <div style="margin-left:20px;"> 
+                               <div> 
                                    <span>套餐选择</span>
                                     <Select size="small" v-model="business.packageId" style="width:231px;margin-left:10px;" @on-change='domainChange'>
                                         <Option v-for="item in setMealList" :value="item.packageid" :key="item.packageid" >{{ item.packageid }}</Option>
@@ -320,14 +320,14 @@
                                </div>
                               <div  style="margin-left:20px;">
                                    <span>按统计时间</span>
-                                   <DatePicker :options="options" v-model='business.date' format='yyyy-MM-dd' size='small' :transfer='true' type="daterange" placeholder='选择时间'  placement="bottom-end"  style="width: 231px;margin:0 10px;"></DatePicker>
-                                   <Button size='small' type="primary" style="width:54px;" @click="getAllBusinessMap">查询</Button>
+                                   <DatePicker :options="options" v-model='business.date' format='yyyy-MM-dd' size='small' :transfer='true' type="daterange" placeholder='选择时间'  placement="bottom-end"  style="width: 231px;margin-left:10px;"></DatePicker>
                                </div>
                                 <div  style="margin-left:20px;">
                                    <span>域名选择</span>
-                                   <Select size="small" v-model="business.domain" style="width:231px;margin-left:10px;">
+                                   <Select size="small" v-model="business.domain" style="width:231px;margin:0 10px;">
                                         <Option v-for="item in domainAllList" :value="item" :key="item">{{ item }}</Option>
                                     </Select>
+                                    <Button size='small' type="primary" style="width:54px;" @click="getAllBusinessMap">查询</Button>
                                </div>
                            </div>
                            <div>
@@ -379,7 +379,7 @@
                                         <p class="no-pfb">暂无数据</p>
                                         <p class="no-pfs">该时段未产生攻击或攻击数据暂未更新，请稍后重试</p>
                                     </div>
-                                    <chart v-show="flowOut.series[0].data.length != 0 "  style="width:100%;" id='flowOut' :options="flowOut"></chart>
+                                    <chart   style="width:100%;" id='flowOut' :options="flowOut"></chart>
                                 </div>
                            </div>
                            <div>
@@ -398,7 +398,7 @@
                                         <p class="no-pfb">暂无数据</p>
                                         <p class="no-pfs">该时段未产生攻击或攻击数据暂未更新，请稍后重试</p>
                                     </div>
-                                    <chart v-show="reque.series[0].data.length != 0" style="width:100%;" id='reque'  :options="reque"></chart>
+                                    <chart style="width:100%;" id='reque'  :options="reque"></chart>
                                 </div>
                            </div>
                             <div>
@@ -525,10 +525,10 @@
                                     title="您确认删除选中的配置吗？" style="margin: 0 10px">
                                     <Button type="primary" :disabled='renewDisabled'>删除</Button>
                                     </Poptip>
-                                    <!-- <span class="dp-cn">CNAME：{{ruleData[0].cname||'无'}}</span> -->
+                                    <span class="dp-cn">CNAME：{{ruleData[0].cname||'无'}}</span>
                                 </div>
                                 <div>
-                                    <Select v-model="attackMeal"  style="width:300px;">
+                                    <Select v-model="attackMeal"  style="width:200px;">
                                         <Option
                                             v-for="item in setMealList"
                                             :value="item.packageid"
@@ -851,6 +851,7 @@ import hightIp from '@/echarts/hightIp';
 import hightIpBs from '@/echarts/hightIpBs';
 import hightIpSl from '@/echarts/hightIpSl';
 import hightIpBin from '@/echarts/hightIpBin';
+import inMap from 'inmap'
 var debounce = require('throttle-debounce/debounce')
 
 const dIp  = JSON.stringify(hightIp);
@@ -1150,6 +1151,10 @@ export default {
         ],
         ddosAttInfoData:[],
         ddosAttTotal:0,
+        ddosAttProportion:{
+
+        },
+        ddosAttFlow:{},
 
       // 证书管理
       cIsAdd:'add',
@@ -2037,7 +2042,7 @@ export default {
             // }
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
-                this.flowBtm.xAxis.data = res.data.peakTime;
+                this.flowBtm.xAxis.data = res.data.time;
                 this.flowBtm.series[0].data = res.data.syn;
                 this.flowBtm.series[1].data = res.data.ack;
                 this.flowBtm.series[2].data = res.data.udp;
@@ -2059,6 +2064,9 @@ export default {
             // }
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
+                this.ddosAttProportion = res.data.percent;
+                this.ddosAttFlow = res.data.data;
+                this.hightIpBin.series[0].data = res.data.data;
                 this.echartsLodaing('hightIpBin').hideLoading();
             }else{
                 this.echartsLodaing('hightIpBin').hideLoading();
@@ -2227,7 +2235,6 @@ export default {
     // ……CC统计图结束……
 
     inmapVoid(){
-        let iMap = this.$inMap;
         var data =[
             {   geometry: {type: 'Point', coordinates: [123, 23]},
                 style:{}, 
@@ -2235,26 +2242,32 @@ export default {
                 count: 30  
             }
             ]
-        var inmap = new iMap.Map({
+        var inmap = new inMap.Map({
         id: "topMap",
-        // skin: "Blueness",
-        // center: [105.403119, 38.028658],
-        // zoom: {
-        //     value: 5,
-        //     show: true,
-        //     max: 18,
-        //     min: 5
-        // }
+        skin: "Blueness",
+        center: [105.403119, 38.028658],
+        zoom: {
+            value: 5,
+            show: true,
+            max: 18,
+            min: 5
+        }
         });
-        var overlay = new iMap.HeatOverlay({
+         data.forEach(element => {
+                element["style"] = {
+                    size: Math.random() * 10
+                }
+            });
+        var overlay = new inMap.HeatOverlay({
         style: {
             radius: 10, // 半径
             minScope: 0, // 最小区间,小于此区间的不显示
             maxScope: 1 // 最大区间,大于此区间的不显示
-        }
+        },
+         data: data,
         });
-        // inmap.add(overlay);
-        overlay.setData(data);
+        inmap.add(overlay);
+        // overlay.setData(data);
         // console.log(overlay.setData(data));
     },
     //统计图结束^ 
@@ -2314,7 +2327,7 @@ export default {
     },
 
     dataToUpdate(name){
-        this[name].splice(1,data);
+        this[name][0]._disabled = true;
     },
 
     updateDomainTable(){
@@ -2643,7 +2656,6 @@ export default {
             domain +=item.domainname+',';
             id +=item.id+',';
             packageId+=item.packageid+',';
-
         })
          let params  = {
             domain:domain,
@@ -2655,7 +2667,6 @@ export default {
                 Id:id
             }
         }
-       
         if(name == 'domain'){
             url = 'ddosImitationIp/deletedomain.do'
         }else if(name == 'certificate'){

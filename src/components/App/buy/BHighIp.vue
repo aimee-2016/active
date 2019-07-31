@@ -90,7 +90,7 @@
                       <InputNumber :max="2000" :min="selectList.bandwith" v-model="bandWidth" size="large"
                             style="position: relative;bottom: 5px" :precision="0"></InputNumber>
                   </div>
-                  <p class="bm-fn">无封顶值，超出部分的计费按预购买的业务带宽所在梯度对应标准按天收费。当前预购买带宽为5M，按2.67M/元/天计费。</p>
+                  <p class="bm-fn">无封顶值，超出部分的计费按预购买的业务带宽所在梯度对应标准按天收费。当前预购买带宽为{{selectList.bandwith}}M，按{{dayMoney}}M/元/天计费。</p>
                 </div>
                
                 
@@ -380,13 +380,19 @@
             content: '购物车已满'
           })
         }
+        let cost = 0;
+        if(this.buyNumber>1){
+          cost = this.totalPrice / this.buyNumber;
+        }else{
+          cost = this.totalPrice;
+        }
         let prod = {
           typeName: 'DDoS高防IP',
           type: 'Pddosip',
           zone: this.selectList.zoneid,
           line:this.selectList.zonename,
           timeForm: this.timeForm,
-          cost: this.totalPrice,
+          cost: cost,
            packageName:this.selectList.packagename,
             elasticband:this.bandwidths.bandwidthIndex,
             port:this.port,
@@ -443,7 +449,7 @@
             timeVlue:this.timeForm.currentTimeValue.value,
             timeType: this.timeForm.currentTimeType == 'annual' ? this.timeForm.currentTimeValue.type : 'current',
             zoneId:this.selectList.zoneid,
-            cost:this.price,
+            // cost:this.totalPrice,
             isAutoRenew:'1'
           }
         }).then(res => {
@@ -476,6 +482,17 @@
        }else{
          return false;
        }
+      },
+      dayMoney(){
+        if(this.bandWidth>50 && this.bandWidth <=100 ){
+          return '2.4'
+        }else if( this.bandWidth>100 && this.bandWidth <= 500){
+          return '2.2'
+        }else if( this.bandWidth > 500){
+          return '2.0'
+        }else{
+          return '2.67'
+        }
       }
     },
     watch: {

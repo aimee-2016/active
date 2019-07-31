@@ -13,7 +13,7 @@
                     <p class="t-psize">基本信息</p>
                     <div class='ds-row'>
                         <div class="ds-ct">
-                            <p>套餐ID</p>
+                            <p>套餐ID</p> <!-- <span class="ds-blf" @click="$router.push('DDoSUpgrade')">升级</span> --> 
                             <p>{{ddosipDetails.packageId}}</p>
                         </div>
                         <div class="ds-ct">
@@ -46,7 +46,7 @@
                     <p class="t-psize">购买信息</p>
                     <div class='ds-row'>
                         <div class="ds-ct">
-                            <p>购买时长</p>
+                            <p>购买时长<span class="ds-blf" @click="showModal.refund = true">申请退款</span></p>
                             <p>{{ddosipDetails.buyMounthNumber+'个月'}}</p>
                         </div>
                         <div class="ds-ct">
@@ -122,6 +122,24 @@
                 <Button type="ghost" @click="showModal.meal = false">取消</Button>
                 <Button type="primary" @click="createMealRenew">确定</Button>
             </div>
+         </Modal> 
+
+        <!-- 申请退款 -->
+         <Modal :mask-closable="false" v-model="showModal.refund">
+             <p slot="header" class="modal-header-border">
+                <span class="universal-modal-title">退款详情</span>
+            </p>
+             <div class="dp-yw">
+                 <span style="margin-left:4px;">高防IP退款渠道为退款到余额，您可以到余额中申请提现。</span>
+             </div>
+            <Table  :columns="refundList" :data="refundData" style="margin:10px 0 20px 0;"></Table>
+            <p style="font-size:14px;">订单总额：<span>￥1700.00</span></p>
+            <p class="dp-tui">退款金额：<span>¥1500.00</span></p>
+             <div slot="footer" class="modal-footer-border">
+                 <span class="b-lf">查看退款说明</span>
+                <Button type="ghost" @click="showModal.refund = false">取消</Button>
+                <Button type="primary" @click="createMealRenew">确定</Button>
+            </div>
          </Modal>   
     </div>
 </template>
@@ -130,7 +148,7 @@ export default {
     data(){
         return{
             ddosipDetails:{},
-            showModal:{meal:false},
+            showModal:{meal:false,refund:false},
             durationIndex:0,
             duration:'',
             durationIndex:0,
@@ -181,12 +199,29 @@ export default {
                     isTrue:-8
                 },
             ],
-            renewPrice:{}
+            renewPrice:{},
+            refundData:[],
+            refundList:[
+                {
+                    title:'产品',
+                    render:(h,params)=>{
+                        return h('p',{},'高防IP')
+                    }
+                },
+                {
+                    key:'',
+                    title:'付费类型'
+                },
+                {
+                    key:'buyMounthNumber',
+                    title:'付费时长',
+                }
+            ]
         }
     },
     created(){
         this.getDDosDetails();
-       
+
     },
     methods:{
         getDDosDetails(){
@@ -197,6 +232,7 @@ export default {
             }).then(res =>{
                 if(res.status == 200 && res.data.status == 1){
                     this.ddosipDetails = res.data.result;
+                    this.refundData.push(res.data.result);
                      this.queryMealRenew(0);
                 }else{
                     this.$Message.info(res.data.message);
@@ -246,6 +282,11 @@ export default {
         goDip(){
             this.$router.push('ddosipback')
         },
+
+        getRefundData(){
+            let data = {};
+            
+        }
     },
     computed:{}
 }
@@ -261,6 +302,12 @@ export default {
           font-size: 18px;
           margin: 0 10px 0 5px;
       }
+  }
+  .b-lf{
+      color: #2A99F2;
+      cursor: pointer;
+      float: left;
+      margin-top: 10px;
   }
   .ds-row{
       display: flex;
@@ -360,5 +407,21 @@ export default {
     color: #ff624b;
     font-weight: bold;
   }
+}
+.dp-yw{
+    height: 32px;
+    background-color: rgba(255,196,57,0.2);
+    color: #FF881C;
+    line-height: 32px;
+    padding-left: 10px;
+}
+.dp-tui{
+  font-size: 14px;
+  color: #333333;
+  margin-top: 5px;
+  span {
+    font-size: 24px;
+    color: #2A99F2;
+  } 
 }
 </style>

@@ -8,7 +8,7 @@
         <div class="info">
           <h3 >{{logo.title}}</h3>
           <span class="desc">{{logo.desc}}</span>
-          <router-link :to="logo.linkRouter">立即体验</router-link>
+          <router-link :to="logo.linkRouter">立即购买</router-link>
         </div>
       </div>
     </div>
@@ -129,8 +129,8 @@
         logo: {
           img: require('../../../assets/img/product/ddos-logo.png'),
           title: 'DDOS防护',
-          desc: '新睿云通过专用硬件，针对DDoS攻击，为用户提供高防IP服务。高防IP为用户已备案的域名提供最高40Gbps的DDoS高级防护。用户在遭遇大流量DDoS攻击的情况下，可以在配置高防IP后将攻击流量引至高防IP，确保源站稳定可用。',
-          linkRouter: $store.state.userInfo ? '/firewallList' : '/login'
+          desc: 'DDoS云清洗是新睿云针对易遭受大流量DDoS攻击的用户推出的付费服务，依托于庞大的节点、带宽资源，高达10T的云防护容量，全方位防护各类DDoS和CC攻击，保证您的业务稳定在线。',
+          linkRouter: $store.state.userInfo ? '/ddosipback' : '/login'
         },
         features: [
           {img: 'icon-DDOSliuliangqingxi', title: 'DDOS攻击防护', desc: '防护多种类型的DDoS攻击包括但不限于SYN Flood、ACK Flood 、ICMP Flood、UDP Flood、TCP Flood、CC等攻击，并提供黑白名单等精准防御机制。'},
@@ -141,23 +141,23 @@
         advantages: [
           {
             img: 'icon-gaoxingnengyingjian',
-            title: '高品质硬件',
-            desc: '采用华为最新一代DDoS防护硬件，高效稳定。'
+            title: '超大清洗容量',
+            desc: '单点800G，全网10T+防御带宽，超大流量攻击时智能调度全网节点，化攻击于无形。'
           },
-//          {
-//            img: 'icon-xiangyingxunsu',
-//            title: '响应迅速',
-//            desc: '灵活选择固定或弹性计费模式，起点带宽低至5Gbps。'
-//          },
+         {
+           img: 'icon-lingbushuchengben',
+           title: '高性价比',
+           desc: '按需购买保底带宽，弹性防护，超保底的大流量攻击按天付费，既保证成本可控，又无需担心攻击过大导致服务中断。'
+         },
           {
-            img: 'icon-lingbushuchengben',
-            title: '零部署成本',
-            desc: '无需更改网络拓扑，不需要采购设备，只需使用高防IP。'
+            img: 'icon-xiangyingxunsu',
+            title: '业务友好化',
+            desc: 'HTTP/TCP/UDP全协议支持，适用于游戏、金融、电商等各类网站或非网站业务。基于CDN的云高防平台，用户就近访问，可定制缓存，节约源站带宽成本'
           },
           {
             img: 'icon-hailiangqingxinengli',
-            title: '海量清洗能力',
-            desc: '可防御40G的DDoS攻击流量，支持升级到100G。'
+            title: '专业服务团队',
+            desc: '7*24小时安全专家服务团队随时待命，为您的业务保驾护航。'
           }
 
         ],
