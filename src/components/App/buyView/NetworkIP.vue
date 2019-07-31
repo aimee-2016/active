@@ -1,6 +1,6 @@
 <template>
-  <div class="database-page">
-    <buy-header title-name="购买云数据库" @toOldVersion="toOldVersion"></buy-header>
+  <div class="disk-page">
+    <buy-header title-name="购买公网IP" @toOldVersion="toOldVersion"></buy-header>
     <buy-area isNotServer="true" :area-group="areaGroup" :area="area" @changeArea="changeArea"></buy-area>
     <buy-billing-type
       isNotServer="true"
@@ -8,13 +8,14 @@
       :billing-type="billingType"
       @changeBillingType="changeBillingType"
     ></buy-billing-type>
+    <buy-ip-specification :network="network" @changeAutoRenewal="changeAutoRenewal"></buy-ip-specification>
     <div id="footer_page">
       <buy-footer :buyStep="buyStep" :is-fixed="isFixed" @nextStep="nextStep"></buy-footer>
     </div>
   </div>
 </template>
 <style lang="less" scoped>
-.database-page {
+.disk-page {
   background: rgba(248, 248, 248, 1);
   #footer_page {
     margin-top: 20px;
@@ -27,12 +28,14 @@ import $store from "@/vuex";
 import buyHeader from "../buyComponents/buy-header";
 import buyArea from "../buyComponents/buy-area";
 import buyBillingType from "../buyComponents/buy-billing-type";
+import buyIpSpecification from "../buyComponents/buy-ip-specification";
 import buyFooter from "../buyComponents/buy-footer";
 export default {
   components: {
     buyHeader,
     buyArea,
     buyBillingType,
+    buyIpSpecification,
     buyFooter
   },
   // 以前统一写在app里，由于静态打包与写在app里冲突，所以vuex必须先在这里获取到区域信息,不然区域信息是null,
@@ -80,6 +83,12 @@ export default {
         { text: "实时计费", value: "timely" }
       ],
       billingType: "monthly",
+      network: {
+        vpcId: "",
+        vpcGroup: [],
+        bandwidth: 1,
+        autoRenewal: true
+      },
       buyStep: 3
     };
   },

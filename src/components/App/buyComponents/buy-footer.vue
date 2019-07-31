@@ -35,6 +35,7 @@
           <button v-show="buyStep===1" @click="nextStep(2)">下一步：登录信息</button>
           <button class="left-button" v-show="buyStep===2" @click="nextStep(1)">上一步：网络与带宽</button>
           <button v-show="buyStep===2" @click="nextStep(3)">下一步：提交订单</button>
+          <button v-show="buyStep===3" @click="nextStep(3)">提交订单</button>
         </div>
       </div>
     </div>

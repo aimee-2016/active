@@ -1,68 +1,48 @@
 <template>
-  <div class="buy-disk">
+  <div class="buy-ip-specification">
     <div class="wrap">
-      <div class="content" :class="{narrow: isNotServer}">
-        <h2>云硬盘</h2>
+      <div class="content">
+        <h2>网络与带宽</h2>
         <div class="specification-item">
           <div class="item-label">
-            <span>磁盘名称</span>
+            <span>虚拟私有云</span>
           </div>
           <div class="item-text">
-            <Input
-              v-model="diskSpecification.systemDiskName"
-              placeholder="请输入磁盘名"
-              style="width: 300px"
-              :maxlength="30"
-            ></Input>
+            <Select
+              placeholder="请选择VPC"
+              v-model="network.vpcId"
+              style="width:200px;margin-right: 10px"
+            >
+              <Option
+                v-for="item in network.vpcGroup"
+                :value="item.value"
+                :key="item.value"
+              >{{ item.label }}</Option>
+            </Select>
           </div>
         </div>
-        <div class="specification-item text-hint">
-          <div class="item-label"></div>
-          <div class="item-text">
-            <p>
-              <span @click="addSystemDisk">添加数据盘</span>你还可以添加
-              <span>{{diskCountLimit}}块</span>数据盘
-            </p>
+        <div class="specification-item">
+          <div class="item-label">
+            <span>带宽</span>
           </div>
-        </div>
-        <div v-for="(diskitem,diskindex) in diskSpecification.systemDisk" :key="diskindex">
-          <div class="specification-item">
-            <div class="item-label">
-              <span>数据盘类型</span>
-            </div>
-            <div class="item-text">
-              <span
-                v-for="(item,index) in diskSpecification.systemDiskTypeGroup"
-                :key="index"
-                :class="{selected: diskitem.type === item.value,disabled: area.gpuserver == 1 && item.value !== 'ssd' }"
-                @click="changeSystemDiskType(item,diskindex)"
-              >{{ item.name }}</span>
-              <span class="cancel" @click="deleteSystemDisk(diskindex)" v-if="diskindex !== 0">取消</span>
-            </div>
-          </div>
-          <div class="specification-item">
-            <div class="item-label">
-              <span>数据盘容量</span>
-            </div>
-            <div class="item-slider">
-              <i-slider
-                v-model="diskitem.size"
-                unit="GB"
-                :min="diskitem.minDiskSize"
-                :max="1000"
-                :step="20"
-                :points="[300,500,800]"
-                style="margin-right:30px;vertical-align: middle;"
-              ></i-slider>
-              <InputNumber
-                :max="1000"
-                :min="diskitem.minDiskSize"
-                v-model="diskitem.size"
-                size="large"
-                :step="20"
-                :precision="0"
-              ></InputNumber>
-            </div>
+          <div class="item-slider">
+            <i-slider
+              v-model="network.bandwidth"
+              unit="MB"
+              :min="1"
+              :max="100"
+              :step="1"
+              :points="[30,50]"
+              style="margin-right:30px;vertical-align: middle;"
+            ></i-slider>
+            <InputNumber
+              :max="100"
+              :min="1"
+              v-model="network.bandwidth"
+              size="large"
+              :step="1"
+              :precision="0"
+            ></InputNumber>
           </div>
         </div>
         <div class="specification-item short">
@@ -71,7 +51,7 @@
           </div>
           <div class="item-text">
             <div class="renewal">
-              <i-switch v-model="diskSpecification.autoRenewal" @on-change="changeAutoRenewal"></i-switch>
+              <i-switch v-model="network.autoRenewal" @on-change="changeAutoRenewal"></i-switch>
               <span>开启后，资源到期会自动续费，请确保账户内有足够的余额。</span>
             </div>
           </div>
@@ -80,7 +60,7 @@
           <div class="item-label">
             <span>
               价格
-              <Poptip trigger="hover" placement="top-start" content="磁盘总价">
+              <Poptip trigger="hover" placement="top-start" content="包含公网IP与带宽费用">
                 <span class="label-hint">?</span>
               </Poptip>
             </span>
@@ -94,18 +74,16 @@
   </div>
 </template>
 <style lang="less" scoped>
-.buy-disk {
+.buy-ip-specification {
   margin-top: 10px;
   .wrap {
     width: 1200px;
     margin: 0 auto;
     .content {
+      width: 800px;
       padding: 30px;
       background: rgba(255, 255, 255, 1);
       box-shadow: 0px 2px 14px -7px rgba(166, 166, 166, 0.3);
-      &.narrow {
-        width: 800px;
-      }
       > h2 {
         font-size: 18px;
         font-family: MicrosoftYaHei-Bold;
@@ -144,7 +122,7 @@
             font-size: 14px;
             font-family: MicrosoftYaHei;
             color: rgba(102, 102, 102, 1);
-            width: 80px;
+            width: 106px;
             border: 1px solid rgba(217, 217, 217, 1);
             line-height: 33px;
             cursor: pointer;
@@ -153,12 +131,6 @@
               box-shadow: 0px 2px 10px -3px rgba(66, 151, 242, 0.49);
               border: 1px solid rgba(66, 151, 242, 1);
             }
-            &.disabled {
-              background: #666666;
-              border: 1px solid #666666;
-              cursor: not-allowed;
-              color: #fff;
-            }
           }
           .cancel {
             text-align: left;
@@ -166,18 +138,20 @@
             border: none;
           }
           > p {
-            font-size: 14px;
+            font-size: 12px;
             font-family: MicrosoftYaHei;
-            color: rgba(51, 51, 51, 1);
+            color: rgba(153, 153, 153, 1);
+            > a {
+              color: #4297f2;
+            }
             > span {
-              color: rgba(66, 151, 242, 1);
+              color: #ff9801;
             }
-            span:nth-child(1) {
+            .view {
+              line-height: 33px;
+              margin-left: 10px;
               cursor: pointer;
-              margin-right: 20px;
-            }
-            span:nth-child(2) {
-              color: #f85e1d;
+              color: #4297f2;
             }
           }
           .price {
@@ -210,22 +184,13 @@
 }
 </style>
 <script type="text/ecmascript-6">
+import axios from "axios";
 export default {
   data() {
     return {};
   },
   props: {
-    area: {
-      type: Object,
-      default: () => {
-        return new Object();
-      }
-    },
-    isNotServer: {
-      type: String,
-      default: ""
-    },
-    diskSpecification: {
+    network: {
       type: Object,
       default: () => {
         return new Object();
@@ -233,24 +198,9 @@ export default {
     }
   },
   methods: {
-    addSystemDisk() {
-      this.$emit("addSystemDisk");
-    },
-    changeSystemDiskType(item, index) {
-      this.$emit("changeSystemDiskType", item, index);
-    },
-    deleteSystemDisk(diskindex) {
-      this.$emit("deleteSystemDisk", diskindex);
-    },
     changeAutoRenewal(val) {
       this.$emit("changeAutoRenewal", val);
     }
-  },
-  computed: {
-    diskCountLimit() {
-      return 5 - this.diskSpecification.systemDisk.length;
-    }
-  },
-  watch: {}
+  }
 };
 </script>

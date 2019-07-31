@@ -1,7 +1,13 @@
 <template>
   <div class="disk-page">
-    <buy-header title-name="购买云硬盘" @toOldVersion="toOldVersion('host')"></buy-header>
+    <buy-header title-name="购买云硬盘" @toOldVersion="toOldVersion"></buy-header>
     <buy-area isNotServer="true" :area-group="areaGroup" :area="area" @changeArea="changeArea"></buy-area>
+    <buy-billing-type
+      isNotServer="true"
+      :billing-type-group="billingTypeGroup"
+      :billing-type="billingType"
+      @changeBillingType="changeBillingType"
+    ></buy-billing-type>
     <buy-disk-group
       isNotServer="true"
       :area="area"
@@ -11,11 +17,17 @@
       @deleteSystemDisk="deleteSystemDisk"
       @changeAutoRenewal="changeAutoRenewal"
     ></buy-disk-group>
+    <div id="footer_page">
+      <buy-footer :buyStep="buyStep" :is-fixed="isFixed" @nextStep="nextStep"></buy-footer>
+    </div>
   </div>
 </template>
 <style lang="less" scoped>
 .disk-page {
   background: rgba(248, 248, 248, 1);
+  #footer_page {
+    margin-top: 20px;
+  }
 }
 </style>
 <script type="text/ecmascript-6">
@@ -23,12 +35,16 @@ import axios from "axios";
 import $store from "@/vuex";
 import buyHeader from "../buyComponents/buy-header";
 import buyArea from "../buyComponents/buy-area";
+import buyBillingType from "../buyComponents/buy-billing-type";
 import buyDiskGroup from "../buyComponents/buy-disk-group";
+import buyFooter from "../buyComponents/buy-footer";
 export default {
   components: {
     buyHeader,
     buyArea,
-    buyDiskGroup
+    buyDiskGroup,
+    buyFooter,
+    buyBillingType
   },
   // 以前统一写在app里，由于静态打包与写在app里冲突，所以vuex必须先在这里获取到区域信息,不然区域信息是null,
   beforeRouteEnter(to, from, next) {
@@ -66,8 +82,15 @@ export default {
   },
   data() {
     return {
+      // 标志购买栏是否固定于底部
+      isFixed: false,
       areaGroup: [],
       area: null,
+      billingTypeGroup: [
+        { text: "包年包月", value: "monthly" },
+        { text: "实时计费", value: "timely" }
+      ],
+      billingType: "monthly",
       diskSpecification: {
         systemDiskName: "",
         systemDiskTypeGroup: [
@@ -92,13 +115,34 @@ export default {
           }
         ],
         autoRenewal: true
-      }
+      },
+      buyStep: 3
     };
   },
   created() {
     this.setAreaData();
   },
+  mounted() {
+    window.addEventListener("scroll", this.handleScroll); // 监听滚动事件
+  },
   methods: {
+    handleScroll() {
+      //获取div距离顶部的偏移量
+      var top = document.getElementById("footer_page").offsetTop;
+      //获取屏幕高度
+      var windowTop =
+        window.innerHeight || document.documentElement.clientHeight;
+      //屏幕卷去的高度
+      var scrollTops =
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop;
+      if (windowTop + scrollTops > top) {
+        this.isFixed = false;
+      } else {
+        this.isFixed = true;
+      }
+    },
     setAreaData() {
       this.areaGroup = this.$store.state.zoneList;
       this.area = this.$store.state.zone;
@@ -117,6 +161,9 @@ export default {
     },
     changeArea(item) {
       this.area = item;
+    },
+    changeBillingType(item) {
+      this.billingType = item.value;
     },
     addSystemDisk() {
       let len = this.diskSpecification.systemDisk.length;
@@ -151,7 +198,11 @@ export default {
     },
     changeAutoRenewal(val) {
       this.diskSpecification.autoRenewal = val;
-    }
+    },
+    nextStep() {}
+  },
+  destroyed() {
+    window.removeEventListener("scroll", this.handleScroll);
   }
 };
 </script>

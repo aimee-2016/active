@@ -142,8 +142,8 @@ export default {
   },
   props: {
     isNotServer: {
-      type: Boolean,
-      default: false
+      type: String,
+      default: ""
     }
   },
   methods: {}

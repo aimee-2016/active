@@ -36,8 +36,10 @@ const BDdos = () => import('@/components/App/buy/BDdos')
 // 新版购买模块
 
 const buyServer = () =>import('@/components/App/buyView/Server')
-const buyIp = () =>import('@/components/App/buyView/SafelyIp')
+const buySafelyIp = () =>import('@/components/App/buyView/SafelyIp')
 const buyDisk = () =>import('@/components/App/buyView/Disk')
+const buyNetworkIP = () =>import('@/components/App/buyView/NetworkIP')
+const buyDatabase = () =>import('@/components/App/buyView/Database')
 
 //const hostPrice = () => import('@/components/App/Price/Host')
 //const diskPrice = () => import('@/components/App/Price/Disk')
@@ -354,8 +356,10 @@ var router = new Router({
           ]
         },
         {path: 'buyServer', name: 'buyServer', component: buyServer},
-        {path: 'buyIp', name: 'buyIp', component: buyIp},
+        {path: 'buySafelyIp', name: 'buySafelyIp', component: buySafelyIp},
         {path: 'buyDisk', name: 'buyDisk', component: buyDisk},
+        {path: 'buyNetworkIP', name: 'buyNetworkIP', component: buyNetworkIP},
+        {path: 'buyDatabase', name: 'buyDatabase', component: buyDatabase},
         //{path: 'active', name: 'active', component: Active},
         {path: 'vps', name: 'vps', component: Vps},
        /*{path: 'newNodes_1', name: 'newNodes_1', component: NewNodes_1},
