@@ -539,9 +539,9 @@
                   <div v-else>
                     <!-- 快速选择大于400GB -->
                     <div class="countmins">
-                      <div class="minusbtn"></div>
+                      <div class="minusbtn" @click="minusQuickProtectDay"></div>
                       <input class="countNum" type="text" maxlength="2" disabled v-model="bigProtectTime"/>
-                      <div class="addbtn"></div>
+                      <div class="addbtn" @click="addQuickProtectDay"></div>
                       <div class="depart">天</div>
                     </div>
                   </div>
@@ -554,9 +554,9 @@
                   <div v-else>
                     <!-- 自定义配置大于400GB -->
                     <div class="countmins">
-                      <div class="minusbtn"></div>
+                      <div class="minusbtn" @click="minusCustomProtectDay"></div>
                       <input class="countNum" type="text" maxlength="2" disabled v-model="bigCustomProtectTime"/>
-                      <div class="addbtn"></div>
+                      <div class="addbtn" @click="addCustomProtectDay"></div>
                       <div class="depart">天</div>
                     </div>
                   </div>
@@ -963,6 +963,8 @@
         this.createType = item.value
         this.purchCount = 1
         this.timeForm.currentTimeValue = {label: '1月', value: '1', type: 'month'}
+        this.bigProtectTime = 1
+        this.bigCustomProtectTime = 1
       },
       // 设置系统模版
       setTemplate() {
@@ -1116,13 +1118,13 @@
           diskType: this.currentSystem.diskType,
           memory: this.currentSystem.RAM,
           timeType: this.quickProtectSecIndex.value > 300 ? 'current' : this.timeForm.currentTimeValue.type,
-          timeValue: this.quickProtectSecIndex.value > 300 ? (this.bigProtectTime)*24 : this.timeForm.currentTimeValue.value,
+          timeValue: this.quickProtectSecIndex.value > 300 ? this.bigProtectTime : this.timeForm.currentTimeValue.value,
           zoneId: this.zone.zoneid
         }
         var ipParams = {
           brand: this.currentSystem.bandWidth,
           timeType: this.quickProtectSecIndex.value > 300 ? 'current' : this.timeForm.currentTimeValue.type,
-          timeValue: this.quickProtectSecIndex.value > 300 ? (this.bigProtectTime)*24 : this.timeForm.currentTimeValue.value,
+          timeValue: this.quickProtectSecIndex.value > 300 ? this.bigProtectTime : this.timeForm.currentTimeValue.value,
           zoneId: this.zone.zoneid
         }
         var protectParams = {
@@ -1135,14 +1137,26 @@
         var ip = axios.post('device/queryIpPrice.do', ipParams)
         let protect = axios.post("device/QueryDdosPrice.do", protectParams)
         Promise.all([host, ip, protect]).then(response => {
-          // 设置主机价格
-          this.quickDdosHostPrice = response[0].data.cost
-          // 防护价格 + IP价格
-          this.quickDdosSelectPrice = response[2].data.cost + response[1].data.cost
-          if (response[0].data.coupon) {
-            this.temFastCoupon = response[0].data.coupon + response[1].data.coupon + response[2].data.coupon
-          } else {
-            this.temFastCoupon = 0
+          if(this.quickProtectSecIndex.value > 300){ // 防护配置按月或者年计算
+            // 设置主机价格
+            this.quickDdosHostPrice = (response[0].data.cost)*(this.bigProtectTime)*24
+            // 防护价格 + IP价格
+            this.quickDdosSelectPrice = response[2].data.cost + (response[1].data.cost)*(this.bigProtectTime)*24
+            if (response[0].data.coupon) {
+              this.temFastCoupon = response[0].data.coupon + (response[1].data.coupon)*(this.bigProtectTime)*24 + response[2].data.coupon
+            } else {
+              this.temFastCoupon = 0
+            }
+          } else { // 防护配置小于400GB的时候，按月或者年计算
+            // 设置主机价格
+            this.quickDdosHostPrice = response[0].data.cost
+            // 防护价格 + IP价格
+            this.quickDdosSelectPrice = response[2].data.cost + response[1].data.cost
+            if (response[0].data.coupon) {
+              this.temFastCoupon = response[0].data.coupon + response[1].data.coupon + response[2].data.coupon
+            } else {
+              this.temFastCoupon = 0
+            }
           }
         })
       },
@@ -1192,10 +1206,12 @@
           prod.currentSystem = this.currentSystem
           prod.cost = this.fastCost/this.purchCount
           prod.system = this.selectFastMirrorInfo
+          prod.fastHeightDdosTime = this.quickProtectSecIndex.value > 300 ? this.bigProtectTime : ''
         } else {
           prod.system = this.currentType == 'public' ? this.system : this.appSystem
           prod.IPConfig = this.IPConfig
           prod.vmConfig = this.vmConfig
+          prod.customHeightDdosTime = this.customProtectSecIndex.value > 300 ? this.bigCustomProtectTime : ''
           prod.dataDiskList = this.dataDiskList
           prod.vpc = this.vpc
           prod.network = this.network
@@ -1242,8 +1258,6 @@
         }
         var params = {
           zoneId: this.zone.zoneid,
-          timeType: this.timeForm.currentTimeType == 'annual' ? this.timeForm.currentTimeValue.type : 'current',
-          timeValue: this.timeForm.currentTimeValue.value,
           templateId: this.currentType == 'public' ? this.system.systemtemplateid : this.customMirror.systemtemplateid,
           isAutoRenew: this.autoRenewal ? '1' : '0',
           count: this.purchCount
@@ -1258,7 +1272,11 @@
           params.vpcId = 'no'
           params.templateId = this.selectFastMirror
           params.ddosProtectNumber = this.quickProtectSecIndex.value
+          params.timeType = this.quickProtectSecIndex.value > 300 ? 'day' : this.timeForm.currentTimeValue.type,
+          params.timeValue = this.quickProtectSecIndex.value > 300 ? this.bigProtectTime : this.timeForm.currentTimeValue.value
         } else {
+          params.timeType = this.customProtectSecIndex.value > 300 ? 'day' : this.timeForm.currentTimeValue.type,
+          params.timeValue = this.customProtectSecIndex.value > 300 ? this.bigCustomProtectTime : this.timeForm.currentTimeValue.value,
           params.ddosProtectNumber = this.customProtectSecIndex.value
           params.cpuNum = this.vmConfig.kernel
           params.memory = this.vmConfig.RAM
@@ -1319,7 +1337,7 @@
       // 自定义防护带宽价格列表
       getProtectConfig(){
         axios.post("device/QueryDdosPrice.do", {
-          "timeType": this.customProtectSecIndex.value > 300 ? 'current' : this.timeForm.currentTimeValue.type,
+          "timeType": this.customProtectSecIndex.value > 300 ? 'day' : this.timeForm.currentTimeValue.type,
           "zoneId": this.zone.zoneid,
           "timeValue":  this.customProtectSecIndex.value > 300 ? this.bigCustomProtectTime : this.timeForm.currentTimeValue.value,
           "ddosProtectNumber": this.customProtectSecIndex.value
@@ -1357,6 +1375,40 @@
           this.$Message.info('购买数量不能超过10台');
         }else {
           this.purchCount = tempAddCount
+        }
+      },
+      // 快速购买天数减
+      minusQuickProtectDay() {
+        let tempQuickDay = this.bigProtectTime - 1
+        if(tempQuickDay < 1){
+          this.$Message.info('购买时长不能小于1天');
+        } else {
+          this.bigProtectTime = tempQuickDay
+        }
+      },
+      // 快速购买天数加 不超过30天
+      addQuickProtectDay() {
+        let tempQuickDay1 = this.bigProtectTime + 1
+        if(tempQuickDay1 > 30){
+          this.$Message.info('购买时长不能大于30天');
+        } else {
+          this.bigProtectTime = tempQuickDay1
+        }
+      },
+      minusCustomProtectDay() {
+        let tempCustomDay = this.bigCustomProtectTime - 1
+        if(tempCustomDay < 1){
+          this.$Message.info('购买时长不能小于1天');
+        } else {
+          this.bigCustomProtectTime = tempCustomDay
+        }
+      },
+      addCustomProtectDay() {
+        let tempCustomDay1 = this.bigCustomProtectTime + 1
+        if(tempCustomDay1 > 30){
+          this.$Message.info('购买时长不能大于30天');
+        } else {
+          this.bigCustomProtectTime = tempCustomDay1
         }
       },
 
@@ -1406,19 +1458,23 @@
           diskSize: this.vmConfig.diskSize,
           diskType: this.vmConfig.diskType,
           memory: this.vmConfig.RAM.toString(),
-          timeType: this.timeForm.currentTimeValue.type,
-          timeValue: this.timeForm.currentTimeValue.value,
+          timeType: this.customProtectSecIndex.value > 300 ? 'current' : this.timeForm.currentTimeValue.type,
+          timeValue: this.customProtectSecIndex.value > 300 ? this.bigCustomProtectTime : this.timeForm.currentTimeValue.value,
           zoneId: this.zone.zoneid
         }
-        if (this.timeForm.currentTimeType === 'current') {
-          params.timeType = 'current'
-        }
         axios.post('device/QueryBillingPrice.do', params).then(response => {
-          this.vmConfig.cost = response.data.cost
-          if (response.data.coupon) {
-            this.vmConfig.coupon = response.data.coupon
-          } else {
+          if(this.customProtectSecIndex.value > 300){
+            // 防护配置不小于400GB的时候，计费按天计算，返回的值是一个小时的
+            this.vmConfig.cost = (response.data.cost)*(this.bigCustomProtectTime)*24
             this.vmConfig.coupon = 0
+          } else {
+            // 防护配置小于400GB按 月或年计算
+            this.vmConfig.cost = response.data.cost
+            if (response.data.coupon) {
+              this.vmConfig.coupon = response.data.coupon
+            } else {
+              this.vmConfig.coupon = 0
+            }
           }
         })
       },
@@ -1449,19 +1505,23 @@
       queryIPPrice: debounce(500, function () {
         var params = {
           brand: this.IPConfig.bandWidth,
-          timeType: this.timeForm.currentTimeValue.type,
-          timeValue: this.timeForm.currentTimeValue.value,
+          timeType: this.customProtectSecIndex.value > 300 ? 'current' : this.timeForm.currentTimeValue.type,
+          timeValue: this.customProtectSecIndex.value > 300 ? this.bigCustomProtectTime : this.timeForm.currentTimeValue.value,
           zoneId: this.zone.zoneid
         }
-        if (this.timeForm.currentTimeType === 'current') {
-          params.timeType = 'current'
-        }
         axios.post('device/queryIpPrice.do', params).then(response => {
-          this.IPConfig.cost = response.data.cost
-          if (response.data.coupon) {
-            this.IPConfig.coupon = response.data.coupon
-          } else {
+          if(this.customProtectSecIndex.value > 300){
+            // 防护配置不小于400GB的时候，计费按天计算，返回的值是一个小时的
+            this.IPConfig.cost = (response.data.cost)*(this.bigCustomProtectTime)*24
             this.IPConfig.coupon = 0
+          } else {
+            // 防护配置小于400GB按 月或年计算
+            this.IPConfig.cost = response.data.cost
+            if (response.data.coupon) {
+              this.IPConfig.coupon = response.data.coupon
+            } else {
+              this.IPConfig.coupon = 0
+            }
           }
         })
       }),
@@ -1486,19 +1546,23 @@
           diskSize,
           diskType,
           memory: '0',
-          timeType: this.timeForm.currentTimeValue.type,
-          timeValue: this.timeForm.currentTimeValue.value,
+          timeType: this.customProtectSecIndex.value > 300 ? 'current' : this.timeForm.currentTimeValue.type,
+          timeValue: this.customProtectSecIndex.value > 300 ? this.bigCustomProtectTime :this.timeForm.currentTimeValue.value,
           zoneId: this.zone.zoneid
         }
-        if (this.timeForm.currentTimeType === 'current') {
-          params.timeType = 'current'
-        }
         axios.post('device/QueryBillingPrice.do', params).then(response => {
-          this.dataDiskCost = response.data.cost
-          if (response.data.coupon) {
-            this.coupon = response.data.coupon
-          } else {
+          if(this.customProtectSecIndex.value > 300){
+            // 防护配置不小于400GB的时候，计费按天计算，返回的值是一个小时的
+            this.dataDiskCost = (response.data.cost)*(this.bigCustomProtectTime)*24
             this.coupon = 0
+          } else {
+            // 防护配置小于400GB按 月或年计算
+            this.dataDiskCost = response.data.cost
+            if (response.data.coupon) {
+              this.coupon = response.data.coupon
+            } else {
+              this.coupon = 0
+            }
           }
         })
       }),
@@ -1597,7 +1661,7 @@
         },
         deep: true
       },
-      // 大于400GB快速配置的时候
+      // 大于400GB快速配置的时候,天数变化
       bigProtectTime() {
         this.queryQuick()
       },
@@ -1624,6 +1688,9 @@
       'customProtectSecIndex': {
         handler(){
           this.getProtectConfig()
+          this.queryCustomVM()
+          this.queryIPPrice()
+          this.queryDiskPrice()
         },
         deep: true
       },

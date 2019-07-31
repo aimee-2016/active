@@ -40,7 +40,7 @@
                   <p class="item">
                     <span class="hidden">$</span><span class="title">计费模式</span><span class="hidden">#</span>{{prod.timeForm.currentTimeType=='annual'?`包年包月`:prod.timeForm.currentTimeType=='current'?'实时计费':'七天计费'}}
                   </p>
-                  <p class="item" v-if="prod.timeForm.currentTimeType=='annual'">
+                  <p class="item" v-if="prod.timeForm.currentTimeType=='annual' && (prod.type != 'PDdosHost')">
                     <span class="hidden">$</span><span class="title">购买时长</span><span
                     class="hidden">#</span>{{prod.timeForm.currentTimeValue.label}}
                   </p>
@@ -146,6 +146,19 @@
                 </div>
                 <!-- Ddos高防主机字段 -->
                 <div v-if="prod.type=='PDdosHost'">
+                  <p class="item" v-if="prod.type == 'PDdosHost' && prod.ddosProtectNumber < 400 && !prod.fastHeightDdosTime && !prod.customHeightDdosTime">
+                    <span class="hidden">$</span><span class="title">购买时长</span><span
+                    class="hidden">#</span>{{prod.timeForm.currentTimeValue.label}}
+                  </p>
+                  <p class="item" v-else-if="prod.fastHeightDdosTime && !prod.customHeightDdosTime">
+                    <span class="hidden">$</span><span class="title">购买时长</span><span
+                    class="hidden">#</span>{{prod.fastHeightDdosTime}}天
+                  </p>
+                  <p class="item" v-else-if="!prod.fastHeightDdosTime && prod.customHeightDdosTime">
+                    <span class="hidden">$</span><span class="title">购买时长</span><span
+                    class="hidden">#</span>{{prod.customHeightDdosTime}}天
+                  </p>
+                  <p v-else></p>
                   <p class="item">
                     <span class="hidden">$</span><span class="title">防护大小</span><span
                     class="hidden">#</span>{{prod.ddosProtectNumber}}GB
@@ -420,6 +433,7 @@
       }
     },
     created() {
+      console.log(this.cart)
       this.$http.get('information/getServiceoffers.do').then(
         response => {
           this.info = response.data.info

@@ -5,10 +5,10 @@
     <div class="logo">
       <div class="logo-wrapper">
         <img :src="logo.img" alt="描述">
-        <div class="info">
-          <h3 >{{logo.title}}</h3>
+        <div class="info" style="top: 98px;">
+          <h3 style="margin-bottom: 20px;font-size:28px;line-height:28px;">{{logo.title}}</h3>
           <span class="desc">{{logo.desc}}</span>
-          <router-link :to="logo.linkRouter">立即体验</router-link>
+          <router-link style="display: inline-block;" :to="logo.linkRouter">立即购买</router-link>
         </div>
       </div>
     </div>
@@ -123,13 +123,13 @@
       },
         {                 // set meta
           name: 'description',
-          content: '新睿云通过专用硬件，针对DDoS攻击，为用户提供高防IP服务。高防IP为用户已备案的域名提供最高40Gbps的DDoS高级防护。用户在遭遇大流量DDoS攻击的情况下，可以在配置高防IP后将攻击流量引至高防IP，确保源站稳定可用。'
+          content: '高防云服务器是一台具备了高防DDoS能力的服务器，它具有DDoS防护与CC攻击防护能力，并能够根据您的业务需求进行弹性升级'
         }]
     },
     watch: {
-      userInfo () {
+      /* userInfo () {
         this.logo.linkRouter = this.userInfo ? '/BackDdos' : '/login'
-      }
+      } */
     },
     data(){
       return {
@@ -138,7 +138,7 @@
           img: require('../../../assets/img/product/ddos-logo.png'),
           title: 'DDoS高防主机',
           desc: '针对DDoS攻击，新睿云为用户提供高防IP服务，新睿云高防IP为用户已备案的 域名提供最高40Gbps的DDoS高级防护。用户在遭遇大流量DDoS攻击的情况 下，可以在配置后将攻击流量引至高防IP，确保源站稳定可用。',
-          linkRouter: '/login'
+          linkRouter: '/buy/ddos'
         },
         features: [
           {img: 'icon-DDosliuliangqingxi1', title: '低成本、高易用', desc: '弹性防护，灵活计费相较于高防IP，高防主机应用成本价格更低，且更易用，管理方式与云服务器一致，无需任何额外学习成本。'},
@@ -234,7 +234,7 @@
       }
     },
     mounted () {
-      this.setUserInfo()
+      // this.setUserInfo()
     },
     methods: {
       setUserInfo () {
