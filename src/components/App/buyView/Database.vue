@@ -8,6 +8,32 @@
       :billing-type="billingType"
       @changeBillingType="changeBillingType"
     ></buy-billing-type>
+    <buy-mirror
+      isNotServer="true"
+      :mirror-type-group="mirrorTypeGroup"
+      :mirrorType="mirrorType"
+      :area="area"
+      :mirrorID="mirrorID"
+      :mirrorName="mirrorName"
+      @changePublicMirror="changePublicMirror"
+    ></buy-mirror>
+    <buy-server-specification
+      isNotServer="true"
+      :server-specification-group="serverSpecificationGroup"
+      :server-specification="serverSpecification"
+      @changeCPU="changeCPU"
+      @changeMemory="changeMemory"
+      @changeRootDiskType="changeRootDiskType"
+      @addServerSystemDisk="addServerSystemDisk"
+      @changeServerSystemDiskType="changeServerSystemDiskType"
+      @deleteServerSystemDisk="deleteServerSystemDisk"
+    ></buy-server-specification>
+    <buy-network :area="area" :server-network="serverNetwork"></buy-network>
+    <buy-login-info
+      :login-info="loginInfo"
+      @changeSetType="changeSetType"
+      @changeAutoRenewal="changeAutoRenewal"
+    ></buy-login-info>
     <div id="footer_page">
       <buy-footer :buyStep="buyStep" :is-fixed="isFixed" @nextStep="nextStep"></buy-footer>
     </div>
@@ -27,12 +53,20 @@ import $store from "@/vuex";
 import buyHeader from "../buyComponents/buy-header";
 import buyArea from "../buyComponents/buy-area";
 import buyBillingType from "../buyComponents/buy-billing-type";
+import buyMirror from "../buyComponents/buy-mirror";
+import buyServerSpecification from "../buyComponents/buy-server-specification";
+import buyNetwork from "../buyComponents/buy-network";
+import buyLoginInfo from "../buyComponents/buy-login-info";
 import buyFooter from "../buyComponents/buy-footer";
 export default {
   components: {
     buyHeader,
     buyArea,
     buyBillingType,
+    buyMirror,
+    buyServerSpecification,
+    buyNetwork,
+    buyLoginInfo,
     buyFooter
   },
   // 以前统一写在app里，由于静态打包与写在app里冲突，所以vuex必须先在这里获取到区域信息,不然区域信息是null,
@@ -80,7 +114,99 @@ export default {
         { text: "实时计费", value: "timely" }
       ],
       billingType: "monthly",
-      buyStep: 3
+      buyStep: 3,
+      mirrorType: "piblicMirror",
+      mirrorTypeGroup: [
+        {
+          text: "公共镜像",
+          value: "piblicMirror"
+        }
+      ],
+      mirrorID: "",
+      mirrorName: "",
+      // 当前服务器规格
+      serverSpecification: {
+        CPU: "",
+        memoryGroup: [],
+        memory: "",
+        rootDiskTypeGroup: [
+          {
+            name: "SSD",
+            value: "ssd"
+          },
+          {
+            name: "SAS",
+            value: "sas"
+          }
+        ],
+        rootDiskType: "ssd",
+        rootDiskSize: 40,
+        systemDiskTypeGroup: [
+          {
+            name: "SSD",
+            value: "ssd"
+          },
+          {
+            name: "SAS",
+            value: "sas"
+          },
+          {
+            name: "SATA",
+            value: "sata"
+          }
+        ],
+        systemDisk: [
+          {
+            type: "ssd",
+            size: 20
+          }
+        ]
+      },
+      // 每个区域对应的服务器规格配置
+      serverSpecificationGroup: {},
+      serverNetwork: {
+        vpcGroup: [],
+        vpcId: "",
+        networkGroup: [],
+        networkId: "",
+        publicIPTypeGroup: [
+          {
+            name: "现在购买",
+            value: "buyNow"
+          }
+        ],
+        publicIPType: "buyNow",
+        bandwidth: 1,
+        publicIPGroup: [],
+        publicIPID: "",
+        firewallGroup: [],
+        firewall: ""
+      },
+      loginInfo: {
+        setTypeGroup: [
+          {
+            name: "默认设置",
+            value: "defaultSet"
+          },
+          {
+            name: "自定义设置",
+            value: "customSet"
+          }
+        ],
+        setType: "defaultSet",
+        loginName: "administrator",
+        autoRenewal: true,
+        serverName: "",
+        serverPassword: "",
+        mirrorName: "u",
+        loginType: "password",
+        loginTypeGroup: [
+          { name: "密码", value: "password" }
+          //{ name: "SSH密钥", value: "ssh" }
+        ],
+        SSHID: "",
+        SSHIDGroup: []
+      }
     };
   },
   created() {
@@ -119,6 +245,30 @@ export default {
         // 默认选中zoneList中第一个区域
         this.area = this.areaGroup[0];
       }
+      if (this.area) {
+        this.setSpecification();
+      }
+    },
+    setSpecification() {
+      axios.get("information/getServiceoffers.do").then(res => {
+        if (res.status === 200 && res.data.status === 1) {
+          res.data.info.length > 0
+            ? res.data.info.forEach(item => {
+                if (this.area.zoneid === item.zoneId) {
+                  this.serverSpecificationGroup = item;
+                  this.serverSpecification.CPU = item.kernelList[0].value;
+                  this.serverSpecification.memoryGroup =
+                    item.kernelList[0].RAMList;
+                  this.serverSpecification.memory = this.serverSpecification.memoryGroup[0].value;
+                }
+              })
+            : false;
+        } else {
+          this.$message.info({
+            content: res.data.message
+          });
+        }
+      });
     },
     toOldVersion() {
       this.$router.push("/buy/ip");
@@ -128,6 +278,41 @@ export default {
     },
     changeBillingType(item) {
       this.billingType = item.value;
+    },
+    changePublicMirror(arr) {
+      this.mirrorID = arr[1];
+      this.mirrorName = arr[0];
+    },
+    changeCPU(item) {
+      this.serverSpecification.CPU = item.value;
+      this.serverSpecification.memoryGroup = item.RAMList;
+      this.serverSpecification.memory = this.serverSpecification.memoryGroup[0].value;
+    },
+    changeMemory(item) {
+      this.serverSpecification.memory = item.value;
+    },
+    changeRootDiskType(item) {
+      this.serverSpecification.rootDiskType = item.value;
+    },
+    addServerSystemDisk() {
+      let len = this.serverSpecification.systemDisk.length;
+      if (len === 5) {
+        return;
+      }
+      let diskItem = {
+        type: "ssd",
+        size: 20
+      };
+      this.serverSpecification.systemDisk.push(diskItem);
+    },
+    changeServerSystemDiskType(item, index) {
+      this.serverSpecification.systemDisk[index].type = item.value;
+    },
+    deleteServerSystemDisk(index) {
+      this.serverSpecification.systemDisk.splice(index, 1);
+    },
+    changeSetType(item) {
+      this.loginInfo.setType = item.value;
     },
     changeAutoRenewal(val) {
       this.network.autoRenewal = val;

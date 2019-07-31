@@ -137,7 +137,6 @@
     margin: 0 auto;
     .content {
       width: 800px;
-      min-height: 500px;
       padding: 30px;
       background: rgba(255, 255, 255, 1);
       box-shadow: 0px 2px 14px -7px rgba(166, 166, 166, 0.3);

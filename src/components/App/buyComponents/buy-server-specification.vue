@@ -2,7 +2,7 @@
   <div class="buy-server-specification">
     <div class="wrap">
       <div class="content" :class="{narrow: isNotServer}">
-        <h2>主机规格选择</h2>
+        <h2>{{isNotServer? '数据库' : '主机'}}规格选择</h2>
         <div class="specification-item">
           <div class="item-label">
             <span>核心数</span>
@@ -240,8 +240,8 @@ export default {
   },
   props: {
     isNotServer: {
-      type: Boolean,
-      default: false
+      type: String,
+      default: ""
     },
     serverSpecification: {
       type: Object,
