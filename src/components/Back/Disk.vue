@@ -1580,15 +1580,14 @@
         this.timeOptions.renewalTime = this.timeOptions[type]
       },
       ratesChangeTime(time) {
-          
         if (time == '') {
           this.ratesChangeCost = '--'
           this.ratesChangeOriginalCost = '--'
         } else {
           let hostArr = this.ratesChangeOther[0] == '变更关联云主机' ? this.ratesChangeConnectionsHost : '';
           let params1 ={
-                timeValue: this.renewalTime,
-                timeType: this.renewalType,
+                timeValue: this.ratesChangeTime,
+                timeType: this.ratesChangeType,
                 diskArr: this.diskSelection.id,
                 hostIdArr: hostArr
             },
@@ -1621,7 +1620,7 @@
                 timeValue: this.ratesChangeTime,
                 timeType: this.ratesChangeType,
                 diskArr: this.diskSelection.id,
-                hostIdArr: this.renewalConnectionsHost
+                hostIdArr: this.ratesChangeConnectionsHost
             },
             params2 ={
                 timeValue: this.ratesChangeTime,

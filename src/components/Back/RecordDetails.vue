@@ -2131,6 +2131,8 @@ export default {
            }else{
               this.updateHostUnitList.webserveraddress = this.webipList[i].zonename
            }
+        }else{
+          this.updateHostUnitList.webserveraddress = '';
         }
       }
     },

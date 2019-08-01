@@ -57,7 +57,7 @@
                 <Checkbox label='cash'>
                   <p style="font-weight: 700;margin-left: 10px;display:inline-block;">使用现金券<span style="color:#FF624B;font-size:18px;">{{couponInfo.cash}}</span>元</p>
                 </Checkbox>
-                <span style="float:right;">已经抵扣：<strong style="color:#FF624B;font-size:24px;">{{ vipName != '' && vipName !=undefined ? vipPrice : deductionPrice}}</strong>元</span>
+                <span style="float:right;">已经抵扣：<strong style="color:#FF624B;font-size:24px;">{{deductionPrice}}</strong>元</span>
               </div>
             </CheckboxGroup>
           </div>
@@ -65,7 +65,7 @@
 
           <div style="border-top:1px solid #E9E9E9;padding:20px 0;margin-top:20px;">
             <!-- <span style="color:#2d8cf0;cursor:pointer;">全民普惠，3折减单，最高减免7000元！</span> -->
-            <span style="float:right;">实际支付：<strong style="color:#FF624B;font-size:24px;">{{couponInfo.totalCost}}</strong>元</span>
+            <span style="float:right;">实际支付：<strong style="color:#FF624B;font-size:24px;">{{totalCost}}</strong>元</span>
           </div>
         </div>
         <div style="text-align:right;margin-top:40px;">
@@ -390,7 +390,9 @@ export default {
       },
       orderPay: {},
       vipName: this.$store.state.userInfo.vipname,
-      routePath: ""
+      routePath: "",
+      deductionPrice:0,
+      totalCost:0
     };
   },
   beforeRouteEnter(to, from, next) {
@@ -419,7 +421,7 @@ export default {
       });
   },
   created() {
-    this.getSpentCost();
+    // this.getSpentCost();
     this.getWalletsBalance();
     this.changeCashbox('cash')
   },
@@ -532,7 +534,7 @@ export default {
           .then(response => {
                  this.couponInfo.couponList = response.data.result;
           });
-
+        this.getPrice();
         axios
           .get("information/zfconfirm.do", {
             params: {
@@ -580,10 +582,11 @@ export default {
       this.couponInfo.originCost = originCost;
       if (selection.length == 0) {
         this.couponInfo.totalCost = 0;
+        this.deductionPrice = 0;
+        this.totalCost = 0;
       } else {
-        // if(this.groupList[0] == 'coupon' || this.groupList[1] == 'coupon'){
-          this.couponInfo.totalCost = cost;
-        // }
+        this.getPrice();
+    
       }
       let orderNumber = this.orderData.map(item => {
         return item.orderId;
@@ -600,6 +603,7 @@ export default {
         .then(response => {
           this.couponInfo.couponList = response.data.result;
         });
+        
     },
     changeCashbox(bol) {
       if (this.couponInfo.cash > 0) {
@@ -634,6 +638,9 @@ export default {
       if (!this.canUseTicket) {
         this.couponInfo.selectTicket = "";
         this.$message.info("当前订单不可使用优惠券！");
+        return;
+      }else{
+        this.getPrice();
       }
     },
     // 页面支付方法
@@ -650,7 +657,7 @@ export default {
               this.orderInfo.orderId.length - 1
             ),
             ticket: this.couponInfo.selectTicket,
-            money: this.couponInfo.totalCost
+            money: this.totalCost
           }
         })
         .then(response => {
@@ -778,6 +785,25 @@ export default {
     }
     },
 
+    getPrice(){
+      axios.get('information/getPrice.do',{
+        params:{
+          orders:this.orderInfo.orderId.substring(
+              0,
+              this.orderInfo.orderId.length - 1
+            ),
+          ticket:this.couponInfo.selectTicket
+        }
+      }).then(res => {
+        if(res.status == 200 && res.data.status == 1){
+          this.deductionPrice = res.data.result.deduMount;
+          this.totalCost = res.data.result.payMount;
+        }else{
+          this.$Message.info(res.data.message);
+        }
+      })
+    },
+
     // 返回主页面
     goRouterPath(){
        if(this.routerPath.indexOf('https')>-1){
@@ -809,40 +835,7 @@ export default {
           "可领取3100元+ 1000元+ 350元 + 50元苏宁卡/京东E卡！";
       }
     },
-    deductionPrice() {
-      if (this.groupList[0] == "coupon" || this.groupList[1] == "coupon") {
-        let money = 0;
-        if (this.couponInfo.selectTicket != "") {
-          this.couponInfo.couponList.forEach(item => {
-            if (item.operatorid == this.couponInfo.selectTicket) {
-              if (item.tickettype == 1) {
-                money = (
-                  this.couponInfo.cost -
-                  this.couponInfo.cost * item.money
-                ).toFixed(2);
-              } else if (item.tickettype == 0) {
-                money = item.money.toFixed(2);
-              } else if (item.tickettype == 2 || item.tickettype == 3){
-                money =   item.money
-              }
-            }
-          });
-          return money;
-        }
-      }
-      if (this.groupList[0] == "cash" || this.groupList[1] == "cash") {
-        if (this.couponInfo.cost > this.couponInfo.cash) {
-          return this.couponInfo.cash.toFixed(2);
-        }
-        if (
-          this.couponInfo.cost < this.couponInfo.cash ||
-          this.couponInfo.cost == this.couponInfo.cash
-        ) {
-          return this.couponInfo.cost.toFixed(2);
-        }
-      }
-      return 0;
-    },
+
     routerName() {
       if (this.goodType == 0) {
         return "新建云主机";
@@ -958,289 +951,15 @@ export default {
 
 
     
-    // 待优化
-    vipPrice() {
-      if (this.vipName != "" || this.vipName != undefined) {
-        let money = 0;
-        if (
-          this.couponInfo.selectTicket != "" &&
-          (this.groupList[0] == "cash" || this.groupList[1] == "cash")
-        ) {
-          this.couponInfo.couponList.forEach(item => {
-            if (item.operatorid == this.couponInfo.selectTicket) {
-              if (item.tickettype == 1) {
-                if (this.couponInfo.cost > this.couponInfo.cash) {
-                  money = (
-                    this.couponInfo.cash -
-                    (this.couponInfo.cost -
-                      Number(this.couponInfo.cost * item.money))
-                  ).toFixed(2);
-                }
-                if (
-                  this.couponInfo.cost < this.couponInfo.cash ||
-                  this.couponInfo.cost == this.couponInfo.cash
-                ) {
-                  money = (
-                    this.couponInfo.cash -
-                    (this.couponInfo.cost -
-                      Number(this.couponInfo.cost * item.money))
-                  ).toFixed(2);
-                }
-              } else if (item.tickettype == 0) {
-                if (this.couponInfo.cost - item.money > this.couponInfo.cash) {
-                  money = (item.money + this.couponInfo.cash).toFixed(2);
-                }
-                if (
-                  this.couponInfo.cost - item.money < this.couponInfo.cash ||
-                  this.couponInfo.cost - item.money == this.couponInfo.cash
-                ) {
-                  money = this.couponInfo.cost.toFixed(2);
-                }
-              }
-            }
-          });
-          return money;
-        } else {
-          if (
-            (this.groupList[0] == "cash" || this.groupList[1] == "cash") &&
-            this.couponInfo.selectTicket == ""
-          ) {
-            if (this.couponInfo.cost > this.couponInfo.cash) {
-              return this.couponInfo.cash.toFixed(2);
-            }
-            if (
-              this.couponInfo.cost < this.couponInfo.cash ||
-              this.couponInfo.cost == this.couponInfo.cash
-            ) {
-              return this.couponInfo.cost.toFixed(2);
-            }
-          } else {
-            this.couponInfo.couponList.forEach(item => {
-              if (item.operatorid == this.couponInfo.selectTicket) {
-                if (item.tickettype == 1) {
-                  money = (
-                    this.couponInfo.cost -
-                    this.couponInfo.cost * item.money
-                  ).toFixed(2);
-                } else if (item.tickettype == 0) {
-                  money = item.money.toFixed(2);
-                }
-              }
-            });
-            return money;
-          }
-        }
-        return 0;
-      }
-    }
+   
   },
   //  待优化
   watch: {
     "couponInfo.selectTicket": {
-      handler: function() {
-        if (this.vipName == "" || this.vipName == undefined) {
-          this.couponInfo.couponList.forEach(item => {
-            if (item.operatorid == this.couponInfo.selectTicket) {
-              if (item.tickettype == 1) {
-                this.couponInfo.totalCost = Number(
-                  (this.couponInfo.cost * item.money).toFixed(2)
-                );
-              } else if (item.tickettype == 0) {
-                this.couponInfo.totalCost = Number(
-                  (this.couponInfo.cost - item.money).toFixed(2)
-                );
-              }
-            }
-          });
-        } else {
-          if (this.groupList.indexOf("cash") == -1) {
-            this.couponInfo.couponList.forEach(item => {
-              if (item.operatorid == this.couponInfo.selectTicket) {
-                if (item.tickettype == 1) {
-                  this.couponInfo.totalCost = Number(
-                    (this.couponInfo.cost * item.money).toFixed(2)
-                  );
-                } else if (item.tickettype == 0) {
-                  this.couponInfo.totalCost = Number(
-                    (this.couponInfo.cost - item.money).toFixed(2)
-                  );
-                }
-              }
-            });
-          } else {
-            this.couponInfo.couponList.forEach(item => {
-              if (item.operatorid == this.couponInfo.selectTicket) {
-                if (item.tickettype == 1) {
-                  if (
-                    this.couponInfo.cash >
-                      Number((this.couponInfo.cost - item.money).toFixed(2)) ||
-                    this.couponInfo.cash ==
-                      Number((this.couponInfo.cost - item.money).toFixed(2))
-                  ) {
-                    this.couponInfo.totalCost = Number(
-                      this.couponInfo.cash - this.couponInfo.cost * item.money
-                    ).toFixed(2);
-                  }
-                  if (
-                    this.couponInfo.cash <
-                    Number((this.couponInfo.cost - item.money).toFixed(2))
-                  ) {
-                    this.couponInfo.totalCost = Number(
-                      this.couponInfo.cost * item.money - this.couponInfo.cash
-                    ).toFixed(2);
-                  }
-                  if (Number(this.couponInfo.totalCost) == 0) {
-                    this.isButtonCash = true;
-                  }
-                } else if (item.tickettype == 0) {
-                  if (
-                    this.couponInfo.cash >
-                      Number((this.couponInfo.cost - item.money).toFixed(2)) ||
-                    this.couponInfo.cash ==
-                      Number((this.couponInfo.cost - item.money).toFixed(2))
-                  ) {
-                    this.couponInfo.totalCost = 0;
-                  }
-                  if (
-                    this.couponInfo.cash <
-                    Number((this.couponInfo.cost - item.money).toFixed(2))
-                  ) {
-                    this.couponInfo.totalCost = Number(
-                      this.couponInfo.cost - item.money - this.couponInfo.cash
-                    ).toFixed(2);
-                  }
-                  if (Number(this.couponInfo.totalCost) == 0) {
-                    this.isButtonCash = true;
-                  }
-                }
-              }
-            });
-          }
-        }
-      },
-      deep: true
+  
     },
     groupList: {
-      handler: function(val) {
-        if (this.groupList.length == 1) {
-          // if(this.groupList.indexOf('cash') == -1){
-          // this.couponInfo.totalCost = this.couponInfo.cost.toFixed(2);
-          // }
-          if (this.groupList.indexOf("coupon") == -1) {
-            this.couponInfo.totalCost = Number(this.couponInfo.cost.toFixed(2));
-          }
-        }
-        if (this.groupList.length == 0) {
-          this.couponInfo.totalCost = Number(this.couponInfo.cost.toFixed(2));
-        }
-
-        if (this.groupList[0] != "coupon" && this.groupList[1] != "coupon") {
-          this.couponInfo.selectTicket = "";
-        }
-        if (
-          this.vipName != "" ||
-          this.vipName != undefined ||
-          this.vipName != "undefined"
-        ) {
-          if (
-            (this.groupList[0] == "cash" || this.groupList[1] == "cash") &&
-            this.couponInfo.selectTicket != ""
-          ) {
-            this.couponInfo.couponList.forEach(item => {
-              if (item.operatorid == this.couponInfo.selectTicket) {
-                if (item.tickettype == 1) {
-                  if (
-                    this.couponInfo.cash >
-                      Number((this.couponInfo.cost - item.money).toFixed(2)) ||
-                    this.couponInfo.cash ==
-                      Number((this.couponInfo.cost - item.money).toFixed(2))
-                  ) {
-                    this.couponInfo.totalCost = Number(
-                      this.couponInfo.cash - this.couponInfo.cost * item.money
-                    ).toFixed(2);
-                  }
-                  if (
-                    this.couponInfo.cash <
-                    Number((this.couponInfo.cost - item.money).toFixed(2))
-                  ) {
-                    this.couponInfo.totalCost = Number(
-                      this.couponInfo.cost * item.money - this.couponInfo.cash
-                    ).toFixed(2);
-                  }
-
-                  if (Number(this.couponInfo.totalCost) == 0) {
-                    this.isButtonCash = true;
-                  }
-                } else if (item.tickettype == 0) {
-                  if (
-                    this.couponInfo.cash >
-                      Number((this.couponInfo.cost - item.money).toFixed(2)) ||
-                    this.couponInfo.cash ==
-                      Number((this.couponInfo.cost - item.money).toFixed(2))
-                  ) {
-                    this.couponInfo.totalCost = 0;
-                  }
-                  if (
-                    this.couponInfo.cash <
-                    Number((this.couponInfo.cost - item.money).toFixed(2))
-                  ) {
-                    this.couponInfo.totalCost = Number(
-                      this.couponInfo.cost - item.money - this.couponInfo.cash
-                    ).toFixed(2);
-                  }
-                  if (Number(this.couponInfo.totalCost) == 0) {
-                    this.isButtonCash = true;
-                  }
-                }
-              }
-            });
-          } else {
-            if (
-              (this.groupList[0] == "cash" || this.groupList[1] == "cash") &&
-              this.couponInfo.selectTicket == ""
-            ) {
-              if (
-                this.couponInfo.cash > this.couponInfo.cost ||
-                this.couponInfo.cash == this.couponInfo.cost
-              ) {
-                this.couponInfo.totalCost = 0;
-              }
-              if (Number(this.couponInfo.totalCost) == 0) {
-                this.isButtonCash = true;
-              }
-              if (
-                this.couponInfo.cash < this.couponInfo.cost &&
-                this.couponInfo.selectTicket == ""
-              ) {
-                this.couponInfo.totalCost = Number(
-                  (this.couponInfo.cost - this.couponInfo.cash).toFixed(2)
-                );
-              }
-            }
-          }
-        } else {
-          if (
-            (this.couponInfo.cash > this.couponInfo.cost ||
-              this.couponInfo.cash == this.couponInfo.cost) &&
-            this.couponInfo.selectTicket == ""
-          ) {
-            this.couponInfo.totalCost = 0;
-          }
-          if (Number(this.couponInfo.totalCost) == 0) {
-            this.isButtonCash = true;
-          }
-          if (
-            this.couponInfo.cash < this.couponInfo.cost &&
-            this.couponInfo.selectTicket == ""
-          ) {
-            this.couponInfo.totalCost = Number(
-              (this.couponInfo.cost - this.couponInfo.cash).toFixed(2)
-            );
-          }
-        }
-      },
-      deep: true,
-      immediate: true
+    
     }
   }
 };
