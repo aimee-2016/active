@@ -23,8 +23,6 @@
 .buy-step {
   margin-top: 20px;
   .wrap {
-    width: 1200px;
-    margin: 0 auto;
     display: flex;
     justify-content: space-between;
     .step-item {

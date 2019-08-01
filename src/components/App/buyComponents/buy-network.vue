@@ -163,8 +163,6 @@
 .buy-network {
   padding: 20px 0;
   .wrap {
-    width: 1200px;
-    margin: 0 auto;
     .content {
       width: 800px;
       padding: 30px;

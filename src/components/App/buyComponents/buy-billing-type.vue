@@ -19,8 +19,6 @@
 .buy-billing-type {
   margin-top: 10px;
   .wrap {
-    width: 1200px;
-    margin: 0 auto;
     .content {
       padding: 30px;
       background: rgba(255, 255, 255, 1);

@@ -25,8 +25,6 @@
 .buy-server-type {
   margin-top: 20px;
   .wrap {
-    width: 1200px;
-    margin: 0 auto;
     padding: 30px;
     background: rgba(255, 255, 255, 1);
     box-shadow: 0px 2px 14px -7px rgba(166, 166, 166, 0.3);

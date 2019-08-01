@@ -1,61 +1,71 @@
 <template>
   <div class="server-page">
-    <buy-header :title-name="headerTitle" @toOldVersion="toOldVersion('host')"></buy-header>
-    <buy-step :buy-step-group="buyStepGroup" :buy-step="buyStep"></buy-step>
-    <div v-if="buyStep===0">
-      <buy-server-type
-        :server-type-group="serverTypeGroup"
-        :server-type="serverType"
-        @changeServerType="changeServerType"
-      ></buy-server-type>
-      <buy-billing-type
-        :billing-type-group="billingTypeGroup"
-        :billing-type="billingType"
-        @changeBillingType="changeBillingType"
-      ></buy-billing-type>
-      <buy-area :area-group="areaGroup" :area="area" @changeArea="changeArea"></buy-area>
-      <buy-mirror
-        :mirror-type-group="mirrorTypeGroup"
-        :mirrorType="mirrorType"
-        :area="area"
-        :mirrorID="mirrorID"
-        :mirrorName="mirrorName"
-        @changeMirrorType="changeMirrorType"
-        @changePublicMirror="changePublicMirror"
-      ></buy-mirror>
-      <buy-server-specification
-        :server-specification-group="serverSpecificationGroup"
-        :server-specification="serverSpecification"
-        @changeCPU="changeCPU"
-        @changeMemory="changeMemory"
-        @changeRootDiskType="changeRootDiskType"
-        @addServerSystemDisk="addServerSystemDisk"
-        @changeServerSystemDiskType="changeServerSystemDiskType"
-        @deleteServerSystemDisk="deleteServerSystemDisk"
-      ></buy-server-specification>
-      <buy-defend v-if="serverType==='NOKIAServer'"></buy-defend>
-      <buy-gpu-specification
-        v-if="serverType==='GPUServer'"
-        :gpu-specification="gpuSpecification"
-        :gpu-specificationGroup="gpuSpecificationGroup"
-        @addGpuSystemDisk="addGpuSystemDisk"
-        @changeGpuSystemDiskType="changeGpuSystemDiskType"
-        @deleteGpuSystemDisk="deleteGpuSystemDisk"
-      ></buy-gpu-specification>
-    </div>
-    <div v-if="buyStep === 1">
-      <buy-network
-        :area="area"
-        :server-network="serverNetwork"
-        @changepublicIPType="changepublicIPType"
-      ></buy-network>
-    </div>
-    <div v-if="buyStep === 2">
-      <buy-login-info
-        :login-info="loginInfo"
-        @changeSetType="changeSetType"
-        @changeAutoRenewal="changeAutoRenewal"
-      ></buy-login-info>
+    <buy-header :title-name="headerTitle" @toOldVersion="toOldVersion"></buy-header>
+    <div class="container">
+      <buy-step :buy-step-group="buyStepGroup" :buy-step="buyStep"></buy-step>
+      <div v-if="buyStep===0">
+        <buy-server-type
+          :server-type-group="serverTypeGroup"
+          :server-type="serverType"
+          @changeServerType="changeServerType"
+        ></buy-server-type>
+        <buy-billing-type
+          :billing-type-group="billingTypeGroup"
+          :billing-type="billingType"
+          @changeBillingType="changeBillingType"
+        ></buy-billing-type>
+        <buy-area :area-group="areaGroup" :area="area" @changeArea="changeArea"></buy-area>
+        <buy-mirror
+          :mirror-type-group="mirrorTypeGroup"
+          :mirrorType="mirrorType"
+          :area="area"
+          :mirrorID="mirrorID"
+          :mirrorName="mirrorName"
+          @changeMirrorType="changeMirrorType"
+          @changePublicMirror="changePublicMirror"
+        ></buy-mirror>
+        <buy-server-specification
+          :server-specification-group="serverSpecificationGroup"
+          :server-specification="serverSpecification"
+          @changeCPU="changeCPU"
+          @changeMemory="changeMemory"
+          @changeRootDiskType="changeRootDiskType"
+          @addServerSystemDisk="addServerSystemDisk"
+          @changeServerSystemDiskType="changeServerSystemDiskType"
+          @deleteServerSystemDisk="deleteServerSystemDisk"
+        ></buy-server-specification>
+        <buy-defend v-if="serverType==='NOKIAServer'"></buy-defend>
+        <buy-gpu-specification
+          v-if="serverType==='GPUServer'"
+          :gpu-specification="gpuSpecification"
+          :gpu-specificationGroup="gpuSpecificationGroup"
+          @addGpuSystemDisk="addGpuSystemDisk"
+          @changeGpuSystemDiskType="changeGpuSystemDiskType"
+          @deleteGpuSystemDisk="deleteGpuSystemDisk"
+        ></buy-gpu-specification>
+      </div>
+      <div v-if="buyStep === 1" class="list-wrap">
+        <buy-network
+          :area="area"
+          :server-network="serverNetwork"
+          @changepublicIPType="changepublicIPType"
+        ></buy-network>
+        <div class="lists">
+          <buy-budget-list></buy-budget-list>
+          <buy-selected-config></buy-selected-config>
+        </div>
+      </div>
+      <div v-if="buyStep === 2" class="list-wrap">
+        <buy-login-info
+          :login-info="loginInfo"
+          @changeSetType="changeSetType"
+          @changeAutoRenewal="changeAutoRenewal"
+        ></buy-login-info>
+        <div class="lists">
+          <buy-budget-list></buy-budget-list>
+          <buy-selected-config></buy-selected-config>
+        </div>
+      </div>
     </div>
     <div id="footer_page">
       <buy-footer :buyStep="buyStep" :is-fixed="isFixed" @nextStep="nextStep"></buy-footer>
@@ -65,6 +75,18 @@
 <style lang="less" scoped>
 .server-page {
   background: rgba(248, 248, 248, 1);
+  .container {
+    width: 1200px;
+    margin: 0 auto;
+    .list-wrap {
+      display: flex;
+      justify-content: space-between;
+      .lists {
+        width: 380px;
+        padding-top: 20px;
+      }
+    }
+  }
   #footer_page {
     margin-top: 20px;
   }
@@ -85,6 +107,8 @@ import buyNetwork from "../buyComponents/buy-network";
 import buyLoginInfo from "../buyComponents/buy-login-info";
 import buyFooter from "../buyComponents/buy-footer";
 import buyDefend from "../buyComponents/buy-defend";
+import buySelectedConfig from "../buyComponents/buy-selected-config";
+import buyBudgetList from "../buyComponents/buy-budget-list";
 export default {
   components: {
     buyHeader,
@@ -98,7 +122,9 @@ export default {
     buyDefend,
     buyNetwork,
     buyLoginInfo,
-    buyFooter
+    buyFooter,
+    buySelectedConfig,
+    buyBudgetList
   },
   // 以前统一写在app里，由于静态打包与写在app里冲突，所以vuex必须先在这里获取到区域信息,不然区域信息是null,
   beforeRouteEnter(to, from, next) {
@@ -345,9 +371,23 @@ export default {
       }
     },
     setAreaData() {
-      this.areaGroup = this.$store.state.zoneList.filter(zone => {
-        return zone.gpuserver == 0;
-      });
+      switch (this.serverType) {
+        case "cloudServer":
+          this.areaGroup = this.$store.state.zoneList.filter(zone => {
+            return zone.gpuserver === 0;
+          });
+          break;
+        case "NOKIAServer":
+          this.areaGroup = this.$store.state.zoneList.filter(zone => {
+            return zone.gpuserver === 2;
+          });
+          break;
+        case "GPUServer":
+          this.areaGroup = this.$store.state.zoneList.filter(zone => {
+            return zone.gpuserver === 1;
+          });
+          break;
+      }
       this.area = this.$store.state.zone;
       // 如果默认区域在该资源下不存在
       if (
@@ -383,11 +423,25 @@ export default {
         }
       });
     },
-    toOldVersion(val) {
-      this.$router.push("/buy/host");
+    toOldVersion() {
+      switch (this.serverType) {
+        case "cloudServer":
+          this.$router.push("/buy/host/");
+          break;
+        case "NOKIAServer":
+          this.$router.push("/buy/ddos/");
+          break;
+        case "GPUServer":
+          this.$router.push("/buy/gpu/");
+          break;
+      }
     },
     changeServerType(item) {
+      if (item.value === "bareMetalServer") {
+        return;
+      }
       this.serverType = item.value;
+      this.setAreaData();
     },
     changeBillingType(item) {
       this.billingType = item.value;
@@ -463,6 +517,7 @@ export default {
       this.loginInfo.autoRenewal = val;
     },
     nextStep(val) {
+      window.scroll(0, 0);
       this.buyStep = val;
     }
   },
