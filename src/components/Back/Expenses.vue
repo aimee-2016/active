@@ -1694,16 +1694,16 @@
                     value: 9
                   },
                   {
-                    label: '10',
-                    value: '高防主机'
+                    label: '高防主机',
+                    value: 10
                   },
                   {
-                    label: '11',
-                    value: '高防弹性公网IP'
+                    label: '高防弹性公网IP',
+                    value: 11
                   },
                   {
-                    label: '12',
-                    value: 'DDoS高防IP'
+                    label: 'DDoS高防IP',
+                    value: 12
                   }
                 ],
                 filterMultiple: false,

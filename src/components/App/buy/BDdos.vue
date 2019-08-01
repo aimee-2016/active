@@ -1118,13 +1118,13 @@
           diskType: this.currentSystem.diskType,
           memory: this.currentSystem.RAM,
           timeType: this.quickProtectSecIndex.value > 300 ? 'current' : this.timeForm.currentTimeValue.type,
-          timeValue: this.quickProtectSecIndex.value > 300 ? this.bigProtectTime : this.timeForm.currentTimeValue.value,
+          timeValue: this.quickProtectSecIndex.value > 300 ? (this.bigProtectTime)*24 : this.timeForm.currentTimeValue.value,
           zoneId: this.zone.zoneid
         }
         var ipParams = {
           brand: this.currentSystem.bandWidth,
           timeType: this.quickProtectSecIndex.value > 300 ? 'current' : this.timeForm.currentTimeValue.type,
-          timeValue: this.quickProtectSecIndex.value > 300 ? this.bigProtectTime : this.timeForm.currentTimeValue.value,
+          timeValue: this.quickProtectSecIndex.value > 300 ? (this.bigProtectTime)*24 : this.timeForm.currentTimeValue.value,
           zoneId: this.zone.zoneid
         }
         var protectParams = {
@@ -1133,17 +1133,17 @@
           timeValue: this.quickProtectSecIndex.value > 300 ? this.bigProtectTime : this.timeForm.currentTimeValue.value,
           ddosProtectNumber: this.quickProtectSecIndex.value
         }
-        var host = axios.post('device/QueryBillingPrice.do', params)
-        var ip = axios.post('device/queryIpPrice.do', ipParams)
+        var host = axios.post('ddosImitationhost/QueryBillingPrice.do', params)
+        var ip = axios.post('ddosImitationhost/queryIpPrice.do', ipParams)
         let protect = axios.post("device/QueryDdosPrice.do", protectParams)
         Promise.all([host, ip, protect]).then(response => {
           if(this.quickProtectSecIndex.value > 300){ // 防护配置按月或者年计算
             // 设置主机价格
-            this.quickDdosHostPrice = (response[0].data.cost)*(this.bigProtectTime)*24
+            this.quickDdosHostPrice = (response[0].data.cost)*(this.bigProtectTime)
             // 防护价格 + IP价格
-            this.quickDdosSelectPrice = response[2].data.cost + (response[1].data.cost)*(this.bigProtectTime)*24
+            this.quickDdosSelectPrice = response[2].data.cost + (response[1].data.cost)*(this.bigProtectTime)
             if (response[0].data.coupon) {
-              this.temFastCoupon = response[0].data.coupon + (response[1].data.coupon)*(this.bigProtectTime)*24 + response[2].data.coupon
+              this.temFastCoupon = response[0].data.coupon*(this.bigProtectTime) + (response[1].data.coupon)*(this.bigProtectTime) + response[2].data.coupon
             } else {
               this.temFastCoupon = 0
             }
@@ -1201,17 +1201,18 @@
         prod.currentLoginType = this.currentLoginType
         prod.computerName = this.computerName
         prod.password = this.password
-        prod.ddosProtectNumber = this.quickProtectSecIndex.value
         if (this.createType == 'fast') {
           prod.currentSystem = this.currentSystem
           prod.cost = this.fastCost/this.purchCount
           prod.system = this.selectFastMirrorInfo
           prod.fastHeightDdosTime = this.quickProtectSecIndex.value > 300 ? this.bigProtectTime : ''
+          prod.ddosProtectNumber = this.quickProtectSecIndex.value
         } else {
           prod.system = this.currentType == 'public' ? this.system : this.appSystem
           prod.IPConfig = this.IPConfig
           prod.vmConfig = this.vmConfig
           prod.customHeightDdosTime = this.customProtectSecIndex.value > 300 ? this.bigCustomProtectTime : ''
+          prod.ddosProtectNumber = this.customProtectSecIndex.value
           prod.dataDiskList = this.dataDiskList
           prod.vpc = this.vpc
           prod.network = this.network
@@ -1459,13 +1460,13 @@
           diskType: this.vmConfig.diskType,
           memory: this.vmConfig.RAM.toString(),
           timeType: this.customProtectSecIndex.value > 300 ? 'current' : this.timeForm.currentTimeValue.type,
-          timeValue: this.customProtectSecIndex.value > 300 ? this.bigCustomProtectTime : this.timeForm.currentTimeValue.value,
+          timeValue: this.customProtectSecIndex.value > 300 ? (this.bigCustomProtectTime)*24 : this.timeForm.currentTimeValue.value,
           zoneId: this.zone.zoneid
         }
-        axios.post('device/QueryBillingPrice.do', params).then(response => {
+        axios.post('ddosImitationhost/QueryBillingPrice.do', params).then(response => {
           if(this.customProtectSecIndex.value > 300){
             // 防护配置不小于400GB的时候，计费按天计算，返回的值是一个小时的
-            this.vmConfig.cost = (response.data.cost)*(this.bigCustomProtectTime)*24
+            this.vmConfig.cost = (response.data.cost)*(this.bigCustomProtectTime)
             this.vmConfig.coupon = 0
           } else {
             // 防护配置小于400GB按 月或年计算
@@ -1506,13 +1507,13 @@
         var params = {
           brand: this.IPConfig.bandWidth,
           timeType: this.customProtectSecIndex.value > 300 ? 'current' : this.timeForm.currentTimeValue.type,
-          timeValue: this.customProtectSecIndex.value > 300 ? this.bigCustomProtectTime : this.timeForm.currentTimeValue.value,
+          timeValue: this.customProtectSecIndex.value > 300 ? (this.bigCustomProtectTime)*24 : this.timeForm.currentTimeValue.value,
           zoneId: this.zone.zoneid
         }
-        axios.post('device/queryIpPrice.do', params).then(response => {
+        axios.post('ddosImitationhost/queryIpPrice.do', params).then(response => {
           if(this.customProtectSecIndex.value > 300){
             // 防护配置不小于400GB的时候，计费按天计算，返回的值是一个小时的
-            this.IPConfig.cost = (response.data.cost)*(this.bigCustomProtectTime)*24
+            this.IPConfig.cost = (response.data.cost)*(this.bigCustomProtectTime)
             this.IPConfig.coupon = 0
           } else {
             // 防护配置小于400GB按 月或年计算
@@ -1547,13 +1548,13 @@
           diskType,
           memory: '0',
           timeType: this.customProtectSecIndex.value > 300 ? 'current' : this.timeForm.currentTimeValue.type,
-          timeValue: this.customProtectSecIndex.value > 300 ? this.bigCustomProtectTime :this.timeForm.currentTimeValue.value,
+          timeValue: this.customProtectSecIndex.value > 300 ? (this.bigCustomProtectTime)*24 :this.timeForm.currentTimeValue.value,
           zoneId: this.zone.zoneid
         }
-        axios.post('device/QueryBillingPrice.do', params).then(response => {
+        axios.post('ddosImitationhost/QueryBillingPrice.do', params).then(response => {
           if(this.customProtectSecIndex.value > 300){
             // 防护配置不小于400GB的时候，计费按天计算，返回的值是一个小时的
-            this.dataDiskCost = (response.data.cost)*(this.bigCustomProtectTime)*24
+            this.dataDiskCost = (response.data.cost)*(this.bigCustomProtectTime)
             this.coupon = 0
           } else {
             // 防护配置小于400GB按 月或年计算

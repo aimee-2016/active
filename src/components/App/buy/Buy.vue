@@ -433,7 +433,6 @@
       }
     },
     created() {
-      console.log(this.cart)
       this.$http.get('information/getServiceoffers.do').then(
         response => {
           this.info = response.data.info
@@ -656,8 +655,6 @@
           } else if (prod.type == 'PDdosHost') { // 高防主机Ddos
             var params = {
               zoneId: prod.zone.zoneid,
-              timeType: prod.timeForm.currentTimeType == 'annual' ? prod.timeForm.currentTimeValue.type : 'current',
-              timeValue: prod.timeForm.currentTimeValue.value,
               isAutoRenew: prod.autoRenewal ? '1' : '0',
               count: prod.count,
               ddosProtectNumber: prod.ddosProtectNumber,
@@ -672,9 +669,13 @@
               params.networkId = 'no'
               params.vpcId = 'no'
               params.templateId = prod.system.systemId
+              params.timeType = prod.ddosProtectNumber > 300 ? 'day' : prod.timeForm.currentTimeValue.type,
+              params.timeValue = prod.ddosProtectNumber > 300 ? prod.fastHeightDdosTime : prod.timeForm.currentTimeValue.value
             } else {
               // params.templateId =  prod.currentType == 'public' ? prod.system.systemtemplateid : prod.customMirror.systemtemplateid,
               params.cpuNum = prod.vmConfig.kernel
+              params.timeType = prod.ddosProtectNumber > 300 ? 'day' : prod.timeForm.currentTimeValue.type,
+              params.timeValue = prod.ddosProtectNumber > 300 ? prod.bigCustomProtectTime : prod.timeForm.currentTimeValue.value
               params.memory = prod.vmConfig.RAM
               params.bandWidth = prod.IPConfig.publicIP ? prod.IPConfig.bandWidth : 0
               params.rootDiskType = prod.vmConfig.diskType
