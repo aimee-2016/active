@@ -73,12 +73,12 @@
               <Radio label="0" v-if="defaultDatabaseTemp!='--'">部分备份</Radio>
             </RadioGroup>
           </FormItem>
-          <FormItem label="请输入数据库名称" prop="name" v-if="defaultDatabaseTemp!='--'">
+          <FormItem label="请输入数据库名称" prop="name" v-if="defaultDatabaseTemp!='--'&&createSnapsForm.type==0">
             <Input v-model="createSnapsForm.name" placeholder="请输入数据库名称"></Input>
           </FormItem>
         </Form>
         <p class="mb20">备份时间为：{{new Date().format('yyyy-MM-dd hh:mm:ss')}}</p>
-        <p style="color:#ed3f14;margin-bottom: 10px;" v-if="defaultDatabaseTemp!='--'">提示：请输入数据库名称，默认名称为：{{defaultDatabaseTemp}}</p>
+        <p style="color:#ed3f14;margin-bottom: 10px;" v-if="defaultDatabaseTemp!='--'&&createSnapsForm.type==0">提示：请输入数据库名称，默认名称为：{{defaultDatabaseTemp}}</p>
       </div>
       <div slot="footer" class="modal-footer-border">
         <Button type="ghost" @click="cancelSnaps('createSnapsForm')">取消</Button>
@@ -225,7 +225,7 @@
         }
       }
       return {
-        defaultDatabaseTemp: '',
+        defaultDatabaseTemp: 'mysql',
         strategyName: '',
         strategyId: '',
         databaseList: [],
