@@ -5,43 +5,49 @@
         <h2>镜像选择</h2>
         <div class="mirror-group">
           <span
-            v-for="(item,index) in mirrorTypeGroup"
+            v-for="(item,index) in mirrorConfig.mirrorTypeGroup"
             :key="index"
-            :class="{selected: mirrorType === item.value}"
+            :class="{selected: mirrorConfig.mirrorType === item.value}"
             @click="changeMirrorType(item)"
           >{{ item.text }}</span>
         </div>
         <div class="mirror-lists">
-          <div v-show="mirrorType === 'mirrorMarket'">
+          <div v-show="mirrorConfig.mirrorType === 'mirrorMarket'">
             <div class="mirror-category">
               <span>镜像类别:</span>
               <span
                 class="category"
-                v-for="(item,index) in mirrorCategorys"
+                v-for="(item,index) in mirrorConfig.mirrorMarketGroup"
                 :key="index"
-                :class="{selected: index === 0}"
-              >{{ item.name}}</span>
+                :class="{selected: mirrorConfig.selectedMirrorMarket === item.mirrorMarketType}"
+                @click="changeMirrorMarketType(item)"
+              >{{ item.mirrorMarketType }}</span>
             </div>
             <div class="mirror-items">
-              <ul v-for="(item,index) in mirroritems" :key="index" :class="{selected: index === 0}">
+              <ul
+                v-for="(item,index) in mirrorConfig.mirrorMarketItems"
+                :key="index"
+                :class="{selected: mirrorConfig.mirrorID === item.systemtemplateid}"
+                @click="changeMirrorMarketItem(item)"
+              >
                 <li>图片</li>
-                <li>WordPress建站系统</li>
-                <li>系统镜像：centos 7.4</li>
+                <li>{{item.templatedescript}}</li>
+                <li>系统镜像：{{item.ostypename}}</li>
                 <li>免费</li>
               </ul>
             </div>
           </div>
-          <div v-show="mirrorType === 'piblicMirror'">
+          <div v-show="mirrorConfig.mirrorType === 'piblicMirror'">
             <Dropdown
               class="public-mirror-type"
               trigger="click"
-              v-for="(item,index) in publicMirrorGroup"
+              v-for="(item,index) in mirrorConfig.publicMirrorGroup"
               :key="index"
               @on-click="changePublicMirror"
             >
               <span
                 class="mirror-type-name"
-                :class="{selected: mirrorName===item.publicMirrorType}"
+                :class="{selected: mirrorConfig.mirrorName===item.publicMirrorType}"
               >{{item.publicMirrorType}}</span>
               <DropdownMenu slot="list" style="width:222px">
                 <DropdownItem
@@ -52,10 +58,10 @@
               </DropdownMenu>
             </Dropdown>
           </div>
-          <div v-show="mirrorType === 'customMirror'">
-            <Select placeholder="请选择自制镜像" v-model="ownMirrorID" style="width:338px">
+          <div v-show="mirrorConfig.mirrorType === 'customMirror'">
+            <Select placeholder="请选择自制镜像" v-model="mirrorConfig.ownMirrorID" style="width:338px">
               <Option
-                v-for="item in ownMirrorGroup"
+                v-for="item in mirrorConfig.ownMirrorGroup"
                 :value="item.value"
                 :key="item.value"
               >{{ item.label }}</Option>
@@ -154,8 +160,13 @@
               font-size: 12px;
               font-family: MicrosoftYaHei;
               color: rgba(51, 51, 51, 1);
+              width: 30%;
+            }
+            li:nth-child(1) {
+              width: 20%;
             }
             li:last-child {
+              width: 20%;
               font-weight: bold;
               color: rgba(51, 51, 51, 1);
             }
@@ -198,101 +209,36 @@ import axios from "axios";
 
 export default {
   data() {
-    return {
-      mirrorCategorys: [
-        {
-          name: "网站建设",
-          value: "1"
-        },
-        {
-          name: "视频直播",
-          value: "2"
-        }
-      ],
-      mirroritems: [{}, {}, {}, {}, {}],
-      publicMirrorGroup: [],
-      selectedPublicMirrorType: "",
-      ownMirrorID: "",
-      ownMirrorGroup: []
-    };
+    return {};
   },
   props: {
     isNotServer: {
       type: String,
       default: ""
     },
-    mirrorTypeGroup: {
-      type: Array,
-      default: () => {
-        return new Array();
-      }
-    },
-    mirrorType: {
-      type: String,
-      default: ""
-    },
-    area: {
+    mirrorConfig: {
       type: Object,
       default: () => {
         return new Object();
       }
-    },
-    mirrorID: {
-      type: String,
-      default: ""
-    },
-    mirrorName: {
-      type: String,
-      default: ""
     }
   },
-  created() {
-    this.getPublicMirror();
-  },
+  created() {},
   methods: {
-    getPublicMirror() {
-      axios
-        .get("information/listTemplates.do", {
-          params: {
-            zoneId: this.area.zoneid,
-            // 0代表系统镜像
-            user: "0"
-          }
-        })
-        .then(response => {
-          if (response.status == 200 && response.data.status == 1) {
-            this.publicMirrorGroup = [];
-            for (let key in response.data.result) {
-              this.publicMirrorGroup.push({
-                publicMirrorType: key,
-                publicMirrorList: response.data.result[key],
-                key
-              });
-            }
-          }
-        });
-    },
     changeMirrorType(item) {
       this.$emit("changeMirrorType", item);
     },
     changePublicMirror(val) {
-      let arr = val.split("#");
-      this.publicMirrorGroup.forEach((item, index) => {
-        if (index !== arr[2]) {
-          item.publicMirrorType = item.key; // 重置其他公共镜像列表
-        }
-      });
-      this.publicMirrorGroup[arr[2]].publicMirrorType = arr[0];
-      this.$emit("changePublicMirror", arr);
+      this.$emit("changePublicMirror", val);
+    },
+    changeMirrorMarketType(item) {
+      this.$emit("changeMirrorMarketType", item);
+    },
+    changeMirrorMarketItem(item) {
+      this.$emit("changeMirrorMarketItem", item);
     }
   },
   computed: {},
-  watch: {
-    area(val) {
-      if (val) {
-        this.getPublicMirror();
-      }
-    }
-  }
+  watch: {}
 };
 </script>

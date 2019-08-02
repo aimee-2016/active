@@ -14,17 +14,17 @@
               style="width:200px;margin-right: 10px"
             >
               <Option
-                v-for="item in serverNetwork.vpcGroup"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
+                v-for="(item,index) in serverNetwork.vpcGroup"
+                :value="item.vpcid"
+                :key="index"
+              >{{ item.vpcname }}</Option>
             </Select>
             <Select placeholder="请选择子网" v-model="serverNetwork.networkId" style="width:200px">
               <Option
-                v-for="item in serverNetwork.networkGroup"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
+                v-for="(item,index) in serverNetwork.networkGroup"
+                :value="item.ipsegmentid"
+                :key="index"
+              >{{ item.name }}</Option>
             </Select>
           </div>
         </div>
@@ -108,10 +108,10 @@
           <div class="item-text">
             <Select placeholder="请选择防火墙" v-model="serverNetwork.firewall" style="width:200px;">
               <Option
-                v-for="item in serverNetwork.firewallGroup"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
+                v-for="(item,index) in serverNetwork.firewallGroup"
+                :value="item.acllistid"
+                :key="index"
+              >{{ item.acllistname }}</Option>
             </Select>
             <p>
               <span class="view" @click="viewFireWallRule">查看防火墙配置详情</span>
@@ -134,10 +134,18 @@
           <div class="item-text">
             <Tabs type="card" :animated="false">
               <TabPane label="入站规则">
-                <Table :columns="upRuleCol" :data="upRuleData" style="width:620px;"></Table>
+                <Table
+                  :columns="serverNetwork.upRuleCol"
+                  :data="serverNetwork.upRuleData"
+                  style="width:620px;"
+                ></Table>
               </TabPane>
               <TabPane label="出站规则">
-                <Table :columns="downRuleCol" :data="downRuleData" style="width:620px;"></Table>
+                <Table
+                  :columns="serverNetwork.downRuleCol"
+                  :data="serverNetwork.downRuleData"
+                  style="width:620px;"
+                ></Table>
               </TabPane>
             </Tabs>
           </div>
@@ -263,84 +271,7 @@ import axios from "axios";
 export default {
   data() {
     return {
-      fireWallRuleShow: false,
-      upRuleCol: [
-        {
-          title: "名称",
-          key: "acllistitemname"
-        },
-        {
-          title: "来源",
-          key: "cidr"
-        },
-        {
-          title: "协议端口",
-          render: (h, params) => {
-            var port = "";
-            if (params.row.startport == params.row.endport) {
-              port = params.row.startport;
-            } else {
-              port = params.row.startport + " " + params.row.endport;
-            }
-            return h("span", {}, port);
-          }
-        },
-        {
-          title: "策略",
-          key: "operation",
-          render: (h, params) => {
-            return h(
-              "span",
-              {},
-              params.row.operation == "Allow" ? "允许" : "拒绝"
-            );
-          }
-        }
-      ],
-      upRuleData: [
-        {
-          acllistitemname: "默认防火墙",
-          acllistname: "默认防火墙",
-          cidr: "0.0.0.0/0",
-          operation: "Allow",
-          startport: "3360 3389 443 80",
-          endport: ""
-        }
-      ],
-      downRuleCol: [
-        {
-          title: "名称",
-          key: "acllistitemname"
-        },
-        {
-          title: "来源",
-          key: "cidr"
-        },
-        {
-          title: "协议端口",
-          render: (h, params) => {
-            var port = "";
-            if (params.row.startport == params.row.endport) {
-              port = params.row.startport;
-            } else {
-              port = params.row.startport + "" + params.row.endport;
-            }
-            return h("span", {}, port);
-          }
-        },
-        {
-          title: "策略",
-          key: "operation",
-          render: (h, params) => {
-            return h(
-              "span",
-              {},
-              params.row.operation == "Allow" ? "允许" : "拒绝"
-            );
-          }
-        }
-      ],
-      downRuleData: []
+      fireWallRuleShow: false
     };
   },
   props: {

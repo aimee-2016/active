@@ -6,17 +6,26 @@
           <div class="buy-num">
             <span>购买数量：</span>
             <ul>
-              <li>-</li>
-              <li>1</li>
-              <li>+</li>
+              <li @click="minusBuyCount">-</li>
+              <li>{{timeConfig.buyCount}}</li>
+              <li @click="addBuyCount">+</li>
             </ul>
             <span>台</span>
           </div>
-          <div class="buy-time">
+          <div class="buy-num" style="margin-left:40px" v-show="billingType === 'dayly'">
+            <span>购买天数：</span>
+            <ul>
+              <li>-</li>
+              <li>{{timeConfig.buyDay}}</li>
+              <li>+</li>
+            </ul>
+            <span>天</span>
+          </div>
+          <div class="buy-time" v-show="billingType === 'month'">
             <span>购买时长：</span>
-            <Select placeholder="请选择时长" v-model="buyTime" style="width:100px">
+            <Select placeholder="请选择时长" v-model="timeConfig.buyTime" style="width:100px">
               <Option
-                v-for="item in buyTimeGroup"
+                v-for="item in timeConfig.buyTimeGroup"
                 :value="item.value"
                 :key="item.value"
               >{{ item.label }}</Option>
@@ -169,11 +178,7 @@
 <script type="text/ecmascript-6">
 export default {
   data() {
-    return {
-      buyTime: "",
-      buyTimeType: "",
-      buyTimeGroup: []
-    };
+    return {};
   },
   props: {
     buyStep: {
@@ -183,9 +188,25 @@ export default {
     isFixed: {
       type: Boolean,
       default: false
+    },
+    timeConfig: {
+      type: Object,
+      default: () => {
+        return new Object();
+      }
+    },
+    billingType: {
+      type: String,
+      default: ""
     }
   },
   methods: {
+    minusBuyCount() {
+      this.$emit("minusBuyCount");
+    },
+    addBuyCount() {
+      this.$emit("addBuyCount");
+    },
     nextStep(val) {
       this.$emit("nextStep", val);
     }
