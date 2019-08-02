@@ -1427,6 +1427,12 @@
                     case 9:
                       text = '云市场'
                       break;
+                    case 10:
+                      text = '高防云服务器'
+                      break;
+                    case 11:
+                      text = '高防IP'
+                      break;
                     }
                   return h('span',text)
                 },
@@ -1470,6 +1476,14 @@
                   {
                     label: '云市场',
                     value: 9
+                  },
+                  {
+                    label: '高防云服务器',
+                    value: 10
+                  },
+                  {
+                    label: '高防IP',
+                    value: 11
                   },
                 ],
                 filterMultiple: false,
@@ -1694,16 +1708,16 @@
                     value: 9
                   },
                   {
-                    label: '10',
-                    value: '高防主机'
+                    label: '高防主机',
+                    value: 10
                   },
                   {
-                    label: '11',
-                    value: '高防弹性公网IP'
+                    label: '高防弹性公网IP',
+                    value: 11
                   },
                   {
-                    label: '12',
-                    value: 'DDoS高防IP'
+                    label: 'DDoS高防IP',
+                    value: 12
                   }
                 ],
                 filterMultiple: false,
@@ -1951,6 +1965,46 @@
                     },
                     on: {
                       click:()=> {
+                        let text = ''
+                        switch(params.row.name)
+                          {
+                            case '弹性云服务器':
+                              text = 0
+                              break;
+                            case '磁盘':
+                              text = 1
+                              break;
+                            case '弹性公网IP':
+                              text = 2
+                              break;
+                            case '数据库':
+                              text = 3
+                              break;
+                            case 'GPU云服务器':
+                              text = 4
+                              break;
+                            case 'NAT网关':
+                              text = 5
+                              break;
+                            case '对象存储':
+                              text = 6
+                              break;
+                            case '域名':
+                              text = 7
+                              break;
+                            case 'SSL证书':
+                              text = 8
+                              break;
+                            case '云市场':
+                              text = 9
+                              break;
+                            case '高防云服务器':
+                              text = 10
+                              break;
+                            case '高防IP':
+                              text = 11
+                              break;
+                          }
                         this.billBtnSelected = 1
                         this.resourcesType = params.index
                         this.getResourcesTable() 

@@ -567,10 +567,10 @@
               },
             ]
           },
-          // {
-          //   title: '云市场',
-          //   path: '/market'
-          // }, 
+          {
+            title: '云市场',
+            path: '/market'
+          },
           {
             title: '帮助文档',
             path: 'https://www.xrcloud.net/support/products/',
@@ -978,7 +978,7 @@
           window.open(`https://im.xrcloud.net/im/text/0Jck1w.html?companyId=${this.userInfo.companyid}`)
         } else{
           window.open('https://im.xrcloud.net/im/text/0Jck1w.html')
-        }       
+        }
       }
     },
     computed: mapState({
