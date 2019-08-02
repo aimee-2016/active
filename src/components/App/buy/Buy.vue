@@ -40,7 +40,7 @@
                   <p class="item">
                     <span class="hidden">$</span><span class="title">计费模式</span><span class="hidden">#</span>{{prod.timeForm.currentTimeType=='annual'?`包年包月`:prod.timeForm.currentTimeType=='current'?'实时计费':'七天计费'}}
                   </p>
-                  <p class="item" v-if="prod.timeForm.currentTimeType=='annual'">
+                  <p class="item" v-if="prod.timeForm.currentTimeType=='annual' && (prod.type != 'PDdosHost')">
                     <span class="hidden">$</span><span class="title">购买时长</span><span
                     class="hidden">#</span>{{prod.timeForm.currentTimeValue.label}}
                   </p>
@@ -146,6 +146,19 @@
                 </div>
                 <!-- Ddos高防主机字段 -->
                 <div v-if="prod.type=='PDdosHost'">
+                  <p class="item" v-if="prod.type == 'PDdosHost' && prod.ddosProtectNumber < 400 && !prod.fastHeightDdosTime && !prod.customHeightDdosTime">
+                    <span class="hidden">$</span><span class="title">购买时长</span><span
+                    class="hidden">#</span>{{prod.timeForm.currentTimeValue.label}}
+                  </p>
+                  <p class="item" v-else-if="prod.fastHeightDdosTime && !prod.customHeightDdosTime">
+                    <span class="hidden">$</span><span class="title">购买时长</span><span
+                    class="hidden">#</span>{{prod.fastHeightDdosTime}}天
+                  </p>
+                  <p class="item" v-else-if="!prod.fastHeightDdosTime && prod.customHeightDdosTime">
+                    <span class="hidden">$</span><span class="title">购买时长</span><span
+                    class="hidden">#</span>{{prod.customHeightDdosTime}}天
+                  </p>
+                  <p v-else></p>
                   <p class="item">
                     <span class="hidden">$</span><span class="title">防护大小</span><span
                     class="hidden">#</span>{{prod.ddosProtectNumber}}GB
@@ -645,8 +658,6 @@
           } else if (prod.type == 'PDdosHost') { // 高防主机Ddos
             var params = {
               zoneId: prod.zone.zoneid,
-              timeType: prod.timeForm.currentTimeType == 'annual' ? prod.timeForm.currentTimeValue.type : 'current',
-              timeValue: prod.timeForm.currentTimeValue.value,
               isAutoRenew: prod.autoRenewal ? '1' : '0',
               count: prod.count,
               ddosProtectNumber: prod.ddosProtectNumber,
@@ -661,9 +672,13 @@
               params.networkId = 'no'
               params.vpcId = 'no'
               params.templateId = prod.system.systemId
+              params.timeType = prod.ddosProtectNumber > 300 ? 'day' : prod.timeForm.currentTimeValue.type,
+              params.timeValue = prod.ddosProtectNumber > 300 ? prod.fastHeightDdosTime : prod.timeForm.currentTimeValue.value
             } else {
               // params.templateId =  prod.currentType == 'public' ? prod.system.systemtemplateid : prod.customMirror.systemtemplateid,
               params.cpuNum = prod.vmConfig.kernel
+              params.timeType = prod.ddosProtectNumber > 300 ? 'day' : prod.timeForm.currentTimeValue.type,
+              params.timeValue = prod.ddosProtectNumber > 300 ? prod.customHeightDdosTime : prod.timeForm.currentTimeValue.value
               params.memory = prod.vmConfig.RAM
               params.bandWidth = prod.IPConfig.publicIP ? prod.IPConfig.bandWidth : 0
               params.rootDiskType = prod.vmConfig.diskType
