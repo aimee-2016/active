@@ -30,10 +30,10 @@
                 <div class="menu-dropdown-list">
                   <div class="content-dropdown">
                     <div class="content" ref="content" style="height:0px;">
-                      <div v-if="item.content" class="column" :class="{info:index1 == 4,zx:index1 == 3}" style="padding:21px 0;">
+                      <div v-if="item.content" class="column" :class="{info:index1 == 5,zx:index1 == 4}" style="padding:21px 0;">
                         <div v-for="(prod,index) in item.content" :key="index">
                           <div>
-                            <h2 v-if="index1 == 3||index1 == 4" class="info" @click="openInfo(prod.path)" :class="{mark:item.title=='新闻动态'}">{{prod.prod}}</h2>
+                            <h2 v-if="index1 == 4||index1 == 5" class="info" @click="openInfo(prod.path)" :class="{mark:item.title=='新闻动态'}">{{prod.prod}}</h2>
                             <h2 v-else :class="{mark:item.title=='新闻动态'}">{{prod.prod}}</h2>
                             <div v-for="(i,index) in prod.prodItem" style="line-height: normal" :key="index">
                               <a :href="i.path" v-if="i.path==''">{{i.title}}</a>
