@@ -57,7 +57,7 @@
                 <Checkbox label='cash'>
                   <p style="font-weight: 700;margin-left: 10px;display:inline-block;">使用现金券<span style="color:#FF624B;font-size:18px;">{{couponInfo.cash}}</span>元</p>
                 </Checkbox>
-                <span style="float:right;">已经抵扣：<strong style="color:#FF624B;font-size:24px;">{{deductionPrice}}</strong>元</span>
+                <span style="float:right;">已经抵扣：<strong style="color:#FF624B;font-size:24px;">{{deductionPrice.deduMount}}</strong>元</span>
               </div>
             </CheckboxGroup>
           </div>
@@ -65,7 +65,7 @@
 
           <div style="border-top:1px solid #E9E9E9;padding:20px 0;margin-top:20px;">
             <!-- <span style="color:#2d8cf0;cursor:pointer;">全民普惠，3折减单，最高减免7000元！</span> -->
-            <span style="float:right;">实际支付：<strong style="color:#FF624B;font-size:24px;">{{totalCost}}</strong>元</span>
+            <span style="float:right;">实际支付：<strong style="color:#FF624B;font-size:24px;">{{deductionPrice.payMount}}</strong>元</span>
           </div>
         </div>
         <div style="text-align:right;margin-top:40px;">
@@ -391,8 +391,11 @@ export default {
       orderPay: {},
       vipName: this.$store.state.userInfo.vipname,
       routePath: "",
-      deductionPrice:0,
-      totalCost:0
+      deductionPrice:{
+        deduMount:0,
+        payMount:0,
+        ticketMessage:''
+      },
     };
   },
   beforeRouteEnter(to, from, next) {
@@ -421,7 +424,7 @@ export default {
       });
   },
   created() {
-    // this.getSpentCost();
+    // this.getSpentCost(); 
     this.getWalletsBalance();
     this.changeCashbox('cash')
   },
@@ -582,8 +585,8 @@ export default {
       this.couponInfo.originCost = originCost;
       if (selection.length == 0) {
         this.couponInfo.totalCost = 0;
-        this.deductionPrice = 0;
-        this.totalCost = 0;
+        this.deductionPrice.deduMount = 0;
+        this.deductionPrice.payMount = 0;
       } else {
         this.getPrice();
     
@@ -657,7 +660,7 @@ export default {
               this.orderInfo.orderId.length - 1
             ),
             ticket: this.couponInfo.selectTicket,
-            money: this.totalCost
+            money: this.deductionPrice.payMount
           }
         })
         .then(response => {
@@ -796,8 +799,9 @@ export default {
         }
       }).then(res => {
         if(res.status == 200 && res.data.status == 1){
-          this.deductionPrice = res.data.result.deduMount;
-          this.totalCost = res.data.result.payMount;
+          this.deductionPrice = res.data.result;
+          if(res.data.result.ticketMessage != "")
+          this.$Message.info(res.data.result.ticketMessage);
         }else{
           this.$Message.info(res.data.message);
         }
@@ -948,7 +952,9 @@ export default {
         return false;
       }
     },
+    priceData(){
 
+    },
 
     
    

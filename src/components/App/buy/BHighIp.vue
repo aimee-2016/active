@@ -201,10 +201,6 @@
                     label:'中国大陆',
                     value:'1'
                 },
-                {
-                    label:'海外',
-                    value:'2'
-                }
             ],
             lineIndex:'1'
         },

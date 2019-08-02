@@ -179,7 +179,7 @@
                                         <p class="no-pfb">暂无数据</p>
                                         <p class="no-pfs">该时段未产生攻击或攻击数据暂未更新，请稍后重试</p>
                                     </div>
-                                    <chart style="width:100%;" id='flowBtm'  :options="flowBtm"></chart>
+                                    <chart style="width:100%;height:80%;" id='flowBtm'  :options="flowBtm"></chart>
                                 </div>
                             </div>
                             <div class="dp-mbr" style="width:570px;">
@@ -525,10 +525,10 @@
                                     title="您确认删除选中的配置吗？" style="margin: 0 10px">
                                     <Button type="primary" :disabled='renewDisabled'>删除</Button>
                                     </Poptip>
-                                    <span class="dp-cn">CNAME：{{ruleData[0].cname||'无'}}</span>
+                                    <span class="dp-cn">CNAME：{{ruleData.length == 0 ? '无':ruleData[0].cname||'无'}}</span>
                                 </div>
                                 <div>
-                                    <Select v-model="attackMeal"  style="width:200px;">
+                                    <Select v-model="attackMeal"  style="width:200px;" @on-change='getAllforwardrule(1)'>
                                         <Option
                                             v-for="item in setMealList"
                                             :value="item.packageid"
@@ -909,8 +909,8 @@ export default {
         white:[{required: true, message: '请输入白名单', trigger: 'blur'},
         {validate:whiteList}],
     }, 
-    blackName: '',
-    whiteName: '',
+      blackName: '',
+      whiteName: '',
       overviewRadio:'概览',
       button1: "网站业务",
       duration:'',
@@ -1040,7 +1040,7 @@ export default {
         hightIpBin:JSON.parse(bin),
         ccStatistics:{
             packageid:'',
-            date:'',
+            date:[new Date(),new Date()],
             domain:''
         },
         price:0,
@@ -1049,7 +1049,7 @@ export default {
         attackMeal:'',
         business:{
             packageId:'',
-            date:'',
+            date:[new Date(),new Date()],
             domain:'',
             peakTime:'--',
             peakValue:'--',
@@ -1061,7 +1061,7 @@ export default {
             outFlow:'0Gbps'
         },
         // 统计时间
-        statisticsTime:'',
+        statisticsTime:[new Date(),new Date()],
         
         renewPrice:{},
 
@@ -1749,6 +1749,7 @@ export default {
                                 click:()=>{
                                     this.ccShow = false;
                                     this.ccDisabled = false;
+                                    params.row._disableExpand = false;
                                 }
                             }
                         },'修改')
@@ -1760,6 +1761,7 @@ export default {
                             },
                             on:{
                                 click:()=>{
+                                    params.row._disableExpand = true;
                                     this.saveConfig(params.row._index);
                                 }
                             }
@@ -1816,11 +1818,6 @@ export default {
 
     }
   },
-  beforeRouteEnter(to,from,next){
-      next(vm=>{
-          vm.changeColor()
-      })
-  },
   created(){
       this.changeColor();
       this.getDdosOverview(1);
@@ -1833,7 +1830,7 @@ export default {
   mounted(){
     //   this.inmapVoid();
           var inmap = new inMap.Map({
-                id: this.$refs.topMap,
+                id: 'topMap',
                 skin: "Blueness",
                 center: [105.403119, 38.028658],
                 zoom: {
@@ -1860,22 +1857,23 @@ export default {
         let domainList = [];
         this.$http.get('ddosImitationIp/packageIdInfo.do',{}).then(res=>{
             if(res.status == 200 && res.data.status == 1){
-                for(let i =0; i<res.data.result.length; i++){
-                    for(let key in res.data.result[i]){
-                        if(res.data.result[i][key].length != 0){
-                            for(let j = 0; j<res.data.result[i][key].length;j++){
-                                  domainList.push(res.data.result[i][key][j].domainname);
+                if(res.data.result){
+                    for(let i =0; i<res.data.result.length; i++){
+                        for(let key in res.data.result[i]){
+                            if(res.data.result[i][key].length != 0){
+                                for(let j = 0; j<res.data.result[i][key].length;j++){
+                                    domainList.push(res.data.result[i][key][j].domainname);
+                                }
+                            }else{
+                                domainList = [];
                             }
-                        }else{
-                            domainList = [];
+                            this.setMealList.push({'packageid':key,'domainList':domainList});
                         }
-                        this.setMealList.push({'packageid':key,'domainList':domainList});
-                    }
                 }
-                this.setMeal  = this.ccStatistics.packageid = this.operationObject = this.business.packageId =  this.attackMeal = this.setMealList[0].packageid;
-                this.domainChange( this.setMeal);
-                this.getProtectCC(this.setMeal,1);
-               
+                    this.setMeal  = this.ccStatistics.packageid = this.operationObject = this.business.packageId =  this.attackMeal = this.setMealList[0].packageid;
+                    this.domainChange( this.setMeal);
+                    this.getProtectCC(this.setMeal,1);
+                }
             }else{
                 this.$Message.info(res.data.message);
             }
@@ -2297,7 +2295,7 @@ export default {
     getDomainList(page){
         this.$http.get('ddosImitationIp/QueryAlldomain.do',{
             params:{
-                packageId:this.tabsId,
+                packageId:sessionStorage.getItem('pgId') || this.tabsId,
                 page:page,
                 pageSize:'10'
             }
@@ -2347,6 +2345,7 @@ export default {
     },
 
     dataToUpdate(name){
+         this[name][0].hide = 1;
         this[name][0]._disabled = true;
     },
 
@@ -2357,8 +2356,8 @@ export default {
              http = this.addDomainList.http.join(',').indexOf('http') == -1 ?0 :1;
              https = this.addDomainList.http.join(',').indexOf('https') == -1 ? 0:1;
         }
-        this.dataToUpdate('businessData');
-        return;
+        // this.dataToUpdate('businessData');
+        // return;
        this.$http.get('ddosImitationIp/UpdateDomain.do',{
             params:{
                 domain:this.addDomainList.domain,
@@ -2541,7 +2540,7 @@ export default {
                 params:{
                     page:page,
                     pageSize:'10',
-                    packageUserId:''
+                    packageUserId:this.attackMeal
                 }
             }).then(res => {
                 if(res.status == 200 && res.data.status == 1){

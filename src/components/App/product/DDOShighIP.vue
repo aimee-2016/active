@@ -130,7 +130,7 @@
           img: require('../../../assets/img/product/ddos-logo.png'),
           title: 'DDOS高防IP',
           desc: 'DDoS云清洗是新睿云针对易遭受大流量DDoS攻击的用户推出的付费服务，依托于庞大的节点、带宽资源，高达10T的云防护容量，全方位防护各类DDoS和CC攻击，保证您的业务稳定在线。',
-          linkRouter: $store.state.userInfo ? '/ddosipback' : '/login'
+          linkRouter: '/buy/ddosip'
         },
         features: [
           {img: 'icon-DDOSliuliangqingxi', title: 'DDOS攻击防护', desc: '防护多种类型的DDoS攻击包括但不限于SYN Flood、ACK Flood 、ICMP Flood、UDP Flood、TCP Flood、CC等攻击，并提供黑白名单等精准防御机制。'},

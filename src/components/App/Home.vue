@@ -872,7 +872,7 @@
                 detailText: '查看详情',
                 useText: '立即购买',
                 detailLink: '/ddos/',
-                useLink: $store.state.userInfo ? '/buy/ddos' : '/login',
+                useLink: '/buy/ddos' ,
                 ME: true
               },
               {
@@ -1032,7 +1032,7 @@
                 detailText: '查看详情',
                 useText: '立即购买',
                 detailLink: '/ddosip/',
-                useLink: $store.state.userInfo ? '/buy/ddosip' : '/login',
+                useLink:'/buy/ddosip',
                 ME: true
               }
             ],
