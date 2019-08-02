@@ -298,6 +298,14 @@ export default {
           background: rgba(255, 98, 75, 0);
           cursor: pointer;
           outline: none;
+          font-size: 16px;
+          color: rgba(51,51,51,1);
+          &:hover{
+            background: #89cef1;
+            color: white;
+            transition: .3s;
+            border: 2px solid white;
+          }
         }
       }
     }
@@ -310,7 +318,7 @@ export default {
     background: rgba(255,255,255,1);
     .body{
       width: 999px;
-      padding-top: 40px;
+      padding-top: 41px;
       box-sizing: border-box;
       .body-nav{
         width: 100%;
@@ -334,6 +342,11 @@ export default {
           position: absolute;
           right: 40px;
           bottom: 20px;
+          &:hover{
+            color: rgba(59,120,255,1);
+            border: 1px solid rgba(59,120,255,1);
+            transition: 0.3s;
+          }
         }
       }
       .body-list{
@@ -365,8 +378,8 @@ export default {
               width: 641px;
               &:first-of-type{
                 font-size: 18px;
-                font-weight: bold;
                 line-height: 24px;
+                color: rgba(51,51,51,1);
               }
               &:nth-of-type(2){
                 font-size: 14px;

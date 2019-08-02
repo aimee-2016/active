@@ -17,20 +17,20 @@
     <!--公告、推荐-->
     <div class="notices">
       <div class="notice">
-        <div class="notice-row" @click="checkNotice(notice.id)">
+        <div class="notice-row">
           <img src="../../../assets/img/market/notice.png" class="notice-row-icon" />
           <div class="title">公告</div>
           <div class="line"></div>
-          <div class="title-t">{{notice.description}}</div>
-          <div class="content">{{notice.title}}</div>
+          <div class="title-t" @click="checkNotice(notice.id)">{{notice.description}}</div>
+          <div class="content" @click="checkNotice(notice.id)">{{notice.title}}</div>
           <img src="../../../assets/img/market/go.png" />
         </div>
-        <div class="notice-row" @click="checkRecommend(recommend.id)">
+        <div class="notice-row">
           <img src="../../../assets/img/market/remcomend.png" class="notice-row-icon" />
           <div class="title">推荐</div>
           <div class="line"></div>
-          <div class="title-t">{{recommend.description}}</div>
-          <div class="content">{{recommend.title}}</div>
+          <div class="title-t" @click="checkRecommend(recommend.id)">{{recommend.description}}</div>
+          <div class="content" @click="checkRecommend(recommend.id)">{{recommend.title}}</div>
           <img src="../../../assets/img/market/go.png" />
         </div>
       </div>
@@ -44,7 +44,7 @@
         <div class="partner-box">
           <div class="partner-boxs">
             <div class="partner-box-n">
-              <div class="item" v-for="(item, index) in partnerList" :key="index" @click="toPartner(item)">
+              <div class="item" v-for="(item, index) in partnerList" :key="index" @click="toPartner(item)" ref="item">
                 <div class="item-url">
                   <img :src="item.pictureUrl" alt="加载中..."/>
                 </div>
@@ -181,8 +181,13 @@ export default {
         this.productList = res.data.result
       }
     })
-  }
-}
+  },
+  watch: {
+    distance(val, newval) {
+      
+    }
+  },
+} 
 </script>
 
 <style rel="stylesheet/less" lang="less" scoped>
@@ -254,6 +259,13 @@ export default {
           background: rgba(255, 98, 75, 0);
           cursor: pointer;
           outline: none;
+          font-size: 16px;
+          &:hover{
+            background: #89cef1;
+            color: white;
+            transition: .3s;
+            border: 2px solid white;
+          }
         }
       }
     }
@@ -265,7 +277,7 @@ export default {
     .notice {
       width: 1200px;
       margin: 0 auto;
-      padding: 40px 0;
+      padding-top: 40px;
       box-sizing: border-box;
       display: flex;
       align-items: center;
@@ -282,7 +294,12 @@ export default {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        cursor: pointer;
+        div{
+          &:nth-of-type(3):hover,&:nth-of-type(4):hover {
+            text-decoration: underline;
+            cursor: pointer;
+          }
+        }
         .notice-row-icon {
           width: 40px;
           height: 40px;
@@ -323,7 +340,7 @@ export default {
     .partner {
       width: 1220px;
       margin: 0px auto;
-      padding: 80px 0;
+      padding: 80px 0 40px 0;
       box-sizing: border-box;
       position: relative;
       background: rgba(255, 255, 255, 1);
@@ -365,14 +382,13 @@ export default {
               width: 285px;
               height: 349px;
               background: rgba(255, 255, 255, 1);
-              box-shadow: 0px 2px 22px -5px rgba(102, 102, 102, 0.25);
               border-radius: 4px;
               border: 1px solid rgba(233, 233, 233, 1);
               margin: 10px 20px 10px 0;
               cursor: pointer;
               display: inline-block;
               &:hover {
-                box-shadow: 0 5px 20px #b1afaf;
+                box-shadow: 0 5px 10px #dadada;
               }
               &:first-of-type {
                 margin-left: 10px;
@@ -428,8 +444,8 @@ export default {
   }
   .show {
     width: 100%;
-    height: 1864px;
-    background: url('../../../assets/img/market/show-bg.png') no-repeat, linear-gradient(360deg,rgba(40,96,221,0.14) 0%,rgba(59,120,255,0.01) 100%);;
+    height: 1884px;
+    background: url('../../../assets/img/market/show-bg.png') no-repeat, linear-gradient(360deg,rgba(40,96,221,0.14) 0%,rgba(59,120,255,0.03) 100%);
     margin: auto;
     background-position: bottom;
     .product {
@@ -437,7 +453,7 @@ export default {
       margin: auto;
       box-sizing: border-box;
       &:first-of-type {
-        padding-top: 40px;
+        padding-top: 80px;
         .product-title {
           margin-top: 0;
         }
@@ -447,8 +463,8 @@ export default {
         color: rgba(51, 51, 51, 1);
         text-align: center;
         width: 100%;
-        height: 40px;
-        line-height: 40px;
+        height: 36px;
+        line-height: 36px;
         margin: 80px 0 40px 0;
       }
       .product-list {
@@ -500,6 +516,10 @@ export default {
           background: rgba(255, 255, 255, 1);
           border: 1px solid rgba(233, 233, 233, 1);
           text-align: center;
+          border-right: none;
+          &:last-of-type {
+            border-right: 1px solid rgba(233, 233, 233, 1);
+          }
           &:hover {
             transform: translateY(-9px);
             box-shadow: 0 5px 30px #b5d4f5;

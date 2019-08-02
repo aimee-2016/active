@@ -147,13 +147,18 @@
             <div class="ino-box-deploy-item">
               <div class="title">核心数</div>
               <div class="content">
-                <span v-for="(item,index) in nucleusList" :key="index" :class="{areaActive: nucleIndex == index }" @click="changeNucleus(item,index)">{{item}}</span>
+                <span v-for="item in nucleusList" :key="item.value" 
+                  :class="{areaActive: nucleIndex == item.value }"
+                  @click="changeNucleus(item)"
+                  v-if="item.value <= 8">{{item.name}}</span>
               </div>
             </div>
             <div class="ino-box-deploy-item">
               <div class="title">内存</div>
               <div class="content">
-                <span v-for="(item,index) in size" :key="index" :class="{areaActive: sizeIndex == index }" @click="changeSize(item,index)">{{item}}</span>
+                <span v-for="item in size" :key="item.value" 
+                  :class="{areaActive: sizeIndex == item.value}"
+                  @click="changeSize(item)">{{item.name}}</span>
               </div>
             </div>
           </div>
@@ -208,7 +213,7 @@
             </div>
           </div>
           <div class="back">
-            <button>返回</button>
+            <button @click="$router.push('provider')">返回</button>
           </div>
         </div>
       </div>
@@ -256,7 +261,16 @@ export default {
           { required: true, message: '产品介绍不能为空', trigger: 'blur' }
         ],
         name: [
-          { required: true, message: '联系人不能为空', trigger: 'blur' }
+          { required: true, message: '联系人不能为空', trigger: 'blur' },
+          { type: 'string', message: '请输入中文或者英文', trigger: 'blur', transform(value){
+            let namereg1 = /^[a-zA-Z\u4e00-\u9fa5]+$/;
+            let namereg2 = /[a-zA-Z]/;
+            if (!namereg1.test(value)) {
+              return false
+            } else {
+              return String(value)
+            }
+          }}
         ],
         tel: [
           { required: true, message: '联系电话不能为空', trigger: 'blur'},
@@ -304,14 +318,14 @@ export default {
       // 自定义主机选择
       defined: {
         size: 120,
-        nucleus: '',
+        nucleus: 1,
         interSize: ''
       },
       // 核心数、内存
-      nucleIndex: false,
-      nucleusList: ['1核', '2核', '4核', '8核'],
-      sizeIndex: false,
-      size: ['1G', '2G', '4G', '8G']
+      nucleIndex: 1,
+      nucleusList: [],
+      sizeIndex: 1,
+      size: []
     }
   },
   methods: {
@@ -323,7 +337,7 @@ export default {
             axios.post('cloudMarket/insertServiceProvider.do', {
               merchanName: this.formValidate.company,
               merchanWebsite: this.formValidate.web,
-              merchanWebsite: this.formValidate.desc,
+              merchanDesc: this.formValidate.desc,
               merchanProductPresentation: this.formValidate.intro,
               merchanContact: this.formValidate.name,
               merchanPhone: this.formValidate.tel,
@@ -354,6 +368,7 @@ export default {
                 }
               })
           }
+          this.infoTitle = '测试部署'
         } else {
           // console.log('失败')
         }
@@ -419,13 +434,15 @@ export default {
       this.defined.nucleus = this.nucleusList[0]
       this.defined.interSize = this.size[0]
     },
-    changeNucleus (item,index) {
-      this.nucleIndex = index
-      this.defined.nucleus = item
+    changeNucleus (item) {
+      this.nucleIndex = item.value
+      this.defined.nucleus = item.value
+      this.size = item.RAMList
+      this.sizeIndex = item.value
     },
-    changeSize (item,index) {
-      this.sizeIndex = index
-      this.defined.interSize = item
+    changeSize (item) {
+      this.sizeIndex = item.value
+      this.defined.interSize = item.value
     },
     // 获取用户信息
     getRecord () {
@@ -463,6 +480,7 @@ export default {
     back () {
       this.stepInfo.step = 0
       this.stetStatus()
+      this.infoTitle = '公司基础信息'
     },
     stetStatus () {
       if (this.stepInfo.step === 0) {
@@ -487,6 +505,24 @@ export default {
           this.$router.push('login')
         }
       })
+    },
+    // 自定义配置
+    getctm () {
+      axios.get('information/getServiceoffers.do', {
+        params: {
+          zoneId: this.area[0].zoneid
+        }
+      }).then(res => {
+        if (res.status === 200 && res.data.status === 1) {
+          let info = res.data.info
+          info.forEach(e => {
+            if (e.zoneId === this.area[0].zoneid) {
+              this.nucleusList = e.kernelList
+              this.size = this.nucleusList[0].RAMList
+            }
+          })
+        }
+      })
     }
   },
   mounted () {
@@ -500,6 +536,7 @@ export default {
             zoneId = e.zoneid
           }
         })
+        this.getctm()
         axios.get('network/listVpcBuyComputer.do', {
           params: {
             zoneId:zoneId
@@ -755,10 +792,13 @@ export default {
         }
         .sub{
           margin-top: 40px;
-          padding-left: 80px;
+          padding-left: 92px;
           box-sizing: border-box;
           button{
             margin-right: 20px;
+            width: 147px;
+            height: 49px;
+            font-size: 16px;
           }
         }
       }
