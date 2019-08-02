@@ -12,7 +12,7 @@ import '@/assets/css/iviewOverRide.css'
 import '@/assets/css/reset.css'
 import '@/assets/css/universal.less'
 import MetaInfo from 'vue-meta-info'
-
+import './util/staInfo.js'
 
 
 //import './util/BMap'

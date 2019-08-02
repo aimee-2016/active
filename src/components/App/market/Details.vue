@@ -512,6 +512,8 @@ export default {
       this.typeIndex = 0
       this.units = '元/小时'
       this.tabName = 'name0'
+      this.sysIndex = 0
+      this.areaIndex = 0
 
       sessionStorage.setItem('proid',item.id)
       sessionStorage.setItem('typeName', item.classification.name)
@@ -521,7 +523,6 @@ export default {
       this.reload()
       this.getProductPrice()
       // location.reload()
-      console.log(this.mainFrame)
     },
     // 获取产品详情
     getProduct () {
@@ -538,6 +539,7 @@ export default {
       Promise.all([getArea,getProduct]).then(res => {
         if (res[0].status === 200 && res[0].data.status === 1) {
           this.area = res[0].data.result
+          this.buyTypeStatus = 0
           axios.get('information/getServiceoffers.do', {
             params: {
               zoneId: this.area[0].zoneid
