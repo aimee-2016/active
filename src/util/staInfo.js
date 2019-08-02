@@ -1,7 +1,7 @@
 import $store from '@/vuex'
 import $ from 'jquery'
 
-window.onload = function() {
+function staInfo() {
 
   var source = {
     IP: '',
@@ -27,7 +27,6 @@ window.onload = function() {
 
   //获取公网IP
   function getIp() {
-    console.log('公网IP')
     $.ajax({
       url: 'http://ip-api.com/json',
       type: 'get',
@@ -187,3 +186,5 @@ window.onload = function() {
   //console.log(source)
   return source;
 }
+staInfo()
+//console.log(staInfo())
