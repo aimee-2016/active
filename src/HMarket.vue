@@ -1238,7 +1238,7 @@
               margin-right: 30px;
               font-size: 14px;
               color: #FFF;
-              line-height: 16px;
+              line-height: 19px;
             }
             .links-info {
               width: auto;
