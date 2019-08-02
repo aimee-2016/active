@@ -433,7 +433,6 @@
       }
     },
     created() {
-      console.log(this.cart)
       this.$http.get('information/getServiceoffers.do').then(
         response => {
           this.info = response.data.info
