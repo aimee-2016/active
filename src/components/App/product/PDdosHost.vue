@@ -137,7 +137,7 @@
         logo: {
           img: require('../../../assets/img/product/ddos-logo.png'),
           title: 'DDoS高防主机',
-          desc: '针对DDoS攻击，新睿云为用户提供高防IP服务，新睿云高防IP为用户已备案的 域名提供最高40Gbps的DDoS高级防护。用户在遭遇大流量DDoS攻击的情况 下，可以在配置后将攻击流量引至高防IP，确保源站稳定可用。',
+          desc: '高防云服务器是一台具备了高防DDoS能力的服务器，它具有DDoS防护与CC攻击防护能力，并能够根据您的业务需求进行弹性升级，包括服务器性能与防护性能，最大支持800GB的超高防护能力。',
           linkRouter: '/buy/ddos'
         },
         features: [

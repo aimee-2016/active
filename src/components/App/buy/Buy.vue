@@ -433,6 +433,7 @@
       }
     },
     created() {
+      console.log(this.cart)
       this.$http.get('information/getServiceoffers.do').then(
         response => {
           this.info = response.data.info
@@ -675,7 +676,7 @@
               // params.templateId =  prod.currentType == 'public' ? prod.system.systemtemplateid : prod.customMirror.systemtemplateid,
               params.cpuNum = prod.vmConfig.kernel
               params.timeType = prod.ddosProtectNumber > 300 ? 'day' : prod.timeForm.currentTimeValue.type,
-              params.timeValue = prod.ddosProtectNumber > 300 ? prod.bigCustomProtectTime : prod.timeForm.currentTimeValue.value
+              params.timeValue = prod.ddosProtectNumber > 300 ? prod.customHeightDdosTime : prod.timeForm.currentTimeValue.value
               params.memory = prod.vmConfig.RAM
               params.bandWidth = prod.IPConfig.publicIP ? prod.IPConfig.bandWidth : 0
               params.rootDiskType = prod.vmConfig.diskType

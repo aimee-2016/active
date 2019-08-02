@@ -1679,7 +1679,7 @@
         }
       },
       getHostList() {
-        let url = 'information/listVirtualMachines.do'
+        let url = 'ddosImitationhost/listHighMachines.do'
         this.$http.get(url, {
           params: {
             returnList: '1',
@@ -1719,7 +1719,7 @@
       /* 局部刷新 */
       timingRefresh(ids) {
         let timer = setInterval(() => {
-          let url = 'information/listVirtualMachines.do'
+          let url = 'ddosImitationhost/listHighMachines.do'
           this.$http.get(url, {
             params: {
               returnList: '1',
