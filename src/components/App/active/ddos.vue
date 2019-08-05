@@ -656,6 +656,7 @@
       </p>
       <div class="universal-modal-content-flex qrcode-modal">
          <p class="p-top">认证完成之前，请勿关闭或者切换此页面，否则可能导致认证失败</p>
+         <p>请使用手机扫描二维码，并根据提示完成实名认证</p>
          <p v-show="authStatus" class="p-top">您的实名认证提交失败，请刷新二维码重新认证</p>
          <div class="qr-code">
             <vue-q-art :config="qrConfig" ></vue-q-art>
@@ -667,7 +668,23 @@
         <Button type="primary" @click="showModal.qrCode = false">确定</Button>
       </div>
     </Modal>
-    
+    <!-- 弹窗提示 -->
+      <transition name="fade">
+        <div class="overlay" @click.stop="showModal.hint=true" v-if="showModal.hint">
+          <div class="rule-modal" style="width:400px;">
+            <div class="header">
+              <span>提示</span>
+              <img src=../../../assets/img/active/ddos/ddos-close-icon.png alt="关闭图标" @click.stop="showModal.hint=false">
+            </div>
+            <div class="body" style="text-align:center">
+              <div>{{hintMsg}}</div>
+            </div>
+            <div class="footer">
+                <Button class="btn" @click.stop="showModal.hint=false">确认</Button>
+            </div>
+          </div>
+        </div>
+      </transition>
     </div>
   </div>
 </template>
@@ -731,16 +748,21 @@ export default {
         ruleGT: false,
         ruleForcast: false,
         qrCode: false,
-        cashverification: true,
+        cashverification: false,
+        hint: false
       },
-      authStatus: false,
+      hintMsg: '',
       qrConfig: {
           value: '',
           imagePath: require('../../../assets/img/pay/payBackground.png'),
           filter: 'black',
           size: 500
         },
+         // 二维码失效
       codeLoseEfficacy: '',
+      tempCode: '',
+      codeTimer: null,
+      authStatus: false,
       //验证码和短信验证
         formCustom: {
           VerificationPhone:'',
@@ -1200,7 +1222,7 @@ export default {
   },
   created () {
     this.getTime()
-    this.getConfigureHot()
+    this.getConfigureKill()
     this.getSubsection()
     this.activityForecast()
     this.getConfigureDDOS('55', 'listGT')
@@ -1237,7 +1259,7 @@ export default {
       })
     },
     // 获取活动配置,区域
-    getConfigureHot () {
+    getConfigureKill () {
       let url = 'activity/getActInfoById.do'
       axios.get(url, {
         params: {
@@ -1359,6 +1381,7 @@ export default {
           this.showModal.cashverification = true
         } else {
           this.showModal.qrCode = true
+          this.refreshUserStatus()
         }
         return
       }
@@ -1379,9 +1402,8 @@ export default {
           this.$Message.success('创建订单成功')
           this.$router.push('/order')
         } else {
-          this.$message.info({
-            content: res.data.message
-          })
+          this.hintMsg = res.data.message
+          this.showModal.hint = true
         }
       })
     },
@@ -1501,6 +1523,7 @@ export default {
           this.showModal.cashverification = true
         } else {
           this.showModal.qrCode = true
+          this.refreshUserStatus()
         }
         return
       }
@@ -1515,9 +1538,8 @@ export default {
           this.$Message.success('创建订单成功')
           this.$router.push('/order')
         } else {
-          this.$message.info({
-            content: res.data.message
-          })
+          this.hintMsg = res.data.message
+          this.showModal.hint = true
         }
       })
     },
@@ -1589,7 +1611,8 @@ export default {
               this.formatTime(leftTime)
               leftTime -= 1000
               if (leftTime <= 0) {
-                this.$router.history.go(0)
+                // this.$router.history.go(0)
+                this.getConfigureKill()
                 window.clearInterval(this.timer)
               }
             }, 1000)
@@ -1664,6 +1687,7 @@ export default {
     },
       // 刷新用户认证状态
       refreshUserStatus(){
+        // console.log('refreshQRCode')
         clearInterval(this.codeTimer)
         this.codeTimer =  setInterval(() => {
         this.$http.get('/faceRecognition/getAllStatus.do', {params: {tempCode: this.tempCode}}).then(res => {
@@ -1867,6 +1891,10 @@ export default {
   },
   components: {
     VueQArt
+  },
+  beforeRouteLeave(to, from, next) {
+    clearInterval(this.codeTimer)
+    next()
   }
 }
 </script>
@@ -2559,7 +2587,7 @@ export default {
       height: 198px;
       width: 197px;
       background: url('../../../assets/img/app/auth_background.png') no-repeat center;
-      margin: 0 auto;
+      margin: 30px auto;
       position: relative;
       .shade{
         position: absolute;
