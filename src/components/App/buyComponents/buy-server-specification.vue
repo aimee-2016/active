@@ -55,6 +55,7 @@
               :step="10"
               :points="[300,500,800]"
               style="margin-right:30px;vertical-align: middle;"
+              @change="changeRootDiskSize"
             ></i-slider>
             <InputNumber
               :max="1000"
@@ -63,6 +64,7 @@
               size="large"
               :step="10"
               :precision="0"
+              @on-change="changeRootDiskSize"
             ></InputNumber>
           </div>
         </div>
@@ -102,6 +104,7 @@
                 :max="1000"
                 :step="10"
                 :points="[300,500,800]"
+                @change="changeServerSystemDiskSize"
                 style="margin-right:30px;vertical-align: middle;"
               ></i-slider>
               <InputNumber
@@ -111,6 +114,7 @@
                 size="large"
                 :step="10"
                 :precision="0"
+                @on-change="changeServerSystemDiskSize"
               ></InputNumber>
             </div>
           </div>
@@ -125,7 +129,7 @@
             </span>
           </div>
           <div class="item-text">
-            <p class="price">￥750/月</p>
+            <p class="price">￥{{serverSpecification.price}}</p>
           </div>
         </div>
       </div>
@@ -263,6 +267,12 @@ export default {
     },
     changeRootDiskType(item) {
       this.$emit("changeRootDiskType", item);
+    },
+    changeRootDiskSize() {
+      this.$emit("changeRootDiskSize");
+    },
+    changeServerSystemDiskSize() {
+      this.$emit("changeServerSystemDiskSize");
     },
     addServerSystemDisk() {
       this.$emit("addServerSystemDisk");

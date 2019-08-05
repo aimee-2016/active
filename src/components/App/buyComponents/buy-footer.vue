@@ -23,7 +23,12 @@
           </div>
           <div class="buy-time" v-show="billingType === 'month'">
             <span>购买时长：</span>
-            <Select placeholder="请选择时长" v-model="timeConfig.buyTime" style="width:100px">
+            <Select
+              placeholder="请选择时长"
+              v-model="timeConfig.buyTime"
+              :placement="placement"
+              style="width:100px"
+            >
               <Option
                 v-for="item in timeConfig.buyTimeGroup"
                 :value="item.value"
@@ -209,6 +214,11 @@ export default {
     },
     nextStep(val) {
       this.$emit("nextStep", val);
+    }
+  },
+  computed: {
+    placement() {
+      return this.isFixed ? "top" : "bottom";
     }
   }
 };

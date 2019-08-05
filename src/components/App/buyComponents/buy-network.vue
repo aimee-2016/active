@@ -160,7 +160,7 @@
             </span>
           </div>
           <div class="item-text">
-            <p class="price">￥750/月</p>
+            <p class="price">￥{{serverNetwork.price}}</p>
           </div>
         </div>
       </div>

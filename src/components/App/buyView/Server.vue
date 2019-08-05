@@ -29,8 +29,10 @@
           @changeCPU="changeCPU"
           @changeMemory="changeMemory"
           @changeRootDiskType="changeRootDiskType"
+          @changeRootDiskSize="changeRootDiskSize"
           @addServerSystemDisk="addServerSystemDisk"
           @changeServerSystemDiskType="changeServerSystemDiskType"
+          @changeServerSystemDiskSize="changeServerSystemDiskSize"
           @deleteServerSystemDisk="deleteServerSystemDisk"
         ></buy-server-specification>
         <buy-defend v-if="serverType==='NOKIAServer'"></buy-defend>
@@ -116,6 +118,7 @@ import buyFooter from "../buyComponents/buy-footer";
 import buyDefend from "../buyComponents/buy-defend";
 import buySelectedConfig from "../buyComponents/buy-selected-config";
 import buyBudgetList from "../buyComponents/buy-budget-list";
+import debounce from "throttle-debounce/debounce";
 export default {
   components: {
     buyHeader,
@@ -199,7 +202,7 @@ export default {
       ],
       billingTypeGroup: [
         { text: "包年包月", value: "month" },
-        { text: "实时计费", value: "year" }
+        { text: "实时计费", value: "current" }
       ],
       billingType: "month",
       areaGroup: [],
@@ -264,7 +267,9 @@ export default {
             type: "ssd",
             size: 20
           }
-        ]
+        ],
+        price: 0,
+        coupon: 0
       },
       // 每个区域对应的服务器规格配置
       serverSpecificationGroup: {},
@@ -405,7 +410,9 @@ export default {
             }
           }
         ],
-        downRuleData: []
+        downRuleData: [],
+        price: 0,
+        coupon: 0
       },
       loginInfo: {
         setTypeGroup: [
@@ -426,15 +433,14 @@ export default {
         mirrorName: "u",
         loginType: "password",
         loginTypeGroup: [
-          { name: "密码", value: "password" },
-          { name: "SSH密钥", value: "ssh" }
+          { name: "密码", value: "password" }
+          //{ name: "SSH密钥", value: "ssh" }
         ],
         SSHID: "",
         SSHIDGroup: []
       },
       timeConfig: {
         buyTime: "1",
-        buyTimeType: "month",
         buyTimeGroup: [
           {
             label: "1个月",
@@ -551,6 +557,7 @@ export default {
         this.getPublicMirror();
         this.getMirrorMarket();
         this.getVpcList();
+        this.queryIPPrice()
       }
     },
     // 获取公共镜像
@@ -611,6 +618,7 @@ export default {
                   this.serverSpecification.memoryGroup =
                     item.kernelList[0].RAMList;
                   this.serverSpecification.memory = this.serverSpecification.memoryGroup[0].value;
+                  this.queryServerSpecificationPrice();
                 }
               })
             : false;
@@ -643,9 +651,11 @@ export default {
     },
     changeBillingType(item) {
       this.billingType = item.value;
+      this.queryServerSpecificationPrice();
     },
     changeArea(item) {
       this.area = item;
+      this.queryServerSpecificationPrice();
     },
     changeMirrorType(item) {
       this.mirrorConfig.mirrorType = item.value;
@@ -690,12 +700,18 @@ export default {
       this.serverSpecification.CPU = item.value;
       this.serverSpecification.memoryGroup = item.RAMList;
       this.serverSpecification.memory = this.serverSpecification.memoryGroup[0].value;
+      this.queryServerSpecificationPrice();
     },
     changeMemory(item) {
       this.serverSpecification.memory = item.value;
+      this.queryServerSpecificationPrice();
     },
     changeRootDiskType(item) {
       this.serverSpecification.rootDiskType = item.value;
+      this.queryServerSpecificationPrice();
+    },
+    changeRootDiskSize() {
+      this.queryServerSpecificationPrice();
     },
     addServerSystemDisk() {
       let len = this.serverSpecification.systemDisk.length;
@@ -707,12 +723,18 @@ export default {
         size: 20
       };
       this.serverSpecification.systemDisk.push(diskItem);
+      this.queryServerSpecificationPrice();
     },
     changeServerSystemDiskType(item, index) {
       this.serverSpecification.systemDisk[index].type = item.value;
+      this.queryServerSpecificationPrice();
+    },
+    changeServerSystemDiskSize() {
+      this.queryServerSpecificationPrice();
     },
     deleteServerSystemDisk(index) {
       this.serverSpecification.systemDisk.splice(index, 1);
+      this.queryServerSpecificationPrice();
     },
     addGpuSystemDisk() {
       let len = this.gpuSpecification.systemDisk.length;
@@ -810,7 +832,56 @@ export default {
     nextStep(val) {
       window.scroll(0, 0);
       this.buyStep = val;
-    }
+    },
+    // 查询服务器配置价格价格
+    queryServerSpecificationPrice: debounce(500, function() {
+      let diskSize = this.serverSpecification.rootDiskSize + ",";
+      let diskType = this.serverSpecification.rootDiskType + ",";
+      for (let disk of this.serverSpecification.systemDisk) {
+        diskSize += `${disk.size},`;
+        diskType += `${disk.type},`;
+      }
+      var params = {
+        cpuNum: this.serverSpecification.CPU,
+        diskSize,
+        diskType,
+        memory: this.serverSpecification.memory,
+        timeType: this.billingType,
+        timeValue: this.timeConfig.buyTime,
+        zoneId: this.area.zoneid
+      };
+      if (parseInt(this.timeConfig.buyTime) > 11) {
+        params.timeType = "year";
+      }
+      axios.post("device/QueryBillingPrice.do", params).then(response => {
+        this.serverSpecification.price = response.data.cost;
+        if (response.data.coupon) {
+          this.serverSpecification.coupon = response.data.coupon;
+        } else {
+          this.serverSpecification.coupon = 0;
+        }
+      });
+    }),
+    // 查询服务器IP价格
+    queryIPPrice: debounce(500, function() {
+      let params = {
+        brand: this.serverNetwork.bandwidth,
+        timeType: this.billingType,
+        timeValue: this.timeConfig.buyTime,
+        zoneId: this.area.zoneid
+      };
+      if (parseInt(this.timeConfig.buyTime) > 11) {
+        params.timeType = "year";
+      }
+      axios.post("device/queryIpPrice.do", params).then(response => {
+        this.serverNetwork.price = response.data.cost;
+        if (response.data.coupon) {
+          this.serverNetwork.coupon = response.data.coupon;
+        } else {
+          this.serverNetwork.coupon = 0;
+        }
+      });
+    })
   },
   watch: {
     buyStep() {
