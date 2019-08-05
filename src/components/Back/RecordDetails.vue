@@ -926,7 +926,7 @@
           <p style="margin:10px">网站语言</p>
           <Input type="text" v-model="updateHostUnitList.webmessage"></Input>
         </FormItem>
-        <FormItem prop="webmessage">
+        <FormItem prop="mainrecordnumber">
           <p style="margin:10px">主体备案号</p>
           <Input type="text" v-model="updateHostUnitList.mainrecordnumber"></Input>
         </FormItem>
