@@ -2059,7 +2059,7 @@
         }
         axios.post(url, params).then(res => {
           if (res.data.status == 1) {
-            this.areaGroup = res.data.result.optionalArea
+            this.areaGroup = res.data.result.optionalAreaGpu
             this.areaGroup.forEach((item, index) => {
               if (item.value === '3205dbc5-2cba-4d16-b3f5-9229d2cfd46c') {
                 this.areaGroup.splice(index, 1)

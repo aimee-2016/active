@@ -117,7 +117,7 @@ const Pnat = () =>import('@/components/App/product/NATgateway.vue')
 const Pdisk = () =>import('@/components/App/product/CloudDisk.vue')
 const Pbackupdisk = () =>import('@/components/App/product/CloudDiskBackup.vue')
 const Pfirewall = () =>import('@/components/App/product/Firewall.vue')
-const Pddos = () =>import('@/components/App/product/DDOShighIP.vue')
+const Pddosip = () =>import('@/components/App/product/DDOShighIP.vue')
 const Pmonitor = () =>import('@/components/App/product/CloudMonitoring.vue')
 const PobjStorage = () =>import('@/components/App/product/PobjStorage.vue')
 const PdataBase = () =>import('@/components/App/product/PdataBase.vue')
@@ -232,6 +232,7 @@ const DDoSIP = () => import('@/components/Back/DDoSIP')
 const DDoSAddDomain = () => import('@/components/Back/DDoSAddDomain')
 const DDoSIpRuleAdd = () => import('@/components/Back/DDoSIpRuleAdd')
 const DDoSIPdetails = () => import('@/components/Back/DDoSIPdetails')
+const DDoSUpgrade   = () => import('@/components/Back/DDoSUpgrade')
 
 // DDOS 高防主机
 const BackDdos = () => import('@/components/Back/BackDdos')
@@ -401,7 +402,7 @@ var router = new Router({
         {path: 'disk', component: Pdisk},
         {path: 'diskbackup', component: Pbackupdisk},
         {path: 'firewall', component: Pfirewall},
-        {path: 'ddosip', component: Pddos},
+        {path: 'ddosip', component: Pddosip},
         {path: 'monitor', component: Pmonitor},
         {path: 'objectstorage', component: PobjStorage},
         {path: 'database', component: PdataBase},
@@ -480,12 +481,12 @@ var router = new Router({
         {path: 'SpaceDetails', name: 'SpaceDetails', component: SpaceDetails},
 	    	{path: 'AllRegions', name: 'AllRegions', component: AllRegions},
         {path: 'completedFilingDetails', name: 'completedFilingDetails', component: CompletedFilingDetails},
-        {path: 'cloudDataManage', name: 'cloudDataManage', component: CloudDataManage},
         {path: 'cloudDatabaseBackup', name: 'cloudDatabaseBackup', component: CloudDatabaseBackup},
-        {path: 'cloudDatabase1', name: 'cloudDatabase', component: CloudDatabase},
+        // {path: 'cloudDatabase', name: 'cloudDatabase', component: CloudDatabase},
         {path: 'cloudDatabase', name: 'database', component: Database},
+        // {path: 'CloudDataManage', name: 'cloudDataManage', component: CloudDataManage},
         {path: 'databaseManage', name: 'databaseManage', component: DatabaseManage},
-        {path: 'dataBaseUpgrade1', name: 'dataBaseUpgrade', component: dataBaseUpgrade},
+        // {path: 'dataBaseUpgrade', name: 'dataBaseUpgrade', component: dataBaseUpgrade},
         {path: 'dataBaseUpgrade', name: 'dataBaseUpgrade1', component: dataBaseUpgrade1},
         {path: 'GpuList', name: 'GpuList', component: GpuList},
         {path: 'gpuManage', name: 'gpuManage', component: gpuManage},
@@ -500,6 +501,7 @@ var router = new Router({
         {path: 'DDoSAddDomain', name: 'DDoSAddDomain', component: DDoSAddDomain},
         {path: 'ddosipruleadd', name: 'ddosipruleadd', component: DDoSIpRuleAdd},
         {path: 'ddosipdetails', name: 'ddosipdetails', component: DDoSIPdetails},
+        {path: 'ddosupgrade', name: 'DDoSUpgrade', component: DDoSUpgrade},
         // DDOS 高防主机
         {path: 'BackDdos', name: 'BackDdos', component: BackDdos},
         {path: 'protectUpgrade', name: 'ProtectUpgrade', component: protectUpgrade}

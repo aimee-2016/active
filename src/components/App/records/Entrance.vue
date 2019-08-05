@@ -172,9 +172,9 @@
       records
     },
     beforeRouteEnter(to, from, next) {
-      if ($store.state.userInfo && $store.state.userInfo.recordFlag) {
-        next({path: '/waitSecondTrial'})
-      } else {
+      // if ($store.state.userInfo && $store.state.userInfo.recordFlag) {
+      //   next({path: '/waitSecondTrial'})
+      // } else {
         // 获取用户信息
         var userInfo = axios.get('user/GetUserInfo.do', {params: {t: new Date().getTime()}})
         // 获取zone信息
@@ -192,7 +192,7 @@
           value => {
             next()
           })
-      }
+      // }
     },
     data() {
       return {
@@ -444,10 +444,10 @@
           this.$router.push('/BRecords')
           return
         }
-        if (this.isRecords.length !== 0) {
-          this.showModal.hasRecord = true
-          return
-        }
+        // if (this.isRecords.length !== 0) {
+        //   this.showModal.hasRecord = true
+        //   return
+        // }
         if ((this.type == 1 && this.recordInfo.length !== 0) || (this.type == 2 && this.recordInfo.length !== 0)) {
           this.showModal.hint = true
           return

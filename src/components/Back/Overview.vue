@@ -445,7 +445,7 @@
           // 企业认证
           'company-icon': this.authInfo && this.authInfo.authtype != 0 && this.authInfo.checkstatus == 0,
           // 企业认证中/失败
-          'company-authing': (this.authInfo&&this.authInfo.authtype == 1 && this.authInfo.checkstatus == 2) 
+          'company-authing': (this.authInfo&&this.authInfo.authtype == 1 && this.authInfo.checkstatus == 2) || (this.authInfo&&this.authInfo.authtype == 0 && this.authInfo.checkstatus == 1) 
         }
       },
       authText() {
@@ -457,6 +457,8 @@
           return '企业认证'
         } else if (this.authInfo&&this.authInfo.authtype == 1 && this.authInfo.checkstatus == 2) {
           return '企业认证中'
+        } else if(this.authInfo&&this.authInfo.authtype == 0 && this.authInfo.checkstatus == 1){
+          return '个人认证失败'
         }
       },
       currentDate() {
@@ -587,13 +589,41 @@
             border-bottom: 1px solid #e9e9e9;
           }
           .wrapper {
+            zoom: 1;
+            &::before{
+              content: "";
+              display: table;
+            }
+            &::after{
+              content: "";
+              display: table;
+              clear: both;
+            }
             .item {
-              margin-top: 30px;
+              margin-top: 20px;
               width: 45%;
               display: inline-block;
               float: left;
+              &:first-child{
+                margin-top: 30px;
+              }
+              &:nth-child(2){
+                margin-top: 30px;
+              }
               &:nth-child(2n) {
                 float: right;
+              }
+              &:nth-child(3) {
+                float: right;
+              }
+              &:nth-child(4) {
+                float: left;
+              }
+              &:nth-child(5) {
+                float: right;
+              }
+              &:nth-child(6) {
+                float: left;
               }
               .source-item {
                 height: 40px;

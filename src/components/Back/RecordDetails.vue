@@ -220,7 +220,7 @@
                       <p v-if="hostUnitList.mainrecordnumber != '' && hostUnitList.mainrecordnumber != undefined">{{hostUnitList.mainrecordnumber}}</p>
                       <p v-else>暂无主体备案号</p>
                       <div v-if="mainrecordnumberHide" class="text_block"><span style="color:red">信息有误</span> <span
-                        style="color:#2a99f2;cursor:pointer;" @click="addressModal = true">重新输入</span></div>
+                        style="color:#2a99f2;cursor:pointer;" @click="website = true">重新输入</span></div>
                 </li>
               </ul>
             </div>
@@ -926,12 +926,12 @@
           <p style="margin:10px">网站语言</p>
           <Input type="text" v-model="updateHostUnitList.webmessage"></Input>
         </FormItem>
-        <FormItem prop="webmessage">
+        <FormItem prop="mainrecordnumber">
           <p style="margin:10px">主体备案号</p>
           <Input type="text" v-model="updateHostUnitList.mainrecordnumber"></Input>
         </FormItem>
-        <FormItem prop="webmessage">
-          <p style="margin:10px">主体备案号</p>
+        <FormItem prop="icprecordpassword">
+          <p style="margin:10px">ICP备案密码</p>
           <Input type="text" v-model="updateHostUnitList.icprecordpassword"></Input>
         </FormItem>
       </Form>
@@ -1858,10 +1858,10 @@ export default {
                   case "mark4":
                     this.mark4Hide = true;
                     break;
-                  case "icprecordpassword":
+                  case "ICPRecordPassword":
                     this.icprecordpasswordHide = true;
                     break;  
-                  case "mainrecordnumber":
+                  case "mainRecordNumber":
                   this.mainrecordnumberHide = true;
                   break;  
                 }

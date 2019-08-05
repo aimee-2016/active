@@ -151,6 +151,7 @@
                     class="hidden">#</span>{{prod.ddosProtectNumber}}GB
                   </p>
                 </div>
+                <!-- DDoS高防IP -->
                  <div v-if="prod.type=='Pddosip'">
                   <p class="item">
                     <span class="hidden">$</span><span class="title">套餐类型</span><span
@@ -166,17 +167,17 @@
                   </p>
                   <p class="item">
                     <span class="hidden">$</span><span class="title">业务带宽</span><span
-                    class="hidden">#</span>{{prod.bandWidth}}M
-                  </p>
-                  <p class="item">
-                    <span class="hidden"></span>
-                      <span class="title">购买数量</span>
-                      <span class="hidden"></span>{{prod.count}}
+                    class="hidden">#</span>{{prod.serviceband}}M
                   </p>
                   <p class="item">
                     <span class="hidden"></span>
                     <span class="title">购买时长</span>
                     <span class="hidden"></span>{{prod.timeForm.currentTimeValue.label}}
+                  </p>
+                  <p class="item">
+                    <span class="hidden"></span>
+                      <span class="title">购买数量</span>
+                      <span class="hidden"></span>{{prod.count}}
                   </p>
                 </div>
                 <!--ssl证书清单字段-->
@@ -208,13 +209,13 @@
                 </div> -->
                 <!--底部价格公共区域-->
                 <div style="border-bottom:1px solid #EDEDED;padding-bottom: 20px;">
-                  <p class="item" style="margin-top: 10px">
+                  <p class="item" style="margin-top: 10px" v-if="prod.type != 'Pddosip'">
                     <span class="hidden">$</span>
                     <span class="title" style="vertical-align: middle">价格</span>
                     <span class="hidden">#</span>
                     <span style="font-size: 24px;color: #F85E1D;vertical-align: middle;user-select: none;">{{(prod.cost * prod.count).toFixed(2)}}元</span>
                   </p>
-                  <p class="item" style="margin-top: 10px" v-if="!(prod.type=='Pssl'||prod.type=='Pobj')">
+                  <p class="item" style="margin-top: 10px" v-if="!(prod.type=='Pssl'||prod.type=='Pobj' || prod.type == 'Pddosip')">
                     <span class="title" style="vertical-align: middle">购买数量</span>
                   <ul style="display: inline-block;font-size: 14px;user-select: none">
                     <span class="numberAdd" v-if="prod.count == 1">-</span>
@@ -635,8 +636,9 @@
               timeVlue:prod.timeForm.currentTimeValue.value,
               timeType: prod.timeForm.currentTimeType == 'annual' ? prod.timeForm.currentTimeValue.type : 'current',
               zoneId:prod.zone,
-              cost:prod.cost,
-              isAutoRenew:'1'
+              // cost:prod.cost,
+              isAutoRenew:'1',
+              countOrder
             }
             PromiseList.push(axios.get('ddosImitationIp/creatDdosIP.do', {params}))
             
@@ -808,8 +810,8 @@
           'gpu/': 'gpu',
           'objectstorage/': 'objectstorage',
           'ssl/': 'ssl',
-          'ddos/': 'ddos'
-          // 'ddosip/':'ddosip'
+          'ddos/': 'ddos',
+          'ddosip/':'ddosip'
         }
         return map[this.product.currentProduct]
       }

@@ -895,8 +895,7 @@
               _status: 1
             })
             this.showModal.addNetwork = false
-            axios.get('network/createNetwork.do', {
-              params: {
+            axios.post('network/createNetwork.do', {
                 vpcId: this.data.vpcid,
                 networkName: this.newNetworkForm.networkName,
                 displayText: this.newNetworkForm.networkDesc,
@@ -904,7 +903,6 @@
                 gateway: `${gateWay[0]}.${gateWay[1]}.${this.newNetworkForm.gateway}.1`,
                 networkOfferId: this.newNetworkForm.serviceOffer,
                 aclListId: this.newNetworkForm.firewall
-              }
             }).then(response => {
               this.refresh()
               if (response.status == 200 && response.data.status == 1) {

@@ -20,10 +20,10 @@
               <div @click="$router.push('/activity/ddosActive')" class="ddos">
               </div>
             </my-carousel-item>
-            <my-carousel-item class="carousel-item">
+            <!-- <my-carousel-item class="carousel-item">
               <div @click="$router.push('activity/BlacKActivities')" class="black-active">
               </div>
-            </my-carousel-item>
+            </my-carousel-item> -->
             <my-carousel-item class="carousel-item">
               <div @click="$router.push('activity/free/')" class="fr-active">
               </div>

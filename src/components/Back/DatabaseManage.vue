@@ -180,7 +180,7 @@
                       <div><i :class="{reach: passwordForm.secondDegree }"></i>
                         <p>不能输入连续6位数字或字母，如123456aA</p></div>
                       <div><i :class="{reach: passwordForm.firstDegree }"></i>
-                        <p>长度8~30位，推荐使用12位以上的密码</p></div>
+                        <p>长度8~20位，推荐使用12位以上的密码</p></div>
                       <div><i :class="{reach: passwordForm.thirdDegree }"></i>
                         <p>至少包含：小写字母，大写字母，数字</p></div>
                       <div><p style="color:rgba(102,102,102,1);">可用特殊符号：~:，*_</p></div>
@@ -196,7 +196,7 @@
                       <div><i :class="{reach: passwordFormTwo.secondDegree }"></i>
                         <p>不能输入连续6位数字或字母，如123456aA</p></div>
                       <div><i :class="{reach: passwordFormTwo.firstDegree }"></i>
-                        <p>长度8~30位，推荐使用12位以上的密码</p></div>
+                        <p>长度8~20位，推荐使用12位以上的密码</p></div>
                       <div><i :class="{reach: passwordFormTwo.thirdDegree }"></i>
                         <p>至少包含：小写字母，大写字母，数字</p></div>
                       <div><p style="color:rgba(102,102,102,1);">可用特殊符号：~:，*_</p></div>
@@ -401,7 +401,7 @@ import axios from 'axios'
         if (!value) {
           callback(new Error('密码不能为空'));
         } else if (!regExp.test(value)) {
-          callback(new Error('密码由6位及以上23位以下的字母数字组成，必须包含大小写字母、数字'));
+          callback(new Error('密码由6位及以上20位以下的字母数字组成，必须包含大小写字母、数字'));
         } else {
           callback();
         }

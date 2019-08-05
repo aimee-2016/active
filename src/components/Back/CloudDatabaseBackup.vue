@@ -241,10 +241,42 @@
             key: "dbName",
             title: "备份名称"
           },
-          // {
-          //   key: "ccc",
-          //   title: "状态"
-          // },
+          {
+            key: "status",
+            title: "状态",
+            // status 0 异常 1 正常 2 创建中 3 删除中 4 回滚中
+            render: (h, params) => {
+              let text = ''
+              switch(params.row.status) {
+                case 0:
+                  text = '异常'
+                  break
+                case 1:
+                  text = '正常'
+                  break
+                case 2:
+                  text = '创建中'
+                  break
+                case 3:
+                  text = '删除中'
+                  break
+                case 4:
+                  text = '回滚中'
+                  break
+                default:
+                  text = ''
+              }
+              if (params.row.status==2||params.row.status==3||params.row.status==4){
+                return h('div', {}, [h('Spin', {
+                    style: {
+                      display: 'inline-block'
+                    }
+                  }), h('span', text)])
+              } else {
+                return h('span',text)
+              }
+            }
+          },
           {
             key: "computerName",
             title: "数据库名称"
@@ -349,13 +381,13 @@
             title: '策略名称',
             key: 'strategyname',
           },
-          {
-            title: '状态',
-            key: 'status',
-            render: (h, params) => {
-              return h('span', {}, '可用')
-            }
-          },
+          // {
+          //   title: '状态',
+          //   key: 'status',
+          //   render: (h, params) => {
+          //     return h('span', {}, '可用')
+          //   }
+          // },
           {
             title: '自动备份保留个数',
             width: 140,
@@ -575,6 +607,7 @@
         databaseForStrategy: [],
         // 应用该备份策略的数据库,显示在穿梭框右面
         resourceDatabase: [],
+        timer:null
       };
     },
     beforeRouteEnter(to, from, next) {
@@ -614,6 +647,28 @@
       // deleteBackup() {
       //   this.showModal.delete = true
       // },
+      backupList() {
+        axios.get('database/listDatebaseBackupFile.do', {
+          params: {
+            zoneId: $store.state.zone.zoneid
+          }
+        }).then(response => {
+          if (response.status == 200 && response.data.status == 1) {
+            // status 0 异常 1 正常 2 创建中 3 删除中 4 回滚中
+            this.backupData = response.data.result
+            let flag = response.data.result.some(item => {
+              return item.status == 2 || item.status == 3 || item.status == 4
+            })
+            if (!flag) {
+              window.clearInterval(this.timer)
+            } else {
+              this.timer = setTimeout(() => {
+                this.backupList()
+              }, 3000)
+            }
+          }
+        })
+      },
       rollback_ok() {
         this.showModal.rollback = false
         this.$http.get('database/BDRestore.do', {
@@ -625,6 +680,7 @@
         }).then(response => {
            if (response.status == 200 && response.data.status == 1) {
               this.$Message.success(response.data.message)
+              this.backupList()
             } else {
               this.$Message.error(response.data.message)
             }
@@ -696,6 +752,7 @@
             }).then(response => {
               if (response.status == 200 && response.data.status == 1) {
                 this.$Message.success(response.data.message)
+                this.backupList()
               } else {
                 this.$Message.error(response.data.message)
               }
@@ -1029,6 +1086,10 @@
         },
         deep:true
       },
+    },
+    beforeRouteLeave(to, from, next) {
+      clearInterval(this.timer)
+      next()
     }
   };
 </script>

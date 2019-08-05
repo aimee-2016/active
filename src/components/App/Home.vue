@@ -65,18 +65,18 @@
             </div>
           </div>
         </my-carousel-item> -->
-        <my-carousel-item class="carousel-item">
+        <!-- <my-carousel-item class="carousel-item">
           <div class="blackact" @click="push('/activity/BlacKActivities')"
                style="cursor: pointer;">
             <div class="wrap">
               <div>
                 <div>
-                  <!-- <img src="../../assets/img/home/indeximg.png" alt="black"/> -->
+                  <img src="../../assets/img/home/indeximg.png" alt="black"/>
                 </div>
               </div>
             </div>
           </div>
-        </my-carousel-item>
+        </my-carousel-item> -->
 
         <my-carousel-item class="carousel-item">
           <div @click="push('/activity/free/')"

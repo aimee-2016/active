@@ -494,7 +494,7 @@
                   {title: 'ECS快照', desc: '稳定可靠、安全保障', path: '/ecssnapshot/'},
                   {title: 'GPU服务器', desc: 'Tesla P100、Tesla P40 GPU', path: '/gpu/'},
                   {title: '弹性伸缩', desc: '高可用、可视化、低成本', path: '/elasticscalable/'},
-                  {title: 'DDoS高防主机（敬请期待）', desc: '最大800G超大防护', path: '/'},
+                  {title: 'DDoS高防主机', desc: '最大800G超大防护', path: '/ddos'},
                   {title: '裸金属服务器（敬请期待）', desc: '专属物理服务器', path: '/'}
                 ]
               },
@@ -548,7 +548,7 @@
                 prod: '云安全',
                 prodItem: [
                   {title: '防火墙', desc: '自定义规则、协议、端口', path: '/firewall/'},
-                  //{title: 'DDOS高防IP', desc: '硬件防护、40G超大流量', path: '/ddos/'},
+                  {title: 'DDOS高防IP', desc: '硬件防护、40G超大流量', path: '/ddosip/'},
                   {
                     title: 'SSL证书',
                     desc: '网站可信身份认证与安全数据传输',
@@ -676,7 +676,7 @@
             title: '云安全',
             desc: [
               {subTitle: '防火墙', url: '/firewall/'},
-              //{subTitle: 'DDOS高防IP', url: '/ddos/'}
+              {subTitle: 'DDOS高防IP', url: '/ddosip/'}
             ]
           },
           {

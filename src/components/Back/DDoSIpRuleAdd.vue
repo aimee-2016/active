@@ -4,6 +4,9 @@
             <span class="title">云安全 / DDoS高防IP / <span>业务管理</span></span>
              <div id="content">
                 <div id="header">
+                    <i class="back-btn" @click="$router.push('/ddosipback')">
+                        <Icon type="chevron-left" style="font-size:12px;"></Icon>
+                    </i>
                     <span id="title">添加转发规则</span>
                     <button id="refresh_button" @click="$router.go(0)" style="margin-top: 10px;">刷新</button>
                 </div>
@@ -26,11 +29,11 @@
                             </Select>
                         </FormItem>
                         <FormItem label="使用协议" prop="agreement">
-                            <RadioGroup v-model="formValidate.agreement" :disabled='disNo'>
-                                <Radio label="TCP">
+                            <RadioGroup v-model="formValidate.agreement" >
+                                <Radio label="TCP" :disabled='disNo'>
                                     <span>TCP</span>
                                 </Radio>
-                                <Radio label="UDP" style="margin-left:43px;">
+                                <Radio label="UDP" style="margin-left:43px;" :disabled='disNo'>
                                     <span>UDP</span>
                                 </Radio>
                             </RadioGroup>
@@ -67,13 +70,13 @@
                             </Tooltip>
                         </FormItem>
                     </Form>
-                    <Button style="margin-right:10px;" @click="$router.push('DDoSIPBack')">返回</Button>
+                    <Button style="margin-right:10px;" @click="clearD">取消</Button>
                     <Button type="primary" @click="addforwardrule('formValidate')">提交，查看下一步</Button>
                 </div>
 
                 <div class="st-box" v-if="current == 1">
                     <p>转发规则添加完成，您还需要将实际业务IP切换到转发规则对应的CNAME。 </p>
-                    <p>CNAME：sectest564as65d4a65s4d5as4d5a6s4d6</p>
+                    <p>CNAME：{{cname}}</p>
                     <p style="margin-bottom: 40px;">若您是在新睿云购买的域名，请前往<span style="color:#2A99F2;cursor:pointer;">域名解析</span></p>
                     <Table :columns="ruleList" :data="ruleData"></Table>
                     <div style="margin-top:40px;text-align:right;">
@@ -117,32 +120,27 @@ export default {
             },
             ruleList:[
                 {
-                    key:'域名',
+                    key:'domain',
                     title:'域名'
                 },
                 {
-                    key:'端口',
+                    key:'visitPort',
                     title:'端口'
                 },
                 {
-                    key:'acc',
+                    key:'returnPort',
                     title:'源站IP/域名'
                 },
                 {
-                    key:'套餐信息',
+                    key:'attackMeal',
                     title:'套餐信息'
                 },
             ],
-            ruleData:[
-                {
-                    域名:'11111111',
-                    端口:'222222222',
-                    acc:'3333333333',
-                    套餐信息:'444444444'
-                }
+            ruleData:[            
             ],
             setMealList:[],
-            disNo:false
+            disNo:false,
+            cname:''
         }
     },
     methods:{
@@ -193,9 +191,15 @@ export default {
                         this.loading = true;
                         this.$http.get(url,{params}).then(res => {
                             if(res.status == 200 && res.data.status == 1){
-                                this.current += 1;
                                 this.loading = false;
                                 this.$Message.info(res.data.message);
+                                if(sessionStorage.getItem('ruleList')!=undefined){
+                                    this.$router.push('ddosipBack');
+                                    return;
+                                }
+                                this.ruleData.push(this.formValidate);
+                                this.cname = res.data.CNAME;
+                                this.current += 1;
                             }else{
                                 this.$Message.info(res.data.message);
                                 this.loading = false;
@@ -203,7 +207,24 @@ export default {
                         }).catch(err =>{})
                     }})
         },
-   
+        clearData(){
+            for(let key in this.formValidate){
+                if(key != 'agreement' && key != 'attackMeal'){
+                    this.formValidate[key] = '';
+                }
+            }
+        },
+        clearD(){
+            if(sessionStorage.getItem('ruleList')!=undefined){
+                for(let key in this.formValidate){
+                if(key != 'agreement' && key != 'attackMeal' && key != 'visitPort'){
+                    this.formValidate[key] = '';
+                }
+            }
+            }else{
+               this.clearData(); 
+            }
+        }
     },
     created(){
         this.getId();
@@ -249,4 +270,16 @@ export default {
         font-weight:Bold;
         margin:24px 0 18px 0;
     }
+    .back-btn {
+  margin-top: 8px;
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  border-radius: 4px;
+  border: 1px solid rgba(225, 225, 225, 1);
+  color: #999999;
+  text-align: center;
+  cursor:pointer;
+  line-height: 24px;
+}
 </style>

@@ -18,7 +18,7 @@
          <div>
              <div class="b-meal">
                 <div class="bm-rg">套餐说明  </div>
-                <div>
+                <div class="bm-tx">
                     <p>DDoS防护能力：{{selectList.ddosprotectnumber}}Gbps </p>
                     <p>CC防护能力：{{selectList.ccprotectnumber}}QPS </p>
                     <p>套餐包含的正常业务带宽：{{selectList.bandwith}}M </p>
@@ -57,6 +57,7 @@
                             </div>
                          <p class="bm-fn">
          弹性防护带宽为最高防护带宽，如果弹性防护带宽值跟保底防护带宽值设置一样，则不会产生后付费且最高防护带宽为保底防护带宽值，如果弹性带宽值设置高于保底带宽值，则超过保底带宽值但不大于弹性带宽值的攻击仍然可以进行有效防护，超出部分按天计费 ，如超过封顶抗攻击量，则回源，2小时后自动解封。</p>
+          <p class="b-font">点击查看弹性防护带宽计费详情</p>
                     </div>
              </div>
             <div class="b-meal">
@@ -75,19 +76,24 @@
              </div>
              <div class="b-meal">
                 <div class="bm-rg">业务带宽</div>
-               <div style="width:500px;display: flex;align-items:center">
-                   <i-slider
-                        v-model="bandWidth"
-                        unit="MB"
-                        :min='selectList.bandwith'
-                        :max=400
-                        :step=1
-                        :points="[50,100,150,200,300]"
-                        style="margin-right:30px;vertical-align: middle;">
-                    </i-slider>
-                    <InputNumber :max="400" :min="selectList.bandwith" v-model="bandWidth" size="large"
-                           style="position: relative;bottom: 5px" :precision="0"></InputNumber>
+                <div style="width:500px;">
+                  <div style="display: flex;align-items:center">
+                    <i-slider
+                          v-model="bandWidth"
+                          unit="MB"
+                          :min='selectList.bandwith'
+                          :max=2000
+                          :step=1
+                          :points="[400,600,900,1200,1500]"
+                          style="margin-right:30px;vertical-align: middle;">
+                      </i-slider>
+                      <InputNumber :max="2000" :min="selectList.bandwith" v-model="bandWidth" size="large"
+                            style="position: relative;bottom: 5px" :precision="0"></InputNumber>
+                  </div>
+                  <p class="bm-fn">无封顶值，超出部分的计费按预购买的业务带宽所在梯度对应标准按天收费。当前预购买带宽为{{selectList.bandwith}}M，按{{dayMoney}}M/元/天计费。</p>
                 </div>
+               
+                
              </div>
              <div class="b-meal">
                 <div class="bm-rg">价格</div>
@@ -111,12 +117,12 @@
                    <InputNumber @on-change='changeTime' v-model="buyNumber" :step='1' :min='1' :max='10' :editable="false"></InputNumber><span style="margin-left:5px;color:#999">个</span>
                 </div>
              </div>
-             <div class="b-meal">
+             <!-- <div class="b-meal">
                 <div class="bm-rg">价格</div>
                 <div class="bm-price">
                     {{totalPrice}}元
                 </div>
-             </div>
+             </div> -->
          </div>
             
       </div>
@@ -374,13 +380,19 @@
             content: '购物车已满'
           })
         }
+        let cost = 0;
+        if(this.buyNumber>1){
+          cost = this.totalPrice / this.buyNumber;
+        }else{
+          cost = this.totalPrice;
+        }
         let prod = {
           typeName: 'DDoS高防IP',
           type: 'Pddosip',
           zone: this.selectList.zoneid,
           line:this.selectList.zonename,
           timeForm: this.timeForm,
-          cost: this.totalPrice,
+          cost: cost,
            packageName:this.selectList.packagename,
             elasticband:this.bandwidths.bandwidthIndex,
             port:this.port,
@@ -437,7 +449,7 @@
             timeVlue:this.timeForm.currentTimeValue.value,
             timeType: this.timeForm.currentTimeType == 'annual' ? this.timeForm.currentTimeValue.type : 'current',
             zoneId:this.selectList.zoneid,
-            cost:this.price,
+            // cost:this.totalPrice,
             isAutoRenew:'1'
           }
         }).then(res => {
@@ -459,7 +471,7 @@
         return this.$store.state.userInfo
       },
       price(){
-        return this.elasticIpPrice +  this.businessPrice + this.pPrice+ this.dPrice +this.selectList.price;
+        return this.elasticIpPrice +  this.businessPrice + this.pPrice+ this.dPrice;
       },
       totalPrice(){
        return this.elasticIpPrice +  this.businessPrice + this.protPirce;
@@ -470,6 +482,17 @@
        }else{
          return false;
        }
+      },
+      dayMoney(){
+        if(this.bandWidth>50 && this.bandWidth <=100 ){
+          return '2.4'
+        }else if( this.bandWidth>100 && this.bandWidth <= 500){
+          return '2.2'
+        }else if( this.bandWidth > 500){
+          return '2.0'
+        }else{
+          return '2.67'
+        }
       }
     },
     watch: {
@@ -835,13 +858,15 @@
           color: #333333;
           font-size: 16px;
       }
-      p{
+      .bm-tx{
+        p{
           line-height: 22px;
           color:#999999;
           font-size: 14px;
+        }
       }
       .bm-fn{
-          margin-top: 10px;margin-bottom: 20px;font-size: 12px;color: #999999;line-height: 25px;
+          margin-top: 10px;font-size: 12px;color: #999999;line-height: 20px;
       }
       .bm-price{
           color:#F85E1D;font-size:18px;
@@ -852,5 +877,10 @@
     background-color: #f7f7f7;
     border-color: 1px solid #dddee1;
     cursor: not-allowed !important;
+  }
+  .b-font{
+    color: #2A99F2;
+    font-size: 12px;
+    cursor: pointer;
   }
 </style>
