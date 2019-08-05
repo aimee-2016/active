@@ -424,101 +424,6 @@
           </div>
         </div>
       </div>
-      <!-- 购买前实名认证 -->
-      <Modal v-model="showModal.authentication" width="640" :scrollable="true">
-        <p slot="header" class="modal-header-border">
-          <span class="universal-modal-title">实名认证</span>
-        </p>
-        <Form
-          :model="quicklyAuthForm"
-          :label-width="100"
-          ref="quicklyAuth"
-          :rules="quicklyAuthFormValidate"
-          style="width:450px;margin-top:20px;"
-        >
-          <FormItem label="真实姓名" prop="name" style="width: 100%">
-            <Input v-model="quicklyAuthForm.name" placeholder="请输入姓名"></Input>
-          </FormItem>
-          <FormItem label="身份证号" prop="IDCard" style="width: 100%">
-            <Input v-model="quicklyAuthForm.IDCard" placeholder="请输入身份证号"></Input>
-          </FormItem>
-          <Form
-            :model="quicklyAuthForm"
-            :rules="quicklyAuthFormValidate"
-            ref="sendCode"
-            :label-width="100"
-          >
-            <FormItem label="图形验证码" prop="pictureCode">
-              <div style="display: flex">
-                <Input
-                  v-model="quicklyAuthForm.pictureCode"
-                  placeholder="请输入图片验证码"
-                  style="width:250px;margin-right: 10px"
-                ></Input>
-                <img
-                  :src="imgSrc"
-                  style="height:33px;"
-                  @click="imgSrc=`https://kaifa.xrcloud.net/user/getKaptchaImage.do?t=${new Date().getTime()}`"
-                >
-              </div>
-            </FormItem>
-            <FormItem label="手机号码" prop="phone" style="width: 100%">
-              <Input v-model="quicklyAuthForm.phone" placeholder="请输入以该身份证开户的手机号码"></Input>
-            </FormItem>
-          </Form>
-          <FormItem label="验证码" prop="validateCode" style="width: 100%">
-            <div style="display: flex;justify-content: space-between">
-              <Input
-                v-model="quicklyAuthForm.validateCode"
-                placeholder="请输入验证码"
-                style="width:260px;margin-right: 10px"
-              ></Input>
-              <Button
-                type="primary"
-                @click="sendCode"
-                :disabled="quicklyAuthForm.sendCodeText!='获取验证码'"
-              >{{quicklyAuthForm.sendCodeText}}</Button>
-            </div>
-          </FormItem>
-        </Form>
-        <div slot="footer" class="modal-footer-border">
-          <Button type="primary" @click="quicklyAuth">提交</Button>
-        </div>
-      </Modal>
-      <!-- 实名认证成功 -->
-      <Modal v-model="showModal.authenticationSuccess" width="640" :scrollable="true">
-        <p slot="header" class="modal-header-border">
-          <span class="universal-modal-title">实名认证</span>
-        </p>
-        <div style="text-align:center;padding:40px 0;">
-          <img
-            src="../../../assets/img/payresult/paySuccess.png"
-            style="width:36px;vertical-align:middle;margin-right:10px;"
-            alt="实名认证成功"
-          >
-          <span style="font-size:14px;line-height:36px">恭喜您，实名认证成功！</span>
-        </div>
-        <div slot="footer" class="modal-footer-border">
-          <Button type="primary" @click="showModal.authenticationSuccess=false">确认</Button>
-        </div>
-      </Modal>
-      <!-- 实名认证失败 -->
-      <Modal v-model="showModal.authenticationError" width="640" :scrollable="true">
-        <p slot="header" class="modal-header-border">
-          <span class="universal-modal-title">实名认证</span>
-        </p>
-        <div style="text-align:center;padding:40px 0;">
-          <img
-            src="../../../assets/img/payresult/payFail.png"
-            style="width:36px;vertical-align:middle;margin-right:10px;"
-            alt="实名认证失败"
-          >
-          <span style="font-size:14px;line-height:36px">抱歉，实名认证失败，原因：{{authErrorText}}</span>
-        </div>
-        <div slot="footer" class="modal-footer-border">
-          <Button type="primary" @click="showModal.authenticationError=false">确认</Button>
-        </div>
-      </Modal>
       <!-- 活动规则 -->
       <transition name="fade">
         <div class="overlay" @click.stop="showModal.ruleKill=true" v-if="showModal.ruleKill">
@@ -611,8 +516,7 @@
         :scrollable="true"
         :closable="true"
         :width="520"
-        :mask-closable="false"
-      >
+        :mask-closable="false">
         <p slot="header" class="modal-header-border">
           <span class="universal-modal-title">身份验证</span>
         </p>
@@ -712,8 +616,7 @@
         width="550"
         :scrollable="true"
         :mask-closable="false"
-        :closable="false"
-      >
+        :closable="false">
         <p slot="header" class="modal-header-border">
           <span class="universal-modal-title">扫码认证</span>
         </p>
@@ -826,9 +729,6 @@ export default {
     }
     return {
       showModal: {
-        authentication: false,
-        authenticationSuccess: false,
-        authenticationError: false,
         rule: false,
         ruleKill: false,
         ruleFT: false,
@@ -1274,36 +1174,6 @@ export default {
         }
       ],
       dataForcast: [],
-      // 快速认证表单
-      quicklyAuthForm: {
-        name: '',
-        IDCard: '',
-        pictureCode: '',
-        phone: '',
-        validateCode: '',
-        sendCodeText: '获取验证码'
-      },
-      // 快速认证表单验证
-      quicklyAuthFormValidate: {
-        name: [
-          { required: true, message: '请输入姓名' },
-          { validator: validaRegisteredName }
-        ],
-        IDCard: [
-          { required: true, message: '请输入身份证号' },
-          { validator: validaRegisteredID }
-        ],
-        pictureCode: [
-          { required: true, message: '请输入图片验证码' }
-        ],
-        phone: [
-          { required: true, message: '请输入以该身份证开户的手机号码' },
-          { validator: validaRegisteredPhone }
-        ],
-        validateCode: [
-          { required: true, message: '请输入验证码' }
-        ]
-      },
       imgSrc: 'https://kaifa.xrcloud.net/user/getKaptchaImage.do',
       authErrorText: ''
     }
@@ -1714,64 +1584,6 @@ export default {
       this.m2 = Math.floor(leftTime / 1000 / 60 % 60 % 10)
       this.s1 = Math.floor(leftTime / 1000 % 60 / 10)
       this.s2 = Math.floor(leftTime / 1000 % 60 % 10)
-    }, // 快速认证时发送验证码
-    sendCode () {
-      this.$refs.sendCode.validate(validate => {
-        if (validate) {
-          axios.get('user/code.do', {
-            params: {
-              aim: this.quicklyAuthForm.phone,
-              isemail: 0,
-              vailCode: this.quicklyAuthForm.pictureCode
-            }
-          }).then(response => {
-            // 发送成功，进入倒计时
-            if (response.status == 200 && response.data.status == 1) {
-              var countdown = 60
-              this.quicklyAuthForm.sendCodeText = `重新发送(${countdown})S`
-              var Interval = setInterval(() => {
-                countdown--
-                this.quicklyAuthForm.sendCodeText = `重新发送(${countdown})S`
-                if (countdown == 0) {
-                  clearInterval(Interval)
-                  this.quicklyAuthForm.sendCodeText = '获取验证码'
-                }
-              }, 1000)
-            } else {
-              this.$Message.error(response.data.message)
-            }
-          })
-        }
-      })
-    },
-    // 快速认证
-    quicklyAuth () {
-      var quicklyAuth = this.$refs.quicklyAuth.validate(validate => {
-        return Promise.resolve(validate)
-      })
-      var sendCode = this.$refs.sendCode.validate(validate => {
-        return Promise.resolve(validate)
-      })
-      Promise.all([quicklyAuth, sendCode]).then(results => {
-        if (results[0] === true && results[1] === true) {
-          axios.post('user/personalAttest.do', {
-            cardID: this.quicklyAuthForm.IDCard,
-            name: this.quicklyAuthForm.name,
-            phone: this.quicklyAuthForm.phone,
-            phoneCode: this.quicklyAuthForm.validateCode,
-            type: '0'
-          }).then(response => {
-            if (response.status == 200 && response.data.status == 1) {
-              this.showModal.authentication = false
-              this.showModal.authenticationSuccess = true
-              this.init()
-            } else {
-              this.showModal.authenticationError = true
-              this.authErrorText = response.data.message
-            }
-          })
-        }
-      })
     },
     // 刷新用户认证状态
     refreshUserStatus () {
