@@ -681,7 +681,7 @@
 					if(res.data.result.qrCode == 2){
 					this.codeLoseEfficacy = 'scanSuccess'
 					}
-					if(res.data.result.authStatus == 1){
+					if(res.data.result.authStatus == 1 || res.data.result.authStatus == 3){
 					clearInterval(this.codeTimer)
 					 this.SubInformation()
 					}

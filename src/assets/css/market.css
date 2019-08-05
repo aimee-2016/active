@@ -299,7 +299,7 @@
 #apply .ivu-input-wrapper{
   width: 500px;
 }
-textarea.ivu-input{
+#apply textarea.ivu-input{
   resize: none;
   height: 120px !important;
 }

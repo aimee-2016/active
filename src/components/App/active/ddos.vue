@@ -109,7 +109,7 @@
                       </li>
                     </ul>
                   </div>
-                  <div v-if="item.post.pronum" class="s"> 
+                  <div v-if="item.post.pronum" class="s">
                     <span class="label">防御：</span>
                     {{ item.post.pronum }}G
                   </div>
@@ -132,7 +132,11 @@
                     </div>
                   </div>
                   <div v-else>
-                    <div style="margin-bottom:10px;" class="ddos-zone" :style="{marginTop:item.post.servicetype=='host'?'33px':'0'}">
+                    <div
+                      style="margin-bottom:10px;"
+                      class="ddos-zone"
+                      :style="{marginTop:item.post.servicetype=='host'?'33px':'0'}"
+                    >
                       <span class="label">区域：</span>
                       <Select
                         v-model="item.zone"
@@ -191,12 +195,15 @@
                     ￥
                     <span>{{item.price}}</span>
                     /{{item.post.days==12?'年':'月'}}
-                    <i v-if="item.post.explosives==1">爆款</i>
+                    <i
+                      v-if="item.post.explosives==1"
+                    >爆款</i>
                     <i v-if="item.post.highdist==1">高配</i>
                   </div>
                   <div class="origin-price">
                     原价：￥
-                    <span>{{item.originPrice}}</span>/{{item.post.days==12?'年':'月'}}
+                    <span>{{item.originPrice}}</span>
+                    /{{item.post.days==12?'年':'月'}}
                   </div>
                   <div>
                     <Button
@@ -204,7 +211,7 @@
                       v-if="item.num==100"
                       style="background:linear-gradient(90deg,rgba(206,206,206,1) 0%,rgba(168,168,168,1) 100%)"
                     >已抢完</Button>
-                    <Button class="btn" @click="pushOrderHot(item)" v-else>立即购买</Button>
+                    <Button class="btn" @click="pushOrderKill(item)" v-else>立即购买</Button>
                   </div>
                 </div>
                 <div class="percentage">
@@ -417,101 +424,6 @@
           </div>
         </div>
       </div>
-      <!-- 购买前实名认证 -->
-      <Modal v-model="showModal.authentication" width="640" :scrollable="true">
-        <p slot="header" class="modal-header-border">
-          <span class="universal-modal-title">实名认证</span>
-        </p>
-        <Form
-          :model="quicklyAuthForm"
-          :label-width="100"
-          ref="quicklyAuth"
-          :rules="quicklyAuthFormValidate"
-          style="width:450px;margin-top:20px;"
-        >
-          <FormItem label="真实姓名" prop="name" style="width: 100%">
-            <Input v-model="quicklyAuthForm.name" placeholder="请输入姓名"></Input>
-          </FormItem>
-          <FormItem label="身份证号" prop="IDCard" style="width: 100%">
-            <Input v-model="quicklyAuthForm.IDCard" placeholder="请输入身份证号"></Input>
-          </FormItem>
-          <Form
-            :model="quicklyAuthForm"
-            :rules="quicklyAuthFormValidate"
-            ref="sendCode"
-            :label-width="100"
-          >
-            <FormItem label="图形验证码" prop="pictureCode">
-              <div style="display: flex">
-                <Input
-                  v-model="quicklyAuthForm.pictureCode"
-                  placeholder="请输入图片验证码"
-                  style="width:250px;margin-right: 10px"
-                ></Input>
-                <img
-                  :src="imgSrc"
-                  style="height:33px;"
-                  @click="imgSrc=`https://kaifa.xrcloud.net/user/getKaptchaImage.do?t=${new Date().getTime()}`"
-                >
-              </div>
-            </FormItem>
-            <FormItem label="手机号码" prop="phone" style="width: 100%">
-              <Input v-model="quicklyAuthForm.phone" placeholder="请输入以该身份证开户的手机号码"></Input>
-            </FormItem>
-          </Form>
-          <FormItem label="验证码" prop="validateCode" style="width: 100%">
-            <div style="display: flex;justify-content: space-between">
-              <Input
-                v-model="quicklyAuthForm.validateCode"
-                placeholder="请输入验证码"
-                style="width:260px;margin-right: 10px"
-              ></Input>
-              <Button
-                type="primary"
-                @click="sendCode"
-                :disabled="quicklyAuthForm.sendCodeText!='获取验证码'"
-              >{{quicklyAuthForm.sendCodeText}}</Button>
-            </div>
-          </FormItem>
-        </Form>
-        <div slot="footer" class="modal-footer-border">
-          <Button type="primary" @click="quicklyAuth">提交</Button>
-        </div>
-      </Modal>
-      <!-- 实名认证成功 -->
-      <Modal v-model="showModal.authenticationSuccess" width="640" :scrollable="true">
-        <p slot="header" class="modal-header-border">
-          <span class="universal-modal-title">实名认证</span>
-        </p>
-        <div style="text-align:center;padding:40px 0;">
-          <img
-            src="../../../assets/img/payresult/paySuccess.png"
-            style="width:36px;vertical-align:middle;margin-right:10px;"
-            alt="实名认证成功"
-          >
-          <span style="font-size:14px;line-height:36px">恭喜您，实名认证成功！</span>
-        </div>
-        <div slot="footer" class="modal-footer-border">
-          <Button type="primary" @click="showModal.authenticationSuccess=false">确认</Button>
-        </div>
-      </Modal>
-      <!-- 实名认证失败 -->
-      <Modal v-model="showModal.authenticationError" width="640" :scrollable="true">
-        <p slot="header" class="modal-header-border">
-          <span class="universal-modal-title">实名认证</span>
-        </p>
-        <div style="text-align:center;padding:40px 0;">
-          <img
-            src="../../../assets/img/payresult/payFail.png"
-            style="width:36px;vertical-align:middle;margin-right:10px;"
-            alt="实名认证失败"
-          >
-          <span style="font-size:14px;line-height:36px">抱歉，实名认证失败，原因：{{authErrorText}}</span>
-        </div>
-        <div slot="footer" class="modal-footer-border">
-          <Button type="primary" @click="showModal.authenticationError=false">确认</Button>
-        </div>
-      </Modal>
       <!-- 活动规则 -->
       <transition name="fade">
         <div class="overlay" @click.stop="showModal.ruleKill=true" v-if="showModal.ruleKill">
@@ -598,6 +510,171 @@
           </div>
         </div>
       </transition>
+      <!-- 身份验证弹窗 -->
+      <Modal
+        v-model="showModal.cashverification"
+        :scrollable="true"
+        :closable="true"
+        :width="520"
+        :mask-closable="false">
+        <p slot="header" class="modal-header-border">
+          <span class="universal-modal-title">身份验证</span>
+        </p>
+        <div class="modal-content-s">
+          <div>
+            <p
+              class="lh24"
+              style="font-size:14px;font-family:MicrosoftYaHei;color:rgba(51,51,51,1);line-height:24px;"
+            >为保障您的账户安全，请进行手机验证：</p>
+          </div>
+        </div>
+        <div class="modal-content-s">
+          <Form
+            ref="cashverification"
+            label-position="left"
+            :model="formCustom"
+            :rules="ruleCustom"
+            style="width: 500px;"
+          >
+            <FormItem prop="VerificationPhone">
+              <Input
+                v-model="formCustom.VerificationPhone"
+                placeholder="请输入手机号码"
+                style="width: 300px;"
+              ></Input>
+            </FormItem>
+            <FormItem prop="Verificationcode">
+              <Input
+                v-model="formCustom.Verificationcode"
+                placeholder="请输入随机验证码"
+                style="width: 300px;"
+              ></Input>
+              <img
+                :src="imgSrc"
+                @click="imgSrc=`user/getKaptchaImage.do?t=${new Date().getTime()}`"
+                style="height:32px;vertical-align: middle;margin-left: 10px;"
+              >
+            </FormItem>
+            <FormItem prop="messagecode">
+              <Input v-model="formCustom.messagecode" placeholder="请输入收到的验证码" style="width: 300px;"></Input>
+              <Button
+                type="primary"
+                @click="getPhoneCode('code')"
+                :disabled="formCustom.newCodeText !='获取验证码'"
+                style="margin-left: 10px;"
+              >{{formCustom.newCodeText}}</Button>
+            </FormItem>
+          </Form>
+        </div>
+        <div class="modal-content-s divall">
+          <div
+            style="width: 91%;margin-left: 4%;margin-top: 10px;font-size: 14px;margin-bottom: 20px;"
+          >
+            <p style="float: left;line-height:24px;">没有收到验证码？</p>
+            <br>
+            <p style="line-height:24px;">
+              1、网络异常可能会造成短信丢失，请
+              <span
+                class="spanaa"
+                :class="{notallow:formCustom.newCodeText !='获取验证码'}"
+                @click="getPhoneCode('againCode')"
+              >重新获取</span>或
+              <span
+                class="spanaa"
+                :class="{notallow:formCustom.newCodeText !='获取验证码'}"
+                @click.prevent="getPhoneCode('voice')"
+              >接收语音验证码</span>。
+            </p>
+            <p v-if="authInfo&&authInfo.checkstatus==0" style="line-height:24px;">
+              2、如果手机已丢失或停机，请
+              <span
+                class="spanaa"
+                @click="showModal.modifyPhoneID = true;showModal.cashverification=false"
+              >通过身份证号码验证</span>或
+              <span class="spanaa" @click="$router.push('/work')">提交工单</span>更改手机号。
+            </p>
+            <p v-if="!authInfo||authInfo&&authInfo.checkstatus!=0" style="line-height:24px;">
+              2、如果手机已丢失或停机，请
+              <span class="spanaa" @click="$router.push('/work')">提交工单</span>或
+              <a
+                target="_blank"
+                :href="`tencent://message/?uin=${$store.state.qq.qqnumber}&amp;Site=www.cloudsoar.com&amp;Menu=yes`"
+                class="spanaa"
+                style="font-size: 13px;"
+              >联系客服</a>更改手机号。
+            </p>
+          </div>
+        </div>
+        <p slot="footer" class="modal-footer-s">
+          <Button @click="showModal.cashverification = false">取消</Button>
+          <Button type="primary" :disabled="disabled" @click="Callpresentation">确定</Button>
+        </p>
+      </Modal>
+      <!-- 人脸识别二维码弹出框 -->
+      <Modal
+        v-model="showModal.qrCode"
+        width="550"
+        :scrollable="true"
+        :mask-closable="false"
+        :closable="false">
+        <p slot="header" class="modal-header-border">
+          <span class="universal-modal-title">扫码认证</span>
+        </p>
+        <div class="universal-modal-content-flex qrcode-modal">
+          <p class="p-top">认证完成之前，请勿关闭或者切换此页面，否则可能导致认证失败</p>
+          <p>请使用手机扫描二维码，并根据提示完成实名认证</p>
+          <p v-show="authStatus" class="p-top">您的实名认证提交失败，请刷新二维码重新认证</p>
+          <div class="qr-code">
+            <vue-q-art :config="qrConfig"></vue-q-art>
+            <div
+              class="shade"
+              :class="{scanSuccess: codeLoseEfficacy=== 'scanSuccess'}"
+              v-show="codeLoseEfficacy"
+            ></div>
+          </div>
+          <p class="p-bottom">
+            若二维码失效或异常，请
+            <span @click="refreshQRCode">刷新</span>
+          </p>
+        </div>
+        <div slot="footer" class="modal-footer-border">
+          <Button type="primary" @click="showModal.qrCode = false">确定</Button>
+        </div>
+      </Modal>
+      <!-- 弹窗提示 -->
+      <transition name="fade">
+        <div class="overlay" @click.stop="showModal.hint=true" v-if="showModal.hint">
+          <div class="rule-modal" style="width:400px;">
+            <div class="header">
+              <span>提示</span>
+              <img src=../../../assets/img/active/ddos/ddos-close-icon.png alt="关闭图标" @click.stop="showModal.hint=false">
+            </div>
+            <div class="body" style="text-align:center">
+              <div>{{hintMsg}}</div>
+            </div>
+            <div class="footer">
+              <Button class="btn" @click.stop="showModal.hint=false">确认</Button>
+            </div>
+          </div>
+        </div>
+      </transition>
+      <!-- 弹窗提示 -->
+      <transition name="fade">
+        <div class="overlay" @click.stop="showModal.authHint=true" v-if="showModal.authHint">
+          <div class="rule-modal" style="width:400px;">
+            <div class="header">
+              <span>提示</span>
+              <img src=../../../assets/img/active/ddos/ddos-close-icon.png alt="关闭图标" @click.stop="showModal.authHint=false">
+            </div>
+            <div class="body" style="text-align:center">
+              <div>抱歉，人脸识别实名认证失败！您也可以 前往用户中心上传身份证照片进行实名认证。</div>
+            </div>
+            <div class="footer">
+              <Button class="btn" @click.stop="toAuthPage()">去实名认证</Button>
+            </div>
+          </div>
+        </div>
+      </transition>
     </div>
   </div>
 </template>
@@ -607,6 +684,7 @@ import axios from 'axios'
 import reg from '../../../util/regExp'
 import VueQArt from 'vue-qart'
 import $ from 'jquery'
+import throttle from 'throttle-debounce/debounce'
 export default {
   beforeRouteEnter (to, from, next) {
     axios.get('activity/activityTime.do', {
@@ -651,14 +729,59 @@ export default {
     }
     return {
       showModal: {
-        authentication: false,
-        authenticationSuccess: false,
-        authenticationError: false,
         rule: false,
         ruleKill: false,
         ruleFT: false,
         ruleGT: false,
         ruleForcast: false,
+        qrCode: false,
+        cashverification: false,
+        hint: false,
+        authHint: false
+      },
+      hintMsg: '',
+      qrConfig: {
+        value: '',
+        imagePath: require('../../../assets/img/pay/payBackground.png'),
+        filter: 'black',
+        size: 500
+      },
+      // 二维码失效
+      codeLoseEfficacy: '',
+      tempCode: '',
+      codeTimer: null,
+      authStatus: false,
+      //验证码和短信验证
+      formCustom: {
+        VerificationPhone: '',
+        //图片随机码
+        Verificationcode: '',
+        //短信验证码
+        messagecode: '',
+        newCodeText: '获取验证码',
+        codeText: '获取验证码',
+      },
+      ruleCustom: {
+        VerificationPhone: [{
+          required: true,
+          validator: validaRegisteredPhone,
+          trigger: 'blur'
+        }],
+        Verificationcode: [{
+          required: true,
+          message: '请输入图形验证码',
+          trigger: 'blur'
+        }],
+        messagecode: [{
+          required: true,
+          message: '请输入收到的验证码',
+          trigger: 'blur'
+        },]
+      },
+      regExpObj: {
+        phone: /^1[3|4|5|8|9|6|7]\d{9}$/,
+        email: /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/,
+        password: /(?!(^[^a-z]+$))(?!(^[^A-Z]+$))(?!(^[^\d]+$))^[\w`~!#$%_()^&*,-<>?@.+=]{8,32}$/
       },
       systemDDOSHList: [{
         value: 'window',
@@ -1051,43 +1174,13 @@ export default {
         }
       ],
       dataForcast: [],
-      // 快速认证表单
-      quicklyAuthForm: {
-        name: '',
-        IDCard: '',
-        pictureCode: '',
-        phone: '',
-        validateCode: '',
-        sendCodeText: '获取验证码'
-      },
-      // 快速认证表单验证
-      quicklyAuthFormValidate: {
-        name: [
-          { required: true, message: '请输入姓名' },
-          { validator: validaRegisteredName }
-        ],
-        IDCard: [
-          { required: true, message: '请输入身份证号' },
-          { validator: validaRegisteredID }
-        ],
-        pictureCode: [
-          { required: true, message: '请输入图片验证码' }
-        ],
-        phone: [
-          { required: true, message: '请输入以该身份证开户的手机号码' },
-          { validator: validaRegisteredPhone }
-        ],
-        validateCode: [
-          { required: true, message: '请输入验证码' }
-        ]
-      },
       imgSrc: 'https://kaifa.xrcloud.net/user/getKaptchaImage.do',
       authErrorText: ''
     }
   },
   created () {
     this.getTime()
-    this.getConfigureHot()
+    this.getConfigureKill()
     this.getSubsection()
     this.activityForecast()
     this.getConfigureDDOS('55', 'listGT')
@@ -1097,6 +1190,17 @@ export default {
   mounted () {
   },
   methods: {
+    init () {
+      axios.get('user/GetUserInfo.do').then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          $store.commit('setAuthInfo', {
+            authInfo: response.data.authInfo,
+            userInfo: response.data.result,
+            authInfoPersion: response.data.authInfo_persion
+          })
+        }
+      })
+    },
     // 53    高防云服务器，限时秒杀
     // 54    高防服务器首月8折优惠
     // 55    超低折扣 买时长送域名
@@ -1113,7 +1217,7 @@ export default {
       })
     },
     // 获取活动配置,区域
-    getConfigureHot () {
+    getConfigureKill () {
       let url = 'activity/getActInfoById.do'
       axios.get(url, {
         params: {
@@ -1225,13 +1329,18 @@ export default {
         }
       })
     },
-    pushOrderHot (item) {
+    pushOrderKill (item) {
       if (!this.$store.state.userInfo) {
         this.$LR({ type: 'register' })
         return
       }
       if ((!this.authInfo) || (this.authInfo && this.authInfo.authtype == 0 && this.authInfo.checkstatus != 0) || (!this.authInfoPersion && this.authInfo && this.authInfo.authtype == 1 && this.authInfo.checkstatus != 0) || (this.authInfoPersion && this.authInfoPersion.checkstatus != 0 && this.authInfo && this.authInfo.checkstatus != 0)) {
-        this.showModal.authentication = true
+        if (!this.userInfo.phone) {
+          this.showModal.cashverification = true
+        } else {
+          this.showModal.qrCode = true
+          this.refreshUserStatus()
+        }
         return
       }
       let url = 'information/getDiskcountMv.do'
@@ -1251,9 +1360,8 @@ export default {
           this.$Message.success('创建订单成功')
           this.$router.push('/order')
         } else {
-          this.$message.info({
-            content: res.data.message
-          })
+          this.hintMsg = res.data.message
+          this.showModal.hint = true
         }
       })
     },
@@ -1369,7 +1477,12 @@ export default {
         return
       }
       if ((!this.authInfo) || (this.authInfo && this.authInfo.authtype == 0 && this.authInfo.checkstatus != 0) || (!this.authInfoPersion && this.authInfo && this.authInfo.authtype == 1 && this.authInfo.checkstatus != 0) || (this.authInfoPersion && this.authInfoPersion.checkstatus != 0 && this.authInfo && this.authInfo.checkstatus != 0)) {
-        this.showModal.authentication = true
+        if (!this.userInfo.phone) {
+          this.showModal.cashverification = true
+        } else {
+          this.showModal.qrCode = true
+          this.refreshUserStatus()
+        }
         return
       }
       axios.get('activity/getDiskcountHighPreventionMv.do', {
@@ -1383,9 +1496,8 @@ export default {
           this.$Message.success('创建订单成功')
           this.$router.push('/order')
         } else {
-          this.$message.info({
-            content: res.data.message
-          })
+          this.hintMsg = res.data.message
+          this.showModal.hint = true
         }
       })
     },
@@ -1437,7 +1549,7 @@ export default {
           for (let i = 0; i < hourArray.length - 1; i++) {
             if (h >= hourArray[i] && h < hourArray[i + 1]) {
               hourPoint = hourArray[i + 1]
-            } else if (h == 22 || h == 23 ) {
+            } else if (h == 22 || h == 23) {
               hourPoint = 24
             } else if (h == 0 || h == 1) {
               hourPoint = 2
@@ -1445,8 +1557,8 @@ export default {
           }
           let nowb = new Date(res.data.result)
           let endTime = ''
-          if(hourPoint==24) {
-            endTime = nowb.setHours(hourPoint, 0, 0, 0) + 2*60*60*1000
+          if (hourPoint == 24) {
+            endTime = nowb.setHours(hourPoint, 0, 0, 0) + 2 * 60 * 60 * 1000
           } else {
             endTime = nowb.setHours(hourPoint, 0, 0, 0)
           }
@@ -1457,7 +1569,8 @@ export default {
               this.formatTime(leftTime)
               leftTime -= 1000
               if (leftTime <= 0) {
-                this.$router.history.go(0)
+                // this.$router.history.go(0)
+                this.getConfigureKill()
                 window.clearInterval(this.timer)
               }
             }, 1000)
@@ -1471,65 +1584,202 @@ export default {
       this.m2 = Math.floor(leftTime / 1000 / 60 % 60 % 10)
       this.s1 = Math.floor(leftTime / 1000 % 60 / 10)
       this.s2 = Math.floor(leftTime / 1000 % 60 % 10)
-    }, // 快速认证时发送验证码
-    sendCode () {
-      this.$refs.sendCode.validate(validate => {
-        if (validate) {
-          axios.get('user/code.do', {
-            params: {
-              aim: this.quicklyAuthForm.phone,
-              isemail: 0,
-              vailCode: this.quicklyAuthForm.pictureCode
-            }
-          }).then(response => {
-            // 发送成功，进入倒计时
-            if (response.status == 200 && response.data.status == 1) {
-              var countdown = 60
-              this.quicklyAuthForm.sendCodeText = `重新发送(${countdown})S`
-              var Interval = setInterval(() => {
-                countdown--
-                this.quicklyAuthForm.sendCodeText = `重新发送(${countdown})S`
-                if (countdown == 0) {
-                  clearInterval(Interval)
-                  this.quicklyAuthForm.sendCodeText = '获取验证码'
-                }
-              }, 1000)
-            } else {
-              this.$Message.error(response.data.message)
-            }
-          })
-        }
-      })
     },
-    // 快速认证
-    quicklyAuth () {
-      var quicklyAuth = this.$refs.quicklyAuth.validate(validate => {
-        return Promise.resolve(validate)
-      })
-      var sendCode = this.$refs.sendCode.validate(validate => {
-        return Promise.resolve(validate)
-      })
-      Promise.all([quicklyAuth, sendCode]).then(results => {
-        if (results[0] === true && results[1] === true) {
-          axios.post('user/personalAttest.do', {
-            cardID: this.quicklyAuthForm.IDCard,
-            name: this.quicklyAuthForm.name,
-            phone: this.quicklyAuthForm.phone,
-            phoneCode: this.quicklyAuthForm.validateCode,
-            type: '0'
-          }).then(response => {
-            if (response.status == 200 && response.data.status == 1) {
-              this.showModal.authentication = false
-              this.showModal.authenticationSuccess = true
+    // 刷新用户认证状态
+    refreshUserStatus () {
+      // console.log('refreshQRCode')
+      clearInterval(this.codeTimer)
+      this.codeTimer = setInterval(() => {
+        this.$http.get('/faceRecognition/getAllStatus.do', { params: { tempCode: this.tempCode } }).then(res => {
+          if (res.status == 200 && res.data.status == 1) {
+            if (res.data.result.qrCode == 0) {
+              this.codeLoseEfficacy = 'lose'
+            }
+            if (res.data.result.qrCode == 2) {
+              this.codeLoseEfficacy = 'scanSuccess'
+            }
+            if (res.data.result.authStatus == 1) {
               this.init()
+              this.showModal.qrCode = false
+              clearInterval(this.codeTimer)
+            }
+            if (res.data.result.authStatus == 0) {
+              this.authStatus = true
+            } else if (res.data.result.authStatus == 3) {
+              this.showModal.authHint = true
+            }
+          }
+        })
+      }, 3000)
+    },
+    // 刷新二维码状态状态
+    refreshQRCode: throttle(1000, function () {
+      this.authStatus = false
+      this.tempCode = this.uuid(6, 16)
+      let url = '/faceRecognition/getUserInfoByPcQRCode.do'
+      let config1 = {
+        phone: this.userInfo.phone ? this.userInfo.phone : this.formCustom.VerificationPhone,
+      }
+      let params = {
+        faceType: '1',
+        tempCode: this.tempCode
+      }
+      params.config = JSON.stringify(config1)
+      axios.post(url, params).then(res => {
+        if (res.status == 200 && res.data.status == 1) {
+          this.$Message.success('刷新成功')
+          this.qrConfig.value = res.data.result.url
+          this.codeLoseEfficacy = ''
+        } else {
+          this.codeLoseEfficacy = 'lose'
+        }
+      })
+    }),
+    //短信验证码
+    getPhoneCode (codeType) {
+      if (!this.userInfo.phone && !this.regExpObj.phone.test(this.formCustom.VerificationPhone)) {
+        this.$Message.info('请输入正确的手机号')
+        return
+      }
+      if (this.formCustom.VerificationPhone) {
+        axios.get('user/isRegister.do', {
+          params: {
+            username: this.formCustom.VerificationPhone
+          }
+        }).then(res => {
+          if (res.status === 200 && res.data.status === 1) {
+            this.$refs.cashverification.validateField('Verificationcode', (text) => {
+              if (text == '') {
+                var url = ''
+                if (codeType == 'code' || codeType == 'againCode' && this.formCustom.newCodeText == '获取验证码') {
+                  url = 'user/code.do'
+                } else if (codeType == 'voice' && this.formCustom.newCodeText == '获取验证码') {
+                  url = 'user/voiceCode.do'
+                } else {
+                  return false
+                }
+                axios.get(url, {
+                  params: {
+                    aim: this.formCustom.VerificationPhone,
+                    isemail: 0,
+                    vailCode: this.formCustom.Verificationcode
+                  }
+                }).then(response => {
+                  // 发送成功，进入倒计时
+                  if (response.status == 200 && response.data.status == 1) {
+                    var countdown = 60
+                    this.formCustom.newCodeText = `${countdown}S`
+                    var Interval = setInterval(() => {
+                      countdown--
+                      this.formCustom.newCodeText = `${countdown}S`
+                      if (countdown == 0) {
+                        clearInterval(Interval)
+                        this.formCustom.newCodeText = '获取验证码'
+                      }
+                    }, 1000)
+                  } else {
+                    this.$message.info({
+                      content: response.data.message
+                    })
+                    this.imgSrc = `user/getKaptchaImage.do?t=${new Date().getTime()}`
+                    this.formCustom.Verificationcode = ''
+                  }
+                })
+              }
+            })
+          } else {
+            this.$Message.info('该手机号已被使用')
+          }
+        })
+      }
+    },
+    Callpresentation () {
+      this.$refs.cashverification.validateField('messagecode', (text) => {
+        if (text == '') {
+          let url = 'user/judgeCode.do'
+          let params = {}
+          if (this.formCustom.VerificationPhone) {
+            params = {
+              aim: this.formCustom.VerificationPhone,
+              isemail: 0,
+              code: this.formCustom.messagecode
+            }
+          }
+          axios.get(url, {
+            params
+          }).then(res => {
+            if (res.data.status == 1 && res.status == 200) {
+              if (this.phoneVerifyType === 'identification') {
+                this.showModal.cashverification = false
+                this.tempCode = this.uuid(6, 16)
+                let url = '/faceRecognition/getUserInfoByPcQRCode.do'
+                let config = {
+                  phone: this.userInfo.phone ? this.userInfo.phone : this.formCustom.VerificationPhone,
+                }
+                axios.post(url, {
+                  faceType: '1',
+                  config: JSON.stringify(config),
+                  tempCode: this.tempCode
+                }).then(res => {
+                  if (res.status == 200 && res.data.status == 1) {
+                    this.qrConfig.value = res.data.result.url
+                    this.showModal.qrCode = true
+                    this.codeLoseEfficacy = ''
+                    this.refreshUserStatus()
+                  } else {
+                    this.codeLoseEfficacy = 'lose'
+                    this.showModal.qrCode = true
+                    this.refreshUserStatus()
+                  }
+                })
+              }
             } else {
-              this.showModal.authenticationError = true
-              this.authErrorText = response.data.message
+              this.$message.info({
+                content: res.data.message
+              })
             }
           })
         }
       })
     },
+    uuid (len, radix) {
+      var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+      var uuid = [], i;
+      radix = radix || chars.length;
+
+      if (len) {
+        // Compact form
+        for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random() * radix];
+      } else {
+        // rfc4122, version 4 form
+        var r;
+
+        // rfc4122 requires these characters
+        uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
+        uuid[14] = '4';
+
+        // Fill in random data.  At i==19 set the high bits of clock sequence as
+        // per rfc4122, sec. 4.1.5
+        for (i = 0; i < 36; i++) {
+          if (!uuid[i]) {
+            r = 0 | Math.random() * 16;
+            uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
+          }
+        }
+      }
+      return uuid.join('');
+    },
+    toAuthPage () {
+      this.showModal.authHint = false
+      var paneStatue = {
+        vpc: 'VPC',
+        vpn: 'remote',
+        usercenter: 'certification',
+        expenses: 'accountSummary'
+      }
+      this.$router.push('/usercenter')
+      this.$store.commit('setPane', paneStatue)
+    }
   },
   computed: {
     authInfo () {
@@ -1538,11 +1788,26 @@ export default {
     authInfoPersion () {
       return this.$store.state.authInfoPersion
     },
+    userInfo () {
+      return this.$store.state.userInfo
+    },
+    disabled () {
+      if (this.formCustom.Verificationcode == '' || this.formCustom.messagecode == '') {
+        return true
+      } else {
+        return false
+      }
+    }
   },
   watch: {
 
   },
   components: {
+    VueQArt
+  },
+  beforeRouteLeave (to, from, next) {
+    clearInterval(this.codeTimer)
+    next()
   }
 }
 </script>
@@ -1668,8 +1933,8 @@ export default {
 }
 
 .banner {
-  background: url(../../../assets/img/active/ddos/ddos-banner-bg.png) no-repeat center;
-  
+  background: url(../../../assets/img/active/ddos/ddos-banner-bg.png) no-repeat
+    center;
 }
 .seckill {
   padding: 40px 0 60px;
@@ -1808,13 +2073,13 @@ export default {
       }
       .s {
         font-size: 16px;
-        font-family:Arial-BoldItalicMT;
+        font-family: Arial-BoldItalicMT;
         font-weight: bold;
         font-style: italic;
-        color: #FFD08C;
+        color: #ffd08c;
         span {
           font-size: 16px;
-          font-family:Arial-BoldItalicMT;
+          font-family: Arial-BoldItalicMT;
         }
       }
       .label {
@@ -1828,12 +2093,12 @@ export default {
           font-size: 24px;
           font-weight: bold;
         }
-        i{
+        i {
           display: inline-block;
-          width:36px;
-          height:20px;
-          background: #FF624B;
-          border-radius:10px 10px 10px 0px;
+          width: 36px;
+          height: 20px;
+          background: #ff624b;
+          border-radius: 10px 10px 10px 0px;
           color: #fff;
           font-style: normal;
           vertical-align: super;
@@ -2150,7 +2415,7 @@ export default {
       width: 100%;
       height: 52px;
       font-size: 20px;
-      background:rgba(250,221,152,1);
+      background: rgba(250, 221, 152, 1);
     }
   }
 }
@@ -2228,6 +2493,49 @@ export default {
 .ivu-table td.demo-table-info-column {
   background-color: #2db7f5;
   color: #fff;
+}
+.qrcode-modal {
+  text-align: center;
+  .qr-code {
+    height: 198px;
+    width: 197px;
+    background: url("../../../assets/img/app/auth_background.png") no-repeat
+      center;
+    margin: 30px auto;
+    position: relative;
+    .shade {
+      position: absolute;
+      top: 0;
+      height: 198px;
+      width: 197px;
+      background: url("../../../assets/img/app/lose_efficacy.png") center;
+      &.scanSuccess {
+        background: url("../../../assets/img/app/scan_success.png") center;
+      }
+    }
+  }
+  > p {
+    font-size: 14px;
+    font-family: MicrosoftYaHei;
+    color: rgba(51, 51, 51, 1);
+    margin: 10px;
+    > span {
+      color: #ff624b;
+    }
+  }
+  .p-top {
+    font-family: MicrosoftYaHei-Bold;
+    font-weight: bold;
+    color: rgba(237, 64, 20, 1);
+  }
+  .p-bottom {
+    margin-top: 14px;
+    margin-bottom: 0;
+    > span {
+      color: #4297f2;
+      cursor: pointer;
+    }
+  }
 }
 @media (max-width: 1366px) {
   .mobile-nav {
