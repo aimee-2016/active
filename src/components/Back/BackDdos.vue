@@ -510,6 +510,23 @@
         <Button type="primary" v-else :disabled="!resetPasswordForm.agreeRule" @click="resetPasswordOk">确定</Button>
       </div>
     </Modal>
+
+    <!-- 进入高防服务器区域 -->
+    <Modal v-model="enterDdos" :scrollable="true" :closable="false" :width="390">
+      <p slot="header" class="modal-header-border">
+        <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
+        <span class="universal-modal-title">提示信息</span>
+      </p>
+      <div class="modal-content-s">
+        <div>
+          <p class="lh24">您当前已切换到<span style="color:#2A99F2">{{ $store.state.zone.zonename}}</span>区域！
+          </p>
+        </div>
+      </div>
+      <p slot="footer" class="modal-footer-s" style="text-align:center">
+        <Button type="primary" @click="enterDdos = false">我知道了</Button>
+      </p>
+    </Modal>
   </div>
 </template>
 
@@ -1549,10 +1566,12 @@
             chart: null
           }
         ],
-        currentData: this.getCurrentDate()
+        currentData: this.getCurrentDate(),
+        enterDdos: false
       }
     },
     created() {
+      this.enterDdos = true
       this.toggleZone(this.$store.state.zone.zoneid)
       // 用户未认证，弹出认证提示框
       if (this.$store.state.authInfo == null) {
@@ -1660,7 +1679,7 @@
         }
       },
       getHostList() {
-        let url = 'information/listVirtualMachines.do'
+        let url = 'ddosImitationhost/listHighMachines.do'
         this.$http.get(url, {
           params: {
             returnList: '1',
@@ -1700,7 +1719,7 @@
       /* 局部刷新 */
       timingRefresh(ids) {
         let timer = setInterval(() => {
-          let url = 'information/listVirtualMachines.do'
+          let url = 'ddosImitationhost/listHighMachines.do'
           this.$http.get(url, {
             params: {
               returnList: '1',

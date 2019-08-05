@@ -287,7 +287,8 @@ export default {
         },
 
         goDip(){
-            this.$router.push('ddosipback')
+            this.$router.push('ddosipback');
+            sessionStorage.setItem('pgId',this.ddosipDetails.packageId);
         },
 
         getRefundData(){
