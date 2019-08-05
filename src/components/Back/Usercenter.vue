@@ -4576,7 +4576,9 @@
               }
             if(res.data.result.authStatus == 3){
                 if(this.paneStatus.usercenter == 'certification'){
-                 this.init()
+                 this.$message.info({
+                     content:"抱歉，人脸识别认证失败！您也可以选择其他认证方式进行实名认证。"
+                 })
                } else{
                  sessionStorage.setItem("faceFail","true")
                  this.faceFail = true
