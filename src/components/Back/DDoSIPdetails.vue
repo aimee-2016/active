@@ -17,7 +17,7 @@
                             <p>{{ddosipDetails.packageId}}</p>
                         </div>
                         <div class="ds-ct">
-                            <p>DDoS防护能力</p>
+                            <p>DDoS防护能力<span class="ds-blf" @click="$router.push('ddosemodify')">修改弹性防护带宽</span></p>
                             <p>{{ddosipDetails.ddosProtectNumber+'GB'}}</p>
                         </div>
                         <div class="ds-ct">

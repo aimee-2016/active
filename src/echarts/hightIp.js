@@ -4,7 +4,7 @@ export default {
     tooltip: {
     trigger: 'axis',
     backgroundColor:'rgba(255,255,255,1)',
-    padding:10,
+    padding: 10,
     textStyle:{
         color:'#333333',
         fontFamily:'MicrosoftYaHei',
@@ -23,17 +23,15 @@ export default {
         data: ['已清洗流量', '正常业务流量'],
         bottom: 0,
         icon: 'circle',
-        padding: [40, 0, 0, 0],
         // itemWidth: 100,
         // itemHeight: 20
     },
    grid: {
+       top: 20,
        left: '3%',
        right: '4%',
-       bottom: '3%',
+       bottom: '7%',
        containLabel: true,
-   },
-   toolbox: {
    },
    xAxis: {
        type: 'category',
