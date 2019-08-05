@@ -111,5 +111,8 @@ export default {
         font-size: 14px;
         color: #666666;
     }
+  .ivu-input-wrapper textarea{
+        resize: none;
+        }
 </style>
 

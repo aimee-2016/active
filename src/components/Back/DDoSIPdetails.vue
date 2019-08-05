@@ -17,7 +17,7 @@
                             <p>{{ddosipDetails.packageId}}</p>
                         </div>
                         <div class="ds-ct">
-                            <p>DDoS防护能力<span class="ds-blf" @click="$router.push('ddosemodify')">修改弹性防护带宽</span></p>
+                            <p>DDoS防护能力<span class="ds-blf" @click="goDEupdate">修改弹性防护带宽</span></p>
                             <p>{{ddosipDetails.ddosProtectNumber+'GB'}}</p>
                         </div>
                         <div class="ds-ct">
@@ -288,6 +288,11 @@ export default {
 
         goDip(){
             this.$router.push('ddosipback');
+            sessionStorage.setItem('pgId',this.ddosipDetails.packageId);
+        },
+
+        goDEupdate(){
+            this.$router.push('ddosemodify');
             sessionStorage.setItem('pgId',this.ddosipDetails.packageId);
         },
 

@@ -2818,9 +2818,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.ivu-input-wrapper textarea.ivu-input {
-  resize: none;
-}
+
 .ivu-switch-checked {
   border-color: #19be6a;
   background-color: #19be6a;
