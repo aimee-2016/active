@@ -59,12 +59,16 @@
             </Dropdown>
           </div>
           <div v-show="mirrorConfig.mirrorType === 'customMirror'">
-            <Select placeholder="请选择自制镜像" v-model="mirrorConfig.ownMirrorID" style="width:338px">
+            <Select
+              placeholder="请选择自制镜像"
+              v-model="mirrorConfig.ownMirrorID"
+              @on-change="changeOwnMirror"
+              style="width:338px"
+            >
               <Option
                 v-for="(item,index) in mirrorConfig.ownMirrorGroup"
-                :value="item.systemtemplateid"
+                :value="`${item.templatename}#${item.systemtemplateid}`"
                 :key="index"
-                @on-change="changeOwnMirror(item)"
               >{{ item.templatename }}</Option>
             </Select>
             <span class="hint">
@@ -237,6 +241,9 @@ export default {
     },
     changeMirrorMarketItem(item) {
       this.$emit("changeMirrorMarketItem", item);
+    },
+    changeOwnMirror(val) {
+      this.$emit("changeOwnMirror", val);
     }
   },
   computed: {},

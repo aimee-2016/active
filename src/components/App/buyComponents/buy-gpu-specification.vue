@@ -5,21 +5,50 @@
       <div class="specification-item">
         <div class="item-search">
           <span>vCPU</span>
-          <Select placeholder="请选择" v-model="vCPU" style="width:200px;margin-right:40px">
-            <Option v-for="item in vCPUGroup" :value="item.value" :key="item.value">{{ item.label }}</Option>
+          <Select
+            placeholder="请选择"
+            v-model="gpuSpecification.vCPU"
+            style="width:200px;margin-right:40px"
+          >
+            <Option
+              v-for="item in gpuSpecification.vCPUGroup"
+              :value="item.value"
+              :key="item.value"
+            >{{ item.label }}</Option>
           </Select>
           <span>内存容量</span>
-          <Select placeholder="请选择" v-model="mem" style="width:200px;margin-right:40px">
-            <Option v-for="item in vCPUGroup" :value="item.value" :key="item.value">{{ item.label }}</Option>
+          <Select
+            placeholder="请选择"
+            v-model="gpuSpecification.mem"
+            style="width:200px;margin-right:40px"
+          >
+            <Option
+              v-for="item in gpuSpecification.vCPUGroup"
+              :value="item.value"
+              :key="item.value"
+            >{{ item.label }}</Option>
           </Select>
           <span>GPU/FPGA</span>
-          <Select placeholder="请选择" v-model="gpu" style="width:200px;margin-right:40px">
-            <Option v-for="item in vCPUGroup" :value="item.value" :key="item.value">{{ item.label }}</Option>
+          <Select
+            placeholder="请选择"
+            v-model="gpuSpecification.gpu"
+            style="width:200px;margin-right:40px"
+          >
+            <Option
+              v-for="item in gpuSpecification.vCPUGroup"
+              :value="item.value"
+              :key="item.value"
+            >{{ item.label }}</Option>
           </Select>
         </div>
       </div>
       <div class="specification-item">
-        <Table :columns="serverOfferColumns" :data="serverOfferList" style="width: 700px"></Table>
+        <Table
+          :columns="gpuSpecification.serverOfferColumns"
+          :data="gpuSpecification.serverOfferList"
+          @radio-change="changeGPUSpecification"
+          style="width: 700px"
+        ></Table>
       </div>
       <div class="specification-item">
         <div class="item-label">
@@ -104,7 +133,7 @@
           </span>
         </div>
         <div class="item-text">
-          <p class="price">￥750/月</p>
+          <p class="price">￥{{gpuSpecification.price}}</p>
         </div>
       </div>
     </div>
@@ -217,42 +246,7 @@
 <script type="text/ecmascript-6">
 export default {
   data() {
-    return {
-      vCPU: "",
-      vCPUGroup: [],
-      mem: "",
-      gpu: "",
-      serverOfferList: [],
-      serverOfferColumns: [
-        {
-          type: "radio",
-          width: 60,
-          align: "center"
-        },
-        {
-          title: "型号",
-          key: "gpunumber"
-        },
-        {
-          title: "vCPU",
-          render: (h, params) => {
-            return h("span", {}, params.row.cpunum + "核");
-          }
-        },
-        {
-          title: "内存",
-          render: (h, params) => {
-            return h("span", {}, params.row.memory + "G");
-          }
-        },
-        {
-          title: "GPU/FPGA",
-          render: (h, params) => {
-            return h("span", `${params.row.gpusize}*${params.row.gputype}`);
-          }
-        }
-      ]
-    };
+    return {};
   },
   props: {
     gpuSpecification: {
@@ -260,15 +254,12 @@ export default {
       default: () => {
         return new Object();
       }
-    },
-    gpuSpecificationGroup: {
-      type: Object,
-      default: () => {
-        return new Object();
-      }
     }
   },
   methods: {
+    changeGPUSpecification(item) {
+      this.$emit("changeGPUSpecification", item);
+    },
     addGpuSystemDisk() {
       this.$emit("addGpuSystemDisk");
     },

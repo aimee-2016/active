@@ -21,6 +21,7 @@
           @changeMirrorMarketType="changeMirrorMarketType"
           @changePublicMirror="changePublicMirror"
           @changeMirrorMarketItem="changeMirrorMarketItem"
+          @changeOwnMirror="changeOwnMirror"
         ></buy-mirror>
         <buy-server-specification
           v-if="serverType!=='GPUServer'"
@@ -40,7 +41,7 @@
         <buy-gpu-specification
           v-if="serverType==='GPUServer'"
           :gpu-specification="gpuSpecification"
-          :gpu-specificationGroup="gpuSpecificationGroup"
+          @changeGPUSpecification="changeGPUSpecification"
           @addGpuSystemDisk="addGpuSystemDisk"
           @changeGpuSystemDiskType="changeGpuSystemDiskType"
           @deleteGpuSystemDisk="deleteGpuSystemDisk"
@@ -235,7 +236,8 @@ export default {
         publicMirrorGroup: [],
         mirrorID: "",
         mirrorName: "",
-        ownMirrorGroup: []
+        ownMirrorGroup: [],
+        ownMirrorID: ""
       },
       // 当前服务器规格
       serverSpecification: {
@@ -281,6 +283,41 @@ export default {
       serverSpecificationGroup: {},
       // 当前GPU服务器规格
       gpuSpecification: {
+        vCPU: "",
+        vCPUGroup: [],
+        mem: "",
+        gpu: "",
+        serverOfferList: [],
+        gpuSelection: null,
+        serverOfferColumns: [
+          {
+            type: "radio",
+            width: 60,
+            align: "center"
+          },
+          {
+            title: "型号",
+            key: "gpunumber"
+          },
+          {
+            title: "vCPU",
+            render: (h, params) => {
+              return h("span", {}, params.row.cpunum + "核");
+            }
+          },
+          {
+            title: "内存",
+            render: (h, params) => {
+              return h("span", {}, params.row.memory + "G");
+            }
+          },
+          {
+            title: "GPU/FPGA",
+            render: (h, params) => {
+              return h("span", `${params.row.gpusize}*${params.row.gputype}`);
+            }
+          }
+        ],
         rootDiskTypeGroup: [
           {
             name: "SSD",
@@ -306,10 +343,10 @@ export default {
             type: "ssd",
             size: 20
           }
-        ]
+        ],
+        price: 0,
+        coupon: 0
       },
-      // 每个区域对应的GPU服务器规格配置
-      gpuSpecificationGroup: {},
       serverNetwork: {
         vpcGroup: [],
         vpcId: "",
@@ -320,10 +357,10 @@ export default {
             name: "现在购买",
             value: "buyNow"
           },
-          {
-            name: "使用已有",
-            value: "useOwn"
-          },
+          //   {
+          //     name: "使用已有",
+          //     value: "useOwn"
+          //   },
           {
             name: "暂不购买",
             value: "notBuy"
@@ -563,7 +600,11 @@ export default {
         this.area = this.areaGroup[0];
       }
       if (this.area) {
-        this.setSpecification();
+        if (this.serverType !== "GPUServer") {
+          this.setSpecification();
+        } else {
+          this.setGpuSpecification();
+        }
         this.getPublicMirror();
         this.getMirrorMarket();
         this.getVpcList();
@@ -607,16 +648,22 @@ export default {
         .then(response => {
           if (response.status == 200 && response.data.status == 1) {
             this.mirrorConfig.mirrorMarketGroup = [];
-            for (let key in response.data.result) {
-              this.mirrorConfig.mirrorMarketGroup.push({
-                mirrorMarketType: key,
-                mirrorMarketList: response.data.result[key]
-              });
+            this.mirrorConfig.selectedMirrorMarket = "";
+            this.mirrorConfig.mirrorMarketItems = [];
+            this.mirrorConfig.mirrorID = "";
+            this.mirrorConfig.mirrorName = "";
+            if (JSON.stringify(response.data.result) !== "{}") {
+              for (let key in response.data.result) {
+                this.mirrorConfig.mirrorMarketGroup.push({
+                  mirrorMarketType: key,
+                  mirrorMarketList: response.data.result[key]
+                });
+              }
+              this.mirrorConfig.selectedMirrorMarket = this.mirrorConfig.mirrorMarketGroup[0].mirrorMarketType;
+              this.mirrorConfig.mirrorMarketItems = this.mirrorConfig.mirrorMarketGroup[0].mirrorMarketList;
+              this.mirrorConfig.mirrorID = this.mirrorConfig.mirrorMarketItems[0].systemtemplateid;
+              this.mirrorConfig.mirrorName = this.mirrorConfig.mirrorMarketItems[0].templatedescript;
             }
-            this.mirrorConfig.selectedMirrorMarket = this.mirrorConfig.mirrorMarketGroup[0].mirrorMarketType;
-            this.mirrorConfig.mirrorMarketItems = this.mirrorConfig.mirrorMarketGroup[0].mirrorMarketList;
-            this.mirrorConfig.mirrorID = this.mirrorConfig.mirrorMarketItems[0].systemtemplateid;
-            this.mirrorConfig.mirrorName = this.mirrorConfig.mirrorMarketItems[0].templatedescript;
           }
         });
     },
@@ -639,6 +686,7 @@ export default {
           }
         });
     },
+    // 获取服务器配置
     setSpecification() {
       axios.get("information/getServiceoffers.do").then(res => {
         if (res.status === 200 && res.data.status === 1) {
@@ -660,6 +708,20 @@ export default {
           });
         }
       });
+    },
+    // 获取GPU配置
+    setGpuSpecification() {
+      axios
+        .get("gpuserver/listGpuServerOffer.do", {
+          params: {
+            zoneId: this.area.zoneid
+          }
+        })
+        .then(response => {
+          response.data.result[0]._checked = true;
+          this.gpuSpecification.serverOfferList = response.data.result;
+          this.gpuSpecification.gpuSelection = this.gpuSpecification.serverOfferList[0];
+        });
     },
     toOldVersion() {
       switch (this.serverType) {
@@ -683,19 +745,28 @@ export default {
     },
     changeBillingType(item) {
       this.billingType = item.value;
-      this.queryServerSpecificationPrice();
+      if (this.serverType !== "GPUServer") {
+        this.queryServerSpecificationPrice();
+      }
       this.queryIPPrice();
     },
     changeArea(item) {
       this.area = item;
-      this.queryServerSpecificationPrice();
+      if (this.serverType !== "GPUServer") {
+        this.queryServerSpecificationPrice();
+      }
     },
     changeMirrorType(item) {
       this.mirrorConfig.mirrorType = item.value;
       switch (item.value) {
         case "mirrorMarket":
-          this.mirrorConfig.mirrorID = this.mirrorConfig.mirrorMarketItems[0].systemtemplateid;
-          this.mirrorConfig.mirrorName = this.mirrorConfig.mirrorMarketItems[0].templatedescript;
+          if (this.mirrorConfig.mirrorMarketItems.length !== 0) {
+            this.mirrorConfig.mirrorID = this.mirrorConfig.mirrorMarketItems[0].systemtemplateid;
+            this.mirrorConfig.mirrorName = this.mirrorConfig.mirrorMarketItems[0].templatedescript;
+          } else {
+            this.mirrorConfig.mirrorID = "";
+            this.mirrorConfig.mirrorName = "";
+          }
           break;
         case "piblicMirror":
           this.mirrorConfig.mirrorID = "";
@@ -705,6 +776,9 @@ export default {
           });
           break;
         case "customMirror":
+          this.mirrorConfig.mirrorID = "";
+          this.mirrorConfig.mirrorName = "";
+          this.mirrorConfig.ownMirrorID = "";
           break;
       }
     },
@@ -717,6 +791,11 @@ export default {
     changeMirrorMarketItem(item) {
       this.mirrorConfig.mirrorID = item.systemtemplateid;
       this.mirrorConfig.mirrorName = item.templatedescript;
+    },
+    changeOwnMirror(val) {
+      let arr = val.split("#");
+      this.mirrorConfig.mirrorID = arr[1];
+      this.mirrorConfig.mirrorName = arr[0];
     },
     changePublicMirror(val) {
       let arr = val.split("#");
@@ -780,6 +859,9 @@ export default {
     deleteServerSystemDisk(index) {
       this.serverSpecification.systemDisk.splice(index, 1);
       this.queryServerSpecificationPrice();
+    },
+    changeGPUSpecification(item) {
+      console.log(item);
     },
     addGpuSystemDisk() {
       let len = this.gpuSpecification.systemDisk.length;
@@ -872,7 +954,9 @@ export default {
       this.loginInfo.autoRenewal = val;
     },
     changeBuyTime() {
-      this.queryServerSpecificationPrice();
+      if (this.serverType !== "GPUServer") {
+        this.queryServerSpecificationPrice();
+      }
       this.queryIPPrice();
     },
     minusBuyCount() {
@@ -883,6 +967,10 @@ export default {
     },
     nextStep(val) {
       switch (val) {
+        case 0:
+          this.buyStep = val;
+          window.scroll(0, 0);
+          break;
         case 1:
           if (!this.area) {
             this.$Message.info("请选择购买区域");
@@ -1103,6 +1191,7 @@ export default {
         case "GPUServer":
           this.billingTypeGroup = [
             { text: "包年包月", value: "month" },
+            { text: "7天计费", value: "week" },
             { text: "实时计费", value: "current" }
           ];
           break;
