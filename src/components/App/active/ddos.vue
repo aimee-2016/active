@@ -290,7 +290,7 @@
             </ul>
             <div class="tips">
               以上配置皆包含40G SSD系统盘
-              <span @click="$router.push('buy/ddos/')">查看更多配置>></span>
+              <span @click="$router.push('/buy/ddos/')">查看更多配置>></span>
             </div>
           </div>
         </div>
@@ -372,7 +372,7 @@
             </div>
           </div>
           <div class="tips">
-            <span @click="$router.push('buy/ddos/')">查看更多配置>></span>
+            <span @click="$router.push('/buy/ddos/')">查看更多配置>></span>
           </div>
         </div>
       </div>
