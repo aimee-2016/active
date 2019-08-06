@@ -56,7 +56,10 @@
                                 <!-- <span v-if="item.type=='year'" class="discount-icon">惠</span> -->
                             </div>
                          <p class="bm-fn">
-         弹性防护带宽为最高防护带宽，如果弹性防护带宽值跟保底防护带宽值设置一样，则不会产生后付费且最高防护带宽为保底防护带宽值，如果弹性带宽值设置高于保底带宽值，则超过保底带宽值但不大于弹性带宽值的攻击仍然可以进行有效防护，超出部分按天计费 ，如超过封顶抗攻击量，则回源，2小时后自动解封。</p>
+                          弹性防护带宽为最高防护带宽，如果弹性防护带宽值跟保底防护带宽值设置一样，则不会产生后付费且最高防护带宽为保底防护带宽值，如果弹性带宽值设置高于保底带宽值，则超过保底带宽值但不大于弹性带宽值的攻击仍然可以进行有效防护，超出部分按天计费 ，
+                          <span style="color:#FF392A;">我们将预先冻结您所选峰值防护一天的费用，在支付成功之后自动冻结，请保持余额充足，</span>
+                          如超过封顶抗攻击量，则回源，2小时后自动解封。
+                        </p>
           <p class="b-font">点击查看弹性防护带宽计费详情</p>
                     </div>
              </div>
@@ -862,7 +865,7 @@
         }
       }
       .bm-fn{
-          margin-top: 10px;font-size: 12px;color: #999999;line-height: 20px;
+          margin-top: 10px;font-size: 14px;color: #999999;line-height: 20px;
       }
       .bm-price{
           color:#F85E1D;font-size:18px;
@@ -878,5 +881,6 @@
     color: #2A99F2;
     font-size: 12px;
     cursor: pointer;
+    margin-top: 10px;
   }
 </style>

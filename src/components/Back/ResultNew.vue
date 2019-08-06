@@ -71,7 +71,11 @@
             if (response.status == 200 && response.data.status == 1) {
               this.title = '支付成功';
               this.payResult = 'success';
-              this.message ='您的订单已支付成功，我们需要一到三分钟为您分配云服务，请稍后。';
+              if(response.data.flag == 2){
+                this.message = '保底套餐购买成功，由于可用余额不足以抵扣所选弹性防护带宽一天费用，弹性防护设定失败，请充值余额之后，在套餐详情页手动修改套餐弹性峰值防护'
+              }else{
+                this.message ='您的订单已支付成功，我们需要一到三分钟为您分配云服务，请稍后。';
+              }
               localStorage.removeItem('serialNum');
             } else {
               this.payResult = 'fail'
@@ -82,8 +86,12 @@
       }else{
          if (this.payResult == 'success') {
             this.title = '支付成功'
-             this.message = sessionStorage.getItem('successMsg') || '您的订单已支付成功，我们需要一到三分钟为您分配云服务，请稍后。'
-             this.firstMessage = sessionStorage.getItem('firstMsg') || ''
+            if(response.data.flag == 2){
+                this.message = '保底套餐购买成功，由于可用余额不足以抵扣所选弹性防护带宽一天费用，弹性防护设定失败，请充值余额之后，在套餐详情页手动修改套餐弹性峰值防护'
+            }else{
+                this.message = sessionStorage.getItem('successMsg') || '您的订单已支付成功，我们需要一到三分钟为您分配云服务，请稍后。'
+                this.firstMessage = sessionStorage.getItem('firstMsg') || ''
+            }
           } else {
              this.title = '支付失败'
              this.message = '抱歉，您的订单支付失败。失败原因是：' + sessionStorage.getItem('errMsg') + ',如已扣款仍支付失败，请联系客服。' || '抱歉，您的订单支付失败。如未完成扣款，请重新提起支付；如已扣款仍支付失败，请联系客服。'

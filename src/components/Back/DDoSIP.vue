@@ -103,7 +103,7 @@
                                         <p class="no-pfb">暂无数据</p>
                                         <p class="no-pfs">该时段未产生攻击或攻击数据暂未更新，请稍后重试</p>
                                     </div>
-                                    <chart style="width:100%;" id='hightIp' :options="hightIp"></chart>
+                                    <chart style="width:100%;height:100%" id='hightIp' :options="hightIp"></chart>
                                 </div>
                            </div>
                            <div>
@@ -260,7 +260,7 @@
                                         <p class="no-pfb">暂无数据</p>
                                         <p class="no-pfs">该时段未产生攻击或攻击数据暂未更新，请稍后重试</p>
                                     </div>
-                                    <chart style="width:100%;" id='ccQps' :options="ccQps"></chart>
+                                    <chart style="width:100%;height:100%" id='ccQps' :options="ccQps"></chart>
                                 </div>
                            </div>
                            <div>
@@ -379,7 +379,7 @@
                                         <p class="no-pfb">暂无数据</p>
                                         <p class="no-pfs">该时段未产生攻击或攻击数据暂未更新，请稍后重试</p>
                                     </div>
-                                    <chart   style="width:100%;" id='flowOut' :options="flowOut"></chart>
+                                    <chart   style="width:100%;height:100%" id='flowOut' :options="flowOut"></chart>
                                 </div>
                            </div>
                            <div>
@@ -398,7 +398,7 @@
                                         <p class="no-pfb">暂无数据</p>
                                         <p class="no-pfs">该时段未产生攻击或攻击数据暂未更新，请稍后重试</p>
                                     </div>
-                                    <chart style="width:100%;" id='reque'  :options="reque"></chart>
+                                    <chart style="width:100%;height:100%" id='reque'  :options="reque"></chart>
                                 </div>
                            </div>
                             <div>
@@ -439,7 +439,7 @@
                                         <p class="no-pfb">暂无数据</p>
                                         <p class="no-pfs">该时段未产生攻击或攻击数据暂未更新，请稍后重试</p>
                                     </div>
-                                    <chart  style="width:100%;" id='concurrent' :options="concurrent"></chart>
+                                    <chart  style="width:100%;height:100%" id='concurrent' :options="concurrent"></chart>
                                 </div>
                            </div>
                        </div>
@@ -1169,7 +1169,21 @@ export default {
         },
         {
           key: "crtname",
-          title: "证书名称"
+          title: "证书名称",
+          render:(h,params) => {
+                  if(params.row._disabled){
+                    return h('div',
+                    {
+                        style:'display:flex'
+                    },
+                        [
+                        h('Spin',{}),
+                        h('span',{},params.row.crtname)
+                  ])  
+                  }else{
+                      return h('p',{},params.row.crtname);
+                  }
+              }
         },
         {
           key: "crtremark",
@@ -1209,7 +1223,7 @@ export default {
                         },
                         on: {
                             click: () => {
-                            params.row.certificateKyeHide = false;
+                                params.row.certificateKyeHide = false;
                             }
                         }
                         },
@@ -1347,7 +1361,21 @@ export default {
            },
           {
               title:'域名',
-              key:'domainname'
+              key:'domainname',
+              render:(h,params) => {
+                  if(params.row._disabled){
+                    return h('div',
+                    {
+                        style:'display:flex'
+                    },
+                        [
+                        h('Spin',{}),
+                        h('span',{},params.row.domainname)
+                  ])  
+                  }else{
+                      return h('p',{},params.row.domainname);
+                  }
+              }
           },
           {
               title:'域名信息',
@@ -1364,8 +1392,8 @@ export default {
                       h('span',{},params.row.sourceip),
                       h('span',{
                           style:{
-                              cursor:'pointer',
-                              color:'#2A99F2',
+                              color: params.row._disabled?'#999999':"#2A99F2",
+                              cursor: params.row._disabled?'not-allowed':"pointer",
                               marginLeft:'19px'
                           },
                          on:{
@@ -1437,11 +1465,14 @@ export default {
                 "p",
                 {
                     style: {
-                    color: "#2A99F2",
-                    cursor: "pointer"
+                    color: params.row._disabled?'#999999':"#2A99F2",
+                    cursor: params.row._disabled?'not-allowed':"pointer"
                     },
                     on:{
                         click:()=>{
+                            if(params.row._disabled){
+                                return;
+                            }
                             this.showModal.addDomain = true;
                             this.addDomainList.attackMeal = params.row.packageid;
                             this.addDomainList.domain = params.row.domainname;
@@ -1605,15 +1636,16 @@ export default {
                 type: 'expand',
                 width: 50,
                 render: (h, params) => {
-                    this.blackName = params.row.blacklist;
-                    this.whiteName = params.row.whitelist;
+                    // this.blackName = params.row.blacklist;
+                    // this.whiteName = params.row.whitelist;
                       return h(expandRow, {
                             props: {
                                 row: params.row
                             },
                             on:{
                                 'white':(value)=>{
-                                    this.whiteName = value
+                                    this.whiteName = value;
+                                    console.log(this.whiteName);
                                 },
                                 'black':(value)=>{
                                     this.blackName = value
@@ -1761,7 +1793,7 @@ export default {
                             },
                             on:{
                                 click:()=>{
-                                    params.row._disableExpand = true;
+                                    params.row._disableExpand = false;
                                     this.saveConfig(params.row._index);
                                 }
                             }
@@ -2315,6 +2347,7 @@ export default {
             this.$Message.info('请选择需要关联的证书ID');
             return;
         }
+        this.dataToUpdate('businessData');
         this.$http.get('ddosImitationIp/UpdateDomain.do',{
             params:{
                 domain:this.businessSelect.domainname,
@@ -2337,16 +2370,23 @@ export default {
                     this.showModal.changeIp = false;
                      this.getDomainList(1);
                 }
-                
             }else{
                  this.renewPrice = res.data;
             }   
         }).catch(err =>{})
     },
 
-    dataToUpdate(name){
-         this[name][0].hide = 1;
-        this[name][0]._disabled = true;
+    dataToUpdate(name,id){
+        if(id == undefined){
+            this[name].push(this.certificateValidate)
+        }
+       let index = this[name].findIndex(item =>{
+           return item.id == id;
+       })
+            for(let key in this[name][index]){
+                this[name][index][key] = '--';
+                this[name][index]._disabled = true;
+            }
     },
 
     updateDomainTable(){
@@ -2356,8 +2396,7 @@ export default {
              http = this.addDomainList.http.join(',').indexOf('http') == -1 ?0 :1;
              https = this.addDomainList.http.join(',').indexOf('https') == -1 ? 0:1;
         }
-        // this.dataToUpdate('businessData');
-        // return;
+        this.dataToUpdate('businessData',this.addDomainList.id);
        this.$http.get('ddosImitationIp/UpdateDomain.do',{
             params:{
                 domain:this.addDomainList.domain,
@@ -2382,17 +2421,16 @@ export default {
     addNameList(name) {
         this.$refs[name].validate((valid) => {
         if (valid) {
-            let bN = '',
+            let bN = this.blackName,
                 bN1 = '',
-                wN =  '' ,
+                wN =   this.whiteName,
                 wN1 = '';
                 bN +=';'+this.nameValidate.black;
                 bN1 +=this.nameValidate.black;
                 wN +=';'+this.nameValidate.white;
                 wN1 +=this.nameValidate.white;
-            
+            this.ccProtectData[this.ccIndex]._disableExpand = false;
              this.ccProtectData[this.ccIndex].blacklist = this.ccProtectData[this.ccIndex].blacklist != '' ?bN:bN1;
-            //   this.ccProtectData[this.ccIndex].blacklist+=';'+this.nameValidate.black;
             this.ccProtectData[this.ccIndex].whitelist =  this.ccProtectData[this.ccIndex].whitelist != ''?wN : wN1;
               this.showModal.nameList = false;
               this.nameValidate.black = '';
@@ -2447,6 +2485,8 @@ export default {
     },
 
     createCertificate(name){
+        this.dataToUpdate('certificateData');
+                return;
         this.$refs.certificateValidate.validate((valid) => {
         if (valid) {
             this.$http.post('ddosImitationIp/AddCertificate.do',{
@@ -2492,6 +2532,8 @@ export default {
     },
 
     updateCertificate(){
+         this.dataToUpdate('certificateData',this.certificateValidate.id);
+         return;
         this.$http.post('ddosImitationIp/UpdateCertificate.do',{
                 crtId:this.certificateValidate.crtId,
                 crtName:this.certificateValidate.name,
@@ -2687,12 +2729,16 @@ export default {
             }
         }
         if(name == 'domain'){
+            this.dataToUpdate('businessData',id);
             url = 'ddosImitationIp/deletedomain.do'
         }else if(name == 'certificate'){
+            this.dataToUpdate('certificateData',id);
             url = 'ddosImitationIp/DeleteCertificate.do'
         }else if(name == 'forwardrule'){
+            this.dataToUpdate('ruleData',id);
             url = 'ddosImitationIp/deleteforwardrule.do'
         }
+        
         this.$http.get(url,{params}).then(res =>{
             if(res.status == 200 && res.data.status == 1){
                 this.overviewSelect = [];
@@ -2724,6 +2770,7 @@ export default {
                 this.$Message.info(res.data.message);
                 this.ccShow = true;
                 this.ccDisabled = true;
+                this.ccProtectData[index]._disableExpand = true;
             } else {
                 this.$Message.info(res.data.message);
             }

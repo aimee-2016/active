@@ -72,7 +72,7 @@
                   <p class="item-title" style="margin-top:2px;">价格</p>
                 </div>
                 <div>
-                  <div class="priceOrange">{{quickDdosHostPrice.toFixed(2)}}元</div>
+                  <div class="priceOrange">{{quickDdosHostPrice.toFixed(2)}}<span v-if="quickProtectSecIndex.value > 300">元/天</span><span v-else>元/月</span></div>
                 </div>
               </div>
             </div>
@@ -101,7 +101,7 @@
                     <p class="item-title" style="margin-top:2px;">价格</p>
                   </div>
                   <div>
-                    <div class="priceOrange">{{quickDdosSelectPrice}}元</div>
+                    <div class="priceOrange">{{quickDdosSelectPrice}}<span v-if="quickProtectSecIndex.value > 300">元/天</span><span v-else>元/月</span></div>
                   </div>
                 </div>
               </div>
@@ -255,7 +255,7 @@
                     <p class="item-title" style="margin-top:2px;">价格</p>
                   </div>
                   <div>
-                    <div class="priceOrange">{{vmConfig.cost.toFixed(2)}}元</div>
+                    <div class="priceOrange">{{vmConfig.cost.toFixed(2)}}<span v-if="customProtectSecIndex.value > 300">元/天</span><span v-else>元/月</span></div>
                   </div>
                 </div>
               </div>
@@ -285,7 +285,7 @@
                     <p class="item-title" style="margin-top:2px;">价格</p>
                   </div>
                   <div>
-                    <div class="priceOrange">{{customIpAndDdosSelectPrice.toFixed(2)}}元</div>
+                    <div class="priceOrange">{{customIpAndDdosSelectPrice.toFixed(2)}}<span v-if="customProtectSecIndex.value > 300">元/天</span><span v-else>元/月</span></div>
                   </div>
                 </div>
               </div>
@@ -457,7 +457,7 @@
                     <p class="item-title" style="margin-top:0px;">价格</p>
                   </div>
                   <div>
-                    <p style="font-size: 16px;color: #F85E1D;line-height: 20px;">{{dataDiskCost.toFixed(2)}}元</p>
+                    <p style="font-size: 16px;color: #F85E1D;line-height: 20px;">{{dataDiskCost.toFixed(2)}}<span v-if="customProtectSecIndex.value > 300">元/天</span><span v-else>元/月</span></p>
                   </div>
                 </div>
               </div>
@@ -491,7 +491,7 @@
                 <div>
                   <p class="item-title" style="margin-top: 5px">主机密码</p>
                 </div>
-                <Input v-model="password" placeholder="请输入至少6位包含大小写与数字的密码"
+                <Input v-model="password" placeholder="请输入至少8位包含大小写与数字的密码"
                        style="width: 300px" @on-change="passwordWarning=''"  @on-focus="passwordForm.passwordHint = true" @on-blur="passwordForm.passwordHint = false"></Input>
                 <span style="line-height: 32px;color:red;margin-left:10px">{{passwordWarning}}</span>
               </div>
