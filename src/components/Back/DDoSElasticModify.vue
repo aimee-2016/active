@@ -52,7 +52,7 @@
                          <p class="du-bft">可修改配置</p>
                          <div style="width:711px;margin-bottom:10px;">
                              <div v-for="(item,index) in elasticList" :key="index" class="timeType"
-                                :class="{zoneSelect : elasticIndex  == index}"
+                                :class="item.value  < newList.elasticband || item.value  == newList.elasticband ? 'dis-no':elasticIndex == index ? 'zoneSelect':''"
                                 @click="changeElastic(index)"
                             >
                                 {{item.label}}
@@ -267,6 +267,9 @@ export default {
         },
         
         changeElastic(index){
+            // if(this.elasticList[this.elasticIndex].value  < this.newList.elasticband || this.elasticList[this.elasticIndex].value  == this.newList.elasticband){
+            //     return;
+            // }
             this.elasticIndex = index;
             this.getElasticModify();
         },
@@ -377,5 +380,11 @@ export default {
             border: 1px solid #ed4014;
             border-radius: 4px;
             background-color: rgba(237, 64, 20, 0.08);
+        }
+        .dis-no{
+            color: #bbbec4;
+            background-color: #f7f7f7;
+            border-color: 1px solid #dddee1;
+            cursor: not-allowed !important;
         }
 </style>

@@ -357,9 +357,6 @@ export default {
       },
       disabledCoupon: false,
       groupList: [],
-      
-      // 订单状态
-      orderState:0,
 
       canUseTicket: true,
       showModal: {
@@ -800,6 +797,9 @@ export default {
       }).then(res => {
         if(res.status == 200 && res.data.status == 1){
           this.deductionPrice = res.data.result;
+          if(res.data.result.payMount == 0 && res.data.result.deduMount != 0){
+            this.isButtonCash = true;
+          }
           if(res.data.result.ticketMessage != "")
           this.$Message.info(res.data.result.ticketMessage);
         }else{
@@ -965,7 +965,10 @@ export default {
   
     },
     groupList: {
-    
+      handler(){
+       this.couponInfo.selectTicket = '';
+        this.getPrice();
+      },deep:true
     }
   }
 };

@@ -1643,6 +1643,7 @@ export default {
                             on:{
                                 'white':(value)=>{
                                     this.whiteName = value;
+                                    console.log(value);
                                 },
                                 'black':(value)=>{
                                     this.blackName = value
@@ -1692,7 +1693,7 @@ export default {
                             },
                             on: {
                                 'on-change': (value) => {
-                                    params.row.ccprotect=value?0:1;
+                                    this.ccProtectData[params.row._index].ccprotect=value?0:1;
                                     params.row._disableExpand = false;
                                 }
                             }
@@ -1720,7 +1721,7 @@ export default {
                         },
                         on:{
                             "on-change":(val)=>{    
-                              params.row.protecttype=val;
+                             this.ccProtectData[params.row._index].protecttype=val;
                                params.row._disableExpand = false;
                             }
                         }
@@ -2418,12 +2419,15 @@ export default {
     },
 
     addNameList(name) {
+        console.log(this.blackName);
         this.$refs[name].validate((valid) => {
         if (valid) {
             let bN = this.blackName,
                 bN1 = '',
                 wN =   this.whiteName,
                 wN1 = '';
+                // 赋值
+
                 bN +=';'+this.nameValidate.black;
                 bN1 +=this.nameValidate.black;
                 wN +=';'+this.nameValidate.white;
@@ -2756,6 +2760,8 @@ export default {
     },
 
     saveConfig(index) {
+        console.log(this.blackName);
+        // return;
          this.$http.post('ddosImitationIp/updateddoSConfig.do',{
              packageId:this.setMeal,
              domainName: this.ccProtectData[index].domainname,
@@ -2770,6 +2776,7 @@ export default {
                 this.ccShow = true;
                 this.ccDisabled = true;
                 this.ccProtectData[index]._disableExpand = true;
+                this.getProtectCC(this.setMeal,1);
             } else {
                 this.$Message.info(res.data.message);
             }

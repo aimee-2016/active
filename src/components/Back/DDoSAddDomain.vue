@@ -244,8 +244,8 @@ export default {
             })
             .then(res => {
               if (res.status == 200 && res.data.status == 1) {
-                //  this.getDomainList(1);
                 this.businessData.push(addDomainList);
+                this.steps=1;
               } else {
                 this.$Message.info(res.data.message);
               }
