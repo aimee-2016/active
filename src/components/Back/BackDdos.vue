@@ -586,6 +586,7 @@
                     on: {
                       click: () => {
                         sessionStorage.setItem('manageId', params.row.computerid)
+                        sessionStorage.setItem('isDdosManage', 'ddoshost')
                         this.$router.push('manage')
                       }
                     }
@@ -598,6 +599,7 @@
                     on: {
                       click: () => {
                         sessionStorage.setItem('manageId', params.row.computerid)
+                        sessionStorage.setItem('isDdosManage', 'ddoshost')
                         this.$router.push('manage')
                       }
                     }

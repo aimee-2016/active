@@ -2,7 +2,7 @@
   <div id="background">
     <div id="wrapper">
       <span class="title">云服务器 /
-         <span>云主机 / </span>
+         <span v-if="isDdosHost">高防云主机 / </span><span v-else>云主机 / </span>
         <span>管理</span>
       </span>
       <Alert type="warning" show-icon style="margin-bottom:10px" v-if="!auth">您尚未进行实名认证，只有认证用户才能对外提供服务，
@@ -15,7 +15,7 @@
             <button @click="$router.go(0)">刷新</button>
             <button style="margin-right: 10px;background: #2A99F2;color: #FFF" @click="linkHost" v-if="hostInfo.computerStatus == 1">连接主机</button>
           </p>
-          <p v-if="hostInfo.bandwith">{{ hostInfo.cpuNum }}核CPU，{{ hostInfo.memory}}G内存，{{ hostInfo.rootDiskSize}}G硬盘，{{ hostInfo.bandwith}}M带宽 | {{ hostInfo.zoneName}} <span
+          <p v-if="hostInfo.bandwith">{{ hostInfo.cpuNum }}核CPU，{{ hostInfo.memory}}G内存，{{ hostInfo.rootDiskSize}}G硬盘，{{ hostInfo.bandwith}}M带宽 | {{ hostInfo.zoneName}} <span style="color: #333;" v-if="isDdosHost">| {{ hostInfo.ddosProtectNumber}} GB防护宽带 </span><span
             @click="hostUpgrade">[升级]</span>
           </p>
             <p v-else>{{ hostInfo.cpuNum }}核CPU，{{ hostInfo.memory}}G内存，{{ hostInfo.rootDiskSize}}G硬盘 | {{ hostInfo.zoneName}} <span
@@ -987,11 +987,13 @@
           cidr: [
             {required: true, validator: validateCdir, trigger: 'blur'}
           ]
-        }
+        },
+        isDdosHost: ''
       }
     },
     created() {
       this.computerId = sessionStorage.getItem('manageId')
+      this.isDdosHost = sessionStorage.getItem('isDdosManage') || ''
       this.getHostInfo()
       if (sessionStorage.getItem('guideHint')) {
         this.guideStep = 1
