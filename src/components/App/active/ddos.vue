@@ -397,7 +397,7 @@
                     </p>
                     <p>免费再送一个月</p>
                   </div>
-                  <div class="right"></div>
+                  <div class="right">
                     <span>9</span>.5
                     <i>折</i>
                   </div>
