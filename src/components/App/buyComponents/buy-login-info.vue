@@ -37,7 +37,7 @@
             <span>主机名称</span>
           </div>
           <div class="item-text">
-            <Input v-model="serverInfo.serverName" placeholder="请输入主机名" style="width: 200px"></Input>
+            <Input v-model="loginInfo.serverName" placeholder="请输入主机名" style="width: 200px"></Input>
           </div>
         </div>
         <div
@@ -68,24 +68,23 @@
           </div>
           <div class="item-text">
             <Input
-              v-model="serverInfo.serverPassword"
+              v-model="loginInfo.serverPassword"
               placeholder="请输入主机登陆密码"
               style="width: 200px"
-              @on-change="passwordWarning=''"
-              @on-focus="passwordForm.passwordHint = true"
-              @on-blur="passwordForm.passwordHint = false"
+              @on-focus="loginInfo.passwordHint = true"
+              @on-blur="loginInfo.passwordHint = false"
             ></Input>
-            <div class="popTip" v-show="passwordForm.passwordHint">
+            <div class="popTip" v-show="loginInfo.passwordHint">
               <div>
-                <i :class="{reach: passwordForm.secondDegree}"></i>
+                <i :class="{reach: loginInfo.secondDegree}"></i>
                 <p>不能输入连续6位数字或字母，如123456aA</p>
               </div>
               <div>
-                <i :class="{reach: passwordForm.firstDegree}"></i>
+                <i :class="{reach: loginInfo.firstDegree}"></i>
                 <p>长度8~30位，推荐使用12位以上的密码</p>
               </div>
               <div>
-                <i :class="{reach: passwordForm.thirdDegree}"></i>
+                <i :class="{reach: loginInfo.thirdDegree}"></i>
                 <p>至少包含：小写字母，大写字母，数字</p>
               </div>
               <div>
@@ -292,25 +291,9 @@
 }
 </style>
 <script type="text/ecmascript-6">
-import regExp from "@/util/regExp";
 export default {
   data() {
-    return {
-      serverInfo: {
-        serverName: "",
-        serverPassword: ""
-      },
-      passwordForm: {
-        passwordHint: false,
-        //密码强度
-        firstDegree: false,
-        secondDegree: false,
-        thirdDegree: false,
-        firstError: false,
-        secondError: false,
-        thirdError: false
-      }
-    };
+    return {};
   },
   props: {
     loginInfo: {
@@ -329,60 +312,6 @@ export default {
     }
   },
   watch: {
-    "serverInfo.serverPassword": {
-      handler: function(val) {
-        if (val.length > 7 && val.length < 31) {
-          this.passwordForm.firstDegree = true;
-        } else {
-          this.passwordForm.firstDegree = false;
-        }
-        let len = val.length;
-        let reg = /[0-9]/;
-        let flag = false;
-        // 当用户输入到第6位时，开始校验是否有6位连续字符
-        if (len > 5) {
-          flag = check(len);
-          function check(index) {
-            let count = 0;
-            for (let i = index - 5; i < index; i++) {
-              let next = reg.test(val[i]) ? val[i] : val[i].charCodeAt(); // 检查字符是数字还是字母，数字没转原因是9和：ACSII码连续
-              let current = reg.test(val[i - 1])
-                ? val[i - 1]
-                : val[i - 1].charCodeAt();
-              if (next - current === 1) {
-                // 字母ACSII 码相差1 则为连续
-                count += 1;
-              }
-            }
-            if (count > 4) {
-              // 有6位连续字符
-              return true;
-            } else if (count < 5 && index > 6) {
-              return check(index - 1); // 递归继续校验
-            } else {
-              return false;
-            }
-          }
-          if (flag && len > 5) {
-            this.passwordForm.secondDegree = false;
-          } else if (!flag && len > 5) {
-            this.passwordForm.secondDegree = true;
-          }
-          if (len === 0) {
-            this.passwordForm.secondDegree = false;
-          }
-          if (regExp.hostPassword(val)) {
-            this.passwordForm.thirdDegree = true;
-          } else {
-            this.passwordForm.thirdDegree = false;
-          }
-        } else {
-          this.passwordForm.secondDegree = false;
-          this.passwordForm.secondDegree = true;
-        }
-      },
-      deep: true
-    }
   }
 };
 </script>

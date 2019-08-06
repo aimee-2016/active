@@ -27,6 +27,7 @@
               placeholder="请选择时长"
               v-model="timeConfig.buyTime"
               :placement="placement"
+              @on-change="changeBuyTime"
               style="width:100px"
             >
               <Option
@@ -38,7 +39,7 @@
           </div>
           <div class="buy-price">
             <span>总计费用：</span>
-            <span class="money">¥ 2000.72</span>
+            <span class="money">¥ {{ totalCost }}</span>
             <a>点击查看计费规则</a>
           </div>
         </div>
@@ -203,6 +204,14 @@ export default {
     billingType: {
       type: String,
       default: ""
+    },
+    totalCost: {
+      type: String,
+      default: "0"
+    },
+    totalCoupon: {
+      type: String,
+      default: "0"
     }
   },
   methods: {
@@ -211,6 +220,9 @@ export default {
     },
     addBuyCount() {
       this.$emit("addBuyCount");
+    },
+    changeBuyTime() {
+      this.$emit("changeBuyTime");
     },
     nextStep(val) {
       this.$emit("nextStep", val);

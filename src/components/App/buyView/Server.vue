@@ -26,6 +26,7 @@
           v-if="serverType!=='GPUServer'"
           :server-specification-group="serverSpecificationGroup"
           :server-specification="serverSpecification"
+          :mirror-config="mirrorConfig"
           @changeCPU="changeCPU"
           @changeMemory="changeMemory"
           @changeRootDiskType="changeRootDiskType"
@@ -50,6 +51,7 @@
           :area="area"
           :server-network="serverNetwork"
           @changepublicIPType="changepublicIPType"
+          @changePublicIPBandwidth="changePublicIPBandwidth"
         ></buy-network>
         <div class="lists">
           <buy-budget-list></buy-budget-list>
@@ -74,8 +76,11 @@
         :is-fixed="isFixed"
         :time-config="timeConfig"
         :billing-type="billingType"
+        :total-cost="totalCost"
+        :total-coupon="totalCoupon"
         @minusBuyCount="minusBuyCount"
         @addBuyCount="addBuyCount"
+        @changeBuyTime="changeBuyTime"
         @nextStep="nextStep"
       ></buy-footer>
     </div>
@@ -104,6 +109,7 @@
 <script type="text/ecmascript-6">
 import axios from "axios";
 import $store from "@/vuex";
+import regExp from "@/util/regExp";
 import buyHeader from "../buyComponents/buy-header";
 import buyStep from "../buyComponents/buy-step";
 import buyServerType from "../buyComponents/buy-server-type";
@@ -430,14 +436,18 @@ export default {
         autoRenewal: true,
         serverName: "",
         serverPassword: "",
-        mirrorName: "u",
         loginType: "password",
         loginTypeGroup: [
           { name: "密码", value: "password" }
           //{ name: "SSH密钥", value: "ssh" }
         ],
         SSHID: "",
-        SSHIDGroup: []
+        SSHIDGroup: [],
+        passwordHint: false,
+        //密码强度
+        firstDegree: false,
+        secondDegree: false,
+        thirdDegree: false
       },
       timeConfig: {
         buyTime: "1",
@@ -557,7 +567,10 @@ export default {
         this.getPublicMirror();
         this.getMirrorMarket();
         this.getVpcList();
-        this.queryIPPrice()
+        this.queryIPPrice();
+        if (this.userInfo) {
+          this.getPrivatelyMirror();
+        }
       }
     },
     // 获取公共镜像
@@ -607,6 +620,25 @@ export default {
           }
         });
     },
+    // 获取私有镜像
+    getPrivatelyMirror() {
+      axios
+        .get("information/listTemplates.do", {
+          params: {
+            user: "1",
+            zoneId: this.area.zoneid
+          }
+        })
+        .then(response => {
+          if (response.status == 200 && response.data.status == 1) {
+            this.mirrorConfig.ownMirrorGroup = response.data.result.window.concat(
+              response.data.result.centos,
+              response.data.result.debian,
+              response.data.result.ubuntu
+            );
+          }
+        });
+    },
     setSpecification() {
       axios.get("information/getServiceoffers.do").then(res => {
         if (res.status === 200 && res.data.status === 1) {
@@ -652,6 +684,7 @@ export default {
     changeBillingType(item) {
       this.billingType = item.value;
       this.queryServerSpecificationPrice();
+      this.queryIPPrice();
     },
     changeArea(item) {
       this.area = item;
@@ -697,12 +730,24 @@ export default {
       this.mirrorConfig.mirrorName = arr[0];
     },
     changeCPU(item) {
+      if (
+        item.value > 4 &&
+        this.mirrorConfig.mirrorName === "windows-2003-32bit"
+      ) {
+        return;
+      }
       this.serverSpecification.CPU = item.value;
       this.serverSpecification.memoryGroup = item.RAMList;
       this.serverSpecification.memory = this.serverSpecification.memoryGroup[0].value;
       this.queryServerSpecificationPrice();
     },
     changeMemory(item) {
+      if (
+        item.value > 4 &&
+        this.mirrorConfig.mirrorName == "windows-2003-32bit"
+      ) {
+        return;
+      }
       this.serverSpecification.memory = item.value;
       this.queryServerSpecificationPrice();
     },
@@ -817,11 +862,18 @@ export default {
         this.serverNetwork.bandwidth = 0;
       }
     },
+    changePublicIPBandwidth() {
+      this.queryIPPrice();
+    },
     changeSetType(item) {
       this.loginInfo.setType = item.value;
     },
     changeAutoRenewal(val) {
       this.loginInfo.autoRenewal = val;
+    },
+    changeBuyTime() {
+      this.queryServerSpecificationPrice();
+      this.queryIPPrice();
     },
     minusBuyCount() {
       this.timeConfig.buyCount > 1 ? (this.timeConfig.buyCount -= 1) : null;
@@ -830,8 +882,57 @@ export default {
       this.timeConfig.buyCount < 5 ? (this.timeConfig.buyCount += 1) : null;
     },
     nextStep(val) {
-      window.scroll(0, 0);
-      this.buyStep = val;
+      switch (val) {
+        case 1:
+          if (!this.area) {
+            this.$Message.info("请选择购买区域");
+            return;
+          }
+          if (!this.mirrorConfig.mirrorID) {
+            this.$Message.info("请选择服务器镜像");
+            return;
+          }
+          this.buyStep = val;
+          window.scroll(0, 0);
+          break;
+        case 2:
+          if (
+            this.serverNetwork.publicIPType === "useOwn" &&
+            !this.serverNetwork.publicIPID
+          ) {
+            this.$Message.info("请选择需要使用的公网IP");
+            return;
+          }
+          this.buyStep = val;
+          window.scroll(0, 0);
+          break;
+        case 3:
+          if (this.loginInfo.setType === "customSet") {
+            if (!this.loginInfo.serverName) {
+              this.$Message.info("请输入主机名称");
+              return;
+            }
+            if (this.loginInfo.serverName.indexOf(" ") != -1) {
+              this.$Message.info("主机名称不能包含空格");
+              return;
+            }
+            if (
+              !(
+                this.loginInfo.firstDegree &&
+                this.loginInfo.secondDegree &&
+                this.loginInfo.thirdDegree
+              ) &&
+              this.loginInfo.loginType === "password"
+            ) {
+              this.$Message.info("您输入的密码不符合格式要求");
+              return;
+            }
+          }
+          if (this.serverType === "cloudServer") {
+            this.createdCloudServerOrder();
+          }
+          break;
+      }
     },
     // 查询服务器配置价格价格
     queryServerSpecificationPrice: debounce(500, function() {
@@ -850,8 +951,12 @@ export default {
         timeValue: this.timeConfig.buyTime,
         zoneId: this.area.zoneid
       };
-      if (parseInt(this.timeConfig.buyTime) > 11) {
+      if (
+        parseInt(this.timeConfig.buyTime) > 11 &&
+        this.billingType !== "current"
+      ) {
         params.timeType = "year";
+        params.timeValue = this.timeConfig.buyTime / 12 + "";
       }
       axios.post("device/QueryBillingPrice.do", params).then(response => {
         this.serverSpecification.price = response.data.cost;
@@ -870,8 +975,12 @@ export default {
         timeValue: this.timeConfig.buyTime,
         zoneId: this.area.zoneid
       };
-      if (parseInt(this.timeConfig.buyTime) > 11) {
+      if (
+        parseInt(this.timeConfig.buyTime) > 11 &&
+        this.billingType !== "current"
+      ) {
         params.timeType = "year";
+        params.timeValue = this.timeConfig.buyTime / 12 + "";
       }
       axios.post("device/queryIpPrice.do", params).then(response => {
         this.serverNetwork.price = response.data.cost;
@@ -881,9 +990,101 @@ export default {
           this.serverNetwork.coupon = 0;
         }
       });
-    })
+    }),
+    // 创建主机订单
+    createdCloudServerOrder() {
+      //   if (this.userInfo == null) {
+      //     this.$LR({ type: "login" });
+      //     return;
+      //   }
+
+      let url = "information/deployVirtualMachine.do";
+      let diskType = "",
+        diskSize = "";
+      for (let disk of this.serverSpecification.systemDisk) {
+        diskType += `${disk.type},`;
+        diskSize += `${disk.size},`;
+      }
+      let params = {
+        zoneId: this.area.zoneid,
+        timeType: this.billingType,
+        timeValue: this.timeConfig.buyTime,
+        templateId: this.mirrorConfig.mirrorID,
+        isAutoRenew: this.loginInfo.autoRenewal ? "1" : "0",
+        count: this.timeConfig.buyCount,
+        cpuNum: this.serverSpecification.CPU,
+        memory: this.serverSpecification.memory,
+        bandWidth: this.serverNetwork.bandwidth,
+        rootDiskType: this.serverSpecification.rootDiskType,
+        rootDiskSize: this.serverSpecification.rootDiskSize,
+        vpcId: this.serverNetwork.vpcId,
+        networkId: this.serverNetwork.networkId,
+        diskType,
+        diskSize
+      };
+      if (
+        parseInt(this.timeConfig.buyTime) > 11 &&
+        this.billingType !== "current"
+      ) {
+        // 购买时间单位为年
+        params.timeType = "year";
+        params.timeValue = this.timeConfig.buyTime / 12 + "";
+      }
+      if (this.serverNetwork.publicIPType !== "buyNow") {
+        params.bandWidth = "0"; // 没有选择立即购买IP
+      }
+      // 设置了主机名和密码
+      if (this.loginInfo.setType == "customSet") {
+        params.VMName = this.loginInfo.serverName;
+        params.password = this.loginInfo.serverPassword;
+      }
+      axios.get(url, { params }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          this.$router.push({
+            path: "/order"
+          });
+        } else {
+          this.$message.info({
+            content: response.data.message
+          });
+        }
+      });
+    }
+  },
+  computed: {
+    userInfo() {
+      return this.$store.state.userInfo;
+    },
+    totalCost() {
+      if (this.serverType === "cloudServer") {
+        let price = "0";
+        if (this.serverNetwork.publicIPType === "buyNow") {
+          price = (
+            (this.serverSpecification.price + this.serverNetwork.price) *
+            this.timeConfig.buyCount
+          ).toFixed(2);
+        } else {
+          price = (
+            this.serverSpecification.price * this.timeConfig.buyCount
+          ).toFixed(2);
+        }
+        return price;
+      }
+    },
+    // 折扣金额，设计图上没用到
+    totalCoupon() {
+      if (this.serverType === "cloudServer") {
+        return "0";
+      }
+    }
   },
   watch: {
+    userInfo(val) {
+      if (val) {
+        this.getVpcList();
+        this.getPrivatelyMirror();
+      }
+    },
     buyStep() {
       this.isFixed = false; // 步骤改变重置浮动
     },
@@ -893,7 +1094,7 @@ export default {
           // 初始化计费方式
           this.billingTypeGroup = [
             { text: "包年包月", value: "month" },
-            { text: "实时计费", value: current }
+            { text: "实时计费", value: "current" }
           ];
           break;
         case "NOKIAServer":
@@ -907,6 +1108,74 @@ export default {
           break;
       }
       this.billingType = "month";
+    },
+    "mirrorConfig.mirrorName": {
+      handler: function(value) {
+        let s = value.substr(0, 1);
+        if (s === "W" || s === "w") {
+          this.loginInfo.loginName = "administrator";
+        } else {
+          this.loginInfo.loginName = "root";
+        }
+        if (value === "windows-2003-32bit") {
+          this.setSpecification();
+        }
+      },
+      deep: true
+    },
+    "loginInfo.serverPassword": {
+      handler: function(val) {
+        if (val.length > 7 && val.length < 31) {
+          this.loginInfo.firstDegree = true;
+        } else {
+          this.loginInfo.firstDegree = false;
+        }
+        let len = val.length;
+        let reg = /[0-9]/;
+        let flag = false;
+        // 当用户输入到第6位时，开始校验是否有6位连续字符
+        if (len > 5) {
+          flag = check(len);
+          function check(index) {
+            let count = 0;
+            for (let i = index - 5; i < index; i++) {
+              let next = reg.test(val[i]) ? val[i] : val[i].charCodeAt(); // 检查字符是数字还是字母，数字没转原因是9和：ACSII码连续
+              let current = reg.test(val[i - 1])
+                ? val[i - 1]
+                : val[i - 1].charCodeAt();
+              if (next - current === 1) {
+                // 字母ACSII 码相差1 则为连续
+                count += 1;
+              }
+            }
+            if (count > 4) {
+              // 有6位连续字符
+              return true;
+            } else if (count < 5 && index > 6) {
+              return check(index - 1); // 递归继续校验
+            } else {
+              return false;
+            }
+          }
+          if (flag && len > 5) {
+            this.loginInfo.secondDegree = false;
+          } else if (!flag && len > 5) {
+            this.loginInfo.secondDegree = true;
+          }
+          if (len === 0) {
+            this.loginInfo.secondDegree = false;
+          }
+          if (regExp.hostPassword(val)) {
+            this.loginInfo.thirdDegree = true;
+          } else {
+            this.loginInfo.thirdDegree = false;
+          }
+        } else {
+          this.loginInfo.secondDegree = false;
+          this.loginInfo.secondDegree = true;
+        }
+      },
+      deep: true
     }
   },
   destroyed() {

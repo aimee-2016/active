@@ -11,7 +11,7 @@
             <span
               v-for="(item,index) in serverSpecificationGroup.kernelList"
               :key="index"
-              :class="{selected: serverSpecification.CPU === item.value}"
+              :class="{selected: serverSpecification.CPU === item.value,disabled: item.value >= 8 && mirrorConfig.mirrorName === 'windows-2003-32bit'}"
               @click="changeCPU(item)"
             >{{ item.name }}</span>
           </div>
@@ -24,7 +24,7 @@
             <span
               v-for="(item,index) in serverSpecification.memoryGroup"
               :key="index"
-              :class="{selected: serverSpecification.memory === item.value}"
+              :class="{selected: serverSpecification.memory === item.value,disabled: item.value > 4 && mirrorConfig.mirrorName === 'windows-2003-32bit'}"
               @click="changeMemory(item)"
             >{{ item.name }}</span>
           </div>
@@ -194,6 +194,12 @@
               box-shadow: 0px 2px 10px -3px rgba(66, 151, 242, 0.49);
               border: 1px solid rgba(66, 151, 242, 1);
             }
+            &.disabled {
+              background: #666666;
+              border: 1px solid #666666;
+              cursor: not-allowed;
+              color: #fff;
+            }
           }
           .cancel {
             text-align: left;
@@ -244,6 +250,12 @@ export default {
     isNotServer: {
       type: String,
       default: ""
+    },
+    mirrorConfig: {
+      type: Object,
+      default: () => {
+        return new Object();
+      }
     },
     serverSpecification: {
       type: Object,

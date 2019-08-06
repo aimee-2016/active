@@ -61,10 +61,11 @@
           <div v-show="mirrorConfig.mirrorType === 'customMirror'">
             <Select placeholder="请选择自制镜像" v-model="mirrorConfig.ownMirrorID" style="width:338px">
               <Option
-                v-for="item in mirrorConfig.ownMirrorGroup"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
+                v-for="(item,index) in mirrorConfig.ownMirrorGroup"
+                :value="item.systemtemplateid"
+                :key="index"
+                @on-change="changeOwnMirror(item)"
+              >{{ item.templatename }}</Option>
             </Select>
             <span class="hint">
               点击此处

@@ -62,6 +62,7 @@
               :max="100"
               :step="1"
               :points="[30,50]"
+              @change="changePublicIPBandwidth"
               style="margin-right:30px;vertical-align: middle;"
             ></i-slider>
             <InputNumber
@@ -71,6 +72,7 @@
               size="large"
               :step="1"
               :precision="0"
+              @on-change="changePublicIPBandwidth"
             ></InputNumber>
           </div>
         </div>
@@ -150,7 +152,7 @@
             </Tabs>
           </div>
         </div>
-        <div class="specification-item">
+        <div class="specification-item" v-if="serverNetwork.publicIPType === 'buyNow'">
           <div class="item-label">
             <span>
               价格
@@ -292,34 +294,10 @@ export default {
     changepublicIPType(item) {
       this.$emit("changepublicIPType", item);
     },
+    changePublicIPBandwidth() {
+      this.$emit("changePublicIPBandwidth");
+    },
     viewFireWallRule() {
-      //   axios
-      //     .get("network/listAclList.do", {
-      //       params: {
-      //         zoneId: this.area.zoneid,
-      //         aclId: this.serverNetwork.networkId
-      //       }
-      //     })
-      //     .then(response => {
-      //       if (response.status == 200 && response.data.status == 1) {
-      //         this.acllist[0].acllistname = response.data.result[0].acllistname;
-      //         this.upRuleData = response.data.result[0].acllistitem.filter(
-      //           item => {
-      //             return item.type == "Ingress";
-      //           }
-      //         );
-      //         this.downRuleData = response.data.result[0].acllistitem.filter(
-      //           item => {
-      //             return item.type != "Ingress";
-      //           }
-      //         );
-      //         this.fireWallRuleShow = true;
-      //       } else {
-      //         this.$message.info({
-      //           content: response.data.message
-      //         });
-      //       }
-      //     });
       this.fireWallRuleShow = true;
     }
   }
