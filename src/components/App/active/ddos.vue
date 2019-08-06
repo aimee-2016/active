@@ -402,7 +402,7 @@
                     <i>折</i>
                   </div>
                 </div>
-                <Button class="btn" @click="$router.push('buy/ddos/')">立即选购</Button>
+                <Button class="btn" @click="$router.push('/buy/ddos/')">立即选购</Button>
               </li>
               <li>
                 <div class="top">
@@ -418,7 +418,7 @@
                     <i>折</i>
                   </div>
                 </div>
-                <Button class="btn" @click="$router.push('buy/ddos/')">立即选购</Button>
+                <Button class="btn" @click="$router.push('/buy/ddos/')">立即选购</Button>
               </li>
             </ul>
           </div>
