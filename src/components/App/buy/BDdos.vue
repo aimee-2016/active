@@ -396,6 +396,16 @@
                   </div>
                 </div>
               </div>
+              <div class="item-wrapper">
+                <div style="display: flex">
+                  <div>
+                    <p class="item-title" style="margin-top:2px;">价格</p>
+                  </div>
+                  <div><!--{{vmConfig.cost.toFixed(2)}}<span v-if="customProtectSecIndex.value > 300">元/天</span><span v-else>元/月</span>-->
+                    <div class="priceOrange">{{IPConfig.cost.toFixed(2)}}<span v-if="customProtectSecIndex.value > 300">元/天</span><span v-else>元/月</span></div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div>
@@ -473,7 +483,7 @@
                 <div>
                   <p class="item-title" style="margin-top: 5px">主机名称</p>
                 </div>
-                <Input v-model="computerName" placeholder="请输入1-16位主机名称，可包含字母与数字" style="width: 300px"
+                <Input v-model="computerName" :maxlength="16" placeholder="请输入1-16位主机名称，可包含字母与数字" style="width: 300px"
                        @on-change="computerNameWarning=''"></Input>
                 <span style="line-height: 32px;color:red;margin-left:10px">{{computerNameWarning}}</span>
               </div>
@@ -492,7 +502,7 @@
                   <p class="item-title" style="margin-top: 5px">主机密码</p>
                 </div>
                 <Input v-model="password" placeholder="请输入至少8位包含大小写与数字的密码"
-                       style="width: 300px" @on-change="passwordWarning=''"  @on-focus="passwordForm.passwordHint = true" @on-blur="passwordForm.passwordHint = false"></Input>
+                       style="width: 300px" :maxlength="30" @on-change="passwordWarning=''"  @on-focus="passwordForm.passwordHint = true" @on-blur="passwordForm.passwordHint = false"></Input>
                 <span style="line-height: 32px;color:red;margin-left:10px">{{passwordWarning}}</span>
               </div>
               <div class="popTip" v-show="passwordForm.passwordHint">
@@ -1139,19 +1149,19 @@
         Promise.all([host, ip, protect]).then(response => {
           if(this.quickProtectSecIndex.value > 300){ // 防护配置按月或者年计算
             // 设置主机价格
-            this.quickDdosHostPrice = (response[0].data.cost)*(this.bigProtectTime)
+            this.quickDdosHostPrice = (response[0].data.cost) + (response[1].data.cost)
             // 防护价格 + IP价格
-            this.quickDdosSelectPrice = response[2].data.cost + (response[1].data.cost)*(this.bigProtectTime)
+            this.quickDdosSelectPrice = response[2].data.cost
             if (response[0].data.coupon) {
-              this.temFastCoupon = response[0].data.coupon*(this.bigProtectTime) + (response[1].data.coupon)*(this.bigProtectTime) + response[2].data.coupon
+              this.temFastCoupon = response[0].data.coupon + (response[1].data.coupon) + response[2].data.coupon
             } else {
               this.temFastCoupon = 0
             }
           } else { // 防护配置小于400GB的时候，按月或者年计算
             // 设置主机价格
-            this.quickDdosHostPrice = response[0].data.cost
+            this.quickDdosHostPrice = response[0].data.cost + response[1].data.cost
             // 防护价格 + IP价格
-            this.quickDdosSelectPrice = response[2].data.cost + response[1].data.cost
+            this.quickDdosSelectPrice = response[2].data.cost
             if (response[0].data.coupon) {
               this.temFastCoupon = response[0].data.coupon + response[1].data.coupon + response[2].data.coupon
             } else {
@@ -1623,11 +1633,11 @@
         return this.$store.state.userInfo
       },
       customIpAndDdosSelectPrice() {
-        return this.customDdosSelectPrice + this.IPConfig.cost
+        return this.customDdosSelectPrice
       },
       // 自定义主机总价
       totalCost() {
-        return (this.vmConfig.cost + this.customIpAndDdosSelectPrice + this.dataDiskCost )*this.purchCount
+        return (this.vmConfig.cost + this.customIpAndDdosSelectPrice + this.dataDiskCost  + this.IPConfig.cost)*this.purchCount
       },
       totalCoupon() {
         return (this.vmConfig.coupon + this.IPConfig.coupon + this.coupon + this.customProtectCoupon)*this.purchCount
