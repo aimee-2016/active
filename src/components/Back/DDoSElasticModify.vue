@@ -50,7 +50,7 @@
                 <div style="margin:40px 0 20px 0;">
                     <div class="du-up">
                          <p class="du-bft">可修改配置</p>
-                         <div style="width:700px;margin-bottom:10px;">
+                         <div style="width:711px;margin-bottom:10px;">
                              <div v-for="(item,index) in elasticList" :key="index" class="timeType"
                                 :class="{zoneSelect : elasticIndex  == index}"
                                 @click="changeElastic(index)"
@@ -59,12 +59,12 @@
                             </div>
                          </div>
                          
-                         <p>当前峰值阶梯计费金额：{{newList.newProtectBandwithPrice}}元/天</p>
+                         <p class="du-lft">当前峰值阶梯计费金额：{{newList.newProtectBandwithPrice}}元/天</p>
                     </div>
                 </div>
                 <div class="du-up">
                     <p class="du-bft">修改后弹性防护峰值配置</p>
-                     <div class="du-tdb" style="border:none;">
+                     <div class="du-tdb" style="border-top:none;border-bottom:1px solid #E9E9E9;">
                         <div class="du-tbox">
                             <div>
                                 <span class="du-lft">套餐保底防护</span>
@@ -93,10 +93,10 @@
                      <p class="du-nft">购买和计费说明</p>
                     <div style="display:flex;">
                         <div>
-                            <p style="color:#FF9801;">提示：当您调整您的弹性防护峰值之时，我们将根据弹性防护的阶梯计费表来计算您的冻结费用。</p>
+                            <p style="color:#FF9801;line-height:32px;">提示：当您调整您的弹性防护峰值之时，我们将根据弹性防护的阶梯计费表来计算您的冻结费用。</p>
                         </div>
-                        <div sty>
-                            <p>应补冻结费用：<span class="du-oft" style="font-size:24px;">{{newList.price}}元</span></p>
+                        <div style="width:53%;text-align:right;">
+                            <p style="color:#000000;font-size:14px;">应补冻结费用：<span class="du-oft" style="font-size:24px;">{{newList.price}}</span>元</p>
                         </div>
                     </div>
                     
@@ -126,7 +126,7 @@
             </div>
             <div slot="footer" class="modal-footer-border">
                 <Button type="ghost" @click="modalW = false">取消</Button>
-                <Button type="primary" @click="gotopMoeny">确定</Button>
+                <Button type="primary" :loading='loading' @click="gotopMoeny">确定</Button>
             </div>
         </Modal>
     </div>
@@ -242,7 +242,8 @@ export default {
             pId:sessionStorage.getItem('pgId'),
             newList:{},
             modalW:false,
-            renewPrice:{}
+            renewPrice:{},
+            loading:false
         }
     },
     created(){
@@ -270,6 +271,7 @@ export default {
             this.getElasticModify();
         },
         gotopMoeny(){
+            this.loading = true;
             let value = this.elasticList[this.elasticIndex].value;
             this.$http.post('ddosImitationIp/getRemainderFrozen.do',{
                 eachMoney:this.newList.price,
@@ -277,10 +279,16 @@ export default {
                 elasticband:value
             }).then(res => {
                 if(res.status == 200 && res.data.status == 1){
-                    this.$Message.success('修改成功');
+                     this.loading = false;
+                    this.$Message.success('弹性防护峰值修改成功');
+                    this.$router.push('DDoSIPdetails');
                 }else{
                     this.renewPrice = res.data;
+                     this.loading = false;
                 }
+            }).catch(err => {
+                if(err)
+                 this.loading = false;
             })
         }
     }
@@ -338,50 +346,36 @@ export default {
   .du-nft{
       color: #2A99F2;
       cursor: pointer;
+      margin-top: 10px;
   }
   .du-up{
       border: 1px solid #E9E9E9;
       padding: 20px;
   }
        .zoneSelect {
-          border-color: #377dff;
-          background-color: #377dff;
-          color: #ffffff;
+          background-color: #EDF7FF;
+          color: #4297F2;
+           box-shadow: inset 0px 0px 0px 1px #2A99F2
         }
         .timeType {
           width: 80px;
           height: 35px;
           line-height: 35px;
           text-align: center;
-          border: 1px solid #d9d9d9;
+          border: 1px solid #E5E9ED;
           font-size: 14px;
           cursor: pointer;
-          border-right: none;
           display: inline-block;
+          margin-right:-1px; margin-bottom:-1px;
           position: relative;
-          .discount-icon {
-            display: inline-block;
-            position: absolute;
-            background-color: rgb(255, 125, 45);
-            color: #ffffff;
-            right: 2px;
-            top: 1px;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            line-height: 20px;
-          }
-          &:last-of-type {
-            border-right: 1px solid #d9d9d9 !important;
-          }
         }
         .dp-er {
-  height: 32px;
-  line-height: 32px;
-  margin-bottom: 20px;
-  padding: 0 20px;
-  border: 1px solid #ed4014;
-  border-radius: 4px;
-  background-color: rgba(237, 64, 20, 0.08);
-}
+            height: 32px;
+            line-height: 32px;
+            margin-bottom: 20px;
+            padding: 0 20px;
+            border: 1px solid #ed4014;
+            border-radius: 4px;
+            background-color: rgba(237, 64, 20, 0.08);
+        }
 </style>

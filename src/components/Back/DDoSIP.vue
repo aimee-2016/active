@@ -553,7 +553,7 @@
                         <div class="dp-row">
                             <div>
                                 <span style="font-size:14px;color:#333333;">套餐选择</span>
-                                <Select v-model="setMeal" style="width:230px" @on-change='getProtectCC(setMeal)'>
+                                <Select v-model="setMeal" style="width:230px" @on-change='getProtectCC(setMeal,1)'>
                                     <Option v-for="item in setMealList" :value="item.packageid" :key="item.packageid">{{ item.packageid }}</Option>
                                 </Select>
                             </div>
@@ -1636,8 +1636,6 @@ export default {
                 type: 'expand',
                 width: 50,
                 render: (h, params) => {
-                    // this.blackName = params.row.blacklist;
-                    // this.whiteName = params.row.whitelist;
                       return h(expandRow, {
                             props: {
                                 row: params.row
@@ -1645,7 +1643,6 @@ export default {
                             on:{
                                 'white':(value)=>{
                                     this.whiteName = value;
-                                    console.log(this.whiteName);
                                 },
                                 'black':(value)=>{
                                     this.blackName = value
@@ -1695,7 +1692,8 @@ export default {
                             },
                             on: {
                                 'on-change': (value) => {
-                                    this.ccProtectData[params.index].ccprotect=value?0:1;
+                                    params.row.ccprotect=value?0:1;
+                                    params.row._disableExpand = false;
                                 }
                             }
                         },
@@ -1722,7 +1720,8 @@ export default {
                         },
                         on:{
                             "on-change":(val)=>{    
-                              this.ccProtectData[params.index].protecttype=val
+                              params.row.protecttype=val;
+                               params.row._disableExpand = false;
                             }
                         }
                     },[
@@ -2347,7 +2346,7 @@ export default {
             this.$Message.info('请选择需要关联的证书ID');
             return;
         }
-        this.dataToUpdate('businessData');
+        // this.dataToUpdate('businessData');
         this.$http.get('ddosImitationIp/UpdateDomain.do',{
             params:{
                 domain:this.businessSelect.domainname,
@@ -2396,7 +2395,7 @@ export default {
              http = this.addDomainList.http.join(',').indexOf('http') == -1 ?0 :1;
              https = this.addDomainList.http.join(',').indexOf('https') == -1 ? 0:1;
         }
-        this.dataToUpdate('businessData',this.addDomainList.id);
+        // this.dataToUpdate('businessData',this.addDomainList.id);
        this.$http.get('ddosImitationIp/UpdateDomain.do',{
             params:{
                 domain:this.addDomainList.domain,
@@ -2485,8 +2484,8 @@ export default {
     },
 
     createCertificate(name){
-        this.dataToUpdate('certificateData');
-                return;
+        // this.dataToUpdate('certificateData');
+        //         return;
         this.$refs.certificateValidate.validate((valid) => {
         if (valid) {
             this.$http.post('ddosImitationIp/AddCertificate.do',{
@@ -2532,8 +2531,8 @@ export default {
     },
 
     updateCertificate(){
-         this.dataToUpdate('certificateData',this.certificateValidate.id);
-         return;
+        //  this.dataToUpdate('certificateData',this.certificateValidate.id);
+        //  return;
         this.$http.post('ddosImitationIp/UpdateCertificate.do',{
                 crtId:this.certificateValidate.crtId,
                 crtName:this.certificateValidate.name,
@@ -2638,7 +2637,7 @@ export default {
         this.$http.get('ddosImitationIp/QueryAlldomain.do',{
             params:{
                 packageId:id,
-                page:'1',
+                page:page,
                 pageSize:'10'
             }
         }).then(res => {
@@ -2729,13 +2728,13 @@ export default {
             }
         }
         if(name == 'domain'){
-            this.dataToUpdate('businessData',id);
+            // this.dataToUpdate('businessData',id);
             url = 'ddosImitationIp/deletedomain.do'
         }else if(name == 'certificate'){
-            this.dataToUpdate('certificateData',id);
+            // this.dataToUpdate('certificateData',id);
             url = 'ddosImitationIp/DeleteCertificate.do'
         }else if(name == 'forwardrule'){
-            this.dataToUpdate('ruleData',id);
+            // this.dataToUpdate('ruleData',id);
             url = 'ddosImitationIp/deleteforwardrule.do'
         }
         
