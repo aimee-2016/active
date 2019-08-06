@@ -192,7 +192,7 @@
         sourceUrl: [
           {
             prod: '云计算',
-            prodUrl: ['host', 'mirror#own', 'snapshot', '', '', 'GpuList']
+            prodUrl: ['host', 'GpuList',  'BackDdos', 'mirror#own', '', '', 'snapshot']
           },
           {
             prod: '云网络',
