@@ -846,6 +846,16 @@
                 ME: false
               },
               {
+                title: '高防云服务器',
+                desc: '弹性防护、60-800G可选',
+                img: '#icon-DDOSgaofangIP1',
+                detailText: '查看详情',
+                useText: '立即购买',
+                detailLink: '/ddos/',
+                useLink: '/buy/ddos' ,
+                ME: true
+              },
+              {
                 title: '镜像服务',
                 desc: '公共镜像、功能镜像、自定义镜像',
                 img: '#icon-feiyongzhongxin',
@@ -865,16 +875,7 @@
                 useLink: $store.state.userInfo ? '/buy/' : '/buy/',
                 ME: false
               },
-               {
-                title: '高防云服务器',
-                desc: '高可用、可视化、低成本',
-                img: '#icon-DDOSgaofangIP1',
-                detailText: '查看详情',
-                useText: '立即购买',
-                detailLink: '/ddos/',
-                useLink: '/buy/ddos' ,
-                ME: true
-              },
+               
               {
                 title: '裸金属服务器',
                 desc: '专属物理服务器',

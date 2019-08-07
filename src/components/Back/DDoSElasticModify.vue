@@ -267,10 +267,10 @@ export default {
         },
         
         changeElastic(index){
-            // if(this.elasticList[this.elasticIndex].value  < this.newList.elasticband || this.elasticList[this.elasticIndex].value  == this.newList.elasticband){
-            //     return;
-            // }
-            this.elasticIndex = index;
+            if(this.elasticList[index].value  < this.newList.elasticband || this.elasticList[index].value == this.newList.elasticband){
+                return;
+            }
+             this.elasticIndex = index;
             this.getElasticModify();
         },
         gotopMoeny(){

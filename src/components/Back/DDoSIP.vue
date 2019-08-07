@@ -1642,10 +1642,11 @@ export default {
                             },
                             on:{
                                 'white':(value)=>{
+                                    params.row._disableExpand = false;
                                     this.whiteName = value;
-                                    console.log(value);
                                 },
                                 'black':(value)=>{
+                                    params.row._disableExpand = false;
                                     this.blackName = value
                                 }
                             }
@@ -2419,12 +2420,11 @@ export default {
     },
 
     addNameList(name) {
-        console.log(this.blackName);
         this.$refs[name].validate((valid) => {
         if (valid) {
-            let bN = this.blackName,
+            let bN = this.ccProtectData[this.ccIndex].blacklist,
                 bN1 = '',
-                wN =   this.whiteName,
+                wN =    this.ccProtectData[this.ccIndex].whitelist,
                 wN1 = '';
                 // 赋值
 
@@ -2433,8 +2433,10 @@ export default {
                 wN +=';'+this.nameValidate.white;
                 wN1 +=this.nameValidate.white;
             this.ccProtectData[this.ccIndex]._disableExpand = false;
-             this.ccProtectData[this.ccIndex].blacklist = this.ccProtectData[this.ccIndex].blacklist != '' ?bN:bN1;
+            this.ccProtectData[this.ccIndex].blacklist = this.ccProtectData[this.ccIndex].blacklist != '' ?bN:bN1;
             this.ccProtectData[this.ccIndex].whitelist =  this.ccProtectData[this.ccIndex].whitelist != ''?wN : wN1;
+            this.blackName = this.ccProtectData[this.ccIndex].blacklist ;
+            this.whiteName = this.ccProtectData[this.ccIndex].whitelist;
               this.showModal.nameList = false;
               this.nameValidate.black = '';
               this.nameValidate.white = '';
@@ -2760,8 +2762,6 @@ export default {
     },
 
     saveConfig(index) {
-        console.log(this.blackName);
-        // return;
          this.$http.post('ddosImitationIp/updateddoSConfig.do',{
              packageId:this.setMeal,
              domainName: this.ccProtectData[index].domainname,
