@@ -2497,7 +2497,7 @@
                   return h('div', {}, [
                     h('router-link', {
                       attrs: {
-                        to: 'buy'
+                        to: '/'+ obj.row.buyurl
                       }
                     }, '立即使用'),
 
