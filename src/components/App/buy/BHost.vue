@@ -1065,6 +1065,11 @@
           if (this.computerName.trim() == '') {
             this.computerNameWarning = '请输入主机名称'
             return
+          } else {
+            if(this.computerName.trim().indexOf('&') != -1){
+              this.$Message.info('主机名不能包含\'&\'特殊字符')
+              return
+            }
           }
           /*if (!regExp.hostPassword(this.password)) {
             this.passwordWarning = '请输入8-30位包含英文大小写与数字的密码'
@@ -1131,6 +1136,11 @@
           if (!this.computerName||this.computerName.indexOf(" ") != -1) {
             this.computerNameWarning = '请输入主机名称，不能包含空格'
             return
+          } else {
+            if(this.computerName.trim().indexOf('&') != -1){
+              this.$Message.info('主机名不能包含\'&\'特殊字符')
+              return
+            }
           }
           /*if (!regExp.hostPassword(this.password)) {
             this.passwordWarning = '请输入8-30位包含英文大小写与数字的密码'

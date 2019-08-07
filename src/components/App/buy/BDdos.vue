@@ -212,13 +212,13 @@
                     <i-slider
                       v-model="vmConfig.diskSize"
                       unit="GB"
-                      :min=100
+                      :min=40
                       :max=1000
-                      :step=100
+                      :step=10
                       :points="[300,500, 800]"
                       style="margin-right:30px;vertical-align: middle;">
                     </i-slider>
-                    <InputNumber :max="1000" :min="100" v-model="vmConfig.diskSize" size="large" :step=100
+                    <InputNumber :max="1000" :min="40" v-model="vmConfig.diskSize" size="large" :step=10
                                 :precision="0"></InputNumber>
                   </div>
                 </div>
@@ -1191,6 +1191,11 @@
           this.computerNameWarning = '请输入主机名称'
           this.$Message.info('请输入主机名称')
           return
+        } else {
+          if(this.computerName.trim().indexOf('&') != -1){
+            this.$Message.info('主机名不能包含\'&\'特殊字符')
+            return
+          }
         }
         if (!(this.passwordForm.firstDegree&&this.passwordForm.secondDegree&&this.passwordForm.thirdDegree)) {
           this.passwordWarning = '您输入的密码不符合格式要求'
@@ -1257,6 +1262,11 @@
           this.computerNameWarning = '请输入主机名称，不能包含空格'
           this.$Message.info('请输入主机名称，不能包含空格')
           return
+        } else {
+          if(this.computerName.trim().indexOf('&') != -1){
+            this.$Message.info('主机名不能包含\'&\'特殊字符')
+            return
+          }
         }
         if (!(this.passwordForm.firstDegree&&this.passwordForm.secondDegree&&this.passwordForm.thirdDegree)) {
           this.passwordWarning = '您输入的密码不符合格式要求'
