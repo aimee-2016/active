@@ -74,7 +74,7 @@
                 <DropdownItem
                   v-for="(mirror,mirrorIndex) in item.publicMirrorList"
                   :key="mirrorIndex"
-                  :name="`${mirror.dbname}#${mirror.systemtemplateid}#${index}#${mirror.dbloginname}#${mirror.dbport}`"
+                  :name="`${mirror.dbname}#${mirror.systemtemplateid}#${index}#${mirror.dbloginname}#${mirror.dbport}#${mirror.defaultDbName}`"
                 >{{mirror.dbname}}</DropdownItem>
               </DropdownMenu>
             </Dropdown>

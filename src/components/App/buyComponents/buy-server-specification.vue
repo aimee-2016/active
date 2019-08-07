@@ -24,7 +24,7 @@
             <span
               v-for="(item,index) in serverSpecification.memoryGroup"
               :key="index"
-              :class="{selected: serverSpecification.memory === item.value,disabled: item.value > 4 && mirrorConfig.mirrorName === 'windows-2003-32bit'}"
+              :class="{selected: serverSpecification.memory === item.value,disabled: (item.value > 4 && mirrorConfig.mirrorName === 'windows-2003-32bit') || (item.value<4 &&mirrorConfig.mirrorName.indexOf('sqlserver') !== -1)}"
               @click="changeMemory(item)"
             >{{ item.name }}</span>
           </div>
