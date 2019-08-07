@@ -116,7 +116,7 @@
                                     <span class="l-font" @click="QueryAttEvent">刷新</span> 
                                     </div>
                                 </div>
-                                <Table no-data-text='暂无攻击数据' :columns="ddosAttEventList" :data="ddosAttEventData"></Table>
+                                <Table no-data-text='暂无攻击数据' :loading='ddosEventAttLoading' :columns="ddosAttEventList" :data="ddosAttEventData"></Table>
                                 <div class="dp-page">
                                     <Page :total="ddosAttInfoTotal" style="display:inline-block;vertical-align: middle;margin-left:20px;" ></Page>
                                 </div>
@@ -131,7 +131,7 @@
                                     <span class="l-font" @click="QueryAttInfoDetail">刷新</span> 
                                     </div>
                                 </div>
-                                <Table no-data-text='暂无攻击数据' :columns="ddosAttInfoList" :data="ddosAttInfoData"></Table>
+                                <Table no-data-text='暂无攻击数据' :loading='ddosTargetAttLoading' :columns="ddosAttInfoList" :data="ddosAttInfoData"></Table>
                                 <div class="dp-page">
                                     <Page :total="ddosAttTotal" style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
                                 </div>
@@ -273,7 +273,7 @@
                                     <span class="l-font" @click='QueryCCAttackInfo'>刷新</span> 
                                     </div>
                                 </div>
-                                <Table no-data-text='还未收到攻击/未配置域名' :columns="ccAttackList" :data="ccAttackData"></Table>
+                                <Table no-data-text='还未收到攻击/未配置域名' :loading='ccAttackLoading' :columns="ccAttackList" :data="ccAttackData"></Table>
                                 <div class="dp-page">
                                     <Page :total="ccAttinfoData" style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
                                 </div>
@@ -288,7 +288,7 @@
                                     <span class="l-font" @click='QueryCCAttDomain'>刷新</span> 
                                     </div>
                                 </div>
-                                <Table no-data-text='还未收到攻击/未配置域名' :columns="ccAttDomainList" :data="ccAttDomainData"></Table>
+                                <Table no-data-text='还未收到攻击/未配置域名' :loading='ccAttDomainLoading' :columns="ccAttDomainList" :data="ccAttDomainData"></Table>
                                 <div class="dp-page">
                                     <Page :total="ccAttTotal" style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
                                 </div>
@@ -1111,6 +1111,8 @@ export default {
         ],
         ccAttDomainData:[],  
         ccAttTotal:0,  
+        ccAttDomainLoading:false,
+        ccAttackLoading:false,
 
         // ddos统计图表格
         ddosAttEventList:[
@@ -1153,10 +1155,10 @@ export default {
         ],
         ddosAttInfoData:[],
         ddosAttTotal:0,
-        ddosAttProportion:{
-
-        },
+        ddosAttProportion:{},
         ddosAttFlow:{},
+        ddosEventAttLoading:false,
+        ddosTargetAttLoading:false,
 
       // 证书管理
       cIsAdd:'add',
@@ -2055,6 +2057,7 @@ export default {
 
     // 攻击事件统计
     QueryAttEvent(){
+        this.ddosEventAttLoading = true;
         this.$http.post('ddosImitationIp/QueryAttEvent.do',{
             // params:{
                 packageId:this.attackMeal,
@@ -2063,15 +2066,18 @@ export default {
             // }
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
+                this.ddosEventAttLoading = false;
                 this.ddosAttEventData = res.data.result;
                 this.ddosAttInfoTotal = res.data.count;
             }else{
+                this.ddosEventAttLoading = false;
                 this.$Message.info(res.data.message);
             }
         })
     },
 
     QueryAttInfoDetail(){
+        this.ddosTargetAttLoading = true;
         this.$http.post('ddosImitationIp/QueryAttInfoDetail.do',{
             // params:{
                 packageId:this.attackMeal,
@@ -2082,19 +2088,20 @@ export default {
             if(res.status == 200 && res.data.status == 1){
                 this.ddosAttInfoData = res.data.result;
                 this.ddosAttTotal = res.data.count;
+                this.ddosTargetAttLoading = false;
             }else{
                 this.$Message.info(res.data.message);
+                this.ddosTargetAttLoading = false;
             }
         })
     },
 
     QueryAttCleanBandWidthType(){
+        this.echartsLodaing('flowBtm').showLoading();
         this.$http.post('ddosImitationIp/queryAttCleanBandWidthType.do',{
-            // params:{
                 packageId:this.attackMeal,
                 startdate:this.statisticsTime[0].format('yyyy-MM-dd hh:mm:ss')+'',
                 enddate:this.statisticsTime[1].format('yyyy-MM-dd hh:mm:ss')+'' 
-            // }
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
                 this.flowBtm.xAxis.data = res.data.time;
@@ -2103,20 +2110,19 @@ export default {
                 this.flowBtm.series[2].data = res.data.udp;
                 this.flowBtm.series[3].data = res.data.icmp;
                 this.flowBtm.series[4].data = res.data.other;
-                 this.echartsLodaing('flowBtm').hideLoading();
+                this.echartsLodaing('flowBtm').hideLoading();
             }else{
-                 this.echartsLodaing('flowBtm').hideLoading();
+                this.echartsLodaing('flowBtm').hideLoading();
             }
         })
     },
 
     QueryAttTypeDistribution(){
+        this.echartsLodaing('hightIpBin').showLoading();
         this.$http.post('ddosImitationIp/QueryAttTypeDistribution.do',{
-            // params:{
                 packageId:this.attackMeal,
                 startdate:this.statisticsTime[0].format('yyyy-MM-dd hh:mm:ss')+'',
                 enddate:this.statisticsTime[1].format('yyyy-MM-dd hh:mm:ss')+'' 
-            // }
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
                 this.ddosAttProportion = res.data.percent;
@@ -2235,6 +2241,7 @@ export default {
     },
 
     QueryCCAttackInfo(){
+        this.ccAttackLoading = true;
         this.$http.post('ddosImitationIp/QueryCCAttackInfo.do',{
             packageId:this.ccStatistics.packageid,
             startdate:this.ccStatistics.date[0].format('yyyy-MM-dd hh:mm:ss')+'',
@@ -2242,15 +2249,18 @@ export default {
             domains:this.ccStatistics.domain
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
+                this.ccAttackLoading = false; 
                 this.ccAttackData = res.data.result;
                 this.ccAttinfoData = res.data.count;
             }else{
+                this.ccAttackLoading = false; 
                 this.$Message.info(res.data.message);
             }
         })
     },
 
     QueryCCAttDomain(){
+         this.ccAttDomainLoading = true;
          this.$http.post('ddosImitationIp/QueryCCAttDomain.do',{
              packageId:this.ccStatistics.packageid,
             startdate:this.ccStatistics.date[0].format('yyyy-MM-dd hh:mm:ss')+'',
@@ -2258,9 +2268,11 @@ export default {
             domains:this.ccStatistics.domain
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
+                 this.ccAttDomainLoading = false;
                  this.ccAttDomainData = res.data.result;
                  this.ccAttTotal = res.data.count;
             }else{
+                this.ccAttDomainLoading = false;
                 this.$Message.info(res.data.message);
             }
         })
@@ -2393,10 +2405,16 @@ export default {
     updateDomainTable(){
         let http = 0,
             https = 0;
-        if(this.addDomainList.http.length != 0){
-             http = this.addDomainList.http.join(',').indexOf('http') == -1 ?0 :1;
-             https = this.addDomainList.http.join(',').indexOf('https') == -1 ? 0:1;
-        }
+            if(this.addDomainList.http.length != 0){
+                if(this.addDomainList.http.length == 1 && this.addDomainList.http.join(',').indexOf('https') == -1){
+                    http = 1;
+                } else if(this.addDomainList.http.length == 2){
+                    http = 1;
+                    https = 1;
+                }else{
+                    https = 1;
+                }
+            }
         // this.dataToUpdate('businessData',this.addDomainList.id);
        this.$http.get('ddosImitationIp/UpdateDomain.do',{
             params:{
