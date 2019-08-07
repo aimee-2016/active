@@ -1118,7 +1118,7 @@
                           on: {
                             click: () => {
                               sessionStorage.setItem('manageId', params.row.computerid)
-                              this.$router.push('manage')
+                              this.$router.push('ddosHostManage')
                             }
                           }
                         }, '管理'),
@@ -1250,7 +1250,7 @@
                           on: {
                             click: () => {
                               sessionStorage.setItem('manageId', params.row.computerid)
-                              this.$router.push('manage')
+                              this.$router.push('ddosHostManage')
                             }
                           }
                         }, '管理'),
@@ -2047,7 +2047,7 @@
       },
       toManage(item) {
         sessionStorage.setItem('manageId', item.computerid)
-        this.$router.push('manage')
+        this.$router.push('ddosHostManage')
       },
       changeResetPasswordType(name) {
         this.$refs[name].type === 'password' ? this.$refs[name].type = 'text' : this.$refs[name].type = 'password'
