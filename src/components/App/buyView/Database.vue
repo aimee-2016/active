@@ -146,11 +146,11 @@ export default {
       billingType: "month",
       buyStep: 3,
       mirrorConfig: {
-        mirrorType: "publicMirror",
+        mirrorType: "DBpublicMirror",
         mirrorTypeGroup: [
           {
             text: "公共镜像",
-            value: "publicMirror"
+            value: "DBpublicMirror"
           }
         ],
         publicMirrorGroup: [],
@@ -379,11 +379,9 @@ export default {
     // 获取公共镜像
     getPublicMirror() {
       axios
-        .get("information/listTemplates.do", {
+        .get("database/listDbTemplates.do", {
           params: {
-            zoneId: this.area.zoneid,
-            // 0代表系统镜像
-            user: "0"
+            zoneId: this.area.zoneid
           }
         })
         .then(response => {

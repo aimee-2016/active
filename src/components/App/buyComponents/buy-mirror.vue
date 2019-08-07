@@ -12,7 +12,7 @@
           >{{ item.text }}</span>
         </div>
         <div class="mirror-lists">
-          <div v-show="mirrorConfig.mirrorType === 'mirrorMarket'">
+          <div v-if="mirrorConfig.mirrorType === 'mirrorMarket'">
             <div class="mirror-category">
               <span>镜像类别:</span>
               <span
@@ -37,7 +37,7 @@
               </ul>
             </div>
           </div>
-          <div v-show="mirrorConfig.mirrorType === 'publicMirror'">
+          <div v-if="mirrorConfig.mirrorType === 'publicMirror'">
             <Dropdown
               class="public-mirror-type"
               trigger="click"
@@ -58,7 +58,28 @@
               </DropdownMenu>
             </Dropdown>
           </div>
-          <div v-show="mirrorConfig.mirrorType === 'customMirror'">
+          <div v-if="mirrorConfig.mirrorType === 'DBpublicMirror'">
+            <Dropdown
+              class="public-mirror-type"
+              trigger="click"
+              v-for="(item,index) in mirrorConfig.publicMirrorGroup"
+              :key="index"
+              @on-click="changePublicMirror"
+            >
+              <span
+                class="mirror-type-name"
+                :class="{selected: mirrorConfig.mirrorName===item.publicMirrorType}"
+              >{{item.publicMirrorType}}</span>
+              <DropdownMenu slot="list" style="width:222px">
+                <DropdownItem
+                  v-for="(mirror,mirrorIndex) in item.publicMirrorList"
+                  :key="mirrorIndex"
+                  :name="`${mirror.dbname}#${mirror.systemtemplateid}#${index}#${mirror.dbloginname}#${mirror.dbport}`"
+                >{{mirror.dbname}}</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </div>
+          <div v-if="mirrorConfig.mirrorType === 'customMirror'">
             <Select
               placeholder="请选择自制镜像"
               v-model="mirrorConfig.ownMirrorID"
