@@ -393,7 +393,8 @@
                   <div class="left">
                     <p>
                       购
-                      <span>6个月</span>高防云服务器
+                      <span>6个月</span>
+                      高防云服务器
                     </p>
                     <p>免费再送一个月</p>
                   </div>
@@ -409,7 +410,8 @@
                   <div class="left">
                     <p>
                       购
-                      <span>1年</span>高防云服务器
+                      <span>1年</span>
+                      高防云服务器
                     </p>
                     <p>免费再送三个月</p>
                   </div>
@@ -433,9 +435,9 @@
               <img src=../../../assets/img/active/ddos/ddos-close-icon.png alt="关闭图标" @click.stop="showModal.ruleKill=false">
             </div>
             <div class="body">
-              <p>1、活动时间：2019.7.25-2019.9.25，每天6场秒杀， 2点、6点、10点、14点、18点、22点开抢。</p>
+              <p>1、活动时间：2019.8.15-2019.11.15，每天6场秒杀， 2点、6点、10点、14点、18点、22点开抢。</p>
               <p>2、活动对象：新老用户皆可参与，其中云服务器、GPU服务器仅限于新用户。</p>
-              <p>3、数量限制：活动期间同一用户（同一手机、邮箱、实名认证用户视为同一用户）按照不同的配置进行秒杀，其中云服务器和GPU服务器仅限新用户抢购，每次秒杀每款配置限量40台，限额以后台配额限制为准（实名认证后每个用户云服务器最多可拥有7台，如有特殊要求，可向销售申请）。</p>
+              <p>3、数量限制：活动期间同一用户（同一手机、邮箱、实名认证用户视为同一用户）按照不同的配置进行秒杀，其中云服务器和GPU服务器仅限新用户抢购，每次秒杀每款配置限抢购，限额以后台配额限制为准（实名认证后每个用户云服务器最多可拥有7台，如有特殊要求，可向销售申请）。</p>
               <p>4、参与本次活动购买的产品不能进行退款。</p>
               <p>5、此次活动产品不能用于转售，不能用于第三方业务，只能用于自身业务。如若利用资源从事违法违规行为的用户，新睿云有权收回使用资格，并且不予退款。</p>
               <p>6、购买时不可使用任何优惠券和现金券，秒杀活动不支持会员折扣。</p>
@@ -1545,7 +1547,6 @@ export default {
           let now = new Date(res.data.result)
           let h = now.getHours()
           let hourPoint = ''
-          // 22-2点有点bug
           for (let i = 0; i < hourArray.length - 1; i++) {
             if (h >= hourArray[i] && h < hourArray[i + 1]) {
               hourPoint = hourArray[i + 1]
@@ -1569,7 +1570,7 @@ export default {
               this.formatTime(leftTime)
               leftTime -= 1000
               if (leftTime <= 0) {
-                // this.$router.history.go(0)
+                this.getTime()
                 this.getConfigureKill()
                 window.clearInterval(this.timer)
               }
