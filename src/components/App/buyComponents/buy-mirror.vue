@@ -37,7 +37,7 @@
               </ul>
             </div>
           </div>
-          <div v-show="mirrorConfig.mirrorType === 'piblicMirror'">
+          <div v-show="mirrorConfig.mirrorType === 'publicMirror'">
             <Dropdown
               class="public-mirror-type"
               trigger="click"

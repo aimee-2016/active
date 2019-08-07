@@ -52,6 +52,7 @@
                 :max="1000"
                 :step="20"
                 :points="[300,500,800]"
+                @change="changeSystemDiskSize"
                 style="margin-right:30px;vertical-align: middle;"
               ></i-slider>
               <InputNumber
@@ -61,6 +62,7 @@
                 size="large"
                 :step="20"
                 :precision="0"
+                @on-change="changeSystemDiskSize"
               ></InputNumber>
             </div>
           </div>
@@ -86,7 +88,7 @@
             </span>
           </div>
           <div class="item-text">
-            <p class="price">￥750/月</p>
+            <p class="price">￥{{diskSpecification.price}}</p>
           </div>
         </div>
       </div>
@@ -97,8 +99,6 @@
 .buy-disk {
   margin-top: 10px;
   .wrap {
-    width: 1200px;
-    margin: 0 auto;
     .content {
       padding: 30px;
       background: rgba(255, 255, 255, 1);
@@ -241,6 +241,9 @@ export default {
     },
     deleteSystemDisk(diskindex) {
       this.$emit("deleteSystemDisk", diskindex);
+    },
+    changeSystemDiskSize() {
+      this.$emit("changeSystemDiskSize");
     },
     changeAutoRenewal(val) {
       this.$emit("changeAutoRenewal", val);

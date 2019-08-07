@@ -37,13 +37,18 @@
           @changeServerSystemDiskSize="changeServerSystemDiskSize"
           @deleteServerSystemDisk="deleteServerSystemDisk"
         ></buy-server-specification>
-        <buy-defend v-if="serverType==='NOKIAServer'"></buy-defend>
+        <buy-defend
+          v-if="serverType==='NOKIAServer'"
+          :defend-specification="defendSpecification"
+          @changeDefendBandwidth="changeDefendBandwidth"
+        ></buy-defend>
         <buy-gpu-specification
           v-if="serverType==='GPUServer'"
           :gpu-specification="gpuSpecification"
           @changeGPUSpecification="changeGPUSpecification"
           @addGpuSystemDisk="addGpuSystemDisk"
           @changeGpuSystemDiskType="changeGpuSystemDiskType"
+          @changeGPUSystemDiskSize="changeGPUSystemDiskSize"
           @deleteGpuSystemDisk="deleteGpuSystemDisk"
         ></buy-gpu-specification>
       </div>
@@ -52,6 +57,8 @@
           :area="area"
           :server-network="serverNetwork"
           @changepublicIPType="changepublicIPType"
+          @changeVpc="changeVpc"
+          @changeNetwork="changeNetwork"
           @changePublicIPBandwidth="changePublicIPBandwidth"
         ></buy-network>
         <div class="lists">
@@ -79,8 +86,11 @@
         :billing-type="billingType"
         :total-cost="totalCost"
         :total-coupon="totalCoupon"
+        :server-type="serverType"
         @minusBuyCount="minusBuyCount"
         @addBuyCount="addBuyCount"
+        @minusBuyDay="minusBuyDay"
+        @addBuyDay="addBuyDay"
         @changeBuyTime="changeBuyTime"
         @nextStep="nextStep"
       ></buy-footer>
@@ -223,7 +233,7 @@ export default {
           },
           {
             text: "公共镜像",
-            value: "piblicMirror"
+            value: "publicMirror"
           },
           {
             text: "自制镜像",
@@ -346,6 +356,47 @@ export default {
         ],
         price: 0,
         coupon: 0
+      },
+      // 防护配置
+      defendSpecification: {
+        defendBandwidthGroup: [
+          {
+            name: "60GB",
+            value: 60
+          },
+          {
+            name: "100GB",
+            value: 100
+          },
+          {
+            name: "200GB",
+            value: 200
+          },
+          { name: "300GB", value: 300 },
+          {
+            name: "400GB",
+            value: 400
+          },
+          {
+            name: "500GB",
+            value: 500
+          },
+          {
+            name: "600GB",
+            value: 600
+          },
+          {
+            name: "700GB",
+            value: 700
+          },
+          {
+            name: "800GB",
+            value: 800
+          }
+        ],
+        defendBandwidth: 60,
+        price: "0",
+        coupon: "0"
       },
       serverNetwork: {
         vpcGroup: [],
@@ -699,6 +750,9 @@ export default {
                     item.kernelList[0].RAMList;
                   this.serverSpecification.memory = this.serverSpecification.memoryGroup[0].value;
                   this.queryServerSpecificationPrice();
+                  if (this.serverType === "NOKIAServer") {
+                    this.queryNOKIAServerSpecificationPrice();
+                  }
                 }
               })
             : false;
@@ -721,6 +775,7 @@ export default {
           response.data.result[0]._checked = true;
           this.gpuSpecification.serverOfferList = response.data.result;
           this.gpuSpecification.gpuSelection = this.gpuSpecification.serverOfferList[0];
+          this.queryGPUSpecificationPrice();
         });
     },
     toOldVersion() {
@@ -747,6 +802,11 @@ export default {
       this.billingType = item.value;
       if (this.serverType !== "GPUServer") {
         this.queryServerSpecificationPrice();
+        if (this.serverType === "NOKIAServer") {
+          this.queryNOKIAServerSpecificationPrice();
+        }
+      } else {
+        this.queryGPUSpecificationPrice();
       }
       this.queryIPPrice();
     },
@@ -754,6 +814,12 @@ export default {
       this.area = item;
       if (this.serverType !== "GPUServer") {
         this.queryServerSpecificationPrice();
+        if (this.serverType === "NOKIAServer") {
+          this.queryNOKIAServerSpecificationPrice();
+          this.queryIPPrice();
+        }
+      } else {
+        this.queryGPUSpecificationPrice();
       }
     },
     changeMirrorType(item) {
@@ -768,7 +834,7 @@ export default {
             this.mirrorConfig.mirrorName = "";
           }
           break;
-        case "piblicMirror":
+        case "publicMirror":
           this.mirrorConfig.mirrorID = "";
           this.mirrorConfig.mirrorName = "";
           this.mirrorConfig.publicMirrorGroup.forEach((item, index) => {
@@ -861,7 +927,8 @@ export default {
       this.queryServerSpecificationPrice();
     },
     changeGPUSpecification(item) {
-      console.log(item);
+      this.gpuSpecification.gpuSelection = item;
+      this.queryGPUSpecificationPrice();
     },
     addGpuSystemDisk() {
       let len = this.gpuSpecification.systemDisk.length;
@@ -873,13 +940,34 @@ export default {
         size: 20
       };
       this.gpuSpecification.systemDisk.push(diskItem);
+      this.queryGPUSpecificationPrice();
     },
     changeGpuSystemDiskType(item, index) {
       this.gpuSpecification.systemDisk[index].type = item.value;
+      this.queryGPUSpecificationPrice();
+    },
+    changeGPUSystemDiskSize() {
+      this.queryGPUSpecificationPrice();
     },
     deleteGpuSystemDisk(index) {
-      console.log(index);
       this.gpuSpecification.systemDisk.splice(index, 1);
+      this.queryGPUSpecificationPrice();
+    },
+    changeDefendBandwidth(item) {
+      this.defendSpecification.defendBandwidth = item.value;
+      if (item.value >= 400) {
+        this.billingTypeGroup = [
+          { text: "包年包月", value: "month" },
+          { text: "按天计费", value: "day" }
+        ];
+        this.billingType = "day";
+      } else {
+        this.billingTypeGroup = [{ text: "包年包月", value: "month" }];
+        this.billingType = "month";
+      }
+      this.timeConfig.buyTime = 1;
+      this.queryServerSpecificationPrice();
+      this.queryNOKIAServerSpecificationPrice();
     },
     // 查询虚拟私有云vpc列表
     getVpcList() {
@@ -944,6 +1032,14 @@ export default {
         this.serverNetwork.bandwidth = 0;
       }
     },
+    changeVpc(val) {
+      this.serverNetwork.vpcId = val;
+      this.getNetworkList();
+    },
+    changeNetwork(val) {
+      this.serverNetwork.networkId = val;
+      this.getFireWallList();
+    },
     changePublicIPBandwidth() {
       this.queryIPPrice();
     },
@@ -956,6 +1052,11 @@ export default {
     changeBuyTime() {
       if (this.serverType !== "GPUServer") {
         this.queryServerSpecificationPrice();
+        if (this.serverType === "NOKIAServer") {
+          this.queryNOKIAServerSpecificationPrice();
+        }
+      } else {
+        this.queryGPUSpecificationPrice();
       }
       this.queryIPPrice();
     },
@@ -964,6 +1065,18 @@ export default {
     },
     addBuyCount() {
       this.timeConfig.buyCount < 5 ? (this.timeConfig.buyCount += 1) : null;
+    },
+    minusBuyDay() {
+      this.timeConfig.buyDay > 1 ? (this.timeConfig.buyDay -= 1) : null;
+      this.queryServerSpecificationPrice();
+      this.queryNOKIAServerSpecificationPrice();
+      this.queryIPPrice();
+    },
+    addBuyDay() {
+      this.timeConfig.buyDay += 1;
+      this.queryServerSpecificationPrice();
+      this.queryNOKIAServerSpecificationPrice();
+      this.queryIPPrice();
     },
     nextStep(val) {
       switch (val) {
@@ -978,6 +1091,13 @@ export default {
           }
           if (!this.mirrorConfig.mirrorID) {
             this.$Message.info("请选择服务器镜像");
+            return;
+          }
+          if (
+            this.serverType === "GPUServer" &&
+            !this.gpuSpecification.gpuSelection
+          ) {
+            this.$Message.info("请选择GPU服务器型号");
             return;
           }
           this.buyStep = val;
@@ -995,6 +1115,10 @@ export default {
           window.scroll(0, 0);
           break;
         case 3:
+          if (this.userInfo == null) {
+            this.$LR({ type: "login" });
+            return;
+          }
           if (this.loginInfo.setType === "customSet") {
             if (!this.loginInfo.serverName) {
               this.$Message.info("请输入主机名称");
@@ -1018,19 +1142,24 @@ export default {
           }
           if (this.serverType === "cloudServer") {
             this.createdCloudServerOrder();
+          } else if (this.serverType === "GPUServer") {
+            this.createdGPUServerOrder();
+          } else if (this.serverType === "NOKIAServer") {
+            this.createdNOKIAServerOrder();
           }
           break;
       }
     },
     // 查询服务器配置价格价格
     queryServerSpecificationPrice: debounce(500, function() {
+      let url = "device/QueryBillingPrice.do";
       let diskSize = this.serverSpecification.rootDiskSize + ",";
       let diskType = this.serverSpecification.rootDiskType + ",";
       for (let disk of this.serverSpecification.systemDisk) {
         diskSize += `${disk.size},`;
         diskType += `${disk.type},`;
       }
-      var params = {
+      let params = {
         cpuNum: this.serverSpecification.CPU,
         diskSize,
         diskType,
@@ -1041,12 +1170,17 @@ export default {
       };
       if (
         parseInt(this.timeConfig.buyTime) > 11 &&
-        this.billingType !== "current"
+        this.billingType === "month"
       ) {
         params.timeType = "year";
         params.timeValue = this.timeConfig.buyTime / 12 + "";
       }
-      axios.post("device/QueryBillingPrice.do", params).then(response => {
+      if (this.billingType === "day") {
+        url = "ddosImitationhost/QueryBillingPrice.do";
+        params.timeType = "current";
+        params.timeValue = this.timeConfig.buyDay * 24;
+      }
+      axios.post(url, params).then(response => {
         this.serverSpecification.price = response.data.cost;
         if (response.data.coupon) {
           this.serverSpecification.coupon = response.data.coupon;
@@ -1055,13 +1189,24 @@ export default {
         }
       });
     }),
-    // 查询服务器IP价格
-    queryIPPrice: debounce(500, function() {
+    // 查询GPU服务器器配置价格
+    queryGPUSpecificationPrice: debounce(500, function() {
+      let diskSize = this.gpuSpecification.rootDiskSize + ",";
+      let diskType = this.gpuSpecification.rootDiskType + ",";
+      for (let disk of this.gpuSpecification.systemDisk) {
+        diskSize += `${disk.size},`;
+        diskType += `${disk.type},`;
+      }
       let params = {
-        brand: this.serverNetwork.bandwidth,
+        cpuNum: this.gpuSpecification.gpuSelection.cpunum,
+        diskSize,
+        diskType,
+        memory: this.gpuSpecification.gpuSelection.memory,
         timeType: this.billingType,
         timeValue: this.timeConfig.buyTime,
-        zoneId: this.area.zoneid
+        zoneId: this.area.zoneid,
+        gpu: this.gpuSpecification.gpuSelection.gpu,
+        gpuSize: this.gpuSpecification.gpuSelection.gpusize
       };
       if (
         parseInt(this.timeConfig.buyTime) > 11 &&
@@ -1070,7 +1215,58 @@ export default {
         params.timeType = "year";
         params.timeValue = this.timeConfig.buyTime / 12 + "";
       }
-      axios.post("device/queryIpPrice.do", params).then(response => {
+      axios.post("device/QueryBillingPrice.do", params).then(response => {
+        this.gpuSpecification.price = response.data.cost;
+        if (response.data.coupon) {
+          this.vmCogpuSpecification.coupon = response.data.coupon;
+        } else {
+          this.vmCoupon = 0;
+        }
+      });
+    }),
+    // 查询高仿服务器配置价格
+    queryNOKIAServerSpecificationPrice: debounce(500, function() {
+      let url = "device/QueryDdosPrice.do";
+      let params = {
+        zoneId: this.area.zoneid,
+        timeType: this.billingType,
+        timeValue: this.timeConfig.buyTime,
+        ddosProtectNumber: this.defendSpecification.defendBandwidth
+      };
+      if (this.billingType === "day") {
+        params.timeValue = this.timeConfig.buyDay;
+      }
+      axios.post(url, params).then(response => {
+        this.defendSpecification.price = response.data.cost;
+        if (response.data.coupon) {
+          this.defendSpecification.coupon = response.data.coupon;
+        } else {
+          this.defendSpecification.coupon = 0;
+        }
+      });
+    }),
+    // 查询服务器IP价格
+    queryIPPrice: debounce(500, function() {
+      let url = "device/queryIpPrice.do";
+      let params = {
+        brand: this.serverNetwork.bandwidth,
+        timeType: this.billingType,
+        timeValue: this.timeConfig.buyTime,
+        zoneId: this.area.zoneid
+      };
+      if (
+        parseInt(this.timeConfig.buyTime) > 11 &&
+        this.billingType === "month"
+      ) {
+        params.timeType = "year";
+        params.timeValue = this.timeConfig.buyTime / 12 + "";
+      }
+      if (this.billingType === "day") {
+        url = "ddosImitationhost/queryIpPrice.do";
+        params.timeType = "current";
+        params.timeValue = this.timeConfig.buyDay * 24;
+      }
+      axios.post(url, params).then(response => {
         this.serverNetwork.price = response.data.cost;
         if (response.data.coupon) {
           this.serverNetwork.coupon = response.data.coupon;
@@ -1080,12 +1276,7 @@ export default {
       });
     }),
     // 创建主机订单
-    createdCloudServerOrder() {
-      //   if (this.userInfo == null) {
-      //     this.$LR({ type: "login" });
-      //     return;
-      //   }
-
+    createdCloudServerOrder: debounce(500, function() {
       let url = "information/deployVirtualMachine.do";
       let diskType = "",
         diskSize = "";
@@ -1137,7 +1328,116 @@ export default {
           });
         }
       });
-    }
+    }),
+    createdGPUServerOrder: debounce(500, function() {
+      let url = "gpuserver/createGpuServer.do";
+      let diskType = "",
+        diskSize = "";
+      for (let disk of this.gpuSpecification.systemDisk) {
+        diskType += `${disk.type},`;
+        diskSize += `${disk.size},`;
+      }
+      let params = {
+        zoneId: this.area.zoneid,
+        templateId: this.mirrorConfig.mirrorID,
+        bandWidth: this.serverNetwork.bandwidth,
+        timeType: this.billingType,
+        timeValue: this.timeConfig.buyTime,
+        count: this.timeConfig.buyCount,
+        isAutoRenew: this.loginInfo.autoRenewal ? "1" : "0",
+        cpuNum: this.gpuSpecification.gpuSelection.cpunum,
+        memory: this.gpuSpecification.gpuSelection.memory,
+        vpcId: this.serverNetwork.vpcId,
+        networkId: this.serverNetwork.networkId,
+        rootDiskType: this.gpuSpecification.rootDiskType,
+        rootDiskSize: this.gpuSpecification.rootDiskSize,
+        gpusize: this.gpuSpecification.gpuSelection.gpusize,
+        serviceType: this.gpuSpecification.gpuSelection.servicetype,
+        diskType,
+        diskSize
+      };
+      if (
+        parseInt(this.timeConfig.buyTime) > 11 &&
+        this.billingType !== "current"
+      ) {
+        // 购买时间单位为年
+        params.timeType = "year";
+        params.timeValue = this.timeConfig.buyTime / 12 + "";
+      }
+      if (this.serverNetwork.publicIPType !== "buyNow") {
+        params.bandWidth = "0"; // 没有选择立即购买IP
+      }
+      // 设置了主机名和密码
+      if (this.loginInfo.setType == "customSet") {
+        params.VMName = this.loginInfo.serverName;
+        params.password = this.loginInfo.serverPassword;
+      }
+      axios.get(url, { params }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          this.$router.push({
+            path: "/order"
+          });
+        } else {
+          this.$message.info({
+            content: response.data.message
+          });
+        }
+      });
+    }),
+    createdNOKIAServerOrder: debounce(500, function() {
+      let url = "ddosImitationhost/createDdosHostServer.do";
+      let diskType = "",
+        diskSize = "";
+      for (let disk of this.serverSpecification.systemDisk) {
+        diskType += `${disk.type},`;
+        diskSize += `${disk.size},`;
+      }
+      let params = {
+        zoneId: this.area.zoneid,
+        timeType: this.billingType,
+        timeValue: this.timeConfig.buyTime,
+        templateId: this.mirrorConfig.mirrorID,
+        isAutoRenew: this.loginInfo.autoRenewal ? "1" : "0",
+        count: this.timeConfig.buyCount,
+        ddosProtectNumber: this.defendSpecification.defendBandwidth,
+        cpuNum: this.serverSpecification.CPU,
+        memory: this.serverSpecification.memory,
+        bandWidth: this.serverNetwork.bandwidth,
+        rootDiskType: this.serverSpecification.rootDiskType,
+        rootDiskSize: this.serverSpecification.rootDiskSize,
+        vpcId: this.serverNetwork.vpcId,
+        networkId: this.serverNetwork.networkId,
+        diskType,
+        diskSize
+      };
+      if (
+        parseInt(this.timeConfig.buyTime) > 11 &&
+        this.billingType === "month"
+      ) {
+        // 购买时间单位为年
+        params.timeType = "year";
+        params.timeValue = this.timeConfig.buyTime / 12 + "";
+      }
+      if (this.billingType === "day") {
+        params.timeValue = this.timeConfig.buyDay;
+      }
+      // 设置了主机名和密码
+      if (this.loginInfo.setType == "customSet") {
+        params.VMName = this.loginInfo.serverName;
+        params.password = this.loginInfo.serverPassword;
+      }
+      axios.get(url, { params }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          this.$router.push({
+            path: "/order"
+          });
+        } else {
+          this.$message.info({
+            content: response.data.message
+          });
+        }
+      });
+    })
   },
   computed: {
     userInfo() {
@@ -1154,6 +1454,35 @@ export default {
         } else {
           price = (
             this.serverSpecification.price * this.timeConfig.buyCount
+          ).toFixed(2);
+        }
+        return price;
+      } else if (this.serverType === "GPUServer") {
+        let price = "0";
+        if (this.serverNetwork.publicIPType === "buyNow") {
+          price = (
+            (this.gpuSpecification.price + this.serverNetwork.price) *
+            this.timeConfig.buyCount
+          ).toFixed(2);
+        } else {
+          price = (
+            this.gpuSpecification.price * this.timeConfig.buyCount
+          ).toFixed(2);
+        }
+        return price;
+      } else if (this.serverType === "NOKIAServer") {
+        let price = "0";
+        if (this.serverNetwork.publicIPType === "buyNow") {
+          price = (
+            (this.serverSpecification.price +
+              this.defendSpecification.price +
+              this.serverNetwork.price) *
+            this.timeConfig.buyCount
+          ).toFixed(2);
+        } else {
+          price = (
+            (this.serverSpecification.price + this.defendSpecification.price) *
+            this.timeConfig.buyCount
           ).toFixed(2);
         }
         return price;
@@ -1177,16 +1506,142 @@ export default {
       this.isFixed = false; // 步骤改变重置浮动
     },
     serverType(val) {
+      // 初始化相关选项
       switch (val) {
         case "cloudServer":
-          // 初始化计费方式
           this.billingTypeGroup = [
             { text: "包年包月", value: "month" },
             { text: "实时计费", value: "current" }
           ];
+          this.timeConfig.buyTimeGroup = [
+            {
+              label: "1个月",
+              value: "1"
+            },
+            {
+              label: "2个月",
+              value: "2"
+            },
+            {
+              label: "3个月",
+              value: "3"
+            },
+            {
+              label: "4个月",
+              value: "4"
+            },
+            {
+              label: "5个月",
+              value: "5"
+            },
+            {
+              label: "6个月",
+              value: "6"
+            },
+            {
+              label: "7个月",
+              value: "7"
+            },
+            {
+              label: "8个月",
+              value: "8"
+            },
+            {
+              label: "9个月",
+              value: "9"
+            },
+            {
+              label: "10个月",
+              value: "10"
+            },
+            {
+              label: "1年",
+              value: "12"
+            },
+            {
+              label: "2年",
+              value: "24"
+            },
+            {
+              label: "3年",
+              value: "36"
+            }
+          ];
+          this.serverNetwork.publicIPTypeGroup = [
+            {
+              name: "现在购买",
+              value: "buyNow"
+            },
+            {
+              name: "暂不购买",
+              value: "notBuy"
+            }
+          ];
+          this.loginInfo.setTypeGroup = [
+            {
+              name: "默认设置",
+              value: "defaultSet"
+            },
+            {
+              name: "自定义设置",
+              value: "customSet"
+            }
+          ];
           break;
         case "NOKIAServer":
           this.billingTypeGroup = [{ text: "包年包月", value: "month" }];
+          this.timeConfig.buyTimeGroup = [
+            {
+              label: "1个月",
+              value: "1"
+            },
+            {
+              label: "2个月",
+              value: "2"
+            },
+            {
+              label: "3个月",
+              value: "3"
+            },
+            {
+              label: "4个月",
+              value: "4"
+            },
+            {
+              label: "5个月",
+              value: "5"
+            },
+            {
+              label: "6个月",
+              value: "6"
+            },
+            {
+              label: "1年",
+              value: "12"
+            },
+            {
+              label: "2年",
+              value: "24"
+            },
+            {
+              label: "3年",
+              value: "36"
+            }
+          ];
+          this.timeConfig.buyTime = "1";
+          this.serverNetwork.publicIPTypeGroup = [
+            {
+              name: "现在购买",
+              value: "buyNow"
+            }
+          ];
+          this.loginInfo.setTypeGroup = [
+            {
+              name: "自定义设置",
+              value: "customSet"
+            }
+          ];
+          this.loginInfo.setType = "customSet";
           break;
         case "GPUServer":
           this.billingTypeGroup = [
@@ -1194,9 +1649,85 @@ export default {
             { text: "7天计费", value: "week" },
             { text: "实时计费", value: "current" }
           ];
+          this.timeConfig.buyTimeGroup = [
+            {
+              label: "1个月",
+              value: "1"
+            },
+            {
+              label: "2个月",
+              value: "2"
+            },
+            {
+              label: "3个月",
+              value: "3"
+            },
+            {
+              label: "4个月",
+              value: "4"
+            },
+            {
+              label: "5个月",
+              value: "5"
+            },
+            {
+              label: "6个月",
+              value: "6"
+            },
+            {
+              label: "7个月",
+              value: "7"
+            },
+            {
+              label: "8个月",
+              value: "8"
+            },
+            {
+              label: "9个月",
+              value: "9"
+            },
+            {
+              label: "10个月",
+              value: "10"
+            },
+            {
+              label: "1年",
+              value: "12"
+            },
+            {
+              label: "2年",
+              value: "24"
+            },
+            {
+              label: "3年",
+              value: "36"
+            }
+          ];
+          this.serverNetwork.publicIPTypeGroup = [
+            {
+              name: "现在购买",
+              value: "buyNow"
+            },
+            {
+              name: "暂不购买",
+              value: "notBuy"
+            }
+          ];
+          this.loginInfo.setTypeGroup = [
+            {
+              name: "默认设置",
+              value: "defaultSet"
+            },
+            {
+              name: "自定义设置",
+              value: "customSet"
+            }
+          ];
           break;
       }
       this.billingType = "month";
+      this.serverNetwork.publicIPType = "buyNow";
+      this.serverNetwork.bandwidth = 1;
     },
     "mirrorConfig.mirrorName": {
       handler: function(value) {

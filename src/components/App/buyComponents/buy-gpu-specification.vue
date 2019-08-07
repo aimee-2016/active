@@ -110,6 +110,7 @@
               :max="1000"
               :step="10"
               :points="[300,500,800]"
+              @change="changeGPUSystemDiskSize"
               style="margin-right:30px;vertical-align: middle;"
             ></i-slider>
             <InputNumber
@@ -119,6 +120,7 @@
               size="large"
               :step="10"
               :precision="0"
+              @on-change="changeGPUSystemDiskSize"
             ></InputNumber>
           </div>
         </div>
@@ -265,6 +267,9 @@ export default {
     },
     changeGpuSystemDiskType(item, index) {
       this.$emit("changeGpuSystemDiskType", item, index);
+    },
+    changeGPUSystemDiskSize() {
+      this.$emit("changeGPUSystemDiskSize");
     },
     deleteGpuSystemDisk(diskindex) {
       this.$emit("deleteGpuSystemDisk", diskindex);

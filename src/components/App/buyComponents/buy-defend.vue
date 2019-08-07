@@ -9,9 +9,10 @@
           </div>
           <div class="item-text">
             <span
-              v-for="(item,index) in defendBandwidthGroup"
+              v-for="(item,index) in defendSpecification.defendBandwidthGroup"
               :key="index"
-              :class="{selected: defendBandwidth === item.value}"
+              :class="{selected: defendSpecification.defendBandwidth === item.value}"
+              @click="changeDefendBandwidth(item)"
             >{{ item.name }}</span>
           </div>
         </div>
@@ -28,7 +29,7 @@
             </span>
           </div>
           <div class="item-text">
-            <p class="price">￥750/月</p>
+            <p class="price">￥{{defendSpecification.price}}</p>
           </div>
         </div>
       </div>
@@ -119,31 +120,24 @@
 <script type="text/ecmascript-6">
 export default {
   data() {
-    return {
-      defendBandwidthGroup: [
-        {
-          name: "60GB",
-          value: 60
-        },
-        {
-          name: "100GB",
-          value: 100
-        },
-        {
-          name: "200GB",
-          value: 200
-        },
-        { name: "300GB", value: 300 }
-      ],
-      defendBandwidth: 60
-    };
+    return {};
   },
   props: {
     isNotServer: {
       type: String,
       default: ""
+    },
+    defendSpecification: {
+      type: Object,
+      default: () => {
+        return new Object();
+      }
     }
   },
-  methods: {}
+  methods: {
+    changeDefendBandwidth(item) {
+      this.$emit("changeDefendBandwidth", item);
+    }
+  }
 };
 </script>

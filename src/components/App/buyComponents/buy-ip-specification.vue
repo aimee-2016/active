@@ -11,13 +11,14 @@
             <Select
               placeholder="请选择VPC"
               v-model="network.vpcId"
+              @on-change="changeVpc"
               style="width:200px;margin-right: 10px"
             >
               <Option
-                v-for="item in network.vpcGroup"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
+                v-for="(item,index) in network.vpcGroup"
+                :value="item.vpcid"
+                :key="index"
+              >{{ item.vpcname }}</Option>
             </Select>
           </div>
         </div>
@@ -33,6 +34,7 @@
               :max="100"
               :step="1"
               :points="[30,50]"
+              @change="changeBandwidth"
               style="margin-right:30px;vertical-align: middle;"
             ></i-slider>
             <InputNumber
@@ -42,6 +44,7 @@
               size="large"
               :step="1"
               :precision="0"
+              @on-change="changeBandwidth"
             ></InputNumber>
           </div>
         </div>
@@ -66,7 +69,7 @@
             </span>
           </div>
           <div class="item-text">
-            <p class="price">￥750/月</p>
+            <p class="price">￥{{network.price }}</p>
           </div>
         </div>
       </div>
@@ -77,8 +80,6 @@
 .buy-ip-specification {
   margin-top: 10px;
   .wrap {
-    width: 1200px;
-    margin: 0 auto;
     .content {
       width: 800px;
       padding: 30px;
@@ -200,6 +201,12 @@ export default {
   methods: {
     changeAutoRenewal(val) {
       this.$emit("changeAutoRenewal", val);
+    },
+    changeVpc(val) {
+      this.$emit("changeVpc", val);
+    },
+    changeBandwidth() {
+      this.$emit("changeBandwidth");
     }
   }
 };

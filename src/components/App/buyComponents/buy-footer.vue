@@ -12,12 +12,16 @@
             </ul>
             <span>台</span>
           </div>
-          <div class="buy-num" style="margin-left:40px" v-show="billingType === 'dayly'">
+          <div
+            class="buy-num"
+            style="margin-left:40px"
+            v-show="billingType === 'day' && serverType === 'NOKIAServer'"
+          >
             <span>购买天数：</span>
             <ul>
-              <li>-</li>
+              <li @click="minusBuyDay">-</li>
               <li>{{timeConfig.buyDay}}</li>
-              <li>+</li>
+              <li @click="addBuyDay">+</li>
             </ul>
             <span>天</span>
           </div>
@@ -212,6 +216,10 @@ export default {
     totalCoupon: {
       type: String,
       default: "0"
+    },
+    serverType: {
+      type: String,
+      default: ""
     }
   },
   methods: {
@@ -220,6 +228,12 @@ export default {
     },
     addBuyCount() {
       this.$emit("addBuyCount");
+    },
+    minusBuyDay() {
+      this.$emit("minusBuyDay");
+    },
+    addBuyDay() {
+      this.$emit("addBuyDay");
     },
     changeBuyTime() {
       this.$emit("changeBuyTime");

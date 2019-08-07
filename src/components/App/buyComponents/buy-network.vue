@@ -11,6 +11,7 @@
             <Select
               placeholder="请选择VPC"
               v-model="serverNetwork.vpcId"
+              @on-change="changeVpc"
               style="width:200px;margin-right: 10px"
             >
               <Option
@@ -19,7 +20,12 @@
                 :key="index"
               >{{ item.vpcname }}</Option>
             </Select>
-            <Select placeholder="请选择子网" v-model="serverNetwork.networkId" style="width:200px">
+            <Select
+              placeholder="请选择子网"
+              v-model="serverNetwork.networkId"
+              @on-change="changeNetwork"
+              style="width:200px"
+            >
               <Option
                 v-for="(item,index) in serverNetwork.networkGroup"
                 :value="item.ipsegmentid"
@@ -293,6 +299,12 @@ export default {
   methods: {
     changepublicIPType(item) {
       this.$emit("changepublicIPType", item);
+    },
+    changeVpc(val) {
+      this.$emit("changeVpc", val);
+    },
+    changeNetwork(val) {
+      this.$emit("changeNetwork", val);
     },
     changePublicIPBandwidth() {
       this.$emit("changePublicIPBandwidth");

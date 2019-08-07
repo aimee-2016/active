@@ -1,47 +1,72 @@
 <template>
   <div class="database-page">
     <buy-header title-name="购买云数据库" @toOldVersion="toOldVersion"></buy-header>
-    <buy-area isNotServer="true" :area-group="areaGroup" :area="area" @changeArea="changeArea"></buy-area>
-    <buy-billing-type
-      isNotServer="true"
-      :billing-type-group="billingTypeGroup"
-      :billing-type="billingType"
-      @changeBillingType="changeBillingType"
-    ></buy-billing-type>
-    <buy-mirror
-      isNotServer="true"
-      :mirror-type-group="mirrorTypeGroup"
-      :mirrorType="mirrorType"
-      :area="area"
-      :mirrorID="mirrorID"
-      :mirrorName="mirrorName"
-      @changePublicMirror="changePublicMirror"
-    ></buy-mirror>
-    <buy-server-specification
-      isNotServer="true"
-      :server-specification-group="serverSpecificationGroup"
-      :server-specification="serverSpecification"
-      @changeCPU="changeCPU"
-      @changeMemory="changeMemory"
-      @changeRootDiskType="changeRootDiskType"
-      @addServerSystemDisk="addServerSystemDisk"
-      @changeServerSystemDiskType="changeServerSystemDiskType"
-      @deleteServerSystemDisk="deleteServerSystemDisk"
-    ></buy-server-specification>
-    <buy-network :area="area" :server-network="serverNetwork"></buy-network>
-    <buy-login-info
-      :login-info="loginInfo"
-      @changeSetType="changeSetType"
-      @changeAutoRenewal="changeAutoRenewal"
-    ></buy-login-info>
+    <div class="container">
+      <div>
+        <buy-area isNotServer="true" :area-group="areaGroup" :area="area" @changeArea="changeArea"></buy-area>
+        <buy-billing-type
+          isNotServer="true"
+          :billing-type-group="billingTypeGroup"
+          :billing-type="billingType"
+          @changeBillingType="changeBillingType"
+        ></buy-billing-type>
+        <buy-mirror
+          isNotServer="true"
+          :mirror-config="mirrorConfig"
+          @changePublicMirror="changePublicMirror"
+        ></buy-mirror>
+        <buy-server-specification
+          isNotServer="true"
+          :server-specification-group="serverSpecificationGroup"
+          :server-specification="serverSpecification"
+          @changeCPU="changeCPU"
+          @changeMemory="changeMemory"
+          @changeRootDiskType="changeRootDiskType"
+          @addServerSystemDisk="addServerSystemDisk"
+          @changeServerSystemDiskType="changeServerSystemDiskType"
+          @deleteServerSystemDisk="deleteServerSystemDisk"
+        ></buy-server-specification>
+        <buy-network :area="area" :server-network="serverNetwork"></buy-network>
+        <buy-login-info
+          :login-info="loginInfo"
+          @changeSetType="changeSetType"
+          @changeAutoRenewal="changeAutoRenewal"
+        ></buy-login-info>
+      </div>
+      <div class="lists">
+        <buy-budget-list></buy-budget-list>
+        <buy-selected-config></buy-selected-config>
+      </div>
+    </div>
     <div id="footer_page">
-      <buy-footer :buyStep="buyStep" :is-fixed="isFixed" @nextStep="nextStep"></buy-footer>
+      <buy-footer
+        :buyStep="buyStep"
+        :is-fixed="isFixed"
+        :time-config="timeConfig"
+        :billing-type="billingType"
+        :total-cost="totalCost"
+        :total-coupon="totalCoupon"
+        @minusBuyCount="minusBuyCount"
+        @addBuyCount="addBuyCount"
+        @changeBuyTime="changeBuyTime"
+        @nextStep="nextStep"
+      ></buy-footer>
     </div>
   </div>
 </template>
 <style lang="less" scoped>
 .database-page {
   background: rgba(248, 248, 248, 1);
+  .container {
+    width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    .lists {
+      width: 380px;
+      padding-top: 20px;
+    }
+  }
   #footer_page {
     margin-top: 20px;
   }
@@ -50,6 +75,7 @@
 <script type="text/ecmascript-6">
 import axios from "axios";
 import $store from "@/vuex";
+import debounce from "throttle-debounce/debounce";
 import buyHeader from "../buyComponents/buy-header";
 import buyArea from "../buyComponents/buy-area";
 import buyBillingType from "../buyComponents/buy-billing-type";
@@ -58,6 +84,8 @@ import buyServerSpecification from "../buyComponents/buy-server-specification";
 import buyNetwork from "../buyComponents/buy-network";
 import buyLoginInfo from "../buyComponents/buy-login-info";
 import buyFooter from "../buyComponents/buy-footer";
+import buySelectedConfig from "../buyComponents/buy-selected-config";
+import buyBudgetList from "../buyComponents/buy-budget-list";
 export default {
   components: {
     buyHeader,
@@ -67,7 +95,9 @@ export default {
     buyServerSpecification,
     buyNetwork,
     buyLoginInfo,
-    buyFooter
+    buyFooter,
+    buySelectedConfig,
+    buyBudgetList
   },
   // 以前统一写在app里，由于静态打包与写在app里冲突，所以vuex必须先在这里获取到区域信息,不然区域信息是null,
   beforeRouteEnter(to, from, next) {
@@ -110,20 +140,23 @@ export default {
       areaGroup: [],
       area: null,
       billingTypeGroup: [
-        { text: "包年包月", value: "monthly" },
-        { text: "实时计费", value: "timely" }
+        { text: "包年包月", value: "month" },
+        { text: "实时计费", value: "time" }
       ],
-      billingType: "monthly",
+      billingType: "month",
       buyStep: 3,
-      mirrorType: "piblicMirror",
-      mirrorTypeGroup: [
-        {
-          text: "公共镜像",
-          value: "piblicMirror"
-        }
-      ],
-      mirrorID: "",
-      mirrorName: "",
+      mirrorConfig: {
+        mirrorType: "publicMirror",
+        mirrorTypeGroup: [
+          {
+            text: "公共镜像",
+            value: "publicMirror"
+          }
+        ],
+        publicMirrorGroup: [],
+        mirrorID: "",
+        mirrorName: ""
+      },
       // 当前服务器规格
       serverSpecification: {
         CPU: "",
@@ -160,7 +193,9 @@ export default {
             type: "ssd",
             size: 20
           }
-        ]
+        ],
+        price: 0,
+        coupon: 0
       },
       // 每个区域对应的服务器规格配置
       serverSpecificationGroup: {},
@@ -184,16 +219,16 @@ export default {
       },
       loginInfo: {
         setTypeGroup: [
-          {
-            name: "默认设置",
-            value: "defaultSet"
-          },
+          //   {
+          //     name: "默认设置",
+          //     value: "defaultSet"
+          //   },
           {
             name: "自定义设置",
             value: "customSet"
           }
         ],
-        setType: "defaultSet",
+        setType: "customSet",
         loginName: "administrator",
         autoRenewal: true,
         serverName: "",
@@ -206,6 +241,65 @@ export default {
         ],
         SSHID: "",
         SSHIDGroup: []
+      },
+      timeConfig: {
+        buyTime: "1",
+        buyTimeGroup: [
+          {
+            label: "1个月",
+            value: "1"
+          },
+          {
+            label: "2个月",
+            value: "2"
+          },
+          {
+            label: "3个月",
+            value: "3"
+          },
+          {
+            label: "4个月",
+            value: "4"
+          },
+          {
+            label: "5个月",
+            value: "5"
+          },
+          {
+            label: "6个月",
+            value: "6"
+          },
+          {
+            label: "7个月",
+            value: "7"
+          },
+          {
+            label: "8个月",
+            value: "8"
+          },
+          {
+            label: "9个月",
+            value: "9"
+          },
+          {
+            label: "10个月",
+            value: "10"
+          },
+          {
+            label: "1年",
+            value: "12"
+          },
+          {
+            label: "2年",
+            value: "24"
+          },
+          {
+            label: "3年",
+            value: "36"
+          }
+        ],
+        buyCount: 1,
+        buyDay: 1
       }
     };
   },
@@ -234,7 +328,9 @@ export default {
       }
     },
     setAreaData() {
-      this.areaGroup = this.$store.state.zoneList;
+      this.areaGroup = this.$store.state.zoneList.filter(zone => {
+        return zone.gpuserver == 0;
+      });
       this.area = this.$store.state.zone;
       // 如果默认区域在该资源下不存在
       if (
@@ -247,6 +343,7 @@ export default {
       }
       if (this.area) {
         this.setSpecification();
+        this.getPublicMirror();
       }
     },
     setSpecification() {
@@ -279,9 +376,39 @@ export default {
     changeBillingType(item) {
       this.billingType = item.value;
     },
-    changePublicMirror(arr) {
-      this.mirrorID = arr[1];
-      this.mirrorName = arr[0];
+    // 获取公共镜像
+    getPublicMirror() {
+      axios
+        .get("information/listTemplates.do", {
+          params: {
+            zoneId: this.area.zoneid,
+            // 0代表系统镜像
+            user: "0"
+          }
+        })
+        .then(response => {
+          if (response.status == 200 && response.data.status == 1) {
+            this.mirrorConfig.publicMirrorGroup = [];
+            for (let key in response.data.result) {
+              this.mirrorConfig.publicMirrorGroup.push({
+                publicMirrorType: key,
+                publicMirrorList: response.data.result[key],
+                key
+              });
+            }
+          }
+        });
+    },
+    changePublicMirror(val) {
+      let arr = val.split("#");
+      this.mirrorConfig.publicMirrorGroup.forEach((item, index) => {
+        if (index !== arr[2]) {
+          item.publicMirrorType = item.key; // 重置其他公共镜像列表
+        }
+      });
+      this.mirrorConfig.publicMirrorGroup[arr[2]].publicMirrorType = arr[0];
+      this.mirrorConfig.mirrorID = arr[1];
+      this.mirrorConfig.mirrorName = arr[0];
     },
     changeCPU(item) {
       this.serverSpecification.CPU = item.value;
@@ -317,7 +444,28 @@ export default {
     changeAutoRenewal(val) {
       this.network.autoRenewal = val;
     },
+    minusBuyCount() {
+      this.timeConfig.buyCount > 1 ? (this.timeConfig.buyCount -= 1) : null;
+    },
+    addBuyCount() {
+      this.timeConfig.buyCount < 5 ? (this.timeConfig.buyCount += 1) : null;
+    },
+    changeBuyTime() {
+      this.queryIPPrice();
+    },
     nextStep() {}
+  },
+  computed: {
+    userInfo() {
+      return this.$store.state.userInfo;
+    },
+    totalCost() {
+      return "0";
+    },
+    // 折扣金额，设计图上没用到
+    totalCoupon() {
+      return "0";
+    }
   },
   destroyed() {
     window.removeEventListener("scroll", this.handleScroll);
