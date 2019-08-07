@@ -70,7 +70,7 @@
                                 <span class="du-lft">套餐保底防护</span>
                             </div>
                             <div>
-                                <span class="du-oft">{{newList.newElasticband}}GB</span>
+                                <span class="du-oft">{{newList.elasticband}}GB</span>
                             </div>
                         </div>
                         <div class="du-tbox">
@@ -78,7 +78,7 @@
                                 <span class="du-lft">弹性防护配置</span>
                             </div>
                             <div>
-                                <span class="du-oft">{{elasticList[elasticIndex].label}}</span>
+                                <span class="du-oft">{{newList.newElasticband}}GB</span>
                             </div>
                         </div>
                         <div class="du-tbox">
@@ -102,7 +102,7 @@
                     
                 </div>
                 <div style="text-align:right;margin-top:20px;">
-                    <Button style="margin-right:10px;">取消修改</Button>
+                    <Button style="margin-right:10px;" @click="$router.push('DDoSIPdetails')">取消修改</Button>
                     <Button type="primary" @click="modalW = true,renewPrice ={}">确认修改</Button>
                 </div>
             </div>
@@ -238,7 +238,7 @@ export default {
                     value:"1020"
                 },
             ],
-            elasticIndex:0,
+            elasticIndex:2,
             pId:sessionStorage.getItem('pgId'),
             newList:{},
             modalW:false,
@@ -247,6 +247,7 @@ export default {
         }
     },
     created(){
+       
         this.getElasticModify();
     },
     methods:{
@@ -260,6 +261,7 @@ export default {
             }).then(res => {
                 if(res.status == 200 && res.data.status == 1){
                     this.newList = res.data.result;
+                 
                 }else{
                     this.$Message.info(res.data.message);
                 }

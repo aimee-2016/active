@@ -81,7 +81,7 @@
                     @click="handleReset('addDomainList')"
                     style="margin-right:10px;"
                   >取消</Button>
-                  <Button type="primary" @click="addDomain('addDomainList')">下一步</Button>
+                  <Button type="primary" :loading='loading' @click="addDomain('addDomainList')">下一步</Button>
                 </FormItem>
               </Form>
             </div>
@@ -97,7 +97,7 @@
               <Table :columns="businessList" :data="businessData" style="margin-top:10px;"></Table>
               <div style="margin-top:20px;">
                 <Button type="ghost" @click="steps=0" style="margin-right:10px;">上一步</Button>
-                <Button type="primary" @click="steps=2">下一步</Button>
+                <Button type="primary" @click="steps=2" >下一步</Button>
               </div>
             </div>
             <div v-if="steps==2">
@@ -147,6 +147,7 @@ export default {
         ip: '',
         id: ''
       },
+      loading:false,
       addDomainListRule: {
         attackMeal: [
           { required: true, message: "请选择一个套餐", trigger: "change" }
@@ -215,13 +216,14 @@ export default {
               this.setMealList.push({ packageid: key});
             }
           }
-          this.setMeal = this.attackMeal = this.setMealList[0].packageid;
+        this.addDomainList.attackMeal = this.setMealList[0].packageid;
         } else {
           this.$Message.info(res.data.message);
         }
       });
     },
     addDomain(name) {
+      this.loading=true;
          let http = 0,
             https = 0;
         if(this.addDomainList.http.length != 0){
@@ -244,9 +246,12 @@ export default {
             })
             .then(res => {
               if (res.status == 200 && res.data.status == 1) {
-                this.businessData.push(addDomainList);
+                this.loading=false;
                 this.steps=1;
+                this.businessData.push(this.addDomainList);
+                this.$Message.success('域名添加成功');
               } else {
+                this.loading=false;
                 this.$Message.info(res.data.message);
               }
             })

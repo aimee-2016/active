@@ -1661,7 +1661,7 @@ export default {
                 render:(h,params)=>{
                     return h('p',{
                         style:{
-                            color:this.ccDisabled ?'#999999':''
+                            color:params.row._disableExpand?'#999999':''
                         }
                     },params.row.domainname)
                 }
@@ -1672,7 +1672,7 @@ export default {
                 render:(h,params)=>{
                     return h('p',{
                         style:{
-                            color:this.ccDisabled ?'#999999':''
+                            color:params.row._disableExpand?'#999999':''
                         }
                     },params.row.sourceip)
                 }
@@ -1692,7 +1692,7 @@ export default {
                         {
                             props:{
                                 value:params.row.ccprotect == 0 ?true:false,
-                                disabled:this.ccDisabled
+                                disabled:params.row._disableExpand
                             },
                             on: {
                                 'on-change': (value) => {
@@ -1732,19 +1732,19 @@ export default {
                         h('Radio',{
                             props:{
                                 label:0,
-                                disabled:this.ccDisabled
+                                disabled:params.row._disableExpand
                             }
                         },'标准'),
                         h('Radio',{
                             props:{
                                 label:1,
-                                disabled:this.ccDisabled
+                                disabled:params.row._disableExpand
                             }
                         },'严格'),
                         h('Radio',{
                             props:{
                                 label:2,
-                                disabled:this.ccDisabled
+                                disabled:params.row._disableExpand
                             }
                         },'攻击应急')
                     ])
@@ -1755,12 +1755,12 @@ export default {
                 render:(h,params)=>{
                     return h('span',{
                         style:{
-                           color:this.ccDisabled ?'#999999':'#4297F2',
-                           cursor:this.ccDisabled ?'':'pointer'
+                           color:params.row._disableExpand ?'#999999':'#4297F2',
+                           cursor:params.row._disableExpand ?'':'pointer'
                         },
                         on:{
                             click:()=>{
-                                if(!this.ccDisabled){
+                                if(!params.row._disableExpand){
                                     this.ccIndex = params.row._index;
                                     this.nameValidate.domain = params.row.domainname;
                                     this.showModal.nameList=true;
@@ -1774,7 +1774,7 @@ export default {
                 title:'操作',
                 width:100,
                 render:(h,params)=>{
-                    if(this.ccShow){
+                    if(params.row.ccShow){
                         return h('p',{
                             style:{
                                 color:'#4297F2',
@@ -1782,7 +1782,7 @@ export default {
                             },
                             on:{
                                 click:()=>{
-                                    this.ccShow = false;
+                                    params.row.ccShow = false;
                                     this.ccDisabled = false;
                                     params.row._disableExpand = false;
                                 }
@@ -1806,7 +1806,6 @@ export default {
             }
         ],
         ccTotal:0,
-        ccShow:true,
         riadosCC:'严格',
         ccProtectData:[
         ],
@@ -1850,7 +1849,8 @@ export default {
          logTime:[],
          domainAllList:[],
          journalTotal:0,
-
+         detailsList:JSON.parse(sessionStorage.getItem('details'))||'',
+         fwzdetails:JSON.parse(sessionStorage.getItem('fwzdetails'))||'',  
     }
   },
   created(){
@@ -1861,8 +1861,19 @@ export default {
       this.getLog(1);
       this.getId();
       this.getAllforwardrule(1);
+      if(this.fwzdetails != ''){
+         this.tabsValue =  this.fwzdetails.name;
+         this.button1 = this.fwzdetails.radio;
+         this.attackMeal = this.fwzdetails.pdId
+      }
   },
   mounted(){
+      if(this.detailsList != ''){
+          this.overviewRadio = this.detailsList.name;
+          this.business.packageId = this.detailsList.pgId;
+      }
+      this.getAllBusinessMap();
+      this.getMitigatedBandwidth();
     //   this.inmapVoid();
           var inmap = new inMap.Map({
                 id: 'topMap',
@@ -1922,6 +1933,8 @@ export default {
     },
     tabsChange(item){
         this.tabsValue = item;
+        sessionStorage.removeItem('details');
+        sessionStorage.removeItem('fwzdetails');
     },
 
     // 改变统计图样式
@@ -2670,6 +2683,7 @@ export default {
                 this.ccTotal = res.data.count;
                 this.ccProtectData.forEach(item =>{
                     item._disableExpand = true;
+                    item.ccShow = true;
                 })
             }else{
                 this.$Message.info(res.data.message);

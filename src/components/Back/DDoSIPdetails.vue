@@ -69,14 +69,13 @@
                             <div>
                                 <p v-for="(item,index) in ddosipDetails.domainName" :key="index">{{item.domainname}}</p>
                             </div>
-                            
                         </div>
                         <div class="ds-ct">
-                            <p>套餐下非网站业务 <span class="ds-blf" >查看详情</span></p>
+                            <p>套餐下非网站业务 <span class="ds-blf" @click="gofwz">查看详情</span></p>
                             <p>{{ddosipDetails.count}}条转发规则</p>
                         </div>
                         <div class="ds-ct">
-                            <p><span class="ds-blf" >查看业务监控统计</span></p>
+                            <p><span class="ds-blf" @click="goTj">查看业务监控统计</span></p>
                         </div>
                     </div>
                 </div>
@@ -289,6 +288,26 @@ export default {
         goDip(){
             this.$router.push('ddosipback');
             sessionStorage.setItem('pgId',this.ddosipDetails.packageId);
+            
+        },
+
+        goTj(){
+            this.$router.push('ddosipback');
+            let details ={
+                pgId:this.ddosipDetails.packageId,
+                name:'业务统计'
+            }
+            sessionStorage.setItem('details',JSON.stringify(details));
+        },
+
+        gofwz(){
+            this.$router.push('ddosipback');
+            let details ={
+                pdId:this.ddosipDetails.packageId,
+                name:'业务管理',
+                radio:'非网站业务'
+            }
+            sessionStorage.setItem('fwzdetails',JSON.stringify(details));
         },
 
         goDEupdate(){
@@ -358,7 +377,6 @@ export default {
       display: flex;
       background-color: rgba(239, 246, 254, 0.7);
       padding:0 0px 0 20px;
-      height: 58px;
       margin-top:10px;
       line-height: 68px;
   }
@@ -378,6 +396,7 @@ export default {
           p{
               font-size: 14px;
               color: #333333;
+              margin-bottom:10px;
           }
           p:first-child{
               margin-bottom: 10px;
