@@ -2,7 +2,7 @@
   <div id="background">
     <div id="wrapper">
       <span class="title">云服务器 /
-         <span>云主机 / </span>
+         <span>高防云主机 / </span>
         <span>管理</span>
       </span>
       <Alert type="warning" show-icon style="margin-bottom:10px" v-if="!auth">您尚未进行实名认证，只有认证用户才能对外提供服务，
@@ -10,12 +10,12 @@
       </Alert>
       <div class="host-config">
         <div class="config-top">
-          <p class="title"><img @click="$router.push('host')" src="../../assets/img/host/h-icon9.png" alt="back to hostList"/> 名称：{{ hostInfo.computerName}}
+          <p class="title"><img @click="$router.push('BackDdos')" src="../../assets/img/host/h-icon9.png" alt="back to hostList"/> 名称：{{ hostInfo.computerName}}
             <img class="last" @click="renameForm.hostName = '',showModal.rename = true" src="../../assets/img/host/h-icon11.png" alt="modification computerName"/>
             <button @click="$router.go(0)">刷新</button>
             <button style="margin-right: 10px;background: #2A99F2;color: #FFF" @click="linkHost" v-if="hostInfo.computerStatus == 1">连接主机</button>
           </p>
-          <p v-if="hostInfo.bandwith">{{ hostInfo.cpuNum }}核CPU，{{ hostInfo.memory}}G内存，{{ hostInfo.rootDiskSize}}G硬盘，{{ hostInfo.bandwith}}M带宽 | {{ hostInfo.zoneName}}<span
+          <p v-if="hostInfo.bandwith">{{ hostInfo.cpuNum }}核CPU，{{ hostInfo.memory}}G内存，{{ hostInfo.rootDiskSize}}G硬盘，{{ hostInfo.bandwith}}M带宽 | {{ hostInfo.zoneName}} | {{ hostInfo.ddosProtectNumber}} GB防护宽带 <span
             @click="hostUpgrade">[升级]</span>
           </p>
             <p v-else>{{ hostInfo.cpuNum }}核CPU，{{ hostInfo.memory}}G内存，{{ hostInfo.rootDiskSize}}G硬盘 | {{ hostInfo.zoneName}} <span
@@ -340,18 +340,18 @@
             <img class="modal-img" @click="changeLoginPasType(1)" src="../../assets/img/login/lr-icon3.png"/>
           </FormItem>
           <FormItem label="新的密码" prop="newPassword" style="width: 80%;margin-bottom: 10px">
-            <Input :maxlength="20" :type="modifyPasswordForm.newPasswordInput" v-model="modifyPasswordForm.newPassword" @on-focus="modifyPasswordForm.passwordHint = true" @on-blur="modifyPasswordForm.passwordHint = false"></Input>
+            <Input :maxlength="32" :type="modifyPasswordForm.newPasswordInput" v-model="modifyPasswordForm.newPassword" @on-focus="modifyPasswordForm.passwordHint = true" @on-blur="modifyPasswordForm.passwordHint = false"></Input>
             <img class="modal-img" @click="changeLoginPasType(2)" src="../../assets/img/login/lr-icon3.png"/>
           </FormItem>
           <FormItem label="确认密码" prop="confirmPassword" style="width: 80%;margin-bottom: 10px">
-            <Input :maxlength="20" :type="modifyPasswordForm.confirmPasswordInput" v-model="modifyPasswordForm.confirmPassword"></Input>
+            <Input :maxlength="32" :type="modifyPasswordForm.confirmPasswordInput" v-model="modifyPasswordForm.confirmPassword"></Input>
             <img class="modal-img" @click="changeLoginPasType(3)" src="../../assets/img/login/lr-icon3.png"/>
           </FormItem>
           <div class="popTip" v-show="modifyPasswordForm.passwordHint">
                   <div><i :class="{reach: modifyPasswordForm.secondDegree }"></i>
                     <p>不能输入连续6位数字或字母，如123456aA</p></div>
                   <div><i :class="{reach: modifyPasswordForm.firstDegree }"></i>
-                    <p>长度8~20位，推荐使用12位以上的密码</p></div>
+                    <p>长度8~30位，推荐使用12位以上的密码</p></div>
                   <div><i :class="{reach: modifyPasswordForm.thirdDegree }"></i>
                     <p>至少包含：小写字母，大写字母，数字</p></div>
                   <div><p style="color:rgba(102,102,102,1);">可用特殊符号：~:，*_</p></div>
@@ -1838,7 +1838,7 @@
       },
       'modifyPasswordForm.newPassword':{
         handler: function(val){
-          if(val.length >7 && val.length <21){
+          if(val.length >7 && val.length <31){
           this.modifyPasswordForm.firstDegree = true
         } else{
           this.modifyPasswordForm.firstDegree = false

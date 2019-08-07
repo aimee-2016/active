@@ -172,7 +172,7 @@
     },
     data(){
       var zoneList = this.$store.state.zoneList.filter(zone => {
-        return zone.gpuserver == 0 || zone.gpuserver == 1
+        return zone.gpuserver == 0 || zone.gpuserver == 1 || zone.gpuserver == 2
       })
       var zone = this.$store.state.zone
       // 如果默认区域在该资源下不存在
@@ -324,7 +324,7 @@
               })
             }
           })
-        } else {
+        } else if(this.zone.gpuserver == 1){
           let url = 'gpuserver/listGpuServer.do'
           axios.get(url, {
             params: {
@@ -351,6 +351,28 @@
               }
             } else {
                 this.$message.info({
+                content: res.data.message
+              })
+            }
+          })
+        }  else if(this.zone.gpuserver == 2){
+          let url = 'ddosImitationhost/listHighMachines.do'
+          axios.get(url, {
+            params: {
+              returnList: '1',
+              page: 1,
+              pageSize: 10,
+              zoneId:this.zone.zoneid,
+            }
+          }).then(res=>{
+            if(res.status == 200 && res.data.status ==1){
+              if(res.data.result.data.length != 0){
+                this.buyDiskOK()
+              } else{
+                this.showModal.withoutHost = true
+              }
+            } else {
+              this.$message.info({
                 content: res.data.message
               })
             }

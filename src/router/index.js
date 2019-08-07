@@ -237,6 +237,7 @@ const DDoSEModify   = () => import('@/components/Back/DDoSElasticModify')
 // DDOS 高防主机
 const BackDdos = () => import('@/components/Back/BackDdos')
 const protectUpgrade = () => import('@/components/Back/ProtectUpgrade')
+const DdosHostManage = () => import('@/components/Back/DdosHostManage')
 
 const CloudDatabaseBackup = () => import('@/components/Back/CloudDatabaseBackup')
 const CloudDatabase = () => import('@/components/Back/CloudDatabase')
@@ -504,7 +505,8 @@ var router = new Router({
         {path: 'ddosemodify', name: 'DDoSEModify', component: DDoSEModify},
         // DDOS 高防主机
         {path: 'BackDdos', name: 'BackDdos', component: BackDdos},
-        {path: 'protectUpgrade', name: 'ProtectUpgrade', component: protectUpgrade}
+        {path: 'protectUpgrade', name: 'ProtectUpgrade', component: protectUpgrade},
+        {path: 'ddosHostManage', name: 'DdosHostManage', component: DdosHostManage}
       ]
     },
     {
