@@ -1696,8 +1696,9 @@ export default {
                             },
                             on: {
                                 'on-change': (value) => {
+                                    this.ccProtectData[params.row._index]._disableExpand = false;
                                     this.ccProtectData[params.row._index].ccprotect=value?0:1;
-                                    params.row._disableExpand = false;
+                                    
                                 }
                             }
                         },
@@ -1724,8 +1725,9 @@ export default {
                         },
                         on:{
                             "on-change":(val)=>{    
+                                 this.ccProtectData[params.row._index]._disableExpand = false;
                              this.ccProtectData[params.row._index].protecttype=val;
-                               params.row._disableExpand = false;
+                               
                             }
                         }
                     },[
@@ -1774,7 +1776,7 @@ export default {
                 title:'操作',
                 width:100,
                 render:(h,params)=>{
-                    if(params.row.ccShow){
+                    if(params.row._disableExpand){
                         return h('p',{
                             style:{
                                 color:'#4297F2',
@@ -1782,7 +1784,6 @@ export default {
                             },
                             on:{
                                 click:()=>{
-                                    params.row.ccShow = false;
                                     this.ccDisabled = false;
                                     params.row._disableExpand = false;
                                 }

@@ -122,7 +122,7 @@
                 </div>
                 <p>添加完成</p>
                 <span>由于解析需要一定时间，请根据列表“部署状态”查询域名添加结果</span>
-                <Button type="primary" @click="domainResult=true">返回列表</Button>
+                <Button type="primary" @click="$router.push('ddosipback')">返回列表</Button>
               </div>
             </div>
           </div>
@@ -178,8 +178,7 @@ export default {
           key: 'attackMeal'
         }
       ],
-      businessData: [
-      ],
+      businessData: [],
       cerIdList:[],
     };
   },
@@ -227,9 +226,15 @@ export default {
          let http = 0,
             https = 0;
         if(this.addDomainList.http.length != 0){
-             http = this.addDomainList.http.join(',').indexOf('http') == -1 ?0 :1;
-             https = this.addDomainList.http.join(',').indexOf('https') == -1 ? 0:1;
-        }
+                if(this.addDomainList.http.length == 1 && this.addDomainList.http.join(',').indexOf('https') == -1){
+                    http = 1;
+                } else if(this.addDomainList.http.length == 2){
+                    http = 1;
+                    https = 1;
+                }else{
+                    https = 1;
+                }
+            }
       this.$refs[name].validate(valid => {
         if (valid) {
           this.$http
@@ -246,9 +251,11 @@ export default {
             })
             .then(res => {
               if (res.status == 200 && res.data.status == 1) {
+                this.addDomainList.http ='';
                 this.loading=false;
                 this.steps=1;
                 this.businessData.push(this.addDomainList);
+                this.businessData.shift();
                 this.$Message.success('域名添加成功');
               } else {
                 this.loading=false;
