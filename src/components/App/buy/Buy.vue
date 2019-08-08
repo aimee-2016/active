@@ -227,7 +227,7 @@
                     <span class="hidden">#</span>
                     <span style="font-size: 24px;color: #F85E1D;vertical-align: middle;user-select: none;">{{(prod.cost * prod.count).toFixed(2)}}元</span>
                   </p>
-                  <p class="item" style="margin-top: 10px" v-if="!(prod.type=='Pssl'||prod.type=='Pobj')">
+                  <p class="item" style="margin-top: 10px" v-if="!(prod.type=='Pssl'||prod.type=='Pobj'||prod.type=='PDdosHost')">
                     <span class="title" style="vertical-align: middle">购买数量</span>
                   <ul style="display: inline-block;font-size: 14px;user-select: none">
                     <span class="numberAdd" v-if="prod.count == 1">-</span>

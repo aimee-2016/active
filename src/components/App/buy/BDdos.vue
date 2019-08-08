@@ -72,7 +72,7 @@
                   <p class="item-title" style="margin-top:2px;">价格</p>
                 </div>
                 <div>
-                  <div class="priceOrange">{{quickDdosHostPrice.toFixed(2)}}<span v-if="quickProtectSecIndex.value > 300">元/天</span><span v-else>元/月</span></div>
+                  <div class="priceOrange">{{quickDdosHostPrice.toFixed(2)}}<span v-if="quickProtectSecIndex.value > 300">元/天</span><span v-else-if="timeForm.currentTimeValue.type == 'year'">元/年</span><span v-else>元/月</span></div>
                 </div>
               </div>
             </div>
@@ -101,7 +101,7 @@
                     <p class="item-title" style="margin-top:2px;">价格</p>
                   </div>
                   <div>
-                    <div class="priceOrange">{{quickDdosSelectPrice}}<span v-if="quickProtectSecIndex.value > 300">元/天</span><span v-else>元/月</span></div>
+                    <div class="priceOrange">{{quickDdosSelectPrice}}<span v-if="quickProtectSecIndex.value > 300">元/天</span><span v-else-if="timeForm.currentTimeValue.type == 'year'">元/年</span><span v-else>元/月</span></div>
                   </div>
                 </div>
               </div>
@@ -255,7 +255,7 @@
                     <p class="item-title" style="margin-top:2px;">价格</p>
                   </div>
                   <div>
-                    <div class="priceOrange">{{vmConfig.cost.toFixed(2)}}<span v-if="customProtectSecIndex.value > 300">元/天</span><span v-else>元/月</span></div>
+                    <div class="priceOrange">{{vmConfig.cost.toFixed(2)}}<span v-if="customProtectSecIndex.value > 300">元/天</span><span v-else-if="timeForm.currentTimeValue.type == 'year'">元/年</span><span v-else>元/月</span></div>
                   </div>
                 </div>
               </div>
@@ -285,7 +285,7 @@
                     <p class="item-title" style="margin-top:2px;">价格</p>
                   </div>
                   <div>
-                    <div class="priceOrange">{{customIpAndDdosSelectPrice.toFixed(2)}}<span v-if="customProtectSecIndex.value > 300">元/天</span><span v-else>元/月</span></div>
+                    <div class="priceOrange">{{customIpAndDdosSelectPrice.toFixed(2)}}<span v-if="customProtectSecIndex.value > 300">元/天</span><span v-else-if="timeForm.currentTimeValue.type == 'year'">元/年</span><span v-else>元/月</span></div>
                   </div>
                 </div>
               </div>
@@ -402,7 +402,7 @@
                     <p class="item-title" style="margin-top:2px;">价格</p>
                   </div>
                   <div><!--{{vmConfig.cost.toFixed(2)}}<span v-if="customProtectSecIndex.value > 300">元/天</span><span v-else>元/月</span>-->
-                    <div class="priceOrange">{{IPConfig.cost.toFixed(2)}}<span v-if="customProtectSecIndex.value > 300">元/天</span><span v-else>元/月</span></div>
+                    <div class="priceOrange">{{IPConfig.cost.toFixed(2)}}<span v-if="customProtectSecIndex.value > 300">元/天</span><span v-else-if="timeForm.currentTimeValue.type == 'year'">元/年</span><span v-else>元/月</span></div>
                   </div>
                 </div>
               </div>
@@ -467,7 +467,7 @@
                     <p class="item-title" style="margin-top:0px;">价格</p>
                   </div>
                   <div>
-                    <p style="font-size: 16px;color: #F85E1D;line-height: 20px;">{{dataDiskCost.toFixed(2)}}<span v-if="customProtectSecIndex.value > 300">元/天</span><span v-else>元/月</span></p>
+                    <p style="font-size: 16px;color: #F85E1D;line-height: 20px;">{{dataDiskCost.toFixed(2)}}<span v-if="customProtectSecIndex.value > 300">元/天</span><span v-else-if="timeForm.currentTimeValue.type == 'year'">元/年</span><span v-else>元/月</span></p>
                   </div>
                 </div>
               </div>
@@ -589,9 +589,8 @@
         </div>
         
         <!--费用、以及加入预算清单-->
-        <div style="margin-top: 20px">
-          <!--<p style="text-align: left;font-size: 14px;color: #2A99F2;cursor: pointer"
-             @click="$router.push('computed/3-1')">查看计价详情</p>-->
+        <div style="margin-top: 20px;position: relative;">
+          <a class="linkacla" href="/support_docs/kiRWuMFJd_yGmYoDKTz.html" target="_blank" alt="查看计价详情">查看计价详情</a>
           <p v-if="createType=='fast'"
              style="text-align: right;font-size: 14px;color: #666666;margin-bottom: 10px;"><span
             v-if="timeForm.currentTimeType == 'annual'&&timeForm.currentTimeValue.type == 'year'">折后费用：</span><span v-else>费用：</span><span
@@ -2481,6 +2480,15 @@
       color: #fff;
       z-index: 1;
     }
+  }
+  .linkacla {
+    text-align: left;
+    font-size: 14px;
+    color: #2A99F2;
+    cursor: pointer;
+    position: absolute;
+    left: 0;
+    top: 0;
   }
 </style>
 
