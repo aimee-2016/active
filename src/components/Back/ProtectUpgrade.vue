@@ -30,12 +30,12 @@
               </tr>
               <tr>
                 <td>防护配置</td>
-                <td style="width: 140px;">{{hostInfo.ddosProtectNumber}}GB</td>
+                <td >{{hostInfo.ddosProtectNumber}}GB</td>
                 <td v-show="hostInfo.UpddosProtectNumber" style="color: #FF624B">{{hostInfo.UpddosProtectNumber}}GB</td>
               </tr>
               <tr>
                 <td>防护到期时间</td>
-                <td style="width: 140px;">{{hostInfo.endTime}}</td>
+                <td>{{hostInfo.endTime}}</td>
                 <td v-show="hostInfo.UpddosProtectNumber" style="color: #FF624B">{{hostInfo.ddosendTime}}</td>
               </tr>
             </table>
@@ -156,6 +156,8 @@
           if(response.status == 200 && response.data.status == 1){
             this.interfacePrice = response.data.price
             this.changeEndTime = response.data.endTime
+          } else {
+            this.$Message.info(response.data.message)
           }
         })
       },
@@ -181,13 +183,13 @@
       },
       changeUpgrade(item) {
         var tempddos = this.hostInfo.UpddosProtectNumber ? parseInt(this.hostInfo.UpddosProtectNumber): 0
-        if((this.hostInfo.ddosProtectNumber+tempddos)<item.value && (this.hostInfo.ddosProtectNumber+item.value)<=800 ){
+        if((this.hostInfo.ddosProtectNumber+tempddos)<item.value && (this.hostInfo.ddosProtectNumber+tempddos)<=800 ){
           this.selectItem = item
         } else {
           if ((this.hostInfo.ddosProtectNumber + item.value) > 800) {
             this.$Message.info('总的防护配置不能超过800GB')
           } else {
-            this.$Message.info('请选择比当前防护配置大的配置')
+            this.$Message.info('请选择比当前'+(this.hostInfo.ddosProtectNumber+tempddos)+'GB 大的可扩容配置')
           }
         }
       },
