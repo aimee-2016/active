@@ -442,10 +442,8 @@ export default {
   }
 }
 .dp-er {
-  height: 32px;
-  line-height: 32px;
   margin-bottom: 20px;
-  padding: 0 20px;
+  padding: 10px 20px;
   border: 1px solid #ed4014;
   border-radius: 4px;
   background-color: rgba(237, 64, 20, 0.08);

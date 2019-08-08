@@ -306,7 +306,12 @@
                                    <div style="border-bottom:1px solid #E9E9E9;padding-bottom:10px;">
                                        <p style="font-size:14px;color:#333333;">Top 100IP分布</p>
                                    </div>
-                                    <div id='topMap'  class='dp-inmap' style=" overflow: hidden; position: relative; z-index: 0; background-color: rgb(243, 241, 236); color: rgb(0, 0, 0); text-align: left;"></div>
+                                   <div style='display:flex;'>
+                                       <div id='topMap'  class='dp-inmap' style=" overflow: hidden; position: relative; z-index: 0; background-color: rgb(243, 241, 236); color: rgb(0, 0, 0); text-align: left;"></div>
+                                           <div style="width:44%;padding:100px 0 0 60px;;">
+                                                <Table  :columns="topMapList" :data="topMapData"></Table>
+                                            </div>
+                                   </div>
                                 </div>
                            </div>
                        </div>
@@ -899,6 +904,32 @@ export default {
                 return date &&   date.valueOf() < Date.now() - 86400000*30 || date.valueOf() > Date.now() ;
             }
         },
+
+        topMapList:[
+            {
+                type:'index',
+                width: 60,
+                align: 'center',
+                title:'序号'
+            },
+            {
+                key:'ip',
+                title:'威胁IP'
+            },
+            {
+                key:'region',
+                title:'地理位置'
+            },
+            {
+                key:'totalHit',
+                title:'攻击次数'
+            },
+            {
+                key:'ratio',
+                title:'占比'
+            }
+        ],
+        topMapData:[],
 
       nameValidate:{
         black:'',
@@ -2271,7 +2302,7 @@ export default {
             domains:this.ccStatistics.domain
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
-
+                this.topMapData = res.data.result;
             }else{
                 this.$Message.info(res.data.message);
             }
@@ -2949,10 +2980,8 @@ export default {
   }
 }
 .dp-er {
-  height: 32px;
-  line-height: 32px;
   margin-bottom: 20px;
-  padding: 0 20px;
+  padding: 10px 20px;
   border: 1px solid #ed4014;
   border-radius: 4px;
   background-color: rgba(237, 64, 20, 0.08);
@@ -3050,6 +3079,7 @@ export default {
   width: 620px;
   height: 270px;
   margin-top: 20px;
+  display: inline-block;
 }
 .dp-tp{
    padding-bottom: 10px;

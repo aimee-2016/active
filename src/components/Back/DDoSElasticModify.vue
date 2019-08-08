@@ -96,7 +96,7 @@
                             <p style="color:#FF9801;line-height:32px;">提示：当您调整您的弹性防护峰值之时，我们将根据弹性防护的阶梯计费表来计算您的冻结费用。</p>
                         </div>
                         <div style="width:53%;text-align:right;">
-                            <p style="color:#000000;font-size:14px;">应补冻结费用：<span class="du-oft" style="font-size:24px;">{{newList.price}}</span>元</p>
+                            <p style="color:#000000;font-size:14px;">{{message == '解冻'?'解冻':'应补冻结'}}费用：<span class="du-oft" style="font-size:24px;">{{newList.price}}</span>元</p>
                         </div>
                     </div>
                     
@@ -110,7 +110,7 @@
 
         <Modal :mask-closable="false" v-model="modalW">
             <p slot="header" class="modal-header-border">
-                <span class="universal-modal-title">冻结押金</span>
+                <span class="universal-modal-title">{{message}}押金</span>
             </p>
             <div class="dp-er" v-if="renewPrice.status != 1 && renewPrice.status !== undefined">
                  <Icon type="close-circled" color='#ED4014' size='12px'></Icon>
@@ -118,7 +118,7 @@
              </div>
             <div >
                 <div>
-                    <span style="margin-right:10px;">需冻结金额</span> <span>{{newList.price}}元</span>
+                    <span style="margin-right:10px;">需{{message}}金额</span> <span>{{newList.price}}元</span>
                 </div>
                 <div>
                     <span style="margin-right:24px;">可用余额</span><span>{{newList.remainder}}元</span>
@@ -243,7 +243,7 @@ export default {
             newList:{},
             modalW:false,
             renewPrice:{},
-            loading:false
+            loading:false,
         }
     },
     created(){
@@ -281,7 +281,8 @@ export default {
             this.$http.post('ddosImitationIp/getRemainderFrozen.do',{
                 eachMoney:this.newList.price,
                 packageId:this.pId,
-                elasticband:value
+                elasticband:value,
+                flag:this.newList.flag
             }).then(res => {
                 if(res.status == 200 && res.data.status == 1){
                      this.loading = false;
@@ -295,6 +296,15 @@ export default {
                 if(err)
                  this.loading = false;
             })
+        }
+    },
+    computed:{
+        message(){
+            if(this.newList.flag == '1'){
+                return '冻结'
+            }else{
+                return '解冻'
+            }
         }
     }
 }
@@ -375,10 +385,8 @@ export default {
           position: relative;
         }
         .dp-er {
-            height: 32px;
-            line-height: 32px;
             margin-bottom: 20px;
-            padding: 0 20px;
+            padding: 10px 20px;
             border: 1px solid #ed4014;
             border-radius: 4px;
             background-color: rgba(237, 64, 20, 0.08);
