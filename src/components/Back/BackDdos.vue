@@ -996,6 +996,10 @@
               {
                 label: '7天',
                 value: 4
+              },
+              {
+                label: '包天',
+                value: 5
               }
             ],
             filterMultiple: false,
@@ -1008,10 +1012,12 @@
                 return row.caseType == '3';
               } else if (value === 4) {
                 return row.caseType == '4';
+              } else if(value === 5){
+                return row.caseType == '5'
               }
             },
             render: (h, params) => {
-              let text = params.row.caseType == 1 ? '包年' : params.row.caseType == 2 ? '包月' : params.row.caseType == 3 ? '实时' : '七天'
+              let text = params.row.caseType == 1 ? '包年' : params.row.caseType == 2 ? '包月' : params.row.caseType == 3 ? '实时' : params.row.caseType == 5 ? '包天' : '七天'
               return h('span', {}, text)
             }
           },
