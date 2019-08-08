@@ -33,6 +33,14 @@ const Document1 = () =>import('@/components/App/Document1')
 const Record = () =>import('@/components/App/Record')
 const BDdos = () => import('@/components/App/buy/BDdos')
 
+// 新版购买模块
+
+const buyServer = () =>import('@/components/App/buyView/Server')
+const buySafelyIp = () =>import('@/components/App/buyView/SafelyIp')
+const buyDisk = () =>import('@/components/App/buyView/Disk')
+const buyNetworkIP = () =>import('@/components/App/buyView/NetworkIP')
+const buyDatabase = () =>import('@/components/App/buyView/Database')
+
 //const hostPrice = () => import('@/components/App/Price/Host')
 //const diskPrice = () => import('@/components/App/Price/Disk')
 //const elasticIPPrice = () => import('@/components/App/Price/ElasticIP')
@@ -350,7 +358,11 @@ var router = new Router({
             {path: 'ddos', name: 'ddos/', component: BDdos},
           ]
         },
-
+        {path: 'buyServer', name: 'buyServer', component: buyServer},
+        {path: 'buySafelyIp', name: 'buySafelyIp', component: buySafelyIp},
+        {path: 'buyDisk', name: 'buyDisk', component: buyDisk},
+        {path: 'buyNetworkIP', name: 'buyNetworkIP', component: buyNetworkIP},
+        {path: 'buyDatabase', name: 'buyDatabase', component: buyDatabase},
         //{path: 'active', name: 'active', component: Active},
         {path: 'vps', name: 'vps', component: Vps},
        /*{path: 'newNodes_1', name: 'newNodes_1', component: NewNodes_1},
