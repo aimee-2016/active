@@ -13,7 +13,7 @@
                  <Tabs type="card" :animated='false' :value='tabsValue' @on-click='tabsChange'>
                     <TabPane label="概览" name='概览'>
                         <div class="dp-row">
-                            <RadioGroup v-model="overviewRadio" type="button" @on-change='statisticsChange'>
+                            <RadioGroup v-model="overviewRadio" type="button">
                                 <Radio label="概览"></Radio>
                                 <Radio label="DDoS攻击统计"></Radio>
                                 <Radio label="CC统计"></Radio>
@@ -224,7 +224,7 @@
                        </div>
 
                          <!-- CC统计  -->
-                       <div v-if="overviewRadio == 'CC统计'">
+                       <div v-show="overviewRadio == 'CC统计'">
                            <div class="dp-ds">
                                <div > 
                                    <span>套餐选择</span>
@@ -260,7 +260,7 @@
                                         <p class="no-pfb">暂无数据</p>
                                         <p class="no-pfs">该时段未产生攻击或攻击数据暂未更新，请稍后重试</p>
                                     </div>
-                                    <chart style="width:100%;height:100%" id='ccQps' :options="ccQps"></chart>
+                                    <chart style="width:1118px;height:428px" id='ccQps' :options="ccQps"></chart>
                                 </div>
                            </div>
                            <div>
@@ -303,8 +303,10 @@
                                     </div>
                                 </div>
                                <div class="dp-mbr">
-                                    <p style="font-size:14px;color:#333333;">Top 100IP分布</p>
-                                    <div id='topMap' ref='topMap'  class='dp-inmap' style=" overflow: hidden; position: relative; z-index: 0; background-color: rgb(243, 241, 236); color: rgb(0, 0, 0); text-align: left;"></div>
+                                   <div style="border-bottom:1px solid #E9E9E9;padding-bottom:10px;">
+                                       <p style="font-size:14px;color:#333333;">Top 100IP分布</p>
+                                   </div>
+                                    <div id='topMap'  class='dp-inmap' style=" overflow: hidden; position: relative; z-index: 0; background-color: rgb(243, 241, 236); color: rgb(0, 0, 0); text-align: left;"></div>
                                 </div>
                            </div>
                        </div>
@@ -853,7 +855,7 @@ import hightIpBs from '@/echarts/hightIpBs';
 import hightIpSl from '@/echarts/hightIpSl';
 import hightIpBin from '@/echarts/hightIpBin';
 import inMap from "inmap"
-import point from '@/echarts/point.json';
+import pointList from '@/echarts/point.json';
 var debounce = require('throttle-debounce/debounce')
 
 const dIp  = JSON.stringify(hightIp);
@@ -1873,29 +1875,9 @@ export default {
           this.overviewRadio = this.detailsList.name;
           this.business.packageId = this.detailsList.pgId;
       }
-      this.getAllBusinessMap();
-      this.getMitigatedBandwidth();
-    //   this.inmapVoid();
-          var inmap = new inMap.Map({
-                id: 'topMap',
-                skin: "Blueness",
-                center: [105.403119, 38.028658],
-                zoom: {
-                    value: 5,
-                    show: true,
-                    max: 18,
-                    min: 5
-                }
-            });
-            var overlay = new inMap.HeatOverlay({
-                style: {
-                    radius: 10, // 半径
-                    minScope: 0, // 最小区间,小于此区间的不显示
-                    maxScope: 1 // 最大区间,大于此区间的不显示
-                },
-                data: point,
-            });
-            inmap.add(overlay);
+        this.inmapVoid();
+        // this.getAllBusinessMap();
+        // this.getMitigatedBandwidth();
   },
   methods:{
 
@@ -2025,18 +2007,7 @@ export default {
 
         }) 
     },
-
-
-    statisticsChange(value){
-        if(value == 'DDoS攻击统计'){
-
-        }else if(value == 'CC统计'){
-
-        }else if(value == '业务统计'){
-
-        }
-    },
-
+    
     // DDOS清洗流量
     getMitigatedBandwidth(){
        this.QueryMitigatedBandwidth();
@@ -2317,35 +2288,27 @@ export default {
 
     inmapVoid(){
         var inmap = new inMap.Map({
-        id: "topMap",
-        skin: "Blueness",
-        center: [105.403119, 38.028658],
-        zoom: {
-            value: 5,
-            show: true,
-            max: 18,
-            min: 5
-        }
-        });
-         point.forEach(element => {
-                element["style"] = {
-                    size: Math.random() * 10
+                id: 'topMap',
+                skin: "Blueness",
+                center: [105.403119, 38.028658],
+                zoom: {
+                    value: 5,
+                    show: true,
+                    max: 18,
+                    min: 5
                 }
             });
-        var overlay = new inMap.PointOverlay({
-        style: {
-             normal: {
-                    backgroundColor: 'rgba(45, 140, 240, .5)',
-                    borderWidth: 1,
-                    borderColor: "rgba(0,131,238, 1)",
-                    size: 10,
-                    },
-        },
-         data: point,
-        });
-        inmap.add(overlay);
-        // overlay.setData(data);
-        // console.log(overlay.setData(data));
+            var overlay = new inMap.HeatOverlay({
+                 style: {
+                    radius: 10, // 半径
+                    minScope: 0, // 最小区间,小于此区间的不显示
+                    maxScope: 1, // 最大区间,大于此区间的不显示
+                },
+                data:pointList
+            });
+
+             inmap.add(overlay);
+             overlay.setData(pointList);
     },
     //统计图结束^ 
 
@@ -3086,6 +3049,7 @@ export default {
 .dp-inmap {
   width: 620px;
   height: 270px;
+  margin-top: 20px;
 }
 .dp-tp{
    padding-bottom: 10px;
