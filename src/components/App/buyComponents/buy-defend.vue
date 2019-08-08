@@ -79,9 +79,11 @@
         }
         .item-text {
           display: flex;
+          flex-wrap: wrap;
           > span {
             text-align: center;
             margin-right: 10px;
+            margin-bottom: 10px;
             font-size: 14px;
             font-family: MicrosoftYaHei;
             color: rgba(102, 102, 102, 1);

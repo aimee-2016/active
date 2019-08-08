@@ -43,7 +43,10 @@
       </div>
       <div class="lists">
         <buy-budget-list></buy-budget-list>
-        <buy-selected-config></buy-selected-config>
+        <buy-selected-config
+          :current-database-config="currentDatabaseConfig"
+          @addToCart="addToCart"
+        ></buy-selected-config>
       </div>
     </div>
     <div id="footer_page">
@@ -211,8 +214,10 @@ export default {
       serverNetwork: {
         vpcGroup: [],
         vpcId: "",
+        vpcName: "",
         networkGroup: [],
         networkId: "",
+        networkName: "",
         publicIPTypeGroup: [
           {
             name: "现在购买",
@@ -581,6 +586,7 @@ export default {
         .then(response => {
           this.serverNetwork.vpcGroup = response.data.result;
           this.serverNetwork.vpcId = this.serverNetwork.vpcGroup[0].vpcid;
+          this.serverNetwork.vpcName = this.serverNetwork.vpcGroup[0].vpcname;
           this.getNetworkList();
         });
     },
@@ -596,6 +602,7 @@ export default {
         .then(response => {
           this.serverNetwork.networkGroup = response.data.result;
           this.serverNetwork.networkId = this.serverNetwork.networkGroup[0].ipsegmentid;
+          this.serverNetwork.networkName = this.serverNetwork.networkGroup[0].name;
           this.getFireWallList();
         });
     },
@@ -635,10 +642,20 @@ export default {
     },
     changeVpc(val) {
       this.serverNetwork.vpcId = val;
+      this.serverNetwork.vpcGroup.forEach(item => {
+        if (this.serverSpecification.vpcId === item.vpcid) {
+          this.serverNetwork.vpcName = item.vpcname;
+        }
+      });
       this.getNetworkList();
     },
     changeNetwork(val) {
       this.serverNetwork.networkId = val;
+      this.serverNetwork.networkGroup.forEach(item => {
+        if (this.serverSpecification.networkId === item.ipsegmentid) {
+          this.serverNetwork.networkName = item.name;
+        }
+      });
       this.getFireWallList();
     },
     changePublicIPBandwidth() {
@@ -689,6 +706,36 @@ export default {
         return;
       }
       this.createdDatabaseOrder();
+    },
+    addToCart() {
+      if (!this.area) {
+        this.$Message.info("请选择购买区域");
+        return;
+      }
+      if (!this.mirrorConfig.mirrorID) {
+        this.$Message.info("请选择数据库镜像");
+        return;
+      }
+      if (!this.loginInfo.serverName) {
+        this.$Message.info("请输入实例名称");
+        return;
+      }
+      if (this.loginInfo.serverName.indexOf(" ") != -1) {
+        this.$Message.info("实例名称不能包含空格");
+        return;
+      }
+      if (
+        !(
+          this.loginInfo.firstDegree &&
+          this.loginInfo.secondDegree &&
+          this.loginInfo.thirdDegree
+        ) &&
+        this.loginInfo.loginType === "password"
+      ) {
+        this.$Message.info("您输入的密码不符合格式要求");
+        return;
+      }
+      this.$Message.success("添加成功");
     },
     // 查询服务器配置价格价格
     queryServerSpecificationPrice: debounce(500, function() {
@@ -821,6 +868,27 @@ export default {
     // 折扣金额，设计图上没用到
     totalCoupon() {
       return "0";
+    },
+    currentDatabaseConfig() {
+      let config = {
+        area: this.area,
+        billingType: this.billingType,
+        buyTime: this.timeConfig.buyTime,
+        buyDay: this.timeConfig.buyDay,
+        mirrorName: this.mirrorConfig.mirrorName,
+        cpu: this.serverSpecification.CPU,
+        memory: this.serverSpecification.memory,
+        rootDiskType: this.serverSpecification.rootDiskType,
+        rootDiskSize: this.serverSpecification.rootDiskSize,
+        diskList: this.serverSpecification.systemDisk,
+        network:
+          this.serverNetwork.vpcName + " -- " + this.serverNetwork.networkName,
+        publicIPType: this.serverNetwork.publicIPType,
+        bandwidth: this.serverNetwork.bandwidth,
+        firewall: this.serverNetwork.firewallGroup[0].acllistname,
+        buyCount: this.timeConfig.buyCount
+      };
+      return config;
     }
   },
   watch: {

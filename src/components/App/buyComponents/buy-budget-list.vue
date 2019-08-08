@@ -3,10 +3,22 @@
     <div class="wrap">
       <h3>
         预算清单
-        <span v-if="true">1</span>
+        <span v-if="buyBudgetData.length !==0">{{buyBudgetData.length}}</span>
       </h3>
-      <button>查看清单详情</button>
+      <button @click="viewBuyBudget">查看清单详情</button>
     </div>
+    <!-- 挂载硬盘模态框 -->
+    <Modal v-model="showModal.budgetDetails" width="800" :scrollable="true" :mask-closable="false">
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">预算清单</span>
+      </p>
+      <div class="universal-modal-content-flex">
+        <Table :height="maxHeight" :columns="buyBudgetColumns" :data="buyBudgetData"></Table>
+      </div>
+      <div slot="footer" class="modal-footer-border">
+        <Button type="primary">立即购买</Button>
+      </div>
+    </Modal>
   </div>
 </template>
 <style lang="less" scoped>
@@ -51,11 +63,56 @@
 }
 </style>
 <script type="text/ecmascript-6">
+import axios from "axios";
 export default {
   data() {
-    return {};
+    return {
+      showModal: {
+        budgetDetails: false
+      },
+      buyBudgetColumns: [
+        {
+          type: "selection",
+          width: 60,
+          align: "center"
+        },
+        {
+          title: "资源",
+          width: 200
+        },
+        {
+          title: "计费类型"
+        },
+        {
+          title: "购买时长"
+        },
+        {
+          title: "数量"
+        },
+        {
+          title: "价格"
+        },
+        {
+          title: "操作"
+        }
+      ],
+      buyBudgetData: [{}, {},{}]
+    };
   },
   props: {},
-  methods: {}
+  methods: {
+    viewBuyBudget() {
+      this.showModal.budgetDetails = true;
+    }
+  },
+  computed: {
+    maxHeight() {
+      if (this.buyBudgetData.length > 2) {
+        return 400;
+      } else {
+        return "";
+      }
+    }
+  }
 };
 </script>

@@ -23,7 +23,7 @@
       </div>
       <div class="lists">
         <buy-budget-list></buy-budget-list>
-        <buy-selected-config></buy-selected-config>
+        <buy-selected-config :current-disk-config="currentDiskConfig" @addToCart="addToCart"></buy-selected-config>
       </div>
     </div>
     <div id="footer_page">
@@ -334,6 +334,21 @@ export default {
       }
       this.createdDiskOrder();
     },
+    addToCart() {
+      if (!this.area) {
+        this.$Message.info("请选择需要购买的区域");
+        return;
+      }
+      if (!this.diskSpecification.systemDiskName) {
+        this.$Message.info("请输入磁盘名称");
+        return;
+      }
+      if (this.diskSpecification.systemDiskName.indexOf(" ") != -1) {
+        this.$Message.info("磁盘名称不能包含空格");
+        return;
+      }
+      this.$Message.success("添加成功");
+    },
     // 查询磁盘价格
     queryDiskPrice: debounce(500, function() {
       let url = "device/QueryBillingPrice.do";
@@ -417,6 +432,18 @@ export default {
     // 折扣金额，设计图上没用到
     totalCoupon() {
       return "0";
+    },
+    currentDiskConfig() {
+      let config = {
+        serverType: this.serverType,
+        step: this.buyStep,
+        area: this.area,
+        billingType: this.billingType,
+        buyTime: this.timeConfig.buyTime,
+        diskList: this.diskSpecification.systemDisk,
+        buyCount: this.timeConfig.buyCount
+      };
+      return config;
     }
   },
   destroyed() {

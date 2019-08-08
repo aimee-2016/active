@@ -3,7 +3,7 @@
     <buy-header :title-name="headerTitle" @toOldVersion="toOldVersion"></buy-header>
     <div class="container">
       <buy-step :buy-step-group="buyStepGroup" :buy-step="buyStep"></buy-step>
-      <div v-if="buyStep===0">
+      <div v-show="buyStep===0">
         <buy-server-type
           :server-type-group="serverTypeGroup"
           :server-type="serverType"
@@ -52,7 +52,7 @@
           @deleteGpuSystemDisk="deleteGpuSystemDisk"
         ></buy-gpu-specification>
       </div>
-      <div v-if="buyStep === 1" class="list-wrap">
+      <div v-show="buyStep === 1" class="list-wrap">
         <buy-network
           :area="area"
           :server-network="serverNetwork"
@@ -63,10 +63,10 @@
         ></buy-network>
         <div class="lists">
           <buy-budget-list></buy-budget-list>
-          <buy-selected-config></buy-selected-config>
+          <buy-selected-config :current-server-config="currentServerConfig"></buy-selected-config>
         </div>
       </div>
-      <div v-if="buyStep === 2" class="list-wrap">
+      <div v-show="buyStep === 2" class="list-wrap">
         <buy-login-info
           :login-info="loginInfo"
           @changeSetType="changeSetType"
@@ -74,7 +74,7 @@
         ></buy-login-info>
         <div class="lists">
           <buy-budget-list></buy-budget-list>
-          <buy-selected-config></buy-selected-config>
+          <buy-selected-config :current-server-config="currentServerConfig" @addToCart="addToCart"></buy-selected-config>
         </div>
       </div>
     </div>
@@ -401,8 +401,10 @@ export default {
       serverNetwork: {
         vpcGroup: [],
         vpcId: "",
+        vpcName: "",
         networkGroup: [],
         networkId: "",
+        networkName: "",
         publicIPTypeGroup: [
           {
             name: "现在购买",
@@ -966,8 +968,6 @@ export default {
         this.billingType = "month";
       }
       this.timeConfig.buyTime = 1;
-      this.queryServerSpecificationPrice();
-      this.queryNOKIAServerSpecificationPrice();
     },
     // 查询虚拟私有云vpc列表
     getVpcList() {
@@ -980,6 +980,7 @@ export default {
         .then(response => {
           this.serverNetwork.vpcGroup = response.data.result;
           this.serverNetwork.vpcId = this.serverNetwork.vpcGroup[0].vpcid;
+          this.serverNetwork.vpcName = this.serverNetwork.vpcGroup[0].vpcname;
           this.getNetworkList();
         });
     },
@@ -995,6 +996,7 @@ export default {
         .then(response => {
           this.serverNetwork.networkGroup = response.data.result;
           this.serverNetwork.networkId = this.serverNetwork.networkGroup[0].ipsegmentid;
+          this.serverNetwork.networkName = this.serverNetwork.networkGroup[0].name;
           this.getFireWallList();
         });
     },
@@ -1034,10 +1036,20 @@ export default {
     },
     changeVpc(val) {
       this.serverNetwork.vpcId = val;
+      this.serverNetwork.vpcGroup.forEach(item => {
+        if (this.serverSpecification.vpcId === item.vpcid) {
+          this.serverNetwork.vpcName = item.vpcname;
+        }
+      });
       this.getNetworkList();
     },
     changeNetwork(val) {
       this.serverNetwork.networkId = val;
+      this.serverNetwork.networkGroup.forEach(item => {
+        if (this.serverSpecification.networkId === item.ipsegmentid) {
+          this.serverNetwork.networkName = item.name;
+        }
+      });
       this.getFireWallList();
     },
     changePublicIPBandwidth() {
@@ -1150,6 +1162,30 @@ export default {
           break;
       }
     },
+    addToCart() {
+      if (this.loginInfo.setType === "customSet") {
+        if (!this.loginInfo.serverName) {
+          this.$Message.info("请输入主机名称");
+          return;
+        }
+        if (this.loginInfo.serverName.indexOf(" ") != -1) {
+          this.$Message.info("主机名称不能包含空格");
+          return;
+        }
+        if (
+          !(
+            this.loginInfo.firstDegree &&
+            this.loginInfo.secondDegree &&
+            this.loginInfo.thirdDegree
+          ) &&
+          this.loginInfo.loginType === "password"
+        ) {
+          this.$Message.info("您输入的密码不符合格式要求");
+          return;
+        }
+      }
+      this.$Message.success("添加成功");
+    },
     // 查询服务器配置价格价格
     queryServerSpecificationPrice: debounce(500, function() {
       let url = "device/QueryBillingPrice.do";
@@ -1224,7 +1260,7 @@ export default {
         }
       });
     }),
-    // 查询高仿服务器配置价格
+    // 查询高仿防护配置价格
     queryNOKIAServerSpecificationPrice: debounce(500, function() {
       let url = "device/QueryDdosPrice.do";
       let params = {
@@ -1493,6 +1529,45 @@ export default {
       if (this.serverType === "cloudServer") {
         return "0";
       }
+    },
+    currentServerConfig() {
+      let config = {
+        serverType: this.serverType,
+        step: this.buyStep,
+        area: this.area,
+        billingType: this.billingType,
+        buyTime: this.timeConfig.buyTime,
+        buyDay: this.timeConfig.buyDay,
+        mirrorName: this.mirrorConfig.mirrorName,
+        cpu:
+          this.serverType === "GPUServer" && this.gpuSpecification.gpuSelection
+            ? this.gpuSpecification.gpuSelection.cpunum
+            : this.serverSpecification.CPU,
+        memory:
+          this.serverType === "GPUServer" && this.gpuSpecification.gpuSelection
+            ? this.gpuSpecification.gpuSelection.cpunum
+            : this.serverSpecification.memory,
+        rootDiskType:
+          this.serverType === "GPUServer"
+            ? this.gpuSpecification.rootDiskType
+            : this.serverSpecification.rootDiskType,
+        rootDiskSize:
+          this.serverType === "GPUServer"
+            ? this.gpuSpecification.rootDiskSize
+            : this.serverSpecification.rootDiskSize,
+        diskList:
+          this.serverType === "GPUServer"
+            ? this.gpuSpecification.systemDisk
+            : this.serverSpecification.systemDisk,
+        network:
+          this.serverNetwork.vpcName + " -- " + this.serverNetwork.networkName,
+        publicIPType: this.serverNetwork.publicIPType,
+        bandwidth: this.serverNetwork.bandwidth,
+        firewall: this.serverNetwork.firewallGroup[0].acllistname,
+        defendBandwidth: this.defendSpecification.defendBandwidth,
+        buyCount: this.timeConfig.buyCount
+      };
+      return config;
     }
   },
   watch: {

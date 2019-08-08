@@ -19,7 +19,10 @@
       </div>
       <div class="lists">
         <buy-budget-list></buy-budget-list>
-        <buy-selected-config></buy-selected-config>
+        <buy-selected-config
+          :current-networkip-config="currentNetworkIPConfig"
+          @addToCart="addToCart"
+        ></buy-selected-config>
       </div>
     </div>
     <div id="footer_page">
@@ -124,6 +127,7 @@ export default {
       billingType: "month",
       network: {
         vpcId: "",
+        vpcName: "",
         vpcGroup: [],
         bandwidth: 1,
         autoRenewal: true,
@@ -231,7 +235,6 @@ export default {
       if (this.area) {
         this.queryIPPrice();
         this.getVpcList();
-        this.queryIPPrice();
       }
     },
     // 获取虚拟私有云vpc列表
@@ -245,6 +248,7 @@ export default {
         .then(response => {
           this.network.vpcGroup = response.data.result;
           this.network.vpcId = this.network.vpcGroup[0].vpcid;
+          this.network.vpcName = this.network.vpcGroup[0].vpcname;
         });
     },
     toOldVersion() {
@@ -260,6 +264,11 @@ export default {
     },
     changeVpc(val) {
       this.network.vpcId = val;
+      this.network.vpcGroup.forEach(item => {
+        if (this.network.vpcId === item.vpcid) {
+          this.network.vpcName = item.vpcname;
+        }
+      });
     },
     changeBandwidth() {
       this.queryIPPrice();
@@ -286,6 +295,13 @@ export default {
         return;
       }
       this.createdIPOrder();
+    },
+    addToCart() {
+      if (!this.area) {
+        this.$Message.info("请选择需要购买的区域");
+        return;
+      }
+      this.$Message.success("添加成功");
     },
     queryIPPrice: debounce(500, function() {
       let url = "device/queryIpPrice.do";
@@ -351,6 +367,18 @@ export default {
     // 折扣金额，设计图上没用到
     totalCoupon() {
       return "0";
+    },
+    currentNetworkIPConfig() {
+      let config = {
+        area: this.area,
+        billingType: this.billingType,
+        buyTime: this.timeConfig.buyTime,
+        buyDay: this.timeConfig.buyDay,
+        network: this.network.vpcName,
+        bandwidth: this.network.bandwidth,
+        buyCount: this.timeConfig.buyCount
+      };
+      return config;
     }
   },
   watch: {
