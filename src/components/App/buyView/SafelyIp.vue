@@ -25,7 +25,7 @@
         ></buy-defend>
       </div>
       <div class="lists">
-        <buy-budget-list></buy-budget-list>
+        <buy-budget-list ref="budget"></buy-budget-list>
         <buy-selected-config
           :current-safelyip-config="currentSafelyIPConfig"
           @addToCart="addToCart"
@@ -72,6 +72,7 @@
 <script type="text/ecmascript-6">
 import axios from "axios";
 import $store from "@/vuex";
+import uuid from "uuid";
 import debounce from "throttle-debounce/debounce";
 import buyHeader from "../buyComponents/buy-header";
 import buyArea from "../buyComponents/buy-area";
@@ -227,7 +228,8 @@ export default {
         buyCount: 1,
         buyDay: 1
       },
-      buyStep: 3
+      buyStep: 3,
+      buybudget: []
     };
   },
   created() {
@@ -325,6 +327,7 @@ export default {
         this.billingType = "month";
       }
       this.timeConfig.buyTime = 1;
+      this.queryIPPrice();
       this.queryNOKIAServerSpecificationPrice();
     },
     changeAutoRenewal(val) {
@@ -359,13 +362,18 @@ export default {
         this.$Message.info("请选择需要购买的区域");
         return;
       }
+      this.createdSafelyIPOrder();
     },
     addToCart() {
       if (!this.area) {
         this.$Message.info("请选择需要购买的区域");
         return;
       }
-      this.$Message.success("添加成功");
+      this.buybudget = [];
+      if (localStorage.getItem("buybudget")) {
+        this.buybudget = JSON.parse(localStorage.getItem("buybudget"));
+      }
+      this.addSafelyIP();
     },
     queryIPPrice: debounce(500, function() {
       let url = "device/queryIpPrice.do";
@@ -414,6 +422,73 @@ export default {
           this.defendSpecification.coupon = response.data.coupon;
         } else {
           this.defendSpecification.coupon = 0;
+        }
+      });
+    }),
+    addSafelyIP() {
+      if (!this.area) {
+        this.$Message.info("请选择需要购买的区域");
+        return;
+      }
+      var params = {
+        id: uuid.v4(),
+        zoneId: this.area.zoneid,
+        timeType: this.billingType,
+        timeValue: this.timeConfig.buyTime,
+        count: this.timeConfig.buyCount,
+        isAutorenew: this.network.autoRenewal ? "1" : "0",
+        brandWith: this.network.bandwidth,
+        vpcId: this.network.vpcId,
+        vpcName: this.network.vpcName,
+        ddosProtectNumber: this.defendSpecification.defendBandwidth,
+        type: "safelyip",
+        price: this.totalCost
+      };
+      if (
+        parseInt(this.timeConfig.buyTime) > 11 &&
+        this.billingType !== "current"
+      ) {
+        // 购买时间单位为年
+        params.timeType = "year";
+        params.timeValue = this.timeConfig.buyTime / 12 + "";
+      }
+      if (this.billingType === "day") {
+        params.timeValue = this.timeConfig.buyDay;
+      }
+      this.buybudget.push(params);
+      localStorage.setItem("buybudget", JSON.stringify(this.buybudget));
+      this.$refs.budget.setBuyBudget();
+    },
+    createdSafelyIPOrder: debounce(500, function() {
+      let url = "network/createDdosPublicIp.do";
+      var params = {
+        zoneId: this.area.zoneid,
+        timeType: this.billingType,
+        timeValue: this.timeConfig.buyTime,
+        count: this.timeConfig.buyCount,
+        isAutorenew: this.network.autoRenewal ? "1" : "0",
+        brandWith: this.network.bandwidth,
+        vpcId: this.network.vpcId,
+        ddosProtectNumber: this.defendSpecification.defendBandwidth
+      };
+      if (
+        parseInt(this.timeConfig.buyTime) > 11 &&
+        this.billingType !== "current"
+      ) {
+        // 购买时间单位为年
+        params.timeType = "year";
+        params.timeValue = this.timeConfig.buyTime / 12 + "";
+      }
+      if (this.billingType === "day") {
+        params.timeValue = this.timeConfig.buyDay;
+      }
+      axios.get(url, { params }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          this.$router.push("/order");
+        } else {
+          this.$message.info({
+            content: response.data.message
+          });
         }
       });
     })
