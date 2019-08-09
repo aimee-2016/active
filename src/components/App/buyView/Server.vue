@@ -1184,7 +1184,13 @@ export default {
           return;
         }
       }
-      this.$Message.success("添加成功");
+      if (this.serverType === "cloudServer") {
+        this.addCloudServer();
+      } else if (this.serverType === "GPUServer") {
+        this.addGPUServer();
+      } else if (this.serverType === "NOKIAServer") {
+        this.addNOKIAServer();
+      }
     },
     // 查询服务器配置价格价格
     queryServerSpecificationPrice: debounce(500, function() {
@@ -1311,6 +1317,9 @@ export default {
         }
       });
     }),
+    addCloudServer() {
+
+    },
     // 创建主机订单
     createdCloudServerOrder: debounce(500, function() {
       let url = "information/deployVirtualMachine.do";
@@ -1365,6 +1374,7 @@ export default {
         }
       });
     }),
+    addGPUServer() {},
     createdGPUServerOrder: debounce(500, function() {
       let url = "gpuserver/createGpuServer.do";
       let diskType = "",
@@ -1420,6 +1430,7 @@ export default {
         }
       });
     }),
+    addNOKIAServer() {},
     createdNOKIAServerOrder: debounce(500, function() {
       let url = "ddosImitationhost/createDdosHostServer.do";
       let diskType = "",

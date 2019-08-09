@@ -96,11 +96,14 @@ export default {
           title: "操作"
         }
       ],
-      buyBudgetData: [{}, {},{}]
+      buyBudgetData: [{}, {}, {}]
     };
   },
   props: {},
   methods: {
+    setBuyBudget() {
+      console.log(111111111111);
+    },
     viewBuyBudget() {
       this.showModal.budgetDetails = true;
     }
