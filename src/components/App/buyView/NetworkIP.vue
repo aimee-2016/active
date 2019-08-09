@@ -62,6 +62,7 @@
 <script type="text/ecmascript-6">
 import axios from "axios";
 import $store from "@/vuex";
+import uuid from "uuid";
 import debounce from "throttle-debounce/debounce";
 import buyHeader from "../buyComponents/buy-header";
 import buyArea from "../buyComponents/buy-area";
@@ -222,7 +223,9 @@ export default {
       }
     },
     setAreaData() {
-      this.areaGroup = this.$store.state.zoneList;
+      this.areaGroup = this.$store.state.zoneList.filter(zone => {
+        return zone.gpuserver !== 2;
+      });
       this.area = this.$store.state.zone;
       // 如果默认区域在该资源下不存在
       if (
@@ -334,6 +337,7 @@ export default {
     }),
     addNetworkIP() {
       var params = {
+        id: uuid.v4(),
         zoneId: this.area.zoneid,
         timeType: this.billingType,
         timeValue: this.timeConfig.buyTime,

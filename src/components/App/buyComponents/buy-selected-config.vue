@@ -76,6 +76,7 @@
         <li>网络：{{safelyIPConfigText.network}}</li>
         <li>计费模式：{{safelyIPConfigText.billingTypeText}}</li>
         <li>带宽大小：{{safelyIPConfigText.bandwidth + "MB"}}</li>
+        <li>防护带宽： {{safelyIPConfigText.defendBandwidth + "GB"}}</li>
         <li>购买时长：{{safelyIPConfigText.buyTimeText}}</li>
         <li>购买数量：{{safelyIPConfigText.buyCount}}</li>
         <div class="base right">

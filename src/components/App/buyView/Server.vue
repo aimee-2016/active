@@ -121,6 +121,7 @@
 import axios from "axios";
 import $store from "@/vuex";
 import regExp from "@/util/regExp";
+import uuid from "uuid";
 import buyHeader from "../buyComponents/buy-header";
 import buyStep from "../buyComponents/buy-step";
 import buyServerType from "../buyComponents/buy-server-type";
@@ -969,6 +970,8 @@ export default {
         this.billingType = "month";
       }
       this.timeConfig.buyTime = 1;
+      this.queryIPPrice();
+      this.queryNOKIAServerSpecificationPrice();
     },
     // 查询虚拟私有云vpc列表
     getVpcList() {
@@ -1330,6 +1333,7 @@ export default {
         diskSize += `${disk.size},`;
       }
       let params = {
+        id: uuid.v4(),
         zoneId: this.area.zoneid,
         zoneName: this.area.zonename,
         timeType: this.billingType,
@@ -1437,6 +1441,7 @@ export default {
         diskSize += `${disk.size},`;
       }
       let params = {
+        id: uuid.v4(),
         zoneId: this.area.zoneid,
         zoneName: this.area.zonename,
         templateId: this.mirrorConfig.mirrorID,
@@ -1551,6 +1556,7 @@ export default {
         diskSize += `${disk.size},`;
       }
       let params = {
+        id: uuid.v4(),
         zoneId: this.area.zoneid,
         zoneName: this.area.zonename,
         timeType: this.billingType,

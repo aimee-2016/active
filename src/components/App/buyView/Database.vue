@@ -87,6 +87,7 @@
 import axios from "axios";
 import $store from "@/vuex";
 import regExp from "@/util/regExp";
+import uuid from "uuid";
 import debounce from "throttle-debounce/debounce";
 import buyHeader from "../buyComponents/buy-header";
 import buyArea from "../buyComponents/buy-area";
@@ -810,6 +811,7 @@ export default {
         diskSize += `${disk.size},`;
       }
       let params = {
+        id: uuid.v4(),
         zoneId: this.area.zoneid,
         zoneName: this.area.zonename,
         count: this.timeConfig.buyCount,

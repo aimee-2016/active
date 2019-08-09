@@ -275,6 +275,10 @@ export default {
                 item_1 = h("li", {}, "类型：公网IP");
                 arr.push(item_1, item_12, item_13);
                 break;
+              case "safelyip":
+                item_1 = h("li", {}, "类型：高仿IP");
+                arr.push(item_1, item_12, item_13, item_11);
+                break;
             }
             return h(
               "ul",
@@ -354,6 +358,11 @@ export default {
                 style: {
                   cursor: "pointer",
                   color: "#2A99F2"
+                },
+                on: {
+                  click: () => {
+                    this.deleteBudgetItem(params.row.id);
+                  }
                 }
               },
               "删除"
@@ -378,6 +387,15 @@ export default {
         this.buyBudgetData = JSON.parse(localStorage.getItem("buybudget"));
       }
       this.$Message.success("添加预算清单成功");
+    },
+    deleteBudgetItem(id) {
+      this.buyBudgetData.forEach((item, index) => {
+        if (id === item.id) {
+          this.buyBudgetData.splice(index, 1);
+        }
+      });
+      this.$Message.success("删除成功");
+      localStorage.setItem("buybudget", JSON.stringify(this.buyBudgetData));
     },
     viewBuyBudget() {
       this.showModal.budgetDetails = true;
@@ -426,9 +444,133 @@ export default {
             }
             PromiseList.push(axios.get(url, { params }));
             break;
+          case "GPUServer":
+            url = "gpuserver/createGpuServer.do";
+            params = {
+              zoneId: item.zoneId,
+              timeType: item.timeType,
+              timeValue: item.timeValue,
+              templateId: item.templateId,
+              isAutoRenew: item.isAutoRenew,
+              count: item.count,
+              cpuNum: item.cpuNum,
+              memory: item.memory,
+              bandWidth: item.bandWidth,
+              rootDiskType: item.rootDiskType,
+              rootDiskSize: item.rootDiskSize,
+              vpcId: item.vpcId,
+              networkId: item.networkId,
+              diskType: item.diskType,
+              diskSize: item.diskSize,
+              gpusize: item.gpusize,
+              serviceType: item.serviceType,
+              countOrder
+            };
+            if (item.VMName) {
+              params.VMName = item.VMName;
+              params.password = item.password;
+            }
+            PromiseList.push(axios.get(url, { params }));
+            break;
+          case "NOKIAServer":
+            url = "ddosImitationhost/createDdosHostServer.do";
+            params = {
+              zoneId: item.zoneId,
+              timeType: item.timeType,
+              timeValue: item.timeValue,
+              templateId: item.templateId,
+              isAutoRenew: item.isAutoRenew,
+              count: item.count,
+              cpuNum: item.cpuNum,
+              memory: item.memory,
+              bandWidth: item.bandWidth,
+              rootDiskType: item.rootDiskType,
+              rootDiskSize: item.rootDiskSize,
+              vpcId: item.vpcId,
+              networkId: item.networkId,
+              diskType: item.diskType,
+              diskSize: item.diskSize,
+              ddosProtectNumber: item.ddosProtectNumber,
+              countOrder
+            };
+            if (item.VMName) {
+              params.VMName = item.VMName;
+              params.password = item.password;
+            }
+            PromiseList.push(axios.get(url, { params }));
+            break;
+          case "database":
+            url = "database/createDB.do";
+            params = {
+              zoneId: item.zoneId,
+              timeType: item.timeType,
+              timeValue: item.timeValue,
+              templateId: item.templateId,
+              isAutoRenew: item.isAutoRenew,
+              count: item.count,
+              cpuNum: item.cpuNum,
+              memory: item.memory,
+              bandWidth: item.bandWidth,
+              rootDiskType: item.rootDiskType,
+              rootDiskSize: item.rootDiskSize,
+              vpcId: item.vpcId,
+              networkId: item.networkId,
+              diskType: item.diskType,
+              diskSize: item.diskSize,
+              countOrder
+            };
+            if (item.VMName) {
+              params.VMName = item.VMName;
+              params.password = item.password;
+            }
+            PromiseList.push(axios.get(url, { params }));
+            break;
+          case "disk":
+            url = "Disk/createVolume.do";
+            params = {
+              zoneId: item.zoneId,
+              timeType: item.timeType,
+              timeValue: item.timeValue,
+              count: item.count,
+              isAutorenew: item.isAutorenew,
+              diskSize: item.diskSize,
+              diskOfferingId: item.diskOfferingId,
+              diskName: item.diskName,
+              countOrder
+            };
+            PromiseList.push(axios.get(url, { params }));
+            break;
+          case "networkip":
+            url = "network/createPublicIp.do";
+            params = {
+              zoneId: item.zoneId,
+              timeType: item.timeType,
+              timeValue: item.timeValue,
+              count: item.count,
+              isAutorenew: item.isAutorenew,
+              brandWith: item.brandWith,
+              vpcId: item.vpcId,
+              countOrder
+            };
+            PromiseList.push(axios.get(url, { params }));
+            break;
+          case "safelyip":
+            url = "network/createDdosPublicIp.do";
+            params = {
+              zoneId: item.zoneId,
+              timeType: item.timeType,
+              timeValue: item.timeValue,
+              count: item.count,
+              isAutorenew: item.isAutorenew,
+              brandWith: item.brandWith,
+              vpcId: item.vpcId,
+              ddosProtectNumber: item.ddosProtectNumber,
+              countOrder
+            };
+            PromiseList.push(axios.get(url, { params }));
+            break;
         }
       });
-      console.log(PromiseList)
       Promise.all(PromiseList).then(responseList => {
         if (
           responseList.every(item => {
@@ -441,6 +583,7 @@ export default {
               countOrder
             }
           });
+          localStorage.removeItem("buybudget");
         } else {
           let len = responseList.length;
           if (len > 0) {

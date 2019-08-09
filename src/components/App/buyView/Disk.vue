@@ -63,6 +63,7 @@
 <script type="text/ecmascript-6">
 import axios from "axios";
 import $store from "@/vuex";
+import uuid from "uuid";
 import debounce from "throttle-debounce/debounce";
 import buyHeader from "../buyComponents/buy-header";
 import buyArea from "../buyComponents/buy-area";
@@ -396,6 +397,7 @@ export default {
         diskType += `${item.type},`;
       });
       let params = {
+        id: uuid.v4(),
         zoneId: this.area.zoneid,
         diskSize,
         diskName: this.diskSpecification.systemDiskName,
