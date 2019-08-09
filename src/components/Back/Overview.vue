@@ -204,7 +204,7 @@
           },
           {
             prod: '云安全',
-            prodUrl: ['firewallList', '']
+            prodUrl: ['firewallList', 'ddosipback']
           },
           {
             prod: '云运维',
@@ -337,6 +337,8 @@
                 content.cartUrl = '/buy/gpu/'
               } else if (content.itemName == '对象存储') {
                 content.cartUrl = '/buy/objectstorage/'
+              }else if (content.itemName == 'DDOS高防IP') {
+                content.cartUrl = '/buy/ddosip/'
               }
             })
           })

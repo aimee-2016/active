@@ -87,7 +87,7 @@
                           :min='selectList.bandwith'
                           :max=2000
                           :step=1
-                          :points="[400,600,900,1200,1500]"
+                          :points="[300,600,900,1200,1500]"
                           style="margin-right:30px;vertical-align: middle;">
                       </i-slider>
                       <InputNumber :max="2000" :min="selectList.bandwith" v-model="bandWidth" size="large"
