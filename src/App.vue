@@ -10,142 +10,264 @@
     </div> -->
     <!-- 首页公用header -->
     <header>
-      <div class="wrapper">
-        <a href="/" class="logo" alt='新睿云'>
-          <div></div>
-        </a>
-        <div class="operate operate-pdding">
-          <ul @mouseleave="ME(-1)">
-            <li v-for="(item,index1) in titleItem" :key="index1" @mouseenter="ME(index1,$event)">
-              <div class="menu-dropdown">
-                <div class="menu-dropdown-rel">
-                  <a v-if="item.title=='帮助文档'||item.title=='新闻动态'" :href="item.path" target="_blank"><span>{{item.title}}</span>
-                  </a>
-                  <a v-else-if="item.title=='关于我们'" :href="item.path" rel="nofollow"><span>{{item.title}}</span>
-                  </a>
-                  <router-link v-else :to="item.path"><span>{{item.title}}<sup class="circle-dot-a"
-                                                                               v-if="item.title=='活动中心'"></sup></span>
-                  </router-link>
-                </div>
-                <div class="menu-dropdown-list">
-                  <div class="content-dropdown">
-                    <div class="content" ref="content" style="height:0px;">
-                      <div v-if="item.content" class="column" :class="{info:index1 == 4,zx:index1 == 3}" style="padding:21px 0;">
-                        <div v-for="(prod,index) in item.content" :key="index">
-                          <div>
-                            <h2 v-if="index1 == 3||index1 == 4" class="info" @click="openInfo(prod.path)" :class="{mark:item.title=='新闻动态'}">{{prod.prod}}</h2>
-                            <h2 v-else :class="{mark:item.title=='新闻动态'}">{{prod.prod}}</h2>
-                            <div v-for="(i,index) in prod.prodItem" style="line-height: normal" :key="index">
-                              <a :href="i.path" v-if="i.path==''">{{i.title}}</a>
-                              <a :href="i.path" v-else>{{i.title}}</a>
-                              <p>{{i.desc}}</p>
+          <div class='pc-top'>
+                <div class="pc-head">
+                    <a class="navbar-brand logo" href="#" alt='新睿云'>
+                        <img src='./assets/img/home/logo.gif'>
+                    </a>
+                    <div class="p-collapse">
+                        <div style="display: flex;">
+                            <a class="p-link" href="#">
+                                帮助文档
+                            </a>
+                            <a class="p-link" href="#">
+                                新闻动态
+                            </a>
+                            <router-link class="p-link pb" to='/overview' title="控制台">
+                                控制台
+                            </router-link>
+                            <div v-if='!userInfo'>
+                                <router-link class="lg-in" to="/login"  title="登陆">登录</router-link>
+                                <router-link class="lg-re" to="/register" title="注册">注册</router-link>
                             </div>
-                          </div>
-                          <!--添加域名与备案-->
-                          <div v-if="prod.subProd" style="margin-top: 30px;">
-                            <div v-for="(subi,index) in prod.subProd" :key="index">
-                              <h2>{{subi.prod}}</h2>
-                              <div v-for="(i,index) in subi.prodItem" style="line-height: normal" :key="index">
-                                <a :href="i.path" v-if="i.path==''">{{i.title}}</a>
-                                <a :href="i.path" v-else>{{i.title}}</a>
-                                <p>{{i.desc}}</p>
-                              </div>
-                            </div>
-                          </div>
+
+                            <ul v-else class="user-list">
+                                <li >
+                                  <Dropdown >
+                                    <a href="javascript:void(0)" class="user-fn">
+                                      {{ userInfo?userInfo.realname:''}}
+                                      <!--<sup class="circle-dot" v-if="this.$store.state.Msg>0"></sup>-->
+                                      <Icon type="arrow-down-b"></Icon>
+                                    </a>
+                                    <DropdownMenu slot="list">
+                                      <DropdownItem name="/usercenter">
+                                        <a to="/usercenter">用户中心</a>
+                                      </DropdownItem>
+                                      <DropdownItem name="/expenses">
+                                        <a to="/expenses">费用中心</a>
+                                      </DropdownItem>
+                                      <DropdownItem name="/msgcenter" style="position:relative">
+                                        <router-link to="/msgcenter">消息中心
+                                          <!--<sup v-if="this.$store.state.Msg>0" class="badge">{{this.$store.state.Msg}}</sup>-->
+                                        </router-link>
+                                      </DropdownItem>
+                                      <DropdownItem name="/operationlog">
+                                        <router-link to="/operationlog">操作日志</router-link>
+                                      </DropdownItem>
+                                      <DropdownItem divided name="exit">
+                                        <!-- <router-link to="">退出</router-link> -->
+                                        <span style="color:#666;">退出</span>
+                                      </DropdownItem>
+                                    </DropdownMenu>
+                                  </Dropdown>
+                                </li>
+                            </ul>
                         </div>
-                      </div>
                     </div>
-                  </div>
                 </div>
-              </div>
-            </li>
-          </ul>
-          <div class="line" :style="lineStyle" title="新睿云新闻动态"></div>
-        </div>
-        <div class="operate">
-          <!-- 尚未登录 -->
-          <ul v-if="!userInfo" @mouseleave="ME(-1)">
-            <li @mouseenter="ME(1,$event)">
-              <div class="menu-dropdown">
-                <div class="menu-dropdown-rel">
-                  <a href="https://kaifa.xrcloud.net/overview" rel="nofollow"><span>控制台</span>
-                  </a>
+                <div class="nav-list">
+                    <ul class="nav-left" @mouseleave='styleClass(-1,$event)'>
+                        <li class="nav-item" @mouseenter='styleClass(0,$event)'>
+                            <router-link to="/activity" title="活动中心">活动中心</router-link>
+                        </li>
+                        <li class="nav-item" @mouseenter='styleClass(1,$event)'>
+                            <a href="#">首页</a>
+                        </li>
+                        <Poptip placement="bottom-start" trigger="hover">
+                            <li class="nav-item active" @mouseenter='styleClass(-1,$event)'>
+                                <a>云计算</a>
+                            </li>
+                            <ul slot="content" class="np-bs" v-cloak>
+                                <li class="np-item">
+                                    <a>弹性云服务器ECS <img src="./assets/img/home/iconHot.png" /></a>
+                                    <div class="buy-box">
+                                        <img class="buy-img" src="./assets/img/home/buy-icon.png" />
+                                        <span class="buy-font">立即购买</span>
+                                    </div>
+                                </li>
+                                <li class="np-item">
+                                    <a>镜像服务</a>
+                                </li>
+                                <li class="np-item">
+                                    <a>云服务器快照</a>
+                                </li>
+                                <li class="np-item">
+                                    <a>GPU加速云服务器</a>
+                                    <div class="buy-box">
+                                        <img class="buy-img" src='./assets/img/home/buy-icon.png' />
+                                        <span class="buy-font">立即购买</span>
+                                    </div>
+                                </li>
+                                <li class="np-dis">
+                                    裸金属服务器(敬请期待)
+                                </li>
+                            </ul>
+                        </Poptip>
+
+                        <Poptip placement="bottom-start" trigger="hover">
+                            <li class="nav-item active" @mouseenter='styleClass(-1,$event)'>
+                                <a href="#">网络与安全</a>
+                            </li>
+                            <div slot='content' class="np-box" v-cloak>
+                                <div class="np-title">
+                                    <p>云网络</p>
+                                </div>
+                                <ul class="np-bs">
+                                    <li class="np-item">
+                                        <a>虚拟私有云VPC</a>
+                                    </li>
+                                    <li class="np-item">
+                                        <a>NAT网关</a>
+                                    </li>
+                                    <li class="np-item">
+                                        <a>弹性公网IP</a>
+                                        <div class="buy-box">
+                                            <img class="buy-img" src="./assets/img/home/buy-icon.png" />
+                                            <span class="buy-font">立即购买</span>
+                                        </div>
+                                    </li>
+                                    <li class="np-item">
+                                        <a>负载均衡</a>
+                                    </li>
+                                    <li class="np-item">
+                                        <a>虚拟专网VPN</a>
+                                    </li>
+                                    <li class="np-dis">
+                                        CDN(敬请期待)
+                                    </li>
+                                </ul>
+                                <div class="np-title2">
+                                    <p>云安全</p>
+                                </div>
+                                <ul class="np-bs">
+                                    <li class="np-item">
+                                        <a>防火墙</a>
+                                    </li>
+                                    <li class="np-item">
+                                        <a>SSL证书</a>
+                                        <div class="buy-box">
+                                            <img class="buy-img" src="./assets/img/home/buy-icon.png" />
+                                            <span class="buy-font">立即购买</span>
+                                        </div>
+                                    </li>
+                                    <li class="np-item">
+                                        <a>DDoS高防IP</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </Poptip>
+
+                        <Poptip placement="bottom-start" trigger="hover">
+                            <li class="nav-item active" @mouseenter='styleClass(-1,$event)'>
+                                <a>云存储</a>
+                            </li>
+                            <ul slot="content" class="np-bs" v-cloak>
+                                <li class="np-item">
+                                    <a>对象存储 <img src="./assets/img/home/iconNew.png" /></a>
+                                    <div class="buy-box">
+                                        <img class="buy-img" src="./assets/img/home/buy-icon.png" />
+                                        <span class="buy-font">立即购买</span>
+                                    </div>
+                                </li>
+                                <li class="np-item">
+                                    <a>云硬盘</a>
+                                    <div class="buy-box">
+                                        <img class="buy-img" src="./assets/img/home/buy-icon.png" />
+                                        <span class="buy-font">立即购买</span>
+                                    </div>
+                                </li>
+                                <li class="np-item">
+                                    <a>云硬盘备份</a>
+                                </li>
+                            </ul>
+                        </Poptip>
+
+                        <Poptip placement="bottom-start" trigger="hover">
+                            <li class="nav-item active" @mouseenter='styleClass(-1,$event)'>
+                                <a>域名与备案</a>
+                            </li>
+                            <ul slot="content" class="np-bs" v-cloak>
+                                <li class="np-item">
+                                    <a>镜像服务</a>
+                                </li>
+                                <li class="np-item">
+                                    <a>云服务器快照</a>
+                                </li>
+                            </ul>
+                        </Poptip>
+
+                        <Poptip placement="bottom-start" trigger="hover">
+                            <li class="nav-item active" @mouseenter='styleClass(-1,$event)'>
+                                <a href="#">其他产品</a>
+                            </li>
+                            <div slot='content' class="np-box" v-cloak>
+                                <div class="np-title">
+                                    <p>云数据库</p>
+                                </div>
+                                <ul class="np-bs">
+                                    <li class="np-item">
+                                        <a>云数据库MySQL</a>
+                                        <div class="buy-box">
+                                            <img class="buy-img" src="./assets/img/home/buy-icon.png" />
+                                            <span class="buy-font">立即购买</span>
+                                        </div>
+                                    </li>
+                                    <li class="np-item">
+                                        <a>云数据库PostgreSQL</a>
+                                        <div class="buy-box">
+                                            <img class="buy-img" src="./assets/img/home/buy-icon.png" />
+                                            <span class="buy-font">立即购买</span>
+                                        </div>
+                                    </li>
+                                    <li class="np-item">
+                                        <a>云数据库SQLServer</a>
+                                        <div class="buy-box">
+                                            <img class="buy-img" src="./assets/img/home/buy-icon.png" />
+                                            <span class="buy-font">立即购买</span>
+                                        </div>
+                                    </li>
+                                    <li class="np-item">
+                                        <a>云数据库MongoDB</a>
+                                        <div class="buy-box">
+                                            <img class="buy-img" src="./assets/img/home/buy-icon.png" />
+                                            <span class="buy-font">立即购买</span>
+                                        </div>
+                                    </li>
+                                    <li class="np-item">
+                                        <a>云数据库Redis</a>
+                                        <div class="buy-box">
+                                            <img class="buy-img" src="./assets/img/home/buy-icon.png" />
+                                            <span class="buy-font">立即购买</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <div class="np-title2">
+                                    <p>云运维</p>
+                                </div>
+                                <ul class="np-bs">
+                                    <li class="np-item">
+                                        <a>云监控</a>
+                                    </li>
+                                    <li class="np-dis">
+                                        访问控制(敬请期待)
+                                    </li>
+                                </ul>
+                            </div>
+                        </Poptip>
+
+                        <li class="nav-item active" @mouseenter='styleClass(3,$event)'>
+                            <a href="#">解决方案</a>
+                        </li>
+                        <li class="nav-item active" @mouseenter='styleClass(4,$event)'>
+                            <a href="#">定价</a>
+                        </li>
+                        <li class="nav-item active" @mouseenter='styleClass(5,$event)'>
+                            <a href="#">云市场</a>
+                        </li>
+                    </ul>
+                    <div class="line" :style='lineStyle'></div>
                 </div>
-              </div>
-            </li>
-            <li @mouseenter="ME(1,$event)">
-              <div class="menu-dropdown">
-                <div class="menu-dropdown-rel">
-                  <router-link to="/icp/"><span>备案</span></router-link>
-                </div>
-              </div>
-            </li>
-            <li @mouseenter="ME(1,$event)">
-              <div class="menu-dropdown">
-                <div class="menu-dropdown-rel">
-                   <!-- <a href="#" rel="nofollow"><span @click="login">登录</span></a> -->
-                  <a href="https://kaifa.xrcloud.net/login" rel="nofollow"><span>登录</span>
-                  </a>
-                </div>
-              </div>
-            </li>
-            <li @mouseenter="ME(1,$event)" style="background:#387Dff;width:100px;text-align:center;">
-              <div class="menu-dropdown">
-                <div class="menu-dropdown-rels">
-                  <a href="https://kaifa.xrcloud.net/register" rel="nofollow"><span>注册</span>
-                  </a>
-                </div>
-              </div>
-            </li>
-          </ul>
-          <!-- 已登录 -->
-          <ul v-else @mouseleave="ME(-1)">
-            <li @mouseenter="ME(1,$event)">
-              <div class="menu-dropdown">
-                <div class="menu-dropdown-rel">
-                  <router-link to="/overview"><span>控制台</span></router-link>
-                </div>
-              </div>
-            </li>
-            <li @mouseenter="ME(1,$event)">
-              <div class="menu-dropdown">
-                <div class="menu-dropdown-rel">
-                  <router-link to="/icp/"><span>备案</span></router-link>
-                </div>
-              </div>
-            </li>
-            <li @mouseenter="ME(1,$event)">
-              <Dropdown @on-click="go">
-                <a href="javascript:void(0)" style="position:relative">
-                  {{ userInfo?userInfo.realname:''}}
-                  <!--<sup class="circle-dot" v-if="this.$store.state.Msg>0"></sup>-->
-                  <Icon type="arrow-down-b"></Icon>
-                </a>
-                <DropdownMenu slot="list">
-                  <DropdownItem name="/userCenter">
-                    <router-link to="/userCenter">用户中心</router-link>
-                  </DropdownItem>
-                  <DropdownItem name="/expenses">
-                    <router-link to="/expenses">费用中心</router-link>
-                  </DropdownItem>
-                  <DropdownItem name="/msgCenter" style="position:relative">
-                    <router-link to="/msgCenter">消息中心
-                      <!--<sup v-if="this.$store.state.Msg>0" class="badge">{{this.$store.state.Msg}}</sup>-->
-                    </router-link>
-                  </DropdownItem>
-                  <DropdownItem name="/operationLog">
-                    <router-link to="/operationLog">操作日志</router-link>
-                  </DropdownItem>
-                  <DropdownItem divided name="exit">
-                    <!-- <router-link to="">退出</router-link> -->
-                    <span style="color:#666;">退出</span>
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-            </li>
-          </ul>
-        </div>
-      </div>
+            </div>
     </header>
     <!-- 页面展示 -->
     <router-view/>
@@ -635,6 +757,7 @@
           left: '0px',
           transition: 'width .3s'
         }, // line的width和left属性
+        lineIndex:0,
         support: [
           {img: 'icon-duoqudaofuwuyuzhichi', title: '7*24', subTitle: '多渠道服务与支持'},
           {img: 'icon-fankuiyutousujianyiA', title: '意见', subTitle: '反馈与投诉建议'},
@@ -838,17 +961,6 @@
         this.$router.push('login')
       },
       /* li mouseenter事件 重新设置line样式 */
-      ME: debounce(200, function (index, event) {
-        if (index == -1) {
-          this.currentItem = -1
-          this.lineStyle.width = '0px'
-        } else {
-          this.currentItem === -1 ? this.lineStyle.transition = 'width .3s' : this.lineStyle.transition = 'all .3s'
-          this.lineStyle.left = `${event.target.offsetLeft}px`
-          this.lineStyle.width = `${event.target.clientWidth}px`
-          this.currentItem = index
-        }
-      }),
       QME() {
         this.$refs.qq.style.width = '200px'
       },
@@ -861,6 +973,17 @@
       PML() {
         this.$refs.phoneE.style.width = '0px'
       },
+      styleClass(index, event) {
+          if (index != -1) {
+                    this.lineStyle.transition = 'all  .3s';
+                    this.lineStyle.left = event.target.offsetLeft + 'px';
+                    this.lineStyle.width = event.target.clientWidth + 'px';
+                    this.lineIndex = index;
+          } else {
+                    this.lineStyle.width = '0px';
+                    this.lineIndex = -1;
+          }
+        },
       go(path) {
         if (path == 'exit') {
           this.exit()
@@ -1043,201 +1166,180 @@
     }
 
     header {
-      width: 100%;
-      height: 70px;
-      position: relative;
-      &::before {
-        content: '';
-        height: 70px;
+
+      .pc-head {
         width: 100%;
-        //height: 0px;
-        display: block;
-        position: absolute;
-        background-color: #333333;
-        transition: height .2s;
-        z-index: -1;
-      }
-      &:hover {
-        &::before {
-          height: 70px;
-        }
-      }
-      .wrapper {
-        width: 1200px;
-        height: 70px;
-        margin: 0px auto;
+        background-color: #1D1716;
+        height: 40px;
         display: flex;
         justify-content: space-between;
-        .logo {
-          width: 140px;
-          height: 70px;
-          div {
-            width: 100%;
-            height: 100%;
-            background: url(./assets/img/app/logo.gif) no-repeat 50%;
-            background-size: cover;
-          }
-        }
-        .operate-pdding {
-          //padding-left: 90px;
-        }
-        .operate {
-          > ul {
-            display: inline-block;
-            margin: 0px auto;
-            font-size: 0px;
-            width: unset !important;
-            > li {
-              line-height: 70px;
-              display: inline-block;
-              font-size: 14px;
-
-              .ivu-dropdown {
-                .ivu-dropdown-rel {
-                  a {
-                    color: #fff;
-                  }
-                }
-                .ivu-select-dropdown {
-                  a {
-                    color: #000
-                  }
-                }
-                padding-left: 15px;
-              }
-              .menu-dropdown {
-                .menu-dropdown-rel {
-                  a {
-                    color: #fff;
-                    transition: all .3s;
-                    cursor: pointer;
-                    display: block;
-                    line-height: 70px;
-                    span {
-                      padding: 0px 25px;
-                      line-height: 70px;
-                    }
-                    &:hover {
-                      color: #2d8cf0;
-                    }
-                  }
-                }
-                .menu-dropdown-rels {
-                  a {
-                    color: #fff;
-                    transition: all .3s;
-                    cursor: pointer;
-                    display: block;
-                    line-height: 70px;
-                    span {
-                      padding: 0px 25px;
-                      line-height: 70px;
-                    }
-                  }
-                }
-                .menu-dropdown-list {
-                  position: absolute;
-                  width: 100%;
-                  opacity: 0.96;
-                  background: #333333;
-                  top: 100%;
-                  left: 0;
-                  z-index: 1000;
-                  .content-dropdown {
-                    position: absolute;
-                    top: 100%;
-                    width: 100%;
-                    opacity: 0.96;
-                    background: #333333;
-                    color: #ffffff;
-                    .content {
-                      width: 1200px;
-                      margin: 0px auto;
-                      transition: height .3s;
-                      overflow: hidden;
-                      .column {
-                        display: flex;
-                        padding: 26px 0px;
-                        justify-content: space-between;
-                        text-align: left;
-                        &.info {
-                          padding: 10px 0;
-                          height: 50px;
-                          width: 800px;
-                          margin: 0 auto;
-                        }
-                        &.zx {
-                          padding: 10px 0;
-                          height: 50px;
-                          width: 400px;
-                          margin: 0 auto;
-                        }
-                        .info:hover {
-                          color: #2A99F2;
-                        }
-                        > div {
-                          //width: 15%;
-                          // &:last-of-type {
-                          //   > div {
-                          //     height: 155px;
-                          //   }
-                          // }
-                          // &:nth-last-child(2) {
-                          //   > div {
-                          //     height: 155px;
-                          //   }
-                          // }
-
-                        }
-                        .mark {
-                          border-bottom: none;
-                          padding-bottom: 0;
-                        }
-                        h2 {
-                          font-size: 18px;
-                          color: #FFFFFF;
-                          line-height: 32px;
-                          font-weight: normal;
-                          border-bottom: 1px solid rgba(255, 255, 255, 0.35);
-                          padding-bottom: 10px;
-                          &.info {
-                            border: none;
-                            cursor: pointer;
-                            font-size: 14px;
-                          }
-                        }
-                        a {
-                          margin-top: 10px;
-                          display: inline-block;
-                          font-size: 14px;
-                          color: #FFFFFF;
-                          line-height: 25px;
-                          &:hover {
-                            color: #377dff;
-                          }
-                        }
-                        p {
-                          font-size: 12px;
-                          color: #999999;
-                          line-height: 21px;
-                        }
-                      }
-                    }
-
-                  }
-                }
-              }
-
-            }
-          }
-          .line {
-            height: 2px;
-            background-color: #377dff;
-            position: absolute;
-            bottom: 0px;
-          }
-        }
       }
+     .pc-head a{
+        display: inline-block;
+        margin: 0;
+      }
+    .pc-head .p-collapse .lg-in {
+      color: #FF624B;
+      width: 66px;
+      display: inline-block;
+      text-align: center;
+      line-height: 40px;
+      font-size: 14px;
+      vertical-align: top;
+    }
+    .user-list{
+       width: 100px;
+      a{
+        color: #333333;
+      }
+    .user-fn{
+      position:relative;line-height:40px;padding-left:20px;color:#ffffff;
+      }  
+    }
+.pc-head .p-collapse .lg-re {
+  width: 68px;
+  display: inline-block;
+  height: 40px;
+  vertical-align: middle;
+  line-height: 40px;
+  text-align: center;
+  font-size: 14px;
+  background: #FF624B;
+}
+.logo {
+  width: 101px;
+  overflow: hidden;
+}
+
+.logo img {
+  width: 102%;
+  height: 167%;
+  margin-top: -13px;
+}
+
+.navbar-brand {
+  padding: 0;
+}
+
+.p-link {
+  padding: 10px 18px;
+  color: #fff;
+  font-size: 14px;
+}
+
+.pb {
+  border-left: 1px solid rgba(111, 115, 128, 0.52);
+  border-right: 1px solid rgba(111, 115, 128, 0.52);
+}
+
+.nav-list {
+  height: 60px;
+  background: #2D2523;
+  color: #fff;
+  font-family: MicrosoftYaHei;
+  display: flex;
+  border-bottom: 1px solid #9A9DA5;
+}
+
+.nav-list .nav-right {
+  width: 50px;
+  font-size: 14px;
+  padding: 10px 0;
+  text-align: center;
+  display: inline-block;
+  margin: 0 30px 0 20px;
+}
+
+.nav-list .nav-left {
+  display: inline-block;
+  margin: 0;
+}
+
+.nav-list .nav-left .np-box {
+  color: #514644;
+  font-size: 14px;
+  width: 220px;
+}
+
+.nav-list .nav-left .np-box,.np-bs a {
+  color: #514644;
+  text-decoration: none;
+}
+
+.nav-list .nav-left .np-box .np-title {
+  border-bottom: 1px solid #E8DFDD;
+  padding-bottom: 10px;
+}
+
+.nav-list .nav-left .np-box .np-title2 {
+  border-bottom: 1px solid #E8DFDD;
+  padding-bottom: 10px;
+  margin-top: 20px;
+}
+
+.nav-list .nav-left .np-bs {
+  color: #514644;
+  font-size: 14px;
+  width: 220px;
+}
+
+.nav-list .nav-left .np-bs .np-item a:hover {
+  color: #FF624B;
+}
+
+.nav-list .nav-left .np-bs .np-item {
+  margin: 12px 0;
+}
+
+.nav-list .nav-left .np-bs .np-item .buy-box {
+  float: right;
+}
+
+.nav-list .nav-left .np-bs .np-item .buy-box:hover>.buy-img {
+  display: none;
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+}
+
+.nav-list .nav-left .np-bs .np-item .buy-box:hover>.buy-font {
+  display: inline-block;
+  color: #4297F2;
+  font-size: 12px;
+  opacity: 1;
+  transition: all 0.3s ease-in-out;
+}
+
+.nav-list .nav-left .np-bs .np-dis {
+  color: #C5C0BF;
+}
+
+.nav-list .nav-left .np-bs .np-item .buy-font {
+  display: none;
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.nav-list .nav-left .nav-item {
+  display: inline-block;
+  // height: 60px;
+  line-height: 60px;
+  font-size: 14px;
+  padding: 0 10px;
+}
+
+.nav-list .line {
+  width: 20px;
+  height: 2px;
+  background-color: #FF624B;
+  position: absolute;
+  top: 99px;
+  left: 101px;
+  z-index: 9999;
+  transition: all ease-in-out 0.3s;
+}
+ 
     }
     #app-foot {
       #foot-free {
@@ -1601,39 +1703,30 @@
         color: #fff;
       }
     }
-  }
+}
 
-  .slide-fade-enter-active, .slide-fade-leave-active {
-    transition: all .3s ease;
-  }
 
-  .slide-fade-enter, .slide-fade-leave-to {
-    transform: translateY(-10px);
-    opacity: 0;
-  }
+a {
+  color: #fff;
+  text-decoration: none;
+}
 
-  .circle-dot-a {
-    display: inline-block;
-    height: 10px;
-    width: 10px;
-    border-radius: 50%;
-    background-color: rgb(237, 63, 20, 0.5);
-  }
+ul li {
+  list-style: none;
+}
 
-  .logo-img {
-    position: absolute;
-    left: 50%;
-    margin-left: -440px;
-    z-index: 1100
-  }
+a:hover {
+  color: #fff;
+  text-decoration: none;
+}
 
-  .complain-modal {
-    text-align: center;
-    > p {
-      font-size: 14px;
-      font-family: MicrosoftYaHei;
-      color: rgba(81, 70, 68, 1);
-      line-height: 24px;
-    }
-  }
+p {
+  margin: 0;
+  font-family: "pingfang sc medium", Microsoft YaHei;
+}
+
+span {
+  font-family: "pingfang sc medium", Microsoft YaHei;
+}
+
 </style>
