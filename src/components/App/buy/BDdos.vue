@@ -72,7 +72,7 @@
                   <p class="item-title" style="margin-top:2px;">价格</p>
                 </div>
                 <div>
-                  <div class="priceOrange">{{quickDdosHostPrice.toFixed(2)}}<span v-if="quickProtectSecIndex.value > 300">元/天</span><span v-else-if="timeForm.currentTimeValue.type == 'year'">元/年</span><span v-else>元/月</span></div>
+                  <div class="priceOrange">{{quickDdosHostPrice.toFixed(2)}}<span v-if="quickProtectSecIndex.value > 300">元/{{bigProtectTime}}天</span><span v-else-if="timeForm.currentTimeValue.type == 'year'">元/{{timeForm.currentTimeValue.value}}年</span><span v-else>元/{{timeForm.currentTimeValue.value}}月</span></div>
                 </div>
               </div>
             </div>
@@ -101,7 +101,7 @@
                     <p class="item-title" style="margin-top:2px;">价格</p>
                   </div>
                   <div>
-                    <div class="priceOrange">{{quickDdosSelectPrice}}<span v-if="quickProtectSecIndex.value > 300">元/天</span><span v-else-if="timeForm.currentTimeValue.type == 'year'">元/年</span><span v-else>元/月</span></div>
+                    <div class="priceOrange">{{quickDdosSelectPrice}}<span v-if="quickProtectSecIndex.value > 300">元/{{bigProtectTime}}天</span><span v-else-if="timeForm.currentTimeValue.type == 'year'">元/{{timeForm.currentTimeValue.value}}年</span><span v-else>元/{{timeForm.currentTimeValue.value}}月</span></div>
                   </div>
                 </div>
               </div>
@@ -255,7 +255,7 @@
                     <p class="item-title" style="margin-top:2px;">价格</p>
                   </div>
                   <div>
-                    <div class="priceOrange">{{vmConfig.cost.toFixed(2)}}<span v-if="customProtectSecIndex.value > 300">元/天</span><span v-else-if="timeForm.currentTimeValue.type == 'year'">元/年</span><span v-else>元/月</span></div>
+                    <div class="priceOrange">{{vmConfig.cost.toFixed(2)}}<span v-if="customProtectSecIndex.value > 300">元/{{bigCustomProtectTime}}天</span><span v-else-if="timeForm.currentTimeValue.type == 'year'">元/{{timeForm.currentTimeValue.value}}年</span><span v-else>元/{{timeForm.currentTimeValue.value}}月</span></div>
                   </div>
                 </div>
               </div>
@@ -285,7 +285,7 @@
                     <p class="item-title" style="margin-top:2px;">价格</p>
                   </div>
                   <div>
-                    <div class="priceOrange">{{customIpAndDdosSelectPrice.toFixed(2)}}<span v-if="customProtectSecIndex.value > 300">元/天</span><span v-else-if="timeForm.currentTimeValue.type == 'year'">元/年</span><span v-else>元/月</span></div>
+                    <div class="priceOrange">{{customIpAndDdosSelectPrice.toFixed(2)}}<span v-if="customProtectSecIndex.value > 300">元/{{bigCustomProtectTime}}天</span><span v-else-if="timeForm.currentTimeValue.type == 'year'">元/{{timeForm.currentTimeValue.value}}年</span><span v-else>元/{{timeForm.currentTimeValue.value}}月</span></div>
                   </div>
                 </div>
               </div>
@@ -402,7 +402,7 @@
                     <p class="item-title" style="margin-top:2px;">价格</p>
                   </div>
                   <div><!--{{vmConfig.cost.toFixed(2)}}<span v-if="customProtectSecIndex.value > 300">元/天</span><span v-else>元/月</span>-->
-                    <div class="priceOrange">{{IPConfig.cost.toFixed(2)}}<span v-if="customProtectSecIndex.value > 300">元/天</span><span v-else-if="timeForm.currentTimeValue.type == 'year'">元/年</span><span v-else>元/月</span></div>
+                    <div class="priceOrange">{{IPConfig.cost.toFixed(2)}}<span v-if="customProtectSecIndex.value > 300">元/{{bigCustomProtectTime}}天</span><span v-else-if="timeForm.currentTimeValue.type == 'year'">元/{{timeForm.currentTimeValue.value}}年</span><span v-else>元/{{timeForm.currentTimeValue.value}}月</span></div>
                   </div>
                 </div>
               </div>
@@ -467,7 +467,7 @@
                     <p class="item-title" style="margin-top:0px;">价格</p>
                   </div>
                   <div>
-                    <p style="font-size: 16px;color: #F85E1D;line-height: 20px;">{{dataDiskCost.toFixed(2)}}<span v-if="customProtectSecIndex.value > 300">元/天</span><span v-else-if="timeForm.currentTimeValue.type == 'year'">元/年</span><span v-else>元/月</span></p>
+                    <p style="font-size: 16px;color: #F85E1D;line-height: 20px;">{{dataDiskCost.toFixed(2)}}<span v-if="customProtectSecIndex.value > 300">元/{{bigCustomProtectTime}}天</span><span v-else-if="timeForm.currentTimeValue.type == 'year'">元/{{timeForm.currentTimeValue.value}}年</span><span v-else>元/{{timeForm.currentTimeValue.value}}月</span></p>
                   </div>
                 </div>
               </div>
@@ -871,7 +871,7 @@
           diskType: 'ssd',
           kernel: 1,
           RAM: 1,
-          diskSize: 100,
+          diskSize: 40,
           cost: 0,
           coupon: 0
         },
