@@ -461,7 +461,7 @@
                                 </RadioGroup>
                             </div>
                             <div style="line-height:26px;">
-                                <span class="link-te">添加域名帮助文档</span>
+                                <a href="https://zschj.xrcloud.net/support_docs/1JWD4oQgr6_1JWpJJSYH3.html" target="_blank" class="link-te">查看域名添加帮助文档</a>
                             </div>
                         </div>
                         <!--      网站业务     -->
@@ -565,7 +565,7 @@
                                 </Select>
                             </div>
                             <div style="line-height:26px;">
-                                <span class='link-te'>查看域名添加指引</span>
+                                <a href="https://zschj.xrcloud.net/support_docs/1JWD4oQgr6_1JWpqlNAyn.html" target="_blank" class='link-te'>查看防护配置添加指引</a>
                             </div>
                         </div>
                         <div class="dp-box">
@@ -1665,7 +1665,6 @@ export default {
         protectSwicth:true,
         emptyLink:false,
         ccIndex:0,
-        ccDisabled:true,
         ccProtectList:[
             {
                 type: 'expand',
@@ -1725,13 +1724,12 @@ export default {
                         {
                             props:{
                                 value:params.row.ccprotect == 0 ?true:false,
-                                disabled:params.row._disableExpand
+                                disabled:params.row._disableExpand == true ? true : false
                             },
                             on: {
                                 'on-change': (value) => {
                                     this.ccProtectData[params.row._index]._disableExpand = false;
                                     this.ccProtectData[params.row._index].ccprotect=value?0:1;
-                                    
                                 }
                             }
                         },
@@ -1758,9 +1756,8 @@ export default {
                         },
                         on:{
                             "on-change":(val)=>{    
-                                 this.ccProtectData[params.row._index]._disableExpand = false;
-                             this.ccProtectData[params.row._index].protecttype=val;
-                               
+                                this.ccProtectData[params.row._index]._disableExpand = false;
+                                this.ccProtectData[params.row._index].protecttype=val;
                             }
                         }
                     },[
@@ -1817,7 +1814,7 @@ export default {
                             },
                             on:{
                                 click:()=>{
-                                    this.ccDisabled = false;
+                                    this.ccProtectData[params.row._index]._disableExpand = false;
                                     params.row._disableExpand = false;
                                 }
                             }
@@ -1830,6 +1827,7 @@ export default {
                             },
                             on:{
                                 click:()=>{
+                                    this.ccProtectData[params.row._index]._disableExpand = false;
                                     params.row._disableExpand = false;
                                     this.saveConfig(params.row._index);
                                 }
@@ -2801,7 +2799,6 @@ export default {
             if(res.status == 200 && res.data.status == 1){
                 this.$Message.info(res.data.message);
                 this.ccShow = true;
-                this.ccDisabled = true;
                 this.ccProtectData[index]._disableExpand = true;
                 this.getProtectCC(this.setMeal,1);
             } else {

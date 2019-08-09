@@ -136,7 +136,7 @@
             <p style="font-size:14px;">订单总额：<span>￥{{ddosipDetails.cost}}</span></p>
             <p class="dp-tui">退款金额：<span>¥{{refundPrice}}</span></p>
              <div slot="footer" class="modal-footer-border">
-                 <span class="b-lf">查看退款说明</span>
+                 <a href="https://zschj.xrcloud.net/support_docs/1JWD4oQgr6_1JWUt0EHPL.html" target="_blank" class="b-lf">查看退款说明</a>
                 <Button type="ghost" @click="showModal.refund = false">取消</Button>
                 <Button type="primary" @click="packageRefund" :loading='loading'>确定</Button>
             </div>

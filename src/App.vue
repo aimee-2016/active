@@ -548,7 +548,7 @@
                 prod: '云安全',
                 prodItem: [
                   {title: '防火墙', desc: '自定义规则、协议、端口', path: '/firewall/'},
-                  {title: 'DDOS高防IP', desc: '硬件防护、40G超大流量', path: '/ddosip/'},
+                  {title: 'DDOS高防IP', desc: '最高10T防护容量', path: '/ddosip/'},
                   {
                     title: 'SSL证书',
                     desc: '网站可信身份认证与安全数据传输',

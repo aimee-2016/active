@@ -60,7 +60,7 @@
                           <span style="color:#FF392A;">我们将预先冻结您所选峰值防护一天的费用，在支付成功之后自动冻结，请保持余额充足，</span>
                           如超过封顶抗攻击量，则回源，2小时后自动解封。
                         </p>
-          <p class="b-font">点击查看弹性防护带宽计费详情</p>
+                        <p class="b-font"><a href="https://zschj.xrcloud.net/support_docs/1JWD4oQgr6_1JWTi9fgP9.html" target="_blank">点击查看弹性防护带宽计费详情</a></p>
                     </div>
              </div>
             <div class="b-meal">
@@ -131,7 +131,7 @@
       </div>
       <div style="margin-top: 20px">
                 <p style="text-align: left;font-size: 14px;color: #2A99F2;cursor: pointer"
-                  @click="$router.push('computed/3-1')">查看计价详情</p>
+                  ><a href="https://zschj.xrcloud.net/support_docs/1JWD4oQgr6_1JWTi9fgP9.html" target="_blank">查看计价详情</a></p>
                 <p style="text-align: right;font-size: 14px;color: #666666;margin-bottom: 10px;">
                    <!-- <span v-if="timeForm.currentTimeType == 'annual'&&timeForm.currentTimeValue.type == 'year'">折后费用：</span> -->
                  <span >费用：</span><span style="font-size: 24px;color: #EE6723;">{{totalPrice.toFixed(2)}}元</span><span

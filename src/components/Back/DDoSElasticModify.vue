@@ -90,7 +90,7 @@
                             </div>
                         </div>
                     </div>
-                     <p class="du-nft">购买和计费说明</p>
+                     <p class="du-nft"><a href="https://zschj.xrcloud.net/support_docs/1JWD4oQgr6_1JWuF0p7Wc.html" target="_blank">购买和计费说明</a></p>
                     <div style="display:flex;">
                         <div>
                             <p style="color:#FF9801;line-height:32px;">提示：当您调整您的弹性防护峰值之时，我们将根据弹性防护的阶梯计费表来计算您的冻结费用。</p>
