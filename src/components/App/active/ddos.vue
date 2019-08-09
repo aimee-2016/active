@@ -617,7 +617,7 @@ export default {
       if (response.status == 200 && response.data.status == 1) {
         next()
       } else {
-        next({ path: '/activeBefore' })
+        next({ path: '/activebefore' })
       }
     })
   },
