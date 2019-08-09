@@ -90,6 +90,59 @@
       </div>
     </Modal>
 
+    <Modal v-model="showModal.newDdosIPModal" width="500" :scrollable="true">
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">新建弹性IP</span>
+      </p>
+      <div class="universal-modal-content-flex" id="moli2">
+        <Form :model="newDdosIPForm" :rules="newIPRuleValidate" ref="newIPFormValidate" style="width: 100%">
+          <FormItem label="所属VPC" prop="vpc">
+            <Select v-model="newDdosIPForm.vpc" placeholder="请选择所属VPC" style="width:300px;float: right;">
+              <Option v-for="item in newDdosIPForm.VPCOptions" :key="item.vpcid" :value="item.vpcid">{{item.vpcname}}
+              </Option>
+            </Select>
+          </FormItem>
+          <FormItem label="购买方式" prop="timeType" id="fgfg">
+            <Select v-model="newDdosIPForm.timeType" @on-change="changeTimeType"  style="width:145px;float: left;margin-left: 4px;">
+              <Option v-for="item in customTimeOptionsDdos.renewalType" :value="item.value"
+                      :key="item.value">{{ item.label }}
+              </Option>
+            </Select>
+          </FormItem>
+          <FormItem label="" prop="timeValue" v-if="newDdosIPForm.timeType!='current'" id="gfgf1">
+            <Select v-model="newDdosIPForm.timeValue" @on-change="queryNewDdosIPPrice" style="width:145px;float: right;">
+              <Option v-for="item in customTimeOptionsDdos[newDdosIPForm.timeType]" :value="item.value" :key="item.value">
+                {{item.label}}
+              </Option>
+            </Select>
+          </FormItem>
+          <FormItem label="带宽" id="jiakuan">
+            <i-slider v-model="newDdosIPForm.bandWidth" :min=1 :max=100 unit="MB" :points="[20,50]"
+                      style="width:300px;vertical-align: middle;margin-left: 7px;" @change="queryNewDdosIPPrice"></i-slider>
+            <InputNumber :max="100" :min="1" v-model="newDdosIPForm.bandWidth" :editable="false"
+                         style="width: 60px;height: 30px;margin-left: 15px;" @on-change="queryNewDdosIPPrice" :precision="0"></InputNumber>
+            <span style="margin-left: 5px;">MB</span>
+          </FormItem>
+          <FormItem label="防护宽带">
+            <div class="zoneItem" v-for="(item, index) in customProtectList" :key="((index+11)*22)" 
+                      :class="{'selectProtect': item.value == customProtectSecIndex.value}" @click="changeCustomProtectSelect(item)">{{item.name}}</div>
+          </FormItem>
+					<div style="margin-top: 20px;">
+						<span style="font-size: 16px;color: rgba(17,17,17,0.65);line-height: 32px;float:left">资费</span>
+						<span style="font-size: 24px;color:#FF624B;line-height: 32px;float:left;margin-left: 10px;">￥{{newDdosIPForm.cost}} <span
+						  v-if="newDdosIPForm.timeValue != ''">/</span>
+						  <span v-if="newDdosIPForm.timeType == 'year' && newDdosIPForm.timeValue != ''" style="font-size: 16px;">{{newDdosIPForm.timeValue}}年</span>
+						  <span v-if="newDdosIPForm.timeType == 'month' && newDdosIPForm.timeValue != ''" style="font-size: 16px;">{{newDdosIPForm.timeValue}}月</span>
+						  <!--<span v-if="newDdosIPForm.timeType == 'current'">/ <span style="font-size: 16px;">时</span></span>-->
+						</span>
+					</div>
+        </Form>
+      </div>
+      <div slot="footer" class="modal-footer-border">
+        <Button type="primary" @click="handleNewIPSubmit">完成配置</Button>
+      </div>
+    </Modal>
+
     <!-- 为云主机绑定弹性IP -->
     <Modal v-model="showModal.bindIPForHost" width="550" :scrollable="true">
       <p slot="header" class="modal-header-border">
@@ -382,7 +435,8 @@
       </div>
       <p slot="footer" class="modal-footer-s">
         <Button @click="showModal.withoutHost = false">取消</Button>
-        <Button type="primary" @click="showModal.withoutHost = false,showModal.newIPModal = true">仍然创建</Button>
+        <Button type="primary" v-if="hide == 2" @click="showModal.withoutHost = false,showModal.newDdosIPModal = true">仍然创建</Button>
+        <Button type="primary" v-else @click="showModal.withoutHost = false,showModal.newIPModal = true">仍然创建</Button>
       </p>
     </Modal>
   </div>
@@ -436,6 +490,7 @@
           // 续费modal
           renew: false,
           newIPModal: false,
+          newDdosIPModal: false,
           bindIPForHost: false,
           bindIPForDdosHost: false,
           bindIPForNAT: false,
@@ -463,6 +518,12 @@
         adjustFormType: '',
         customTimeOptions: {
           renewalType: [{label: '包年', value: 'year'}, {label: '包月', value: 'month'}, {label: '实时', value: 'current'}],
+          year: [{label: '1年', value: 1}, {label: '2年', value: 2}, {label: '3年', value: 3}],
+          month: [{label: '1月', value: 1}, {label: '2月', value: 2}, {label: '6月', value: 6}],
+        },
+        customTimeOptionsDdos: {
+          renewalType: [{label: '包年', value: 'year'}, {label: '包月', value: 'month'}, {label: '按天', value: 'day'}],
+          day: [{label: '1天', value: 1}, {label: '2天', value: 2}, {label: '5天', value: 5}, {label: '10天', value: 10}, {label: '15天', value: 15}],
           year: [{label: '1年', value: 1}, {label: '2年', value: 2}, {label: '3年', value: 3}],
           month: [{label: '1月', value: 1}, {label: '2月', value: 2}, {label: '6月', value: 6}],
         },
@@ -838,6 +899,15 @@
           timeValue: '',
           cost: 0
         },
+        // 新建高防区域弹性IP
+        newDdosIPForm: {
+          VPCOptions: [],
+          vpc: '',
+          bandWidth: 1,
+          timeType: '',
+          timeValue: '',
+          cost: 0
+        },
         // 绑定IP到云主机表单
         bindForHostForm: {
           host: '',
@@ -925,7 +995,11 @@
             zoneId: $store.state.zone.zoneid
           }
         }).then(response => {
-          this.newIPForm.VPCOptions = response.data.result
+          if(this.hide == 2){
+            this.newDdosIPForm.VPCOptions = response.data.result
+          } else {
+            this.newIPForm.VPCOptions = response.data.result
+          }
         })
       },
 			testjump(){
@@ -1109,7 +1183,7 @@
           }).then(res=>{
             if(res.status == 200 && res.data.status ==1){
               if(res.data.result.data.length != 0){
-                this.showModal.newIPModal = true
+                this.showModal.newDdosIPModal = true
               } else{
                 this.showModal.withoutHost = true
               }
@@ -1147,6 +1221,48 @@
           }
         })
       }),
+      // 高防区域查询价格
+      queryNewDdosIPPrice(){
+        if(this.newDdosIPForm.timeValue != '' && this.newDdosIPForm){
+          this.queryDdosFunction()
+        }
+      },
+      // 新建高防区域，IP价格查询，计算带宽与防护的价格，加在一起
+      queryFunction: debounce(500, function () {
+        let ddosPrice = axios.post('device/queryDdosPrice.do', {
+          ddosProtectNumber: '',
+          timeValue: this.newDdosIPForm.timeValue,
+          timeType: this.newDdosIPForm.timeType,
+          zoneId: $store.state.zone.zoneid
+        });
+
+        let ipPrice = axios.post('ddosImitationhost/queryIpPrice.do', {
+          brand: this.newDdosIPForm.bandWidth,
+          timeValue: this.newDdosIPForm.timeValue,
+          timeType: this.newDdosIPForm.timeType,
+          zoneId: $store.state.zone.zoneid
+        });
+
+        /*axios.post('device/queryIpPrice.do', {
+          brand: this.newIPForm.bandWidth,
+          timeValue: this.newIPForm.timeValue,
+          timeType: this.newIPForm.timeType,
+          zoneId: $store.state.zone.zoneid
+        }).then(response => {
+        axios.post('device/queryIpPrice.do', {
+          brand: this.newIPForm.bandWidth,
+          timeValue: this.newIPForm.timeValue,
+          timeType: this.newIPForm.timeType,
+          zoneId: $store.state.zone.zoneid
+        }).then(response => {
+          if (response.status == 200) {
+            this.newIPForm.cost = response.data.cost
+          } else {
+            this.newIPForm.cost = '正在计算'
+          }
+        })*/
+      }),
+
       // 新建IP提交订单
       handleNewIPSubmit() {
         this.$refs.newIPFormValidate.validate(validate => {
