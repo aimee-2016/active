@@ -88,18 +88,18 @@ const store = new Vuex.Store({
       }
     },
     /* 获取地区信息 */
-    getZoneList({commit}) {
-      // 如果sessionStorage还没有缓存
-      if (!sessionStorage.getItem('zoneList')) {
-        axios.get('information/zone.do').then(response => {
-          if (response.status == 200 && response.data.status == 1) {
-            sessionStorage.setItem('zoneList', JSON.stringify(response.data.result))
-          } else {
-            throw new Error('information/zone.do接口异常')
-          }
-        })
-      }
-    }
+    // getZoneList({commit}) {
+    //   // 如果sessionStorage还没有缓存
+    //   if (!sessionStorage.getItem('zoneList')) {
+    //     axios.get('information/zone.do').then(response => {
+    //       if (response.status == 200 && response.data.status == 1) {
+    //         sessionStorage.setItem('zoneList', JSON.stringify(response.data.result))
+    //       } else {
+    //         throw new Error('information/zone.do接口异常')
+    //       }
+    //     })
+    //   }
+    // }
   }
 })
 
