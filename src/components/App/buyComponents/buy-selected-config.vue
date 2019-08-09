@@ -10,6 +10,7 @@
           <li>购买时长：{{serverConfigText.buyTimeText}}</li>
           <li>镜像：{{serverConfigText.mirrorName}}</li>
           <li>规格：{{serverConfigText.cpu + "核" + serverConfigText.memory + "G"}}</li>
+          <li v-if="serverConfigText.gpuType">GPU类型：{{ serverConfigText.gpuType}}</li>
           <li>系统盘与存储：{{serverConfigText.rootDiskSize + "G " + serverConfigText.rootDiskType + " " + serverConfigText.diskListText}}</li>
           <li
             v-if="serverConfigText.serverType ==='NOKIAServer'"
@@ -192,10 +193,10 @@ export default {
         case "month":
           billingType = "包年包月";
           buyTime = config.buyTime + "月";
-          break;
           if (config.buyTime > 11) {
             buyTime = config.buyTime / 12 + "年";
           }
+          break;
         case "current":
           billingType = "实时计费";
           buyTime = "实时计费";

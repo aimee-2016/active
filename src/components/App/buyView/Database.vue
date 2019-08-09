@@ -42,7 +42,7 @@
         ></buy-login-info>
       </div>
       <div class="lists">
-        <buy-budget-list></buy-budget-list>
+        <buy-budget-list ref="budget"></buy-budget-list>
         <buy-selected-config
           :current-database-config="currentDatabaseConfig"
           @addToCart="addToCart"
@@ -408,7 +408,8 @@ export default {
         ],
         buyCount: 1,
         buyDay: 1
-      }
+      },
+      buybudget: []
     };
   },
   created() {
@@ -735,7 +736,11 @@ export default {
         this.$Message.info("您输入的密码不符合格式要求");
         return;
       }
-      this.$Message.success("添加成功");
+      this.buybudget = [];
+      if (localStorage.getItem("buybudget")) {
+        this.buybudget = JSON.parse(localStorage.getItem("buybudget"));
+      }
+      this.addDatabase();
     },
     // 查询服务器配置价格价格
     queryServerSpecificationPrice: debounce(500, function() {
@@ -797,6 +802,56 @@ export default {
         }
       });
     }),
+    addDatabase() {
+      let diskType = "",
+        diskSize = "";
+      for (let disk of this.serverSpecification.systemDisk) {
+        diskType += `${disk.type},`;
+        diskSize += `${disk.size},`;
+      }
+      let params = {
+        zoneId: this.area.zoneid,
+        zoneName: this.area.zonename,
+        count: this.timeConfig.buyCount,
+        templateId: this.mirrorConfig.mirrorID,
+        templateName: this.mirrorConfig.mirrorName,
+        publicIPType: this.serverNetwork.publicIPType,
+        bandWidth: this.serverNetwork.bandwidth,
+        timeType: this.billingType,
+        timeValue: this.timeConfig.buyTime,
+        isAutoRenew: this.loginInfo.autoRenewal ? "1" : "0",
+        cpuNum: this.serverSpecification.CPU,
+        memory: this.serverSpecification.memory,
+        rootDiskType: this.serverSpecification.rootDiskType,
+        rootDiskSize: this.serverSpecification.rootDiskSize,
+        vpcId: this.serverNetwork.vpcId,
+        networkId: this.serverNetwork.networkId,
+        firewall: this.serverNetwork.firewallGroup[0].acllistname,
+        network:
+          this.serverNetwork.vpcName + " -- " + this.serverNetwork.networkName,
+        password: this.loginInfo.serverPassword,
+        VMName: this.loginInfo.serverName,
+        diskType,
+        diskSize,
+        diskList: this.serverSpecification.systemDisk,
+        type: "database",
+        price: this.totalCost
+      };
+      if (
+        parseInt(this.timeConfig.buyTime) > 11 &&
+        this.billingType !== "current"
+      ) {
+        // 购买时间单位为年
+        params.timeType = "year";
+        params.timeValue = this.timeConfig.buyTime / 12 + "";
+      }
+      if (this.serverNetwork.publicIPType !== "buyNow") {
+        params.bandWidth = "0"; // 没有选择购买IP
+      }
+      this.buybudget.push(params);
+      localStorage.setItem("buybudget", JSON.stringify(this.buybudget));
+      this.$refs.budget.setBuyBudget();
+    },
     createdDatabaseOrder: debounce(500, function() {
       let url = "database/createDB.do";
       let diskType = "",

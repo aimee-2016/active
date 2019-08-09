@@ -18,7 +18,7 @@
         ></buy-ip-specification>
       </div>
       <div class="lists">
-        <buy-budget-list></buy-budget-list>
+        <buy-budget-list ref="budget"></buy-budget-list>
         <buy-selected-config
           :current-networkip-config="currentNetworkIPConfig"
           @addToCart="addToCart"
@@ -193,7 +193,8 @@ export default {
         buyCount: 1,
         buyDay: 1
       },
-      buyStep: 3
+      buyStep: 3,
+      buybudget: []
     };
   },
   created() {
@@ -301,7 +302,11 @@ export default {
         this.$Message.info("请选择需要购买的区域");
         return;
       }
-      this.$Message.success("添加成功");
+      this.buybudget = [];
+      if (localStorage.getItem("buybudget")) {
+        this.buybudget = JSON.parse(localStorage.getItem("buybudget"));
+      }
+      this.addNetworkIP();
     },
     queryIPPrice: debounce(500, function() {
       let url = "device/queryIpPrice.do";
@@ -327,6 +332,31 @@ export default {
         }
       });
     }),
+    addNetworkIP() {
+      var params = {
+        zoneId: this.area.zoneid,
+        timeType: this.billingType,
+        timeValue: this.timeConfig.buyTime,
+        count: this.timeConfig.buyCount,
+        isAutorenew: this.network.autoRenewal ? "1" : "0",
+        brandWith: this.network.bandwidth,
+        vpcId: this.network.vpcId,
+        vpcName: this.network.vpcName,
+        type: "networkip",
+        price: this.totalCost
+      };
+      if (
+        parseInt(this.timeConfig.buyTime) > 11 &&
+        this.billingType !== "current"
+      ) {
+        // 购买时间单位为年
+        params.timeType = "year";
+        params.timeValue = this.timeConfig.buyTime / 12 + "";
+      }
+      this.buybudget.push(params);
+      localStorage.setItem("buybudget", JSON.stringify(this.buybudget));
+      this.$refs.budget.setBuyBudget();
+    },
     createdIPOrder: debounce(500, function() {
       let url = "network/createPublicIp.do";
       var params = {

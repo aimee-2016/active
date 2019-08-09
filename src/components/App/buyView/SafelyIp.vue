@@ -25,7 +25,7 @@
         ></buy-defend>
       </div>
       <div class="lists">
-        <buy-budget-list></buy-budget-list>
+        <buy-budget-list ref="budget"></buy-budget-list>
         <buy-selected-config
           :current-safelyip-config="currentSafelyIPConfig"
           @addToCart="addToCart"
@@ -227,7 +227,8 @@ export default {
         buyCount: 1,
         buyDay: 1
       },
-      buyStep: 3
+      buyStep: 3,
+      buybudget: []
     };
   },
   created() {
@@ -359,13 +360,18 @@ export default {
         this.$Message.info("请选择需要购买的区域");
         return;
       }
+      this.createdSafelyIPOrder();
     },
     addToCart() {
       if (!this.area) {
         this.$Message.info("请选择需要购买的区域");
         return;
       }
-      this.$Message.success("添加成功");
+      this.buybudget = [];
+      if (localStorage.getItem("buybudget")) {
+        this.buybudget = JSON.parse(localStorage.getItem("buybudget"));
+      }
+      this.addSafelyIP();
     },
     queryIPPrice: debounce(500, function() {
       let url = "device/queryIpPrice.do";
@@ -416,7 +422,9 @@ export default {
           this.defendSpecification.coupon = 0;
         }
       });
-    })
+    }),
+    addSafelyIP() {},
+    createdSafelyIPOrder() {}
   },
   computed: {
     userInfo() {
