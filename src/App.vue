@@ -1328,6 +1328,14 @@
   font-size: 14px;
   padding: 0 10px;
 }
+.nav-list .nav-left .nav-item a{
+   color: #fff;
+  text-decoration: none;
+}
+.nav-list .nav-left .nav-item a:hover{
+  color: #fff;
+  text-decoration: none;
+}
 
 .nav-list .line {
   width: 20px;
@@ -1706,19 +1714,13 @@
 }
 
 
-a {
-  color: #fff;
-  text-decoration: none;
-}
+
 
 ul li {
   list-style: none;
 }
 
-a:hover {
-  color: #fff;
-  text-decoration: none;
-}
+
 
 p {
   margin: 0;
