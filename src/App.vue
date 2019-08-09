@@ -238,7 +238,7 @@
     </div>
     <!-- 客服浮动块 -->
     <div class="affix">
-      <div class="registerImg" @click="$router.push('/activity/free/')">
+      <div class="registerImg" @click="$router.push('/activity/free')">
         <p>免费领主机</p>
       </div>
       <!--<img src="./assets/img/app/regiterTag.png"/>-->
@@ -514,7 +514,7 @@
                 prodItem: [
                   {title: '云硬盘', desc: '性能型、超高性能型、存储型', path: '/disk/'},
                   {title: '云硬盘备份', desc: '高可用保障、敏捷易用', path: '/diskbackup/'},
-                  {title: '对象存储', desc: '安全稳定，海量便捷', path: '/objectstorage/'}
+                  {title: '对象存储', desc: '安全稳定，海量便捷', path: '/objectstorage'}
                 ]
               },
               {
@@ -669,7 +669,7 @@
             desc: [
               {subTitle: '云硬盘', url: '/disk/'},
               {subTitle: '云硬盘备份', url: '/diskbackup/'},
-              {title: '对象存储', url: '/objectstorage/'}
+              {title: '对象存储', url: '/objectstorage'}
             ]
           },
           {

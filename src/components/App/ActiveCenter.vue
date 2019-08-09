@@ -65,7 +65,7 @@
           </div>
         </my-carousel-item> -->
         <my-carousel-item class="carousel-item">
-          <div @click="push('/activity/free/')"
+          <div @click="push('/activity/free')"
                style="cursor: pointer;background: #F56B23;">
             <div class="free-receive">
               <div class="wrap">
@@ -81,7 +81,7 @@
           </div>
         </my-carousel-item>
         <my-carousel-item class="carousel-item">
-          <div  @click="push('/activity/objectstorage/')"
+          <div  @click="push('/activity/objectstorage')"
             style="cursor: pointer;">
             <div class="obj-storage">
               <div class="wrap">
@@ -262,7 +262,7 @@
             desc: '保证金闪退',
             time: '2019.06.26开始',
             activeObj: '云主机 新注册用户',
-            url: '/activity/free/',
+            url: '/activity/free',
             isStart: true,
             weight: '1'
           },
@@ -281,7 +281,7 @@
             desc: '安全稳定高效的云端存储服务 免费试用50G',
             time: ' 2018年8月1日',
             activeObj: '对象存储 新老用户',
-            url: '/activity/objectstorage/',
+            url: '/activity/objectstorage',
             isStart: true,
             weight: '1',
             color: 'black'
@@ -293,7 +293,7 @@
             time: '2018.10.19开始',
             // time: '即将上线',
             activeObj: '云数据库 新老用户',
-            url: '/activity/hotdatabase/',
+            url: '/activity/hotdatabase',
             isStart: true,
             weight: '1',
             color: 'black'
