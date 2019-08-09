@@ -29,7 +29,7 @@
             </Button>
             <Dropdown-menu slot="list">
               <Dropdown-item name="adjust">调整带宽</Dropdown-item>
-              <Dropdown-item name="charges">资费变更</Dropdown-item>
+              <Dropdown-item name="charges" v-if="hide != 2">资费变更</Dropdown-item>
               <Dropdown-item name="renewIP">续费IP</Dropdown-item>
             </Dropdown-menu>
           </Dropdown>
@@ -701,8 +701,10 @@
                   break
                 case 3:
                   value = `实时计费(${obj.row.cpCase}/时)`
+                  break
                 case 5:
-                  value = `包天(${obj.row.cpCase})/天` 
+                  value = `包天(${obj.row.cpCase})/天`
+                  break
               }
               return h('span', value)
             }
@@ -1212,7 +1214,7 @@
           this.bindForDdosHostForm.row = row
           this.showModal.bindIPForDdosHost = true
           // 获取手游能绑定弹性IP的高防云服务器
-          this.$http.get('ddosImitationhost/listVirtualMachines.do', {
+          this.$http.get('ddosImitationhost/listHighMachines.do', {
             params: {
               vpcId: row.vpcid,
               num: 0
