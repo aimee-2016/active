@@ -53,6 +53,9 @@ const store = new Vuex.Store({
           state.zone = zone
         }
       }
+      if (!state.zone){
+        state.zone = zoneList[0]
+      }
     },
     setMsg(state, Msg) {
       state.Msg = Msg

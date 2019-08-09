@@ -29,7 +29,7 @@
             </Button>
             <Dropdown-menu slot="list">
               <Dropdown-item name="adjust">调整带宽</Dropdown-item>
-              <Dropdown-item name="charges">资费变更</Dropdown-item>
+              <Dropdown-item name="charges" v-if="hide != 2">资费变更</Dropdown-item>
               <Dropdown-item name="renewIP">续费IP</Dropdown-item>
             </Dropdown-menu>
           </Dropdown>
@@ -116,6 +116,34 @@
       </div>
       <div slot="footer" class="modal-footer-border">
         <Button type="primary" @click="bindHostSubmit">确认绑定</Button>
+      </div>
+    </Modal>
+    <!-- 绑定高防云服务器弹性IP -->
+    <Modal v-model="showModal.bindIPForDdosHost" width="550" :scrollable="true">
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">绑定弹性IP</span>
+      </p>
+      <div class="universal-modal-content-flex">
+        <p style="font-size: 12px;color: #666666;margin-bottom:20px;">您正为弹性IP<span style="color: #2A99F2 ;">{{bindForDdosHostForm.row.publicip}}</span>绑定云主机。
+        </p>
+        <!-- <Icon type="ios-help-outline"></Icon> -->
+        <Form :model="bindForDdosHostForm" :rules="bindForHostRuleValidate" ref="bindForHostFormValidate">
+          <FormItem label="选择云主机" prop="host">
+            <Select v-model="bindForDdosHostForm.host" placeholder="云主机名称">
+              <Option v-for="(item,index) in bindForDdosHostForm.hostOptions" :key="index" :value="item.computerid">
+                {{item.computername}}
+              </Option>
+            </Select>
+          </FormItem>
+          <span style="font-size:14px;font-family:MicrosoftYaHei;color:rgba(42,153,242,1);cursor: pointer;position: absolute;left: 48%;top: 49%;" @click="$router.push('buy/ddos/')">
+              <img style="transform: translate(0px,3px);" src="../../assets/img/public/icon_plussign.png"/>
+              购买高防云服务器
+            </span>
+        </Form>
+        <p style="font-size: 12px;color: #999999">提示：弹性IP只能绑定一个资源，当您绑定该资源后，将不能再将该弹性IP用于其他资源绑定。</p>
+      </div>
+      <div slot="footer" class="modal-footer-border">
+        <Button type="primary" @click="bindDdosHostSubmit">确认绑定</Button>
       </div>
     </Modal>
     <!-- 为云数据库绑定弹性IP -->
@@ -409,6 +437,7 @@
           renew: false,
           newIPModal: false,
           bindIPForHost: false,
+          bindIPForDdosHost: false,
           bindIPForNAT: false,
           bindIPForDatabase: false,
           charges: false,
@@ -643,6 +672,10 @@
               {
                 label: '实时',
                 value: 3
+              },
+              {
+                label: '包天',
+                value: 5
               }
             ],
             filterMultiple: false,
@@ -653,6 +686,8 @@
                 return row.caseType == 2;
               } else if (value === 3) {
                 return row.caseType == 3;
+              } else if (value === 5){
+                return row.caseType == 5
               }
             },
             render(h, obj) {
@@ -666,6 +701,10 @@
                   break
                 case 3:
                   value = `实时计费(${obj.row.cpCase}/时)`
+                  break
+                case 5:
+                  value = `包天(${obj.row.cpCase})/天`
+                  break
               }
               return h('span', value)
             }
@@ -726,7 +765,7 @@
                       name: 'host'
                     },
                     style: {
-                        display: this.hide == -1 ?'block':'none'
+                        display: this.hide == 0 ? 'block' : 'none'
                       },
                   }, '云主机'),
                     h('DropdownItem', {
@@ -734,9 +773,17 @@
                         name: 'gpu'
                       },
                       style: {
-                        display: this.hide == -1 ?'none':'block'
+                        display: this.hide == 1 ? 'block' : 'none'
                       },
                     }, 'GPU云服务器'),
+                    h('DropdownItem', {
+                      attrs: {
+                        name: 'ddosHost'
+                      },
+                      style: {
+                        display: this.hide == 2 ? 'block' : 'none'
+                      },
+                    }, '高防云服务器'),
                     h('DropdownItem', {
                       attrs: {
                         name: 'NAT'
@@ -797,6 +844,12 @@
           hostOptions: [],
           row: {}
         },
+        // 绑定IP到高防云主机
+        bindForDdosHostForm: {
+          host: '',
+          hostOptions: '',
+          row: {}
+        },
         bindForGpuForm: {
           gpu: '',
           gpuOptions: [],
@@ -849,7 +902,7 @@
           bandwidth: '',
           endTime: ''
         },
-        hide: $store.state.zone.zonename.indexOf('GPU'),
+        hide: $store.state.zone.gpuserver,
         intervalInstance: null,
         ipTimer: null,
         unbundleResource: {},
@@ -1015,7 +1068,7 @@
               })
             }
           })
-        } else {
+        } else if(this.$store.state.zone.gpuserver == 1){
           let url = 'gpuserver/listGpuServer.do'
           this.$http.get(url, {
             params: {
@@ -1041,6 +1094,27 @@
               }
             } else {
                 this.$message.info({
+                content: res.data.message
+              })
+            }
+          })
+        } else if(this.$store.state.zone.gpuserver == 2){
+          let url = 'ddosImitationhost/listHighMachines.do'
+          this.$http.get(url, {
+            params: {
+              returnList: 1,
+              page: 1,
+              pageSize: 10
+            }
+          }).then(res=>{
+            if(res.status == 200 && res.data.status ==1){
+              if(res.data.result.data.length != 0){
+                this.showModal.newIPModal = true
+              } else{
+                this.showModal.withoutHost = true
+              }
+            } else{
+              this.$message.info({
                 content: res.data.message
               })
             }
@@ -1136,6 +1210,36 @@
               this.bindForHostForm.hostOptions = bindIphostList
             }
           })
+        } else if (type = 'ddosHost'){
+          this.bindForDdosHostForm.row = row
+          this.showModal.bindIPForDdosHost = true
+          // 获取手游能绑定弹性IP的高防云服务器
+          this.$http.get('ddosImitationhost/listHighMachines.do', {
+            params: {
+              vpcId: row.vpcid,
+              num: 0
+            }
+          }).then(response => {
+            if (response.status == 200 && response.data.status == 1) {
+              var openHostlist = []
+              var closelist = []
+              var waitList = []
+              if (response.data.result.open) {
+                openHostlist = response.data.result.open.list
+              }
+              if (response.data.result.close) {
+                closelist = response.data.result.close.list
+              }
+              if (response.data.result.wait) {
+                waitList = response.data.result.wait.list
+              }
+              var hostList = openHostlist.concat(closelist).concat(waitList)
+              var bindIphostList = hostList.filter((item) => {
+                return item.status != 2
+              })
+              this.bindForDdosHostForm.hostOptions = bindIphostList
+            }
+          })
         } else if (type == 'NAT') {
           this.bindForNATForm.row = row
           this.showModal.bindIPForNAT = true
@@ -1217,6 +1321,10 @@
           }
         })
         this.$refs.bindForHostFormValidate.resetFields();
+      },
+      // 绑定弹性到高防云主机
+      bindDdosHostSubmit () {
+        // ...
       },
       bindDatabaseSubmit() {
         this.$refs.bindForDatabaseFormValidate.validate(validate => {
@@ -1903,7 +2011,8 @@
       // 监听区域变换
       '$store.state.zone': {
         handler: function () {
-         this. hide= $store.state.zone.zonename.indexOf('GPU');
+          console.log(this.$store.state.zone.gpuserver)
+          this.hide= $store.state.zone.gpuserver;
           this.ipData = []
           this.select = []
           this.refresh()

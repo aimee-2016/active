@@ -915,7 +915,7 @@
               })
             }
           })
-        } else {
+        } else if(this.$store.state.zone.gpuserver == 1){
           let url = 'gpuserver/listGpuServer.do'
           this.$http.get(url, {
             params: {
@@ -941,6 +941,27 @@
               }
             } else {
                 this.$message.info({
+                content: res.data.message
+              })
+            }
+          })
+        } else if(this.$store.state.zone.gpuserver == 2){
+          let url = 'ddosImitationhost/listHighMachines.do'
+          this.$http.get(url, {
+            params: {
+              returnList: 1,
+              page: 1,
+              pageSize: 10
+            }
+          }).then(res=>{
+            if(res.status == 200 && res.data.status ==1){
+              if(res.data.result.data.length != 0){
+                this.showModal.newDisk = true
+              } else{
+                this.showModal.withoutHost = true
+              }
+            } else{
+              this.$message.info({
                 content: res.data.message
               })
             }
