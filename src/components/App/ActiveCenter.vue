@@ -4,7 +4,7 @@
     <div class="banner">
       <my-carousel :interval=5000 class="carousel" @on-change="change">
         <my-carousel-item class="carousel-item">
-          <div @click="push('/activity/ddosactive')"
+          <div @click="push('/activity/ddosActive')"
                style="cursor: pointer;">
             <div class="ddos">
               <div class="wrap">
@@ -222,7 +222,7 @@
             desc: '更有首月8折等超多优惠',
             time: '019.7.25-2019.9.25',
             activeObj: '新老用户皆可参与',
-            url: '/activity/ddosactive',
+            url: '/activity/ddosActive',
             isStart: true,
             weight: '1',
             color: 'rgba(252,202,138,1)',
