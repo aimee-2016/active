@@ -91,7 +91,7 @@
                 <p>记录值：xxxx.cdn30.com</p>
                 <p>
                   若您在新睿云购买的域名，点击跳转
-                  <a href="https://test-domain.xrcloud.net/xrdomain/domainGroup">域名解析</a>
+                  <a href="https://test-domain.xrcloud.net/xrdomain/domainGroup" target="_blank">域名解析</a>
                 </p>
               </div>
               <Table :columns="businessList" :data="businessData" style="margin-top:10px;"></Table>

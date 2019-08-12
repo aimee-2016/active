@@ -77,7 +77,7 @@
                 <div class="st-box" v-if="current == 1">
                     <p>转发规则添加完成，您还需要将实际业务IP切换到转发规则对应的CNAME。 </p>
                     <p>CNAME：{{cname}}</p>
-                    <p style="margin-bottom: 40px;">若您是在新睿云购买的域名，请前往<a href="https://test-domain.xrcloud.net/xrdomain/domainGroup" style="color:#2A99F2;cursor:pointer;">域名解析</a></p>
+                    <p style="margin-bottom: 40px;">若您是在新睿云购买的域名，请前往<a href="https://test-domain.xrcloud.net/xrdomain/domainGroup" target="_blank" style="color:#2A99F2;cursor:pointer;">域名解析</a></p>
                     <Table :columns="ruleList" :data="ruleData"></Table>
                     <div style="margin-top:40px;text-align:right;">
                         <Button style="margin-right:10px;" @click="current -= 1">上一步</Button>
