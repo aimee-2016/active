@@ -74,7 +74,7 @@
                     type="drag"
                     :with-credentials="true"
                     :show-upload-list="false"
-                    action="/file/upFile.doupFile.do"
+                    action="https://kaifa.xrcloud.net/file/upFile.doupFile.do"
                     :format="['jpg','gif','png']"
                     :on-format-error="handleFormatJpg"
                     :max-size="4096"
@@ -103,7 +103,7 @@
                     type="drag"
                     :with-credentials="true"
                     :show-upload-list="false"
-                    action="/file/upFile.doupFile.do"
+                    action="https://kaifa.xrcloud.net/file/upFile.doupFile.do"
                     :format="['jpg','gif','png']"
                     :on-format-error="handleFormatJpg"
                     :max-size="4096"
@@ -136,7 +136,7 @@
                     type="drag"
                     :with-credentials="true"
                     :show-upload-list="false"
-                    action="/file/upFile.doupFile.do"
+                    action="https://kaifa.xrcloud.net/file/upFile.doupFile.do"
                     :format="['jpg','gif','png']"
                     :on-format-error="handleFormatJpg"
                     :max-size="4096"
@@ -166,7 +166,7 @@
                     type="drag"
                     :with-credentials="true"
                     :show-upload-list="false"
-                    action="/file/upFile.doupFile.do"
+                    action="https://kaifa.xrcloud.net/file/upFile.doupFile.do"
                     :format="['jpg','gif','png']"
                     :on-format-error="handleFormatJpg"
                     :max-size="4096"
@@ -203,7 +203,7 @@
                     :show-upload-list="false"
                     :format="['jpg','jpeg','png']"
                     :on-format-error="handleFormatJpg"
-                    action="/file/upFile.doupFile.do"
+                    action="https://kaifa.xrcloud.net/file/upFile.doupFile.do"
                     :max-size="4096"
                     :on-exceeded-size="handleMaxSize"
                     :on-success="combine">
@@ -253,7 +253,7 @@
                             :show-upload-list="false"
                             :max-size="4096"
                             :on-exceeded-size="handleMaxSize"
-                            action="/file/upFile.doupFile.do"
+                            action="https://kaifa.xrcloud.net/file/upFile.doupFile.do"
                             :before-upload="markCertifiedDomainNoCertification(upIndex)"
                             :on-success="certifiedDomainNoCertification">
                       <Progress v-show="percentCertification>0" :percent="percentCertification"></Progress>
@@ -268,7 +268,7 @@
                             :show-upload-list="false"
                             :max-size="4096"
                             :on-exceeded-size="handleMaxSize"
-                            action="/file/upFile.doupFile.do"
+                            action="https://kaifa.xrcloud.net/file/upFile.doupFile.do"
                             :before-upload="markCertifiedDomainNoCertification(upIndex)"
                             :on-success="certifiedDomainNoCertification">
                         <img v-if="item.certifiedDomainNoCertificationDefaultList[0].url" :src="item.certifiedDomainNoCertificationDefaultList[0].url" style="height: 120px;width:164px;">
@@ -310,7 +310,7 @@
                             :format="['jpg','jpeg','png','doc','pdf','docx','gif']"
                             :on-format-error="handleFormatError"
                             :with-credentials="true"
-                            action="/file/upFile.doupFile.do"
+                            action="https://kaifa.xrcloud.net/file/upFile.doupFile.do"
                             :max-size="4096"
                             :on-exceeded-size="handleMaxSize"
                             :before-upload="markOtherFile(upIndex)"
@@ -354,7 +354,7 @@
                           :show-upload-list="false"
                           :max-size="4096"
                           :on-exceeded-size="handleMaxSize"
-                          action="/file/upFile.doupFile.do"
+                          action="https://kaifa.xrcloud.net/file/upFile.doupFile.do"
                           :before-upload="markCheckList(upIndex)"
                           :on-success="checkList">
                     <Progress v-show="percentCheckList>0" :percent="percentCheckList"></Progress>
@@ -369,7 +369,7 @@
                           :show-upload-list="false"
                           :max-size="4096"
                           :on-exceeded-size="handleMaxSize"
-                          action="/file/upFile.doupFile.do"
+                          action="https://kaifa.xrcloud.net/file/upFile.doupFile.do"
                           :before-upload="markCheckList(upIndex)"
                           :on-success="checkList">
                     <img v-if="item.checkList[0].url" :src="item.checkList[0].url" style="height: 120px;width:164px;">
@@ -1030,6 +1030,9 @@
             mainRecordNumber: accessInfo ? accessInfo.mainRecordNumber : '',
             ICPRecordPassword: accessInfo ? accessInfo.ICPRecordPassword : '',
           }
+          if(sessionStorage.getItem('mainRecordId')){
+              param.mainCompanyId = sessionStorage.getItem('mainRecordId')
+          }
           return param
         })
         let list_web_picture_message = this.siteListStr.map((item, index) => {
@@ -1133,7 +1136,7 @@
               sessionStorage.setItem('mainParamsStr', JSON.stringify(mainParams))
               sessionStorage.setItem('siteParamsStr', JSON.stringify(siteParams))
               sessionStorage.setItem('tempCode',this.tempCode)
-              this.$router.push('NewRecordStepFour')
+              this.$router.push('/NewRecordStepFour')
               }
             if(res.data.result.authStatus == 0){
               this.authStatus = true
