@@ -1884,7 +1884,7 @@ export default {
          journalData:[            
          ],
          logLoading:false,
-         logTime:[new Date(),new Date()],
+         logTime:[],
          domainAllList:[],
          journalTotal:0,
          detailsList:JSON.parse(sessionStorage.getItem('details'))||'',
