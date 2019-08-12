@@ -336,7 +336,7 @@
             type: 'server',
             subItem: [{subName: '云主机', type: 'host'}, {subName: 'GPU云服务器', type: 'GpuList'},
             {
-              subName: 'DDoS高防主机',
+              subName: 'DDoS高防云服务器',
               type: 'BackDdos'
             },
             {
