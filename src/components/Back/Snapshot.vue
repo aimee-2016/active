@@ -63,7 +63,8 @@
           <FormItem>
             <span style="color:#2A99F2;font-size:14px;padding-top:34px;">
               <span style="font-weight:800;font-size:20px;">+</span>
-              <span style="cursor:pointer;" @click="$router.push('buy')">购买主机</span>
+              <span v-if="$store.state.zone.gpuserver == 2" style="cursor:pointer;" @click="$router.push('buy/ddos')">购买高防主机</span>
+              <span v-else style="cursor:pointer;" @click="$router.push('buy')">购买主机</span>
             </span>
           </FormItem>
           <FormItem label="备份名称" prop="name">
@@ -1956,17 +1957,31 @@
         var vmopenlist = []
         var vmcloselist = []
         var vmListurl = 'information/listVirtualMachines.do'
-        this.$http.get(vmListurl).then(response => {
-          if (response.status == 200 && response.data.status == 1) {
-            if (response.data.result.open) {
-              vmopenlist = response.data.result.open.list
+        if(this.$store.state.zone.gpuserver == 2){
+          this.$http.get(vmListurl, {params: {computerType: 4}}).then(response => {
+            if (response.status == 200 && response.data.status == 1) {
+              if (response.data.result.open) {
+                vmopenlist = response.data.result.open.list
+              }
+              if (response.data.result.close) {
+                vmcloselist = response.data.result.close.list
+              }
+              this.vmList = vmopenlist.concat(vmcloselist)
             }
-            if (response.data.result.close) {
-              vmcloselist = response.data.result.close.list
+          })
+        } else {
+          this.$http.get(vmListurl).then(response => {
+            if (response.status == 200 && response.data.status == 1) {
+              if (response.data.result.open) {
+                vmopenlist = response.data.result.open.list
+              }
+              if (response.data.result.close) {
+                vmcloselist = response.data.result.close.list
+              }
+              this.vmList = vmopenlist.concat(vmcloselist)
             }
-            this.vmList = vmopenlist.concat(vmcloselist)
-          }
-        })
+          })
+        }
       },
 
       // 获取主机备份策略列表
