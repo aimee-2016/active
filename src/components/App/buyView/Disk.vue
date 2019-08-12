@@ -22,7 +22,7 @@
         ></buy-disk-group>
       </div>
       <div class="lists">
-        <buy-budget-list></buy-budget-list>
+        <buy-budget-list ref="budget"></buy-budget-list>
         <buy-selected-config :current-disk-config="currentDiskConfig" @addToCart="addToCart"></buy-selected-config>
       </div>
     </div>
@@ -63,6 +63,7 @@
 <script type="text/ecmascript-6">
 import axios from "axios";
 import $store from "@/vuex";
+import uuid from "uuid";
 import debounce from "throttle-debounce/debounce";
 import buyHeader from "../buyComponents/buy-header";
 import buyArea from "../buyComponents/buy-area";
@@ -212,7 +213,8 @@ export default {
         buyCount: 1,
         buyDay: 1
       },
-      buyStep: 3
+      buyStep: 3,
+      buybudget: []
     };
   },
   created() {
@@ -347,7 +349,11 @@ export default {
         this.$Message.info("磁盘名称不能包含空格");
         return;
       }
-      this.$Message.success("添加成功");
+      this.buybudget = [];
+      if (localStorage.getItem("buybudget")) {
+        this.buybudget = JSON.parse(localStorage.getItem("buybudget"));
+      }
+      this.addDisk();
     },
     // 查询磁盘价格
     queryDiskPrice: debounce(500, function() {
@@ -383,6 +389,39 @@ export default {
         }
       });
     }),
+    addDisk() {
+      let diskSize = "";
+      let diskType = "";
+      this.diskSpecification.systemDisk.forEach(item => {
+        diskSize += `${item.size},`;
+        diskType += `${item.type},`;
+      });
+      let params = {
+        id: uuid.v4(),
+        zoneId: this.area.zoneid,
+        diskSize,
+        diskName: this.diskSpecification.systemDiskName,
+        diskOfferingId: diskType,
+        timeType: this.billingType,
+        timeValue: this.timeConfig.buyTime,
+        count: this.timeConfig.buyCount,
+        isAutorenew: this.diskSpecification.autoRenewal ? "1" : "0",
+        diskList: this.diskSpecification.systemDisk,
+        type: "disk",
+        price: this.totalCost
+      };
+      if (
+        parseInt(this.timeConfig.buyTime) > 11 &&
+        this.billingType !== "current"
+      ) {
+        // 购买时间单位为年
+        params.timeType = "year";
+        params.timeValue = this.timeConfig.buyTime / 12 + "";
+      }
+      this.buybudget.push(params);
+      localStorage.setItem("buybudget", JSON.stringify(this.buybudget));
+      this.$refs.budget.setBuyBudget();
+    },
     createdDiskOrder: debounce(500, function() {
       let url = "Disk/createVolume.do";
       let diskSize = "";
