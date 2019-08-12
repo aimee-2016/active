@@ -394,6 +394,53 @@
         <Button type="primary" @click="renewOk" :disabled="renewalTime==''">确认续费</Button>
       </div>
     </Modal>
+    <!-- 续费高防云主机IPmodal -->
+    <Modal
+      v-model="showModal.renewDdos"
+      width="550"
+      :scrollable="true">
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">续费选择</span>
+      </p>
+      <div class="universal-modal-content-flex">
+        <Form>
+          <FormItem label="付费类型 :">
+            <Select v-model="renewalType">
+              <Option v-for="(item,index) in timeOptions.renewalType" :value="item.value" :key="index">{{ item.label }}
+              </Option>
+            </Select>
+          </FormItem>
+          <FormItem label="付费时长 :">
+            <Select v-model="renewalTime">
+              <Option v-for="(item,index) in timeOptions.renewalTime" :value="item.value" :key="index">{{ item.label }}
+              </Option>
+            </Select>
+          </FormItem>
+          <div class="renewal-info">
+            <ul>
+              <li><span>IP地址：</span>{{renewalInfo.IPAddress}}</li>
+              <li><span>IP带宽：</span>{{renewalInfo.bandwidth}}M</li>
+              <li><span>到期时间：</span>{{renewalInfo.endTime}}</li>
+            </ul>
+          </div>
+          <FormItem label="是否同时续费绑定主机与NAT网关:" style="width: 80%;margin-bottom: 0" v-if="renewalHost || renewalNAT">
+            <CheckboxGroup v-model="renewalOther">
+              <Checkbox label="续费关联云主机" v-if="renewalHost"></Checkbox>
+              <Checkbox label="续费关联NAT网关" v-if="renewalNAT"></Checkbox>
+              <Checkbox label="续费关联GPU云服务器" v-if="renewalGpu"></Checkbox>
+            </CheckboxGroup>
+          </FormItem>
+          <div style="font-size:16px;">
+            资费 <span style="color: #2b85e4; text-indent:4px;display:inline-block;">现价<span style="font-size:24px;">￥{{renewalTotalCost}}/</span></span>
+            <span style="text-decoration: line-through">原价{{renewalOriginalCost}}</span>
+          </div>
+        </Form>
+      </div>
+      <div slot="footer" style="" class="modal-footer-border">
+        <Button type="ghost" @click="showModal.renew=false">取消</Button>
+        <Button type="primary" @click="renewOk" :disabled="renewalTime==''">确认续费</Button>
+      </div>
+    </Modal>
     <Modal v-model="showModal.deleteIP" :scrollable="true" :closable="false" :width="390">
       <p slot="header" class="modal-header-border">
         <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
@@ -495,6 +542,7 @@
         showModal: {
           // 续费modal
           renew: false,
+          renewDdos: false,
           newIPModal: false,
           newDdosIPModal: false,
           bindIPForHost: false,
@@ -1265,7 +1313,17 @@
       // 高防区域查询价格, 查询所有的，购买带宽时长、防护一起
       queryNewDdosIPPrice(){
         if(this.newDdosIPForm.timeValue != '' && this.customProtectSecIndex.value != 0 &&  this.newDdosIPForm.timeType != ''){
-          this.queryDdosFunction()
+          if(this.newDdosIPForm.timeType == 'day' && this.customProtectSecIndex.value >= 400) {
+            this.queryDdosFunction()
+          } else {
+            this.$Message.info('高防区域购买方式选择"包天"，只能选择不小于400GB的防护配置')
+          }
+
+          if((this.newDdosIPForm.timeType == 'year' || this.newDdosIPForm.timeType == 'month') && this.customProtectSecIndex.value < 400){
+            this.queryDdosFunction()
+          } else {
+            this.$Message.info('当购买方式选择"包年包月"，只能选择小于400GB的防护配置')
+          }
         }
       },
       // 新建高防区域，IP价格查询，计算带宽与防护的价格，加在一起
@@ -1277,7 +1335,7 @@
           zoneId: $store.state.zone.zoneid
         });
 
-        let ipPrice = axios.post('ddosImitationhost/queryIpPrice.do', {
+        let ipPrice = axios.post('device/queryIpPrice.do', {
           brand: this.newDdosIPForm.bandWidth,
           timeValue: this.newDdosIPForm.timeValue,
           timeType: this.newDdosIPForm.timeType,
@@ -1812,6 +1870,10 @@
         )
       },
       renewIP() {
+        if(this.$store.state.zone.gpuserver == 2){
+          this.openDdosIpRenew()
+          return false
+        }
         if (this.select.length !== 1) {
           this.$Message.info('请选择一个需要续费的IP')
           return false
@@ -1849,6 +1911,14 @@
             this.showModal.renew = true
           }
         })
+      },
+      // 续费IP
+      openDdosIpRenew() {
+        if (this.select.length !== 1) {
+          this.$Message.info('请选择一个需要续费的IP')
+          return false
+        }
+        this.showModal.renewDdos = true
       },
       queryAdjustPrice: debounce(500, function () {
         if (this.select.length !== 0) {
@@ -2206,7 +2276,6 @@
       // 监听区域变换
       '$store.state.zone': {
         handler: function () {
-          console.log(this.$store.state.zone.gpuserver)
           this.hide= $store.state.zone.gpuserver;
           this.ipData = []
           this.select = []

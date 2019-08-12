@@ -469,7 +469,7 @@
         })
       },
       ownMirrorCreathost(item) {
-        if(this.$store.state.zone.zonename.indexOf("GPU") != -1) {
+        if(this.$store.state.zone.gpuserver == 1) {
           this.$router.push({
             path: '/buy/gpu/',
             query: {
@@ -478,7 +478,16 @@
               mirror: item
             }
           });
-        }else{
+        } else if(this.$store.state.zone.gpuserver == 2) {
+          this.$router.push({
+            path: '/buy/ddos',
+            query: {
+              zoneid: item.zoneid,
+              mirrorType: 'custom',
+              mirror: item
+            }
+          })
+        } else{
           sessionStorage.setItem('ownMirror',JSON.stringify(item))
           sessionStorage.setItem('mirrorType','custom')
           this.$router.push({
