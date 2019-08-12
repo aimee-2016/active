@@ -535,7 +535,7 @@
                                     <span class="dp-cn">CNAME：{{ruleData.length == 0 ? '无':ruleData[0].cname||'无'}}</span>
                                 </div>
                                 <div>
-                                    <Select v-model="attackMeal"  style="width:200px;" @on-change='getAllforwardrule(1)'>
+                                    <Select v-model="attackRule"  style="width:200px;" @on-change='getAllforwardrule(1)'>
                                         <Option
                                             v-for="item in setMealList"
                                             :value="item.packageid"
@@ -627,7 +627,7 @@
                             </Select>
                             <Button type="primary" @click="getLog(1)">查询</Button>    
                         </div>
-                        <Table :columns="journalList" :data="journalData"></Table>
+                        <Table :columns="journalList" :loading='logLoading' :data="journalData"></Table>
                         <div class="dp-page">
                             <Page :total="journalTotal" @on-change='getLog' style="display:inline-block;vertical-align: middle;margin-left:20px;"></Page>
                         </div>
@@ -1080,6 +1080,7 @@ export default {
         overviewPage:1,
         pageSize:10,
         attackMeal:'',
+        attackRule:'',
         business:{
             packageId:'',
             date:[new Date(),new Date()],
@@ -1830,6 +1831,8 @@ export default {
                                     this.ccProtectData[params.row._index]._disableExpand = false;
                                     params.row._disableExpand = false;
                                     this.saveConfig(params.row._index);
+                                    this.ccGetName =  params.row.domainname;
+
                                 }
                             }
                         },'提交')
@@ -1837,6 +1840,8 @@ export default {
                 }
             }
         ],
+        ccGetName:'',
+        ccGetData:[],
         ccTotal:0,
         riadosCC:'严格',
         ccProtectData:[
@@ -1878,6 +1883,7 @@ export default {
          ],
          journalData:[            
          ],
+         logLoading:false,
          logTime:[],
          domainAllList:[],
          journalTotal:0,
@@ -2640,7 +2646,7 @@ export default {
         this.ruleLoading = true;
         this.$http.get('ddosImitationIp/queryforwardrule.do',{
             params:{
-                packageId:'dms-20190719388840',
+                packageId:this.attackRule,
                 accessPort:this.visitPortNum
             }
         }).then(res => {
@@ -2672,11 +2678,27 @@ export default {
             }
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
+                let index = this.ccProtectData.findIndex(item => {
+                    return item.domainname == this.ccGetName;
+                })
+                let index1 = this.ccGetData.findIndex(item => {
+                    return item.domainname == this.ccGetName;
+                })
                 this.ccProtectData = res.data.result;
                 this.ccTotal = res.data.count;
                 this.ccProtectData.forEach(item =>{
-                    item._disableExpand = true;
-                    item.ccShow = true;
+                    if(this.ccGetName != ''){
+                        if(this.ccProtectData[index].domainname == item.domainname){
+                            item._disableExpand = true;
+                        }else{
+                            this.ccGetData.forEach(ite => {
+                               item._disableExpand = ite._disableExpand
+                            })
+                        }
+                    }else{
+                        item._disableExpand = true;
+                    }
+                    
                 })
             }else{
                 this.$Message.info(res.data.message);
@@ -2722,6 +2744,7 @@ export default {
 
     // 获取操作日志
     getLog(page){
+        this.logLoading = true;
         this.$http.post('ddosImitationIp/queryLog.do',{
                 page:page,
                 pageSize:'10',
@@ -2730,9 +2753,11 @@ export default {
                 endTime:this.logTime[1] == undefined ?'':this.logTime[1].format('yyyy-MM-dd hh:mm:ss')
         }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
+                this.logLoading = false;
                 this.journalData = res.data.result;
                 this.journalTotal = res.data.count;
             }else{
+                  this.logLoading = false;
                   this.$Message.info(res.data.message);
             }
         })
@@ -2797,8 +2822,8 @@ export default {
              id:this.ccProtectData[index].id
          }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
+                this.ccGetData = this.ccProtectData;
                 this.$Message.info(res.data.message);
-                this.ccShow = true;
                 this.ccProtectData[index]._disableExpand = true;
                 this.getProtectCC(this.setMeal,1);
             } else {
