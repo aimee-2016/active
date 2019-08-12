@@ -1202,7 +1202,7 @@
           return
         }
         let prod = {}
-        prod.typeName = 'Ddos高防云主机'
+        prod.typeName = 'DDoS高防云主机'
         prod.zone = this.zone
         prod.timeForm = this.timeForm
         prod.customMirror = this.customMirror

@@ -975,9 +975,9 @@
       },
       linkService(){
         if(this.userInfo){
-          window.open(`https://im.xrcloud.net/im/text/0Jck1w.html?companyId=${this.userInfo.companyid}`)
+          window.open(`https://im.xrcloud.net/im/question/index.html?companyId=${this.userInfo.companyid}`)
         } else{
-          window.open('https://im.xrcloud.net/im/text/0Jck1w.html')
+          window.open('https://im.xrcloud.net/im/question/index.html')
         }
       }
     },

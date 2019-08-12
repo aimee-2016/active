@@ -469,6 +469,7 @@
     <!-- 网站核验单 -->
     <Modal
       v-model="checkList"
+      :closable="false"
       :scrollable="true"
     >
      <div slot='header' class="modal-header-border">
@@ -532,6 +533,7 @@
 
     <!-- 主办单位负责人照片 -->
     <Modal
+    :closable="false"
       v-model="sponsorPhoto"
       :scrollable="true"
     >
@@ -615,6 +617,7 @@
     </Modal>
     <!-- 主办单位照片 -->
     <Modal
+    :closable="false"
       v-model="organizerPhoto"
       :scrollable="true"
     >
@@ -662,6 +665,7 @@
 
     <!-- 幕布照片 -->
     <Modal
+    :closable="false"
       v-model="curtainInfo"
       :scrollable="true"
     >
@@ -716,6 +720,7 @@
     </div>
     <!-- 域名证书 -->
     <Modal
+    :closable="false"
       v-model="domainNameCertificate"
       :scrollable="true"
     >
@@ -753,6 +758,7 @@
     </Modal>
     <!-- 其他资料 -->
     <Modal
+    :closable="false"
       v-model="otherInfo"
       :scrollable="true"
     >
@@ -799,6 +805,7 @@
 
     <!-- 修改主办单位信息 -->
     <Modal
+    :closable="false"
       v-model="host"
       :scrollable="true"
     >
@@ -858,6 +865,7 @@
     </Modal>
     <!-- 修改主体单位负责人信息 -->
     <Modal
+    :closable="false"
       v-model="legal"
       :scrollable="true"
     >
@@ -899,6 +907,7 @@
     </Modal>
     <!-- 修改网站基本信息信息 -->
     <Modal
+    :closable="false"
       v-model="website"
       :scrollable="true"
     >
@@ -942,6 +951,7 @@
     </Modal>
     <!-- 修改网站负责人基本信息 -->
     <Modal
+    :closable="false"
       v-model="websitePerson"
       :scrollable="true"
     >
@@ -998,6 +1008,7 @@
     </Modal>
     <!-- 修改ISP信息信息 -->
     <Modal
+    :closable="false"
       v-model="webIsp"
       :scrollable="true"
     >
@@ -1033,6 +1044,7 @@
     </Modal>
     <!-- 修改邮寄地址信息 -->
     <Modal
+    :closable="false"
       v-model="addressModal"
       :scrollable="true"
     >

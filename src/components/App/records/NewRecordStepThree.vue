@@ -1030,6 +1030,9 @@
             mainRecordNumber: accessInfo ? accessInfo.mainRecordNumber : '',
             ICPRecordPassword: accessInfo ? accessInfo.ICPRecordPassword : '',
           }
+          if(sessionStorage.getItem('mainRecordId')){
+              param.mainCompanyId = sessionStorage.getItem('mainRecordId')
+          }
           return param
         })
         let list_web_picture_message = this.siteListStr.map((item, index) => {
@@ -1133,7 +1136,7 @@
               sessionStorage.setItem('mainParamsStr', JSON.stringify(mainParams))
               sessionStorage.setItem('siteParamsStr', JSON.stringify(siteParams))
               sessionStorage.setItem('tempCode',this.tempCode)
-              this.$router.push('NewRecordStepFour')
+              this.$router.push('/NewRecordStepFour')
               }
             if(res.data.result.authStatus == 0){
               this.authStatus = true
