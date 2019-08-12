@@ -140,7 +140,7 @@
                             <div class="dp-row">
                                <div class="dp-mbr" style="margin-right:20px;width:570px;">
                                     <div class='dp-tp'>
-                                        <span style="font-size:14px;color:#333333;">清洗流量统计（单位Gbps）</span>
+                                        <span style="font-size:14px;color:#333333;">清洗流量类型（单位Gbps）</span>
                                          <span class="l-font" style='float:right;' @click="QueryAttCleanBandWidthType">刷新</span> 
                                     </div>
                                     <div style='display:flex;'>
