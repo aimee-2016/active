@@ -1884,7 +1884,7 @@ export default {
          journalData:[            
          ],
          logLoading:false,
-         logTime:[],
+         logTime:[new Date(),new Date()],
          domainAllList:[],
          journalTotal:0,
          detailsList:JSON.parse(sessionStorage.getItem('details'))||'',
@@ -1893,11 +1893,11 @@ export default {
   },
   created(){
       this.changeColor();
+      this.getId();
       this.getDdosOverview(1);
       this.getDomainList(1);
       this.getCertificate(1);
-      this.getLog(1);
-      this.getId();
+     
       this.getAllforwardrule(1);
       if(this.fwzdetails != ''){
          this.tabsValue =  this.fwzdetails.name;
@@ -1934,9 +1934,10 @@ export default {
                             this.setMealList.push({'packageid':key,'domainList':domainList});
                         }
                 }
-                    this.setMeal  = this.ccStatistics.packageid = this.operationObject = this.business.packageId =  this.attackMeal = this.setMealList[0].packageid;
+                    this.setMeal  = this.attackRule =  this.ccStatistics.packageid = this.operationObject = this.business.packageId =  this.attackMeal = this.setMealList[0].packageid;
                     this.domainChange( this.setMeal);
                     this.getProtectCC(this.setMeal,1);
+                    this.getLog(1);
                 }
             }else{
                 this.$Message.info(res.data.message);
@@ -2058,8 +2059,8 @@ export default {
         this.$http.post('ddosImitationIp/QueryMitigatedBandwidth.do',{
             // params:{
                 packageId:this.attackMeal,
-                startdate:this.statisticsTime[0].format('yyyy-MM-dd hh:mm:ss')+'',
-                enddate:this.statisticsTime[1].format('yyyy-MM-dd hh:mm:ss')+'' 
+                startdate:this.statisticsTime[0].format('yyyy-MM-dd hh:mm:ss'),
+                enddate:this.statisticsTime[1].format('yyyy-MM-dd')+' 23:59:59' 
             // }
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
@@ -2081,8 +2082,8 @@ export default {
         this.$http.post('ddosImitationIp/QueryAttEvent.do',{
             // params:{
                 packageId:this.attackMeal,
-                startdate:this.statisticsTime[0].format('yyyy-MM-dd hh:mm:ss')+'',
-                enddate:this.statisticsTime[1].format('yyyy-MM-dd hh:mm:ss')+'' 
+                startdate:this.statisticsTime[0].format('yyyy-MM-dd hh:mm:ss'),
+                enddate:this.statisticsTime[1].format('yyyy-MM-dd')+' 23:59:59'
             // }
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
@@ -2101,8 +2102,8 @@ export default {
         this.$http.post('ddosImitationIp/QueryAttInfoDetail.do',{
             // params:{
                 packageId:this.attackMeal,
-                startdate:this.statisticsTime[0].format('yyyy-MM-dd hh:mm:ss')+'',
-                enddate:this.statisticsTime[1].format('yyyy-MM-dd hh:mm:ss')+'' 
+                startdate:this.statisticsTime[0].format('yyyy-MM-dd hh:mm:ss'),
+                enddate:this.statisticsTime[1].format('yyyy-MM-dd')+' 23:59:59' 
             // }
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
@@ -2120,8 +2121,8 @@ export default {
         this.echartsLodaing('flowBtm').showLoading();
         this.$http.post('ddosImitationIp/queryAttCleanBandWidthType.do',{
                 packageId:this.attackMeal,
-                startdate:this.statisticsTime[0].format('yyyy-MM-dd hh:mm:ss')+'',
-                enddate:this.statisticsTime[1].format('yyyy-MM-dd hh:mm:ss')+'' 
+                startdate:this.statisticsTime[0].format('yyyy-MM-dd hh:mm:ss'),
+                enddate:this.statisticsTime[1].format('yyyy-MM-dd')+' 23:59:59' 
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
                 this.flowBtm.xAxis.data = res.data.time;
@@ -2142,7 +2143,7 @@ export default {
         this.$http.post('ddosImitationIp/QueryAttTypeDistribution.do',{
                 packageId:this.attackMeal,
                 startdate:this.statisticsTime[0].format('yyyy-MM-dd hh:mm:ss')+'',
-                enddate:this.statisticsTime[1].format('yyyy-MM-dd hh:mm:ss')+'' 
+                enddate:this.statisticsTime[1].format('yyyy-MM-dd')+' 23:59:59' 
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
                 this.ddosAttProportion = res.data.percent;
@@ -2165,8 +2166,8 @@ export default {
          this.echartsLodaing('flowOut').showLoading();
         this.$http.post('ddosImitationIp/QueryBusinessBandwidth.do',{
                 packageId:this.business.packageId,
-                startdate:this.business.date[0].format('yyyy-MM-dd hh:mm:ss')+'',
-                enddate:this.business.date[1].format('yyyy-MM-dd hh:mm:ss')+'',
+                startdate:this.business.date[0].format('yyyy-MM-dd hh:mm:ss'),
+                enddate:this.business.date[1].format('yyyy-MM-dd')+' 23:59:59',
                 domains:this.business.domain
         }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
@@ -2190,8 +2191,8 @@ export default {
         this.echartsLodaing('reque').showLoading();
         this.$http.post('ddosImitationIp/QueryRequestNum.do',{
             packageId:this.business.packageId,
-            startdate:this.business.date[0].format('yyyy-MM-dd hh:mm:ss')+'',
-            enddate:this.business.date[1].format('yyyy-MM-dd hh:mm:ss')+'',
+            startdate:this.business.date[0].format('yyyy-MM-dd hh:mm:ss'),
+            enddate:this.business.date[1].format('yyyy-MM-dd')+' 23:59:59',
             domains:this.business.domain
         }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
@@ -2211,8 +2212,8 @@ export default {
         this.echartsLodaing('concurrent').showLoading(); // echarts加载动画
        this.$http.post('ddosImitationIp/QueryConnectionNum.do',{
             packageId:this.business.packageId,
-            startdate:this.business.date[0].format('yyyy-MM-dd hh:mm:ss')+'',
-            enddate:this.business.date[1].format('yyyy-MM-dd hh:mm:ss')+'',
+            startdate:this.business.date[0].format('yyyy-MM-dd hh:mm:ss'),
+            enddate:this.business.date[1].format('yyyy-MM-dd')+' 23:59:59',
             domains:this.business.domain
         }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
@@ -2242,8 +2243,8 @@ export default {
         this.echartsLodaing('ccQps').showLoading();
         this.$http.post('ddosImitationIp/QueryCCAttackQPS.do',{
             packageId:this.ccStatistics.packageid,
-            startdate:this.ccStatistics.date[0].format('yyyy-MM-dd hh:mm:ss')+'',
-            enddate:this.ccStatistics.date[1].format('yyyy-MM-dd hh:mm:ss')+'',
+            startdate:this.ccStatistics.date[0].format('yyyy-MM-dd hh:mm:ss'),
+            enddate:this.ccStatistics.date[1].format('yyyy-MM-dd')+' 23:59:59',
             domains:this.ccStatistics.domain
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
@@ -2264,8 +2265,8 @@ export default {
         this.ccAttackLoading = true;
         this.$http.post('ddosImitationIp/QueryCCAttackInfo.do',{
             packageId:this.ccStatistics.packageid,
-            startdate:this.ccStatistics.date[0].format('yyyy-MM-dd hh:mm:ss')+'',
-            enddate:this.ccStatistics.date[1].format('yyyy-MM-dd hh:mm:ss')+'',
+            startdate:this.ccStatistics.date[0].format('yyyy-MM-dd hh:mm:ss'),
+            enddate:this.ccStatistics.date[1].format('yyyy-MM-dd')+' 23:59:59',
             domains:this.ccStatistics.domain
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
@@ -2283,8 +2284,8 @@ export default {
          this.ccAttDomainLoading = true;
          this.$http.post('ddosImitationIp/QueryCCAttDomain.do',{
              packageId:this.ccStatistics.packageid,
-            startdate:this.ccStatistics.date[0].format('yyyy-MM-dd hh:mm:ss')+'',
-            enddate:this.ccStatistics.date[1].format('yyyy-MM-dd hh:mm:ss')+'',
+            startdate:this.ccStatistics.date[0].format('yyyy-MM-dd hh:mm:ss'),
+            enddate:this.ccStatistics.date[1].format('yyyy-MM-dd')+' 23:59:59',
             domains:this.ccStatistics.domain
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
@@ -2301,8 +2302,8 @@ export default {
     QueryCCAttIPDistribution(){
          this.$http.post('ddosImitationIp/QueryCCAttIPDistribution.do',{
              packageId:this.ccStatistics.packageid,
-            startdate:this.ccStatistics.date[0].format('yyyy-MM-dd hh:mm:ss')+'',
-            enddate:this.ccStatistics.date[1].format('yyyy-MM-dd hh:mm:ss')+'',
+            startdate:this.ccStatistics.date[0].format('yyyy-MM-dd hh:mm:ss'),
+            enddate:this.ccStatistics.date[1].format('yyyy-MM-dd')+' 23:59:59',
             domains:this.ccStatistics.domain
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
@@ -2749,8 +2750,8 @@ export default {
                 page:page,
                 pageSize:'10',
                 packageId:this.operationObject,
-                startTime:this.logTime[0] == undefined ?'':this.logTime[0].format('yyyy-MM-dd hh:mm:ss'),
-                endTime:this.logTime[1] == undefined ?'':this.logTime[1].format('yyyy-MM-dd hh:mm:ss')
+                startTime:this.logTime[0] == undefined ?'':this.logTime[0].format('yyyy-MM-dd hh:mm:ss')+'',
+                endTime:this.logTime[1] == undefined ?'':this.logTime[1].format('yyyy-MM-dd')+' 23:59:59'
         }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
                 this.logLoading = false;
