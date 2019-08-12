@@ -23,13 +23,12 @@ export default {
         data: ['流出带宽'],
         bottom: 0,
         icon: 'circle',
-        padding: [60, 0, 0, 0],
-       
     },
    grid: {
+       top: 20,
        left: '3%',
        right: '4%',
-       bottom: '3%',
+       bottom: '7%',
        containLabel: true,
    },
 

@@ -9,7 +9,6 @@
             <div class="ddos">
               <div class="wrap">
                 <div class="text">
-                  <p>07/25–09/25</p>
                   <img src="../../assets/img/active/ddos/ddos-ac-text.png" />
                   <p>更有首月8折等超多优惠</p>
                 </div>
@@ -394,19 +393,14 @@
                 display: flex;
                 justify-content: space-between;
                 .text{
-                  p:nth-of-type(1){
-                    margin-top: 96px;
-                    font-size:28px;
-                    color:rgba(139,87,42,1);
-                    line-height:37px;
-                  }
-                  p:nth-of-type(2){
+                  margin-top: 148px;
+                  p{
                     font-size:24px;
                     color:rgba(255,98,75,1);
                     line-height:31px;
                   }
                   img {
-                    margin: 15px 0 20px 0;
+                    margin: 0 0 20px 0;
                   }
                 }
               }
