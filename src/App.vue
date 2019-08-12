@@ -33,10 +33,9 @@
 
                             <ul v-else class="user-list">
                                 <li >
-                                  <Dropdown >
+                                  <Dropdown> <!-- @on-click="go"-->
                                     <a href="javascript:void(0)" class="user-fn">
                                       {{ userInfo?userInfo.realname:''}}
-                                      <!--<sup class="circle-dot" v-if="this.$store.state.Msg>0"></sup>-->
                                       <Icon type="arrow-down-b"></Icon>
                                     </a>
                                     <DropdownMenu slot="list">
@@ -47,15 +46,12 @@
                                         <a to="/expenses">费用中心</a>
                                       </DropdownItem>
                                       <DropdownItem name="/msgcenter" style="position:relative">
-                                        <router-link to="/msgcenter">消息中心
-                                          <!--<sup v-if="this.$store.state.Msg>0" class="badge">{{this.$store.state.Msg}}</sup>-->
-                                        </router-link>
+                                        <span>消息中心</span>
                                       </DropdownItem>
                                       <DropdownItem name="/operationlog">
-                                        <router-link to="/operationlog">操作日志</router-link>
+                                        <span>操作日志</span>
                                       </DropdownItem>
                                       <DropdownItem divided name="exit">
-                                        <!-- <router-link to="">退出</router-link> -->
                                         <span style="color:#666;">退出</span>
                                       </DropdownItem>
                                     </DropdownMenu>
@@ -989,7 +985,7 @@
           this.exit()
           return
         }
-        this.$router.push(path)
+        // this.$router.push(path)
       },
       exit() {
         localStorage.removeItem("realname")
@@ -1203,6 +1199,7 @@
   vertical-align: middle;
   line-height: 40px;
   text-align: center;
+  color: #ffffff;
   font-size: 14px;
   background: #FF624B;
 }
