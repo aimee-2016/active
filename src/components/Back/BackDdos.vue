@@ -668,6 +668,10 @@
                     h('img', {
                       attrs: {
                         src: icon_5
+                      },
+                      style: {
+                        width: '16px',
+                        height: '16px'
                       }
                     }, ''),
                     h('span', {
