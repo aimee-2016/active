@@ -13,6 +13,7 @@ const FrActive = () =>import('@/components/App/active/freeReceive.1')
 const objStorageActive = () =>import('@/components/App/active/objStorageActive')
 const DBActive = () =>import('@/components/App/active/DatabaseActive')
 const ddosActive = () =>import('@/components/App/active/ddos')
+const ddosActiveM = () =>import('@/components/App/active/hignCopy')
 
 // 404
 const notFindPage = () => import('@/components/404')
@@ -34,6 +35,7 @@ var router = new Router({
         {path: 'activity/objectstorage', name: 'activity/objectstorage', component: objStorageActive,caseSensitive: true},
         {path: 'activity/hotdatabase', name: 'activity/hotdatabase', component: DBActive,caseSensitive: true},
         {path: 'activity/ddosactive',name: 'activity/ddosactive', component:ddosActive,caseSensitive: true},
+        {path: 'activity/highcopy',name: 'activity/highcopy', component:ddosActiveM,caseSensitive: true},
       ]
     },
     {path: '/*', name: '404', component: notFindPage},

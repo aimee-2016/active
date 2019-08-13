@@ -36,6 +36,20 @@ import md5 from 'md5'
 import VueClipboards from 'vue-clipboards'
 import LR from './myView/login'
 
+// 移动端需要引入
+import {ConfirmPlugin} from 'vux'
+Vue.use(ConfirmPlugin)
+
+import {AlertPlugin} from 'vux'
+Vue.use(AlertPlugin)
+
+import {ToastPlugin} from 'vux'
+Vue.use(ToastPlugin, {time: 2000})
+
+import {TransferDom} from 'vux'
+Vue.directive('transfer-dom', TransferDom)
+// 结束
+
 Vue.prototype.$message = message
 Vue.prototype.$LR = LR
 Vue.config.productionTip = false
