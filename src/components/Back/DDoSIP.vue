@@ -2161,7 +2161,9 @@ export default {
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
                 this.ddosAttProportion = res.data.percent;
-                this.ddosAttFlow = res.data.data;
+                res.data.data.forEach(item =>{
+                    this.ddosAttFlow.push(item.value)
+                })
                 this.hightIpBin.series[0].data = res.data.data;
                 this.echartsLodaing('hightIpBin').hideLoading();
             }else{
