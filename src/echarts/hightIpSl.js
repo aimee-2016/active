@@ -17,6 +17,7 @@ export default {
            type: 'dashed'
          },
        },
+       extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);'
    },
    legend: {
         data: ['已清洗流量', '正常业务流量'],

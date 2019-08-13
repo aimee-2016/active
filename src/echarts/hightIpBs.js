@@ -17,7 +17,8 @@ export default {
            opacity: 0.5,
            type: 'dashed'
          },
-       }
+       },
+       extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);'
    },
    legend: {
         data: ['流出带宽'],

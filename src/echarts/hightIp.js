@@ -1,14 +1,13 @@
 var echart = require('echarts/lib/echarts');
 export default {
-  
     tooltip: {
     trigger: 'axis',
-    backgroundColor:'rgba(255,255,255,1)',
+    backgroundColor: 'rgba(255,255,255,1)',
     padding: 10,
-    textStyle:{
-        color:'#333333',
-        fontFamily:'MicrosoftYaHei',
-        fontSize:'12'
+    textStyle: {
+        color: '#333333',
+        fontFamily: 'MicrosoftYaHei',
+        fontSize: '12',
     },
        axisPointer: {
          type: 'line',
@@ -17,7 +16,8 @@ export default {
            opacity: 0.5,
            type: 'dashed'
          },
-       }
+       },
+       extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);'
    },
    legend: {
         data: ['已清洗流量', '正常业务流量'],

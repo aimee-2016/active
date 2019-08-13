@@ -259,7 +259,8 @@
         originNum:0,
         origindNum:0,
         dPrice:0,
-        pPrice:0
+        pPrice:0,
+        dayMoney:0,
       }
     },
     created(){
@@ -327,6 +328,7 @@
         }).then(res =>{
           if(res.status == 200 && res.data.status == 1){
             this.businessPrice = res.data.price;
+            this.dayMoney = res.data.cost;
           }else{
             this.$Message.info(res.data.message);
           }
@@ -482,17 +484,7 @@
          return false;
        }
       },
-      dayMoney(){
-        if(this.bandWidth>50 && this.bandWidth <=100 ){
-          return '2.4'
-        }else if( this.bandWidth>100 && this.bandWidth <= 500){
-          return '2.2'
-        }else if( this.bandWidth > 500){
-          return '2.0'
-        }else{
-          return '2.67'
-        }
-      }
+ 
     },
     watch: {
       'zone': {

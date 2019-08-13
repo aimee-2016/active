@@ -202,19 +202,11 @@
                                             </ul>
                                             <ul class="dp-list" style="margin-right:20px;">
                                                 <li class="dp-item">攻击占比</li>
-                                                <li class="dp-item">| 36%</li>
-                                                <li class="dp-item">| 20%</li>
-                                                <li class="dp-item">| 16%</li>
-                                                <li class="dp-item">| 10%</li>
-                                                <li class="dp-item">| 18%</li>
+                                                <li class="dp-item" v-for="(item,index) in ddosAttProportion" :key="index">| {{item}}</li>
                                             </ul>
                                             <ul class="dp-list">
                                                 <li>攻击流量</li>
-                                                <li>4.5Gb</li>
-                                                <li>3.6Gb</li>
-                                                <li>3.2Gb</li>
-                                                <li>2.8Gb</li>
-                                                <li>1.8Gb</li>
+                                                <li v-for="(item,index) in ddosAttFlow" :key="index">{{item}}</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -1189,8 +1181,8 @@ export default {
         ],
         ddosAttInfoData:[],
         ddosAttTotal:0,
-        ddosAttProportion:{},
-        ddosAttFlow:{},
+        ddosAttProportion:['0%','0%','0%','0%','0%'],
+        ddosAttFlow:['0Gb','0Gb','0Gb','0Gb','0Gb'],
         ddosEventAttLoading:false,
         ddosTargetAttLoading:false,
         ddosBandType:{
@@ -1576,7 +1568,21 @@ export default {
            },
            {
                key:'accessprotocol',
-               title:'协议'
+               title:'协议',
+               render: (h,params)=>{
+                   if(params.row._disabled){
+                    return h('div',
+                    {
+                        style:'display:flex'
+                    },
+                        [
+                        h('Spin',{}),
+                        h('span',{},params.row.accessprotocol)
+                  ])  
+                  }else{
+                       h('span',{},params.row.accessprotocol)
+                  }
+               }
            },
            {
                key:'accessport',

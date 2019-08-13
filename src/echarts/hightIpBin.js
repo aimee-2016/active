@@ -10,6 +10,7 @@ export default {
             fontFamily:'MicrosoftYaHei',
             fontSize:'12'
         },
+        extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);'
     },
     color:[ '#2A99F2', '#19BE6A', '#FCCF14', '#F82B79', '#723BCA'],
     series: [
@@ -36,13 +37,12 @@ export default {
                     show: false
                 }
             },
-          
-            data:[
-                {value:335, name:'SYN Flood'},
-                {value:310, name:'Ack Flood'},
-                {value:234, name:'Udp Flood'},
-                {value:135, name:'ICMP Flood'},
-                {value:1548, name:'Other'}
+            data: [
+                {value: 0, name: 'SYN Flood'},
+                {value: 0, name: 'Ack Flood'},
+                {value: 0, name: 'Udp Flood'},
+                {value: 0, name: 'ICMP Flood'},
+                {value: 0, name: 'Other'}
             ]
         }
     ]
