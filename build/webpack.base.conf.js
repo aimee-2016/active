@@ -3,14 +3,16 @@ const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
-function resolve(dir) {
+const vuxLoader = require('vux-loader')
+
+function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
-module.exports = {
+let webpackConfig = {
   context: path.resolve(__dirname, '../'),
   entry: {
-    app: ['./src/main.js']
+    app: './src/main.js'
   },
   output: {
     path: config.build.assetsRoot,
@@ -28,44 +30,22 @@ module.exports = {
   },
   module: {
     rules: [
-      /*      ...(config.dev.useEslint ? [{
-       test: /\.(js|vue)$/,
-       loader: 'eslint-loader',
-       enforce: 'pre',
-       include: [resolve('src'), resolve('test')],
-       options: {
-       formatter: require('eslint-friendly-formatter'),
-       emitWarning: !config.dev.showEslintErrorsInOverlay
-       }
-       }] : []),*/
       {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: vueLoaderConfig
       },
       {
-        test: /\.html$/,
-        loader: 'html-withimg-loader'
-      },
-      {
         test: /\.js$/,
-        // use: [
-        //   {
         loader: 'babel-loader',
-        //   options: {
-        //     presets:['es2015']
-        //   }
-        // }
-        // ],
-        include: [resolve('src'), resolve('test'), resolve('/node_modules/pinyin')]
+        include: [resolve('src'), resolve('test')]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
         options: {
-          limit: 100,
-          // name: utils.assetsPath('img/[name].[hash:7].[ext]')
-          name: utils.assetsPath('img/[name].[ext]')
+          limit: 10000,
+          name: utils.assetsPath('img/[name].[hash:7].[ext]')
         }
       },
       {
@@ -73,8 +53,7 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          // name: utils.assetsPath('media/[name].[hash:7].[ext]')
-          name: utils.assetsPath('media/[name].[ext]')
+          name: utils.assetsPath('media/[name].[hash:7].[ext]')
         }
       },
       {
@@ -82,10 +61,42 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          // name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
-          name: utils.assetsPath('fonts/[name].[ext]')
+          name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
-      }
+      },
+      /*{
+        test: /\.(js|vue)$/,
+        loader: 'eslint-loader',
+        enforce: 'pre',
+        include: [resolve('src'), resolve('test')],
+        options: {
+          formatter: require('eslint-friendly-formatter')
+        }
+      },*/
     ]
   }
 }
+
+
+module.exports = vuxLoader.merge(webpackConfig, {
+  plugins: [
+    'vux-ui',
+    'progress-bar',
+    {
+      name: 'duplicate-style',
+      options: {
+        cssProcessorOptions : {
+          safe: true,
+          zindex: false,
+          autoprefixer: {
+            add: true,
+            browsers: [
+              'iOS >= 7',
+              'Android >= 4.1'
+            ]
+          }
+        }
+      }
+    }
+  ]
+})
