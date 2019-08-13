@@ -1122,7 +1122,7 @@
       },
       // 刷新用户认证状态
       refreshUserStatus(mainParams,siteParams){
-        this.timer =  setInterval(() => {
+         let timer =  setInterval(() => {
         this.$http.get('/faceRecognition/getAllStatus.do', {params: {tempCode: this.tempCode}}).then(res => {
           if(res.status == 200 && res.data.status == 1){
             if(res.data.result.qrCode == 0){
@@ -1132,7 +1132,7 @@
               this.codeLoseEfficacy = 'scanSuccess'
               }
             if(res.data.result.authStatus == 1 || res.data.result.authStatus == 3){
-              clearInterval(this.timer)
+              clearInterval(timer)
               sessionStorage.setItem('mainParamsStr', JSON.stringify(mainParams))
               sessionStorage.setItem('siteParamsStr', JSON.stringify(siteParams))
               sessionStorage.setItem('tempCode',this.tempCode)
