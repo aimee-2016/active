@@ -536,7 +536,7 @@
         var item = this.select;
 
         sessionStorage.setItem('templateId',item.templateid);
-        if(this.$store.state.zone.zonename.indexOf("GPU") != -1){
+        if(this.$store.state.zone.gpuserver == 1){
           this.$router.push({
             path: '/buy/gpu/',
             query: {
@@ -545,7 +545,16 @@
               mirror: item
             }
           })
-        }else {
+        } else if(this.$store.state.zone.gpuserver == 2) {
+          this.$router.push({
+            path: '/buy/ddos',
+            query: {
+              zoneid: item.zoneid,
+              mirrorType: 'public',
+              mirror: item
+            }
+          })
+        } else {
           this.$router.push({
             path: '/buy/',
             query: {
