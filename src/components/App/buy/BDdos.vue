@@ -935,7 +935,7 @@
         this.createType = 'custom'
         setTimeout(() => {
           this.publicList[0].selectSystem = this.mirrorQuery.templatename
-        }, 200)
+        }, 1000)
       }
       this.xiaoshouData()
       // this.$store.dispatch('getZoneList')

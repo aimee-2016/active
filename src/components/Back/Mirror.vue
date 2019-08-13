@@ -559,7 +559,7 @@
             path: '/buy/ddos',
             query: {
               zoneid: item.zoneid,
-              mirrorType: 'public',
+              mirrorType: 'custom',
               mirror: item
             }
           })
