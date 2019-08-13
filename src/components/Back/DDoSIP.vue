@@ -140,7 +140,7 @@
                             <div class="dp-row">
                                <div class="dp-mbr" style="margin-right:20px;width:570px;">
                                     <div class='dp-tp'>
-                                        <span style="font-size:14px;color:#333333;">清洗流量统计（单位Gbps）</span>
+                                        <span style="font-size:14px;color:#333333;">清洗流量类型（单位Gbps）</span>
                                          <span class="l-font" style='float:right;' @click="QueryAttCleanBandWidthType">刷新</span> 
                                     </div>
                                     <div style='display:flex;'>
@@ -150,7 +150,7 @@
                                                 <span class="fh-sp">清洗流量最多类型</span>
                                             </div>
                                             <div class="dp-bts">
-                                                <span class="b-font" style="margin:0px;">ICMP</span>
+                                                <span class="b-font" style="margin:0px;">{{ddosBandType.type}}</span>
                                             </div>
                                         </div> 
                                     </div>
@@ -160,7 +160,7 @@
                                                 <span class="fh-sp">清洗最大值</span>
                                             </div>
                                             <div class="dp-bts">
-                                                <span class="b-font" style="margin:0px;">5672Mbps</span>
+                                                <span class="b-font" style="margin:0px;">{{ddosBandType.maxValue}}</span>
                                             </div>
                                         </div> 
                                     </div>
@@ -170,7 +170,7 @@
                                                 <span class="fh-sp">峰值时间</span>
                                             </div>
                                             <div class="dp-bts">
-                                                <span class="b-font" style="margin:0px;">10-15 24:24</span>
+                                                <span class="b-font" style="margin:0px;">{{ddosBandType.time}}</span>
                                             </div>
                                         </div> 
                                     </div>
@@ -1193,6 +1193,11 @@ export default {
         ddosAttFlow:{},
         ddosEventAttLoading:false,
         ddosTargetAttLoading:false,
+        ddosBandType:{
+            maxValue:'0Mbps',
+            time:'--',
+            type:'--'
+        },
 
       // 证书管理
       cIsAdd:'add',
@@ -1884,7 +1889,7 @@ export default {
          journalData:[            
          ],
          logLoading:false,
-         logTime:[new Date(),new Date()],
+         logTime:[],
          domainAllList:[],
          journalTotal:0,
          detailsList:JSON.parse(sessionStorage.getItem('details'))||'',
@@ -2131,6 +2136,9 @@ export default {
                 this.flowBtm.series[2].data = res.data.udp;
                 this.flowBtm.series[3].data = res.data.icmp;
                 this.flowBtm.series[4].data = res.data.other;
+                this.ddosBandType.maxValue = res.data.maxValue;
+                this.ddosBandType.time = res.data.Time;
+                this.ddosBandType.type = res.data.type;
                 this.echartsLodaing('flowBtm').hideLoading();
             }else{
                 this.echartsLodaing('flowBtm').hideLoading();
@@ -2682,9 +2690,6 @@ export default {
                 let index = this.ccProtectData.findIndex(item => {
                     return item.domainname == this.ccGetName;
                 })
-                let index1 = this.ccGetData.findIndex(item => {
-                    return item.domainname == this.ccGetName;
-                })
                 this.ccProtectData = res.data.result;
                 this.ccTotal = res.data.count;
                 this.ccProtectData.forEach(item =>{
@@ -2693,7 +2698,9 @@ export default {
                             item._disableExpand = true;
                         }else{
                             this.ccGetData.forEach(ite => {
-                               item._disableExpand = ite._disableExpand
+                                if(this.ccProtectData[index].domainname != ite.domainname){
+                                    item._disableExpand = ite._disableExpand;
+                                }
                             })
                         }
                     }else{
@@ -2824,7 +2831,7 @@ export default {
          }).then(res =>{
             if(res.status == 200 && res.data.status == 1){
                 this.ccGetData = this.ccProtectData;
-                this.$Message.info(res.data.message);
+                this.$Message.success('修改成功');
                 this.ccProtectData[index]._disableExpand = true;
                 this.getProtectCC(this.setMeal,1);
             } else {
