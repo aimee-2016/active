@@ -263,6 +263,245 @@
                     </ul>
                     <div class="line" :style='lineStyle'></div>
                 </div>
+          </div>
+
+          <div class="m-head">
+                <div class="mobile-head" v-cloak>
+                    <div class="mh-top">
+                        <div class="mr-icon" @click="mIcon = !mIcon">
+                            <Icon type="md-menu" size="40" color='#9B908E' :class="mIcon?'mhead-icons':'mhead-icon'" />
+                        </div>
+                        <a class="mobile-logo" href="#" alt='新睿云'>
+                            <div class="mobile-limg">
+                                <img src='./assets/img/home/logo.gif'>
+                            </div>
+                        </a>
+                        <div class="m-logining" v-if="isLogin" @click='mLogin =!mLogin'>
+                            <img src="./assets/img/home/logining.png">
+                            <div class="ml-text">名字有五个多字吗</div>
+                            <div :class="mLogin?'ml-block':'ml-blocks'"></div>
+                        </div>
+                        <div class="m-pople" v-else>
+                            <Icon type="md-person" size='40' @click="loginIcon = !loginIcon" />
+                        </div>
+                    </div>
+
+
+                    <div class="m-login" :class='loginIcon?"":"m-logins"' v-if="!isLogin">
+                        <div>
+                            <a ref="external nofollow" target="_blank" href="https://wap.xrcloud.net/ruicloud/console?from=xinruiyun-kongzhitai" title="控制台">控制台</a>
+                        </div>
+                        <div>
+                            <a ref="external nofollow" target="_blank" href="https://wap.xrcloud.net/ruicloud/login?from=xinruiyun-denglu" title="登陆">登陆</a>
+                        </div>
+                        <div>
+                            <a ref="external nofollow" target="_blank" href="  https://wap.xrcloud.net/ruicloud/register?from=xinruiyun-zhuce" title="注册">注册</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="ml-right" :class="mLogin?'ml-rights':''" v-cloak>
+                    <ul class="m-list">
+                        <li class="m-item">
+                            <a href="#" alt="用户中心">用户中心</a>
+                        </li>
+                        <li class="m-item">
+                            <a href="#" alt="费用中心">费用中心</a>
+                        </li>
+                        <li class="m-item">
+                            <a href="#" alt="消息中心">消息中心</a>
+                        </li>
+                        <li class="m-item">
+                            <a href="" alt="操作日志">操作日志</a>
+                        </li>
+                        <li class="m-item">
+                            <a href="" alt="退出登录">退出登录</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="mhead-list" :class="mIcon?'':'mhead-lists'">
+                    <div style="text-align: center;">
+                        <i-input style="width:87%;margin:20px 0;">
+                            <Icon type="ios-search" size='30' slot="suffix" />
+                        </i-input>
+                    </div>
+
+                    <div class="mhead-product">
+                        <div style="padding: 10px 10px;">
+                            <a ref="external nofollow" target="_blank" href="https://wap.xrcloud.net/ruicloud/sort?from=xinruiyun-huodongzhongxin" title="活动中心">活动中心</a>
+                        </div>
+                    </div>
+                    <div class="mhead-product">
+                        <div style="padding: 10px 10px;" @click='getSelectDown(0)'>
+                            <span>产品</span>
+                            <span class="active mhead-arrow2"></span>
+                        </div>
+
+                        <div class="mhead-pone mhead-pones">
+                            <div class="mhead-child">
+                                <div class="mhead-cdd" @click="getSelectDown2(0)">
+                                    <span>云计算</span>
+                                    <span class='select mhead-arrow2'></span>
+                                </div>
+                                <div class="mhead-box mhead-boxs">
+                                    <div class="mhead-chd">
+                                        <a href="#" target="blank">弹性云服务器ECS</a>
+                                    </div>
+                                    <div class="mhead-chd">
+                                        <a href="#" target="blank">镜像服务器</a>
+                                    </div>
+                                    <div class="mhead-chd">
+                                        <a href="#" target="blank"> 云服务器快照</a>
+                                    </div>
+                                    <div class="mhead-chd">
+                                        <a href="#" target="blank"> GPU加速服务器</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mhead-child">
+                                <div class="mhead-cdd" @click="getSelectDown2(1)">
+                                    <span>云存储</span>
+                                    <span class='select mhead-arrow2'></span>
+                                </div>
+                                <div class="mhead-box mhead-boxs">
+                                    <div class="mhead-chd">
+                                        <a href="#" target="blank"> 对象存储</a>
+                                    </div>
+                                    <div class="mhead-chd">
+                                        <a href="#" target="blank"> 云硬盘</a>
+                                    </div>
+                                    <div class="mhead-chd">
+                                        <a href="#" target="blank">云硬盘备份</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mhead-child">
+                                <div class="mhead-cdd" @click="getSelectDown2(2)">
+                                    <span>云安全</span>
+                                    <span class='select mhead-arrow2'></span>
+                                </div>
+                                <div class="mhead-box mhead-boxs">
+                                    <div class="mhead-chd">
+                                        <a href="#" target="blank"> 防火墙</a>
+                                    </div>
+                                    <div class="mhead-chd">
+                                        <a href="#" target="blank"> DDoS基础防护</a>
+                                    </div>
+                                    <div class="mhead-chd">
+                                        <a href="#" target="blank">DDoS高防IP</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mhead-child">
+                                <div class="mhead-cdd" @click="getSelectDown2(3)">
+                                    <span>云网络</span>
+                                    <span class='select mhead-arrow2'></span>
+                                </div>
+                                <div class="mhead-box mhead-boxs">
+                                    <div class="mhead-chd">
+                                        <a href="#" target="blank"> 虚拟私有云VPC</a>
+                                    </div>
+                                    <div class="mhead-chd">
+                                        <a href="#" target="blank"> NAT网关</a>
+                                    </div>
+                                    <div class="mhead-chd">
+                                        <a href="#" target="blank">弹性公网IP</a>
+                                    </div>
+                                    <div class="mhead-chd">
+                                        <a href="#" target="blank"> 负载均衡</a>
+                                    </div>
+                                    <div class="mhead-chd">
+                                        <a href="#" target="blank">虚拟专网VPN</a>
+                                    </div>
+                                    <div class="mhead-chd">
+                                        <a href="#" target="blank"> CDN（敬请期待）</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mhead-child">
+                                <div class="mhead-cdd" @click="getSelectDown2(4)">
+                                    <span>云运维</span>
+                                    <span class='select mhead-arrow2'></span>
+                                </div>
+                                <div class="mhead-box mhead-boxs">
+                                    <div class="mhead-chd">
+                                        <a href="#" target="blank"> 云监控</a>
+                                    </div>
+                                    <div class="mhead-chd">
+                                        <a href="#" target="blank"> 访问控制（敬请期待）</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mhead-child">
+                                <div class="mhead-cdd" @click="getSelectDown2(5)">
+                                    <span>云数据库</span>
+                                    <span class='select mhead-arrow2'></span>
+                                </div>
+                                <div class="mhead-box mhead-boxs">
+                                    <div class="mhead-chd">
+                                        <a href="#" target="blank">云数据库MySQL</a>
+                                    </div>
+                                    <div class="mhead-chd">
+                                        <a href="#" target="blank"> 云数据库PostgreSQL</a>
+                                    </div>
+                                    <div class="mhead-chd">
+                                        <a href="#" target="blank"> 云数据库Redis</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mhead-product">
+                        <div style="padding: 10px 10px;" @click='getSelectDown(1)'>
+                            <span>域名与备案</span>
+                            <span class="active mhead-arrow2"></span>
+                        </div>
+                        <div class="mhead-pone mhead-pones">
+                            <div class="mhead-box">
+                                <div class="mhead-child">
+                                    <div class="mhead-cdd">
+                                        <span>
+                                            <a href="#" target="blank">域名注册</a>
+                                        </span>
+                                    </div>
+                                    <div class="mhead-cdd">
+                                        <span>
+                                            <a href="#" target="blank">域名备案</a>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mhead-product">
+                        <div style="padding: 10px 10px;">
+                            <span>解决方案</span>
+                        </div>
+                    </div>
+                    <div class="mhead-product">
+                        <div style="padding: 10px 10px;">
+                            <span>定价</span>
+                        </div>
+                    </div>
+                    <div class="mhead-product">
+                        <div style="padding: 10px 10px;">
+                            <span>云市场</span>
+                            <!-- <span :class='item.itemShow?"mhead-arrow":"mhead-arrow2"'></span> -->
+                        </div>
+                    </div>
+                    <div class="mhead-product">
+                        <div style="padding: 10px 10px;">
+                            <span>帮助文档</span>
+                            <!-- <span :class='item.itemShow?"mhead-arrow":"mhead-arrow2"'></span> -->
+                        </div>
+                    </div>
+                    <div class="mhead-product">
+                        <div style="padding: 10px 10px;">
+                            <span>新闻动态</span>
+                            <!-- <span :class='item.itemShow?"mhead-arrow":"mhead-arrow2"'></span> -->
+                        </div>
+                    </div>
+                </div>
+
             </div>
     </header>
     <!-- 页面展示 -->
@@ -980,6 +1219,20 @@
                     this.lineIndex = -1;
           }
         },
+
+         // 移动端头部产品手风琴动效
+        getSelectDown(index) {
+                let arry = document.querySelectorAll('.mhead-product .mhead-pone');
+                let arry2 = document.querySelectorAll('.mhead-product .active');
+                if (arry[index].className == 'mhead-pone mhead-pones') {
+                    arry[index].className = 'mhead-pone mhead-pone';
+                    arry2[index].className = 'active mhead-arrow';
+                } else {
+                    arry[index].className = 'mhead-pone mhead-pones';
+                    arry2[index].className = 'active mhead-arrow2';
+                }
+        },
+
       go(path) {
         if (path == 'exit') {
           this.exit()
@@ -1184,7 +1437,7 @@
       vertical-align: top;
     }
     .user-list{
-       width: 100px;
+       margin-right: 20px;
       a{
         color: #333333;
       }
@@ -1344,6 +1597,28 @@
   z-index: 9999;
   transition: all ease-in-out 0.3s;
 }
+
+// 移动
+  .m-head {
+    display: none;
+    min-width: 320px;
+    position: absolute;
+    width: 100%;
+    z-index: 999;
+  }
+
+  .mobile-head .mobile-logo .mobile-limg img {
+    width: 103px;
+    height: auto;
+    max-width: 86%;
+    max-height: 66px;
+    position: relative;
+    top: -11px;
+}
+    .mobile-head .mr-icon{
+    height: 60px;
+    line-height: 60px;
+    }
  
     }
     #app-foot {
@@ -1716,8 +1991,6 @@
 ul li {
   list-style: none;
 }
-
-
 
 p {
   margin: 0;
