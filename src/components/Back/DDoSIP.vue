@@ -1734,13 +1734,13 @@ export default {
                         h('i-switch',
                         {
                             props:{
-                                value:params.row.ccprotect == 0 ?true:false,
+                                value:params.row.ccprotect == 1 ?true:false,
                                 disabled:params.row._disableExpand == true ? true : false
                             },
                             on: {
                                 'on-change': (value) => {
                                     this.ccProtectData[params.row._index]._disableExpand = false;
-                                    this.ccProtectData[params.row._index].ccprotect=value?0:1;
+                                    this.ccProtectData[params.row._index].ccprotect=value?1:0;
                                 }
                             }
                         },
