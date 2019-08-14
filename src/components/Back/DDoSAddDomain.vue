@@ -67,7 +67,7 @@
                   ></Input>
                   <p class="dp-bf">
                     如果源站暴露，请参考使用
-                    <span>高防后源站IP暴露的解决方法</span>
+                    <a href="https://zschj.xrcloud.net/support_docs/1JWD4oQgr6_1LnzoqVYwB.html" target="_blank">高防后源站IP暴露的解决方法</a>
                   </p>
                 </FormItem>
                 <FormItem label="证书ID" prop="id" v-if="certificateShow">
