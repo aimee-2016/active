@@ -55,7 +55,7 @@
           </FormItem>
 					<span v-if="$store.state.zone.gpuserver == 2">
             <span v-if="bindHostForm.vmOptions==''" style="font-size:14px;font-family:MicrosoftYaHei;color:rgba(42,153,242,1);cursor: pointer;position: absolute;left: 47%;top: 45%;"
-            @click="buyzhuji">
+            @click="buyDdos">
               <img style="transform: translate(0px,3px);" src="../../assets/img/public/icon_plussign.png" />
               购买高防云服务器
             </span>
@@ -207,7 +207,18 @@
 				    this.$router.push('/buy/')
 				  }
 				}
-			},
+      },
+      buyDdos() {
+        // 切换默认区域
+				axios.get('user/setDefaultZone.do', {params: {zoneId: this.$store.state.zone.zoneid}}).then(response => {
+				})
+				for (var zone of this.$store.state.zoneList) {
+				  if (zone.zoneid) {
+				    sessionStorage.setItem('pane', 'Peip')
+				    this.$router.push('/buy/ddos')
+				  }
+				}
+      },
       /*  列出该负载均衡下的云服务器*/
       listHostByBalance () {
         var loadbalanceType = this.balanceInfo._internal ? '0' : '1'
