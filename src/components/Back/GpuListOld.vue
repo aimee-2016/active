@@ -24,7 +24,7 @@
             <Select v-model="gpuTimeValue" style="width:200px" placeholder="计费类型" @on-change="getGpuServerList">
               <Option v-for="item in gpuTimeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
             </Select>
-            <Select v-model="gpuStatus" style="width:200px" placeholder="主机状态" @on-change="getGpuServerList">
+            <Select v-model="gpuStatus" style="width:200px" placeholder="云服务器状态" @on-change="getGpuServerList">
               <Option v-for="item in gpuStatusList" :value="item.value" :key="item.value">{{ item.label }}</Option>
             </Select>
           </div>
@@ -69,9 +69,9 @@
                 <Icon type="ios-help-outline" style="color:#2A99F2;font-size:16px;"></Icon>
                 <div slot="content">
                   <div>
-                    您可以选择在制作快照的时候保存您主机的当前运行状态。当您选择“保存”之时，
-                    当前主机的内存将被记录，在您对快照执行回滚操作的时候，也只能在开机状态下执行；当您选择“不保存”时
-                    此次快照将不记录主机内存信息，您在通过该快照回滚的时候只能在关机状态下执行。
+                    您可以选择在制作快照的时候保存您云服务器的当前运行状态。当您选择“保存”之时，
+                    当前云服务器的内存将被记录，在您对快照执行回滚操作的时候，也只能在开机状态下执行；当您选择“不保存”时
+                    此次快照将不记录云服务器内存信息，您在通过该快照回滚的时候只能在关机状态下执行。
                   </div>
                 </div>
               </Poptip>
@@ -82,7 +82,7 @@
             </RadioGroup>
           </div>
         </Form>
-        <p class="modal-text-hint-bottom">提示：云服务器快照为每块磁盘提供<span>8个</span>快照额度，当某个主机的快照数量达到额度上限，在创建新的快照任务时，系统会删除由自动快照策略所生成的时间最早的自动快照点
+        <p class="modal-text-hint-bottom">提示：云服务器快照为每块磁盘提供<span>8个</span>快照额度，当某个云服务器的快照数量达到额度上限，在创建新的快照任务时，系统会删除由自动快照策略所生成的时间最早的自动快照点
         </p>
       </div>
       <div slot="footer" class="modal-footer-border">
@@ -113,8 +113,8 @@
       </div>
     </Modal>
 
-    <!--主机续费-->
-    <Modal title="主机续费" width="550" :mask-closable="false" v-model="showModal.renew" >
+    <!--云服务器续费-->
+    <Modal title="云服务器续费" width="550" :mask-closable="false" v-model="showModal.renew" >
       <Form ref="renewValidate" :model="renewValidate" :rules="renewRuleValidate" label-position="top" inline>
         <FormItem label="付费类型" prop="name">
           <Select v-model="timeType" placeholder="请选择付费类型" style="width: 200px" @on-change="renewChange">
@@ -258,10 +258,10 @@
         VMId:'',
         //GPU的computerid
         uuId:'',
-        //主机名称
+        //云服务器名称
         companyname:'',
 
-        //筛选主机
+        //筛选云服务器
         gpuTimeValue:'',
         gpuTimeList:[
           {
@@ -347,7 +347,7 @@
           ]
         },
 
-        //主机续费
+        //云服务器续费
         renewValidate:{
           time:[
             {
@@ -548,7 +548,7 @@
             key:'zonename'
           },
           {
-            title:'主机配置',
+            title:'云服务器配置',
             key:'serviceoffername'
           },
           {
@@ -594,13 +594,13 @@
                     style:{color:'#2A99F2',padding:'8px 0',display:'inline-block'}
                   },[
                     h('p',{style:{cursor:'pointer',display:pros?'none':'inline-block'},on:{click:()=>{ if(params.row.status == 2 || params.row.status == 3){
-                          this.$Message.info('请等待主机完成当前操作');
+                          this.$Message.info('请等待云服务器完成当前操作');
                         }else {this.link(params.row)}}}},'远程链接'),
                     h('p',{style:{cursor:'pointer',margin:'5px 0'},
                       on:{
                         click:()=> {
                           if(params.row.status == 2 || params.row.status == 3){
-                            this.$Message.info('请等待主机完成当前操作');
+                            this.$Message.info('请等待云服务器完成当前操作');
                           }else {
                             this.deleteHost(params.row);
                           }
@@ -624,10 +624,10 @@
                       nativeOn: {
                         click: () => {
                           if(params.row.publicip != '' && params.row.publicip != undefined){
-                            this.$Message.info('该主机已绑定IP');
+                            this.$Message.info('该云服务器已绑定IP');
                           }else {
                             if(params.row.status == 2 || params.row.status ==3){
-                              this.$Message.info('请等待主机完成当前操作');
+                              this.$Message.info('请等待云服务器完成当前操作');
                             }else {
                               this.uuId = params.row.computerid;
                               this.vpcId = params.row.vpcid;
@@ -642,7 +642,7 @@
                           click: () => {
                             this.companyname = params.row.companyname;
                             if(params.row.status == 2 || params.row.status ==3){
-                              this.$Message.info('请等待主机完成当前操作');
+                              this.$Message.info('请等待云服务器完成当前操作');
                             }else {
                               this.$Modal.confirm({
                                 title:'解绑IP',
@@ -662,13 +662,13 @@
                       //       if(params.row.computerstate == '1' && params.row.status=='1'){
                       //         this.companyname = params.row.companyname;
                       //         if(params.row.status == 2 || params.row.status ==3){
-                      //           this.$Message.info('请等待主机完成当前操作');
+                      //           this.$Message.info('请等待云服务器完成当前操作');
                       //         }else {
                       //           this.showModal.snapshot = true;
                       //           this.uuId = params.row.computerid;
                       //         }
                       //       }else{
-                      //         this.$Message.info('制作快照前请先开启主机');
+                      //         this.$Message.info('制作快照前请先开启云服务器');
                       //       }
                       //     }
                       //   }
@@ -682,13 +682,13 @@
                             if(params.row.computerstate == '0' && params.row.status=='1'){
                               this.uuId = params.row.computerid;
                               if(params.row.status == 2 || params.row.status ==3){
-                                this.$Message.info('请等待主机完成当前操作');
+                                this.$Message.info('请等待云服务器完成当前操作');
                               }else {
                                 this.showModal.mirror  = true;
                                 this.mirrorValidate.rootdiskid = params.row.rootdiskid;
                               }
                             }else{
-                              this.$Message.info('制作镜像前请先关闭主机');
+                              this.$Message.info('制作镜像前请先关闭云服务器');
                             }
                           }
                         }
@@ -702,14 +702,14 @@
                             this.uuId = params.row.computerid;
                             this.$Modal.confirm({
                               title:'提示',
-                              content:'确定要重启主机吗',
+                              content:'确定要重启云服务器吗',
                               onOk:()=>{
                                 this.reStartGPU();
                               }
                             })
                           }
                         }
-                      }, '重启主机'),
+                      }, '重启云服务器'),
                       h('DropdownItem', {
                         props:{
                           disabled:pros
@@ -717,10 +717,10 @@
                         nativeOn: {
                           click: () => {
                             if(params.row.status == 2 || params.row.status ==3){
-                              this.$Message.info('请等待主机完成当前操作');
+                              this.$Message.info('请等待云服务器完成当前操作');
                             }else {
                               // if(params.row.computerstate == '0' && params.row.status=='1'){
-                              //   this.$Message.info('主机续费需要关闭主机')
+                              //   this.$Message.info('云服务器续费需要关闭云服务器')
                               // }
                               if(params.row.caseType != 3){
                                 this.$Message.info('请选择实时计费的云服务器进行资费变更');
@@ -741,13 +741,13 @@
                         nativeOn: {
                           click: () => {
                             if(params.row.status == 2 || params.row.status ==3){
-                              this.$Message.info('请等待主机完成当前操作');
+                              this.$Message.info('请等待云服务器完成当前操作');
                             }else {
                               // if(params.row.computerstate == '0' && params.row.status=='1'){
-                              //   this.$Message.info('主机续费需要关闭主机')
+                              //   this.$Message.info('云服务器续费需要关闭云服务器')
                               // }
                               if(params.row.caseType == 3){
-                                this.$Message.info('请选择包年包月主机续费');
+                                this.$Message.info('请选择包年包月云服务器续费');
                                 return
                               }
                               this.VMId = params.row.id;
@@ -755,7 +755,7 @@
                             }
                           }
                         }
-                      }, '主机续费'),
+                      }, '云服务器续费'),
                       h('DropdownItem', {
                         props:{
                           disabled:pros
@@ -768,9 +768,9 @@
                               content:'确定要开/关机吗',
                               onOk:()=>{
                                 if(params.row.status == 2){
-                                  this.$Message.info('请等待主机创建完成');
+                                  this.$Message.info('请等待云服务器创建完成');
                                 }else if(params.row.status == 3){
-                                  this.$Message.info('主机正在删除中');
+                                  this.$Message.info('云服务器正在删除中');
                                 }else {
                                   if(params.row.computerstate == '0'){
                                     this.openHost(params.row._index);
@@ -809,7 +809,7 @@
           }
         }
       },
-      // 获取GPU主机
+      // 获取GPU云服务器
       getGpuServerList(){
         axios.get('gpuserver/listGpuServer.do',{
           params:{
@@ -912,7 +912,7 @@
         })
       },
 
-      //主机开机
+      //云服务器开机
       openHost(){
         this.$http.get('gpuserver/startGPU.do',{
           params:{
@@ -929,7 +929,7 @@
         })
       },
 
-      //主机关机
+      //云服务器关机
       stopHost(){
         this.$http.get('gpuserver/stopGPU.do',{
           params:{
@@ -947,18 +947,18 @@
         })
       },
 
-      //删除主机
+      //删除云服务器
       deleteHost(info){
         if(info.caseType != 3){
-          this.$Message.warning('只能删除实时计费主机');
+          this.$Message.warning('只能删除实时计费云服务器');
           return
         }
         if(info.status == 3){
-          this.$Message.warning('主机正在删除中');
+          this.$Message.warning('云服务器正在删除中');
           return
         }
         this.$Modal.confirm({
-          content:`${info.computername}主机删除之后将进入回收站（注：资源在回收站中也将会持续扣费，请及时处理），新睿云将为您保留2小时，在2小时之内您可以恢复资源，超出保留时间之后，将彻底删除资源，无法在恢复。`,
+          content:`${info.computername}云服务器删除之后将进入回收站（注：资源在回收站中也将会持续扣费，请及时处理），新睿云将为您保留2小时，在2小时之内您可以恢复资源，超出保留时间之后，将彻底删除资源，无法在恢复。`,
           onOk:()=>{
             axios.get('information/deleteVM.do',{
               params:{
@@ -979,7 +979,7 @@
       },
 
 
-      //重启主机
+      //重启云服务器
       reStartGPU(){
         this.$http.get('gpuserver/reStartGPU.do',{
           params:{
@@ -1065,7 +1065,7 @@
         }
       },
 
-      //获取主机续费价格
+      //获取云服务器续费价格
       getGpuMonery(){
         axios.get('information/getYjPrice.do',{
           params:{
@@ -1088,7 +1088,7 @@
         })
       },
 
-      //主机续费提交
+      //云服务器续费提交
       setGPuMoney(){
         let gpuList =JSON.stringify([{type:6,id:this.VMId}]);
         axios.post('continue/continueOrder.do',{
@@ -1189,7 +1189,7 @@
         })
       },
 
-      //连接主机
+      //连接云服务器
       link(item) {
         localStorage.setItem('link-companyid', item.companyid)
         localStorage.setItem('link-vmid', item.computerid)

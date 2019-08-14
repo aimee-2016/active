@@ -60,11 +60,11 @@
           <h4>升级后配置</h4>
           <div class="end-info">
             <p>
-              主机CPU:
+              云服务器CPU:
               <span>{{endCPU}}核</span>
             </p>
             <p>
-              主机内存:
+              云服务器内存:
               <span>{{endMemory}}G</span>
             </p>
             <div class="price">

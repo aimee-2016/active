@@ -5,7 +5,7 @@
         <h2>登录信息</h2>
         <div class="specification-item">
           <div class="item-label">
-            <span>主机信息</span>
+            <span>云服务器信息</span>
           </div>
           <div class="item-text">
             <span
@@ -34,10 +34,10 @@
         </div>
         <div class="specification-item short" v-if="loginInfo.setType==='customSet'">
           <div class="item-label">
-            <span>主机名称</span>
+            <span>云服务器名称</span>
           </div>
           <div class="item-text">
-            <Input v-model="loginInfo.serverName" placeholder="请输入主机名" style="width: 200px"></Input>
+            <Input v-model="loginInfo.serverName" placeholder="请输入云服务器名" style="width: 200px"></Input>
           </div>
         </div>
         <div
@@ -69,7 +69,7 @@
           <div class="item-text">
             <Input
               v-model="loginInfo.serverPassword"
-              placeholder="请输入主机登陆密码"
+              placeholder="请输入云服务器登陆密码"
               style="width: 200px"
               @on-focus="loginInfo.passwordHint = true"
               @on-blur="loginInfo.passwordHint = false"

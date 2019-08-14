@@ -71,7 +71,7 @@
                         </FormItem>
                     </Form>
                     <Button style="margin-right:10px;" @click="clearD">取消</Button>
-                    <Button type="primary" @click="addforwardrule('formValidate')">提交，查看下一步</Button>
+                    <Button type="primary" :loading='loading' @click="addforwardrule('formValidate')">提交，查看下一步</Button>
                 </div>
 
                 <div class="st-box" v-if="current == 1">
@@ -81,7 +81,7 @@
                     <Table :columns="ruleList" :data="ruleData"></Table>
                     <div style="margin-top:40px;text-align:right;">
                         <Button style="margin-right:10px;" @click="current -= 1">上一步</Button>
-                        <Button type="primary" :loading='loading' @click="next">下一步</Button>
+                        <Button type="primary"  @click="next">下一步</Button>
                     </div>
                 </div>
                 <div class="st-box" v-if="current == 2">
@@ -91,7 +91,7 @@
                         <p>由于解析需要一定时间，请根据列表“部署状态”查询转发规则添加结果</p>
                     </div>
                     <div style="margin-top:40px;">
-                        <Button type="primary" :loading='loading' @click="$router.push('ddosipBack')">返回列表</Button>
+                        <Button type="primary"  @click="$router.push('ddosipBack')">返回列表</Button>
                     </div>
                 </div>
                 </div>

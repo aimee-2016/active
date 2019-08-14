@@ -24,16 +24,16 @@
             <div class="gpu_right"  v-if="cpuList != '1'" >
                <div>
                  <p>升级前配置</p>
-                 <p>主机名称：{{name}}</p>
-                 <p>主机配置：{{gpuDetail.cpuNum}}核{{gpuDetail.memory}}G</p>
+                 <p>云服务器名称：{{name}}</p>
+                 <p>云服务器配置：{{gpuDetail.cpuNum}}核{{gpuDetail.memory}}G</p>
                  <p>GPU类型：{{cpuList[cpuIndex].gputype}}</p>
                  <p>剩余时长：{{gpuDetail.endTime}} </p>
                  <p style="color:#2A99F2;text-align: center;position: relative;bottom: 0px">全民普惠，3折减单，最高减免7000元！</p>
                </div>
               <div>
                 <p>升级后配置</p>
-                <p>主机名称：{{name}}</p>
-                <p>主机配置：{{cpuList[cpuIndex].cpunum}}核{{cpuList[cpuIndex].memory}}G</p>
+                <p>云服务器名称：{{name}}</p>
+                <p>云服务器配置：{{cpuList[cpuIndex].cpunum}}核{{cpuList[cpuIndex].memory}}G</p>
                 <p>GPU类型：{{cpuList[cpuIndex].gputype}}</p>
                 <p>剩余时长：{{gpuDetail.endTime}}</p>
                 <p>应付差价:<span style="float: right;color: #2A99F2;font-size: 24px;">{{upMoney}}元</span></p>

@@ -18,8 +18,8 @@
             </template>
             <Menu-item name="2-1">概述</Menu-item>
             <Menu-item name="2-2">注册及登录</Menu-item>
-            <Menu-item name="2-3">新建主机</Menu-item>
-            <Menu-item name="2-4">连接主机</Menu-item>
+            <Menu-item name="2-3">新建云服务器</Menu-item>
+            <Menu-item name="2-4">连接云服务器</Menu-item>
           </Submenu>
           <Submenu name="3">
             <template slot="title">
@@ -39,12 +39,12 @@
             <Menu-item name="4-3">启动/关闭云服务器</Menu-item>
             <Menu-item name="4-5">重启云服务器</Menu-item>
             <Menu-item name="4-6">监控云服务器</Menu-item>
-            <!--Menu-item name="4-7">修改主机名称</Menu-item-->
-            <Menu-item name="4-8">重置主机密码</Menu-item>
+            <!--Menu-item name="4-7">修改云服务器名称</Menu-item-->
+            <Menu-item name="4-8">重置云服务器密码</Menu-item>
             <Menu-item name="4-9">重装云服务器</Menu-item>
             <Menu-item name="4-10">制作快照</Menu-item>
             <Menu-item name="4-11">回滚快照</Menu-item>
-            <Menu-item name="4-12">升级主机配置</Menu-item>
+            <Menu-item name="4-12">升级云服务器配置</Menu-item>
             <Menu-item name="4-13">升级云服务器宽带</Menu-item>
             <!--Menu-item name="4-14">防火墙管理</Menu-item-->
             <Menu-item name="4-15">续费云服务器</Menu-item>
@@ -80,7 +80,7 @@
             <Menu-item name="8-1">制作镜像</Menu-item>
             <Menu-item name="8-2">修改镜像名称</Menu-item>
             <Menu-item name="8-3">删除镜像</Menu-item>
-            <Menu-item name="8-4">以镜像生成主机</Menu-item>
+            <Menu-item name="8-4">以镜像生成云服务器</Menu-item>
             <Menu-item name="8-5">常用问题</Menu-item>
           </Submenu>
         </Menu>

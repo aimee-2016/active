@@ -33,11 +33,11 @@
               <Dropdown-item name="rename" v-else>重命名</Dropdown-item>
               <Dropdown-item name="ratesChange" :disabled="status=='欠费'||status=='异常'">资费变更</Dropdown-item>
               <!-- 续费 -->
-              <Dropdown-item name="renewal" v-if="status=='异常'" :disabled=true>主机续费
+              <Dropdown-item name="renewal" v-if="status=='异常'" :disabled=true>云服务器续费
                 <!--<span
                   style="display:inline-block;background-color: #f24746;color:#fff;margin-left:20px;width: 18px;height: 18px;border-radius: 50%;text-align: center;line-height: 17px;">惠</span>-->
               </Dropdown-item>
-              <Dropdown-item name="renewal" v-else>主机续费<!--<span
+              <Dropdown-item name="renewal" v-else>云服务器续费<!--<span
                 style="display:inline-block;background-color: #f24746;color:#fff;margin-left:20px;width: 18px;height: 18px;border-radius: 50%;text-align: center;line-height: 17px;">惠</span>-->
               </Dropdown-item>
               <!-- 备份 -->
@@ -49,47 +49,47 @@
               <Dropdown-item name="backup" v-else>制作快照</Dropdown-item>
               <!-- 镜像 -->
               <Dropdown-item name="mirror" v-if="status!='关机'" :disabled=true>
-                <Tooltip content="制作镜像前您必须关闭主机" placement="top">
+                <Tooltip content="制作镜像前您必须关闭云服务器" placement="top">
                   制作镜像
                 </Tooltip>
               </Dropdown-item>
               <Dropdown-item name="mirror" v-else>制作镜像</Dropdown-item>
-              <!-- 升级主机 -->
+              <!-- 升级云服务器 -->
               <Dropdown-item name="upgrade" v-if="status!='关机'" :disabled=true>
-                <Tooltip content="升级主机前您必须关闭主机" placement="top">
-                  主机升级<span
+                <Tooltip content="升级云服务器前您必须关闭云服务器" placement="top">
+                  云服务器升级<span
                   style="display:inline-block;background-color: #f24746;color:#fff;margin-left:20px;width: 18px;height: 18px;border-radius: 50%;text-align: center;line-height: 17px;">惠</span>
                 </Tooltip>
               </Dropdown-item>
               <Dropdown-item name="upgrade" v-else>
-                主机升级<span
+                云服务器升级<span
                 style="display:inline-block;background-color: #f24746;color:#fff;margin-left:20px;width: 18px;height: 18px;border-radius: 50%;text-align: center;line-height: 17px;">惠</span>
               </Dropdown-item>
 
-              <!-- 重启主机 -->
+              <!-- 重启云服务器 -->
 
               <Poptip
                 confirm
                 width="200"
                 placement="right"
-                title="您确认重启主机吗？"
+                title="您确认重启云服务器吗？"
                 @on-ok="reboot"
                 @on-cancel="cancel">
-                <li class="del" v-if="status!='欠费'&&status!='异常'&&status!='关机'" :disabled=true>重启主机</li>
+                <li class="del" v-if="status!='欠费'&&status!='异常'&&status!='关机'" :disabled=true>重启云服务器</li>
               </Poptip>
 
-              <!-- 删除主机 -->
+              <!-- 删除云服务器 -->
 
-              <Dropdown-item name="delhost" v-if="status=='异常'" :disabled=true>删除主机</Dropdown-item>
-              <Dropdown-item name="delhost" v-else>删除主机</Dropdown-item>
+              <Dropdown-item name="delhost" v-if="status=='异常'" :disabled=true>删除云服务器</Dropdown-item>
+              <Dropdown-item name="delhost" v-else>删除云服务器</Dropdown-item>
 
-              <!-- 解绑主机 -->
+              <!-- 解绑云服务器 -->
 
               <Poptip
                 confirm
                 width="200"
                 placement="right"
-                title="您确认解绑主机IP吗？"
+                title="您确认解绑云服务器IP吗？"
                 @on-ok="unbind"
                 @on-cancel="cancel"
                 style="display: block">
@@ -107,7 +107,7 @@
 
             <Tab-pane :label="`开启(${openHost.length+waitHost.length})`" name="开启">
               <div class="flex-wrapper">
-                <!-- 创建中主机列表 -->
+                <!-- 创建中云服务器列表 -->
                 <div v-for="(item,index) in waitHost" :key="index" :class="{select:item.select}"
                      style="margin-bottom: 20px;height:228px;">
                   <Card style="width:375px;">
@@ -161,17 +161,17 @@
                         <Button @click.stop="manage(item,'normal')" style="margin-left:55px;" :disabled="(!authInfo)|| (authInfo&&authInfo.authtype==0&&authInfo.checkstatus!=0)||(!authInfoPersion &&authInfo&&authInfo.authtype==1&&authInfo.checkstatus!=0)||(authInfoPersion&&authInfoPersion.checkstatus!=0 && authInfo&&authInfo.checkstatus!=0)"
                                 :class="{btnnormal:(auth&& auth.checkstatus == 0)||(authInfoPersion&& authInfoPersion.checkstatus == 0),_hover:(auth&& auth.checkstatus == 0)||(authInfoPersion&& authInfoPersion.checkstatus == 0)}">管理
                         </Button>
-                        <Button v-if="(!authInfo)|| (authInfo&&authInfo.authtype==0&&authInfo.checkstatus!=0)||(!authInfoPersion &&authInfo&&authInfo.authtype==1&&authInfo.checkstatus!=0)||(authInfoPersion&&authInfoPersion.checkstatus!=0 && authInfo&&authInfo.checkstatus!=0)">连接主机</Button>
-                        <Button v-else class="btnnormal _hover" @click="link(item)">连接主机
+                        <Button v-if="(!authInfo)|| (authInfo&&authInfo.authtype==0&&authInfo.checkstatus!=0)||(!authInfoPersion &&authInfo&&authInfo.authtype==1&&authInfo.checkstatus!=0)||(authInfoPersion&&authInfoPersion.checkstatus!=0 && authInfo&&authInfo.checkstatus!=0)">连接云服务器</Button>
+                        <Button v-else class="btnnormal _hover" @click="link(item)">连接云服务器
                         </Button>
                         <!--<a v-else :href="item.connecturl" target="_blank"
-                           style="line-height: 30px;border: 1px solid;border-radius: 4px;width: 76px;" class="_hover">连接主机</a>-->
+                           style="line-height: 30px;border: 1px solid;border-radius: 4px;width: 76px;" class="_hover">连接云服务器</a>-->
                       </div>
                     </div>
                   </Card>
                 </div>
 
-                <!-- 关机中中主机列表 -->
+                <!-- 关机中中云服务器列表 -->
                 <div v-for="(item,index) in openHost" v-if="item.status==2" :key="index" :class="{select:item.select}"
                      style="margin-bottom: 20px;height:228px;">
                   <Card style="width:375px;height:228px;">
@@ -306,7 +306,7 @@
                   </Card>
                 </div>
 
-                <!-- 开机中中主机列表 -->
+                <!-- 开机中中云服务器列表 -->
                 <div v-for="(item,index) in closeHost" v-if="item.status==2" :key="index" :class="{select:item.select}"
                      style="margin-bottom: 20px;height:228px;">
                   <Card style="width:375px;height:228px;">
@@ -357,9 +357,9 @@
                 <Icon type="ios-help-outline" style="color:#2A99F2;font-size:16px;"></Icon>
                 <div slot="content">
                   <div>
-                    您可以选择在制作快照的时候保存您主机的当前运行状态。当您选择“保存”之时，
-                    当前主机的内存将被记录，在您对快照执行回滚操作的时候，也只能在开机状态下执行；当您选择“不保存”时
-                    此次快照将不记录主机内存信息，您在通过该快照回滚的时候只能在关机状态下执行。
+                    您可以选择在制作快照的时候保存您云服务器的当前运行状态。当您选择“保存”之时，
+                    当前云服务器的内存将被记录，在您对快照执行回滚操作的时候，也只能在开机状态下执行；当您选择“不保存”时
+                    此次快照将不记录云服务器内存信息，您在通过该快照回滚的时候只能在关机状态下执行。
                   </div>
                 </div>
               </Poptip>
@@ -370,7 +370,7 @@
             </RadioGroup>
           </div>
         </Form>
-        <p class="modal-text-hint-bottom">提示：云服务器快照为每块磁盘提供<span>8个</span>快照额度，当某个主机的快照数量达到额度上限，在创建新的快照任务时，系统会删除由自动快照策略所生成的时间最早的自动快照点
+        <p class="modal-text-hint-bottom">提示：云服务器快照为每块磁盘提供<span>8个</span>快照额度，当某个云服务器的快照数量达到额度上限，在创建新的快照任务时，系统会删除由自动快照策略所生成的时间最早的自动快照点
         </p>
       </div>
       <div slot="footer" class="modal-footer-border">
@@ -378,15 +378,15 @@
         <Button type="primary" @click="backupSubmit('backupForm')">制作快照</Button>
       </div>
     </Modal>
-    <!-- 主机重命名弹窗 -->
+    <!-- 云服务器重命名弹窗 -->
     <Modal v-model="showModal.rename" width="550" :scrollable="true">
       <p slot="header" class="modal-header-border">
-        <span class="universal-modal-title">主机重命名</span>
+        <span class="universal-modal-title">云服务器重命名</span>
       </p>
       <div class="universal-modal-content-flex">
         <Form :model="renameForm" ref="renameForm" :rules="renameFormRule">
-          <Form-item label="主机名" prop="hostName">
-            <Input v-model="renameForm.hostName" placeholder="请输入新主机名" :maxlength="15"></Input>
+          <Form-item label="云服务器名" prop="hostName">
+            <Input v-model="renameForm.hostName" placeholder="请输入新云服务器名" :maxlength="15"></Input>
           </Form-item>
         </Form>
       </div>
@@ -498,9 +498,9 @@
           </FormItem>
           <div class="renewal-info">
             <ul>
-              <li><span>主机名称：</span>{{renewalInfo.computername}}</li>
+              <li><span>云服务器名称：</span>{{renewalInfo.computername}}</li>
               <li><span>操作系统：</span>{{renewalInfo.templatename}}</li>
-              <li><span>主机配置：</span>{{renewalInfo.serviceoffername}}</li>
+              <li><span>云服务器配置：</span>{{renewalInfo.serviceoffername}}</li>
               <li><span>剩余时长：</span>{{renewalInfo.endtime}}</li>
             </ul>
           </div>
@@ -511,7 +511,7 @@
             </CheckboxGroup>
           </FormItem>
           <div class="renewal-upgrade">
-            <p>如果现在配置内容不支持使用，可进行<span v-if="status =='关机'" @click="renewalUpgrade">主机升级</span><span v-else style="color:#333;cursor:not-allowed">主机升级</span>
+            <p>如果现在配置内容不支持使用，可进行<span v-if="status =='关机'" @click="renewalUpgrade">云服务器升级</span><span v-else style="color:#333;cursor:not-allowed">云服务器升级</span>
             </p>
           </div>
         </Form>
@@ -567,7 +567,7 @@
     <!-- 欠费tab页，续费弹窗 -->
     <Modal v-model="showModal.Renew" width="550" :scrollable="true">
       <div slot="header" class="modal-header-border">
-        <span class="universal-modal-title">续费主机</span>
+        <span class="universal-modal-title">续费云服务器</span>
       </div>
       <div class="universal-modal-content-flex">
         <p style="margin-bottom: 20px">温馨提示：当前资源已欠费，如需激活需要<span class="bluetext">1小时费用</span></p>
@@ -614,7 +614,7 @@
           提示：个人用户账户可以升级为企业用户账户，但企业用户账户不能降级为个人用户账户。完成实名认证的用户才能享受上述资源建立额度与免费试用时长如需帮助请联系：400-050-5565</p>
       </div>
     </Modal>
-        <!-- 删除主机关联其他资源确认弹窗 -->
+        <!-- 删除云服务器关联其他资源确认弹窗 -->
       <Modal v-model="showModal.delHostHint" :scrollable="true" :closable="false" :width="390">
       <p slot="header" class="modal-header-border">
         <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
@@ -905,8 +905,8 @@
                   if (response.data.result.loadbalance != '') {
                     this.$message.confirm({
                       title: '提示',
-                      content: `该主机已加入负载均衡：${response.data.result.loadbalance[0]}，若您需要修改主机所属负载均衡请先将主机移出该负载均衡在进行操作`,
-                      okText: '移出主机',
+                      content: `该云服务器已加入负载均衡：${response.data.result.loadbalance[0]}，若您需要修改云服务器所属负载均衡请先将云服务器移出该负载均衡在进行操作`,
+                      okText: '移出云服务器',
                       onOk: () => {
                         axios.get('loadbalance/listBalanceRoleAndVMByVMId.do', {
                           params: {
@@ -965,7 +965,7 @@
               this.$message.confirm({
                 title: '提示',
                 okText: '调整子网',
-                content: '您选择的主机的子网的网络服务方案为普通网络，不支持负载均衡。若您需要将该主机加入负载均衡可将该主机移入子网服务方案为：公网/私网负载均衡网络的子网之后在进行加入负载均衡操作',
+                content: '您选择的云服务器的子网的网络服务方案为普通网络，不支持负载均衡。若您需要将该云服务器加入负载均衡可将该云服务器移入子网服务方案为：公网/私网负载均衡网络的子网之后在进行加入负载均衡操作',
                 onOk: () => {
                   sessionStorage.setItem('vpcId', this.currentHost[0].vpcid)
                   this.$router.push('vpcManage')
@@ -982,7 +982,7 @@
         this.$refs[name].validate((valid) => {
           if (valid) {
             this.showModal.balance = false
-            this.$Message.info('主机正在加入负载均衡，请稍后')
+            this.$Message.info('云服务器正在加入负载均衡，请稍后')
             if (this.loadBalanceForm.loadbalanceroleid.split('#')[1] == 'public') {
               axios.get('loadbalance/assignToLoadBalancerRule.do', {
                 params: {
@@ -1023,14 +1023,14 @@
           }
         })
       },
-      //恢复主机
+      //恢复云服务器
       recoverHost(id) {
         this.$Modal.confirm({
           title: '',
-          content: '<p>确定要恢复当前主机吗？</p>',
+          content: '<p>确定要恢复当前云服务器吗？</p>',
           scrollable: true,
           onOk: () => {
-            this.$Message.info('主机正在恢复，请稍后')
+            this.$Message.info('云服务器正在恢复，请稍后')
             this.$http.get('information/recoverVM.do', {
               params: {
                 id: id
@@ -1049,7 +1049,7 @@
           }
         })
       },
-      // 欠费主机续费
+      // 欠费云服务器续费
       renewHost(item) {
         if (item.caseType == 3) {
           this.showModal.Renew = true
@@ -1067,7 +1067,7 @@
           this.showModal.renewal = true
         }
       },
-      // 实时欠费主机续费确认
+      // 实时欠费云服务器续费确认
       renewOk() {
         this.showModal.Renew = false
         this.$http.get('information/vmRenew.do', {
@@ -1077,7 +1077,7 @@
         }).then(response => {
           this.getData()
           if (response.status == 200 && response.data.status == 1) {
-            this.$Message.success('主机续费成功')
+            this.$Message.success('云服务器续费成功')
           } else {
             this.$message.info({
               content: response.data.message
@@ -1089,7 +1089,7 @@
       getData() {
         this.$http.get('information/listVirtualMachines.do').then(response => {
           if (response.status == 200 && response.data.status == 1) {
-            // 遍历各种主机类型，开启、关闭、欠费、错误、创建中
+            // 遍历各种云服务器类型，开启、关闭、欠费、错误、创建中
             for (var type of ['open', 'close', 'arrears', 'error', 'wait']) {
               var list = []
               var target = response.data.result[type] || {list: []}
@@ -1113,7 +1113,7 @@
         this.currentHost = []
         this.$http.get('information/listVirtualMachines.do').then(response => {
           if (response.status == 200 && response.data.status == 1) {
-            // 遍历各种主机类型，开启、关闭、欠费、错误、创建中
+            // 遍历各种云服务器类型，开启、关闭、欠费、错误、创建中
             for (var type in response.data.result) {
               var list = []
               var target = response.data.result[type]
@@ -1156,19 +1156,19 @@
       startUp() {
         switch (this.status) {
           case '开启':
-            this.$Message.warning('请选择未开启的主机!')
+            this.$Message.warning('请选择未开启的云服务器!')
             break
           case '异常':
-            this.$Message.warning('异常主机无法启动!')
+            this.$Message.warning('异常云服务器无法启动!')
             break
           case '欠费':
-            this.$Message.warning('主机欠费请续费!')
+            this.$Message.warning('云服务器欠费请续费!')
             break
           case '关机':
             if (this.closeHost.every(item => {
               return item.select == false
             })) {
-              this.$Message.warning('请选择主机')
+              this.$Message.warning('请选择云服务器')
               return
             }
             var num = 0
@@ -1177,7 +1177,7 @@
                 num++
               }
             })
-            this.loadingMessage = '正在启动主机'
+            this.loadingMessage = '正在启动云服务器'
             this.loading = true
             this.closeHost.forEach(item => {
               if (item.select == true) {
@@ -1217,7 +1217,7 @@
         })
       },
       start(item) {
-        this.loadingMessage = '正在启动主机'
+        this.loadingMessage = '正在启动云服务器'
         this.loading = true
         item.select = false
         item.status = 2
@@ -1237,7 +1237,7 @@
       bindIP() {
         if (this.checkSelect()) {
           if (this.currentHost[0].publicip) {
-            this.$Message.warning('已绑定主机无法再次绑定!')
+            this.$Message.warning('已绑定云服务器无法再次绑定!')
           } else {
             this.bindForm.publicIP = ''
             axios.get('network/listPublicIp.do', {
@@ -1313,7 +1313,7 @@
         this.$store.commit('setSelect', 'new')
         this.$router.push('/buy/')
       },
-      // 查询续费主机下是否有ip或磁盘
+      // 查询续费云服务器下是否有ip或磁盘
       renewType() {
         axios.get('information/listVirtualMachinesById.do', {
           params: {
@@ -1426,7 +1426,7 @@
                   if (!response.data.result) {
                     this.$Modal.confirm({
                       title: '提示',
-                      content: '您的主机有快照，无法升级，请删除快照再试',
+                      content: '您的云服务器有快照，无法升级，请删除快照再试',
                       scrollable: true,
                       okText: '删除快照',
                       onOk: () => {
@@ -1516,7 +1516,7 @@
             break
         }
         if (this.currentHost.length != 1) {
-          this.$Message.warning('请选择1个主机')
+          this.$Message.warning('请选择1个云服务器')
           return false
         }
         return true
@@ -1545,10 +1545,10 @@
           }
         })
       },
-      // 重命名主机
+      // 重命名云服务器
       rename() {
         this.showModal.rename = false
-        this.loadingMessage = '正在修改主机名'
+        this.loadingMessage = '正在修改云服务器名'
         this.loading = true
         this.$http.post('information/changeVmName.do', {
           vmId: this.currentHost[0].computerid,
@@ -1557,11 +1557,11 @@
           this.loading = false
           if (response.status == 200 && response.data.status == 1) {
             this.currentHost[0].computername = response.data.message
-            this.$Message.success('主机名修改成功')
+            this.$Message.success('云服务器名修改成功')
           }
         })
       },
-      // 包年/月主机续费
+      // 包年/月云服务器续费
       renewalok() {
         var selectIp = ''
         var selectDisk = ''
@@ -1644,7 +1644,7 @@
           }
         })
       },
-      // 创建主机镜像
+      // 创建云服务器镜像
       mirrorSubmit(name) {
         this.$refs[name].validate((valid) => {
           if (valid) {
@@ -1689,13 +1689,13 @@
       },
       del() {
         if (this.checkSelect()) {
-          // 实时主机或者活动主机可以删除
+          // 实时云服务器或者活动云服务器可以删除
           // if (this.currentHost[0].caseType != 3 || this.currentHost[0].isfreevm == 1) {
-          //   this.$Message.warning('只能删除实时计费主机')
+          //   this.$Message.warning('只能删除实时计费云服务器')
           //   return
           // }
           this.$message.confirm({
-            content: `${this.currentHost[0].computername}主机删除之后将进入回收站（注：资源在回收站中也将会持续扣费，请及时处理），新睿云将为您保留2小时，在2小时之内您可以恢复资源，超出保留时间之后，将彻底删除资源，无法在恢复。`,
+            content: `${this.currentHost[0].computername}云服务器删除之后将进入回收站（注：资源在回收站中也将会持续扣费，请及时处理），新睿云将为您保留2小时，在2小时之内您可以恢复资源，超出保留时间之后，将彻底删除资源，无法在恢复。`,
             onOk: () => {
               this.$http.get('information/deleteVM.do', {
                 params: {
@@ -1720,7 +1720,7 @@
       },
       reboot() {
         if (this.checkSelect()) {
-          this.loadingMessage = '正在重启主机'
+          this.loadingMessage = '正在重启云服务器'
           this.loading = true
           this.$http.get('information/rebootVirtualMachine.do', {
             params: {
@@ -1745,7 +1745,7 @@
         this.$store.commit('setPane', {vpc: 'VPC', vpn: 'remote', usercenter: type})
         this.$router.push('/usercenter')
       },
-      // 连接主机动作
+      // 连接云服务器动作
       link(item) {
         localStorage.setItem('link-companyid', item.companyid)
         localStorage.setItem('link-vmid', item.computerid)

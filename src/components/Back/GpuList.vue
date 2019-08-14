@@ -25,7 +25,7 @@
                 width="230"
                 placement="right"
                 @on-ok="stopHost()"
-                title="您确认关闭选中的主机吗？" style="margin: 0 0 0 10px">
+                title="您确认关闭选中的云服务器吗？" style="margin: 0 0 0 10px">
                 <Button type="primary" :disabled='shutdownDisabled' style="margin:0 10px;">关机</Button>
               </Poptip>
             <Button type="primary" :disabled='startDisabled' @click="openHost">开机</Button>
@@ -34,7 +34,7 @@
               width="230"
               placement="right"
               @on-ok="reStartGPU"
-              title="您确认重启选中的主机吗？" style="margin: 0 10px">
+              title="您确认重启选中的云服务器吗？" style="margin: 0 10px">
               <Button type="primary" :disabled="restartDisabled">重启</Button>
             </Poptip>
              <Poptip
@@ -42,7 +42,7 @@
               width="230"
               placement="right"
               @on-ok="deleteHost(1)"
-              title="您确认删除选中的主机吗？">
+              title="您确认删除选中的云服务器吗？">
               <Button type="primary" :disabled="deleteDisabled">删除</Button>
             </Poptip>
             <Dropdown @on-click="hideEvent">
@@ -59,7 +59,7 @@
                       confirm
                       width="200"
                       placement="right"
-                      title="您确认解绑主机IP吗？"
+                      title="您确认解绑云服务器IP吗？"
                       @on-ok="unbind"
                       style="display: block">
                       <Dropdown-item name="unbindIP" :disabled="unbindIPDisabled">解绑公网IP</Dropdown-item>
@@ -70,7 +70,7 @@
                     <Tooltip content="资费变更只适用于实时计费的资源" placement="top">资费变更
                     </Tooltip>
                   </DropdownItem>
-                  <DropdownItem name="renewal" :disabled="hostRenewDisabled">主机续费</DropdownItem>
+                  <DropdownItem name="renewal" :disabled="hostRenewDisabled">云服务器续费</DropdownItem>
                   <DropdownItem name="mirror" :disabled="makeMirrorDisabled">
                     <Tooltip content="制作镜像只适用于已关机的资源" placement="top">制作镜像
                     </Tooltip>
@@ -191,10 +191,10 @@
         </div>
       </Modal>
 
-      <!--主机续费-->
+      <!--云服务器续费-->
       <Modal width="550" :mask-closable="false" v-model="showModal.renew" >
          <p slot="header" class="modal-header-border">
-          <span class="universal-modal-title">主机续费</span>
+          <span class="universal-modal-title">云服务器续费</span>
         </p>
         <Form ref="renewValidate" :model="renewValidate" :rules="renewRuleValidate" label-position="top" inline>
           <FormItem label="付费类型" prop="name">
@@ -311,11 +311,11 @@
         <span class="universal-modal-title">重置密码</span>
       </p>
       <div class="universal-modal-content-flex">
-        <p class="resetModal-title">您已选 <span>{{ resetPasswordHostData.length }} 台主机</span></p>
+        <p class="resetModal-title">您已选 <span>{{ resetPasswordHostData.length }} 台云服务器</span></p>
         <ul class="resetModal-table">
           <li>No.</li>
           <li>用户名</li>
-          <li>主机名</li>
+          <li>云服务器名</li>
           <li>当前密码</li>
         </ul>
         <ul class="resetModal-table data" v-for="(item,index) in resetPasswordHostData" :key="index">
@@ -325,7 +325,7 @@
           <li v-if="item.changepassword">
             <input :class="{error: item.errorMsg}" v-model="item.currentPassword" @input="item.errorMsg = ''" type="text" placeHolder="请输入当前密码" :maxlength="20"></input>
             <p v-if="item.errorMsg == 'passwordMistake'">您输入的密码有误</p>
-            <p v-if="item.errorMsg == 'passwordIsEmpty'">请输入主机密码</p>
+            <p v-if="item.errorMsg == 'passwordIsEmpty'">请输入云服务器密码</p>
           </li>
           <li v-else>默认密码</li>
         </ul>
@@ -363,15 +363,15 @@
       </div>
     </Modal>
 
-    <!-- 主机重命名弹窗 -->
+    <!-- 云服务器重命名弹窗 -->
     <Modal v-model="showModal.rename" width="550" :scrollable="true">
       <p slot="header" class="modal-header-border">
-        <span class="universal-modal-title">主机重命名</span>
+        <span class="universal-modal-title">云服务器重命名</span>
       </p>
       <div class="universal-modal-content-flex">
         <Form :model="renameForm" ref="renameForm" :rules="renameFormRule">
-          <Form-item label="主机名" prop="hostName">
-            <Input v-model="renameForm.hostName" placeholder="请输入新主机名" :maxlength="15"></Input>
+          <Form-item label="云服务器名" prop="hostName">
+            <Input v-model="renameForm.hostName" placeholder="请输入新云服务器名" :maxlength="15"></Input>
           </Form-item>
         </Form>
       </div>
@@ -537,7 +537,7 @@
           VMId:'',
           //GPU的computerid
           uuId:'',
-          //主机名称
+          //云服务器名称
           companyname:'',
 
            renameForm: {
@@ -567,7 +567,7 @@
               {required: true, validator: validatePassCheck, trigger: 'blur'}
             ],
           },
-          //筛选主机
+          //筛选云服务器
           gpuTimeValue:'',
           gpuTimeList:[
             {
@@ -656,7 +656,7 @@
             ]
           },
 
-          //主机续费
+          //云服务器续费
           renewValidate:{
             time:[
               {
@@ -1015,7 +1015,7 @@
               }
             },
             {
-              title:'主机配置',
+              title:'云服务器配置',
               render: (h, params) => {
               let textArr = params.row.serviceoffername.split('+')
               let text_1 = 'CPU:' + textArr[0]
@@ -1244,7 +1244,7 @@
                         style:{color:'#2A99F2',padding:'8px 0',display:'inline-block'}
                       },[
                     h('p',{style:{cursor:'pointer'},on:{click:()=>{ if(params.row.status == 2 || params.row.status == 3){
-                          this.$Message.info('请等待主机完成当前操作');
+                          this.$Message.info('请等待云服务器完成当前操作');
                         }else {this.link(params.row)}}}},'远程链接'),
                     h('p',{style:{cursor:'pointer',margin:'5px 0'},
                       on:{
@@ -1256,9 +1256,9 @@
                             content:msg,
                             onOk:()=>{
                                 if(params.row.status == 2){
-                                    this.$Message.info('请等待主机创建完成');
+                                    this.$Message.info('请等待云服务器创建完成');
                                 }else if(params.row.status == 3){
-                                    this.$Message.info('主机正在删除中');
+                                    this.$Message.info('云服务器正在删除中');
                                 }else {
                                 if(params.row.computerstate == '0'){
                                   this.openHost(params.row._index);
@@ -1285,11 +1285,11 @@
                         nativeOn: {
                           click: () => {
                             if(params.row.publicip != '' && params.row.publicip != undefined){
-                              this.$Message.info('该主机已绑定IP');
+                              this.$Message.info('该云服务器已绑定IP');
                             }else {
                               
                               if(params.row.status == 2 || params.row.status ==3){
-                                this.$Message.info('请等待主机完成当前操作');
+                                this.$Message.info('请等待云服务器完成当前操作');
                               }else {
                                 this.uuId = params.row.computerid;
                                 this.vpcId = params.row.vpcid;
@@ -1304,7 +1304,7 @@
                             click: () => {
                               this.companyname = params.row.companyname;
                               if(params.row.status == 2 || params.row.status ==3){
-                                this.$Message.info('请等待主机完成当前操作');
+                                this.$Message.info('请等待云服务器完成当前操作');
                               }else {
                                 this.$Modal.confirm({
                                   title:'解绑IP',
@@ -1325,14 +1325,14 @@
                               if(params.row.computerstate == '0' && params.row.status=='1'){
                                 this.uuId = params.row.computerid;
                                 if(params.row.status == 2 || params.row.status ==3){
-                                  this.$Message.info('请等待主机完成当前操作');
+                                  this.$Message.info('请等待云服务器完成当前操作');
                                 }else {
                                   this.showModal.mirror  = true;
                                   this.mirrorValidate.rootdiskid = params.row.rootdiskid;
                                   this.hostSelectList = params.row;
                                 }
                               }else{
-                              this.$Message.info('制作镜像前请先关闭主机');
+                              this.$Message.info('制作镜像前请先关闭云服务器');
                               }
                             }
                           }
@@ -1343,7 +1343,7 @@
                               this.uuId = params.row.computerid;
                               this.$Modal.confirm({
                                 title:'提示',
-                                content:'确定要重启主机吗',
+                                content:'确定要重启云服务器吗',
                                 onOk:()=>{
                                   this.hostSelectList = params.row;
                                   this.reStartGPU(2);
@@ -1351,12 +1351,12 @@
                               })
                             }
                           }
-                        }, '重启主机'),
+                        }, '重启云服务器'),
                           h('DropdownItem', {
                           nativeOn: {
                             click: () => {
                               if(params.row.status == 2 || params.row.status ==3){
-                                this.$Message.info('请等待主机完成当前操作');
+                                this.$Message.info('请等待云服务器完成当前操作');
                               }else {
                                 if(params.row.caseType != 3){
                                   this.$Message.info('请选择实时计费的云服务器进行资费变更');
@@ -1375,10 +1375,10 @@
                           nativeOn: {
                             click: () => {
                               if(params.row.status == 2 || params.row.status ==3){
-                                this.$Message.info('请等待主机完成当前操作');
+                                this.$Message.info('请等待云服务器完成当前操作');
                               }else {
                                 if(params.row.caseType == 3){
-                                  this.$Message.info('请选择包年包月主机续费');
+                                  this.$Message.info('请选择包年包月云服务器续费');
                                   return
                                 }
                                 this.VMId = params.row.id;
@@ -1386,12 +1386,12 @@
                               }
                             }
                           }
-                        }, '主机续费'),
+                        }, '云服务器续费'),
                         h('DropdownItem', {
                           nativeOn: {
                             click: () => {
                             if(params.row.status == 2 || params.row.status == 3){
-                                this.$Message.info('请等待主机完成当前操作');
+                                this.$Message.info('请等待云服务器完成当前操作');
                               }else {
                                 this.deleteList = params.row;
                                 this.deleteHost(2);
@@ -1453,7 +1453,7 @@
             }
           }
         },
-        // 获取GPU主机
+        // 获取GPU云服务器
        getGpuServerList(){
          this.selectLength = [];
          axios.get('gpuserver/listGpuServer.do',{
@@ -1516,7 +1516,7 @@
               }
               let flag = locality.some(item => {
                 return item.status == 2 || item.status == -2
-              }) // 操作的主机中是否有过渡状态，没有就清除定时器，取消刷新
+              }) // 操作的云服务器中是否有过渡状态，没有就清除定时器，取消刷新
               if (!flag) {
                 this.hostData.forEach((host, index) => {
                   locality.forEach(item => {
@@ -1626,7 +1626,7 @@
             })
         },
 
-        //主机开机
+        //云服务器开机
        openHost(index){
         if (index == undefined) {
           this.hostData.forEach(host => {
@@ -1670,7 +1670,7 @@
          })
         },
 
-      //主机关机
+      //云服务器关机
        stopHost(index){
          console.log(index);
          if (index != undefined) {
@@ -1733,7 +1733,7 @@
           })
         }
       },
-      //删除主机
+      //删除云服务器
        deleteHost(index){
             if(this.deleteList ==""){
              this.selectLength.forEach(item =>{
@@ -1741,7 +1741,7 @@
             })
           }
          this.$Modal.confirm({
-           content:`主机删除之后将进入回收站（注：资源在回收站中也将会持续扣费，请及时处理），新睿云将为您保留2小时，在2小时之内您可以恢复资源，超出保留时间之后，将彻底删除资源，无法在恢复。`,
+           content:`云服务器删除之后将进入回收站（注：资源在回收站中也将会持续扣费，请及时处理），新睿云将为您保留2小时，在2小时之内您可以恢复资源，超出保留时间之后，将彻底删除资源，无法在恢复。`,
            onOk:()=>{
              axios.get('information/deleteVM.do',{
                params:{
@@ -1768,7 +1768,7 @@
         },
 
 
-      //重启主机
+      //重启云服务器
       reStartGPU(index){
         if (index == undefined) {
           this.hostData.forEach(host => {
@@ -1808,7 +1808,7 @@
           })
       },
 
-      // 选中主机
+      // 选中云服务器
       selectIndex(selection){
         this.uuId = '';
         this.selectLength = selection;
@@ -1824,7 +1824,7 @@
         //创建镜像
       createMrrior(){
         if(this.selectLength.length > 1){
-          this.$Message.info('一次只能选择一台主机镜像制作');
+          this.$Message.info('一次只能选择一台云服务器镜像制作');
           return;
         }
           this.$refs.mirrorValidate.validate((valid) => {
@@ -1877,7 +1877,7 @@
           }
       },
 
-         //获取主机续费价格
+         //获取云服务器续费价格
       getGpuMonery(){
          axios.get('information/getYjPrice.do',{
            params:{
@@ -1900,7 +1900,7 @@
          })
       },
 
-        //主机续费提交
+        //云服务器续费提交
       setGPuMoney(){
          let gpuList =JSON.stringify([{type:6,id:this.hostSelectList.id}]);
           axios.post('continue/continueOrder.do',{
@@ -2001,7 +2001,7 @@
         })
       },
 
-        //连接主机
+        //连接云服务器
       link(item) {
           localStorage.setItem('link-companyid', item.companyid)
           localStorage.setItem('link-vmid', item.computerid)
@@ -2247,7 +2247,7 @@
           switch (name) {
             case 'bindingIP':
             if(this.selectLength[0].publicip != '' && this.selectLength[0].publicip != undefined){
-              this.$Message.info('该主机已绑定IP');
+              this.$Message.info('该云服务器已绑定IP');
               return;
             }
               this.showModal.ipShow = true;
@@ -2265,7 +2265,7 @@
               break
             case 'renewal':
              if(this.selectLength[0].caseType == 3){
-                  this.$Message.info('请选择包年包月主机续费');
+                  this.$Message.info('请选择包年包月云服务器续费');
                   return;
              }
               this.showModal.renew = true;
@@ -2279,7 +2279,7 @@
               if (this.selectLength[0].publicip) {
                  this.unbind();
               } else {
-                this.$Message.warning('该主机没有绑定公网IP')
+                this.$Message.warning('该云服务器没有绑定公网IP')
               }
               break
           }
@@ -2389,7 +2389,7 @@
         if (len === 0) {
           return true
         } else {
-          // 只有开机状态的主机才能关机
+          // 只有开机状态的云服务器才能关机
           return !this.selectLength.every(host => {
             return host.status == 1 && host.computerstate == 1
           })
@@ -2400,7 +2400,7 @@
         if (len === 0) {
           return true
         } else {
-          // 只有关机状态的主机才能开机
+          // 只有关机状态的云服务器才能开机
           return !this.selectLength.every(host => {
             return host.status == 1 && host.computerstate == 0
           })
@@ -2411,7 +2411,7 @@
         if (len === 0) {
           return true
         } else {
-          // 只有开机状态的主机才能重启
+          // 只有开机状态的云服务器才能重启
           return !this.selectLength.every(host => {
             return host.status == 1 && host.computerstate == 1
           })
@@ -2422,7 +2422,7 @@
         if (len === 0) {
           return true
         } else {
-          // 过渡状态主机不能再次删除
+          // 过渡状态云服务器不能再次删除
           return this.selectLength.some(host => {
             return host.status == -2 || host.status == 2
           })
@@ -2433,7 +2433,7 @@
           if (len === 0) {
             return true
           } else {
-            // 开启关闭主机才能重置密码
+            // 开启关闭云服务器才能重置密码
             return this.selectLength.some(host => {
               return host.status != 1
             })

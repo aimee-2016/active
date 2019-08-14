@@ -685,16 +685,16 @@
                         <Input v-model="certificateValidate.name" placeholder="请输入证书名称"></Input>
                     </FormItem>
                     <FormItem label="证书文件" prop="file">
-                        <Input type="textarea" v-model="certificateValidate.file" placeholder="请输入证书文件">
+                        <Input class="dp-area" type="textarea" v-model="certificateValidate.file" placeholder="请输入证书文件">
                         </Input>
                      
                     </FormItem>
                     <FormItem label="秘钥内容" prop="secret">
-                        <Input type="textarea" v-model="certificateValidate.secret" placeholder="输入秘钥内容"></Input>
+                        <Input class="dp-area" type="textarea" v-model="certificateValidate.secret" placeholder="输入秘钥内容"></Input>
                       
                     </FormItem>
                     <FormItem label="CA内容" prop="ca">
-                        <Input type="textarea" v-model="certificateValidate.ca" placeholder="请输入加密后的根证书"></Input>
+                        <Input class="dp-area" type="textarea" v-model="certificateValidate.ca" placeholder="请输入加密后的根证书"></Input>
                      
                     </FormItem>
                     <FormItem label="加密方式">
@@ -725,7 +725,7 @@
             <div class="md-cer">
                  <Form style="width:430px;margin:0 auto;text-align:left;" ref="nameValidate" :model="nameValidate" :rules="nameRuleValidate" :label-width="90">
                         <FormItem label="IP黑名单" prop="black">
-                            <Input v-model="nameValidate.black" type="textarea" :autosize="{minRows: 4,maxRows: 5}" placeholder="如1.1.1.1，多个IP以“；”隔开，暂不支持IP段" style="width:300px;"></Input>
+                            <Input v-model="nameValidate.black" class="dp-area"  type="textarea" :autosize="{minRows: 4,maxRows: 5}" placeholder="如1.1.1.1，多个IP以“；”隔开，暂不支持IP段" style="width:300px;"></Input>
                             <Poptip placement="top">
                                 <div slot="content" style="width:145px;white-space: normal;line-height:16px;">
                                     多个使用英文半角分号分隔，不 支持传入 IP 段；最大支持 300 个 IP 
@@ -734,7 +734,7 @@
                             </Poptip>
                         </FormItem>
                         <FormItem label="IP白名单" prop="white">
-                            <Input v-model="nameValidate.white" type="textarea" :autosize="{minRows: 4,maxRows: 5}" placeholder="如1.1.1.1，多个IP以“；”隔开，暂不支持IP段" style="width:300px;"></Input>
+                            <Input v-model="nameValidate.white" class="dp-area" type="textarea" :autosize="{minRows: 4,maxRows: 5}" placeholder="如1.1.1.1，多个IP以“；”隔开，暂不支持IP段" style="width:300px;"></Input>
                             <Poptip placement="top">
                                 <div slot="content" style="width:145px;white-space: normal;">
                                     多个使用英文半角分号分隔，不 支持传入 IP 段；最大支持 300 个 IP 
@@ -785,9 +785,9 @@
              </div>
             <div class="md-cer">
             <div style='display:flex;'>
-                <div style='margin-right:5px;'><span>源站IP/域名</span></div>
+                <div style='margin-right:5px;'><a href='https://zschj.xrcloud.net/support_docs/1JWD4oQgr6_1LnzoqVYwB.html' target="_blank">源站IP/域名</a></div>
                 <div>
-                    <Input type="textarea" v-model='sourceip' style='width:300px;display:inline-block;'></Input>
+                    <Input class="dp-area" type="textarea" v-model='sourceip' style='width:300px;display:inline-block;'></Input>
                     <p class='dp-bf'>如果源站暴露，请参考使用 <span>高防后源站IP暴露的解决方法</span></p>
                 </div>
             </div>
@@ -830,7 +830,7 @@
                         <Input  v-model="addDomainList.agreement" placeholder="请输入协议端口"></Input>
                     </FormItem>
                     <FormItem label="源站IP/域名" prop="ip">
-                        <Input type="textarea" v-model="addDomainList.ip" placeholder="多个域名与IP用；隔开"></Input>
+                        <Input class="dp-area" type="textarea" v-model="addDomainList.ip" placeholder="多个域名与IP用；隔开"></Input>
                         <p class='dp-bf'>如果源站暴露，请参考使用 <span>高防后源站IP暴露的解决方法</span></p>
                     </FormItem>
                  </Form>   
@@ -1567,7 +1567,6 @@ export default {
               align: "center"
            },
            {
-               key:'accessprotocol',
                title:'协议',
                render: (h,params)=>{
                    if(params.row._disabled){
@@ -1580,7 +1579,7 @@ export default {
                         h('span',{},params.row.accessprotocol)
                   ])  
                   }else{
-                       h('span',{},params.row.accessprotocol)
+                     return  h('span',{},params.row.accessprotocol)
                   }
                }
            },
@@ -2161,7 +2160,9 @@ export default {
         }).then(res => {
             if(res.status == 200 && res.data.status == 1){
                 this.ddosAttProportion = res.data.percent;
-                this.ddosAttFlow = res.data.data;
+                res.data.data.forEach(item =>{
+                    this.ddosAttFlow.push(item.value)
+                })
                 this.hightIpBin.series[0].data = res.data.data;
                 this.echartsLodaing('hightIpBin').hideLoading();
             }else{
@@ -2865,8 +2866,7 @@ export default {
       'button1':{
           handler(){
               let list =[];
-               this.overviewTableChange(list);
-                
+               this.overviewTableChange(list);    
           },deep:true
       },
       'overviewRadio':{

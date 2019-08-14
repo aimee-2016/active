@@ -2,7 +2,7 @@
   <div>
     <h1>云服务器价格</h1>
     <Table border :columns="columns" :data="data"></Table>
-    <p class="zhushi">*主机价格说明：包年价格第一年原价，第二年价格为8.5折，第三价格7.5折*</p>
+    <p class="zhushi">*云服务器价格说明：包年价格第一年原价，第二年价格为8.5折，第三价格7.5折*</p>
     <h1>公网IP价格</h1>
     <Table border :columns="columns1" :data="data1"></Table>
     <p class="zhushi">价格计算说明：带宽价格=带宽大小x带宽价格x时长  例如8m带宽一个月格
