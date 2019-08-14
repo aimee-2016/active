@@ -236,13 +236,7 @@
         for (var zone of this.$store.state.zoneList) {
           if (zone.zoneid == item.zoneId) {
             $store.commit('setZone', zone);
-            if (ited.buyUrl == 'vpc#NAT') {
-              this.paneStatus.vpc = ited.url.split('#')[1]
-              this.$router.push(ited.buyUrl)
-            }
-            else {
-              this.$router.push('/buy/' + ited.buyUrl)
-            }
+            this.$router.push('/' + ited.buyUrl)
           }
         }
       },
@@ -261,17 +255,7 @@
         // 切换默认区域
         axios.get('user/setDefaultZone.do', {params: {zoneId: item.zoneId}}).then(response => {
         })
-        for (var zone of this.$store.state.zoneList) {
-          if (zone.zoneid == item.zoneId) {
-            $store.commit('setZone', zone);
-            if (item.type == '2') {
-              this.$router.push('/buy/gpu/')
-            }
-            else if (item.type == '1') {
-              this.$router.push('/buy/host/')
-            }
-          }
-        }
+        this.$router.push(item.url)
       },
       freepush(item, ites) {
         // 切换默认区域
