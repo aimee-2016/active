@@ -52,7 +52,7 @@ export default {
       // 申请流程步骤
       step: [
         {title: '商务对接', hint: '贵方与新睿云的合作意向确认', unIcon: require('../../../assets/img/market/step-1-1.png'), status: 0},
-        {title: '部署测试', hint: '为您分配测试主机，测试您需要上架的产品', unIcon: require('../../../assets/img/market/step-2-1.png'), icon: require('../../../assets/img/market/step-2-2.png'), status: 1},
+        {title: '部署测试', hint: '为您分配测试云服务器，测试您需要上架的产品', unIcon: require('../../../assets/img/market/step-2-1.png'), icon: require('../../../assets/img/market/step-2-2.png'), status: 1},
         {title: '商品上架', hint: '测试验收通过之后5个工作日，商品上架', unIcon: require('../../../assets/img/market/step-3-1.png'), icon: require('../../../assets/img/market/step-3-2.png'), status: 0}
       ],
       flow: [
@@ -62,7 +62,7 @@ export default {
       ],
       // 规格
       sysIndex: false,
-      sys: ['1核1G 40G SSD系统盘', '2核4G 40G SSD系统盘', '自定义主机规格'],
+      sys: ['1核1G 40G SSD系统盘', '2核4G 40G SSD系统盘', '自定义云服务器规格'],
       // 区域
       areaIndex: false,
       area: [],

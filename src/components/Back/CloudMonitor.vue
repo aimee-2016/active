@@ -548,7 +548,7 @@
           }, {
             title: '策略类型',
             render: (h, params) => {
-              // 0主机  1磁盘     2vpc  3对象存储
+              // 0云服务器  1磁盘     2vpc  3对象存储
               let type = params.row.strategytype
               let strategytype = type == 0 ? '云服务器' : (type == 1 ? '磁盘' : (type == 2 ? 'vpc' : (type == 3 ? '对象存储' : '')))
               return h('span', {}, strategytype + '策略')

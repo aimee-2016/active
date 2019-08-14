@@ -193,7 +193,7 @@
             }
           ],
           pImg: [
-            {img: 'icon-danxingyunfuwuqiECS', isc: 'DDoS高防主机'},
+            {img: 'icon-danxingyunfuwuqiECS', isc: 'DDoS高防云服务器'},
             {img: 'icon-vpn', isc: 'DDoS高防IP'},
             {img: 'icon-yuming', isc: '域名'}
           ],

@@ -1375,7 +1375,7 @@ export default {
         }
       })
     },
-    // 获取高仿主机的系统
+    // 获取高仿云服务器的系统
     getSystemDDOS () {
       let url = 'activity/getTemActInfoById.do'
       axios.get(url, {

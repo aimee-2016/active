@@ -15,7 +15,7 @@
               <router-link to="GpuList">
                 <Button>返回</Button>
               </router-link>
-              <Button @click="$router.push({path:'link'})">连接主机</Button>
+              <Button @click="$router.push({path:'link'})">连接云服务器</Button>
             </div>
           </div>
           <div style="display: flex;margin-top: 20px;">
@@ -258,11 +258,11 @@
         <!--<div class="modal-content-s">-->
           <!--<Icon type="android-alert" class="yellow f24 mr10"></Icon>-->
           <!--<div>-->
-            <!--<strong>主机回滚</strong>-->
-            <!--<p class="lh24">是否确定回滚主机</p>-->
+            <!--<strong>云服务器回滚</strong>-->
+            <!--<p class="lh24">是否确定回滚云服务器</p>-->
             <!--<p class="lh24">提示：您正使用<span class="bluetext">{{snapsDetails.snapshotname}}</span>回滚<span-->
               <!--class="bluetext">{{snapsDetails.name}}</span>至<span-->
-              <!--class="bluetext">{{snapsDetails.addtime}}</span>，当您确认操作之后，此<span class="bluetext">时间点</span>之后的主机内的数据将丢失。</p>-->
+              <!--class="bluetext">{{snapsDetails.addtime}}</span>，当您确认操作之后，此<span class="bluetext">时间点</span>之后的云服务器内的数据将丢失。</p>-->
           <!--</div>-->
         <!--</div>-->
         <!--<p slot="footer" class="modal-footer-s">-->
@@ -636,7 +636,7 @@
       //   console.log(this.snapsDetails);
       //   return;
       //     this.showWindow.rollback = false
-      //     this.loadingMessage = '正在回滚主机'
+      //     this.loadingMessage = '正在回滚云服务器'
       //     this.loading = true
       //     axios.get('Snapshot/revertToVMSnapshot.do', {
       //       params: {
@@ -972,7 +972,7 @@
         })
       },
 
-      //连接主机
+      //连接云服务器
       link(item) {
         sessionStorage.setItem('link-companyid', item.companyid);
         sessionStorage.setItem('link-vmid', item.computerid);

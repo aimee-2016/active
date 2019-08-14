@@ -13,7 +13,7 @@
           <p class="title"><img @click="$router.push('host')" src="../../assets/img/host/h-icon9.png" alt="back to hostList"/> 名称：{{ hostInfo.computerName}}
             <img class="last" @click="renameForm.hostName = '',showModal.rename = true" src="../../assets/img/host/h-icon11.png" alt="modification computerName"/>
             <button @click="$router.go(0)">刷新</button>
-            <button style="margin-right: 10px;background: #2A99F2;color: #FFF" @click="linkHost" v-if="hostInfo.computerStatus == 1">连接主机</button>
+            <button style="margin-right: 10px;background: #2A99F2;color: #FFF" @click="linkHost" v-if="hostInfo.computerStatus == 1">连接云服务器</button>
           </p>
           <p v-if="hostInfo.bandwith">{{ hostInfo.cpuNum }}核CPU，{{ hostInfo.memory}}G内存，{{ hostInfo.rootDiskSize}}G硬盘，{{ hostInfo.bandwith}}M带宽 | {{ hostInfo.zoneName}}<span
             @click="hostUpgrade">[升级]</span>
@@ -26,13 +26,13 @@
           <ul v-for="item in configTypes" :class="{selected: configType == item}" @click="changeTabs(item)">{{ item }}</ul>
         </div>
         <div class="hint_1" v-show="guideStep == 1">
-          <p>点击「升级」可进行主机升级。</p>
+          <p>点击「升级」可进行云服务器升级。</p>
           <span @click="guideStep = 2">知道了</span>
           <span></span>
           <span>{{guideStep + 6 }} / 10</span>
         </div>
         <div class="hint_2" v-show="guideStep == 2">
-          <p>主机信息项可进行镜像修改、数据盘扩容、数据盘挂/卸载、修改密码等操作。</p>
+          <p>云服务器信息项可进行镜像修改、数据盘扩容、数据盘挂/卸载、修改密码等操作。</p>
           <span @click="guideStep = 3">知道了</span>
           <span></span>
           <span>{{guideStep  + 6 }} / 10</span>
@@ -53,7 +53,7 @@
       <div class="config-info">
         <div class="tab-1" v-show="configType == '基础信息' ">
           <div>
-            <p>主机信息<!--<span>[设置]</span>--></p>
+            <p>云服务器信息<!--<span>[设置]</span>--></p>
             <ul>
               <li><span class="one">镜像系统</span><span class="two">{{ hostInfo.template}}</span><span class="three" @click="modifyMirror"> [修改]</span></li>
               <li><span class="one">系统盘容量</span><span class="two">{{ hostInfo.rootDiskSize}}G</span><span class="three" @click="hostUpgrade"> [扩容]</span></li>
@@ -65,7 +65,7 @@
                 <span class="three" v-if="codePlaceholder == '发送密码'" @click="showModal.lookPassword = true"> [{{codePlaceholder}}]</span>
                 <span class="two" v-else> [{{codePlaceholder}}]</span>
                 <span class="three" @click="showModal.modifyPassword = true"> [修改密码]</span></li>
-              <li><span class="one">主机状态</span><span class="two"> {{ hostInfo.computerStatus? '开机': '关机' }}</span></li>
+              <li><span class="one">云服务器状态</span><span class="two"> {{ hostInfo.computerStatus? '开机': '关机' }}</span></li>
             </ul>
           </div>
           <div>
@@ -108,7 +108,7 @@
             </ul>
           </div>
         </div>
-        <div class="tab-2" v-show="configType == '主机监控'">
+        <div class="tab-2" v-show="configType == '云服务器监控'">
           <div class="item" v-for="(item,index) in tab2.monitoringList">
             <div class="item-title">
               <span>{{ item.title}}</span>
@@ -189,15 +189,15 @@
       </div>
     </div>
 
-    <!-- 主机重命名弹窗 -->
+    <!-- 云服务器重命名弹窗 -->
     <Modal v-model="showModal.rename" width="550" :scrollable="true">
       <p slot="header" class="modal-header-border">
-        <span class="universal-modal-title">主机重命名</span>
+        <span class="universal-modal-title">云服务器重命名</span>
       </p>
       <div class="universal-modal-content-flex">
         <Form :model="renameForm" ref="renameForm" :rules="renameFormRule">
-          <Form-item label="主机名" prop="hostName">
-            <Input v-model="renameForm.hostName" placeholder="请输入新主机名" :maxlength="15"></Input>
+          <Form-item label="云服务器名" prop="hostName">
+            <Input v-model="renameForm.hostName" placeholder="请输入新云服务器名" :maxlength="15"></Input>
           </Form-item>
         </Form>
       </div>
@@ -213,7 +213,7 @@
         <span class="universal-modal-title">修改镜像系统</span>
       </p>
       <div class="universal-modal-content-flex">
-        <p class="modal-p">*提示：重装主机后，将无法找回系统盘数据。数据盘需要重新挂载，请按照帮助中心中的指导说明进行。</p>
+        <p class="modal-p">*提示：重装云服务器后，将无法找回系统盘数据。数据盘需要重新挂载，请按照帮助中心中的指导说明进行。</p>
         <Form :model="mirrorModifyForm" ref="mirrorModifyForm" :rules="mirrorModifyFormRule">
           <Form-item label="选择镜像" style="width: 70%" prop="system">
             <Cascader :data="osOptions" v-model="mirrorModifyForm.system"></Cascader>
@@ -236,7 +236,7 @@
       </p>
       <div class="modal-content-s">
         <div>
-          <p class="lh24">为了数据安全，系统重装之前主机会自动关闭。重装结束后，主机会自动开机。</p>
+          <p class="lh24">为了数据安全，系统重装之前云服务器会自动关闭。重装结束后，云服务器会自动开机。</p>
           <p>请输入“confirm”</p>
           <Input v-model="reloadHintForm.input" placeholder="请输入“confirm”"
                  style="width: 300px;margin-top: 10px;"></Input>
@@ -413,7 +413,7 @@
       </p>
       <div class="modal-content-s">
         <div>
-          <p class="lh24">您确认解绑主机的公网IP吗
+          <p class="lh24">您确认解绑云服务器的公网IP吗
           </p>
         </div>
       </div>
@@ -451,13 +451,13 @@
     <Modal v-model="showModal.rollback" :scrollable="true" :closable="false" :width="390">
       <p slot="header" class="modal-header-border">
         <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
-        <span class="universal-modal-title">主机回滚</span>
+        <span class="universal-modal-title">云服务器回滚</span>
       </p>
       <div class="modal-content-s">
         <div>
-          <p class="lh24">是否确定回滚主机</p>
+          <p class="lh24">是否确定回滚云服务器</p>
           <p class="lh24">提示：您正使用<span class="bluetext">{{tab4.snapsName}}</span>回滚<span class="bluetext">{{tab4.hostName}}</span>至<span
-            class="bluetext">{{tab4.hostCreatetime}}</span>，当您确认操作之后，此<span class="bluetext">时间点</span>之后的主机内的数据将丢失。</p>
+            class="bluetext">{{tab4.hostCreatetime}}</span>，当您确认操作之后，此<span class="bluetext">时间点</span>之后的云服务器内的数据将丢失。</p>
         </div>
       </div>
       <p slot="footer" class="modal-footer-s">
@@ -633,7 +633,7 @@
           input: ''
         },
         configType: '基础信息',
-        configTypes: ['基础信息', '主机监控', '防火墙', '快照管理', '操作日志'],
+        configTypes: ['基础信息', '云服务器监控', '防火墙', '快照管理', '操作日志'],
         isAutoRenew: false,
         diskMountForm: {
           mountDisk: '',
@@ -1008,7 +1008,7 @@
           case '基础信息':
             this.getHostInfo()
             break
-          case '主机监控':
+          case '云服务器监控':
             this.getComputerMonitor()
             break
           case '防火墙':
@@ -1064,7 +1064,7 @@
       },
       hostUpgrade() {
         if (this.hostInfo.computerStatus == 1) {
-          this.$Message.info('主机需要在关机状态下才能升级扩容')
+          this.$Message.info('云服务器需要在关机状态下才能升级扩容')
           return
         }
         this.$http.get('network/VMIsHaveSnapshot.do', {
@@ -1076,7 +1076,7 @@
             if (!response.data.result) {
               this.$Modal.confirm({
                 title: '提示',
-                content: '您的主机有快照，无法升级扩容，请删除快照再试',
+                content: '您的云服务器有快照，无法升级扩容，请删除快照再试',
                 scrollable: true,
                 okText: '删除快照',
                 onOk: () => {

@@ -423,7 +423,7 @@
         <div class="move_box">
           <div class="move_box_left">
             <div>
-              <p style="height: 27px;">该子网<span style="color:#2A99F2">({{details.subnetname}})</span>下所有主机</p>
+              <p style="height: 27px;">该子网<span style="color:#2A99F2">({{details.subnetname}})</span>下所有云服务器</p>
             </div>
             <div class="list_box" v-for="(item,index) in intoCloudHost" :key="index">
               <div>
@@ -438,7 +438,7 @@
           </div>
           <div class="move_box_left">
             <div>
-              <p style="height: 27px;">已选择主机</p>
+              <p style="height: 27px;">已选择云服务器</p>
             </div>
             <div class="list_box" v-for="(item,index) in removeCloudHost" :key="index">
               <div>
@@ -489,7 +489,7 @@
         </FormItem>
         <FormItem label="负载均衡" class="formitem6" >
           <Tooltip  placement="right" transfer>
-            <p slot="content" style="white-space:normal;">伸缩组会自动将新加入的主机添加到负载均衡中。</p>
+            <p slot="content" style="white-space:normal;">伸缩组会自动将新加入的云服务器添加到负载均衡中。</p>
             <Icon type="ios-help-outline"></Icon>
           </Tooltip>
           <Select v-model="updateTelescopicList.externalnetworkloadbalancing" disabled style="width:240px" placeholder="选择负载均衡" @on-change="balancings(updateTelescopicList.externalnetworkloadbalancing)">
@@ -510,7 +510,7 @@
         </FormItem>
         <FormItem label="初始化实例数" class="formitem2" prop="initialinstancenumber">
           <Tooltip  placement="right" transfer>
-            <p slot="content" style="white-space:normal;">伸缩组刚创建时的云服务器数量，伸缩组会为您自动创建对应数量的主机。</p>
+            <p slot="content" style="white-space:normal;">伸缩组刚创建时的云服务器数量，伸缩组会为您自动创建对应数量的云服务器。</p>
             <Icon type="ios-help-outline"></Icon>
           </Tooltip>
           <Input v-model="updateTelescopicList.initialinstancenumber" style="width: 240px" placeholder="请输入0-30之间的数字"></Input>
@@ -522,7 +522,7 @@
         </FormItem>
         <FormItem label="移除策略" class="formitem5">
           <Tooltip  placement="right" transfer>
-            <p slot="content" style="white-space:normal;">当伸缩组要减少实例且有多重选择时，将根据移出策略来选择移出的主机</p>
+            <p slot="content" style="white-space:normal;">当伸缩组要减少实例且有多重选择时，将根据移出策略来选择移出的云服务器</p>
             <Icon type="ios-help-outline"></Icon>
           </Tooltip>
           <Select v-model="updateTelescopicList.removestrategy" style="width:240px" transfer>
@@ -1956,12 +1956,12 @@
           //移除策略
           removePolicyList:[
             {
-              value:'移除旧主机',
-              label:'移除旧主机'
+              value:'移除旧云服务器',
+              label:'移除旧云服务器'
             },
             {
-              value:'移除新主机',
-              label:'移除新主机'
+              value:'移除新云服务器',
+              label:'移除新云服务器'
             }
           ],
           //负载均衡
@@ -2358,7 +2358,7 @@
         })
       },
 
-      //获取伸缩组关联的主机
+      //获取伸缩组关联的云服务器
       selectHost(){
         this.$http.get('elasticScaling/listManualAndAutoAssociatedHost.do',{
           params:{
@@ -2535,7 +2535,7 @@
           }
     },
 
-      //移入主机
+      //移入云服务器
       hostRightRmove(index){
         this.removeCloudHost.push(this.intoCloudHost.splice(index,1)[0]);
       },
@@ -2565,7 +2565,7 @@
         })
       },
 
-      //移出主机
+      //移出云服务器
       removeHost(item){
         this.$http.get('elasticScaling/removemanualAndAutoAssociatedHost.do',{
           params:{

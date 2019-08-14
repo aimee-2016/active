@@ -45,7 +45,7 @@
                     class="hidden">#</span>{{prod.timeForm.currentTimeValue.label}}
                   </p>
                 </div>
-                <!--快速创建主机-->
+                <!--快速创建云服务器-->
                 <div v-if="prod.createType=='fast'">
                   <p class="item" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;" :title="prod.system.systemName">
                     <span class="hidden">$</span>
@@ -56,7 +56,7 @@
                     class="hidden">#</span>{{`${prod.currentSystem.kernel}核${prod.currentSystem.RAM}G、${prod.publicIP?prod.currentSystem.bandWidth:0}M带宽、${prod.currentSystem.diskSize}G系统盘`}}
                   </p>
                 </div>
-                <!--自定义创建主机-->
+                <!--自定义创建云服务器-->
                 <div v-if="prod.createType=='custom'">
                   <!--公共镜像-->
                   <p class="item" v-if="prod.currentType=='public'">
@@ -144,7 +144,7 @@
                     class="hidden">#</span>{{prod.downLoad}}
                   </p>
                 </div>
-                <!-- Ddos高防主机字段 -->
+                <!-- Ddos高防云服务器字段 -->
                 <div v-if="prod.type=='PDdosHost'">
                   <p class="item" v-if="prod.type == 'PDdosHost' && prod.ddosProtectNumber < 400 && !prod.fastHeightDdosTime && !prod.customHeightDdosTime">
                     <span class="hidden">$</span><span class="title">购买时长</span><span
@@ -368,7 +368,7 @@
             {label: '对象存储', value: 'objectstorage/'},
             {label: 'GPU服务器', value: 'gpu/'},
             {label: 'SSL证书', value: 'ssl/'},
-            {label: 'DDoS高防主机', value: 'ddos/'},
+            {label: 'DDoS高防云服务器', value: 'ddos/'},
             {label: 'DDoS高防IP套餐', value: 'ddosip/'}
           ]
         },
@@ -483,7 +483,7 @@
         var PromiseList = []
         // 批次号
         var countOrder = uuid.v4()
-        // 创建的主机数量  创建的磁盘数量 创建的公网IP数量
+        // 创建的云服务器数量  创建的磁盘数量 创建的公网IP数量
 
         for (var prod of this.cart) {
           if (prod.type == 'Pecs') {
@@ -495,7 +495,7 @@
               count: prod.count,
               countOrder
             }
-            // 快速创建主机
+            // 快速创建云服务器
             if (prod.createType == 'fast') {
               params.cpuNum = prod.currentSystem.kernel
               params.memory = prod.currentSystem.RAM
@@ -527,7 +527,7 @@
                 params.templateId = prod.customMirror.systemtemplateid
               }
             }
-            // 设置了主机名和密码
+            // 设置了云服务器名和密码
             if (prod.currentLoginType == 'custom') {
               params.VMName = prod.computerName
               params.password = prod.password
@@ -621,7 +621,7 @@
               diskSize,
               countOrder
             }
-            // 设置了主机名和密码
+            // 设置了云服务器名和密码
             if (prod.currentLoginType == 'custom') {
               params.VMName = prod.computerName
               params.password = prod.password
@@ -655,7 +655,7 @@
             }
             PromiseList.push(axios.get('ddosImitationIp/creatDdosIP.do', {params}))
             
-          } else if (prod.type == 'PDdosHost') { // 高防主机Ddos
+          } else if (prod.type == 'PDdosHost') { // 高防云服务器Ddos
             var params = {
               zoneId: prod.zone.zoneid,
               isAutoRenew: prod.autoRenewal ? '1' : '0',
@@ -663,7 +663,7 @@
               ddosProtectNumber: prod.ddosProtectNumber,
               countOrder
             }
-            // 快速创建主机
+            // 快速创建云服务器
             if (prod.createType == 'fast') {
               params.cpuNum = prod.currentSystem.kernel
               params.memory = prod.currentSystem.RAM
@@ -700,7 +700,7 @@
                 params.templateId = prod.customMirror.systemtemplateid
               }
             }
-            // 设置了主机名和密码
+            // 设置了云服务器名和密码
             if (prod.currentLoginType == 'custom') {
               params.VMName = prod.computerName
               params.password = prod.password

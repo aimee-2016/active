@@ -41,7 +41,7 @@
           </div>
         </div>
         <div class="btn">
-          <button @click="receive">一键领取主机+优惠券</button>
+          <button @click="receive">一键领取云服务器+优惠券</button>
         </div>
       </div>
     </div>
@@ -295,7 +295,7 @@
         )
         ;
       },
-      // 一键领取主机
+      // 一键领取云服务器
       receive(){
         if (this.$store.state.userInfo == null) {
           this.$LR({type:'login'})

@@ -138,7 +138,7 @@
         </div>
       </div>
     </div>
-    <!-- 当前区域没有主机提示 -->
+    <!-- 当前区域没有云服务器提示 -->
     <Modal v-model="showModal.withoutHost" :scrollable="true" :closable="false" :width="390">
       <p slot="header" class="modal-header-border">
         <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
@@ -146,7 +146,7 @@
       </p>
       <div class="modal-content-s">
         <div>
-          <p class="lh24">检测到您所选择区域内没有可用主机，确认在{{ zone.zonename}}购买磁盘吗 
+          <p class="lh24">检测到您所选择区域内没有可用云服务器，确认在{{ zone.zonename}}购买磁盘吗 
           </p>
         </div>
       </div>

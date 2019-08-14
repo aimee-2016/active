@@ -28,7 +28,7 @@
                   <Button type="primary" @click="selectAll" style="margin-right:10px;">全选</Button>
                   <Button type="primary" @click="renewalAll">一键续费</Button>
                   <div style="float:right">
-                    <Tooltip content="当您开启关联选择，在您选择具有关联属性的产品之时，系统会默认勾选其关联资源。例如选择主机之时，会关联选择所绑定的弹性IP、云硬盘等资源。"
+                    <Tooltip content="当您开启关联选择，在您选择具有关联属性的产品之时，系统会默认勾选其关联资源。例如选择云服务器之时，会关联选择所绑定的弹性IP、云硬盘等资源。"
                              placement="bottom" style="vertical-align: middle">
                       <span class="toolTip">?</span>
                     </Tooltip>
@@ -69,7 +69,7 @@
                   <div>
                     <p>没有可续费资源</p>
                     <p>1.您还未购买过任何产品，点击
-                      <router-link to="buy">购买主机</router-link>
+                      <router-link to="buy">购买云服务器</router-link>
                     </p>
                     <p>2.您的资源都为实时计费资源，无需手动续费。</p>
                   </div>
@@ -83,7 +83,7 @@
                   <Button type="primary" @click="selectAll" style="margin-right:10px;">全选</Button>
                   <Button type="primary" @click="renewalAll">一键续费</Button>
                   <div style="float:right">
-                    <Tooltip content="当您开启关联选择，在您选择具有关联属性的产品之时，系统会默认勾选其关联资源。例如选择主机之时，会关联选择所绑定的弹性IP、云硬盘等资源。"
+                    <Tooltip content="当您开启关联选择，在您选择具有关联属性的产品之时，系统会默认勾选其关联资源。例如选择云服务器之时，会关联选择所绑定的弹性IP、云硬盘等资源。"
                              placement="bottom" style="vertical-align: middle">
                       <span class="toolTip">?</span>
                     </Tooltip>
@@ -127,7 +127,7 @@
                   <div>
                     <p>没有可续费资源</p>
                     <p>1.您还未购买过任何产品，点击
-                      <router-link to="buy">购买主机</router-link>
+                      <router-link to="buy">购买云服务器</router-link>
                     </p>
                     <p>2.您的资源都为实时计费资源，无需手动续费。</p>
                   </div>
@@ -141,7 +141,7 @@
                   <Button type="primary" @click="selectAll" style="margin-right:10px;">全选</Button>
                   <Button type="primary" @click="renewalAll">一键续费</Button>
                   <div style="float:right">
-                    <Tooltip content="当您开启关联选择，在您选择具有关联属性的产品之时，系统会默认勾选其关联资源。例如选择主机之时，会关联选择所绑定的弹性IP、云硬盘等资源。"
+                    <Tooltip content="当您开启关联选择，在您选择具有关联属性的产品之时，系统会默认勾选其关联资源。例如选择云服务器之时，会关联选择所绑定的弹性IP、云硬盘等资源。"
                              placement="bottom" style="vertical-align: middle">
                       <span class="toolTip">?</span>
                     </Tooltip>
@@ -189,7 +189,7 @@
                   <div>
                     <p>没有可续费资源</p>
                     <p>1.您还未购买过任何产品，点击
-                      <router-link to="buy">购买主机</router-link>
+                      <router-link to="buy">购买云服务器</router-link>
                     </p>
                     <p>2.您的资源都为实时计费资源，无需手动续费。</p>
                   </div>
@@ -203,7 +203,7 @@
                   <Button type="primary" @click="selectAll" style="margin-right:10px;">全选</Button>
                   <Button type="primary" @click="renewalAll">一键续费</Button>
                   <div style="float:right">
-                    <Tooltip content="当您开启关联选择，在您选择具有关联属性的产品之时，系统会默认勾选其关联资源。例如选择主机之时，会关联选择所绑定的弹性IP、云硬盘等资源。"
+                    <Tooltip content="当您开启关联选择，在您选择具有关联属性的产品之时，系统会默认勾选其关联资源。例如选择云服务器之时，会关联选择所绑定的弹性IP、云硬盘等资源。"
                              placement="bottom" style="vertical-align: middle">
                       <span class="toolTip">?</span>
                     </Tooltip>
@@ -252,7 +252,7 @@
                   <div>
                     <p>没有可续费资源</p>
                     <p>1.您还未购买过任何产品，点击
-                      <router-link to="buy">购买主机</router-link>
+                      <router-link to="buy">购买云服务器</router-link>
                     </p>
                     <p>2.您的资源都为实时计费资源，无需手动续费。</p>
                   </div>

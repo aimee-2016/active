@@ -47,9 +47,9 @@
 
         <!--快速配置主体页面-->
         <div v-show="createType=='fast'">
-          <!--主机规格选择-->
+          <!--云服务器规格选择-->
           <div style="border-bottom: 1px solid #D9D9D9;margin-top: 20px;padding-bottom: 20px">
-            <h2>主机规格选择</h2>
+            <h2>云服务器规格选择</h2>
             <!--镜像选择-->
             <div class="item-wrapper">
               <div style="display: flex;">
@@ -94,9 +94,9 @@
 
         <!--自定义配置主体页面-->
         <div v-show="createType=='custom'">
-          <!--主机规格选择-->
+          <!--云服务器规格选择-->
           <div style="padding-bottom: 20px;border-bottom: 1px solid #EDEDED;margin-top: 20px">
-            <h2>主机规格选择</h2>
+            <h2>云服务器规格选择</h2>
             <!--类型选择-->
             <div class="item-wrapper">
               <div style="display: flex">
@@ -239,7 +239,7 @@
                 </div>
               </div>
             </div>
-            <!--自定义主机价格-->
+            <!--自定义云服务器价格-->
             <div class="item-wrapper" style="margin-top: 28px;">
               <div style="display: flex">
                 <div>
@@ -252,7 +252,7 @@
             </div>
           </div>
 
-          <!--主机网络与带宽-->
+          <!--云服务器网络与带宽-->
           <div style="margin-top:20px; border-bottom: 1px solid #D9D9D9;padding-bottom: 20px;">
             <h2>网络与带宽</h2>
             <!--虚拟私有云-->
@@ -444,7 +444,7 @@
           <div class="item-wrapper">
             <div style="display: flex">
               <div>
-                <p class="item-title">主机信息</p>
+                <p class="item-title">云服务器信息</p>
               </div>
               <div v-for="item in loginType" :key="item.type" class="zoneItem"
                    :class="{zoneSelect:currentLoginType==item.type}"
@@ -479,13 +479,13 @@
             <div class="item-wrapper">
               <div style="display: flex">
                 <div>
-                  <p class="item-title" style="margin-top: 8px">主机名称</p>
+                  <p class="item-title" style="margin-top: 8px">云服务器名称</p>
                 </div>
-                <Input v-model="computerName" placeholder="请输入主机名" style="width: 300px"
+                <Input v-model="computerName" placeholder="请输入云服务器名" style="width: 300px"
                        @on-change="computerNameWarning=''"></Input>
                 <span style="line-height: 32px;color:red;margin-left:10px">{{computerNameWarning}}</span>
               </div>
-              <p class="item-desc">当购买数量大于1台之时，主机命名规则为主机名称加随机数字。</p>
+              <p class="item-desc">当购买数量大于1台之时，云服务器命名规则为云服务器名称加随机数字。</p>
             </div>
             <div class="item-wrapper">
               <div style="display: flex">
@@ -748,9 +748,9 @@
         currentLoginType: 'default',
         // 系统用户名
         systemUsername: 'administrator',
-        // 主机名称
+        // 云服务器名称
         computerName: '',
-        // 主机名称提示信息
+        // 云服务器名称提示信息
         computerNameWarning: '',
         // 登录密码
         password: '',
@@ -763,11 +763,11 @@
 
 
         // 下面是自定义配置的数据================================================
-        // 主机类型
+        // 云服务器类型
         vmTypeList: [
           {label: '标准型', value: 'standard', content: '经典1：2与1：4配比，实现计算、网络与资源的良好平衡，高性价比。'},
           {label: '内存优化型', value: 'optimization', content: '内存优化型系统内存比例更高的实例，最高可达1：16，适用于对内存要求较高，数据量大的产品。'},
-          {label: '高I/O型', value: 'IO', content: '高I/O型提供更稳定，具备更高数据吞吐速度与读写速度的主机，适用于高吞吐量场景，如科学计算。'}
+          {label: '高I/O型', value: 'IO', content: '高I/O型提供更稳定，具备更高数据吞吐速度与读写速度的云服务器，适用于高吞吐量场景，如科学计算。'}
         ],
         vmType: 'standard',
 
@@ -776,10 +776,10 @@
           {label: 'SAS存储', value: 'sas'},
           {label: 'SSD存储', value: 'ssd'}
         ],
-        // 购买主机地区、核心数、内存关联配置，用于选择
-        // 主机RAM内存配置用于ajax请求
+        // 购买云服务器地区、核心数、内存关联配置，用于选择
+        // 云服务器RAM内存配置用于ajax请求
         RAMList: [],
-        // 自定义主机配置
+        // 自定义云服务器配置
         vmConfig: {
           diskType: 'ssd',
           kernel: 1,
@@ -986,7 +986,7 @@
         }
         this.appList[arg[2]].selectSystem = arg[0]
       },
-      // 重新计算快速配置主机价格
+      // 重新计算快速配置云服务器价格
       queryQuick() {
         var params = {
           cpuNum: this.currentSystem.kernel,
@@ -1021,7 +1021,7 @@
           }
         })
       },
-      // 重新计算主机价格
+      // 重新计算云服务器价格
       calculate() {
         var params = {
           cpuNum: this.PecsInfo.vmConfig.kernel.toString(),
@@ -1063,11 +1063,11 @@
         }
         if (this.currentLoginType == 'custom') {
           if (this.computerName.trim() == '') {
-            this.computerNameWarning = '请输入主机名称'
+            this.computerNameWarning = '请输入云服务器名称'
             return
           } else {
             if(this.computerName.trim().indexOf('&') != -1){
-              this.$Message.info('主机名不能包含\'&\'特殊字符')
+              this.$Message.info('云服务器名不能包含\'&\'特殊字符')
               return
             }
           }
@@ -1109,7 +1109,7 @@
         }
         this.$parent.cart.push(JSON.parse(JSON.stringify(prod)))
       },
-      // 购买主机
+      // 购买云服务器
       buy() {
         if (this.zone.buyover == 1) {
           this.$Message.info({
@@ -1134,11 +1134,11 @@
         }
         if (this.currentLoginType == 'custom') {
           if (!this.computerName||this.computerName.indexOf(" ") != -1) {
-            this.computerNameWarning = '请输入主机名称，不能包含空格'
+            this.computerNameWarning = '请输入云服务器名称，不能包含空格'
             return
           } else {
             if(this.computerName.trim().indexOf('&') != -1){
-              this.$Message.info('主机名不能包含\'&\'特殊字符')
+              this.$Message.info('云服务器名不能包含\'&\'特殊字符')
               return
             }
           }
@@ -1163,7 +1163,7 @@
           isAutoRenew: this.autoRenewal ? '1' : '0',
           count: 1,
         }
-        // 快速创建主机
+        // 快速创建云服务器
         if (this.createType == 'fast') {
           params.cpuNum = this.currentSystem.kernel
           params.memory = this.currentSystem.RAM
@@ -1195,7 +1195,7 @@
             params.templateId = this.customMirror.systemtemplateid
           }
         }
-        // 设置了主机名和密码
+        // 设置了云服务器名和密码
         if (this.currentLoginType == 'custom') {
           params.VMName = this.computerName
           params.password = this.password
@@ -1228,7 +1228,7 @@
           this.systemUsername = 'root'
         }
       },
-      // 自定义主机的方法==========================================================================
+      // 自定义云服务器的方法==========================================================================
       // 三种推荐配置切换
       changeType(type) {
         this.vmType = type
@@ -1268,7 +1268,7 @@
         }
         this.vmConfig.RAM = value
       },
-      // 查询自定义主机价格
+      // 查询自定义云服务器价格
       queryCustomVM() {
         var params = {
           cpuNum: this.vmConfig.kernel.toString(),
@@ -1314,7 +1314,7 @@
           this.network = this.networkList[0].ipsegmentid
         })
       },
-      // 查看主机IP价格
+      // 查看云服务器IP价格
       queryIPPrice: debounce(500, function () {
         var params = {
           brand: this.IPConfig.bandWidth,
@@ -1334,11 +1334,11 @@
           }
         })
       }),
-      // 添加主机数据盘
+      // 添加云服务器数据盘
       pushDisk() {
         this.dataDiskList.push({type: 'ssd', size: 20, label: 'SSD存储'})
       },
-      // 删除主机数据盘
+      // 删除云服务器数据盘
       removeHostDisk(index) {
         this.dataDiskList.splice(index, 1)
       },
@@ -1410,7 +1410,7 @@
       userInfo() {
         return this.$store.state.userInfo
       },
-      // 自定义主机总价
+      // 自定义云服务器总价
       totalCost() {
         if (this.IPConfig.publicIP) {
           return this.vmConfig.cost + this.IPConfig.cost + this.dataDiskCost

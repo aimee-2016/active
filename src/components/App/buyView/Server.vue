@@ -193,7 +193,7 @@ export default {
       isFixed: false,
       headerTitle: "购买云服务器",
       buyStep: 0,
-      buyStepGroup: ["主机配置", "网络与带宽", "登陆信息", "订单确认"],
+      buyStepGroup: ["云服务器配置", "网络与带宽", "登陆信息", "订单确认"],
       serverType: "cloudServer",
       serverTypeGroup: [
         {
@@ -1133,11 +1133,11 @@ export default {
           }
           if (this.loginInfo.setType === "customSet") {
             if (!this.loginInfo.serverName) {
-              this.$Message.info("请输入主机名称");
+              this.$Message.info("请输入云服务器名称");
               return;
             }
             if (this.loginInfo.serverName.indexOf(" ") != -1) {
-              this.$Message.info("主机名称不能包含空格");
+              this.$Message.info("云服务器名称不能包含空格");
               return;
             }
             if (
@@ -1165,11 +1165,11 @@ export default {
     addToCart() {
       if (this.loginInfo.setType === "customSet") {
         if (!this.loginInfo.serverName) {
-          this.$Message.info("请输入主机名称");
+          this.$Message.info("请输入云服务器名称");
           return;
         }
         if (this.loginInfo.serverName.indexOf(" ") != -1) {
-          this.$Message.info("主机名称不能包含空格");
+          this.$Message.info("云服务器名称不能包含空格");
           return;
         }
         if (
@@ -1311,7 +1311,7 @@ export default {
         }
       });
     }),
-    // 创建主机订单
+    // 创建云服务器订单
     createdCloudServerOrder: debounce(500, function() {
       let url = "information/deployVirtualMachine.do";
       let diskType = "",
@@ -1348,7 +1348,7 @@ export default {
       if (this.serverNetwork.publicIPType !== "buyNow") {
         params.bandWidth = "0"; // 没有选择立即购买IP
       }
-      // 设置了主机名和密码
+      // 设置了云服务器名和密码
       if (this.loginInfo.setType == "customSet") {
         params.VMName = this.loginInfo.serverName;
         params.password = this.loginInfo.serverPassword;
@@ -1403,7 +1403,7 @@ export default {
       if (this.serverNetwork.publicIPType !== "buyNow") {
         params.bandWidth = "0"; // 没有选择立即购买IP
       }
-      // 设置了主机名和密码
+      // 设置了云服务器名和密码
       if (this.loginInfo.setType == "customSet") {
         params.VMName = this.loginInfo.serverName;
         params.password = this.loginInfo.serverPassword;
@@ -1457,7 +1457,7 @@ export default {
       if (this.billingType === "day") {
         params.timeValue = this.timeConfig.buyDay;
       }
-      // 设置了主机名和密码
+      // 设置了云服务器名和密码
       if (this.loginInfo.setType == "customSet") {
         params.VMName = this.loginInfo.serverName;
         params.password = this.loginInfo.serverPassword;

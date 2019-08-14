@@ -69,7 +69,7 @@
                   <Spin style="display: inline-block"></Spin>
                   <span>删除子网中...</span>
                 </li>
-                <li v-else><span class="blue" @click="addHostToVpc(item)">添加主机</span><span
+                <li v-else><span class="blue" @click="addHostToVpc(item)">添加云服务器</span><span
                   class="vertical-line">|</span><span
                   class="blue" @click="deleteVpc(item)">删除</span></li>
               </ul>
@@ -150,12 +150,12 @@
                           </div>
                         </div>
                         <div class="subnet-info" style="padding:20px 10px">
-                          <span>主机名称：{{vm.computername}}</span>
+                          <span>云服务器名称：{{vm.computername}}</span>
                           <span>公网地址：{{vm.staticnatip}}</span>
                           <span>内网地址：{{vm.privateip}}</span>
                           <span>操作系统：{{vm.operatingSystem}}</span>
                           <span>系统配置：{{vm.systemConfiguration}}</span>
-                          <span>主机状态：{{vm.computerStatus==1?"正常":vm.computerStatus==0?"关机":vm.computerStatus==-1?"异常":vm.computerStatus==-2?"已删除":"执行中"}}</span>
+                          <span>云服务器状态：{{vm.computerStatus==1?"正常":vm.computerStatus==0?"关机":vm.computerStatus==-1?"异常":vm.computerStatus==-2?"已删除":"执行中"}}</span>
                         </div>
                       </div>
                     </DropdownMenu>
@@ -222,7 +222,7 @@
         <Button type="primary" @click="handleNewNetworkSubmit">完成配置</Button>
       </div>
     </Modal>
-    <!--主机离开子网modal-->
+    <!--云服务器离开子网modal-->
     <Modal v-model="showModal.leaveNetwork" :scrollable="true" :closable="false" :width="390">
       <p slot="header" class="modal-header-border">
         <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
@@ -230,7 +230,7 @@
       </p>
       <div class="modal-content-s">
         <div>
-          <p class="lh24">是否将确认将主机离开该网络</p>
+          <p class="lh24">是否将确认将云服务器离开该网络</p>
         </div>
       </div>
       <p slot="footer" class="modal-footer-s">
@@ -238,7 +238,7 @@
         <Button type="primary" @click="leaveNetwork_ok">确认离开</Button>
       </p>
     </Modal>
-    <!-- 添加主机到子网 -->
+    <!-- 添加云服务器到子网 -->
     <Modal v-model="showModal.addHostToNet" width="550" :scrollable="true">
       <p slot="header" class="modal-header-border">
         <span class="universal-modal-title">添加虚拟机</span>
@@ -304,7 +304,7 @@
         </Button>
       </div>
     </Modal>
-    <!-- 主机绑定ip模态框 -->
+    <!-- 云服务器绑定ip模态框 -->
     <Modal v-model="showModal.bindIP" width="590" :scrollable="true">
       <div slot="header" class="modal-header-border">
         <span class="universal-modal-title">绑定静态IP</span>
@@ -404,14 +404,14 @@
         modifyFirewallForm: {
           acl: ''
         },
-        // 主机绑定ip表单
+        // 云服务器绑定ip表单
         bindForm: {publicIP: '', vm: null},
         // 公网ip列表
         publicIPList: [],
         // 防火墙
         firewall: null,
         aclList: [],
-        // 添加主机到子网表单
+        // 添加云服务器到子网表单
         addHostForm: {
           vm: '',
           vmOptions: [],
@@ -474,15 +474,15 @@
               let message = ''
               if (params.row.status) {
                 switch (params.row.status) {
-                  // 状态为1代表添加主机loading
+                  // 状态为1代表添加云服务器loading
                   case 1:
-                    message = '添加主机中...'
+                    message = '添加云服务器中...'
                     break;
-                  // 状态为2代表删除主机loading
+                  // 状态为2代表删除云服务器loading
                   case 2:
-                    message = '删除主机中...'
+                    message = '删除云服务器中...'
                     break;
-                  // 状态为3代表切换主机网卡loading
+                  // 状态为3代表切换云服务器网卡loading
                   case 3:
                     message = '切换网卡中...'
                     break;
@@ -629,7 +629,7 @@
       }
     },
     methods: {
-      // 添加主机到vpc
+      // 添加云服务器到vpc
       addHostToVpc (item) {
         this.showModal.addHostToNet = true
         this.addHostForm.ipsegmentid = item.ipsegmentid
@@ -990,7 +990,7 @@
           }
         })
       },
-      /* 主机绑定ip，弹出模态框*/
+      /* 云服务器绑定ip，弹出模态框*/
       bindIP(item, vm){
         this.bindForm.vm = vm
         this.bindForm.publicIP = ''
@@ -1006,7 +1006,7 @@
             }
           })
       },
-      /* 主机确认绑定ip */
+      /* 云服务器确认绑定ip */
       bind(){
         this.showModal.bindIP = false
         var arr = this.bindForm.publicIP.split("#")
@@ -1036,10 +1036,10 @@
             }
           })
       },
-      /* 主机解绑ip */
+      /* 云服务器解绑ip */
       unbind(vm){
         this.$message.confirm({
-          content: '该主机确认解绑IP？',
+          content: '该云服务器确认解绑IP？',
           onOk: () => {
             for (let network of this.data.ipsList) {
               for (let VM of network.vmList) {

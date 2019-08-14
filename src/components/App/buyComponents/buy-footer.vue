@@ -48,9 +48,9 @@
           </div>
         </div>
         <div class="buy-guide">
-          <a v-show="buyStep===0">特惠主机</a>
+          <a v-show="buyStep===0">特惠云服务器</a>
           <button v-show="buyStep===0" @click="nextStep(1)">下一步：配置网络</button>
-          <button class="left-button" v-show="buyStep===1" @click="nextStep(0)">上一步：主机配置</button>
+          <button class="left-button" v-show="buyStep===1" @click="nextStep(0)">上一步：云服务器配置</button>
           <button v-show="buyStep===1" @click="nextStep(2)">下一步：登录信息</button>
           <button class="left-button" v-show="buyStep===2" @click="nextStep(1)">上一步：网络与带宽</button>
           <button v-show="buyStep===2" @click="nextStep(3)">下一步：提交订单</button>

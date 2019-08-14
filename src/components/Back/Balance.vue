@@ -203,7 +203,7 @@
                 <span v-if="bindHostForm.vmOptions==''" style="font-size:14px;font-family:MicrosoftYaHei;color:rgba(42,153,242,1);cursor: pointer;position: absolute;left: 47%;top: 45%;"
                 @click="buyzhuji">
                   <img style="transform: translate(0px,3px);" src="../../assets/img/public/icon_plussign.png" />
-                  购买主机
+                  购买云服务器
                 </span>
               </span>
             </Form>
@@ -290,7 +290,7 @@
           {
             title: '状态',
             render: (h, params) => {
-              const text = params.row.status == 5 ? '删除中' : params.row.status == 6 ? '解绑主机中' : '绑定主机中'
+              const text = params.row.status == 5 ? '删除中' : params.row.status == 6 ? '解绑云服务器中' : '绑定云服务器中'
               if (params.row.status == 5 || params.row.status == 6 || params.row.status == 7) {
                 return h('div', {}, [h('Spin', {
                   style: {
@@ -410,12 +410,12 @@
             ],
           }
         },
-        // 负载均衡主机表
+        // 负载均衡云服务器表
         bindHostForm: {
           vm: [],
           vmOptions: []
         },
-        // 负载均衡解绑主机表
+        // 负载均衡解绑云服务器表
         unbindForm: {
           vm: [],
           hostList: []
@@ -686,7 +686,7 @@
       selectBalance(currentRow) {
         this.balanceSelection = currentRow
       },
-      // 负载均衡绑定主机
+      // 负载均衡绑定云服务器
       bind() {
         if (!this.balanceSelection) {
           this.$Message.info('请选择一个负载均衡')
@@ -751,7 +751,7 @@
             }
           })
         } else {
-          this.$Message.info('请选择需要绑定的主机')
+          this.$Message.info('请选择需要绑定的云服务器')
         }
       },
       /* 解绑虚拟机 */
@@ -818,7 +818,7 @@
             }
           })
         } else {
-          this.$Message.info('请选择需要解绑的主机')
+          this.$Message.info('请选择需要解绑的云服务器')
         }
       },
       /* 删除负载均衡 */

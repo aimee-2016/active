@@ -14,7 +14,7 @@
     </div>
     <div class="center">
       <div class="fr-host">
-        <h2>免费活动主机</h2>
+        <h2>免费活动云服务器</h2>
         <p>新用户专享，云服务器交押金免费试用，押金闪退 <span @click="roll(2400)">活动规则></span></p>
         <!--<div v-for="(config,configIndex) in configGroup" class="fr-config" :key="configIndex">
           <div class="config-title" :class="{configIndex:configIndex ==1 }">
@@ -138,9 +138,9 @@
           <dd>活动对象：</dd>
           <dt>新注册或者一直未使用过平台资源（第三方产品除外）及未参加过其他免费活动并已通过实名认证的用户。</dt>
           <dd>活动内容：</dd>
-          <dt>活动产品需充值对应的押金后方可使用；主机未到期可自行删除，删除后或者主机使用到期后，用户可解冻押金。</dt>
-          <dt>若您需要续费押金主机，可选择在主机未到期之前将押金转换为主机续费费用，最多可延长主机使用时间1年。</dt>
-          <dt>押金转续费时间说明：用户A在2019年4月30日选择押金主机2核4G，一年的配置，冻结押金569元，主机到期时间为2020年4月30日，若用户在2019年4月30日当天操作押金转续费，则主机到期时间仍为2020年4月30日，如用户在2020年4月29日操作押金转续费，则主机实际到期时间为2021年4月29日，可低价续费一年时间。续费时间根据用户之前选择的主机规格时间为准，一月期续费一月，一年期续费一年。</dt>
+          <dt>活动产品需充值对应的押金后方可使用；云服务器未到期可自行删除，删除后或者云服务器使用到期后，用户可解冻押金。</dt>
+          <dt>若您需要续费押金云服务器，可选择在云服务器未到期之前将押金转换为云服务器续费费用，最多可延长云服务器使用时间1年。</dt>
+          <dt>押金转续费时间说明：用户A在2019年4月30日选择押金云服务器2核4G，一年的配置，冻结押金569元，云服务器到期时间为2020年4月30日，若用户在2019年4月30日当天操作押金转续费，则云服务器到期时间仍为2020年4月30日，如用户在2020年4月29日操作押金转续费，则云服务器实际到期时间为2021年4月29日，可低价续费一年时间。续费时间根据用户之前选择的云服务器规格时间为准，一月期续费一月，一年期续费一年。</dt>
           <dd>解冻操作流程：</dd>
           <dt>解冻操作说明：进入控制台，点击右上角用户名，选择【费用中心】，在账户概览中点击【冻结押金】，在弹出的弹窗中选择需要解冻的押金，点击【申请解冻】，根据弹窗提示完成操作。</dt>
           <dt>解冻时间：押金解冻渠道有两种，您可以选择将押金解冻到余额，或者将押金解冻到原支付渠道。押金解冻到余额为及时到账，押金解冻到原支付途径需3-5个工作到账，请注意查看相关收款通知。</dt>
@@ -148,15 +148,15 @@
           <dt>每个用户只能参与一次，同一手机号对应的多个账号、同一实名认证用户等满足同一条件的均视为一个用户。</dt>
           <dt>免费产品中的资源可随时进行升级，升级费用按新睿云标准收费进行收取。</dt>
           <dt>在各产品免费使用期间，若对免费资源进行了销毁，则视为放弃免费使用权。</dt>
-          <dt>因押金主机为免费产品，暂不支持备案，若您需要备案可执行押金转续费操作，或者购买包年包月主机及IP之后进行备案。</dt>
+          <dt>因押金云服务器为免费产品，暂不支持备案，若您需要备案可执行押金转续费操作，或者购买包年包月云服务器及IP之后进行备案。</dt>
           <dd>活动声明：</dd>
-          <dt>为保证活动的公平公正，新睿云有权对恶意刷抢（如通过程序等技术手段）活动资源；领取后3天内未使用资源；利用资源从事违法违规行为；因用户主机遭受DDOS攻击而给平台方带来损失的用户，收回免费套餐使用资格。因此造成任何损失的，由该用户自行负责。</dt>
+          <dt>为保证活动的公平公正，新睿云有权对恶意刷抢（如通过程序等技术手段）活动资源；领取后3天内未使用资源；利用资源从事违法违规行为；因用户云服务器遭受DDOS攻击而给平台方带来损失的用户，收回免费套餐使用资格。因此造成任何损失的，由该用户自行负责。</dt>
         </dl>
       </div>
     </div>
     <!--<div class="fr-suspension">
       <ul>
-        <li :class="{select: 1500>=fr_scrollTop}" @click="roll(500)">活动主机</li>
+        <li :class="{select: 1500>=fr_scrollTop}" @click="roll(500)">活动云服务器</li>
         <li :class="{select: 2000>fr_scrollTop&&fr_scrollTop>1500}" @click="roll(1600)">活动流程</li>
         <li :class="{select: 2700>=fr_scrollTop&&fr_scrollTop>=2000}" @click="roll(2000)">产品优势</li>
         <li :class="{select: fr_scrollTop>2700}" @click="roll(2800)">活动规则</li>
@@ -172,7 +172,7 @@
             <i class="ivu-icon ivu-icon-checkmark-circled"></i>
           </div>
           <strong>提示</strong>
-          <p class="lh24">本免费活动充值押金<span style="color: #D0021B ">{{ cashPledge }}</span>元，主机到期或删除时押金自动退还到账户余额。
+          <p class="lh24">本免费活动充值押金<span style="color: #D0021B ">{{ cashPledge }}</span>元，云服务器到期或删除时押金自动退还到账户余额。
           </p>
         </div>
       </div>
@@ -205,13 +205,13 @@
             <i class="ivu-icon ivu-icon-checkmark-circled"></i>
           </div>
           <strong>提示</strong>
-          <p class="lh24">恭喜您押金已冻结完成，主机领取成功，主机在实名认证之前只可保留3天，请尽快使用。
+          <p class="lh24">恭喜您押金已冻结完成，云服务器领取成功，云服务器在实名认证之前只可保留3天，请尽快使用。
           </p>
         </div>
       </div>
       <p slot="footer" class="modal-footer-s">
         <Button @click="showModal.getSuccessModal = false">取消</Button>
-        <Button type="primary" @click="$router.push('/host')">查看主机</Button>
+        <Button type="primary" @click="$router.push('/host')">查看云服务器</Button>
       </p>
     </Modal>
     <!-- 支付充值失败 -->
@@ -519,7 +519,7 @@
           {
             src: require('../../../assets/img/active/freeToReceive/fr-icon23.png'),
             onSrc: require('../../../assets/img/active/freeToReceive/fr-icon29.png'),
-            text: '充值押金 领取主机'
+            text: '充值押金 领取云服务器'
           },
           {
             src: require('../../../assets/img/active/freeToReceive/fr-icon24.png'),
@@ -697,7 +697,7 @@
             describe: '7*24小时在线客服，80秒客户问题快速响应，7天无理由退款，12年运营商级技术团队为您保驾护航'
           },
         ],
-        stepGroup: ['充值押金', '支付成功', '冻结押金', '领取主机'],
+        stepGroup: ['充值押金', '支付成功', '冻结押金', '领取云服务器'],
         config: {
           value: '',
           imagePath: require('../../../assets/img/pay/payBackground.png'),
@@ -715,7 +715,7 @@
             width: 200,
             render: (h, params) => {
               let arr = []
-              let param3 = h('li', {}, '主机： ' + params.row.title)
+              let param3 = h('li', {}, '云服务器： ' + params.row.title)
               let param = h('li', {}, '带宽： ' + params.row.configs.config[2].value)
               let param1 = h('li', {}, '磁盘： ' + params.row.configs.config[3].value)
               let param2 = h('li', {}, '系统： ' + params.row.configs.system)
@@ -885,7 +885,7 @@
       getRegion() {
         let url = 'activity/getTemActInfo.do'
         axios.post(url, {
-          activityName: '免费领主机'
+          activityName: '免费领云服务器'
         }).then(res => {
           if (res.data.status == 1) {
             if(res.data.result.optionalArea.length !==0){
@@ -1110,9 +1110,9 @@
         let url = 'user/getRemainderFrozen.do'
         let params = {
           eachFrozenMoney: this.cashPledge,
-          describe: '领取主机',
-          operationType: '领取主机',
-          thawCondition: '删除主机、公网IP',
+          describe: '领取云服务器',
+          operationType: '领取云服务器',
+          thawCondition: '删除云服务器、公网IP',
           vmConfig: this.vmConfig,
           zoneId:  this.configGroup[this.index1].zoneId
         }

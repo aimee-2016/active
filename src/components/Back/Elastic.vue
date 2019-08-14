@@ -61,7 +61,7 @@
           </FormItem>
           <FormItem label="负载均衡" class="formitem6">
             <Tooltip placement="right" transfer>
-              <p slot="content" style="white-space: normal;">伸缩组会自动将新加入的主机添加到负载均衡中。</p>
+              <p slot="content" style="white-space: normal;">伸缩组会自动将新加入的云服务器添加到负载均衡中。</p>
               <Icon type="ios-help-outline"></Icon>
             </Tooltip>
             <Select v-model="newAddTelescopicList.balancing" style="width:240px" placeholder="选择负载均衡" @on-change="balancings(newAddTelescopicList.balancing)">
@@ -82,7 +82,7 @@
           </FormItem>
           <FormItem label="初始化实例数" class="formitem2" prop="exampleNumber">
             <Tooltip placement="right" transfer>
-              <p slot="content" style="white-space: normal;">伸缩组刚创建时的云服务器数量，伸缩组会为您自动创建对应数量的主机。</p>
+              <p slot="content" style="white-space: normal;">伸缩组刚创建时的云服务器数量，伸缩组会为您自动创建对应数量的云服务器。</p>
               <Icon type="ios-help-outline"></Icon>
             </Tooltip>
             <Input v-model="newAddTelescopicList.exampleNumber" style="width: 240px" placeholder="请输入0-30之间的数字"></Input>
@@ -94,7 +94,7 @@
           </FormItem>
           <FormItem label="移除策略" class="formitem5">
             <Tooltip placement="right" transfer>
-              <p slot="content" style="white-space: normal;">当伸缩组要减少实例且有多重选择时，将根据移出策略来选择移出的主机</p>
+              <p slot="content" style="white-space: normal;">当伸缩组要减少实例且有多重选择时，将根据移出策略来选择移出的云服务器</p>
               <Icon type="ios-help-outline"></Icon>
             </Tooltip>
             <Select v-model="newAddTelescopicList.removePolicy" style="width:240px">
@@ -404,15 +404,15 @@
           //实例数
           exampleNumber: 1,
           //移除策略
-          removePolicy: '移除旧主机',
+          removePolicy: '移除旧云服务器',
           removePolicyList: [
             {
-              value: '移除旧主机',
-              label: '移除旧主机'
+              value: '移除旧云服务器',
+              label: '移除旧云服务器'
             },
             {
-              value: '移除新主机',
-              label: '移除新主机'
+              value: '移除新云服务器',
+              label: '移除新云服务器'
             }
           ],
           //负载均衡

@@ -13,7 +13,7 @@
           <p class="title"><img @click="$router.push('cloudDatabase')" src="../../assets/img/host/h-icon9.png" alt="back to hostList"/> 名称：{{ hostInfo.computername}}
             <!-- <img class="last" @click="renameForm.hostName = '',showModal.rename = true" src="../../assets/img/host/h-icon11.png" alt="modification computerName"/> -->
             <button @click="$router.go(0)">刷新</button>
-            <button style="margin-right: 10px;background: #2A99F2;color: #FFF" @click="linkHost" v-if="hostInfo.computerStatus == 1">连接主机</button>
+            <button style="margin-right: 10px;background: #2A99F2;color: #FFF" @click="linkHost" v-if="hostInfo.computerStatus == 1">连接云服务器</button>
           </p>
           <p>{{ hostInfo.cpuNum }}CPU，{{ hostInfo.memory}}G menory内存，{{ hostInfo.disksize}}G硬盘 | {{ hostInfo.zonename}} <span
             @click="hostUpgrade">[升级]</span>
@@ -142,7 +142,7 @@
            </dd>
          </dl>
         </div>
-        <div class="tab-2" v-show="configType == '主机监控'">
+        <div class="tab-2" v-show="configType == '云服务器监控'">
           <div class="item" v-for="(item,index) in tab2.monitoringList">
             <div class="item-title">
               <span>{{ item.title}}</span>
@@ -536,7 +536,7 @@ import axios from 'axios'
         hostInfo: {},
         computerId: '',
         configType: '基础信息',
-        configTypes: ['基础信息', '主机监控', '修改密码', '操作日志'],
+        configTypes: ['基础信息', '云服务器监控', '修改密码', '操作日志'],
         codePlaceholder: '发送密码',
         publicIPList: [],
         bindForm: {
@@ -648,7 +648,7 @@ import axios from 'axios'
           case '基础信息':
             this.getHostInfo()
             break
-          case '主机监控':
+          case '云服务器监控':
             this.getComputerMonitor()
             break
           case '修改密码':

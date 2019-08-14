@@ -21,7 +21,7 @@
           </div>
         </div>
         <div class="flow-box-tooltip" v-show="stepInfo.step == 1">
-          尊敬的{{stepInfo.merchanContact}}，您的公司信息已填写完成，我们的商务人员将在24小时内与您取得联系，在此之前您可以选择您需要的测试主机规格，当新睿云的商务人员与您确认之后，将为您分配您所选择的主机
+          尊敬的{{stepInfo.merchanContact}}，您的公司信息已填写完成，我们的商务人员将在24小时内与您取得联系，在此之前您可以选择您需要的测试云服务器规格，当新睿云的商务人员与您确认之后，将为您分配您所选择的云服务器
         </div>
       </div>
     </div>
@@ -43,7 +43,7 @@
             <span v-else-if="stepInfo.status == 9">尊敬的{{stepInfo.merchanContact}}，您的应用已经部署测试完成，我们将安排商品上架。该流程预计耗时3个工作日，上架完成之后我们将通过短信将上架信息发送至您的手机</span>
             <span v-else-if="stepInfo.status == 10">商品详情页地址：<a :href="stepInfo.productUrl">{{stepInfo.productUrl}}</a></span>
           </div>
-          <div v-if="stepInfo.status < 6">部署测试将分为两个阶段，您在接收到测试主机并部署完成之后需要进行一次测试验收，通过之后将测试结果反馈至新睿云商务人员，我方将安排技术人员进行二次测试，若通过测试将安排进入商品上架流程</div>
+          <div v-if="stepInfo.status < 6">部署测试将分为两个阶段，您在接收到测试云服务器并部署完成之后需要进行一次测试验收，通过之后将测试结果反馈至新睿云商务人员，我方将安排技术人员进行二次测试，若通过测试将安排进入商品上架流程</div>
         </div>
       </div>
     </div>
@@ -172,7 +172,7 @@
           <div class="info-box-rate-info">
             <div>项目ID：{{stepInfo.id}}</div>
             <div>新睿云商务：{{stepInfo.belongSellName}}</div>
-            <div>主机发放时间：<span v-if="stepInfo.status == 3">{{stepInfo.vmReleaseTime}}</span><span v-else-if="stepInfo.status == 1">主机待发放</span></div>
+            <div>云服务器发放时间：<span v-if="stepInfo.status == 3">{{stepInfo.vmReleaseTime}}</span><span v-else-if="stepInfo.status == 1">云服务器待发放</span></div>
           </div>
           <div class="info-box-rate-step">
             <div class="dot">
@@ -188,7 +188,7 @@
             </div>
           </div>
           <div class="info-box-rete-step">
-            <p>发放测试主机</p>
+            <p>发放测试云服务器</p>
             <p>应用部署与自测</p>
             <p>新睿云复测</p>
             <p>完成</p>
@@ -197,7 +197,7 @@
             <div class="item">
               <p>{{stepInfo.belongSellName}}</p>
               <p v-if="stepInfo.status == 3">{{stepInfo.vmReleaseTime}}</p>
-              <p v-else-if="stepInfo.status == 1">主机待发放</p>
+              <p v-else-if="stepInfo.status == 1">云服务器待发放</p>
             </div>
             <div class="item" v-if="stepInfo.status == 3">
               <p>商户联系人{{stepInfo.merchanContact}}</p>
@@ -287,7 +287,7 @@ export default {
       // 申请流程步骤
       step: [
         {title: '商务对接', hint: '贵方与新睿云的合作意向确认', unIcon: require('../../../assets/img/market/step-1-1.png'), status: 0},
-        {title: '部署测试', hint: '为您分配测试主机，测试您需要上架的产品', unIcon: require('../../../assets/img/market/step-2-1.png'), icon: require('../../../assets/img/market/step-2-2.png'), status: 0},
+        {title: '部署测试', hint: '为您分配测试云服务器，测试您需要上架的产品', unIcon: require('../../../assets/img/market/step-2-1.png'), icon: require('../../../assets/img/market/step-2-2.png'), status: 0},
         {title: '商品上架', hint: '测试验收通过之后5个工作日，商品上架', unIcon: require('../../../assets/img/market/step-3-1.png'), icon: require('../../../assets/img/market/step-3-2.png'), status: 0}
       ],
       flow: [
@@ -299,14 +299,14 @@ export default {
       stepKong: '',
       // 规格
       sysIndex: false,
-      sys: ['1核1G 40G SSD系统盘', '2核4G 40G SSD系统盘', '自定义主机规格'],
+      sys: ['1核1G 40G SSD系统盘', '2核4G 40G SSD系统盘', '自定义云服务器规格'],
       // 区域
       areaIndex: false,
       area: [],
       // 选择器
       vpcList: [],
       vpc: '',
-      // 主机选择
+      // 云服务器选择
       mainframe: {
         inter: '',
         area: '',
@@ -315,7 +315,7 @@ export default {
       }, 
       // 是否自定义
       isDefined: 0,
-      // 自定义主机选择
+      // 自定义云服务器选择
       defined: {
         size: 120,
         nucleus: 1,
@@ -425,7 +425,7 @@ export default {
         })
       }
     },
-    // 主机默认选择
+    // 云服务器默认选择
     getFrame () {
       this.mainframe.inter = this.sys[0]
     },

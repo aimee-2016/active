@@ -15,7 +15,7 @@
           <button id="refresh_button" @click="refreshPage" style="margin-top: 10px;">刷新</button>
         </div>
         <div class="universal-alert">
-          <p>为主机提供块存储设备，它独立于主机的生命周期而存在，可以被连接到任意运行中的主机上。注意，硬盘附加到主机上后，您还需要登录到您的主机的操作系统中去加载该硬盘。</p>
+          <p>为云服务器提供块存储设备，它独立于云服务器的生命周期而存在，可以被连接到任意运行中的云服务器上。注意，硬盘附加到云服务器上后，您还需要登录到您的云服务器的操作系统中去加载该硬盘。</p>
         </div>
         <div class="operator-bar">
           <Button type="primary" @click="newDisk">创建云硬盘</Button>
@@ -113,7 +113,7 @@
       </p>
       <div class="universal-modal-content-flex">
         <Form :model="diskMountForm" :rules="mountRuleValidate" ref="mountDisk">
-          <Form-item label="可挂载主机列表" prop="mountHost">
+          <Form-item label="可挂载云服务器列表" prop="mountHost">
             <Select v-model="diskMountForm.mountHost" placeholder="请选择">
               <Option v-for="item in mountHostList" :key="item.computerid" :value="item.computerid">{{ item.computername
                 }}
@@ -123,7 +123,7 @@
           <span style="font-size:14px;font-family:MicrosoftYaHei;color:rgba(42,153,242,1);cursor: pointer;position: absolute;left: 48%;top: 42%;" @click="$router.push('buy')"
                 v-if="$store.state.zone.gpuserver !=1">
               <img style="transform: translate(0px,3px);" src="../../assets/img/public/icon_plussign.png"/>
-              购买主机
+              购买云服务器
             </span>
           <span style="font-size:14px;font-family:MicrosoftYaHei;color:rgba(42,153,242,1);cursor: pointer;position: absolute;left: 48%;top: 42%;" @click="$router.push('/buy/gpu/')"
                 v-else>
@@ -131,7 +131,7 @@
               购买GPU云服务器
             </span>
         </Form>
-        <span>提示：如果您购买了主机但主机列表中无选项，是因为待绑定主机上存在快照，无法完成挂载。</span>
+        <span>提示：如果您购买了云服务器但云服务器列表中无选项，是因为待绑定云服务器上存在快照，无法完成挂载。</span>
       </div>
       <div slot="footer" class="modal-footer-border">
         <Button type="ghost" @click="showModal.mountDisk = false">取消</Button>
@@ -197,7 +197,7 @@
       </p>
       <div class="modal-content-s">
         <div>
-          <p class="lh24">是否将确认将硬盘<span style="color: #2A99F2 ">（{{ diskName }}）</span>从主机<span style="color: #2A99F2 ">（{{ hostName }}）</span>卸载，卸载之后该主机将失去该硬盘所存信息
+          <p class="lh24">是否将确认将硬盘<span style="color: #2A99F2 ">（{{ diskName }}）</span>从云服务器<span style="color: #2A99F2 ">（{{ hostName }}）</span>卸载，卸载之后该云服务器将失去该硬盘所存信息
           </p>
         </div>
       </div>
@@ -207,7 +207,7 @@
       </p>
     </Modal>
 
-    <!-- 该磁盘已挂载主机，无法删除。弹出确认卸载框，点击卸载 -->
+    <!-- 该磁盘已挂载云服务器，无法删除。弹出确认卸载框，点击卸载 -->
     <Modal v-model="showModal.beforeDelete" :scrollable="true" :closable="false" :width="390">
       <p slot="header" class="modal-header-border">
         <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
@@ -215,7 +215,7 @@
       </p>
       <div class="modal-content-s">
         <div>
-          <p class="lh24">所选硬盘已挂载主机，无法删除，若您确认删除，请先卸载该硬盘</p>
+          <p class="lh24">所选硬盘已挂载云服务器，无法删除，若您确认删除，请先卸载该硬盘</p>
         </div>
       </div>
       <p slot="footer" class="modal-footer-s">
@@ -294,7 +294,7 @@
               <li><span>到期时间：</span>{{renewalInfo.endTime}}</li>
             </ul>
           </div>
-          <FormItem label="是否同时续费绑定主机:" style="width: 100%;margin-bottom: 0" v-if="renewalHost">
+          <FormItem label="是否同时续费绑定云服务器:" style="width: 100%;margin-bottom: 0" v-if="renewalHost">
             <CheckboxGroup v-model="renewalOther">
               <Checkbox label="续费关联云服务器" v-if="renewalHost"></Checkbox>
             </CheckboxGroup>
@@ -329,7 +329,7 @@
               </Option>
             </Select>
           </FormItem>
-          <FormItem label="是否同时变更绑定主机:" style="width: 100%;margin-bottom: 0" v-if="ratesChangeHost">
+          <FormItem label="是否同时变更绑定云服务器:" style="width: 100%;margin-bottom: 0" v-if="ratesChangeHost">
             <CheckboxGroup v-model="ratesChangeOther">
               <Checkbox label="变更关联云服务器" v-if="ratesChangeHost"></Checkbox>
             </CheckboxGroup>
@@ -345,7 +345,7 @@
         <Button type="primary" @click="ratesChange_ok" :disabled="ratesChangeCost=='--'">确认变更</Button>
       </div>
     </Modal>
-    <!-- 当前区域没有主机提示 -->
+    <!-- 当前区域没有云服务器提示 -->
     <Modal v-model="showModal.withoutHost" :scrollable="true" :closable="false" :width="390">
       <p slot="header" class="modal-header-border">
         <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
@@ -353,7 +353,7 @@
       </p>
       <div class="modal-content-s">
         <div>
-          <p class="lh24">检测到您所选择区域内没有可用主机，确认在{{ $store.state.zone.zonename}}购买磁盘吗 
+          <p class="lh24">检测到您所选择区域内没有可用云服务器，确认在{{ $store.state.zone.zonename}}购买磁盘吗 
           </p>
         </div>
       </div>
@@ -625,7 +625,7 @@
           // 磁盘扩容模态框
           dilatationDisk: false,
           // 删除磁盘模态框
-          // 挂载主机，弹出无法卸载框。
+          // 挂载云服务器，弹出无法卸载框。
           beforeDelete: false,
           // 修改磁盘名称模态框
           modificationDisk: false,
@@ -679,7 +679,7 @@
         // 挂载磁盘表单验证规则
         mountRuleValidate: {
           mountHost: [
-            {required: true, message: '请选择挂载主机', trigger: 'change'}
+            {required: true, message: '请选择挂载云服务器', trigger: 'change'}
           ]
         },
         // 新增磁盘表单的验证规则
@@ -723,7 +723,7 @@
         diskName: '',
         // 需要备份的磁盘名称
         backupForDiskName: '',
-        // 被卸载的磁盘的主机
+        // 被卸载的磁盘的云服务器
         hostName: '',
         // 磁盘备份名称
         createBackupsForm: {
@@ -735,7 +735,7 @@
             {required: true, validator: validaRegisteredName, trigger: 'blur'}
           ]
         },
-        // 可挂载主机列表
+        // 可挂载云服务器列表
         mountHostList: [],
         diskSizeExpenses: 0,
         // 续费所需费用
@@ -968,7 +968,7 @@
           })
         }
       },
-      // 挂载磁盘到主机
+      // 挂载磁盘到云服务器
       mount(data) {
         if (!data.mounton && !data.mountonname && data.status == 1) {
           this.operand = data
@@ -984,11 +984,11 @@
           })
         } else {
           this.$message.info({
-            content: '该硬盘已挂载主机“' + data.mountonname + '”，若需挂载其他主机请先卸载硬盘。'
+            content: '该硬盘已挂载云服务器“' + data.mountonname + '”，若需挂载其他云服务器请先卸载硬盘。'
           })
         }
       },
-      // 从主机中卸载磁盘
+      // 从云服务器中卸载磁盘
       unload(data) {
         this.operand = data
         if (this.operand.mounton && this.operand.mountonname && this.operand.status == 1) {
@@ -997,7 +997,7 @@
           this.hostName = this.operand.mountonname
         } else {
           this.$message.info({
-            content: '该硬盘没有挂载主机，无法卸载'
+            content: '该硬盘没有挂载云服务器，无法卸载'
           })
         }
       },
@@ -1140,7 +1140,7 @@
       deleteDisk() {
         if (this.checkSelect() == true) {
           if (this.diskSelection.status == 1 && this.diskSelection.mounton && this.diskSelection.mountonname) {
-            // 该磁盘已挂载主机，无法删除。弹出确认卸载框，点击卸载
+            // 该磁盘已挂载云服务器，无法删除。弹出确认卸载框，点击卸载
             this.showModal.beforeDelete = true
           } else if (this.diskSelection.caseType != 1 && this.diskSelection.caseType != 2) {
             // 弹出删除框
@@ -1546,7 +1546,7 @@
             })
         }
       },
-      // 续费关联主机
+      // 续费关联云服务器
       renewalOther() {
          let params1 ={
                 timeValue: this.renewalTime,
@@ -1635,7 +1635,7 @@
             })
         }
       },
-      // 变更关联主机
+      // 变更关联云服务器
       ratesChangeOther() {
          let params1 ={
                 timeValue: this.ratesChangeTime,

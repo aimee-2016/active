@@ -136,12 +136,12 @@
           {
             img: 'icon-SNAT',
             title: 'SNAT',
-            desc: 'NAT网关提供SNAT功能，为VPC内无公网IP的主机实例提供访问互联网的代理服务。'
+            desc: 'NAT网关提供SNAT功能，为VPC内无公网IP的云服务器实例提供访问互联网的代理服务。'
           },
           {
             img: 'icon-DNAT',
             title: 'DNAT',
-            desc: 'NAT网关支持DNAT功能，将NAT网关上的公网IP映射给ECS实例使用，使主机实例能够提供互联网服务。DNAT支持端口映射。'
+            desc: 'NAT网关支持DNAT功能，将NAT网关上的公网IP映射给ECS实例使用，使云服务器实例能够提供互联网服务。DNAT支持端口映射。'
           },
           {
             img: 'icon-gongxiangkuandai',
@@ -152,7 +152,7 @@
         stageInfo: {
           stages: [
             {
-              title: '多主机访问公网',
+              title: '多云服务器访问公网',
               icon: 'icon-duozhujifangwengongwang',
               img: require('../../../assets/img/product/nat-stage-1-icon-background.png'),
               desc: ['VPC下多台ECS可以通过SNAT网关上的一个公网IP实现上网功能，同时保证这些ECS不暴露在公网上。']

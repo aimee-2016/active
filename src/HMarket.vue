@@ -239,7 +239,7 @@
     <!-- 客服浮动块 -->
     <div class="affix">
       <div class="registerImg" @click="$router.push('/activity/free/')">
-        <p>免费领主机</p>
+        <p>免费领云服务器</p>
       </div>
       <!--<img src="./assets/img/app/regiterTag.png"/>-->
       <span class="qq" @mouseenter="QME" @mouseleave="QML">
@@ -551,7 +551,7 @@
           {title: '云计算', url: 'https://www.xrcloud.net/news/yunjisuan/'},
           {title: '云安全', url: 'https://www.xrcloud.net/news/yunanquan/'},
           {title: '香港云服务器', url: 'https://www.xrcloud.net/news/xianggangyunfuwuqi/'},
-          {title: '虚拟主机', url: 'https://www.xrcloud.net/news/xunizhuji/'},
+          {title: '虚拟云服务器', url: 'https://www.xrcloud.net/news/xunizhuji/'},
           {title: '服务器虚拟化', url: 'https://www.xrcloud.net/news/fuwuqixunihua/'},
           {title: '域名交流', url: 'https://www.xrcloud.net/news/yumingjiaoliu/'}
         ],

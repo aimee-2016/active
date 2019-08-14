@@ -33,7 +33,7 @@
             <li v-if="balanceInfo.publicport">外网端口：{{ balanceInfo.publicport}}</li>
             <li v-if="balanceInfo.sourceport">源端口：{{balanceInfo.sourceport}}</li>
             <li v-if="balanceInfo.instanceport">实例端口：{{balanceInfo.instanceport}}</li>
-            <li style="color: #2A99F2;cursor: pointer" @click="bind(balanceInfo)">添加主机</li>
+            <li style="color: #2A99F2;cursor: pointer" @click="bind(balanceInfo)">添加云服务器</li>
           </ul>
           <Table :columns="hostColumns" :data="hostData"></Table>
         </div>
@@ -53,11 +53,20 @@
               </Option>
             </Select>
           </FormItem>
-					<span v-if="bindHostForm.vmOptions==''" style="font-size:14px;font-family:MicrosoftYaHei;color:rgba(42,153,242,1);cursor: pointer;position: absolute;left: 47%;top: 45%;"
-					 @click="buyzhuji">
-						<img style="transform: translate(0px,3px);" src="../../assets/img/public/icon_plussign.png" />
-						购买主机
-					</span>
+					<span v-if="$store.state.zone.gpuserver == 2">
+            <span v-if="bindHostForm.vmOptions==''" style="font-size:14px;font-family:MicrosoftYaHei;color:rgba(42,153,242,1);cursor: pointer;position: absolute;left: 47%;top: 45%;"
+            @click="buyzhuji">
+              <img style="transform: translate(0px,3px);" src="../../assets/img/public/icon_plussign.png" />
+              购买高防云服务器
+            </span>
+          </span>
+          <span v-else>
+            <span v-if="bindHostForm.vmOptions==''" style="font-size:14px;font-family:MicrosoftYaHei;color:rgba(42,153,242,1);cursor: pointer;position: absolute;left: 47%;top: 45%;"
+            @click="buyzhuji">
+              <img style="transform: translate(0px,3px);" src="../../assets/img/public/icon_plussign.png" />
+              购买服务器
+            </span>
+          </span>
         </Form>
       </div>
       <div slot="footer" class="modal-footer-border">
@@ -75,12 +84,12 @@
         balanceInfo: null,
         hostColumns: [
           {
-            title: '主机ID',
+            title: '云服务器ID',
             ellipsis: 'true',
             key: 'computerid'
           },
           {
-            title: '主机名称',
+            title: '云服务器名称',
             key: 'computername'
           },
           {
@@ -107,7 +116,7 @@
                   style: {
                     verticalAlign: 'middle'
                   }
-                }, '正在添加主机...')])
+                }, '正在添加云服务器...')])
               }
               if (object.row._status == 2 || object.row.loadbalanceStatus == 3) {
                 return h('div', [h('Spin', {
@@ -119,7 +128,7 @@
                   style: {
                     verticalAlign: 'middle'
                   }
-                }, '正在删除主机...')])
+                }, '正在删除云服务器...')])
               }
               return h('span', {
                 style: {
@@ -129,7 +138,7 @@
                 on: {
                   click: () => {
                     this.$message.confirm({
-                      content: '确认从负载均衡中移除该主机？',
+                      content: '确认从负载均衡中移除该云服务器？',
                       onOk: () => {
                         var url = ''
                         var params = {}
@@ -167,7 +176,7 @@
                     })
                   }
                 }
-              }, '移除该主机')
+              }, '移除该云服务器')
             }
           }
         ],
@@ -199,7 +208,7 @@
 				  }
 				}
 			},
-      /*  列出该负载均衡下的主机*/
+      /*  列出该负载均衡下的云服务器*/
       listHostByBalance () {
         var loadbalanceType = this.balanceInfo._internal ? '0' : '1'
         var roleId = this.balanceInfo.loadbalanceroleid || this.balanceInfo.lbid
@@ -218,7 +227,7 @@
           }
         })
       },
-      // 负载均衡绑定主机
+      // 负载均衡绑定云服务器
       bind(loadbalance){
         var internalLoadbalance = this.balanceInfo._internal ? '1' : '0'
         this.showModal.bind = true
@@ -280,7 +289,7 @@
             }
           })
         } else {
-          this.$Message.info('请选择需要绑定的主机')
+          this.$Message.info('请选择需要绑定的云服务器')
         }
       }
     },

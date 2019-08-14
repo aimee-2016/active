@@ -1,7 +1,7 @@
 <template>
   <div class="background">
     <div class="center">
-      <h2>我的主机</h2>
+      <h2>我的云服务器</h2>
       <div class="item-title">
         特惠专享
       </div>

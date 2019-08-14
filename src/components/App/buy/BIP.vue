@@ -38,7 +38,7 @@
           满一年打8.3折，满两年打7折，满3年6折</p>
       </div>
 
-      <!--主机网络与带宽-->
+      <!--云服务器网络与带宽-->
       <div style="margin-top:20px;border-bottom: 1px solid #D9D9D9;padding-bottom: 20px;">
         <h2>网络与带宽</h2>
         <!--虚拟私有云-->
@@ -114,7 +114,7 @@
         </div>
       </div>
     </div>
-      <!-- 当前区域没有主机提示 -->
+      <!-- 当前区域没有云服务器提示 -->
     <Modal v-model="showModal.withoutHost" :scrollable="true" :closable="false" :width="390">
       <p slot="header" class="modal-header-border">
         <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
@@ -122,7 +122,7 @@
       </p>
       <div class="modal-content-s">
         <div>
-          <p class="lh24">检测到您所选择区域内没有可用主机，确认在{{ zone.zonename}}购买公网IP吗 
+          <p class="lh24">检测到您所选择区域内没有可用云服务器，确认在{{ zone.zonename}}购买公网IP吗 
           </p>
         </div>
       </div>

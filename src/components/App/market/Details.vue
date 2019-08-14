@@ -48,7 +48,7 @@
                 </TabPane>
               </Tabs>
               <div class="tab-row">
-                <div class="title">主机规格</div>
+                <div class="title">云服务器规格</div>
                 <div class="th">
                   <span v-for="(item, index) in sysPecification" :key="index"
                     :class="{sysActive: sysIndex == index, noCheck: buyTypeStatus == 1 }"
@@ -310,11 +310,11 @@ export default {
       name: '',
       tel: '',
       email: '',
-      // 主机规格
+      // 云服务器规格
       sysPecification: [
         {label: '1核1G 40G SSD系统盘', cpuNum: '1', memory: '1', diskSize: '40', diskType: 'ssd'},
         {label: '2核4G 40G SSD系统盘', cpuNum: '2', memory: '4', diskSize: '40', diskType: 'ssd'},
-        {label: '自定义主机规格', cpuNum: '', memory: '', diskSize: '', diskType: ''}
+        {label: '自定义云服务器规格', cpuNum: '', memory: '', diskSize: '', diskType: ''}
       ],
       // 区域
       area: [],
@@ -354,7 +354,7 @@ export default {
         ]
       },
       single: false,
-      // 自定义主机选择
+      // 自定义云服务器选择
       size: 120,
       // 核心数、内存
       nucleIndex: false,
@@ -709,7 +709,7 @@ export default {
         }
       })
     },
-    // 初始化主机选择
+    // 初始化云服务器选择
     getSys () {
       if (this.buyWay[0].typeNum === 1) {
         this.mainFrame.timeType = 'current'

@@ -99,7 +99,7 @@
             <i class="ivu-icon ivu-icon-checkmark-circled"></i>
           </div>
           <strong>提示</strong>
-          <p class="lh24">本免费活动充值押金<span style="color: #D0021B ">{{ cashPledge }}</span>元，主机到期或删除时押金自动退还到账户余额。
+          <p class="lh24">本免费活动充值押金<span style="color: #D0021B ">{{ cashPledge }}</span>元，云服务器到期或删除时押金自动退还到账户余额。
           </p>
         </div>
       </div>
@@ -132,13 +132,13 @@
             <i class="ivu-icon ivu-icon-checkmark-circled"></i>
           </div>
           <strong>提示</strong>
-          <p class="lh24">恭喜您押金已冻结完成，主机领取成功，主机在实名认证之前只可保留3天，请尽快使用。
+          <p class="lh24">恭喜您押金已冻结完成，云服务器领取成功，云服务器在实名认证之前只可保留3天，请尽快使用。
           </p>
         </div>
       </div>
       <p slot="footer" class="modal-footer-s">
         <Button @click="showModal.getSuccessModal = false">取消</Button>
-        <Button type="primary" @click="$router.push('/host')">查看主机</Button>
+        <Button type="primary" @click="$router.push('/host')">查看云服务器</Button>
       </p>
     </Modal>
     <!-- 支付充值失败 -->

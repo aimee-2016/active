@@ -180,7 +180,7 @@
           {
             img: 'icon-cunchunengli',
             title: '存储能力',
-            desc: '支持云硬盘挂载与备份，通过挂载不同类型云硬盘以实现主机存储能力的快速扩展。'
+            desc: '支持云硬盘挂载与备份，通过挂载不同类型云硬盘以实现云服务器存储能力的快速扩展。'
           },
           {
             img: 'icon-duozhongjingxiangxuanze',
@@ -212,7 +212,7 @@
           {
             img: 'icon-mobanchuangjian',
             title: '模板创建',
-            desc: '可依据当前主机的镜像批量生成新的主机。'
+            desc: '可依据当前云服务器的镜像批量生成新的云服务器。'
           },
           {
             img: 'icon-danxingshensuo',
