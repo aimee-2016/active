@@ -1,6 +1,6 @@
 <template>
   <div class="product">
-    <h1 id="hide-h1">DDOS高防主机</h1>
+    <h1 id="hide-h1">DDOS高防云服务器</h1>
     <!-- logo -->
     <div class="logo">
       <div class="logo-wrapper">
@@ -136,12 +136,12 @@
         userInfo: null,
         logo: {
           img: require('../../../assets/img/product/ddos-logo.png'),
-          title: 'DDoS高防主机',
+          title: 'DDoS高防云服务器',
           desc: '高防云服务器是一台具备了高防DDoS能力的服务器，它具有DDoS防护与CC攻击防护能力，并能够根据您的业务需求进行弹性升级，包括服务器性能与防护性能，最大支持800GB的超高防护能力。',
           linkRouter: '/buy/ddos'
         },
         features: [
-          {img: 'icon-DDosliuliangqingxi1', title: '低成本、高易用', desc: '弹性防护，灵活计费相较于高防IP，高防主机应用成本价格更低，且更易用，管理方式与云服务器一致，无需任何额外学习成本。'},
+          {img: 'icon-DDosliuliangqingxi1', title: '低成本、高易用', desc: '弹性防护，灵活计费相较于高防IP，高防云服务器应用成本价格更低，且更易用，管理方式与云服务器一致，无需任何额外学习成本。'},
           {img: 'icon-jingzhunfanghu1', title: '精准防护报表', desc: '提供精准的防护报表，帮您及时了解攻击情况提供实时精准的防护相关报表及日志详情，使您及时、准确了解IP高防的防护效果。'},
           {img: 'icon-jiyuwangluochuanshudegongjifanghu', title: 'DDoS攻击防护', desc: '防护多种类型的DDoS攻击包括但不限于SYN Flood、ACK Flood 、ICMP Flood、UDP Flood、TCP Flood、CC等攻击，支持攻击取证和攻击溯源。'}
         ],
@@ -199,7 +199,7 @@
             }
           ],
           pImg: [
-            {img: 'icon-danxingyunfuwuqiECS', isc: 'DDoS高防主机'},
+            {img: 'icon-danxingyunfuwuqiECS', isc: 'DDoS高防云服务器'},
             {img: 'icon-vpn', isc: 'DDoS高防IP'},
             {img: 'icon-yuming', isc: '域名'}
           ],

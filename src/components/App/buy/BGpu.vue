@@ -42,7 +42,7 @@
 
         <!--自定义配置主体页面-->
         <div>
-          <!--主机规格选择-->
+          <!--云服务器规格选择-->
           <div style="padding-bottom: 20px;border-bottom: 1px solid #EDEDED;margin-top: 20px">
             <h2>GPU规格选择</h2>
             <!--类型选择-->
@@ -131,7 +131,7 @@
                 <Table :columns="serverOfferColumns" :data="serverOfferList" @radio-change="selectGpu" style="width: 629px"></Table>
               </div>
             </div>
-            <!--自定义主机价格-->
+            <!--自定义云服务器价格-->
             <div class="item-wrapper" style="margin-top: 28px;">
               <div style="display: flex">
                 <div>
@@ -144,7 +144,7 @@
             </div>
           </div>
 
-          <!--主机网络与带宽-->
+          <!--云服务器网络与带宽-->
           <div style="margin-top:20px; border-bottom: 1px solid #D9D9D9;padding-bottom: 20px;">
             <h2>网络与带宽</h2>
             <!--虚拟私有云-->
@@ -341,7 +341,7 @@
           <div class="item-wrapper">
             <div style="display: flex">
               <div>
-                <p class="item-title">主机信息</p>
+                <p class="item-title">云服务器信息</p>
               </div>
               <div v-for="item in loginType" :key="item.type" class="zoneItem"
                    :class="{zoneSelect:currentLoginType==item.type}"
@@ -376,13 +376,13 @@
             <div class="item-wrapper">
               <div style="display: flex">
                 <div>
-                  <p class="item-title" style="margin-top: 8px">主机名称</p>
+                  <p class="item-title" style="margin-top: 8px">云服务器名称</p>
                 </div>
-                <Input v-model="computerName" placeholder="请输入主机名" style="width: 300px"
+                <Input v-model="computerName" placeholder="请输入云服务器名" style="width: 300px"
                        @on-change="computerNameWarning=''"></Input>
                 <span style="line-height: 32px;color:red;margin-left:10px">{{computerNameWarning}}</span>
               </div>
-              <p class="item-desc">当购买数量大于1台之时，主机命名规则为主机名称加随机数字。</p>
+              <p class="item-desc">当购买数量大于1台之时，云服务器命名规则为云服务器名称加随机数字。</p>
             </div>
             <div class="item-wrapper">
               <div style="display: flex">
@@ -661,7 +661,7 @@
         // 选中的镜像
         system: {},
 
-        // 快速创建主机是否需要公网IP
+        // 快速创建云服务器是否需要公网IP
         publicIP: true,
 
         // 两种登录设置  默认设置/自定义设置
@@ -669,9 +669,9 @@
         currentLoginType: 'default',
         // 系统用户名
         systemUsername: '',
-        // 主机名称
+        // 云服务器名称
         computerName: '',
-        // 主机名称提示信息
+        // 云服务器名称提示信息
         computerNameWarning: '',
         // 登录密码
         password: '',
@@ -914,7 +914,7 @@
         }
       },
       // 查询GPU价格
-      // 查询自定义主机价格
+      // 查询自定义云服务器价格
       queryCustomVM() {
         var params = {
           cpuNum: this.gpuSelection.cpunum,
@@ -963,7 +963,7 @@
        diskType += `${disk.type},`
        diskSize += `${disk.size},`
        }
-       // 设置了主机名和密码
+       // 设置了云服务器名和密码
        if (this.currentLoginType == 'custom') {
        params.VMName = this.computerName
        params.password = this.password
@@ -997,7 +997,7 @@
        /!*this.RAMList = cpu.RAMList
        this.vmConfig.RAM = this.RAMList[0].value*!/
        },*/
-      // 查询自定义主机价格
+      // 查询自定义云服务器价格
       /*queryCustomVM() {
        var params = {
        cpuNum: this.vmConfig.kernel.toString(),
@@ -1020,7 +1020,7 @@
        }
        })
        },*/
-      // 添加主机数据盘
+      // 添加云服务器数据盘
       pushDisk() {
         this.dataDiskList.push({type: 'ssd', size: 20, label: 'SSD存储'})
       },
@@ -1132,7 +1132,7 @@
         
         if (this.currentLoginType == 'custom') {
           if (this.computerName.trim() == '') {
-            this.computerNameWarning = '请输入主机名称'
+            this.computerNameWarning = '请输入云服务器名称'
             return
           }
           if (!(this.passwordForm.firstDegree&&this.passwordForm.secondDegree&&this.passwordForm.thirdDegree)) {
@@ -1187,7 +1187,7 @@
 
         if (this.currentLoginType == 'custom') {
           if (this.computerName.trim() == '') {
-            this.computerNameWarning = '请输入主机名称'
+            this.computerNameWarning = '请输入云服务器名称'
             return
           }
            if (!(this.passwordForm.firstDegree&&this.passwordForm.secondDegree&&this.passwordForm.thirdDegree)) {
@@ -1220,7 +1220,7 @@
           diskType,
           diskSize
         }
-        // 设置了主机名和密码
+        // 设置了云服务器名和密码
         if (this.currentLoginType == 'custom') {
           params.VMName = this.computerName
           params.password = this.password

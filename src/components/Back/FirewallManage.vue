@@ -137,13 +137,13 @@
     <Modal v-model="showModal.addHost" width="590" :scrollable="true">
       <div slot="header"
            style="color:#666666;font-family: Microsoft Yahei,微软雅黑;font-size: 16px;color: #666666;line-height: 24px;">
-        添加主机
+        添加云服务器
       </div>
-      <p style="padding:20px;">注：一个主机在同一个私有网络内只能被选择一次，操作成功后系统将在此主机的网卡设置中自动生成一个IP地址与此私有网络相对应的新的从网卡。</p>
+      <p style="padding:20px;">注：一个云服务器在同一个私有网络内只能被选择一次，操作成功后系统将在此云服务器的网卡设置中自动生成一个IP地址与此私有网络相对应的新的从网卡。</p>
       <div style="width:69%">
 
         <Form :model="addHostForm" :label-width="80">
-          <Form-item label="主机">
+          <Form-item label="云服务器">
             <Select v-model="addHostForm.hostid" placeholder="请选择">
               <Option v-for="item in addHostForm.hostList" :key="item" :value="item.computerid">
                 {{item.computername}}

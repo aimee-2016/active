@@ -6,7 +6,7 @@
         <img src="../../../../assets/img/doc/newyun/backsnapshot-img1.png" alt="快照">
       </li>
       <li>选择需要回滚的备份，点击“恢复”。<br>
-        <img src="../../../../assets/img/doc/newyun/backsnapshot-img2.png" alt="快照主机">
+        <img src="../../../../assets/img/doc/newyun/backsnapshot-img2.png" alt="快照云服务器">
       </li>
 
 

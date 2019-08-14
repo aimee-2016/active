@@ -277,9 +277,9 @@
                 <RadioGroup v-model="site.basicInformation.accessWay">
                   <Radio label="专线">
                   </Radio>
-                  <Radio label="主机托管">
+                  <Radio label="云服务器托管">
                   </Radio>
-                  <Radio label="虚拟主机">
+                  <Radio label="虚拟云服务器">
                   </Radio>
                   <Radio label="其他">
                   </Radio>

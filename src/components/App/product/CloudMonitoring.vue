@@ -163,7 +163,7 @@
 //              activeIcon: require('../../../assets/img/product/monitor-stage-2-icon-blue.png'),
 //              icon: require('../../../assets/img/product/monitor-stage-2-icon-white.png'),
               img: 'icon-yichanggaojingtongzhi',
-              desc: ['新睿云监控告警平台为您提供7X24小时监控告警能力。登录控制台，进入主机管理，配置告警策略。在告警策略列表页，选择修改告警触发条件，关联告警对象和配置告警接收人。满足告警触发条件后，新睿云监控将在第一时间通知告警接收人。']
+              desc: ['新睿云监控告警平台为您提供7X24小时监控告警能力。登录控制台，进入云服务器管理，配置告警策略。在告警策略列表页，选择修改告警触发条件，关联告警对象和配置告警接收人。满足告警触发条件后，新睿云监控将在第一时间通知告警接收人。']
             }
           ],
           selectIndex: 0

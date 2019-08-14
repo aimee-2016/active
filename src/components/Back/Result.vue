@@ -50,7 +50,7 @@
           <div v-if="currentTab=='otherPay'&&orderInfo.timeType==1">
             <span style="margin-bottom: 20px;display:block;font-size: 14px;">第三方支付渠道<span style="float:right">使用其他支付需渠道金额：{{rechargeValue!=otherPayCount?rechargeValue:otherPayCount.toFixed(2)}}元</span></span>
             <p style="margin-bottom: 20px;color:rgba(153,153,153,1);line-height:16px;">
-              为保障您的服务体验，建议您在购买实时主机之时预留足够余额，避免频繁欠费充值。</p>
+              为保障您的服务体验，建议您在购买实时云服务器之时预留足够余额，避免频繁欠费充值。</p>
             <div style="margin-bottom: 20px;">
               <InputNumber :min="rechargeMin" v-model="rechargeValue" style="margin-right: 20px;"
                            :precision="0"></InputNumber>

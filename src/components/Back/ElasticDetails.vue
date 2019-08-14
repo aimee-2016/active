@@ -22,7 +22,7 @@
             <p>配置名称</p>
             <p>计费方式</p>
             <p>地域选择</p>
-            <p>主机规格</p>
+            <p>云服务器规格</p>
             <p>系统盘</p>
             <p>系统盘容量</p>
             <p>镜像</p>
@@ -30,7 +30,7 @@
             <p v-if="elastic.disktype">数据盘容量</p>
             <p>公网IP</p>
             <p v-if="elastic.bandwidth">带宽</p>
-            <p>主机名称</p>
+            <p>云服务器名称</p>
             <p>用户名</p>
             <p>登录方式</p>
             <p>登录密码</p>
@@ -114,7 +114,7 @@
         </FormItem>
         <FormItem label="负载均衡" class="formitem6" >
           <Tooltip  placement="right" transfer>
-            <p slot="content" style="white-space:normal;">伸缩组会自动将新加入的主机添加到负载均衡中。</p>
+            <p slot="content" style="white-space:normal;">伸缩组会自动将新加入的云服务器添加到负载均衡中。</p>
             <Icon type="ios-help-outline"></Icon>
           </Tooltip>
           <Select v-model="updateTelescopicList.externalnetworkloadbalancing" disabled style="width:240px" placeholder="选择负载均衡" @on-change="balancings(updateTelescopicList.externalnetworkloadbalancing)">
@@ -135,7 +135,7 @@
         </FormItem>
         <FormItem label="初始化实例数" class="formitem2" prop="initialinstancenumber">
           <Tooltip  placement="right" transfer>
-            <p slot="content" style="white-space:normal;">伸缩组刚创建时的云服务器数量，伸缩组会为您自动创建对应数量的主机。</p>
+            <p slot="content" style="white-space:normal;">伸缩组刚创建时的云服务器数量，伸缩组会为您自动创建对应数量的云服务器。</p>
             <Icon type="ios-help-outline"></Icon>
           </Tooltip>
           <Input v-model="updateTelescopicList.initialinstancenumber" style="width: 240px" placeholder="请输入0-30之间的数字"></Input>
@@ -147,7 +147,7 @@
         </FormItem>
         <FormItem label="移除策略" class="formitem5">
           <Tooltip  placement="right" transfer>
-            <p slot="content" style="white-space:normal;">当伸缩组要减少实例且有多重选择时，将根据移出策略来选择移出的主机</p>
+            <p slot="content" style="white-space:normal;">当伸缩组要减少实例且有多重选择时，将根据移出策略来选择移出的云服务器</p>
             <Icon type="ios-help-outline"></Icon>
           </Tooltip>
           <Select v-model="updateTelescopicList.removestrategy" style="width:240px">
@@ -224,7 +224,7 @@
             value:'地域选择'
           },
           {
-            value:'主机规格'
+            value:'云服务器规格'
           },
           {
             value:'系统盘'
@@ -248,7 +248,7 @@
             value:'带宽'
           },
           {
-            value:'主机名称'
+            value:'云服务器名称'
           },
           {
             value:'用户名'
@@ -287,12 +287,12 @@
           //移除策略
           removePolicyList:[
             {
-              value:'移除旧主机',
-              label:'移除旧主机'
+              value:'移除旧云服务器',
+              label:'移除旧云服务器'
             },
             {
-              value:'移除新主机',
-              label:'移除新主机'
+              value:'移除新云服务器',
+              label:'移除新云服务器'
             }
           ],
           //负载均衡

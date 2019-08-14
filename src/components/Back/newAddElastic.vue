@@ -25,7 +25,7 @@
             </div>
           </div>
         </div>
-        <p style="margin: 20px 0;font-size: 14px;color: #999999;">提示：启动配置之时模板，创建启动配置不收费，按照启动配置增加的主机才按照实时价格计费。</p>
+        <p style="margin: 20px 0;font-size: 14px;color: #999999;">提示：启动配置之时模板，创建启动配置不收费，按照启动配置增加的云服务器才按照实时价格计费。</p>
         <!--第一步-->
         <div style="width: 700px;" v-show="hostSpecification.nextIndex == 1">
           <Form ref="config" :model="config" :rules="configValidate" :label-width="80">
@@ -42,7 +42,7 @@
             <span style="margin-right:20px;">地域选择</span>
             <span>{{$store.state.zone.zonename}}</span>
           </div>
-          <p style="font-size: 14px;color: #333333;margin: 20px 0 16px 0;">主机规格</p>
+          <p style="font-size: 14px;color: #333333;margin: 20px 0 16px 0;">云服务器规格</p>
           <div>
             <div class="cpu_list">
               <span>核心数</span>
@@ -89,7 +89,7 @@
                 <p>配置名称</p>
                 <p>计费方式</p>
                 <p>地域选择</p>
-                <p>主机规格</p>
+                <p>云服务器规格</p>
                 <p>系统盘</p>
                 <p>系统盘容量</p>
                 <p v-if="hostSpecification.nextIndex > 2">镜像</p>
@@ -135,7 +135,7 @@
                   {{item.value}}
                 </li>
               </ul>
-              <p style="color: #666666;margin: 10px 0 20px 0;">为了使主机创建完成后直接可用，强烈建议您将业务应用部署在自定义镜像中</p>
+              <p style="color: #666666;margin: 10px 0 20px 0;">为了使云服务器创建完成后直接可用，强烈建议您将业务应用部署在自定义镜像中</p>
               <div v-if="mirrorIndex == 0">
                 <Select v-model="mirrorName" style="width:200px" v-if="mirrorList.length !=0" @on-change='setPrivateOs'>
                   <Option v-for="item in mirrorList" :value="item.systemtemplateid" :key="item.systemtemplateid">{{ item.templatename }}</Option>
@@ -216,14 +216,14 @@
         <div v-if="hostSpecification.nextIndex == 4">
           <div style="display:flex;padding: 20px 0;">
             <div class="next_wo">
-              <p style="height: 32px;line-height: 32px;">主机名称</p>
+              <p style="height: 32px;line-height: 32px;">云服务器名称</p>
               <p style="margin: 26px 0;height: 40px;line-height: 40px;">系统用户名</p>
               <p>登录方式</p>
               <p v-if="passwordList == 1" style="margin: 26px 0;height: 40px;line-height: 40px;">登录密码</p>
             </div>
             <div>
               <Input v-model="computerName"></Input>
-              <p style="color:#999999;margin: 10px 0 17px 0;">当购买数量大于1台之时，主机命名规则为主机名称加随机数字。</p>
+              <p style="color:#999999;margin: 10px 0 17px 0;">当购买数量大于1台之时，云服务器命名规则为云服务器名称加随机数字。</p>
               <p>{{systemUsername}}</p>
               <RadioGroup v-model="passwordList" style="margin-top: 40px">
                 <Radio label="1">
@@ -244,7 +244,7 @@
                   </FormItem>
                 </Form>
               </div>
-              <p style="color:#999999;margin-top: 10px" v-if="passwordList == 2">系统密码在主机创建成功之后将通过密码/邮箱与站内信发送给您</p>
+              <p style="color:#999999;margin-top: 10px" v-if="passwordList == 2">系统密码在云服务器创建成功之后将通过密码/邮箱与站内信发送给您</p>
             </div>
           </div>
         </div>
@@ -266,7 +266,7 @@
         </div>
         <div class="universal-modal-content-flex">
           <Form :model="formItem" ref="formItem" :rules="ruleMirror" style="align-items:flex-end">
-            <FormItem label="主机" prop="vmInfo">
+            <FormItem label="云服务器" prop="vmInfo">
               <Select v-model="formItem.vmInfo">
                 <Option v-for="item in hostName" :value="`${item.rootdiskid}#${item.zoneid}`"
                         :key="item.computerid">
@@ -277,7 +277,7 @@
             <FormItem>
             <span style="color:#2A99F2;font-size:14px;padding-top:34px;">
               <span style="font-weight:800;font-size:20px;">+</span>
-              <span style="cursor:pointer;" @click="$router.push('buy')">购买主机</span>
+              <span style="cursor:pointer;" @click="$router.push('buy')">购买云服务器</span>
             </span>
             </FormItem>
             <FormItem label="镜像名称" prop="mirrorName">
@@ -338,7 +338,7 @@
         },
         ruleMirror: {
           vmInfo: [
-            {required: true, message: '请选择一台主机', trigger: 'change'}
+            {required: true, message: '请选择一台云服务器', trigger: 'change'}
           ],
           mirrorName: [
             {required: true, validator: validaRegisteredName, trigger: 'blur'}
@@ -370,7 +370,7 @@
           },
           {
             number: 4,
-            value: '主机登录信息设置',
+            value: '云服务器登录信息设置',
             className: '',
             yuanName: 'next_number',
             arrowName: 'next_arrow'
@@ -385,7 +385,7 @@
             {required: true, validator: validConfigName, trigger: 'blur'}
           ]
         },
-        //主机规格
+        //云服务器规格
         hostSpecification: {
           //CPU
           cpuList: [
@@ -521,7 +521,7 @@
             {required: true, validator: validLoginPassword, trigger: 'blur'}
           ]
         },
-        //主机名称
+        //云服务器名称
         computerName: '',
 
         //获取私有镜像类型
@@ -839,7 +839,7 @@
           }
         })
       },
-      // 查询已关闭主机
+      // 查询已关闭云服务器
       closeHostList() {
         var vmcloselist = []
         this.hostName = []
@@ -867,7 +867,7 @@
         handler: function () {
           this.getTemplates();
           if(this.$store.state.zone.gpuserver == 1){
-            this.$Message.info('GPU主机目前不支持创建启动配置');
+            this.$Message.info('GPU云服务器目前不支持创建启动配置');
           }
         },
         deep: true

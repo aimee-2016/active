@@ -14,7 +14,7 @@
               <img  src="../../assets/img/host/h-icon11.png" @click="showWindow.rename = true" style="height:16px;cursor:pointer;">
             </div>
             <div class="button_right">
-              <button class="button-one" @click="link" v-if="gpuDetail.computerStatus == 1">连接主机</button>
+              <button class="button-one" @click="link" v-if="gpuDetail.computerStatus == 1">连接云服务器</button>
               <button class="button-tow" @click="$router.go(0)">刷新</button>
             </div>
           </div>
@@ -28,7 +28,7 @@
         <div class="config-info">
           <div class="tab-1" v-if="configType == '基础信息' ">
                 <div>
-                   <p>主机信息</p>  
+                   <p>云服务器信息</p>  
                   <ul>
                     <li><span class="one">镜像系统</span><span class="two">{{ gpuDetail.template}}</span></li><!--<span class="three" @click="modifyMirror"> [修改]</span>-->
                     <li><span class="one">系统盘容量</span><span class="two">{{ gpuDetail.rootDiskSize}}G</span></li>
@@ -36,7 +36,7 @@
                     <li><span class="one">登陆密码</span><span class="two"></span><span class="three" v-if="codePlaceholder == '发送密码'" @click="showWindow.lookPassword = true"> [{{codePlaceholder}}]</span>
                       <span class="two" v-else> [{{codePlaceholder}}]</span>
                       <span class="three" @click="resetModifyPassword"> [修改密码]</span></li>
-                    <li><span class="one">主机状态</span> <span  class="two">{{ gpuDetail.computerStatus? '开机': '关机' }}</span></li>
+                    <li><span class="one">云服务器状态</span> <span  class="two">{{ gpuDetail.computerStatus? '开机': '关机' }}</span></li>
                   </ul>
                 </div>
                  <div>
@@ -78,7 +78,7 @@
                   </ul>
                 </div>
           </div>
-          <div class="tab-2" v-if="configType == '主机监控'">
+          <div class="tab-2" v-if="configType == '云服务器监控'">
             <div class="tab_box">
                 <div class="title-Png">
                   <span>CPU利用率</span>
@@ -257,15 +257,15 @@
         </div>
       </Modal>
 
-        <!-- 修改主机名称 -->
+        <!-- 修改云服务器名称 -->
       <Modal v-model="showWindow.rename" width="550" :scrollable="true">
         <p slot="header" class="modal-header-border">
-          <span class="universal-modal-title">主机重命名</span>
+          <span class="universal-modal-title">云服务器重命名</span>
         </p>
         <div class="universal-modal-content-flex">
           <Form :model="renameForm" ref="renameForm" :rules="renameFormRule">
-            <Form-item label="主机名" prop="hostName">
-              <Input v-model="renameForm.hostName" placeholder="请输入新主机名" :maxlength="15"></Input>
+            <Form-item label="云服务器名" prop="hostName">
+              <Input v-model="renameForm.hostName" placeholder="请输入新云服务器名" :maxlength="15"></Input>
             </Form-item>
           </Form>
         </div>
@@ -338,7 +338,7 @@
           <span class="universal-modal-title">修改镜像系统</span>
         </p>
         <div class="universal-modal-content-flex">
-          <p class="modal-p">*提示：重装主机后，将无法找回系统盘数据。数据盘需要重新挂载，请按照帮助中心中的指导说明进行。</p>
+          <p class="modal-p">*提示：重装云服务器后，将无法找回系统盘数据。数据盘需要重新挂载，请按照帮助中心中的指导说明进行。</p>
           <Form :model="mirrorModifyForm" ref="mirrorModifyForm" :rules="mirrorModifyFormRule">
             <Form-item label="选择镜像" style="width: 70%" prop="system">
               <Cascader :data="osOptions" v-model="mirrorModifyForm.system"></Cascader>
@@ -362,7 +362,7 @@
       </p>
       <div class="modal-content-s">
         <div>
-          <p class="lh24">为了数据安全，系统重装之前主机会自动关闭。重装结束后，主机会自动开机。</p>
+          <p class="lh24">为了数据安全，系统重装之前云服务器会自动关闭。重装结束后，云服务器会自动开机。</p>
           <p>请输入“confirm”</p>
           <Input v-model="reloadHintForm.input" placeholder="请输入“confirm”"
                  style="width: 300px;margin-top: 10px;"></Input>
@@ -485,7 +485,7 @@
       </p>
       <div class="modal-content-s">
         <div>
-          <p class="lh24">您确认解绑主机的公网IP吗
+          <p class="lh24">您确认解绑云服务器的公网IP吗
           </p>
         </div>
       </div>
@@ -947,11 +947,11 @@
         },
         renameFormRule:{
           hostName:[
-            {required:'true',message:'请输入主机名称',trigger:'blur'}
+            {required:'true',message:'请输入云服务器名称',trigger:'blur'}
             ]
         },    
         configType: '基础信息',
-        configTypes: ['基础信息', '主机监控', '防火墙', '操作日志'],
+        configTypes: ['基础信息', '云服务器监控', '防火墙', '操作日志'],
         tab3: {
           rule: '出站规则',
           id: '',
@@ -1023,7 +1023,7 @@
           case '基础信息':
             this.getGpuHostDetail()
             break
-          case '主机监控':
+          case '云服务器监控':
             this.getUtilization()
             break
           case '防火墙':
@@ -1372,7 +1372,7 @@
         })
       },
 
-      //连接主机
+      //连接云服务器
       link() {
         sessionStorage.setItem('link-companyid', this.gpuDetail.companyid);
         sessionStorage.setItem('link-vmid', this.gpuDetail.computerId);

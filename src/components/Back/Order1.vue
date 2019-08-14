@@ -852,7 +852,7 @@ export default {
       } else if (this.goodType == 4) {
         return "续费";
       } else if (this.goodType == 5) {
-        return "主机升级";
+        return "云服务器升级";
       } else if (this.goodType == 6) {
         return "公网带宽升级";
       } else if (this.goodType == 8) {

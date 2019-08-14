@@ -38,7 +38,7 @@
           满一年打8.3折，满两年打7折，满3年6折</p>
       </div>
 
-      <!--主机网络与带宽-->
+      <!--云服务器网络与带宽-->
       <div style="margin-top:20px;border-bottom: 1px solid #D9D9D9;padding-bottom: 20px;">
         <h2>资源规格选择</h2>
         <!--虚拟私有云-->

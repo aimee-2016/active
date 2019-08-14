@@ -99,7 +99,7 @@
             <i class="ivu-icon ivu-icon-checkmark-circled"></i>
           </div>
           <strong>提示</strong>
-          <p class="lh24">本免费活动充值押金<span style="color: #D0021B ">{{ cashPledge }}</span>元，主机到期或删除时押金自动退还到账户余额。
+          <p class="lh24">本免费活动充值押金<span style="color: #D0021B ">{{ cashPledge }}</span>元，云服务器到期或删除时押金自动退还到账户余额。
           </p>
         </div>
       </div>
@@ -132,13 +132,13 @@
             <i class="ivu-icon ivu-icon-checkmark-circled"></i>
           </div>
           <strong>提示</strong>
-          <p class="lh24">恭喜您押金已冻结完成，主机领取成功，主机在实名认证之前只可保留3天，请尽快使用。
+          <p class="lh24">恭喜您押金已冻结完成，云服务器领取成功，云服务器在实名认证之前只可保留3天，请尽快使用。
           </p>
         </div>
       </div>
       <p slot="footer" class="modal-footer-s">
         <Button @click="showModal.getSuccessModal = false">取消</Button>
-        <Button type="primary" @click="$router.push('/host')">查看主机</Button>
+        <Button type="primary" @click="$router.push('/host')">查看云服务器</Button>
       </p>
     </Modal>
     <!-- 支付充值失败 -->
@@ -386,7 +386,7 @@
         },
         currentSceneGroup:{
             currentScene: '软件研发',
-            disc: '基于新睿云云服务器的集成开发环境包含java的Eclipse、PHP的Sublime、PHPstrom、Python的PyCharm。帮助您快速部署开发环境与依赖包，降低开发前期准备并提升研发效率。借助新睿云成熟的云计算基础服务能力，开发人员可以随时创建与释放所需的开发环境与相关计算资源，主机信息可自动与手动备份，多种方式保障您的数据安全。',
+            disc: '基于新睿云云服务器的集成开发环境包含java的Eclipse、PHP的Sublime、PHPstrom、Python的PyCharm。帮助您快速部署开发环境与依赖包，降低开发前期准备并提升研发效率。借助新睿云成熟的云计算基础服务能力，开发人员可以随时创建与释放所需的开发环境与相关计算资源，云服务器信息可自动与手动备份，多种方式保障您的数据安全。',
             configGroup: [],
           },
         // 标记当前场景信息

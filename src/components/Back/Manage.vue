@@ -17,7 +17,7 @@
             <div>
               <Button class="btn" @click="$router.go(-1)" style="margin-right: 10px;">返回</Button>
               <a @click="link" v-if="computerInfo&&computerInfo.computerStatus"
-                 style="border:solid 1px #2A99F2;color: #2A99F2;border-radius: 5px;padding: 6px 15px;background-color:#f7f7f7;font-size:12px;">连接主机</a>
+                 style="border:solid 1px #2A99F2;color: #2A99F2;border-radius: 5px;padding: 6px 15px;background-color:#f7f7f7;font-size:12px;">连接云服务器</a>
             </div>
           </header>
           <div class="pan" v-if="computerInfo!=null" style="width:28%">
@@ -155,7 +155,7 @@
                        @radio-change="changeSelection"></Table>
               </div>
             </TabPane>
-            <Tab-pane label="主机设置">
+            <Tab-pane label="云服务器设置">
               <div class="body">
                 <label>重置密码</label>
                 <Form ref="resetPasswordForm" :model="resetPasswordForm" label-position="left" :label-width="100"
@@ -218,7 +218,7 @@
                   </Form-item>
                   <p
                     style="font-size: 14px;color: rgba(-2147483648,-2147483648,-2147483648,0.43);line-height: 18px;margin-bottom:15px;">
-                    *提示：重装主机后，将无法找回系统盘数据， 数据盘需要重新挂载。请按照
+                    *提示：重装云服务器后，将无法找回系统盘数据， 数据盘需要重新挂载。请按照
                     <router-link to="overview">帮助中心</router-link>
                     中的指导说明进行。
                   </p>
@@ -363,14 +363,14 @@
       <Modal v-model="showModal.rollback" :scrollable="true" :closable="false" :width="390">
         <p slot="header" class="modal-header-border">
           <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
-          <span class="universal-modal-title">主机回滚</span>
+          <span class="universal-modal-title">云服务器回滚</span>
         </p>
         <div class="modal-content-s">
           <div>
-            <p class="lh24">是否确定回滚主机</p>
+            <p class="lh24">是否确定回滚云服务器</p>
             <p class="lh24">提示：您正使用<span class="bluetext">{{snapsName}}</span>回滚<span
               class="bluetext">{{hostName}}</span>至<span
-              class="bluetext">{{hostCreatetime}}</span>，当您确认操作之后，此<span class="bluetext">时间点</span>之后的主机内的数据将丢失。</p>
+              class="bluetext">{{hostCreatetime}}</span>，当您确认操作之后，此<span class="bluetext">时间点</span>之后的云服务器内的数据将丢失。</p>
           </div>
         </div>
         <p slot="footer" class="modal-footer-s">
@@ -386,7 +386,7 @@
         </p>
         <div class="modal-content-s">
           <div>
-            <p class="lh24">为了数据安全，系统重装之前主机会自动关闭。重装结束后，主机会自动开机。</p>
+            <p class="lh24">为了数据安全，系统重装之前云服务器会自动关闭。重装结束后，云服务器会自动开机。</p>
             <p>请输入“confirm”</p>
             <Input v-model="reloadhintForm.input" placeholder="请输入“confirm”"
                    style="width: 300px;margin-top: 10px;"></Input>
@@ -934,7 +934,7 @@
       },
       systemDiskLarger() {
         if (this.computerInfo.computerStatus) {
-          this.$Message.info('请先关闭主机')
+          this.$Message.info('请先关闭云服务器')
           return false
         }
         this.$http.get('network/VMIsHaveSnapshot.do', {
@@ -946,7 +946,7 @@
             if (!response.data.result) {
               this.$Modal.confirm({
                 title: '提示',
-                content: '您的主机有快照，无法升级，请删除快照再试',
+                content: '您的云服务器有快照，无法升级，请删除快照再试',
                 scrollable: true,
                 okText: '删除快照',
                 onOk: () => {
@@ -976,7 +976,7 @@
         this.logTime = time;
       },
       search() {
-        // log/queryLog.do    操作日志   pageSize(1页显示多少条),currentPage（第几页）,target（主机则传 host）  , queryTime（查询时间  格式： 开始时间 , 结束时间  非必传）
+        // log/queryLog.do    操作日志   pageSize(1页显示多少条),currentPage（第几页）,target（云服务器则传 host）  , queryTime（查询时间  格式： 开始时间 , 结束时间  非必传）
         this.$http.get('log/queryLog.do', {
           params: {
             pageSize: this.pageSize,
@@ -1050,7 +1050,7 @@
       // 回滚确认弹窗
       rollbackSubmit() {
         this.showModal.rollback = false
-        this.loadingMessage = '正在回滚主机'
+        this.loadingMessage = '正在回滚云服务器'
         this.loading = true
         axios.get('Snapshot/revertToVMSnapshot.do', {
           params: {
@@ -1096,7 +1096,7 @@
           this.reloadForm.password = ''
         })
       },
-      // 获取具体主机下的快照列表
+      // 获取具体云服务器下的快照列表
       getsnapsList() {
         axios.get('Snapshot/listVMSnapshot.do', {
           params: {

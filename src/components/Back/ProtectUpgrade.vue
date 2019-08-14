@@ -21,7 +21,7 @@
           <div class="config-bottom">
             <table cellpadding="0" cellspacing="0">
               <tr>
-                <td>主机名称</td>
+                <td>云服务器名称</td>
                 <td colspan="2">{{hostInfo.computerName}}</td>
               </tr>
               <tr>
