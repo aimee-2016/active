@@ -1401,21 +1401,27 @@
           this.$Message.info('高防区域购买方式选择"包天"，只能选择不小于400GB的防护配置')
         }
         this.newDdosIPForm.timeValue = ''
+        this.customProtectSecIndex.value = 0
+        this.customProtectSecIndex.name = ''
+        this.newDdosIPForm.cost = 0
         this.queryNewDdosIPPrice()
       },
       // 高防区域查询价格, 查询所有的，购买带宽时长、防护一起
       queryNewDdosIPPrice(){
         if(this.newDdosIPForm.timeValue != '' && this.customProtectSecIndex.value != 0 &&  this.newDdosIPForm.timeType != ''){
-          if(this.newDdosIPForm.timeType == 'day' && this.customProtectSecIndex.value >= 400) {
-            this.queryDdosFunction()
-          } else {
-            this.$Message.info('高防区域购买方式选择"包天"，只能选择不小于400GB的防护配置')
+          if(this.newDdosIPForm.timeType == 'day'){
+            if(this.customProtectSecIndex.value >= 400) {
+              this.queryDdosFunction()
+            } else {
+              this.$Message.info('高防区域购买方式选择"包天"，只能选择不小于400GB的防护配置')
+            }
           }
-
-          if((this.newDdosIPForm.timeType == 'year' || this.newDdosIPForm.timeType == 'month') && this.customProtectSecIndex.value < 400){
-            this.queryDdosFunction()
-          } else {
-            this.$Message.info('当购买方式选择"包年包月"，只能选择小于400GB的防护配置')
+          if(this.newDdosIPForm.timeType == 'year' || this.newDdosIPForm.timeType == 'month') {
+            if(this.customProtectSecIndex.value < 400){
+              this.queryDdosFunction()
+            } else {
+              this.$Message.info('当购买方式选择"包年包月"，只能选择小于400GB的防护配置')
+            }
           }
         }
       },
@@ -2274,7 +2280,8 @@
           if(this.newDdosIPForm.timeType == 'day'){
             // 选择了天，那么防护配置选项必须不小于400GB
             if(item.value >= 400){
-              that.customProtectSecIndex = item
+              that.customProtectSecIndex.name = item.name
+              that.customProtectSecIndex.value = item.value
               this.queryNewDdosIPPrice()
             } else {
               that.$Message.info('高防区域购买方式选择"包天"，只能选择不小于400GB的防护配置')
@@ -2282,7 +2289,8 @@
           } else {
             // 选择的是年或月份的，那么防护配置需要小于400GB
             if(item.value < 400){
-              that.customProtectSecIndex = item
+              that.customProtectSecIndex.name = item.name
+              that.customProtectSecIndex.value = item.value
               this.queryNewDdosIPPrice()
             } else {
               that.$Message.info('当购买方式选择"包年包月"，只能选择小于400GB的防护配置')

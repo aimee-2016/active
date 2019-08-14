@@ -420,7 +420,7 @@
         <p class="mb20">您正为<span class="bluetext">{{currentHostname}}</span>制作快照</p>
         <Form ref="backupForm" :model="backupForm" :rules="backupFormRule">
           <FormItem label="快照名称" prop="name">
-            <Input v-model="backupForm.name" placeholder="请输入2-4094范围内任意数字" :maxlength="15"></Input>
+            <Input v-model="backupForm.name" placeholder="请输入快照名称" :maxlength="15"></Input>
           </FormItem>
           <div style="padding-top: 11px;margin-right: 100px;">
             <div style="font-size: 14px;color:#495060;margin-bottom: 15px">是否保存内存信息

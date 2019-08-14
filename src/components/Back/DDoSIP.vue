@@ -785,10 +785,10 @@
              </div>
             <div class="md-cer">
             <div style='display:flex;'>
-                <div style='margin-right:5px;'><a href='https://zschj.xrcloud.net/support_docs/1JWD4oQgr6_1LnzoqVYwB.html' target="_blank">源站IP/域名</a></div>
+                <div style='margin-right:5px;'><span>源站IP/域名</span></div>
                 <div>
                     <Input class="dp-area" type="textarea" v-model='sourceip' style='width:300px;display:inline-block;'></Input>
-                    <p class='dp-bf'>如果源站暴露，请参考使用 <span>高防后源站IP暴露的解决方法</span></p>
+                    <p class='dp-bf'>如果源站暴露，请参考使用 <a href='https://zschj.xrcloud.net/support_docs/1JWD4oQgr6_1LnzoqVYwB.html' target="_blank">高防后源站IP暴露的解决方法</a></p>
                 </div>
             </div>
             </div>
@@ -831,7 +831,7 @@
                     </FormItem>
                     <FormItem label="源站IP/域名" prop="ip">
                         <Input class="dp-area" type="textarea" v-model="addDomainList.ip" placeholder="多个域名与IP用；隔开"></Input>
-                        <p class='dp-bf'>如果源站暴露，请参考使用 <span>高防后源站IP暴露的解决方法</span></p>
+                        <p class='dp-bf'>如果源站暴露，请参考使用 <a href='https://zschj.xrcloud.net/support_docs/1JWD4oQgr6_1LnzoqVYwB.html' target="_blank">高防后源站IP暴露的解决方法</a></p>
                     </FormItem>
                  </Form>   
             </div>
@@ -1734,13 +1734,13 @@ export default {
                         h('i-switch',
                         {
                             props:{
-                                value:params.row.ccprotect == 0 ?true:false,
+                                value:params.row.ccprotect == 1 ?true:false,
                                 disabled:params.row._disableExpand == true ? true : false
                             },
                             on: {
                                 'on-change': (value) => {
                                     this.ccProtectData[params.row._index]._disableExpand = false;
-                                    this.ccProtectData[params.row._index].ccprotect=value?0:1;
+                                    this.ccProtectData[params.row._index].ccprotect=value?1:0;
                                 }
                             }
                         },
