@@ -30,7 +30,7 @@
               <router-link to="BRecords" :class="{active:pageInfo.path=='BRecords'}"><span>备案</span></router-link>
             </li>
             <li>
-              <router-link to="buy" :class="{active:pageInfo.path=='buy'}"><span>创建主机</span></router-link>
+              <router-link to="buy" :class="{active:pageInfo.path=='buy'}"><span>创建资源</span></router-link>
             </li>
             <li>
               <a href="/support/products/" :class="{active:pageInfo.path=='document'}"><span>帮助文档</span></a>
@@ -334,13 +334,13 @@
           {
             mainName: '云服务器',
             type: 'server',
-            subItem: [{subName: '云主机', type: 'host'}, {subName: 'GPU云服务器', type: 'GpuList'},
+            subItem: [{subName: '云服务器', type: 'host'}, {subName: 'GPU云服务器', type: 'GpuList'},
             {
               subName: 'DDoS高防云服务器',
               type: 'BackDdos'
             },
             {
-              subName: '云主机快照',
+              subName: '云服务器快照',
               type: 'snapshot'
             }, {
               subName: '镜像',

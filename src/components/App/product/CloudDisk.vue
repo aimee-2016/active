@@ -159,7 +159,7 @@
             }
           ],
           pImg: [
-            {icon: 'icon-danxingyunfuwuqiECS', isc: '云主机'},
+            {icon: 'icon-danxingyunfuwuqiECS', isc: '云服务器'},
             {icon: 'icon-xunisiyouyunVPC', isc: 'VPC'}
           ],
           selectIndex: 0

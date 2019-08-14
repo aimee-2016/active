@@ -52,7 +52,7 @@
           },
           {
             value: 'host',
-            label: '主机'
+            label: '云服务器'
           },
           {
             value: 'gpu',

@@ -1,6 +1,6 @@
 <template>
   <div style="background: rgba(255,255,255,1);">
-    <h1 id="hide-h1">云主机免费领</h1>
+    <h1 id="hide-h1">云服务器免费领</h1>
     <div class="banner">
       <div class="wrap">
         <div class="text">
@@ -419,14 +419,14 @@
 
   export default {
     metaInfo: {
-      title: '云服务器免费体验试用 - 免费云主机试用可申请1年、6个月、3个月、30天 - 活动中心 - 新睿云', // set a title
+      title: '云服务器免费体验试用 - 免费云服务器试用可申请1年、6个月、3个月、30天 - 活动中心 - 新睿云', // set a title
       meta: [{                 // set meta
         name: 'keywords',
-        content: '云服务器免费,云服务器免费试用,免费云服务器试用一年,免费云主机试用一年,免费云主机申请,云主机免费体验'
+        content: '云服务器免费,云服务器免费试用,免费云服务器试用一年,免费云服务器试用一年,免费云服务器申请,云服务器免费体验'
       },
         {                 // set meta
           name: 'description',
-          content: '新睿云推出爆款云主机免费试用活动，2款云服务器产品最长免费试用1年，每天随时可领，押金随时可退，2018年8月3日开始，总量有限，先到先得！'
+          content: '新睿云推出爆款云服务器免费试用活动，2款云服务器产品最长免费试用1年，每天随时可领，押金随时可退，2018年8月3日开始，总量有限，先到先得！'
         }]
     },
     components: {
@@ -524,7 +524,7 @@
           {
             src: require('../../../assets/img/active/freeToReceive/fr-icon24.png'),
             onSrc: require('../../../assets/img/active/freeToReceive/fr-icon30.png'),
-            text: '免费试用 云主机'
+            text: '免费试用 云服务器'
           },
           {
             src: require('../../../assets/img/active/freeToReceive/fr-icon25.png'),

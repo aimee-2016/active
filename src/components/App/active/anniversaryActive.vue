@@ -105,7 +105,7 @@
             </div>
             <div class="products-footer">
               <p v-if="timeNode == '1'"><img src="../../../assets/img/active/anniversary/aa-icon4.png"/><span>抢购预告：
-                <span @click="productNode = 'host'">云主机</span>（08:30开始）、<span
+                <span @click="productNode = 'host'">云服务器</span>（08:30开始）、<span
                   @click="productNode = 'objStorage'">对象存储</span>（10:30开始）、<span
                   @click="productNode = 'database'">云数据库</span>（16:30开始）</span></p>
               <p v-if="timeNode == '2' "><img src="../../../assets/img/active/anniversary/aa-icon4.png"/><span>抢购预告：
@@ -113,11 +113,11 @@
                   @click="productNode = 'database'">云数据库</span>（16:30开始）
                 <span @click="productNode = 'host'" v-if="productNode != 'host'">返回本场</span></span></p>
               <p v-if="timeNode == '3'"><img src="../../../assets/img/active/anniversary/aa-icon4.png"/><span>抢购预告：
-                <span @click="productNode = 'host'">云主机</span>（13:00开始）、<span
+                <span @click="productNode = 'host'">云服务器</span>（13:00开始）、<span
                   @click="productNode = 'database'">云数据库</span>（16:30开始）
               <span @click="productNode = 'objStorage'" v-if="productNode != 'objStorage'">返回本场</span></span></p>
               <p v-if="timeNode == '4'"><img src="../../../assets/img/active/anniversary/aa-icon4.png"/><span>抢购预告：
-                <span @click="productNode = 'host'">云主机</span>（13:00开始）、<span
+                <span @click="productNode = 'host'">云服务器</span>（13:00开始）、<span
                   @click="productNode = 'objStorage'">对象存储</span>（15:00开始）、<span
                   @click="productNode = 'database'">云数据库</span>（16:30开始）</span></p>
               <p v-if="timeNode == '5'"><img src="../../../assets/img/active/anniversary/aa-icon4.png"/><span>抢购预告：
@@ -125,15 +125,15 @@
                   @click="productNode = 'database'">云数据库</span>（16:30开始）
               <span @click="productNode = 'host'" v-if="productNode != 'host'">返回本场</span></span></p>
               <p v-if="timeNode == '6'"><img src="../../../assets/img/active/anniversary/aa-icon4.png"/><span>抢购预告：
-                <span @click="productNode = 'database'">云数据库</span>（16:30开始）、<span @click="productNode = 'host'">云主机</span>（20:00开始）
+                <span @click="productNode = 'database'">云数据库</span>（16:30开始）、<span @click="productNode = 'host'">云服务器</span>（20:00开始）
               <span @click="productNode = 'objStorage'" v-if="productNode != 'objStorage'">返回本场</span></span></p>
               <p v-if="timeNode == '7'"><img src="../../../assets/img/active/anniversary/aa-icon4.png"/><span>抢购预告：
-                <span @click="productNode = 'database'">云数据库</span>（16:30开始）、<span @click="productNode = 'host'">云主机</span>（20:00开始）
+                <span @click="productNode = 'database'">云数据库</span>（16:30开始）、<span @click="productNode = 'host'">云服务器</span>（20:00开始）
               <span @click="productNode = 'database'" v-if="productNode != 'database'">返回本场</span></span></p>
               <p v-if="timeNode == '8'"><img src="../../../assets/img/active/anniversary/aa-icon4.png"/><span>抢购预告：今日最后场次
-                <span @click="productNode = 'host'">云主机</span>（20:00开始）</span></p>
+                <span @click="productNode = 'host'">云服务器</span>（20:00开始）</span></p>
               <p v-if="timeNode == '9'"><img src="../../../assets/img/active/anniversary/aa-icon4.png"/><span>抢购预告：
-                <span @click="productNode = 'host'">云主机</span>（明日08:30开始）、<span
+                <span @click="productNode = 'host'">云服务器</span>（明日08:30开始）、<span
                   @click="productNode = 'objStorage'">对象存储</span>（明日10:30开始）、<span
                   @click="productNode = 'database'">云数据库</span>（明日16:30开始）</span></p>
             </div>
@@ -178,7 +178,7 @@
             </div>
             <div class="products-footer">
               <p v-if="timeNode == '1'"><img src="../../../assets/img/active/anniversary/aa-icon4.png"/><span>抢购预告：
-                <span @click="productNode = 'host'">云主机</span>（08:30开始）、<span
+                <span @click="productNode = 'host'">云服务器</span>（08:30开始）、<span
                   @click="productNode = 'objStorage'">对象存储</span>（10:30开始）、<span
                   @click="productNode = 'database'">云数据库</span>（16:30开始）</span></p>
               <p v-if="timeNode == '2' "><img src="../../../assets/img/active/anniversary/aa-icon4.png"/><span>抢购预告：
@@ -186,11 +186,11 @@
                   @click="productNode = 'database'">云数据库</span>（16:30开始）
                 <span @click="productNode = 'host'" v-if="productNode != 'host'">返回本场</span></span></p>
               <p v-if="timeNode == '3'"><img src="../../../assets/img/active/anniversary/aa-icon4.png"/><span>抢购预告：
-                <span @click="productNode = 'host'">云主机</span>（13:00开始）、<span
+                <span @click="productNode = 'host'">云服务器</span>（13:00开始）、<span
                   @click="productNode = 'database'">云数据库</span>（16:30开始）
               <span @click="productNode = 'objStorage'" v-if="productNode != 'objStorage'">返回本场</span></span></p>
               <p v-if="timeNode == '4'"><img src="../../../assets/img/active/anniversary/aa-icon4.png"/><span>抢购预告：
-                <span @click="productNode = 'host'">云主机</span>（13:00开始）、<span
+                <span @click="productNode = 'host'">云服务器</span>（13:00开始）、<span
                   @click="productNode = 'objStorage'">对象存储</span>（15:00开始）、<span
                   @click="productNode = 'database'">云数据库</span>（16:30开始）</span></p>
               <p v-if="timeNode == '5'"><img src="../../../assets/img/active/anniversary/aa-icon4.png"/><span>抢购预告：
@@ -198,15 +198,15 @@
                   @click="productNode = 'database'">云数据库</span>（16:30开始）
               <span @click="productNode = 'host'" v-if="productNode != 'host'">返回本场</span></span></p>
               <p v-if="timeNode == '6'"><img src="../../../assets/img/active/anniversary/aa-icon4.png"/><span>抢购预告：
-                <span @click="productNode = 'database'">云数据库</span>（16:30开始）、<span @click="productNode = 'host'">云主机</span>（20:00开始）
+                <span @click="productNode = 'database'">云数据库</span>（16:30开始）、<span @click="productNode = 'host'">云服务器</span>（20:00开始）
               <span @click="productNode = 'objStorage'" v-if="productNode != 'objStorage'">返回本场</span></span></p>
               <p v-if="timeNode == '7'"><img src="../../../assets/img/active/anniversary/aa-icon4.png"/><span>抢购预告：
-                <span @click="productNode = 'database'">云数据库</span>（16:30开始）、<span @click="productNode = 'host'">云主机</span>（20:00开始）
+                <span @click="productNode = 'database'">云数据库</span>（16:30开始）、<span @click="productNode = 'host'">云服务器</span>（20:00开始）
               <span @click="productNode = 'database'" v-if="productNode != 'database'">返回本场</span></span></p>
               <p v-if="timeNode == '8'"><img src="../../../assets/img/active/anniversary/aa-icon4.png"/><span>抢购预告：今日最后场次
-                <span @click="productNode = 'host'">云主机</span>（20:00开始）</span></p>
+                <span @click="productNode = 'host'">云服务器</span>（20:00开始）</span></p>
               <p v-if="timeNode == '9'"><img src="../../../assets/img/active/anniversary/aa-icon4.png"/><span>抢购预告：
-                <span @click="productNode = 'host'">云主机</span>（明日08:30开始）、<span
+                <span @click="productNode = 'host'">云服务器</span>（明日08:30开始）、<span
                   @click="productNode = 'objStorage'">对象存储</span>（明日10:30开始）、<span
                   @click="productNode = 'database'">云数据库</span>（明日16:30开始）</span></p>
             </div>
@@ -261,7 +261,7 @@
             </div>
             <div class="products-footer">
               <p v-if="timeNode == '1'"><img src="../../../assets/img/active/anniversary/aa-icon4.png"/><span>抢购预告：
-                <span @click="productNode = 'host'">云主机</span>（08:30开始）、<span
+                <span @click="productNode = 'host'">云服务器</span>（08:30开始）、<span
                   @click="productNode = 'objStorage'">对象存储</span>（10:30开始）、<span
                   @click="productNode = 'database'">云数据库</span>（16:30开始）</span></p>
               <p v-if="timeNode == '2' "><img src="../../../assets/img/active/anniversary/aa-icon4.png"/><span>抢购预告：
@@ -269,11 +269,11 @@
                   @click="productNode = 'database'">云数据库</span>（16:30开始）
                 <span @click="productNode = 'host'" v-if="productNode != 'host'">返回本场</span></span></p>
               <p v-if="timeNode == '3'"><img src="../../../assets/img/active/anniversary/aa-icon4.png"/><span>抢购预告：
-                <span @click="productNode = 'host'">云主机</span>（13:00开始）、<span
+                <span @click="productNode = 'host'">云服务器</span>（13:00开始）、<span
                   @click="productNode = 'database'">云数据库</span>（16:30开始）
               <span @click="productNode = 'objStorage'" v-if="productNode != 'objStorage'">返回本场</span></span></p>
               <p v-if="timeNode == '4'"><img src="../../../assets/img/active/anniversary/aa-icon4.png"/><span>抢购预告：
-                <span @click="productNode = 'host'">云主机</span>（13:00开始）、<span
+                <span @click="productNode = 'host'">云服务器</span>（13:00开始）、<span
                   @click="productNode = 'objStorage'">对象存储</span>（15:00开始）、<span
                   @click="productNode = 'database'">云数据库</span>（16:30开始）</span></p>
               <p v-if="timeNode == '5'"><img src="../../../assets/img/active/anniversary/aa-icon4.png"/><span>抢购预告：
@@ -281,15 +281,15 @@
                   @click="productNode = 'database'">云数据库</span>（16:30开始）
               <span @click="productNode = 'host'" v-if="productNode != 'host'">返回本场</span></span></p>
               <p v-if="timeNode == '6'"><img src="../../../assets/img/active/anniversary/aa-icon4.png"/><span>抢购预告：
-                <span @click="productNode = 'database'">云数据库</span>（16:30开始）、<span @click="productNode = 'host'">云主机</span>（20:00开始）
+                <span @click="productNode = 'database'">云数据库</span>（16:30开始）、<span @click="productNode = 'host'">云服务器</span>（20:00开始）
               <span @click="productNode = 'objStorage'" v-if="productNode != 'objStorage'">返回本场</span></span></p>
               <p v-if="timeNode == '7'"><img src="../../../assets/img/active/anniversary/aa-icon4.png"/><span>抢购预告：
-                <span @click="productNode = 'database'">云数据库</span>（16:30开始）、<span @click="productNode = 'host'">云主机</span>（20:00开始）
+                <span @click="productNode = 'database'">云数据库</span>（16:30开始）、<span @click="productNode = 'host'">云服务器</span>（20:00开始）
               <span @click="productNode = 'database'" v-if="productNode != 'database'">返回本场</span></span></p>
               <p v-if="timeNode == '8'"><img src="../../../assets/img/active/anniversary/aa-icon4.png"/><span>抢购预告：今日最后场次
-                <span @click="productNode = 'host'">云主机</span>（20:00开始）</span></p>
+                <span @click="productNode = 'host'">云服务器</span>（20:00开始）</span></p>
               <p v-if="timeNode == '9'"><img src="../../../assets/img/active/anniversary/aa-icon4.png"/><span>抢购预告：
-                <span @click="productNode = 'host'">云主机</span>（明日08:30开始）、<span
+                <span @click="productNode = 'host'">云服务器</span>（明日08:30开始）、<span
                   @click="productNode = 'objStorage'">对象存储</span>（明日10:30开始）、<span
                   @click="productNode = 'database'">云数据库</span>（明日16:30开始）</span></p>
             </div>
@@ -745,7 +745,7 @@
             <h3>（1）活动时间：2018.11.17-2018.12.16</h3>
             <h3>（2）活动内容：新老用户可通过购买打折产品获得抽奖次数。具体如何获得抽奖次数如下：</h3>
             <p>·无论新老用户只要注册/登录新睿云的账号即可获得一次抽奖机。</p>
-            <p>·用户第一次购买1.7折云主机可获得一次抽奖机会。</p>
+            <p>·用户第一次购买1.7折云服务器可获得一次抽奖机会。</p>
             <p>·购买1.7折对象存储可获得一次抽奖机会。</p>
             <p>·购买1.7折云数据库可获得一次抽奖机会</p>
             <p>·购买活动中任意GPU服务器只可获得一次抽奖机会。</p>
@@ -757,8 +757,8 @@
             <h3>（8）奖品发出后新睿云会将奖品物流订单号码通过短信形式发送给客户，客户可通过物流订单号查询物流。</h3>
             <h3>（9）参与本次活动购买的产品不能进行退款（非活动产品可七天无理由退款），若有疑问请联系客服人员。</h3>
             <h3>（10）活动期间任何优惠券折扣券不能在折扣活动中使用。</h3>
-            <h3>（11） 每个用户可购买5台云主机，其余产品均为一台。</h3>
-            <h3>（12）若购买5台云主机，只能获得1次抽奖机会。</h3>
+            <h3>（11） 每个用户可购买5台云服务器，其余产品均为一台。</h3>
+            <h3>（12）若购买5台云服务器，只能获得1次抽奖机会。</h3>
             <h3>（13）本次抽奖实物奖品价格均随市场价格变化而变化</h3>
             <h3 style="margin:20px 0; ">抽奖奖品细则</h3>
             <Table border :columns="awardsRuleColumns" :data="awardsRuleData"></Table>
@@ -792,12 +792,12 @@
           <div class="body">
             <h3>（1）活动时间：2018年11月17日-2018年12月17日</h3>
             <h3>（2）活动内容：新老用户皆可以参加此活动。具体活动购买限制如下：</h3>
-            <p>·云主机每位用户只可购买5次；</p>
+            <p>·云服务器每位用户只可购买5次；</p>
             <p>·对象存储每位用户只可购买1次。</p>
             <p>·云数据库每位用户只可购买1次。</p>
             <p>·GPU服务器每位用户只可购买1次</p>
             <!--           <h3 class="padl">具体购买时间如下： </h3>
-                       <p>·云主机购买时间：上午8:30-10：30；下午13:00-15:00；晚上20:00-22:00；</p>
+                       <p>·云服务器购买时间：上午8:30-10：30；下午13:00-15:00；晚上20:00-22:00；</p>
                        <p>·对象存储购买时间：上午10:30-11:30；下午15:00-16:00</p>
                        <p>·云数据库购买时间：下午16:30-17:30</p>
                        <p>·GPU服务器购买时间：晚上19:00-20:00</p>-->
@@ -1999,7 +1999,7 @@
       getHostZoneList() {
         let url = 'activity/getTemActInfo.do'
         axios.post(url, {
-          activityName: '最低1.7折购买云主机'
+          activityName: '最低1.7折购买云服务器'
         }).then(res => {
           if (res.data.status == 1 && res.status == 200) {
             this.hostZoneList = res.data.result.optionalArea

@@ -80,7 +80,7 @@
           </TabPane>
           <TabPane :label="hostDomain">
             <div>
-              <Button style="margin-bottom: 10px" type="primary" @click="moveCloudHost = true">移入云主机</Button>
+              <Button style="margin-bottom: 10px" type="primary" @click="moveCloudHost = true">移入云服务器</Button>
               <Table :columns="cloudHost.hostList" :data="cloudHost.hostData" :loading='protectLoading'></Table>
             </div>
           </TabPane>
@@ -116,7 +116,7 @@
           <p style="margin-top:10px;color: #999999;">名称不超过16个字符，可输入中文、字母与数字</p>
         </FormItem>
       <div>
-        <p style="margin-bottom: 12px">伸缩组内所有云主机<a href="/support_docs/wHfINiD0y_o67MOos6.html" style="color: #2A99F2;" >查看详细统计规则</a></p>
+        <p style="margin-bottom: 12px">伸缩组内所有云服务器<a href="/support_docs/wHfINiD0y_o67MOos6.html" style="color: #2A99F2;" >查看详细统计规则</a></p>
         <div>
           <Select @on-change="cpuSelect" v-model="alarmStrategy.cpuValue" style="width:123px" transfer>
             <Option v-for="item in alarmStrategy.cpuList" :value="item.value" :key="item.value">{{ item.label }}</Option>
@@ -150,11 +150,11 @@
             <Option value="台">台</Option>
             <Option value="%" :disabled="alarmStrategy.disabled">%</Option>
           </Select>
-          <span>云主机，冷却</span>
+          <span>云服务器，冷却</span>
           <InputNumber :editable='false' :step="15"  :min="15" :max="9999" v-model="alarmStrategy.coolingNumber"></InputNumber>
           <span>分</span>
           <Tooltip  placement="right" transfer>
-            <p slot="content" style="white-space:normal;">冷却时间是指在同一个伸缩组内，一个伸缩活动（添加或移出云主机）执行完成后的一段锁定时间。在这段时间内，该伸缩组不执行伸缩活动。</p>
+            <p slot="content" style="white-space:normal;">冷却时间是指在同一个伸缩组内，一个伸缩活动（添加或移出云服务器）执行完成后的一段锁定时间。在这段时间内，该伸缩组不执行伸缩活动。</p>
             <Icon type="ios-help-outline"></Icon>
           </Tooltip>
         </div>
@@ -184,7 +184,7 @@
           <p style="margin-top:10px;color: #999999;">名称不超过16个字符，可输入中文、字母与数字</p>
         </FormItem>
       <div>
-        <p style="margin-bottom: 12px">伸缩组内所有云主机<a href="/support_docs/wHfINiD0y_wI1UAnp9j.html" style="color: #2A99F2;">查看详细统计规则</a></p>
+        <p style="margin-bottom: 12px">伸缩组内所有云服务器<a href="/support_docs/wHfINiD0y_wI1UAnp9j.html" style="color: #2A99F2;">查看详细统计规则</a></p>
         <div>
           <Select @on-change="cpuSelect" v-model="updateStrategy.cpuValue" style="width:123px" transfer>
             <Option v-for="item in updateStrategy.cpuList" :value="item.value" :key="item.value">{{ item.label }}</Option>
@@ -218,11 +218,11 @@
             <Option value="台">台</Option>
             <Option value="%" :disabled="updateStrategy.disabled">%</Option>
           </Select>
-          <span>云主机，冷却</span>
+          <span>云服务器，冷却</span>
           <InputNumber :editable='false' :step='15' :min="15" :max="999" v-model="updateStrategy.coolingNumber"></InputNumber>
           <span>秒</span>
           <Tooltip  placement="right" transfer>
-            <p slot="content" style="white-space:normal;">冷却时间是指在同一个伸缩组内，一个伸缩活动（添加或移出云主机）执行完成后的一段锁定时间。在这段时间内，该伸缩组不执行伸缩活动。</p>
+            <p slot="content" style="white-space:normal;">冷却时间是指在同一个伸缩组内，一个伸缩活动（添加或移出云服务器）执行完成后的一段锁定时间。在这段时间内，该伸缩组不执行伸缩活动。</p>
             <Icon type="ios-help-outline"></Icon>
           </Tooltip>
         </div>
@@ -415,10 +415,10 @@
       </div>
     </Modal>
 
-    <!--移入云主机-->
-    <modal title="移入云主机" width="550" :mask-closable="false" v-model="moveCloudHost">
+    <!--移入云服务器-->
+    <modal title="移入云服务器" width="550" :mask-closable="false" v-model="moveCloudHost">
 
-      <p>您正为<span style="color:#2A99F2;">{{details.stretchname}}</span>移入云主机</p>
+      <p>您正为<span style="color:#2A99F2;">{{details.stretchname}}</span>移入云服务器</p>
       <div>
         <div class="move_box">
           <div class="move_box_left">
@@ -451,7 +451,7 @@
             </div>
           </div>
         </div>
-        <p style="color:#999999;margin-top: 20px;">提示：手动移入的云主机将自动添加到伸缩组所关联的负载均衡中</p>
+        <p style="color:#999999;margin-top: 20px;">提示：手动移入的云服务器将自动添加到伸缩组所关联的负载均衡中</p>
         <br>
         <hr color="#D8D8D8" size="1">
       </div>
@@ -482,7 +482,7 @@
         </FormItem>
         <FormItem label="最小伸缩数" prop="minimumexpansionnumber" class="formitem1">
           <Tooltip  placement="right" transfer>
-            <p slot="content" style="white-space:normal;">伸缩组中允许的实例最小数量。当伸缩组的云主机数量小于最小伸缩数时，弹性伸缩会增加实例，使得伸缩组当前实例数匹配最小伸缩数。</p>
+            <p slot="content" style="white-space:normal;">伸缩组中允许的实例最小数量。当伸缩组的云服务器数量小于最小伸缩数时，弹性伸缩会增加实例，使得伸缩组当前实例数匹配最小伸缩数。</p>
             <Icon type="ios-help-outline"></Icon>
           </Tooltip>
           <Input v-model="updateTelescopicList.minimumexpansionnumber" style="width: 240px" placeholder="请输入0-30之间的数字"></Input>
@@ -498,7 +498,7 @@
         </FormItem>
         <FormItem label="最大伸缩数" class="formitem1" prop="maximumexpansionnumber">
           <Tooltip  placement="right" transfer>
-            <p slot="content" style="white-space:normal;">伸缩组中允许的实例最大数量。当伸缩组的云主机数量大于最大伸缩数时，弹性伸缩会移出实例，使得伸缩组当前实例数匹配最大伸缩数。</p>
+            <p slot="content" style="white-space:normal;">伸缩组中允许的实例最大数量。当伸缩组的云服务器数量大于最大伸缩数时，弹性伸缩会移出实例，使得伸缩组当前实例数匹配最大伸缩数。</p>
             <Icon type="ios-help-outline"></Icon>
           </Tooltip>
           <Input v-model="updateTelescopicList.maximumexpansionnumber" style="width: 240px" placeholder="请输入1-30之间的数字"></Input>
@@ -583,7 +583,7 @@
         current:1,
         total:0,
 
-        //关联云主机
+        //关联云服务器
         hostDomain:h=>{
           return h('div',{
             on:{
@@ -591,7 +591,7 @@
                 this.selectHost();
               }
             }
-          },'关联云主机')
+          },'关联云服务器')
         },
 
         //告警策略
@@ -985,12 +985,12 @@
           disabled:false
         },
 
-        //关联云主机
+        //关联云服务器
         moveCloudHost:false,
         cloudHost:{
           hostList:[
             {
-              title:'云主机名称',
+              title:'云服务器名称',
               key:'computername'
             },
             {
@@ -1110,7 +1110,7 @@
           hostData:[]
         },
 
-        //移入云主机
+        //移入云服务器
         intoCloudHost:[],
         removeCloudHost:[],
 
@@ -2345,7 +2345,7 @@
         })
       },
 
-      //获取用户的云主机
+      //获取用户的云服务器
       selectCloudHost(){
         this.$http.get('elasticScaling/listVMByTelescopicId.do',{
           params:{
@@ -2554,7 +2554,7 @@
         }).then(res =>{
           if(res.status == 200 && res.data.status == 1){
             this.moveCloudHost = false;
-            this.$Message.success('加入云主机成功');
+            this.$Message.success('加入云服务器成功');
             this.getDetails();
             this.selectHost();
           }else{

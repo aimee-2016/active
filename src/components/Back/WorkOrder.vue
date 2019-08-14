@@ -44,12 +44,12 @@
                 <div class="question">
                   <label>常见问题</label>
                   <span class="q">1、带宽不够怎么办？</span>
-                  <span class="a">购买成功后可以通过控制台升级带宽，睿云主机最大支持100Mbps带宽。</span>
+                  <span class="a">购买成功后可以通过控制台升级带宽，睿云服务器最大支持100Mbps带宽。</span>
                   <span class="q">2、购买后是否支持升级？</span>
                   <span class="a">购买的默认主机无法升级配置，仅可升级带宽，定制主机可随时根据需要升级配置。</span>
                   <span class="q">3、Windows服务器只有一个分区吗？</span>
                   <span class="a">默认提供的硬盘为20GB空间，默认硬盘没有分区，用户可根据自身需求在windows操作系统的计算机管理-》磁盘管理中通过压缩卷创建D盘。</span>
-                  <span class="q">4、云主机初次登录时，提示密码不正确？</span>
+                  <span class="q">4、云服务器初次登录时，提示密码不正确？</span>
                   <span class="a">请根据购买之后您收到登录名和密码登陆主机，您可以在消息中心、绑定邮箱／手机短信中查看账户名和密码。如您忘记密码可通过控制台，先将主机关闭后，再进行重置密码。</span>
                   <span class="q">5、主机远程连接失败？</span>
                   <span class="a">系统默认打开防火墙22端口（linux系统远程连接）和3389端口（windows系统远程连接），如果关闭了，通过客户端进行主机远程连接需要打开相应端口。</span>
@@ -97,12 +97,12 @@
                 <div class="question">
                   <label style="margin-top:0px">常见问题</label>
                   <span class="q">1、带宽不够怎么办？</span>
-                  <span class="a">购买成功后可以通过控制台升级带宽，睿云主机最大支持xMbps带宽。</span>
+                  <span class="a">购买成功后可以通过控制台升级带宽，睿云服务器最大支持xMbps带宽。</span>
                   <span class="q">2、购买后是否支持升级？</span>
                   <span class="a">购买的默认主机无法升级配置，仅可升级带宽，定制主机可随时根据需要升级配置。</span>
                   <span class="q">3、Windows服务器只有一个分区吗？</span>
                   <span class="a">默认提供的硬盘为100GB空间，默认硬盘没有分区，用户可根据自身需求在windows操作系统的计算机管理-》磁盘管理中通过压缩卷创建D盘。</span>
-                  <span class="q">4、云主机初次登录时，提示密码不正确？</span>
+                  <span class="q">4、云服务器初次登录时，提示密码不正确？</span>
                   <span class="a">请根据购买之后您收到登录名和密码登陆主机，您可以在消息中心、绑定邮箱／手机短信中查看账户名和密码。如您忘记密码可通过控制台，先将主机关闭后，再进行重置密码。</span>
                   <span class="q">5、主机远程连接失败？</span>
                   <span class="a">系统默认打开防火墙22端口（linux系统远程连接）和3389端口（windows系统远程连接），如果关闭了，通过客户端进行主机远程连接需要打开相应端口。</span>
@@ -149,12 +149,12 @@
                 <div class="question">
                   <label>常见问题</label>
                   <span class="q">1、带宽不够怎么办？</span>
-                  <span class="a">购买成功后可以通过控制台升级带宽，睿云主机最大支持xMbps带宽。</span>
+                  <span class="a">购买成功后可以通过控制台升级带宽，睿云服务器最大支持xMbps带宽。</span>
                   <span class="q">2、购买后是否支持升级？</span>
                   <span class="a">购买的默认主机无法升级配置，仅可升级带宽，定制主机可随时根据需要升级配置。</span>
                   <span class="q">3、Windows服务器只有一个分区吗？</span>
                   <span class="a">默认提供的硬盘为100GB空间，默认硬盘没有分区，用户可根据自身需求在windows操作系统的计算机管理-》磁盘管理中通过压缩卷创建D盘。</span>
-                  <span class="q">4、云主机初次登录时，提示密码不正确？</span>
+                  <span class="q">4、云服务器初次登录时，提示密码不正确？</span>
                   <span class="a">请根据购买之后您收到登录名和密码登陆主机，您可以在消息中心、绑定邮箱／手机短信中查看账户名和密码。如您忘记密码可通过控制台，先将主机关闭后，再进行重置密码。</span>
                   <span class="q">5、主机远程连接失败？</span>
                   <span class="a">系统默认打开防火墙22端口（linux系统远程连接）和3389端口（windows系统远程连接），如果关闭了，通过客户端进行主机远程连接需要打开相应端口。</span>
@@ -198,12 +198,12 @@
                 <div class="question">
                   <label>常见问题</label>
                   <span class="q">1、带宽不够怎么办？</span>
-                  <span class="a">购买成功后可以通过控制台升级带宽，睿云主机最大支持xMbps带宽。</span>
+                  <span class="a">购买成功后可以通过控制台升级带宽，睿云服务器最大支持xMbps带宽。</span>
                   <span class="q">2、购买后是否支持升级？</span>
                   <span class="a">购买的默认主机无法升级配置，仅可升级带宽，定制主机可随时根据需要升级配置。</span>
                   <span class="q">3、Windows服务器只有一个分区吗？</span>
                   <span class="a">默认提供的硬盘为100GB空间，默认硬盘没有分区，用户可根据自身需求在windows操作系统的计算机管理-》磁盘管理中通过压缩卷创建D盘。</span>
-                  <span class="q">4、云主机初次登录时，提示密码不正确？</span>
+                  <span class="q">4、云服务器初次登录时，提示密码不正确？</span>
                   <span class="a">请根据购买之后您收到登录名和密码登陆主机，您可以在消息中心、绑定邮箱／手机短信中查看账户名和密码。如您忘记密码可通过控制台，先将主机关闭后，再进行重置密码。</span>
                   <span class="q">5、主机远程连接失败？</span>
                   <span class="a">系统默认打开防火墙22端口（linux系统远程连接）和3389端口（windows系统远程连接），如果关闭了，通过客户端进行主机远程连接需要打开相应端口。</span>

@@ -322,7 +322,7 @@
             item.items.forEach((content, index) => {
               content.url = currentUrl[index]
               // 需要跳转到购买页面的资源，添加url
-              if (content.itemName == '弹性云主机ECS') {
+              if (content.itemName == '弹性云服务器ECS') {
                 content.cartUrl = '/buy/#Pecs'
               } else if (content.itemName == '弹性IP') {
                 content.cartUrl = '/buy/elasticip/#Peip'

@@ -2,7 +2,7 @@
   <div>
     <h1></h1>
     <ol>
-      <li>进入新睿云控制台“云主机”页面</li>
+      <li>进入新睿云控制台“云服务器”页面</li>
       <li>点击“更多操作”——选择“备份”。<br>
         <img src="../../../../assets/img/doc/newyun/newsnapshot-img1.png" alt="备份">
       </li>

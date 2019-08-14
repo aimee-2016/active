@@ -1,6 +1,6 @@
 <template>
   <div class="background">
-    <p v-if="isCloud">我是小小新睿云云客，特惠云主机分享给你</p>
+    <p v-if="isCloud">我是小小新睿云云客，特惠云服务器分享给你</p>
     <h2 v-else>特惠产品 你我共享</h2>
     <div class="center">
       <div class="item" v-for="(item,index) in productGroups">

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>连接云主机</h1>
+    <h1>连接云服务器</h1>
     <ol>
       <li>主机创建完成之后，点击“连接主机”。<br>
         <img src="../../../../assets/img/doc/faststart/fs4-img1.png" alt="连接主机">

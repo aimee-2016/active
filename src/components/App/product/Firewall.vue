@@ -178,7 +178,7 @@
               img: require('../../../assets/img/product/firewall-stage-background.png'),
               desc: ['虚拟防火墙通过设置防火墙的规则和策略来控制外网对云平台站点的安全防护和访问控制，能够有效的阻止非法的服务和进程的接入，云平台为用户每个的VPC提供了独立的虚拟防火墙，用户可以灵活配置虚拟防火墙的规则，在在子网上引用对进站、出站的流量进行匹配，满足访问规则的流量才能够正常的接收和发送。虚拟防火墙部署在互联网出口，用于阻断互联网上的非法的流量和行为，一般用于互联网网站的部署，将网站使用的端口开放，其他端口禁止访问。'],
               pImg: [
-                {img: 'icon-danxingyunfuwuqiECS', isc: '云主机'},
+                {img: 'icon-danxingyunfuwuqiECS', isc: '云服务器'},
                 {img: 'icon-xunisiyouyunVPC', isc: 'VPC'}
               ]
             }
@@ -189,13 +189,13 @@
           {
             img: 'icon-danxingyunfuwuqiECS',
             title: '云服务器',
-            desc: '云主机是一种可以根据需求随时改变处理能力并且按照实际使用量来计费的计算服务。',
+            desc: '云服务器是一种可以根据需求随时改变处理能力并且按照实际使用量来计费的计算服务。',
             path: '/ecs/'
           },
           {
             img: 'icon-xunisiyouyunVPC',
             title: '虚拟私有云VPC',
-            desc: 'VPC（Virtual Private Cloud）是一个用户定义的虚拟网络，云主机可以放置在其中...',
+            desc: 'VPC（Virtual Private Cloud）是一个用户定义的虚拟网络，云服务器可以放置在其中...',
             path: '/vpc/'
           },
           {
