@@ -168,7 +168,7 @@
           </FormItem>
           <span style="font-size:14px;font-family:MicrosoftYaHei;color:rgba(42,153,242,1);cursor: pointer;position: absolute;left: 48%;top: 49%;" @click="$router.push('buy')">
               <img style="transform: translate(0px,3px);" src="../../assets/img/public/icon_plussign.png"/>
-              购买主机
+              购买云服务器
             </span>
         </Form>
         <p style="font-size: 12px;color: #999999">提示：弹性IP只能绑定一个资源，当您绑定该资源后，将不能再将该弹性IP用于其他资源绑定。</p>
@@ -303,7 +303,7 @@
               </Select>
             </div>
           </Form-item>
-          <FormItem label="是否同时变更绑定主机与NAT网关:" style="width: 80%;margin-bottom: 0" v-if="chargesHost || chargesNAT">
+          <FormItem label="是否同时变更绑定云服务器与NAT网关:" style="width: 80%;margin-bottom: 0" v-if="chargesHost || chargesNAT">
             <CheckboxGroup v-model="chargesOther">
               <Checkbox label="变更关联云服务器" v-if="chargesHost"></Checkbox>
               <Checkbox label="变更关联NAT网关" v-if="chargesNAT"></Checkbox>
@@ -376,7 +376,7 @@
               <li><span>到期时间：</span>{{renewalInfo.endTime}}</li>
             </ul>
           </div>
-          <FormItem label="是否同时续费绑定主机与NAT网关:" style="width: 80%;margin-bottom: 0" v-if="renewalHost || renewalNAT">
+          <FormItem label="是否同时续费绑定云服务器与NAT网关:" style="width: 80%;margin-bottom: 0" v-if="renewalHost || renewalNAT">
             <CheckboxGroup v-model="renewalOther">
               <Checkbox label="续费关联云服务器" v-if="renewalHost"></Checkbox>
               <Checkbox label="续费关联NAT网关" v-if="renewalNAT"></Checkbox>
@@ -483,7 +483,7 @@
         <Button type="primary" @click="unbindResources_ok">确认</Button>
       </p>
     </Modal>
-    <!-- 当前区域没有主机提示 -->
+    <!-- 当前区域没有云服务器提示 -->
     <Modal v-model="showModal.withoutHost" :scrollable="true" :closable="false" :width="390">
       <p slot="header" class="modal-header-border">
         <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
@@ -491,7 +491,7 @@
       </p>
       <div class="modal-content-s">
         <div>
-          <p class="lh24">检测到您所选择区域内没有可用主机，确认在{{ $store.state.zone.zonename}}购买公网IP吗 
+          <p class="lh24">检测到您所选择区域内没有可用云服务器，确认在{{ $store.state.zone.zonename}}购买公网IP吗 
           </p>
         </div>
       </div>
@@ -830,7 +830,7 @@
             title: 'IP用途',
             key: 'usetype',
             render: (h, params) => {
-              return h('span', params.row.usetype == 0 ? '未使用' : params.row.usetype == 1 ? '绑定主机' : params.row.usetype == 2 ? '负载均衡' : params.row.usetype == 3 ? '源NAT' : 'NAT网关')
+              return h('span', params.row.usetype == 0 ? '未使用' : params.row.usetype == 1 ? '绑定云服务器' : params.row.usetype == 2 ? '负载均衡' : params.row.usetype == 3 ? '源NAT' : 'NAT网关')
             }
           },
           {

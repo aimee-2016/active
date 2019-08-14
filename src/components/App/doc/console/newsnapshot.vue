@@ -7,7 +7,7 @@
         <img src="../../../../assets/img/doc/newyun/newsnapshot-img1.png" alt="备份">
       </li>
       <li>在弹窗中填写“快照”名称与“描述”。 <br>
-        <img src="../../../../assets/img/doc/newyun/newsnapshot-img2.png" alt="主机备份">
+        <img src="../../../../assets/img/doc/newyun/newsnapshot-img2.png" alt="云服务器备份">
       </li>
       <li>完成快照创建。</li>
     </ol>

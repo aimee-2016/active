@@ -50,7 +50,7 @@
               <dl>
                 <dt v-if="isReceive==0"><img src="../../../assets/img/active/vps/lingquzhuji.png" alt="icon"></dt>
                 <dt v-else><img src="../../../assets/img/active/newNodes/lq1.png" alt="icon"></dt>
-                <dd :class="{select:isReceive!=0}">③ 购买折扣主机</dd>
+                <dd :class="{select:isReceive!=0}">③ 购买折扣云服务器</dd>
               </dl>
             </div>
           </div>
@@ -163,7 +163,7 @@
               </dd>-->
             </dl>
             <dl>
-              <dt> 4、活动主机7天内可无理由退款。</dt>
+              <dt> 4、活动云服务器7天内可无理由退款。</dt>
             </dl>
             <dl>
               <dt>5、为保证活动的公平公正，新睿云有权对恶意刷抢（如通过程序等技术手段）活动资源、利用资源从事违法违规行为的用户收回使用资格。</dt>
@@ -819,7 +819,7 @@
         personalauth: 1,
         companyauth: 1,
         isLogin: 0,
-        // 是否领取主机 0未领取
+        // 是否领取云服务器 0未领取
         isReceive: 0,
         userInfo: null,
         config_one: [
@@ -1018,7 +1018,7 @@
           return
         }
         if (item.system === '') {
-          this.$Message.info('请选择主机系统')
+          this.$Message.info('请选择云服务器系统')
           return
         }
         var vmConfigId = index === 0 ? '11' : '12'
@@ -1045,7 +1045,7 @@
           return
         }
         if (item.system === '') {
-          this.$Message.info('请选择主机系统')
+          this.$Message.info('请选择云服务器系统')
           return
         }
         var vmConfigId = ''

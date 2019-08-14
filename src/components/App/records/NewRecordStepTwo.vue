@@ -49,7 +49,7 @@
                     <div class="tooltip-center">
                       <div class="tooltip-arrow"></div>
                       <div class="tooltip">
-                          请注意：根据政策网站备案时填写名称与网站实际名称需保持一致，若不一致可能导致备案失败。
+                          请注意：根据政策，网站备案时填写名称与网站实际名称需保持一致，若不一致可能导致备案失败。
                           1. 网站名称不能以纯数字或纯英文命名，不能包含：域名、特殊符号、敏感词语（反腐、赌博、廉政、色情等）。
                         2. 非国家级单位，不得以中国、中华、中央、人民、人大、国家等字头命名。
                         3. 单位网站名称必须与主办单位名称之间有关联性。
@@ -277,9 +277,9 @@
                 <RadioGroup v-model="site.basicInformation.accessWay">
                   <Radio label="专线">
                   </Radio>
-                  <Radio label="主机托管">
+                  <Radio label="云服务器托管">
                   </Radio>
-                  <Radio label="虚拟主机">
+                  <Radio label="虚拟云服务器">
                   </Radio>
                   <Radio label="其他">
                   </Radio>

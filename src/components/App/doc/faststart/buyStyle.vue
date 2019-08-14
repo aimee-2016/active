@@ -3,8 +3,8 @@
     <h1>控制台购买</h1>
     <ol>
       <li>登录新睿云官网，进入控制台</li>
-      <li>找到并点击“新建主机”<br>
-        <img src="../../../../assets/img/doc/faststart/buystyle-img1.png" alt="创建主机">
+      <li>找到并点击“新建云服务器”<br>
+        <img src="../../../../assets/img/doc/faststart/buystyle-img1.png" alt="创建云服务器">
       </li>
       <li>选择要购买的实例类型及配置</li>
       <li>选择要购买的弹性IP配置<br>

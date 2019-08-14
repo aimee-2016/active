@@ -1355,7 +1355,7 @@
       <div class="modal-content-s">
         <div>
           <p class="lh24" style="margin-bottom: 20px">请注意，若您取消创建虚拟机{{ notificationChannel }}通知，在您下次创建虚拟机的您将不会收到相关{{ notificationChannel
-            }}提醒，提醒内容包括您创建该虚拟机的主机名称与登录密码。在您取消提醒之后，您可以通过云服务器-管理，发送密码来查看该主机密码。请再次确认：
+            }}提醒，提醒内容包括您创建该虚拟机的云服务器名称与登录密码。在您取消提醒之后，您可以通过云服务器-管理，发送密码来查看该云服务器密码。请再次确认：
           </p>
           <RadioGroup v-model="informAffirm" vertical>
             <Radio label="retain">

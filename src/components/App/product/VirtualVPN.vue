@@ -141,7 +141,7 @@
           {
             img: 'icon-dianduiduoVPN',
             title: '点对多VPN（Remote VPN）',
-            desc: '基于Interne，在客户本地主机/第三方公有云服务器与新睿云虚拟私有云（VPC）之间建立起的IPsec加密通信隧道。'
+            desc: '基于Interne，在客户本地云服务器/第三方公有云服务器与新睿云虚拟私有云（VPC）之间建立起的IPsec加密通信隧道。'
           }
         ],
         stageInfo: {

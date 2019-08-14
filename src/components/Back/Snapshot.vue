@@ -20,7 +20,7 @@
           <button id="refresh_button" @click="$router.go(0)" style="margin-top: 10px;">刷新</button>
         </div>
         <div class="universal-alert">
-          <p> 云服务器快照能对主机（包含挂载磁盘）某个时刻的数据进行备份和回滚，云服务器快照为增量备份，提升了云服务器的安全性，同时增强了云服务器快照的易用性。</p>
+          <p> 云服务器快照能对云服务器（包含挂载磁盘）某个时刻的数据进行备份和回滚，云服务器快照为增量备份，提升了云服务器的安全性，同时增强了云服务器快照的易用性。</p>
         </div>
         <Tabs type="card" :animated="false" style="min-height: 400px">
           <TabPane label="云服务器快照">
@@ -54,7 +54,7 @@
       </p>
       <div class="universal-modal-content-flex">
         <Form :model="creatSnapsForm" ref="creatSnapsForm" :rules="ruleSnaps" style="align-items:flex-end">
-          <FormItem label="选择主机" prop="host">
+          <FormItem label="选择云服务器" prop="host">
             <Select v-model="creatSnapsForm.host">
               <Option v-for="item in vmList" :value="item.computerid" :key="item.computerid">{{ item.computername }}
               </Option>
@@ -63,8 +63,8 @@
           <FormItem>
             <span style="color:#2A99F2;font-size:14px;padding-top:34px;">
               <span style="font-weight:800;font-size:20px;">+</span>
-              <span v-if="$store.state.zone.gpuserver == 2" style="cursor:pointer;" @click="$router.push('buy/ddos')">购买高防主机</span>
-              <span v-else style="cursor:pointer;" @click="$router.push('buy')">购买主机</span>
+              <span v-if="$store.state.zone.gpuserver == 2" style="cursor:pointer;" @click="$router.push('buy/ddos')">购买高防云服务器</span>
+              <span v-else style="cursor:pointer;" @click="$router.push('buy')">购买云服务器</span>
             </span>
           </FormItem>
           <FormItem label="备份名称" prop="name">
@@ -76,9 +76,9 @@
                 <Icon type="ios-help-outline" style="color:#2A99F2;font-size:16px;"></Icon>
                 <div slot="content">
                   <div>
-                    您可以选择在制作快照的时候保存您主机的当前运行状态。当您选择“保存”之时，
-                    当前主机的内存将被记录，在您对快照执行回滚操作的时候，也只能在开机状态下执行；当您选择“不保存”时
-                    此次快照将不记录主机内存信息，您在通过该快照回滚的时候只能在关机状态下执行。
+                    您可以选择在制作快照的时候保存您云服务器的当前运行状态。当您选择“保存”之时，
+                    当前云服务器的内存将被记录，在您对快照执行回滚操作的时候，也只能在开机状态下执行；当您选择“不保存”时
+                    此次快照将不记录云服务器内存信息，您在通过该快照回滚的时候只能在关机状态下执行。
                   </div>
                 </div>
               </Poptip>
@@ -89,7 +89,7 @@
             </RadioGroup>
           </div>
         </Form>
-        <p class="modal-text-hint-bottom">提示：云服务器快照为每块磁盘提供<span>{{totalQuota }}个</span>快照额度，当某个主机的快照数量达到额度上限，在创建新的快照任务时，系统会删除由自动快照策略所生成的时间最早的自动快照点
+        <p class="modal-text-hint-bottom">提示：云服务器快照为每块磁盘提供<span>{{totalQuota }}个</span>快照额度，当某个云服务器的快照数量达到额度上限，在创建新的快照任务时，系统会删除由自动快照策略所生成的时间最早的自动快照点
         </p>
       </div>
       <div slot="footer" class="modal-footer-border">
@@ -126,8 +126,8 @@
             <Cascader :data="creatBackupsForm.monthTimeData" v-model="creatBackupsForm.timeValue"
                       v-if="creatBackupsForm.timeType === 'month'"></Cascader>
           </Form-item>
-          <FormItem label="备份策略应用主机">
-            <Select v-model="creatBackupsForm.host" multiple placeholder="主机名称可多选">
+          <FormItem label="备份策略应用云服务器">
+            <Select v-model="creatBackupsForm.host" multiple placeholder="云服务器名称可多选">
               <Option v-for="item in vmList" :value="item.computerid" :key="item.computerid">{{ item.computername
                 }}
               </Option>
@@ -139,9 +139,9 @@
                 <Icon type="ios-help-outline" style="color:#2A99F2;font-size:16px;"></Icon>
                 <div slot="content">
                   <div>
-                    您可以选择在制作快照的时候保存您主机的当前运行状态。当您选择“保存”之时，
-                    当前主机的内存将被记录，在您对快照执行回滚操作的时候，也只能在开机状态下执行；当您选择“不保存”时
-                    此次快照将不记录主机内存信息，您在通过该快照回滚的时候只能在关机状态下执行。
+                    您可以选择在制作快照的时候保存您云服务器的当前运行状态。当您选择“保存”之时，
+                    当前云服务器的内存将被记录，在您对快照执行回滚操作的时候，也只能在开机状态下执行；当您选择“不保存”时
+                    此次快照将不记录云服务器内存信息，您在通过该快照回滚的时候只能在关机状态下执行。
                   </div>
                 </div>
               </Poptip>
@@ -152,7 +152,7 @@
             </RadioGroup>
           </div>
         </Form>
-        <p class="modal-text-hint-bottom">提示：云服务器快照为每块磁盘提供<span class="bluetext">{{totalQuota }}个</span>快照额度，当某个主机的快照数量达到额度上限，在创建新的快照任务时，系统会删除由自动快照策略所生成的时间最早的自动快照点。您最多能创建<span
+        <p class="modal-text-hint-bottom">提示：云服务器快照为每块磁盘提供<span class="bluetext">{{totalQuota }}个</span>快照额度，当某个云服务器的快照数量达到额度上限，在创建新的快照任务时，系统会删除由自动快照策略所生成的时间最早的自动快照点。您最多能创建<span
           class="bluetext">3个</span>自动快照策略
         </p>
       </div>
@@ -165,13 +165,13 @@
     <Modal v-model="showModal.rollback" :scrollable="true" :closable="false" :width="390">
       <p slot="header" class="modal-header-border">
         <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
-        <span class="universal-modal-title">主机回滚</span>
+        <span class="universal-modal-title">云服务器回滚</span>
       </p>
       <div class="modal-content-s">
         <div>
-          <p class="lh24">是否确定回滚主机</p>
+          <p class="lh24">是否确定回滚云服务器</p>
           <p class="lh24">提示：您正使用<span class="bluetext">{{snapsName}}</span>回滚<span class="bluetext">{{hostName}}</span>至<span
-            class="bluetext">{{hostCreatetime}}</span>，当您确认操作之后，此<span class="bluetext">时间点</span>之后的主机内的数据将丢失。</p>
+            class="bluetext">{{hostCreatetime}}</span>，当您确认操作之后，此<span class="bluetext">时间点</span>之后的云服务器内的数据将丢失。</p>
         </div>
       </div>
       <p slot="footer" class="modal-footer-s">
@@ -211,16 +211,16 @@
         <Button type="primary" @click="delStrategySubm">确定</Button>
       </p>
     </Modal>
-    <!-- 备份策略添加/删除主机 -->
+    <!-- 备份策略添加/删除云服务器 -->
     <Modal v-model="showModal.addOrDeleteHost" width="550" :scrollable="true">
       <p slot="header" class="modal-header-border">
-        <span class="universal-modal-title">创建/删除主机</span>
+        <span class="universal-modal-title">创建/删除云服务器</span>
       </p>
       <div class="universal-modal-content-flex">
-        <p style="margin-bottom: 20px">您正为<span class="bluetext">{{strategyName}}</span>添加/删除主机</p>
+        <p style="margin-bottom: 20px">您正为<span class="bluetext">{{strategyName}}</span>添加/删除云服务器</p>
         <div class="modal-main">
           <div class="hostlist">
-            <p>该区域下所有主机</p>
+            <p>该区域下所有云服务器</p>
             <ul>
               <li v-for="(item,index) in hostForBackupsStrategyList" :key="index"><span>{{ item.computername
                 }}</span><span v-if="item.bankupstrategyname">({{ item.bankupstrategyname}})</span><i
@@ -228,7 +228,7 @@
             </ul>
           </div>
           <div class="changelist">
-            <p>已选择的主机</p>
+            <p>已选择的云服务器</p>
             <ul>
               <li v-for="(item,index) in changeHostlist" :key="index"><span>{{ item.resourcesName }}</span><i
                 @click="removeHost(index)" class="bluetext" style="cursor:pointer">
@@ -238,7 +238,7 @@
           </div>
         </div>
         <p style="margin-top: 20px;color: #999999;font-family: Microsoft YaHei;font-size: 12px;">
-          提示：当您选择已绑定快照策略的主机时，新的快照策略将直接覆盖原有快照策略。</p>
+          提示：当您选择已绑定快照策略的云服务器时，新的快照策略将直接覆盖原有快照策略。</p>
       </div>
       <div slot="footer" class="modal-footer-border">
         <Button type="ghost" @click="showModal.addOrDeleteHost = false">取消</Button>
@@ -283,7 +283,7 @@
             {required: true, validator: validaRegisteredName, trigger: 'blur'}
           ],
           host: [
-            {required: true, message: '请选择主机', trigger: 'change'}
+            {required: true, message: '请选择云服务器', trigger: 'change'}
           ]
         },
         creatBackupsForm: {
@@ -1501,9 +1501,9 @@
           name: '',
           radio: '1'
         },
-        // 已创建主机列表
+        // 已创建云服务器列表
         vmList: '',
-        //主机快照col
+        //云服务器快照col
         snapshotCol: [
           {
             type: 'radio',
@@ -1553,7 +1553,7 @@
             }
           },
           {
-            title: '主机名称',
+            title: '云服务器名称',
             key: 'name',
           },
           {
@@ -1619,9 +1619,9 @@
             }
           }
         ],
-        //主机快照数据
+        //云服务器快照数据
         snapshotData: [],
-        //主机备份策略col
+        //云服务器备份策略col
         snapstrategyCol: [
           {
             type: 'radio',
@@ -1717,7 +1717,7 @@
             width: 180
           },
           {
-            title: '应用主机',
+            title: '应用云服务器',
             key: 'resourceBean',
             render: (h, params) => {
               if (params.row.resourceBean.length == 0) {
@@ -1751,11 +1751,11 @@
                     this.unchangeHostlist(params.row)
                   }
                 }
-              }, '添加/删除主机')
+              }, '添加/删除云服务器')
             }
           }
         ],
-        //主机备份策略数据
+        //云服务器备份策略数据
         snapstrategyData: [],
         showModal: {
           createMirror: false,
@@ -1861,7 +1861,7 @@
             }
           })
       },
-      /* 添加主机到备份策略 */
+      /* 添加云服务器到备份策略 */
       addHost(index, data) {
         this.hostForBackupsStrategyList.splice(index, 1)
         var resource = {
@@ -1870,13 +1870,13 @@
         }
         this.changeHostlist.push(resource)
       },
-      /* 删除应用该备份策略的主机 */
+      /* 删除应用该备份策略的云服务器 */
       removeHost(index, data) {
         this.changeHostlist.splice(index, 1)
         data.computername = data.resourcesName
         this.hostForBackupsStrategyList.push(data)
       },
-      /* 添加或删除备份策略应用的主机 */
+      /* 添加或删除备份策略应用的云服务器 */
       unchangeHostlist(data) {
         var leftData = []
         this.changeHostlist = []
@@ -1908,7 +1908,7 @@
         this.strategyId = data.id
         this.showModal.addOrDeleteHost = true
       },
-      /* 确定从快照备份策略添加或移除主机 */
+      /* 确定从快照备份策略添加或移除云服务器 */
       addOrDeleteHost() {
         var vmids = this.changeHostlist.map(item => {
           return item.resourcesId
@@ -1984,7 +1984,7 @@
         }
       },
 
-      // 获取主机备份策略列表
+      // 获取云服务器备份策略列表
       listBackups() {
         var backupsURL = 'information/listVMBackUpStrategy.do'
         axios.get(backupsURL, {

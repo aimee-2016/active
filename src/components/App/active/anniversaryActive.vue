@@ -821,7 +821,7 @@
             <i class="ivu-icon ivu-icon-checkmark-circled"></i>
           </div>
           <strong>提示</strong>
-          <p class="lh24">本免费活动充值押金<span style="color: #D0021B ">{{ cashPledge }}</span>元，主机到期或删除时押金自动退还到账户余额。
+          <p class="lh24">本免费活动充值押金<span style="color: #D0021B ">{{ cashPledge }}</span>元，云服务器到期或删除时押金自动退还到账户余额。
           </p>
         </div>
       </div>
@@ -854,13 +854,13 @@
             <i class="ivu-icon ivu-icon-checkmark-circled"></i>
           </div>
           <strong>提示</strong>
-          <p class="lh24">恭喜您押金已冻结完成，主机领取成功，主机在实名认证之前只可保留3天，请尽快使用。
+          <p class="lh24">恭喜您押金已冻结完成，云服务器领取成功，云服务器在实名认证之前只可保留3天，请尽快使用。
           </p>
         </div>
       </div>
       <p slot="footer" class="modal-footer-s">
         <Button @click="showModal.getSuccessModal = false">取消</Button>
-        <Button type="primary" @click="$router.push('/host')">查看主机</Button>
+        <Button type="primary" @click="$router.push('/host')">查看云服务器</Button>
       </p>
     </Modal>
     <!-- 支付充值失败 -->
@@ -961,7 +961,7 @@
             </Radio>
           </RadioGroup>
         </div>
-        <p class="p1">注：没有实名认证的用户领取主机成功后，需要进行实名认证才可以使用。您可以点击实名认证 现在进行认证，也可以在领取主机之后点击个人中心-个人认证进行实名认证。</p>
+        <p class="p1">注：没有实名认证的用户领取云服务器成功后，需要进行实名认证才可以使用。您可以点击实名认证 现在进行认证，也可以在领取云服务器之后点击个人中心-个人认证进行实名认证。</p>
         <div class="attestationForm">
           <p>实名认证</p>
           <div class="click_icon icons" :class="{hide_icon:!attestationShow}" @click="attestationShow = !attestationShow"></div>
@@ -1598,7 +1598,7 @@
         serialNum: '',
         pageTimer: null,
         onStep: 0,
-        stepGroup: ['充值押金', '支付成功', '冻结押金', '领取主机'],
+        stepGroup: ['充值押金', '支付成功', '冻结押金', '领取云服务器'],
         config: {
           value: '',
           imagePath: require('../../../assets/img/pay/payBackground.png'),
@@ -1616,7 +1616,7 @@
             width: 200,
             render: (h, params) => {
               let arr = []
-              let param3 = h('li', {}, '主机： ' + params.row.title)
+              let param3 = h('li', {}, '云服务器： ' + params.row.title)
               let param = h('li', {}, '带宽： ' + params.row.configs.bandwidth + 'M')
               let param1 = h('li', {}, '磁盘： ' + params.row.configs.rootDisk + 'G')
               let param2 = h('li', {}, '系统： ' + params.row.configs.system)
@@ -2320,7 +2320,7 @@
         })
       },
 
-      // 获取主机原价
+      // 获取云服务器原价
       getHostOriginalPrice(zoneId, vmConfigId, month, index) {
         let url = 'activity/getOriginalPrice.do'
         axios.get(url, {
@@ -2817,9 +2817,9 @@
         let url = 'user/getRemainderFrozen.do'
         let params = {
           eachFrozenMoney: this.cashPledge,
-          describe: '领取主机',
-          operationType: '领取主机',
-          thawCondition: '删除主机、公网IP',
+          describe: '领取云服务器',
+          operationType: '领取云服务器',
+          thawCondition: '删除云服务器、公网IP',
           vmConfig: this.freeHostList[this.index].vmConfigId
         }
         axios.post(url, params).then(response => {

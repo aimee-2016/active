@@ -111,7 +111,7 @@ export default {
                 : params.row.sourceType == 9
                 ? "云市场"
                 : params.row.sourceType == 10
-                ? "高防主机"
+                ? "高防云服务器"
                 : params.row.sourceType == 11
                 ? "高防弹性公网IP"
                 : params.row.sourceType == 12

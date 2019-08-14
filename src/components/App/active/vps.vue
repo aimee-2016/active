@@ -148,7 +148,7 @@
               </dl>
               <dl>
                 <dt>4、领取免费产品规则：</dt>
-                <dd>1） 免费主机为限量产品，每天10:00开抢，每日限量20台</dd>
+                <dd>1） 免费云服务器为限量产品，每天10:00开抢，每日限量20台</dd>
                 <dd>2） 免费产品中的资源可随时进行升级，升级费用按新睿云标准收费进行收取</dd>
                 <dd>3） 在各产品免费使用期间，若对免费资源进行了销毁，则视为放弃免费使用权</dd>
               </dl>
@@ -910,7 +910,7 @@
         personalauth: 1,
         companyauth: 1,
         isLogin: 0,
-        // 是否领取主机 0未领取
+        // 是否领取云服务器 0未领取
         isReceive: 0,
         userInfo: null
       }
@@ -944,14 +944,14 @@
           }
           /* this.$Modal.warning({
            title: "系统提示",
-           content: '今日免费主机已全部领取完,欢迎明日再来。'
+           content: '今日免费云服务器已全部领取完,欢迎明日再来。'
            }); */
           this.$http.get(url,{
               params
           }).then(response => {
             if (response.status == 200 && response.data.status == 1) {
               this.$Modal.success({
-                title: "领取主机成功",
+                title: "领取云服务器成功",
                 content: response.data.message
               });
             } else{

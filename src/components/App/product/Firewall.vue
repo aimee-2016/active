@@ -139,7 +139,7 @@
           {
             img: 'icon-duankoubaohu',
             title: '端口保护',
-            desc: '用户根据需要可建立访问规则对端口和协议进行进/出站控制，最大程度保障主机安全。'
+            desc: '用户根据需要可建立访问规则对端口和协议进行进/出站控制，最大程度保障云服务器安全。'
           },
           {
             img: 'icon-shujubeifen1',
@@ -156,7 +156,7 @@
           {
             img:'icon-miananzhuang',
             title: '高性能防护',
-            desc: '防火墙采用高效的NFV技术，独立于主机存在，性能优异，资源占用低，防护更安全。'
+            desc: '防火墙采用高效的NFV技术，独立于云服务器存在，性能优异，资源占用低，防护更安全。'
           },
           {
             img: 'icon-jianjieyunwei',
@@ -166,7 +166,7 @@
 //          {
 //            img: 'icon-diziyuanzhanyong',
 //            title: '低资源占用',
-//            desc: '不需要在主机上安装任何agent，更关注于业务。'
+//            desc: '不需要在云服务器上安装任何agent，更关注于业务。'
 //          }
         ],
         stageInfo: {

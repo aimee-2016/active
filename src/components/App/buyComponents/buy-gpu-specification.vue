@@ -1,7 +1,7 @@
 <template>
   <div class="buy-server-specification">
     <div class="wrap">
-      <h2>主机规格选择</h2>
+      <h2>云服务器规格选择</h2>
       <div class="specification-item">
         <div class="item-search">
           <span>vCPU</span>

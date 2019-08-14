@@ -6,7 +6,7 @@ const passwordLengthRegExp = /^\w{8,}$/
 const passwordRegExp = /(?:\d[a-zA-Z])|(?:[a-zA-Z]\d)/
 // 注册密码 长度不小于8位，必须包含至少一个大写字母一个小写字母和一个数字
 const registerpPasswordRegExp = /(?!(^[^a-z]+$))(?!(^[^A-Z]+$))(?!(^[^\d]+$))^[\w`~!#$%_()^&*,-<>?@.+=]{8,}$/
-// 重置主机密码
+// 重置云服务器密码
 const hostPassword = /(?!(^[^a-z]+$))(?!(^[^A-Z]+$))(?!(^[^\d]+$))^[\w~*:,]{8,30}$/
 // 身份证号码验证
 const IDCardRegExp = /^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/
@@ -68,7 +68,7 @@ export default {
       callback()
     }
   },
-  // 用于校验主机密码
+  // 用于校验云服务器密码
   hostPassword: (password) => {
     if (!hostPassword.test(password)) {
       return false
