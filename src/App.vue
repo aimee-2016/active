@@ -276,18 +276,18 @@
                                 <img src='./assets/img/home/logo.gif'>
                             </div>
                         </a>
-                        <div class="m-logining" v-if="isLogin" @click='mLogin =!mLogin'>
+                        <div class="m-logining" v-if="userInfo" @click='mLogin =!mLogin'>
                             <img src="./assets/img/home/logining.png">
                             <div class="ml-text">名字有五个多字吗</div>
                             <div :class="mLogin?'ml-block':'ml-blocks'"></div>
                         </div>
                         <div class="m-pople" v-else>
-                            <Icon type="md-person" size='40' @click="loginIcon = !loginIcon" />
+                            <Icon type="md-person" size='40' @click="userInfo = !userInfo" />
                         </div>
                     </div>
 
 
-                    <div class="m-login" :class='loginIcon?"":"m-logins"' v-if="!isLogin">
+                    <div class="m-login" :class='userInfo?"":"m-logins"' v-if="!userInfo">
                         <div>
                             <a ref="external nofollow" target="_blank" href="https://wap.xrcloud.net/ruicloud/console?from=xinruiyun-kongzhitai" title="控制台">控制台</a>
                         </div>
@@ -501,8 +501,7 @@
                         </div>
                     </div>
                 </div>
-
-            </div>
+          </div>
     </header>
     <!-- 页面展示 -->
     <router-view/>
@@ -748,88 +747,6 @@
         }
       };
       return {
-        /*titleItem: [
-         {
-         title: '活动中心',
-         path: '/ruicloud/ActiveCenter'
-         },
-         {
-         title: '首页',
-         path: '/ruicloud/home'
-         },
-         {
-         title: '产品',
-         path: '',
-         content: [
-         {
-         prod: '云计算',
-         prodItem: [
-         {title: '弹性云服务器（ECS）', desc: '通用型、内存优化型、高IO型', path: '/ruicloud/Pecs'},
-         {title: '镜像服务', desc: '公共镜像、功能镜像、自定义镜像', path: '/ruicloud/Phost'},
-         {title: 'ECS快照', desc: '稳定可靠、安全保障', path: '/ruicloud/Pecss'},
-         {title: 'GPU服务器', desc: 'Tesla P100、Tesla P40 GPU', path: '/ruicloud/Pgpu'},
-         {title: '裸金属服务器（敬请期待）', desc: '专属物理服务器', path: ''},
-         {title: '弹性伸缩（敬请期待）', desc: '高可用、可视化、低成本', path: ''}
-         ]
-         },
-         {
-         prod: '云网络',
-         prodItem: [
-         {title: '虚拟私有云VPC', desc: '网络隔离、分配子网', path: '/ruicloud/Pvpc'},
-         {title: '弹性IP', desc: '绑定与解绑IP、扩容', path: '/ruicloud/Peip'},
-         {title: '负载均衡', desc: '源算法、轮询、最小连接数', path: '/ruicloud/Pbalance'},
-         {title: 'NAT网关', desc: 'TCP/HTTP协议、多对一支持', path: '/ruicloud/Pnat'},
-         {title: '虚拟专网VPN', desc: '跨VPC连接', path: '/ruicloud/Pvirvpn'},
-         {title: 'CDN（敬请期待）', desc: '节点丰富、安全易用', path: ''}
-         ]
-         },
-         {
-         prod: '云存储',
-         prodItem: [
-         {title: '云硬盘', desc: '性能型、超高性能型、存储型', path: '/ruicloud/Pdisk'},
-         {title: '云硬盘备份', desc: '高可用保障、敏捷易用', path: '/ruicloud/Pbackupdisk'},
-         {title: '对象存储', desc: '安全稳定，海量便捷', path: '/ruicloud/PobjStorage'}
-         ]
-         },
-         {
-         prod: '云数据库',
-         prodItem: [
-         {
-         title: '云数据库',
-         desc: 'MySQL、PostgreSQL、mongoDB、Redis',
-         path: '/ruicloud/PdataBase'
-         },
-         ]
-         },
-         {
-         prod: '云安全',
-         prodItem: [
-         {title: '防火墙', desc: '自定义规则、协议、端口', path: '/ruicloud/Pfirewall'},
-         {title: 'DDOS高防IP', desc: '硬件防护、40G超大流量', path: '/ruicloud/Pddos'}
-         ]
-         },
-         {
-         prod: '云运维',
-         prodItem: [
-         {title: '云监控', desc: '自定义监控项、多告警推送方式', path: '/ruicloud/Pmonitor'},
-         {title: '访问控制（敬请期待）', desc: '权限管理、精准控制', path: ''}
-         ]
-         }
-         ]
-         },
-         {
-         title: '文档',
-         path: '/ruicloud/document'
-         },
-         {
-         title: '资讯',
-         path: '/ruicloud/article/1'
-         },
-         {
-         title: '关于我们',
-         path: '/about'
-         }
-         ], // banner item*/
         titleItem: [
           {
             title: '活动中心',
@@ -993,6 +910,8 @@
           transition: 'width .3s'
         }, // line的width和left属性
         lineIndex:0,
+        mLogin:true,
+        mIcon: true,
         support: [
           {img: 'icon-duoqudaofuwuyuzhichi', title: '7*24', subTitle: '多渠道服务与支持'},
           {img: 'icon-fankuiyutousujianyiA', title: '意见', subTitle: '反馈与投诉建议'},
@@ -1606,6 +1525,18 @@
     width: 100%;
     z-index: 999;
   }
+    .mobile-head .mobile-logo {
+    width: 103px;
+    height: 60px;
+  }
+
+  .mobile-head .mobile-logo .mobile-limg {
+    width: 135px;
+    height: 40px;
+    display: inline-block;
+    vertical-align: middle;
+    overflow: hidden;
+  }
 
   .mobile-head .mobile-logo .mobile-limg img {
     width: 103px;
@@ -1618,6 +1549,20 @@
     .mobile-head .mr-icon{
     height: 60px;
     line-height: 60px;
+    }
+    .mobile-head .mh-top {
+      padding: 0 39px;
+      background-color: rgba(54, 58, 70, 0.24);
+      border-bottom: 1px solid rgba(220, 214, 213, 0.24);
+    }
+    .mobile-head .mhead-icons {
+      transform: rotate(0);
+      transition: transform ease-in-out 0.3s;
+    }
+
+    .mobile-head .mhead-icon {
+      transform: rotate(90deg);
+      transition: transform ease-in-out 0.3s;
     }
  
     }
