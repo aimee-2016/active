@@ -69,7 +69,7 @@
                   <Spin style="display: inline-block"></Spin>
                   <span>删除子网中...</span>
                 </li>
-                <li v-else><span class="blue" @click="addHostToVpc(item)">添加云服务器</span><span
+                <li v-else style="flex-basis: 130px;"><span class="blue" @click="addHostToVpc(item)">添加云服务器</span><span
                   class="vertical-line">|</span><span
                   class="blue" @click="deleteVpc(item)">删除</span></li>
               </ul>
@@ -649,6 +649,10 @@
         })
       },
       addHostForm_ok () {
+        if(!this.addHostForm.vm){
+            this.$Message.info("请选择虚拟机")
+            return
+        }  
         this.showModal.addHostToNet = false
         var url = 'network/enterVMToNetwork.do'
         for (let network of this.data.ipsList) {
@@ -1106,7 +1110,7 @@
       // 监听区域变换
       '$store.state.zone': {
         handler: function () {
-          this.$router.push('/vpc')
+          this.$router.push('/vpcList')
         },
         deep: true
       }
