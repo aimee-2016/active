@@ -2,7 +2,7 @@
   <div id="background">
     <div id="wrapper">
       <span class="title">首页
-        <!-- / <span>云主机快照</span> -->
+        <!-- / <span>云服务器快照</span> -->
       </span>
       <Alert type="warning" show-icon style="margin-bottom:10px" v-if="!auth">您尚未进行实名认证，只有认证用户才能对外提供服务，
         <router-link to="/userCenter">立即认证</router-link>
@@ -62,8 +62,8 @@
                 </div>
                 <div class="chart-shade" ref="firstShade">
                   <p style="margin-top: 100px">请购买弹性云服务器后查看信息</p>
-                  <button v-if="noHost" style="margin-right: 10px" @click="$router.push('/buy/host/')">购买云主机</button>
-                  <button v-if="noHost"  @click="toDoc">查看云主机购买指南</button>
+                  <button v-if="noHost" style="margin-right: 10px" @click="$router.push('/buy/host/')">购买云服务器</button>
+                  <button v-if="noHost"  @click="toDoc">查看云服务器购买指南</button>
                   <button v-if="!noHost" @click="addOverviewMonitoring(1)">添加监控指标</button>
                 </div>
               </div>
@@ -103,8 +103,8 @@
                 </div>
                 <div class="chart-shade" style="width: 1160px;" ref="secondShade">
                   <p style="margin-top: 150px">请购买弹性云服务器后查看信息</p>
-                  <button v-if="noHost" style="margin-right: 10px" @click="$router.push('/buy/host/')">购买云主机</button>
-                  <button v-if="noHost" @click="toDoc">查看云主机购买指南</button>
+                  <button v-if="noHost" style="margin-right: 10px" @click="$router.push('/buy/host/')">购买云服务器</button>
+                  <button v-if="noHost" @click="toDoc">查看云服务器购买指南</button>
                   <button v-if="!noHost" @click="addOverviewMonitoring(2)">添加监控指标</button>
                 </div>
               </div>
@@ -350,7 +350,7 @@
         messageData: messageMonitor,
         monitorData: [
           {
-            text: '云主机PING不可达',
+            text: '云服务器PING不可达',
             num: '0',
             tabsName: 'alarmList',
             unit: '台'
@@ -362,7 +362,7 @@
             unit: '条'
           },
           {
-            text: '已关机云主机',
+            text: '已关机云服务器',
             num: '0',
             unit: '台'
           }
@@ -374,7 +374,7 @@
         monitoringIndexForm: {
           productTypeGroup: [
             {
-              value: '云主机',
+              value: '云服务器',
               indexGroup: [
                 {
                   label: 'CPU利用率',
@@ -428,7 +428,7 @@
         overviewMonitorIndexForm: {
           productTypeGroup: [
             {
-              value: '云主机',
+              value: '云服务器',
               indexGroup: [
                 {
                   label: 'CPU利用率',
@@ -550,7 +550,7 @@
             render: (h, params) => {
               // 0主机  1磁盘     2vpc  3对象存储
               let type = params.row.strategytype
-              let strategytype = type == 0 ? '云主机' : (type == 1 ? '磁盘' : (type == 2 ? 'vpc' : (type == 3 ? '对象存储' : '')))
+              let strategytype = type == 0 ? '云服务器' : (type == 1 ? '磁盘' : (type == 2 ? 'vpc' : (type == 3 ? '对象存储' : '')))
               return h('span', {}, strategytype + '策略')
             }
           }, {
@@ -1710,7 +1710,7 @@
         let diskId = ''
         let objectStorageId = ''
         switch (this.overviewMonitorIndexForm.productType) {
-          case '云主机':
+          case '云服务器':
             computerId = this.overviewMonitorIndexForm.selectedProduct.map(item => {
               return item.computerid
             })
@@ -1760,7 +1760,7 @@
         let diskId = ''
         let objectStorageId = ''
         switch (this.monitoringIndexForm.productType) {
-          case '云主机':
+          case '云服务器':
             computerId = this.monitoringIndexForm.selectedProduct.map(item => {
               return item.computerid
             })
@@ -1809,7 +1809,7 @@
         let diskId = ''
         let objectStorageId = ''
         switch (this.overviewMonitorIndexForm.productType) {
-          case'云主机':
+          case'云服务器':
             computerId = this.overviewMonitorIndexForm.selectedProduct.map(item => {
               return item.computerid
             })
@@ -1860,7 +1860,7 @@
         let diskId = ''
         let objectStorageId = ''
         switch (this.monitoringIndexForm.productType) {
-          case'云主机':
+          case'云服务器':
             computerId = this.monitoringIndexForm.selectedProduct.map(item => {
               return item.computerid
             })

@@ -21,10 +21,10 @@
 <script type="text/ecmascript-6">
   export default {
     metaInfo: {
-      title: '云服务器、云主机应用场景 - 新睿云', // set a title
+      title: '云服务器、云服务器应用场景 - 新睿云', // set a title
       meta: [{                 // set meta
         name: 'keywords',
-        content: '云服务器应用,云主机应用'
+        content: '云服务器应用,云服务器应用'
       }]
     },
     data() {

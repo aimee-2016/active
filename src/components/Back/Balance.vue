@@ -196,7 +196,7 @@
                 <span v-if="bindHostForm.vmOptions==''" style="font-size:14px;font-family:MicrosoftYaHei;color:rgba(42,153,242,1);cursor: pointer;position: absolute;left: 47%;top: 45%;"
                 @click="buyDdoshost">
                   <img style="transform: translate(0px,3px);" src="../../assets/img/public/icon_plussign.png" />
-                  购买高防云主机
+                  购买高防云服务器
                 </span>
               </span>
               <span v-else>

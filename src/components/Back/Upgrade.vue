@@ -4,7 +4,7 @@
     <div id="wrapper">
         <span class="title">
           <router-link to="overview" style="color:rgba(17, 17, 17, 0.43);">总览</router-link> /
-          <router-link to="host" style="color:rgba(17, 17, 17, 0.43);">云主机</router-link> / <span>升级</span>
+          <router-link to="host" style="color:rgba(17, 17, 17, 0.43);">云服务器</router-link> / <span>升级</span>
         </span>
       <div id="content" class="upgrade">
         <div style="padding-bottom: 20px;border-bottom: 1px solid #E9E9E9;">

@@ -159,7 +159,7 @@
               title: '大流量门户',
               icon: 'icon-daliuliangmenhu',
               img: require('../../../assets/img/product/balance-stage-1-background.png'),
-              desc: ['针对超多用户服务访问量高的特点，通过负载均衡将用户的访问流量均匀的分发到多个后端云主机上，确保业务快速平稳的运行。']
+              desc: ['针对超多用户服务访问量高的特点，通过负载均衡将用户的访问流量均匀的分发到多个后端云服务器上，确保业务快速平稳的运行。']
             },
             {
               title: '音视频大流量',
@@ -175,7 +175,7 @@
             }
           ],
           pImg: [
-            {icon: 'icon-danxingyunfuwuqiECS', isc: '云主机'},
+            {icon: 'icon-danxingyunfuwuqiECS', isc: '云服务器'},
             {icon: 'icon-danxingIP', isc: '弹性IP'},
             {icon: 'icon-xunisiyouyunVPC', isc: 'VPC'}
           ],
@@ -207,13 +207,13 @@
           {
             img: 'icon-danxingyunfuwuqiECS',
             title: '云服务器',
-            desc: '云主机是一种可以根据需求随时改变处理能力并且按照实际使用量来计费的计算服务。',
+            desc: '云服务器是一种可以根据需求随时改变处理能力并且按照实际使用量来计费的计算服务。',
             path: '/ecs/'
           },
           {
             img: 'icon-xunisiyouyunVPC',
             title: '虚拟私有云VPC',
-            desc: 'VPC（Virtual Private Cloud）是一个用户定义的虚拟网络，云主机可以放置在其中...',
+            desc: 'VPC（Virtual Private Cloud）是一个用户定义的虚拟网络，云服务器可以放置在其中...',
             path: '/vpc/'
           }
         ]

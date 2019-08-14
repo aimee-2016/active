@@ -5,8 +5,8 @@
       <li>登录新睿云官网。若用户没有注册，请先完成注册并通过实名认证。<br>
         <img src="../../../../assets/img/doc/newyun/newyun-img1.png" alt="注册">
       </li>
-      <li>登录成功后，进入控制台，点击“新建云主机”，进入“新建云主机”界面。<br>
-        <img src="../../../../assets/img/doc/newyun/newyun-img2.png" alt="云主机">
+      <li>登录成功后，进入控制台，点击“新建云服务器”，进入“新建云服务器”界面。<br>
+        <img src="../../../../assets/img/doc/newyun/newyun-img2.png" alt="云服务器">
       </li>
       <li>用户根据需求选择“自定义主机”“标准主机”。<br>
         <img src="../../../../assets/img/doc/newyun/newyun-img3.png" alt="标准主机">

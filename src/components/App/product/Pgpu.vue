@@ -112,10 +112,10 @@
   import $store from '@/vuex'
   export default{
     metaInfo: {
-      title: 'gpu云服务器租用 - gpu加速云主机 - 云计算 - 新睿云', // set a title
+      title: 'gpu云服务器租用 - gpu加速云服务器 - 云计算 - 新睿云', // set a title
       meta: [{                 // set meta
         name: 'keywords',
-        content: 'gpu服务器,gpu云服务器,gpu加速,gpu云主机,gpu云服务器租用'
+        content: 'gpu服务器,gpu云服务器,gpu加速,gpu云服务器,gpu云服务器租用'
       },
         {                 // set meta
           name: 'description',
@@ -230,13 +230,13 @@
           {
             img: 'icon-danxingyunfuwuqiECS',
             title: '云服务器',
-            desc: '云主机是一种可以根据需求随时改变处理能力并且按照实际使用量来计费的计算服务。',
+            desc: '云服务器是一种可以根据需求随时改变处理能力并且按照实际使用量来计费的计算服务。',
             path: '/ecs/'
           },
           {
             img: 'icon-xunisiyouyunVPC',
             title: '虚拟私有云VPC',
-            desc: 'VPC（Virtual Private Cloud）是一个用户定义的虚拟网络，云主机可以放置在其中...',
+            desc: 'VPC（Virtual Private Cloud）是一个用户定义的虚拟网络，云服务器可以放置在其中...',
             path: '/vpc/'
           },
           {

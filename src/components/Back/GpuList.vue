@@ -1359,7 +1359,7 @@
                                 this.$Message.info('请等待主机完成当前操作');
                               }else {
                                 if(params.row.caseType != 3){
-                                  this.$Message.info('请选择实时计费的云主机进行资费变更');
+                                  this.$Message.info('请选择实时计费的云服务器进行资费变更');
                                   return
                                 }
                                 this.VMId = params.row.id;

@@ -1528,7 +1528,7 @@ export default {
               })
           this.showModal.bindIP = false
           this.$Message.info({
-            content: `<span style="color:#2A99F2">${this.hostCurrentSelected.computername}</span>云主机,正在绑定公网IP`
+            content: `<span style="color:#2A99F2">${this.hostCurrentSelected.computername}</span>云服务器,正在绑定公网IP`
           })
           this.$http.get('network/enableStaticNat.do', {
             params: {

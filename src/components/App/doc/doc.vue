@@ -8,7 +8,7 @@
               <router-link to="/computed"><span class="iconfont icon-icon-test1"></span>计算</router-link>
             </h4>
             <dl>
-             <dt>弹性云主机</dt>
+             <dt>弹性云服务器</dt>
               <router-link to="/computed/1-1"><dd>产品描述</dd></router-link>
               <router-link to="/computed/3-1"><dd>购买指南</dd></router-link>
               <router-link to="/computed/4-1"><dd>操作说明</dd></router-link>

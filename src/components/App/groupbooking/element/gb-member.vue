@@ -2,7 +2,7 @@
   <div class="background">
     <div class="center">
       <h2>云朵成员</h2>
-      <p>您已获得云主机特惠活动购买资格，请点击购买即可。</p>
+      <p>您已获得云服务器特惠活动购买资格，请点击购买即可。</p>
       <div class="member">
         <div class="title">
           <p>云客：<span>{{ commander }}</span></p>
