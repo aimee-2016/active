@@ -2697,6 +2697,7 @@
       },
       // 欠费云服务器续费
       renewHost(item) {
+        let that = this
         if(this.$store.state.zone.gpuserver == 2){
           // 高防区域的云服务器续费
           if(item.caseType == 5){
@@ -2720,18 +2721,19 @@
               var diskarr = response.data.result[0].attachDisk.map(item => {
                 return item.id
               })
-              this.isDdosDisks = diskarr.join()
+              that.isDdosDisks = diskarr.join()
               var iparr = response.data.result[0].attachPublicIp.map(item => {
                 return item.id
               })
-              this.isDdosIps = iparr.join()
+              debugger
+              that.isDdosIps = iparr.join()
               // 清空续费弹窗数据
-              this.bindRenewalVal = ['ip', 'disk']
-              this.Ddoscost = '--'
-              this.originDdosCost = '--'
-              this.renewalDdosType = ''
-              this.renewalDdosTime = ''
-              this.showModal.renewalDdos = true
+              that.bindDdosRenewalVal = ['ip', 'disk']
+              that.Ddoscost = '--'
+              that.originDdosCost = '--'
+              that.renewalDdosType = ''
+              that.renewalDdosTime = ''
+              that.showModal.renewalDdos = true
             }
           })
         } else {
