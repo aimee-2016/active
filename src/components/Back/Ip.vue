@@ -149,18 +149,18 @@
       </div>
     </Modal>
 
-    <!-- 为云主机绑定弹性IP -->
+    <!-- 为云服务器绑定弹性IP -->
     <Modal v-model="showModal.bindIPForHost" width="550" :scrollable="true">
       <p slot="header" class="modal-header-border">
         <span class="universal-modal-title">绑定弹性IP</span>
       </p>
       <div class="universal-modal-content-flex">
-        <p style="font-size: 12px;color: #666666;margin-bottom:20px;">您正为弹性IP<span style="color: #2A99F2 ;">{{bindForHostForm.row.publicip}}</span>绑定云主机。
+        <p style="font-size: 12px;color: #666666;margin-bottom:20px;">您正为弹性IP<span style="color: #2A99F2 ;">{{bindForHostForm.row.publicip}}</span>绑定云服务器。
         </p>
         <!-- <Icon type="ios-help-outline"></Icon> -->
         <Form :model="bindForHostForm" :rules="bindForHostRuleValidate" ref="bindForHostFormValidate">
-          <FormItem label="选择云主机" prop="host">
-            <Select v-model="bindForHostForm.host" placeholder="云主机名称">
+          <FormItem label="选择云服务器" prop="host">
+            <Select v-model="bindForHostForm.host" placeholder="云服务器名称">
               <Option v-for="(item,index) in bindForHostForm.hostOptions" :key="index" :value="item.computerid">
                 {{item.computername}}
               </Option>
@@ -183,12 +183,12 @@
         <span class="universal-modal-title">绑定弹性IP</span>
       </p>
       <div class="universal-modal-content-flex">
-        <p style="font-size: 12px;color: #666666;margin-bottom:20px;">您正为弹性IP<span style="color: #2A99F2 ;">{{bindForDdosHostForm.row.publicip}}</span>绑定云主机。
+        <p style="font-size: 12px;color: #666666;margin-bottom:20px;">您正为弹性IP<span style="color: #2A99F2 ;">{{bindForDdosHostForm.row.publicip}}</span>绑定云服务器。
         </p>
         <!-- <Icon type="ios-help-outline"></Icon> -->
-        <Form :model="bindForDdosHostForm" :rules="bindForHostRuleValidate" ref="bindForHostFormValidate">
-          <FormItem label="选择云主机" prop="host">
-            <Select v-model="bindForDdosHostForm.host" placeholder="云主机名称">
+        <Form :model="bindForDdosHostForm" :rules="bindForDdosHostRuleValidate" ref="bindForDdosHostFormValidate">
+          <FormItem label="选择云服务器" prop="host">
+            <Select v-model="bindForDdosHostForm.host" placeholder="云服务器名称">
               <Option v-for="(item,index) in bindForDdosHostForm.hostOptions" :key="index" :value="item.computerid">
                 {{item.computername}}
               </Option>
@@ -305,7 +305,7 @@
           </Form-item>
           <FormItem label="是否同时变更绑定主机与NAT网关:" style="width: 80%;margin-bottom: 0" v-if="chargesHost || chargesNAT">
             <CheckboxGroup v-model="chargesOther">
-              <Checkbox label="变更关联云主机" v-if="chargesHost"></Checkbox>
+              <Checkbox label="变更关联云服务器" v-if="chargesHost"></Checkbox>
               <Checkbox label="变更关联NAT网关" v-if="chargesNAT"></Checkbox>
             </CheckboxGroup>
           </FormItem>
@@ -378,7 +378,7 @@
           </div>
           <FormItem label="是否同时续费绑定主机与NAT网关:" style="width: 80%;margin-bottom: 0" v-if="renewalHost || renewalNAT">
             <CheckboxGroup v-model="renewalOther">
-              <Checkbox label="续费关联云主机" v-if="renewalHost"></Checkbox>
+              <Checkbox label="续费关联云服务器" v-if="renewalHost"></Checkbox>
               <Checkbox label="续费关联NAT网关" v-if="renewalNAT"></Checkbox>
               <Checkbox label="续费关联GPU云服务器" v-if="renewalGpu"></Checkbox>
             </CheckboxGroup>
@@ -392,6 +392,62 @@
       <div slot="footer" style="" class="modal-footer-border">
         <Button type="ghost" @click="showModal.renew=false">取消</Button>
         <Button type="primary" @click="renewOk" :disabled="renewalTime==''">确认续费</Button>
+      </div>
+    </Modal>
+    <!-- 续费高防云服务器IPmodal -->
+    <Modal
+      v-model="showModal.renewDdos"
+      width="550"
+      :scrollable="true">
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">续费选择</span>
+      </p>
+      <div class="universal-modal-content-flex">
+        <Form>
+          <FormItem label="付费类型 :">
+            <Select v-model="renewalDdosType" v-if="isCaseTpeDay">
+              <Option v-for="(item,index) in timeDdosOptionsDay.renewalType" :value="item.value" :key="index">{{ item.label }}
+              </Option>
+            </Select>
+            <Select v-model="renewalDdosType" v-else>
+              <Option v-for="(item,index) in timeDdosOptions.renewalType" :value="item.value" :key="index">{{ item.label }}
+              </Option>
+            </Select>
+          </FormItem>
+          <FormItem label="付费时长 :" v-if="isCaseTpeDay">
+            <Select v-model="renewalDdosTime">
+              <Option v-for="(item,index) in timeDdosOptionsDay.renewalTime" :value="item.value" :key="index">{{ item.label }}
+              </Option>
+            </Select>
+          </FormItem>
+          <FormItem label="付费时长 :" v-else>
+            <Select v-model="renewalDdosTime">
+              <Option v-for="(item,index) in timeDdosOptions.renewalTime" :value="item.value" :key="index">{{ item.label }}
+              </Option>
+            </Select>
+          </FormItem>
+          <div class="renewal-info">
+            <ul>
+              <li><span>IP地址：</span>{{renewalDdosInfo.IPAddress}}</li>
+              <li><span>IP带宽：</span>{{renewalDdosInfo.bandwidth}}M</li>
+              <li><span>到期时间：</span>{{renewalDdosInfo.endTime}}</li>
+            </ul>
+          </div>
+          <FormItem label="是否同时续费绑定高防云服务器与NAT网关:" style="width: 80%;margin-bottom: 0" v-if="renewalDdosHost || renewalDdosNAT">
+            <CheckboxGroup v-model="renewalDdosOther">
+              <Checkbox label="续费关联高防云服务器" v-if="renewalDdosHost"></Checkbox>
+              <Checkbox label="续费关联NAT网关" v-if="renewalDdosNAT"></Checkbox>
+            </CheckboxGroup>
+          </FormItem>
+          <div style="font-size:16px;">
+            资费 <span style="color: #2b85e4; text-indent:4px;display:inline-block;">现价<span style="font-size:24px;">￥{{renewalDdosTotalCost}}/</span></span>
+            <span style="text-decoration: line-through">原价{{renewalDdosOriginalCost}}</span>
+          </div>
+        </Form>
+      </div>
+      <div slot="footer" style="" class="modal-footer-border">
+        <Button type="ghost" @click="showModal.renewDdos=false">取消</Button>
+        <Button type="primary" @click="renewDdosOk" :disabled="renewalDdosTime==''">确认续费</Button>
       </div>
     </Modal>
     <Modal v-model="showModal.deleteIP" :scrollable="true" :closable="false" :width="390">
@@ -492,9 +548,47 @@
         currentIp: '',
         // 当前选中项
         select: [],
+        // 续费高防区域IP
+        isCaseTpeDay: false,
+        renewalDdosType: '',
+        renewalDdosTime: '',
+        renewalDdosHost: false,
+        renewalDdosNAT: false,
+        renewalDdosHostID: '',
+        renewalDdosNATID: '',
+        renewalDdosTotalCost: '--',
+        renewalDdosOriginalCost: '--',
+        renewalDdosOther: [],
+        currentDdosIp: '',
+        timeDdosOptions: {
+          renewalType: [{label: '包年', value: 'year'}, {label: '包月', value: 'month'}],
+          renewalTime: [],
+          year: [{label: '1年', value: 1}, {label: '2年', value: 2}, {label: '3年', value: 3}],
+          month: [{label: '1月', value: 1}, {label: '2月', value: 2}, {label: '3月', value: 3}, {
+            label: '4月',
+            value: 4
+          }, {label: '5月', value: 5}, {label: '6月', value: 6}, {label: '7月', value: 7}, {
+            label: '8月',
+            value: 8
+          }, {label: '9月', value: 9}, {label: '10月', value: 10}]
+        },
+        timeDdosOptionsDay: {
+          renewalType: [{label: '包天', value: 'day'}],
+          renewalTime: [],
+          day: [
+            {label: '1天', value: 1}, {label: '2天', value: 2}, {label: '3天', value: 3}, {label: '4天', value: 4},
+           {label: '5天', value: 5}, {label: '6天', value: 6}, {label: '7天', value: 7}, {label: '8天', value: 8}, {label: '9天', value: 9}, 
+           {label: '10天', value: 10}, {label: '11天', value: 11}, {label: '12天', value: 12},{label: '13天', value: 13},{label: '14天', value: 14},
+           {label: '15天', value: 15}, {label: '16天', value: 16}, {label: '17天', value: 17}, {label: '18天', value: 18}, {label: '19天', value: 19},
+           {label: '20天', value: 20}, {label: '21天', value: 21}, {label: '22天', value: 22}, {label: '23天', value: 23}, {label: '24天', value: 24},
+           {label: '25天', value: 25}, {label: '26天', value: 26}, {label: '27天', value: 27}, {label: '28天', value: 28}, {label: '29天', value: 29}, {label: '30天', value: 30}
+          ]
+        },
+
         showModal: {
           // 续费modal
           renew: false,
+          renewDdos: false,
           newIPModal: false,
           newDdosIPModal: false,
           bindIPForHost: false,
@@ -651,34 +745,70 @@
                     },
                     on: {
                       click: () => {
-                        this.currentIp = obj.row.id
-                        this.renewalType = ''
-                        this.renewalTime = ''
-                        this.renewalOther = []
-                        this.renewalHost = false
-                        this.renewalGpu = false
-                        this.renewalNAT = false
-                        this.renewalInfo.IPAddress = obj.row.publicip
-                        this.renewalInfo.bandwidth = obj.row.bandwith
-                        this.renewalInfo.endTime = obj.row.endtime
-                        let url = 'network/listPublicIpById.do'
-                        this.$http.get(url, {
-                          params: {
-                            ipId: obj.row.publicipid
-                          }
-                        }).then(response => {
-                          if (response.data.status === 1) {
-                            if (response.data.result[0].attachComputer.length !== 0) {
-                              this.renewalHostID = response.data.result[0].attachComputer[0].id
-                              this.renewalHost = true
+                        if(this.$store.state.zone.gpuserver == 2){
+                          this.renewalDdosType = ''
+                          this.renewalDdosTime = ''
+                          this.renewalDdosOther = []
+                          this.renewalDdosHost = false
+                          this.renewalDdosNAT = false
+                          this.currentDdosIp = obj.row.id
+                          this.renewalDdosInfo.IPAddress = obj.row.publicip
+                          this.renewalDdosInfo.bandwidth = obj.row.bandwith
+                          this.renewalDdosInfo.endTime = obj.row.endtime
+                          let url = 'network/listPublicIpById.do'
+                          this.$http.get(url, {
+                            params: {
+                              ipId: obj.row.publicipid
                             }
-                            if (response.data.result[0].attachNat.length !== 0) {
-                              this.renewalNATID = response.data.result[0].attachNat[0].id
-                              this.renewalNAT = true
+                          }).then(response => {
+                            if (response.data.status === 1) {
+                              if (response.data.result[0].attachComputer.length !== 0) {
+                                this.renewalDdosHostID = response.data.result[0].attachComputer[0].id
+                                this.renewalDdosHost = true
+                                this.renewalDdosOther = ['续费关联高防云服务器']
+                              }
+                              if (response.data.result[0].attachNat.length !== 0) {
+                                this.renewalDdosNATID = response.data.result[0].attachNat[0].id
+                                this.renewalDdosNAT = true
+                                this.renewalDdosOther = ['续费关联NAT网关']
+                              }
+                              if(response.data.result[0].caseType == 5){
+                                this.isCaseTpeDay = true
+                              }
+                              this.showModal.renewDdos = true
                             }
-                            this.showModal.renew = true
-                          }
-                        })
+                          })
+                          return false
+                        } else {
+                          this.currentIp = obj.row.id
+                          this.renewalType = ''
+                          this.renewalTime = ''
+                          this.renewalOther = []
+                          this.renewalHost = false
+                          this.renewalGpu = false
+                          this.renewalNAT = false
+                          this.renewalInfo.IPAddress = obj.row.publicip
+                          this.renewalInfo.bandwidth = obj.row.bandwith
+                          this.renewalInfo.endTime = obj.row.endtime
+                          let url = 'network/listPublicIpById.do'
+                          this.$http.get(url, {
+                            params: {
+                              ipId: obj.row.publicipid
+                            }
+                          }).then(response => {
+                            if (response.data.status === 1) {
+                              if (response.data.result[0].attachComputer.length !== 0) {
+                                this.renewalHostID = response.data.result[0].attachComputer[0].id
+                                this.renewalHost = true
+                              }
+                              if (response.data.result[0].attachNat.length !== 0) {
+                                this.renewalNATID = response.data.result[0].attachNat[0].id
+                                this.renewalNAT = true
+                              }
+                              this.showModal.renew = true
+                            }
+                          })
+                        }
                       }
                     }
                   }, "续费")]);
@@ -839,7 +969,7 @@
                     style: {
                         display: this.hide == 0 ? 'block' : 'none'
                       },
-                  }, '云主机'),
+                  }, '云服务器'),
                     h('DropdownItem', {
                       attrs: {
                         name: 'gpu'
@@ -941,13 +1071,13 @@
           {name: '800GB', value: 800}
         ],
         customProtectSecIndex: {name: '', value: 0},
-        // 绑定IP到云主机表单
+        // 绑定IP到云服务器表单
         bindForHostForm: {
           host: '',
           hostOptions: [],
           row: {}
         },
-        // 绑定IP到高防云主机
+        // 绑定IP到高防云服务器
         bindForDdosHostForm: {
           host: '',
           hostOptions: '',
@@ -958,10 +1088,16 @@
           gpuOptions: [],
           row: {}
         },
-        // 绑定IP到云主机表单校验
+        // 绑定IP到云服务器表单校验
         bindForHostRuleValidate: {
           host: [
-            {required: true, message: '请选择一个云主机', trigger: 'change'}
+            {required: true, message: '请选择一个云服务器', trigger: 'change'}
+          ]
+        },
+        // 绑定IP到高防云服务器
+        bindForDdosHostRuleValidate: {
+          host: [
+            {required: true, message: '请选择一个云服务器', trigger: 'change'}
           ]
         },
         // 绑定IP到NAT表单
@@ -1001,6 +1137,11 @@
         pageSize: 10,
         total: 0,
         renewalInfo: {
+          IPAddress: '',
+          bandwidth: '',
+          endTime: ''
+        },
+        renewalDdosInfo: {
           IPAddress: '',
           bandwidth: '',
           endTime: ''
@@ -1265,7 +1406,17 @@
       // 高防区域查询价格, 查询所有的，购买带宽时长、防护一起
       queryNewDdosIPPrice(){
         if(this.newDdosIPForm.timeValue != '' && this.customProtectSecIndex.value != 0 &&  this.newDdosIPForm.timeType != ''){
-          this.queryDdosFunction()
+          if(this.newDdosIPForm.timeType == 'day' && this.customProtectSecIndex.value >= 400) {
+            this.queryDdosFunction()
+          } else {
+            this.$Message.info('高防区域购买方式选择"包天"，只能选择不小于400GB的防护配置')
+          }
+
+          if((this.newDdosIPForm.timeType == 'year' || this.newDdosIPForm.timeType == 'month') && this.customProtectSecIndex.value < 400){
+            this.queryDdosFunction()
+          } else {
+            this.$Message.info('当购买方式选择"包年包月"，只能选择小于400GB的防护配置')
+          }
         }
       },
       // 新建高防区域，IP价格查询，计算带宽与防护的价格，加在一起
@@ -1277,7 +1428,7 @@
           zoneId: $store.state.zone.zoneid
         });
 
-        let ipPrice = axios.post('ddosImitationhost/queryIpPrice.do', {
+        let ipPrice = axios.post('device/queryIpPrice.do', {
           brand: this.newDdosIPForm.bandWidth,
           timeValue: this.newDdosIPForm.timeValue,
           timeType: this.newDdosIPForm.timeType,
@@ -1347,14 +1498,14 @@
               }
             })
       },
-      // 打开绑定IP到云主机模态框
+      // 打开绑定IP到云服务器模态框
       openBindIPModal(type, row, id) {
         this.operatingId = id
         this.bindForHostForm.hostOptions = []
         if (type == 'host') {
           this.bindForHostForm.row = row
           this.showModal.bindIPForHost = true
-          // 获取所有能绑定弹性IP的云主机
+          // 获取所有能绑定弹性IP的云服务器
           this.$http.get('information/listVirtualMachines.do', {
             params: {
               vpcId: row.vpcid,
@@ -1381,7 +1532,7 @@
               this.bindForHostForm.hostOptions = bindIphostList
             }
           })
-        } else if (type = 'ddosHost'){
+        } else if (type == 'ddosHost'){
           this.bindForDdosHostForm.row = row
           this.showModal.bindIPForDdosHost = true
           // 获取手游能绑定弹性IP的高防云服务器
@@ -1454,7 +1605,7 @@
           })
         }
       },
-      // 绑定弹性IP到云主机
+      // 绑定弹性IP到云服务器
       bindHostSubmit() {
         this.$refs.bindForHostFormValidate.validate(validate => {
           if (validate) {
@@ -1493,9 +1644,44 @@
         })
         this.$refs.bindForHostFormValidate.resetFields();
       },
-      // 绑定弹性到高防云主机
+      // 绑定弹性到高防云服务器
       bindDdosHostSubmit () {
-        // ...
+        this.$refs.bindForDdosHostFormValidate.validate(validate => {
+          if (validate) {
+            this.showModal.bindIPForDdosHost = false
+            this.ipData.forEach(item => {
+              if (item.id === this.operatingId) {
+                // 3代表绑定中
+                item.status = 3
+                item._disabled = true
+              }
+              this.select.forEach(ip => {
+                if (item.id === ip.id) {
+                  item._checked = true
+                }
+              })
+            })
+            this.$http.get('network/enableStaticNat.do', {
+              params: {
+                ipId: this.bindForDdosHostForm.row.publicipid,
+                VMId: this.bindForDdosHostForm.host
+              }
+            }).then(response => {
+              if (response.status == 200 && response.data.status == 1) {
+                this.$Message.success(response.data.message)
+                this.timingRefresh(this.bindForDdosHostForm.row.publicipid)
+              } else {
+                this.$message.info({
+                  content: response.data.message,
+                  'onOk': () => {
+                    this.refresh()
+                  }
+                })
+              }
+            })
+          }
+        })
+        this.$refs.bindForDdosHostFormValidate.resetFields();
       },
       bindDatabaseSubmit() {
         this.$refs.bindForDatabaseFormValidate.validate(validate => {
@@ -1756,7 +1942,7 @@
               if (response.data.result[0].attachComputer.length !== 0) {
                 this.chargesHostID = response.data.result[0].attachComputer[0].id
                 this.chargesHost = true
-                this.chargesOther = ['变更关联云主机']
+                this.chargesOther = ['变更关联云服务器']
               }
               if (response.data.result[0].attachNat.length !== 0) {
                 this.chargesNATID = response.data.result[0].attachNat[0].id
@@ -1773,7 +1959,7 @@
       },
       chargesOK() {
         let list = []
-        if (this.chargesOther[0] == '变更关联云主机') {
+        if (this.chargesOther[0] == '变更关联云服务器') {
           list = [{
             type: 2,
             id: this.select[0].id
@@ -1812,6 +1998,10 @@
         )
       },
       renewIP() {
+        if(this.$store.state.zone.gpuserver == 2){
+          this.openDdosIpRenew()
+          return false
+        }
         if (this.select.length !== 1) {
           this.$Message.info('请选择一个需要续费的IP')
           return false
@@ -1839,7 +2029,7 @@
             if (response.data.result[0].attachComputer.length !== 0) {
               this.renewalHostID = response.data.result[0].attachComputer[0].id
               this.renewalHost = true
-              this.renewalOther = ['续费关联云主机']
+              this.renewalOther = ['续费关联云服务器']
             }
             if (response.data.result[0].attachNat.length !== 0) {
               this.renewalNATID = response.data.result[0].attachNat[0].id
@@ -1847,6 +2037,45 @@
               this.renewalOther = ['续费关联NAT网关']
             }
             this.showModal.renew = true
+          }
+        })
+      },
+      // 续费IP
+      openDdosIpRenew() {
+        if (this.select.length !== 1) {
+          this.$Message.info('请选择一个需要续费的IP')
+          return false
+        }
+        this.renewalDdosType = ''
+        this.renewalDdosTime = ''
+        this.renewalDdosOther = []
+        this.renewalDdosHost = false
+        this.renewalDdosNAT = false
+        this.currentDdosIp = this.select[0].id
+        this.renewalDdosInfo.IPAddress = this.select[0].publicip
+        this.renewalDdosInfo.bandwidth = this.select[0].bandwith
+        this.renewalDdosInfo.endTime = this.select[0].endtime
+        let url = 'network/listPublicIpById.do'
+        this.$http.get(url, {
+          params: {
+            ipId: this.select[0].publicipid
+          }
+        }).then(response => {
+          if (response.data.status === 1) {
+            if (response.data.result[0].attachComputer.length !== 0) {
+              this.renewalDdosHostID = response.data.result[0].attachComputer[0].id
+              this.renewalDdosHost = true
+              this.renewalDdosOther = ['续费关联高防云服务器']
+            }
+            if (response.data.result[0].attachNat.length !== 0) {
+              this.renewalDdosNATID = response.data.result[0].attachNat[0].id
+              this.renewalDdosNAT = true
+              this.renewalDdosOther = ['续费关联NAT网关']
+            }
+            if(response.data.result[0].caseType == 5){
+              this.isCaseTpeDay = true
+            }
+            this.showModal.renewDdos = true
           }
         })
       },
@@ -1869,7 +2098,7 @@
       queryChargePrice() {
         if (this.chargesOther.length != 0) {
           let params = {}
-          let hostArr = this.chargesOther[0] == '变更关联云主机' ? this.chargesHostID : ''
+          let hostArr = this.chargesOther[0] == '变更关联云服务器' ? this.chargesHostID : ''
           let natArr = this.chargesOther[0] == '变更关联NAT网关' ? this.chargesNATID : ''
           params = {
             timeValue: this.chargesForm.timeValue,
@@ -1923,7 +2152,7 @@
       },
       renewOk() {
         let list = []
-        if (this.renewalOther[0] == '续费关联云主机') {
+        if (this.renewalOther[0] == '续费关联云服务器') {
           list = [{
             type: 2,
             id: this.currentIp
@@ -1949,6 +2178,44 @@
           list: JSON.stringify(list),
           timeType: this.renewalType,
           timeValue: this.renewalTime + ''
+        }).then(response => {
+          if (response.status == 200 && response.data.status == 1) {
+            this.$router.push({path: 'order'})
+          } else {
+            this.$message.info({
+              content: response.data.message
+            })
+          }
+        })
+      },
+      renewDdosOk() {
+        let list = []
+        if (this.renewalDdosOther[0] == '续费关联高防云服务器') {
+          list = [{
+            type: 2,
+            id: this.currentDdosIp
+          }, {
+            type: 0,
+            id: this.renewalDdosHostID
+          }]
+        } else if (this.renewalDdosOther[0] == '续费关联NAT网关') {
+          list = [{
+            type: 2,
+            id: this.currentDdosIp
+          }, {
+            type: 4,
+            id: this.renewalDdosNATID
+          }]
+        } else {
+          list = [{
+            type: 2,
+            id: this.currentDdosIp
+          }]
+        }
+        this.$http.post('continue/continueOrder.do', {
+          list: JSON.stringify(list),
+          timeType: this.renewalDdosType,
+          timeValue: this.renewalDdosTime + ''
         }).then(response => {
           if (response.status == 200 && response.data.status == 1) {
             this.$router.push({path: 'order'})
@@ -2032,12 +2299,21 @@
         this.renewalTime = ''
         this.timeOptions.renewalTime = this.timeOptions[type]
       },
+      // 监听计费模式变化
+      renewalDdosType(type) {
+        this.renewalDdosTime = ''
+        if(this.isCaseTpeDay){
+          this.timeDdosOptionsDay.renewalTime = this.timeDdosOptionsDay[type]
+        } else {
+          this.timeDdosOptions.renewalTime = this.timeDdosOptions[type]
+        }
+      },
       renewalTime(time) {
         if (time == '') {
           this.renewalTotalCost = '--'
           this.renewalOriginalCost = '--'
         } else {
-          let hostArr = this.renewalOther[0] == '续费关联云主机' ? this.renewalHostID : ''
+          let hostArr = this.renewalOther[0] == '续费关联云服务器' ? this.renewalHostID : ''
           let natArr = this.renewalOther[0] == '续费关联NAT网关' ? this.renewalNATID : ''
           this.$http.get('information/getYjPrice.do', {
             params: {
@@ -2062,10 +2338,40 @@
             })
         }
       },
+      // 监听高防 IP变化
+      renewalDdosTime(time) {
+        if (time == '') {
+          this.renewalDdosTotalCost = '--'
+          this.renewalDdosOriginalCost = '--'
+        } else {
+          let hostArr = this.renewalDdosOther[0] == '续费关联高防云服务器' ? this.renewalDdosHostID : ''
+          let natArr = this.renewalDdosOther[0] == '续费关联NAT网关' ? this.renewalDdosNATID : ''
+          this.$http.get('information/getYjPrice.do', {
+            params: {
+              timeValue: this.renewalDdosTime,
+              timeType: this.renewalDdosType,
+              ipIdArr: this.currentDdosIp,
+              hostIdArr: hostArr,
+              natArr: natArr
+            }
+          }).then((response) => {
+            if (response.status == 200 && response.data.status == 1) {
+              this.renewalDdosTotalCost = response.data.result.toFixed(2)
+              this.renewalDdosOriginalCost = response.data.result
+              if (response.data.cuspon) {
+                this.renewalDdosOriginalCost = Number((this.renewalDdosOriginalCost + response.data.cuspon).toFixed(2))
+              }
+              if (response.data.continueDiscount) {
+                this.renewalDdosOriginalCost = (this.renewalDdosOriginalCost + response.data.continueDiscount).toFixed(2)
+              }
+            }
+          })
+        }
+      },
       // 监听续费关联
       renewalOther() {
         if (this.renewalTime != '') {
-          if (this.renewalOther[0] == '续费关联云主机') {
+          if (this.renewalOther[0] == '续费关联云服务器') {
             let url = 'information/getYjPrice.do'
             this.$http.get(url, {
               params: {
@@ -2135,7 +2441,7 @@
       },
       chargesOther() {
         if (this.chargesForm.timeValue != '') {
-          if (this.chargesOther[0] == '变更关联云主机') {
+          if (this.chargesOther[0] == '变更关联云服务器') {
             let url = 'information/getYjPrice.do'
             this.$http.get(url, {
               params: {
@@ -2206,7 +2512,6 @@
       // 监听区域变换
       '$store.state.zone': {
         handler: function () {
-          console.log(this.$store.state.zone.gpuserver)
           this.hide= $store.state.zone.gpuserver;
           this.ipData = []
           this.select = []

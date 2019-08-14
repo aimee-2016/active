@@ -249,10 +249,10 @@
 
   export default {
     metaInfo: {
-      title: '陕西西安云服务器、云主机租用，新节点低至1.7折 - 活动中心 - 新睿云', // set a title
+      title: '陕西西安云服务器、云服务器租用，新节点低至1.7折 - 活动中心 - 新睿云', // set a title
       meta: [{                 // set meta
         name: 'keywords',
-        content: '西安云服务器,西安云主机,陕西云服务器,陕西云主机,西安云服务器租用,西安云主机租用'
+        content: '西安云服务器,西安云服务器,陕西云服务器,陕西云服务器,西安云服务器租用,西安云服务器租用'
       },
         {                 // set meta
           name: 'description',
@@ -471,7 +471,7 @@
           }
         })
       },
-      //   云主机生成订单
+      //   云服务器生成订单
       getDiskcountMv(item, hostCount) {
         // 西安活动下线，取消登陆和实名认证
         // if (!this.$store.state.userInfo) {

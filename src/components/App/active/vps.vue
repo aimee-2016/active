@@ -46,12 +46,12 @@
               <dl v-if="company">
                 <dt v-if="isReceive!=2"><img src="../../../assets/img/active/vps/lingquzhuji.png" alt="icon"></dt>
                 <dt v-else><img src="../../../assets/img/active/vps/two.png" alt="icon"></dt>
-                <dd :class="{select:isReceive==2}">③ 免费领取企业云主机</dd>
+                <dd :class="{select:isReceive==2}">③ 免费领取企业云服务器</dd>
               </dl>
               <dl v-if="!company">
                 <dt v-if="isReceive!=1"><img src="../../../assets/img/active/vps/lingquzhuji.png" alt="icon"></dt>
                 <dt v-else><img src="../../../assets/img/active/vps/two.png" alt="icon"></dt>
-                <dd :class="{select:isReceive==1}">③ 免费领取个人云主机</dd>
+                <dd :class="{select:isReceive==1}">③ 免费领取个人云服务器</dd>
               </dl>
             </div>
           </div>

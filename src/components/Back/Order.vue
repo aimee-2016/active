@@ -5,7 +5,7 @@
         <Icon type="load-c" size=80 class="demo-spin-icon-load"></Icon>
         <span style="display: block;font-size:14px;color:black;font-family: Microsoft Yahei,微软雅黑;">正在支付，请稍后...</span>
       </Spin>
-      <span>首页 / 新建云主机 / 订单确认</span>
+      <span>首页 / 新建云服务器 / 订单确认</span>
       <div class="content">
         <span>订单确认</span>
         <span class="title">已选择{{selection.length}}项 | 总计:{{totalCost}}元 |</span>
@@ -115,7 +115,7 @@
               var arr = []
               switch (params.row['订单类型']) {
                 case 'host':
-                  type = '云主机'
+                  type = '云服务器'
                   break
                 case 'vpc':
                   type = 'vpc'

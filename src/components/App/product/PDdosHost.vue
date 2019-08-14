@@ -188,7 +188,7 @@
 //              activeIcon: require('../../../assets/img/product/ddos-stage-2-blue.png'),
               icon: 'icon-youxi',
               img: require('../../../assets/img/product/ddos_fang.png'),
-              desc: ['频繁遭受黑客勒索，竞争对手恶意DDoS攻击，营收损失极大被攻击时往往会遇到DDoS攻击导致带宽堵塞，或因流量过大被云主机厂商强制黑洞；登录、游戏端口被CC攻击，导致服务器连接数暴涨，服务不可用；']
+              desc: ['频繁遭受黑客勒索，竞争对手恶意DDoS攻击，营收损失极大被攻击时往往会遇到DDoS攻击导致带宽堵塞，或因流量过大被云服务器厂商强制黑洞；登录、游戏端口被CC攻击，导致服务器连接数暴涨，服务不可用；']
             },
             {
               title: '其他',
@@ -209,13 +209,13 @@
           {
             img: 'icon-danxingyunfuwuqiECS',
             title: '云服务器',
-            desc: '云主机是一种可以根据需求随时改变处理能力并且按照实际使用量来计费的计算服务。',
+            desc: '云服务器是一种可以根据需求随时改变处理能力并且按照实际使用量来计费的计算服务。',
             path: '/ecs/'
           },
           {
             img: 'icon-xunisiyouyunVPC',
             title: '虚拟私有云VPC',
-            desc: 'VPC（Virtual Private Cloud）是一个用户定义的虚拟网络，云主机可以放置在其中...',
+            desc: 'VPC（Virtual Private Cloud）是一个用户定义的虚拟网络，云服务器可以放置在其中...',
             path: '/vpc/'
           },
           {

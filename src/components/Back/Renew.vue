@@ -38,7 +38,7 @@
                 </div>
                 <div v-if="allShow.all">
                   <div class="item-wrapper">
-                    <p>云主机（{{hostList.length}}）<span :class="{opened:hostOpened}" @click="hostOpened=!hostOpened">{{hostOpened?'收起':'展开'}}</span>
+                    <p>云服务器（{{hostList.length}}）<span :class="{opened:hostOpened}" @click="hostOpened=!hostOpened">{{hostOpened?'收起':'展开'}}</span>
                     </p>
                     <Table :columns="columns" :data="hostList" @on-selection-change="select"
                            v-show="hostOpened"></Table>
@@ -93,7 +93,7 @@
                 </div>
                 <div v-if="allShow.hour">
                   <div class="item-wrapper">
-                    <p>云主机（{{hostList.length}}）<span :class="{opened:hostOpened}" @click="hostOpened=!hostOpened">{{hostOpened?'收起':'展开'}}</span>
+                    <p>云服务器（{{hostList.length}}）<span :class="{opened:hostOpened}" @click="hostOpened=!hostOpened">{{hostOpened?'收起':'展开'}}</span>
                     </p>
                     <Table :columns="columns" :data="hourHostList" @on-selection-change="select"
                            v-show="hostOpened"></Table>
@@ -151,7 +151,7 @@
                 </div>
                 <div v-if="allShow.day">
                   <div class="item-wrapper">
-                    <p>云主机（{{hostList.length}}）<span :class="{opened:weekHostOpened}"
+                    <p>云服务器（{{hostList.length}}）<span :class="{opened:weekHostOpened}"
                                                      @click="weekHostOpened=!weekHostOpened">{{weekHostOpened?'收起':'展开'}}</span>
                     </p>
                     <Table :columns="columns" :data="weekHostList" @on-selection-change="select"
@@ -213,7 +213,7 @@
                 </div>
                 <div v-if="allShow.expired">
                   <div class="item-wrapper">
-                    <p>云主机（{{hostList.length}}）<span :class="{opened:expiredHostOpened}"
+                    <p>云服务器（{{hostList.length}}）<span :class="{opened:expiredHostOpened}"
                                                      @click="expiredHostOpened=!expiredHostOpened">{{expiredHostOpened?'收起':'展开'}}</span>
                     </p>
                     <Table :columns="columns" :data="expiredHostList" @on-selection-change="select"

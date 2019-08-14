@@ -21,7 +21,7 @@
                   </FormItem>
                   <FormItem label="策略类型" prop="strategyType" style="display:flex;">
                     <Select v-model="newAlarmStrategyForm.strategyType" style="width:318px" @on-change="changeResources()">
-                      <Option value="0">云主机</Option>
+                      <Option value="0">云服务器</Option>
                       <!-- <Option value="1">云硬盘</Option>
                       <Option value="2">vpc</Option> -->
                       <Option value="3">对象存储</Option>
@@ -476,7 +476,7 @@ export default {
       },
       // 默认资源选择
       defaultResources: {},
-      // 云主机指标
+      // 云服务器指标
       HostIndex: {
         alarmname: [
           {
@@ -555,7 +555,7 @@ export default {
       diskIndex: {},
       // vpc指标
       vpcIndex: {},
-      selectedResourcesName: '云主机',
+      selectedResourcesName: '云服务器',
       // 联系人
       allContacts: [],
       selectedContacts: [],
@@ -587,7 +587,7 @@ export default {
       this.newAlarmStrategyForm.strategyType = this.strategyTypeGet + ''
       // 资源复制(建议后端返回没选中的资源)
       this.selectedResources = []
-      var nameArr = [ '云主机', '云硬盘', 'vpc', '对象存储' ]
+      var nameArr = [ '云服务器', '云硬盘', 'vpc', '对象存储' ]
       var productType = ''
       nameArr.forEach((item, index) => {
         if (this.newAlarmStrategyForm.strategyType == index) {
@@ -703,7 +703,7 @@ export default {
     // 切换资源
     changeResources() {
       this.selectedResources = []
-      var nameArr = [ '云主机', '云硬盘', 'vpc', '对象存储' ]
+      var nameArr = [ '云服务器', '云硬盘', 'vpc', '对象存储' ]
       var productType = ''
       nameArr.forEach((item, index) => {
         if (this.newAlarmStrategyForm.strategyType == index) {

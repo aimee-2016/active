@@ -41,7 +41,7 @@
               vpc快速入门
             </template>
             <Menu-item name="n-5-1">创建虚拟私有网络</Menu-item>
-            <Menu-item name="n-5-2">添加云主机与弹性ip</Menu-item>
+            <Menu-item name="n-5-2">添加云服务器与弹性ip</Menu-item>
             <Menu-item name="n-5-3">配置防火墙</Menu-item>
           </Submenu>
           <Submenu name="6">

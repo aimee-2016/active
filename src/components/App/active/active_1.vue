@@ -164,10 +164,10 @@
 
   export default {
     metaInfo: {
-      title: '0元试用云主机 - 38元云服务器优惠券 - 158元云主机现金券 - 活动中心 - 新睿云', // set a title
+      title: '0元试用云服务器 - 38元云服务器优惠券 - 158元云服务器现金券 - 活动中心 - 新睿云', // set a title
       meta: [{                 // set meta
         name: 'keywords',
-        content: '0元云服务器,0元试用云主机,0元云主机,云服务器优惠券'
+        content: '0元云服务器,0元试用云服务器,0元云服务器,云服务器优惠券'
       },
         {                 // set meta
           name: 'description',
@@ -253,7 +253,7 @@
       }
     },
     created() {
-      // 区域 云主机 云数据库 gpu
+      // 区域 云服务器 云数据库 gpu
       axios.get('information/zone.do').then(res => {
         if (res.status == 200 && res.data.status == 1) {
           this.productHost.zoneList = res.data.result.filter(item => {
@@ -301,7 +301,7 @@
         })
       },
       changeZoneHost() {
-        // 云主机镜像
+        // 云服务器镜像
         axios.get('information/listTemplates.do', {
           params: {
             zoneId: this.productHost.zone,

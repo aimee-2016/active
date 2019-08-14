@@ -33,7 +33,7 @@
 
   export default {
     metaInfo: {
-      title: '云服务器拼团 - 云主机团购 - 活动中心 - 新睿云', // set a title
+      title: '云服务器拼团 - 云服务器团购 - 活动中心 - 新睿云', // set a title
       meta: [{                 // set meta
         name: 'robots',
         content: 'noindex,nofollow'

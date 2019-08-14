@@ -83,7 +83,7 @@
     <!-- 监控信息 -->
     <div class="monitor" ref="monitor">
       <div class="title">
-        <span>{{ monitorName }}云主机监控图表</span>
+        <span>{{ monitorName }}云服务器监控图表</span>
         <div @click="closeMonitor">
           <Icon type="close" style="font-size: 18px;cursor: pointer"></Icon>
         </div>
@@ -396,7 +396,7 @@
             </RadioGroup>
           </div>
         </Form>
-        <p class="modal-text-hint-bottom">提示：云主机快照为每块磁盘提供<span>8个</span>快照额度，当某个主机的快照数量达到额度上限，在创建新的快照任务时，系统会删除由自动快照策略所生成的时间最早的自动快照点
+        <p class="modal-text-hint-bottom">提示：云服务器快照为每块磁盘提供<span>8个</span>快照额度，当某个主机的快照数量达到额度上限，在创建新的快照任务时，系统会删除由自动快照策略所生成的时间最早的自动快照点
         </p>
       </div>
       <div slot="footer" class="modal-footer-border">
@@ -668,6 +668,10 @@
                     h('img', {
                       attrs: {
                         src: icon_5
+                      },
+                      style: {
+                        width: '16px',
+                        height: '16px'
                       }
                     }, ''),
                     h('span', {
@@ -2327,7 +2331,7 @@
               })
               this.showModal.bindIP = false
               this.$Message.info({
-                content: `<span style="color:#2A99F2">${this.hostCurrentSelected.computername}</span>云主机,正在绑定公网IP`
+                content: `<span style="color:#2A99F2">${this.hostCurrentSelected.computername}</span>云服务器,正在绑定公网IP`
               })
               this.$http.get('network/enableStaticNat.do', {
                 params: {
@@ -2656,7 +2660,7 @@
         })
         this.showModal.unbindIP = false
         this.$Message.info({
-          content: `<span style="color:#2A99F2">${this.hostCurrentSelected.computername}</span>云主机,正在解绑公网IP`
+          content: `<span style="color:#2A99F2">${this.hostCurrentSelected.computername}</span>云服务器,正在解绑公网IP`
         })
         this.$http.get('network/disableStaticNat.do', {
           params: {

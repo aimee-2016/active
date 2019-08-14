@@ -1682,7 +1682,7 @@
               var arr = []
               switch (data.订单类型) {
                 case 'host':
-                  type = '云主机'
+                  type = '云服务器'
                   break
                 case 'vpc':
                   type = 'vpc'

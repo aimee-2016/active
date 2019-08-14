@@ -37,7 +37,7 @@
               <dl>
                 <dt v-if="isReceive==0"><img src="../../../assets/img/active/active_2/icon-process-3.png" alt="icon"></dt>
                 <dt v-else><img src="../../../assets/img/active/active_2/icon-process-33.png" alt="icon"></dt>
-                <dd :class="{select:isReceive!=0}">③ 免费领取个人云主机</dd>
+                <dd :class="{select:isReceive!=0}">③ 免费领取个人云服务器</dd>
               </dl>
 
             </div>
@@ -48,7 +48,7 @@
     <div class="body">
       <div class="content">
         <h2 class="head-headline-product">
-          免费云主机
+          免费云服务器
         </h2>
         <p style="text-align:center;padding:20px 0 50px;font-size:18px;">
           <a @click="modal4=true">活动规则></a>
@@ -258,7 +258,7 @@
           },
           {
             img: require('../../../assets/img/active/active_2/icon-process-33.png'),
-            text: '免费领取企业云主机'
+            text: '免费领取企业云服务器'
           }
         ],
         productData: [

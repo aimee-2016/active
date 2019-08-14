@@ -100,8 +100,8 @@
             <div class="groupBook">
               <div>
                 <div>
-                  <img src="../../assets/img/active/group-booking/gb-banner7.png" alt="云主机特惠计划"/>
-                  <p>云主机特惠计划</p>
+                  <img src="../../assets/img/active/group-booking/gb-banner7.png" alt="云服务器特惠计划"/>
+                  <p>云服务器特惠计划</p>
                   <p>分享赚时长 一年只需<span>59</span>元</p>
                   <p>59元首月开通，<span>0</span>元续费 ，便宜好用尽在新睿云</p>
                   <button>点击了解</button>
@@ -201,14 +201,14 @@
     //   })
     // },
     metaInfo: {
-      title: '云服务器低价优惠活动 - 特价云主机体验 - 活动中心 - 新睿云', // set a title
+      title: '云服务器低价优惠活动 - 特价云服务器体验 - 活动中心 - 新睿云', // set a title
       meta: [{                 // set meta
         name: 'keywords',
-        content: '云服务器活动,云主机活动,低价云服务器,云服务器体验,云服务器优惠,特价云服务器'
+        content: '云服务器活动,云服务器活动,低价云服务器,云服务器体验,云服务器优惠,特价云服务器'
       },
         {                 // set meta
           name: 'description',
-          content: '新睿云活动中心汇聚了云服务器,云数据库,对象存储等产品,推出新春采购季、免费云主机、打折促销,分享赚时长等多种优惠活动！'
+          content: '新睿云活动中心汇聚了云服务器,云数据库,对象存储等产品,推出新春采购季、免费云服务器、打折促销,分享赚时长等多种优惠活动！'
         }]
     },
     data () {
@@ -257,10 +257,10 @@
         //   },
           {
             imgPath: require('../../assets/img/activecenter/bg-card-2.png'),
-            name: '免费云主机 不限量领取',
+            name: '免费云服务器 不限量领取',
             desc: '保证金闪退',
             time: '2019.06.26开始',
-            activeObj: '云主机 新注册用户',
+            activeObj: '云服务器 新注册用户',
             url: '/activity/free/',
             isStart: true,
             weight: '1'
@@ -302,7 +302,7 @@
           //   name: '分享好“云” 你赚时长',
           //   desc: '每成功一位即赠送一个月 最多可领12个月',
           //   time: '2018.07.19开始',
-          //   activeObj: '云主机 新老用户',
+          //   activeObj: '云服务器 新老用户',
           //   url: '/activity/share/',
           //   isStart: true,
           //   weight: '2'

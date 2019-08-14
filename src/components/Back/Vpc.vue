@@ -60,8 +60,11 @@
                     <div class="item" @click="manage(item)" style="cursor: pointer" v-else><p>交换机（子网）：<span>{{item.networkCount}}</span>
                     </p></div>
                     <span class="dotted-vertical"></span>
-                    <router-link to="host">
-                      <div class="item item4"><p>弹性云主机：<span>{{item.computerCount}}</span></p></div>
+                    <router-link to="BackDdos" v-if="$store.state.zone.gpuserver == 2">
+                      <div class="item item4"><p>弹性云服务器：<span>{{item.computerCount}}</span></p></div>
+                    </router-link>
+                    <router-link to="host" v-else>
+                      <div class="item item4"><p>弹性云服务器：<span>{{item.computerCount}}</span></p></div>
                     </router-link>
                   </div>
                   <div class="item-wrap">

@@ -54,7 +54,7 @@
           </FormItem>
           <FormItem label="最小伸缩数" prop="minNumber" class="formitem1">
             <Tooltip placement="right" transfer>
-              <p slot="content" style="white-space: normal;">伸缩组中允许的实例最小数量。当伸缩组的云主机数量小于最小伸缩数时，弹性伸缩会增加实例，使得伸缩组当前实例数匹配最小伸缩数。</p>
+              <p slot="content" style="white-space: normal;">伸缩组中允许的实例最小数量。当伸缩组的云服务器数量小于最小伸缩数时，弹性伸缩会增加实例，使得伸缩组当前实例数匹配最小伸缩数。</p>
               <Icon type="ios-help-outline"></Icon>
             </Tooltip>
             <Input v-model="newAddTelescopicList.minNumber" style="width: 240px" placeholder="请输入0-30之间的数字"></Input>
@@ -70,7 +70,7 @@
           </FormItem>
           <FormItem label="最大伸缩数" class="formitem1" prop="maxNumber">
             <Tooltip placement="right" transfer>
-              <p slot="content" style="white-space: normal;">伸缩组中允许的实例最大数量。当伸缩组的云主机数量大于最大伸缩数时，弹性伸缩会移出实例，使得伸缩组当前实例数匹配最大伸缩数。</p>
+              <p slot="content" style="white-space: normal;">伸缩组中允许的实例最大数量。当伸缩组的云服务器数量大于最大伸缩数时，弹性伸缩会移出实例，使得伸缩组当前实例数匹配最大伸缩数。</p>
               <Icon type="ios-help-outline"></Icon>
             </Tooltip>
             <Input v-model="newAddTelescopicList.maxNumber" style="width: 240px" placeholder="请输入1-30之间的数字"></Input>

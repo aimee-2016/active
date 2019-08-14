@@ -935,7 +935,7 @@
         this.createType = 'custom'
         setTimeout(() => {
           this.publicList[0].selectSystem = this.mirrorQuery.templatename
-        }, 200)
+        }, 1000)
       }
       this.xiaoshouData()
       // this.$store.dispatch('getZoneList')
@@ -1202,7 +1202,7 @@
           return
         }
         let prod = {}
-        prod.typeName = 'DDoS高防云主机'
+        prod.typeName = 'DDoS高防云服务器'
         prod.zone = this.zone
         prod.timeForm = this.timeForm
         prod.customMirror = this.customMirror

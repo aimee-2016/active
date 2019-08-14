@@ -109,7 +109,7 @@
     <!-- 挂载硬盘模态框 -->
     <Modal v-model="showModal.mountDisk" width="550" :scrollable="true">
       <p slot="header" class="modal-header-border">
-        <span class="universal-modal-title">挂载云主机</span>
+        <span class="universal-modal-title">挂载云服务器</span>
       </p>
       <div class="universal-modal-content-flex">
         <Form :model="diskMountForm" :rules="mountRuleValidate" ref="mountDisk">
@@ -296,7 +296,7 @@
           </div>
           <FormItem label="是否同时续费绑定主机:" style="width: 100%;margin-bottom: 0" v-if="renewalHost">
             <CheckboxGroup v-model="renewalOther">
-              <Checkbox label="续费关联云主机" v-if="renewalHost"></Checkbox>
+              <Checkbox label="续费关联云服务器" v-if="renewalHost"></Checkbox>
             </CheckboxGroup>
           </FormItem>
           <div style="font-size:16px;">
@@ -331,7 +331,7 @@
           </FormItem>
           <FormItem label="是否同时变更绑定主机:" style="width: 100%;margin-bottom: 0" v-if="ratesChangeHost">
             <CheckboxGroup v-model="ratesChangeOther">
-              <Checkbox label="变更关联云主机" v-if="ratesChangeHost"></Checkbox>
+              <Checkbox label="变更关联云服务器" v-if="ratesChangeHost"></Checkbox>
             </CheckboxGroup>
           </FormItem>
           <div style="font-size:16px;">
@@ -1200,7 +1200,7 @@
               this.renewalHost = false
             } else {
               this.renewalHost = true
-              this.renewalOther = ['续费关联云主机']
+              this.renewalOther = ['续费关联云服务器']
               this.renewalConnectionsHost = response.data.result[0].attachComputer[0].id
             }
             this.showModal.renewDisk = true
@@ -1210,7 +1210,7 @@
       // 确认续费
       renewDisk_ok() {
         let list = []
-        if (this.renewalOther[0] == '续费关联云主机') {
+        if (this.renewalOther[0] == '续费关联云服务器') {
           list = [{
             type: 1,
             id: this.diskSelection.id
@@ -1256,7 +1256,7 @@
               this.ratesChangeHost = false
             } else {
               this.ratesChangeHost = true
-              this.ratesChangeOther = ['变更关联云主机']
+              this.ratesChangeOther = ['变更关联云服务器']
               this.ratesChangeConnectionsHost = response.data.result[0].attachComputer[0].id
             }
             this.showModal.ratesChange = true
@@ -1266,7 +1266,7 @@
       // 确认变更资费
       ratesChange_ok() {
         let list = []
-        if (this.ratesChangeOther[0] == '变更关联云主机') {
+        if (this.ratesChangeOther[0] == '变更关联云服务器') {
           list = [{
             type: 1,
             id: this.diskSelection.id
@@ -1530,7 +1530,7 @@
             },
            params = this.$store.state.zone.gpuserver == 1?params2:params1;
           let url = 'information/getYjPrice.do'
-          let hostArr = this.renewalOther[0] == '续费关联云主机' ? this.renewalConnectionsHost : ''
+          let hostArr = this.renewalOther[0] == '续费关联云服务器' ? this.renewalConnectionsHost : ''
           this.$http.get(url, { params})
             .then((response) => {
               if (response.status == 200 && response.data.status == 1) {
@@ -1562,7 +1562,7 @@
             },
            params = this.$store.state.zone.gpuserver == 1?params2:params1;
         if (this.renewalTime != '') {
-          if (this.renewalOther[0] == '续费关联云主机') {
+          if (this.renewalOther[0] == '续费关联云服务器') {
             let url = 'information/getYjPrice.do';
             this.$http.get(url, {params})
               .then((response) => {
@@ -1605,7 +1605,7 @@
           this.ratesChangeCost = '--'
           this.ratesChangeOriginalCost = '--'
         } else {
-          let hostArr = this.ratesChangeOther[0] == '变更关联云主机' ? this.ratesChangeConnectionsHost : '';
+          let hostArr = this.ratesChangeOther[0] == '变更关联云服务器' ? this.ratesChangeConnectionsHost : '';
           let params1 ={
                 timeValue: this.ratesChangeTime,
                 timeType: this.ratesChangeType,
@@ -1651,7 +1651,7 @@
             },
             params = this.$store.state.zone.gpuserver == 1?params2:params1;
         if (this.ratesChangeTime != '') {
-          if (this.ratesChangeOther[0] == '变更关联云主机') {
+          if (this.ratesChangeOther[0] == '变更关联云服务器') {
             let url = 'information/getYjPrice.do'
             this.$http.get(url, {params          
             })

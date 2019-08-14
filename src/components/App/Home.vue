@@ -1,6 +1,6 @@
 <template>
   <div id="home" style="background: #FFF">
-    <h1 id="hide-h1">新睿云提供云服务器租用、云主机试用等云计算服务</h1>
+    <h1 id="hide-h1">新睿云提供云服务器租用、云服务器试用等云计算服务</h1>
     <!-- banner 轮播图 -->
     <div class="banner">
       <my-carousel :interval=5000 class="carousel" @on-change="change">
@@ -84,7 +84,7 @@
               <div class="free-receive-content">
                 <div class="free-receive-text">
                   <p>新手特惠</p>
-                  <p>爆款云主机免费用一年</p>
+                  <p>爆款云服务器免费用一年</p>
                   <button>立即领取</button>
                 </div>
                 <div class="free-receive-img">
@@ -105,7 +105,7 @@
               <div class="right">
                 <p>现在注册</p>
                 <p>即可体验 <span>免费套餐</span></p>
-                <p>多款云主机</p>
+                <p>多款云服务器</p>
                 <p @click.stop="$router.push('/activity/free')">免费领取</p>
                 <Button type="primary" long @click.stop="$router.push('register')">注册新账号</Button>
               </div>
@@ -155,7 +155,7 @@
                 <img src="../../assets/img/active/group-booking/gb-icon14.png" alt="icon"/>
                 <div class="groupBook-text">
                   <p>全民狂欢趴</p>
-                  <p>云主机低价拼团 一人成团 </p>
+                  <p>云服务器低价拼团 一人成团 </p>
                   <p>每成功邀请一位，即<span>赠送1个月免费时长</span></p>
                   <button>立即参与</button>
                 </div>
@@ -618,14 +618,14 @@
 
   export default {
     metaInfo: {
-      title: 'ecs弹性云服务器租用 - 便宜云主机免费试用 - 高防云服务器租赁 - 新睿云', // set a title
+      title: 'ecs弹性云服务器租用 - 便宜云服务器免费试用 - 高防云服务器租赁 - 新睿云', // set a title
       meta: [{                 // set meta
         name: 'keywords',
-        content: '云服务器,云主机,云主机服务器,云服务器租用,云主机租用,新睿云'
+        content: '云服务器,云服务器,云服务器服务器,云服务器租用,云服务器租用,新睿云'
       },
         {                 // set meta
           name: 'description',
-          content: '新睿云是领先的基础云计算服务商。云计算产品主要包含云服务器、GPU云服务器、云存储、对象存储OSS、CDN、负载均衡、系统镜像、DDOS防火墙等。提供了可靠、可扩展并且费用低廉的云计算服务。现免费加入,一键领取云主机试用套餐,轻松上云！'
+          content: '新睿云是领先的基础云计算服务商。云计算产品主要包含云服务器、GPU云服务器、云存储、对象存储OSS、CDN、负载均衡、系统镜像、DDOS防火墙等。提供了可靠、可扩展并且费用低廉的云计算服务。现免费加入,一键领取云服务器试用套餐,轻松上云！'
         }]
     },
     data() {
@@ -745,7 +745,7 @@
           },
           {
             title: '软件研发',
-            scene: '基于新睿云云主机的集成开发环境包含java的Eclipse、PHP的Sublime、PHPstrom、Python的PyCharm。帮助您快速部署开发环境与依赖包，降低开发前期准备并提升研发效率。借助新睿云成熟的云计算基础服务能力，开发人员可以随时创建与释放所需的开发环境与相关计算资源，主机信息可自动与手动备份，多种方式保障您的数据安全。',
+            scene: '基于新睿云云服务器的集成开发环境包含java的Eclipse、PHP的Sublime、PHPstrom、Python的PyCharm。帮助您快速部署开发环境与依赖包，降低开发前期准备并提升研发效率。借助新睿云成熟的云计算基础服务能力，开发人员可以随时创建与释放所需的开发环境与相关计算资源，主机信息可自动与手动备份，多种方式保障您的数据安全。',
             software: [
               require('../../assets/img/sceneList/sl-icon11.png'),
               require('../../assets/img/sceneList/sl-icon12.png'),
@@ -758,7 +758,7 @@
           },
           {
             title: '游戏服务',
-            scene: '借助新睿云游戏服务革新您的开发平台，您能够以更快的速度完成大型3D游戏的开发测试工作。凭借超高的运算速度与传输速度，加速您的大规模图形演算与视频处理能力；搭配新睿云云主机、对象存储与云数据库使用，完成从生产研发到部署测试的全流程工作。并且，新睿云游戏服务提供按需付费方式，以小时级为单位来获取工业级GPU计算服务能力。',
+            scene: '借助新睿云游戏服务革新您的开发平台，您能够以更快的速度完成大型3D游戏的开发测试工作。凭借超高的运算速度与传输速度，加速您的大规模图形演算与视频处理能力；搭配新睿云云服务器、对象存储与云数据库使用，完成从生产研发到部署测试的全流程工作。并且，新睿云游戏服务提供按需付费方式，以小时级为单位来获取工业级GPU计算服务能力。',
             software: [
               require('../../assets/img/sceneList/sl-icon15.png'),
               require('../../assets/img/sceneList/sl-icon16.png')
@@ -1258,7 +1258,7 @@
             company: '珠峰时代',
             casetitle: '企业ERP系统云案例—珠峰时代',
             background: '北京珠峰时代科技有限公司的金蝶K3是一款ERP软件。ERP系统是一个在全公司范围内应用的、高度集成的系统。其集物资、财务、人力、信息等资源管理于一体，实现进、销、存、生产和财务相结合。金蝶想利用云计算等新技术，打破财务与业务之间的围墙，让数据从单一的财务系统、会计软件、财务软件、进销存管理软件等软件系统从孤岛中脱离出来，让信息快速流动。',
-            discription: '针对系统的应用需求，新睿云为珠峰时代提供了企业ERP系统解决方案，通过高性能的云主机、高带宽及大容量的系统盘等，完成数据存储、系统整合、弹性扩容等功能，从而降低企业运营成本、缩短产品研发生产周期。'
+            discription: '针对系统的应用需求，新睿云为珠峰时代提供了企业ERP系统解决方案，通过高性能的云服务器、高带宽及大容量的系统盘等，完成数据存储、系统整合、弹性扩容等功能，从而降低企业运营成本、缩短产品研发生产周期。'
           },
           {
             viewmore: false,
