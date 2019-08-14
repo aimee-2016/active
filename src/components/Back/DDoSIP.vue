@@ -453,7 +453,7 @@
                                 </RadioGroup>
                             </div>
                             <div style="line-height:26px;">
-                                <a href="https://zschj.xrcloud.net/support_docs/1JWD4oQgr6_1JWpJJSYH3.html" target="_blank" class="link-te">查看域名添加帮助文档</a>
+                                <a href="https://www.xrcloud.net/support_docs/1JWD4oQgr6_1JWpJJSYH3.html" target="_blank" class="link-te">查看域名添加帮助文档</a>
                             </div>
                         </div>
                         <!--      网站业务     -->
@@ -557,7 +557,7 @@
                                 </Select>
                             </div>
                             <div style="line-height:26px;">
-                                <a href="https://zschj.xrcloud.net/support_docs/1JWD4oQgr6_1JWpqlNAyn.html" target="_blank" class='link-te'>查看防护配置添加指引</a>
+                                <a href="https://www.xrcloud.net/support_docs/1JWD4oQgr6_1JWpqlNAyn.html" target="_blank" class='link-te'>查看防护配置添加指引</a>
                             </div>
                         </div>
                         <div class="dp-box">
@@ -788,7 +788,7 @@
                 <div style='margin-right:5px;'><span>源站IP/域名</span></div>
                 <div>
                     <Input class="dp-area" type="textarea" v-model='sourceip' style='width:300px;display:inline-block;'></Input>
-                    <p class='dp-bf'>如果源站暴露，请参考使用 <a href='https://zschj.xrcloud.net/support_docs/1JWD4oQgr6_1LnzoqVYwB.html' target="_blank">高防后源站IP暴露的解决方法</a></p>
+                    <p class='dp-bf'>如果源站暴露，请参考使用 <a href='https://www.xrcloud.net/support_docs/1JWD4oQgr6_1LnzoqVYwB.html' target="_blank">高防后源站IP暴露的解决方法</a></p>
                 </div>
             </div>
             </div>
@@ -831,7 +831,7 @@
                     </FormItem>
                     <FormItem label="源站IP/域名" prop="ip">
                         <Input class="dp-area" type="textarea" v-model="addDomainList.ip" placeholder="多个域名与IP用；隔开"></Input>
-                        <p class='dp-bf'>如果源站暴露，请参考使用 <a href='https://zschj.xrcloud.net/support_docs/1JWD4oQgr6_1LnzoqVYwB.html' target="_blank">高防后源站IP暴露的解决方法</a></p>
+                        <p class='dp-bf'>如果源站暴露，请参考使用 <a href='https://www.xrcloud.net/support_docs/1JWD4oQgr6_1LnzoqVYwB.html' target="_blank">高防后源站IP暴露的解决方法</a></p>
                     </FormItem>
                  </Form>   
             </div>

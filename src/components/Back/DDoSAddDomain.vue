@@ -67,7 +67,7 @@
                   ></Input>
                   <p class="dp-bf">
                     如果源站暴露，请参考使用
-                    <a href="https://zschj.xrcloud.net/support_docs/1JWD4oQgr6_1LnzoqVYwB.html" target="_blank">高防后源站IP暴露的解决方法</a>
+                    <a href="https://www.xrcloud.net/support_docs/1JWD4oQgr6_1LnzoqVYwB.html" target="_blank">高防后源站IP暴露的解决方法</a>
                   </p>
                 </FormItem>
                 <FormItem label="证书ID" prop="id" v-if="certificateShow">
@@ -91,7 +91,7 @@
                 <p>记录值：xxxx.cdn30.com</p>
                 <p>
                   若您在新睿云购买的域名，点击跳转
-                  <a href="https://test-domain.xrcloud.net/xrdomain/domainGroup" target="_blank">域名解析</a>
+                  <a href="https://domain.xrcloud.net/xrdomain/domainGroup" target="_blank">域名解析</a>
                 </p>
               </div>
               <Table :columns="businessList" :data="businessData" style="margin-top:10px;"></Table>
