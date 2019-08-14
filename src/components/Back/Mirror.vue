@@ -54,7 +54,13 @@
               </Option>
             </Select>
           </FormItem>
-          <FormItem>
+          <FormItem v-if="$store.state.zone.gpuserver == 2">
+            <span style="color:#2A99F2;font-size:14px;padding-top:34px;">
+              <span style="font-weight:800;font-size:20px;">+</span>
+              <span style="cursor:pointer;" @click="$router.push('buy/ddos')">购买高防云主机</span>
+            </span>
+          </FormItem>
+          <FormItem v-else>
             <span style="color:#2A99F2;font-size:14px;padding-top:34px;">
               <span style="font-weight:800;font-size:20px;">+</span>
               <span style="cursor:pointer;" @click="$router.push('buy')">购买主机</span>
@@ -428,8 +434,8 @@
       closeHostList() {
         var vmcloselist = []
         this.hostName = []
-        this.$http.get(`information/listVirtualMachines.do`)
-          .then(response => {
+        if(this.$store.state.zone.gpuserver == 2){
+          this.$http.get(`information/listVirtualMachines.do`, {params: {computerType: 4}}).then(response => {
             if (response.status == 200 && response.data.status == 1) {
               if (response.data.result.close) {
                 vmcloselist = response.data.result.close.list
@@ -437,6 +443,17 @@
               this.hostName = vmcloselist
             }
           })
+        } else {
+          this.$http.get(`information/listVirtualMachines.do`)
+            .then(response => {
+              if (response.status == 200 && response.data.status == 1) {
+                if (response.data.result.close) {
+                  vmcloselist = response.data.result.close.list
+                }
+                this.hostName = vmcloselist
+              }
+            })
+        }
       },
       //查询已关闭GPU
       closeGpuList(){
