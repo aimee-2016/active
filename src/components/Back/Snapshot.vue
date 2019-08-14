@@ -6,7 +6,7 @@
         <div>{{loadingMessage}}</div>
       </Spin>
       <span class="title">云服务器 /
-         <span>云主机快照</span>
+         <span>云服务器快照</span>
       </span>
       <Alert type="warning" show-icon style="margin-bottom:10px" v-if="!auth">您尚未进行实名认证，只有认证用户才能对外提供服务，
         <router-link to="/userCenter">立即认证</router-link>
@@ -16,14 +16,14 @@
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#houtaiicon-ECSkuaizhao"></use>
           </svg>
-          <span id="title">云主机快照</span>
+          <span id="title">云服务器快照</span>
           <button id="refresh_button" @click="$router.go(0)" style="margin-top: 10px;">刷新</button>
         </div>
         <div class="universal-alert">
-          <p> 云主机快照能对主机（包含挂载磁盘）某个时刻的数据进行备份和回滚，云主机快照为增量备份，提升了云主机的安全性，同时增强了云主机快照的易用性。</p>
+          <p> 云服务器快照能对主机（包含挂载磁盘）某个时刻的数据进行备份和回滚，云服务器快照为增量备份，提升了云服务器的安全性，同时增强了云服务器快照的易用性。</p>
         </div>
         <Tabs type="card" :animated="false" style="min-height: 400px">
-          <TabPane label="云主机快照">
+          <TabPane label="云服务器快照">
             <div class="operator-bar">
               <Button type="primary" @click="createsnapshot()">制作快照</Button>
               <!-- <Button type="primary">制作快照策略</Button> -->
@@ -35,7 +35,7 @@
               <Page :total="total" :current="1" @on-change="currentChange"></Page>
             </div>
           </TabPane>
-          <TabPane label="云主机快照策略">
+          <TabPane label="云服务器快照策略">
             <div class="operator-bar">
               <Button type="primary" @click="createBackups()">创建备份策略</Button>
               <Button type="primary" @click="delStrategy">删除策略</Button>
@@ -89,7 +89,7 @@
             </RadioGroup>
           </div>
         </Form>
-        <p class="modal-text-hint-bottom">提示：云主机快照为每块磁盘提供<span>{{totalQuota }}个</span>快照额度，当某个主机的快照数量达到额度上限，在创建新的快照任务时，系统会删除由自动快照策略所生成的时间最早的自动快照点
+        <p class="modal-text-hint-bottom">提示：云服务器快照为每块磁盘提供<span>{{totalQuota }}个</span>快照额度，当某个主机的快照数量达到额度上限，在创建新的快照任务时，系统会删除由自动快照策略所生成的时间最早的自动快照点
         </p>
       </div>
       <div slot="footer" class="modal-footer-border">
@@ -152,7 +152,7 @@
             </RadioGroup>
           </div>
         </Form>
-        <p class="modal-text-hint-bottom">提示：云主机快照为每块磁盘提供<span class="bluetext">{{totalQuota }}个</span>快照额度，当某个主机的快照数量达到额度上限，在创建新的快照任务时，系统会删除由自动快照策略所生成的时间最早的自动快照点。您最多能创建<span
+        <p class="modal-text-hint-bottom">提示：云服务器快照为每块磁盘提供<span class="bluetext">{{totalQuota }}个</span>快照额度，当某个主机的快照数量达到额度上限，在创建新的快照任务时，系统会删除由自动快照策略所生成的时间最早的自动快照点。您最多能创建<span
           class="bluetext">3个</span>自动快照策略
         </p>
       </div>

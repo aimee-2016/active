@@ -16,12 +16,12 @@
           <button id="refresh_button" @click="$router.go(0)" style="margin-top: 10px;">刷新</button>
         </div>
         <div class="universal-alert">
-          <p>镜像是一个包含了软件及必要配置的云主机模板，至少包含操作系统，还可以包含应用软件（例如，数据库软件）和私有软件。通过镜像，您可以创建云主机。</p>
+          <p>镜像是一个包含了软件及必要配置的云服务器模板，至少包含操作系统，还可以包含应用软件（例如，数据库软件）和私有软件。通过镜像，您可以创建云服务器。</p>
         </div>
         <Tabs type="card" :animated="false" style="min-height: 400px" v-model="panselected">
           <TabPane label="系统镜像" name="system">
             <div class="operator-bar">
-              <Button type="primary" @click="createHostBySystem">以镜像创建主机</Button>
+              <Button type="primary" @click="createHostBySystem">以镜像创建服务器</Button>
             </div>
             <Table :columns="systemColumns" :data="systemData" class="table" @radio-change="selectChange"></Table>
           </TabPane>
@@ -57,7 +57,7 @@
           <FormItem v-if="$store.state.zone.gpuserver == 2">
             <span style="color:#2A99F2;font-size:14px;padding-top:34px;">
               <span style="font-weight:800;font-size:20px;">+</span>
-              <span style="cursor:pointer;" @click="$router.push('buy/ddos')">购买高防云主机</span>
+              <span style="cursor:pointer;" @click="$router.push('buy/ddos')">购买高防云服务器</span>
             </span>
           </FormItem>
           <FormItem v-else>

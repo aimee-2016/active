@@ -1007,7 +1007,7 @@
               }],
           }
         ],
-        // 热门云主机打折
+        // 热门云服务器打折
         hostProductHot: {
           zoneId: '',
           cpuMemory: {cpunum: '1', memory: '1'},
@@ -1573,7 +1573,7 @@
           }
         })
       },
-      //  秒杀活动云主机和GPU生成订单
+      //  秒杀活动云服务器和GPU生成订单
       getDiskcountMv(item, index) {
         if (!this.$store.state.userInfo) {
           this.showModal.notLoginModal = true
@@ -1631,7 +1631,7 @@
           }
         })
       },
-      // 云主机打折获取系统
+      // 云服务器打折获取系统
       setTemplateHost(zoneId) {
         axios.get('information/listTemplates.do', {
           params: {
@@ -1662,7 +1662,7 @@
           }
         })
       },
-      // 云主机打折提交订单
+      // 云服务器打折提交订单
       productBuy_host() {
         if (this.$store.state.userInfo == null) {
           this.showModal.notLoginModal = true

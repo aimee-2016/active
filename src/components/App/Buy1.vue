@@ -8,7 +8,7 @@
         <router-link :to="product.currentProduct" target="_blank">查看产品详情</router-link>
       </div>
       <div id="body">
-        <!--云主机div-->
+        <!--云服务器div-->
         <div id="Pecs" v-show="product.currentProduct=='Pecs'">
           <!--选择配置方式，快速配置、自定义配置-->
           <div style="height:60px;display: flex">
@@ -1605,12 +1605,12 @@
         // 产品类型及选中类型
         product: {
           currentProduct: 'Pecs',
-          productList: [{label: '云主机', value: 'Pecs'}, {label: '云硬盘', value: 'Pdisk'}, {
+          productList: [{label: '云服务器', value: 'Pecs'}, {label: '云硬盘', value: 'Pdisk'}, {
             label: '公网IP',
             value: 'Peip'
           }, {label: '数据库', value: 'Pdata'}]
         },
-        // 云主机信息对象
+        // 云服务器信息对象
         PecsInfo: {
           zone,
 
@@ -2562,7 +2562,7 @@
           this.PdataInfo.network = this.PecsInfo.networkList[0].ipsegmentid
         })
       },
-      // 查询云主机快速配置价格
+      // 查询云服务器快速配置价格
       queryQuick() {
         var params = {
           cpuNum: this.PecsInfo.currentSystem.kernel,
@@ -2940,7 +2940,7 @@
         }
         var obj = JSON.parse(JSON.stringify(this.PecsInfo))
         var prod = Object.assign({
-          typeName: '云主机',
+          typeName: '云服务器',
           zone: this.PecsInfo.zone,
           type: 'Pecs',
           customCost: this.totalCost,
@@ -2987,7 +2987,7 @@
 
         var obj = JSON.parse(JSON.stringify(this.PecsInfo))
         var prod = Object.assign({
-          typeName: '云主机',
+          typeName: '云服务器',
           zone: this.PecsInfo.zone,
           type: 'Pecs',
           customCost: this.totalCost,

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>云主机价格</h1>
+    <h1>云服务器价格</h1>
     <Table border :columns="columns" :data="data"></Table>
     <p class="zhushi">*主机价格说明：包年价格第一年原价，第二年价格为8.5折，第三价格7.5折*</p>
     <h1>公网IP价格</h1>

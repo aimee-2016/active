@@ -1,6 +1,6 @@
 <template>
   <div id="bhost">
-    <h1 id="hide-h1">云主机购买</h1>
+    <h1 id="hide-h1">云服务器购买</h1>
     <div id="Pecs">
       <!--选择配置方式，快速配置、自定义配置-->
       <div style="height:60px;display: flex">
@@ -575,7 +575,7 @@
   var debounce = require('throttle-debounce/debounce')
   export default {
     metaInfo: {
-      title: 'ecs云服务器租用价格 - 云主机购买 - 云服务器费用报价 - 购买 - 新睿云', // set a title
+      title: 'ecs云服务器租用价格 - 云服务器购买 - 云服务器费用报价 - 购买 - 新睿云', // set a title
       meta: [{                 // set meta
         name: 'robots',
         content: 'noindex,nofollow'
@@ -1081,7 +1081,7 @@
           }
         }
         let prod = {}
-        prod.typeName = '云主机'
+        prod.typeName = '云服务器'
         prod.zone = this.zone
         prod.timeForm = this.timeForm
         prod.customMirror = this.customMirror

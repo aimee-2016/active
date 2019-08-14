@@ -149,18 +149,18 @@
       </div>
     </Modal>
 
-    <!-- 为云主机绑定弹性IP -->
+    <!-- 为云服务器绑定弹性IP -->
     <Modal v-model="showModal.bindIPForHost" width="550" :scrollable="true">
       <p slot="header" class="modal-header-border">
         <span class="universal-modal-title">绑定弹性IP</span>
       </p>
       <div class="universal-modal-content-flex">
-        <p style="font-size: 12px;color: #666666;margin-bottom:20px;">您正为弹性IP<span style="color: #2A99F2 ;">{{bindForHostForm.row.publicip}}</span>绑定云主机。
+        <p style="font-size: 12px;color: #666666;margin-bottom:20px;">您正为弹性IP<span style="color: #2A99F2 ;">{{bindForHostForm.row.publicip}}</span>绑定云服务器。
         </p>
         <!-- <Icon type="ios-help-outline"></Icon> -->
         <Form :model="bindForHostForm" :rules="bindForHostRuleValidate" ref="bindForHostFormValidate">
-          <FormItem label="选择云主机" prop="host">
-            <Select v-model="bindForHostForm.host" placeholder="云主机名称">
+          <FormItem label="选择云服务器" prop="host">
+            <Select v-model="bindForHostForm.host" placeholder="云服务器名称">
               <Option v-for="(item,index) in bindForHostForm.hostOptions" :key="index" :value="item.computerid">
                 {{item.computername}}
               </Option>
@@ -183,12 +183,12 @@
         <span class="universal-modal-title">绑定弹性IP</span>
       </p>
       <div class="universal-modal-content-flex">
-        <p style="font-size: 12px;color: #666666;margin-bottom:20px;">您正为弹性IP<span style="color: #2A99F2 ;">{{bindForDdosHostForm.row.publicip}}</span>绑定云主机。
+        <p style="font-size: 12px;color: #666666;margin-bottom:20px;">您正为弹性IP<span style="color: #2A99F2 ;">{{bindForDdosHostForm.row.publicip}}</span>绑定云服务器。
         </p>
         <!-- <Icon type="ios-help-outline"></Icon> -->
         <Form :model="bindForDdosHostForm" :rules="bindForDdosHostRuleValidate" ref="bindForDdosHostFormValidate">
-          <FormItem label="选择云主机" prop="host">
-            <Select v-model="bindForDdosHostForm.host" placeholder="云主机名称">
+          <FormItem label="选择云服务器" prop="host">
+            <Select v-model="bindForDdosHostForm.host" placeholder="云服务器名称">
               <Option v-for="(item,index) in bindForDdosHostForm.hostOptions" :key="index" :value="item.computerid">
                 {{item.computername}}
               </Option>
@@ -305,7 +305,7 @@
           </Form-item>
           <FormItem label="是否同时变更绑定主机与NAT网关:" style="width: 80%;margin-bottom: 0" v-if="chargesHost || chargesNAT">
             <CheckboxGroup v-model="chargesOther">
-              <Checkbox label="变更关联云主机" v-if="chargesHost"></Checkbox>
+              <Checkbox label="变更关联云服务器" v-if="chargesHost"></Checkbox>
               <Checkbox label="变更关联NAT网关" v-if="chargesNAT"></Checkbox>
             </CheckboxGroup>
           </FormItem>
@@ -378,7 +378,7 @@
           </div>
           <FormItem label="是否同时续费绑定主机与NAT网关:" style="width: 80%;margin-bottom: 0" v-if="renewalHost || renewalNAT">
             <CheckboxGroup v-model="renewalOther">
-              <Checkbox label="续费关联云主机" v-if="renewalHost"></Checkbox>
+              <Checkbox label="续费关联云服务器" v-if="renewalHost"></Checkbox>
               <Checkbox label="续费关联NAT网关" v-if="renewalNAT"></Checkbox>
               <Checkbox label="续费关联GPU云服务器" v-if="renewalGpu"></Checkbox>
             </CheckboxGroup>
@@ -394,7 +394,7 @@
         <Button type="primary" @click="renewOk" :disabled="renewalTime==''">确认续费</Button>
       </div>
     </Modal>
-    <!-- 续费高防云主机IPmodal -->
+    <!-- 续费高防云服务器IPmodal -->
     <Modal
       v-model="showModal.renewDdos"
       width="550"
@@ -433,9 +433,9 @@
               <li><span>到期时间：</span>{{renewalDdosInfo.endTime}}</li>
             </ul>
           </div>
-          <FormItem label="是否同时续费绑定高防云主机与NAT网关:" style="width: 80%;margin-bottom: 0" v-if="renewalDdosHost || renewalDdosNAT">
+          <FormItem label="是否同时续费绑定高防云服务器与NAT网关:" style="width: 80%;margin-bottom: 0" v-if="renewalDdosHost || renewalDdosNAT">
             <CheckboxGroup v-model="renewalDdosOther">
-              <Checkbox label="续费关联高防云主机" v-if="renewalDdosHost"></Checkbox>
+              <Checkbox label="续费关联高防云服务器" v-if="renewalDdosHost"></Checkbox>
               <Checkbox label="续费关联NAT网关" v-if="renewalDdosNAT"></Checkbox>
             </CheckboxGroup>
           </FormItem>
@@ -765,7 +765,7 @@
                               if (response.data.result[0].attachComputer.length !== 0) {
                                 this.renewalDdosHostID = response.data.result[0].attachComputer[0].id
                                 this.renewalDdosHost = true
-                                this.renewalDdosOther = ['续费关联高防云主机']
+                                this.renewalDdosOther = ['续费关联高防云服务器']
                               }
                               if (response.data.result[0].attachNat.length !== 0) {
                                 this.renewalDdosNATID = response.data.result[0].attachNat[0].id
@@ -969,7 +969,7 @@
                     style: {
                         display: this.hide == 0 ? 'block' : 'none'
                       },
-                  }, '云主机'),
+                  }, '云服务器'),
                     h('DropdownItem', {
                       attrs: {
                         name: 'gpu'
@@ -1071,13 +1071,13 @@
           {name: '800GB', value: 800}
         ],
         customProtectSecIndex: {name: '', value: 0},
-        // 绑定IP到云主机表单
+        // 绑定IP到云服务器表单
         bindForHostForm: {
           host: '',
           hostOptions: [],
           row: {}
         },
-        // 绑定IP到高防云主机
+        // 绑定IP到高防云服务器
         bindForDdosHostForm: {
           host: '',
           hostOptions: '',
@@ -1088,16 +1088,16 @@
           gpuOptions: [],
           row: {}
         },
-        // 绑定IP到云主机表单校验
+        // 绑定IP到云服务器表单校验
         bindForHostRuleValidate: {
           host: [
-            {required: true, message: '请选择一个云主机', trigger: 'change'}
+            {required: true, message: '请选择一个云服务器', trigger: 'change'}
           ]
         },
-        // 绑定IP到高防云主机
+        // 绑定IP到高防云服务器
         bindForDdosHostRuleValidate: {
           host: [
-            {required: true, message: '请选择一个云主机', trigger: 'change'}
+            {required: true, message: '请选择一个云服务器', trigger: 'change'}
           ]
         },
         // 绑定IP到NAT表单
@@ -1498,14 +1498,14 @@
               }
             })
       },
-      // 打开绑定IP到云主机模态框
+      // 打开绑定IP到云服务器模态框
       openBindIPModal(type, row, id) {
         this.operatingId = id
         this.bindForHostForm.hostOptions = []
         if (type == 'host') {
           this.bindForHostForm.row = row
           this.showModal.bindIPForHost = true
-          // 获取所有能绑定弹性IP的云主机
+          // 获取所有能绑定弹性IP的云服务器
           this.$http.get('information/listVirtualMachines.do', {
             params: {
               vpcId: row.vpcid,
@@ -1605,7 +1605,7 @@
           })
         }
       },
-      // 绑定弹性IP到云主机
+      // 绑定弹性IP到云服务器
       bindHostSubmit() {
         this.$refs.bindForHostFormValidate.validate(validate => {
           if (validate) {
@@ -1644,7 +1644,7 @@
         })
         this.$refs.bindForHostFormValidate.resetFields();
       },
-      // 绑定弹性到高防云主机
+      // 绑定弹性到高防云服务器
       bindDdosHostSubmit () {
         this.$refs.bindForDdosHostFormValidate.validate(validate => {
           if (validate) {
@@ -1942,7 +1942,7 @@
               if (response.data.result[0].attachComputer.length !== 0) {
                 this.chargesHostID = response.data.result[0].attachComputer[0].id
                 this.chargesHost = true
-                this.chargesOther = ['变更关联云主机']
+                this.chargesOther = ['变更关联云服务器']
               }
               if (response.data.result[0].attachNat.length !== 0) {
                 this.chargesNATID = response.data.result[0].attachNat[0].id
@@ -1959,7 +1959,7 @@
       },
       chargesOK() {
         let list = []
-        if (this.chargesOther[0] == '变更关联云主机') {
+        if (this.chargesOther[0] == '变更关联云服务器') {
           list = [{
             type: 2,
             id: this.select[0].id
@@ -2029,7 +2029,7 @@
             if (response.data.result[0].attachComputer.length !== 0) {
               this.renewalHostID = response.data.result[0].attachComputer[0].id
               this.renewalHost = true
-              this.renewalOther = ['续费关联云主机']
+              this.renewalOther = ['续费关联云服务器']
             }
             if (response.data.result[0].attachNat.length !== 0) {
               this.renewalNATID = response.data.result[0].attachNat[0].id
@@ -2065,7 +2065,7 @@
             if (response.data.result[0].attachComputer.length !== 0) {
               this.renewalDdosHostID = response.data.result[0].attachComputer[0].id
               this.renewalDdosHost = true
-              this.renewalDdosOther = ['续费关联高防云主机']
+              this.renewalDdosOther = ['续费关联高防云服务器']
             }
             if (response.data.result[0].attachNat.length !== 0) {
               this.renewalDdosNATID = response.data.result[0].attachNat[0].id
@@ -2098,7 +2098,7 @@
       queryChargePrice() {
         if (this.chargesOther.length != 0) {
           let params = {}
-          let hostArr = this.chargesOther[0] == '变更关联云主机' ? this.chargesHostID : ''
+          let hostArr = this.chargesOther[0] == '变更关联云服务器' ? this.chargesHostID : ''
           let natArr = this.chargesOther[0] == '变更关联NAT网关' ? this.chargesNATID : ''
           params = {
             timeValue: this.chargesForm.timeValue,
@@ -2152,7 +2152,7 @@
       },
       renewOk() {
         let list = []
-        if (this.renewalOther[0] == '续费关联云主机') {
+        if (this.renewalOther[0] == '续费关联云服务器') {
           list = [{
             type: 2,
             id: this.currentIp
@@ -2190,7 +2190,7 @@
       },
       renewDdosOk() {
         let list = []
-        if (this.renewalDdosOther[0] == '续费关联高防云主机') {
+        if (this.renewalDdosOther[0] == '续费关联高防云服务器') {
           list = [{
             type: 2,
             id: this.currentDdosIp
@@ -2313,7 +2313,7 @@
           this.renewalTotalCost = '--'
           this.renewalOriginalCost = '--'
         } else {
-          let hostArr = this.renewalOther[0] == '续费关联云主机' ? this.renewalHostID : ''
+          let hostArr = this.renewalOther[0] == '续费关联云服务器' ? this.renewalHostID : ''
           let natArr = this.renewalOther[0] == '续费关联NAT网关' ? this.renewalNATID : ''
           this.$http.get('information/getYjPrice.do', {
             params: {
@@ -2344,7 +2344,7 @@
           this.renewalDdosTotalCost = '--'
           this.renewalDdosOriginalCost = '--'
         } else {
-          let hostArr = this.renewalDdosOther[0] == '续费关联高防云主机' ? this.renewalDdosHostID : ''
+          let hostArr = this.renewalDdosOther[0] == '续费关联高防云服务器' ? this.renewalDdosHostID : ''
           let natArr = this.renewalDdosOther[0] == '续费关联NAT网关' ? this.renewalDdosNATID : ''
           this.$http.get('information/getYjPrice.do', {
             params: {
@@ -2371,7 +2371,7 @@
       // 监听续费关联
       renewalOther() {
         if (this.renewalTime != '') {
-          if (this.renewalOther[0] == '续费关联云主机') {
+          if (this.renewalOther[0] == '续费关联云服务器') {
             let url = 'information/getYjPrice.do'
             this.$http.get(url, {
               params: {
@@ -2441,7 +2441,7 @@
       },
       chargesOther() {
         if (this.chargesForm.timeValue != '') {
-          if (this.chargesOther[0] == '变更关联云主机') {
+          if (this.chargesOther[0] == '变更关联云服务器') {
             let url = 'information/getYjPrice.do'
             this.$http.get(url, {
               params: {

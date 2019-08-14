@@ -8,7 +8,7 @@
         <Menu :open-names="['1','2','3']" @on-select="push" :active-name="activeName">
           <Submenu name="1">
             <template slot="title">
-              弹性云主机
+              弹性云服务器
             </template>
             <Menu-item name="1-1">产品描述</Menu-item>
           </Submenu>
@@ -25,29 +25,29 @@
             <template slot="title">
               购买指南
             </template>
-            <Menu-item name="3-1">云主机价格</Menu-item>
+            <Menu-item name="3-1">云服务器价格</Menu-item>
             <Menu-item name="3-2">购买方式</Menu-item>
-            <Menu-item name="3-3">云主机计费模式</Menu-item>
+            <Menu-item name="3-3">云服务器计费模式</Menu-item>
             <Menu-item name="3-4">选型参考</Menu-item>
           </Submenu>
           <Submenu name="4">
             <template slot="title">
               控制台使用说明
             </template>
-            <Menu-item name="4-1">新增云主机</Menu-item>
-            <Menu-item name="4-2">连接云主机</Menu-item>
-            <Menu-item name="4-3">启动/关闭云主机</Menu-item>
-            <Menu-item name="4-5">重启云主机</Menu-item>
-            <Menu-item name="4-6">监控云主机</Menu-item>
+            <Menu-item name="4-1">新增云服务器</Menu-item>
+            <Menu-item name="4-2">连接云服务器</Menu-item>
+            <Menu-item name="4-3">启动/关闭云服务器</Menu-item>
+            <Menu-item name="4-5">重启云服务器</Menu-item>
+            <Menu-item name="4-6">监控云服务器</Menu-item>
             <!--Menu-item name="4-7">修改主机名称</Menu-item-->
             <Menu-item name="4-8">重置主机密码</Menu-item>
-            <Menu-item name="4-9">重装云主机</Menu-item>
+            <Menu-item name="4-9">重装云服务器</Menu-item>
             <Menu-item name="4-10">制作快照</Menu-item>
             <Menu-item name="4-11">回滚快照</Menu-item>
             <Menu-item name="4-12">升级主机配置</Menu-item>
-            <Menu-item name="4-13">升级云主机宽带</Menu-item>
+            <Menu-item name="4-13">升级云服务器宽带</Menu-item>
             <!--Menu-item name="4-14">防火墙管理</Menu-item-->
-            <Menu-item name="4-15">续费云主机</Menu-item>
+            <Menu-item name="4-15">续费云服务器</Menu-item>
             <!--Menu-item name="4-16">更改计费方式</Menu-item-->
             <Menu-item name="4-17">查看账户余额</Menu-item>
             <Menu-item name="4-18">修改登录密码</Menu-item>
@@ -57,7 +57,7 @@
             <template slot="title">
               常见问题
             </template>
-            <Menu-item name="5-1">云主机服务管理常见问题</Menu-item>
+            <Menu-item name="5-1">云服务器服务管理常见问题</Menu-item>
             <Menu-item name="5-2">云服务器配置调整</Menu-item>
           </Submenu>
           <!--Submenu name="6">

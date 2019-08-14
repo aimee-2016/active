@@ -148,10 +148,10 @@
 
   export default {
     metaInfo: {
-      title: 'ecs弹性云服务器 - ecs云主机租用  - 云计算 - 新睿云', // set a title
+      title: 'ecs弹性云服务器 - ecs云服务器租用  - 云计算 - 新睿云', // set a title
       meta: [{                 // set meta
         name: 'keywords',
-        content: 'ecs,云服务器ecs,ecs服务器,ecs云服务器,弹性云服务器,云服务器ecs租用,云主机ecs,ecs云主机'
+        content: 'ecs,云服务器ecs,ecs服务器,ecs云服务器,弹性云服务器,云服务器ecs租用,云服务器ecs,ecs云服务器'
       },
         {                 // set meta
           name: 'description',
@@ -295,13 +295,13 @@
           {
             img: 'icon-danxingyunfuwuqiECS',
             title: '云服务器',
-            desc: '云主机是一种可以根据需求随时改变处理能力并且按照实际使用量来计费的计算服务。',
+            desc: '云服务器是一种可以根据需求随时改变处理能力并且按照实际使用量来计费的计算服务。',
             path: '/ecs/'
           },
           {
             img: 'icon-xunisiyouyunVPC',
             title: '虚拟私有云VPC',
-            desc: 'VPC（Virtual Private Cloud）是一个用户定义的虚拟网络，云主机可以放置在其中...',
+            desc: 'VPC（Virtual Private Cloud）是一个用户定义的虚拟网络，云服务器可以放置在其中...',
             path: '/vpc/'
           },
           {

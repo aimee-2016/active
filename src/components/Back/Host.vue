@@ -2,7 +2,7 @@
   <div id="background">
     <div id="wrapper">
       <span class="title">云服务器 /
-         <span>云主机</span>
+         <span>云服务器</span>
       </span>
       <Alert type="warning" show-icon style="margin-bottom:10px" v-if="!auth">您尚未进行实名认证，只有认证用户才能对外提供服务，
         <router-link to="/userCenter">立即认证</router-link>
@@ -12,11 +12,11 @@
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#houtaiicon-danxingyunfuwuqiECS"></use>
           </svg>
-          <span id="title">云主机</span>
+          <span id="title">云服务器</span>
           <button id="refresh_button" @click="$router.go(0)" style="margin-top: 10px;">刷新</button>
         </div>
         <div class="universal-alert">
-          <p>云主机是一台配置好了的服务器，它有您期望的硬件配置、操作系统和网络配置。XRcloud为您提供的云主机具有安全、弹性、高性能等特点。</p>
+          <p>云服务器是一台配置好了的服务器，它有您期望的硬件配置、操作系统和网络配置。XRcloud为您提供的云服务器具有安全、弹性、高性能等特点。</p>
         </div>
         <div class="operator-bar">
           <Button type="primary" @click="startUp">一键启动</Button>
@@ -235,7 +235,7 @@
                   </Card>
                 </div>
                 <div v-if="errorHost.length==0" class="logo">
-                  <span>您的云主机很健康，请继续保持哦</span>
+                  <span>您的云服务器很健康，请继续保持哦</span>
                 </div>
               </div>
             </Tab-pane>
@@ -268,7 +268,7 @@
                   </Card>
                 </div>
                 <div v-if="arrearsHost.length==0" class="logo">
-                  <span style="left:60px">暂无欠费云主机</span>
+                  <span style="left:60px">暂无欠费云服务器</span>
                 </div>
               </div>
             </Tab-pane>
@@ -331,7 +331,7 @@
                 </div>
 
                 <div v-if="closeHost.length==0" class="logo">
-                  <span style="left:60px">暂无关机云主机</span>
+                  <span style="left:60px">暂无关机云服务器</span>
                 </div>
               </div>
             </Tab-pane>
@@ -370,7 +370,7 @@
             </RadioGroup>
           </div>
         </Form>
-        <p class="modal-text-hint-bottom">提示：云主机快照为每块磁盘提供<span>8个</span>快照额度，当某个主机的快照数量达到额度上限，在创建新的快照任务时，系统会删除由自动快照策略所生成的时间最早的自动快照点
+        <p class="modal-text-hint-bottom">提示：云服务器快照为每块磁盘提供<span>8个</span>快照额度，当某个主机的快照数量达到额度上限，在创建新的快照任务时，系统会删除由自动快照策略所生成的时间最早的自动快照点
         </p>
       </div>
       <div slot="footer" class="modal-footer-border">
@@ -1265,7 +1265,7 @@
             if (valid) {
               this.showModal.bindIP = false
               this.$Message.info({
-                content: `<span style="color:#2A99F2">${this.currentHost[0].computername}</span>云主机,正在绑定公网IP`
+                content: `<span style="color:#2A99F2">${this.currentHost[0].computername}</span>云服务器,正在绑定公网IP`
               })
               this.$http.get('network/enableStaticNat.do', {
                 params: {
@@ -1289,7 +1289,7 @@
       unbind() {
         if (this.checkSelect()) {
           this.$Message.info({
-            content: `<span style="color:#2A99F2">${this.currentHost[0].computername}</span>云主机,正在解绑公网IP`
+            content: `<span style="color:#2A99F2">${this.currentHost[0].computername}</span>云服务器,正在解绑公网IP`
           })
           this.$http.get('network/disableStaticNat.do', {
             params: {
@@ -1372,7 +1372,7 @@
               if (this.currentHost[0].caseType == 3) {
                 this.ratesChange()
               } else {
-                this.$Message.info('请选择实时计费的云主机进行资费变更')
+                this.$Message.info('请选择实时计费的云服务器进行资费变更')
               }
             }
             break
@@ -1387,7 +1387,7 @@
                 }
                 this.renewType()
               } else {
-                this.$Message.info('请选择包年包月的云主机进行续费')
+                this.$Message.info('请选择包年包月的云服务器进行续费')
               }
             }
             break

@@ -82,7 +82,7 @@
             </RadioGroup>
           </div>
         </Form>
-        <p class="modal-text-hint-bottom">提示：云主机快照为每块磁盘提供<span>8个</span>快照额度，当某个主机的快照数量达到额度上限，在创建新的快照任务时，系统会删除由自动快照策略所生成的时间最早的自动快照点
+        <p class="modal-text-hint-bottom">提示：云服务器快照为每块磁盘提供<span>8个</span>快照额度，当某个主机的快照数量达到额度上限，在创建新的快照任务时，系统会删除由自动快照策略所生成的时间最早的自动快照点
         </p>
       </div>
       <div slot="footer" class="modal-footer-border">
@@ -723,7 +723,7 @@
                               //   this.$Message.info('主机续费需要关闭主机')
                               // }
                               if(params.row.caseType != 3){
-                                this.$Message.info('请选择实时计费的云主机进行资费变更');
+                                this.$Message.info('请选择实时计费的云服务器进行资费变更');
                                 return
                               }
                               this.VMId = params.row.id;

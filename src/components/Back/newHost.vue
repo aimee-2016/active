@@ -2,7 +2,7 @@
   <div id="background">
     <div id="wrapper">
       <span class="title">云服务器 /
-         <span>云主机</span>
+         <span>云服务器</span>
       </span>
       <Alert type="warning" show-icon style="margin-bottom:10px" v-if="!auth">您尚未进行实名认证，只有认证用户才能对外提供服务，
         <router-link to="/userCenter">立即认证</router-link>
@@ -12,11 +12,11 @@
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#houtaiicon-danxingyunfuwuqiECS"></use>
           </svg>
-          <span id="title">云主机</span>
+          <span id="title">云服务器</span>
           <button id="refresh_button" @click="$router.go(0)" style="margin-top: 10px;">刷新</button>
         </div>
         <div class="universal-alert">
-          <p>云主机是一台配置好了的服务器，它有您期望的硬件配置、操作系统和网络配置。XRcloud为您提供的云主机具有安全、弹性、高性能等特点。</p>
+          <p>云服务器是一台配置好了的服务器，它有您期望的硬件配置、操作系统和网络配置。XRcloud为您提供的云服务器具有安全、弹性、高性能等特点。</p>
         </div>
         <div class="operator-bar" style="position: relative">
           <Button type="primary" @click="$router.push('/buy/host/')">+ 创建</Button>
@@ -128,7 +128,7 @@
     <!-- 监控信息 -->
     <div class="monitor" ref="monitor">
       <div class="title">
-        <span>{{ monitorName }}云主机监控图表</span>
+        <span>{{ monitorName }}云服务器监控图表</span>
         <div @click="closeMonitor">
           <Icon type="close" style="font-size: 18px;cursor: pointer"></Icon>
         </div>
@@ -441,7 +441,7 @@
             </RadioGroup>
           </div>
         </Form>
-        <p class="modal-text-hint-bottom">提示：云主机快照为每块磁盘提供<span>{{ totalQuota }}个</span>快照额度，当某个主机的快照数量达到额度上限，在创建新的快照任务时，系统会删除由自动快照策略所生成的时间最早的自动快照点
+        <p class="modal-text-hint-bottom">提示：云服务器快照为每块磁盘提供<span>{{ totalQuota }}个</span>快照额度，当某个主机的快照数量达到额度上限，在创建新的快照任务时，系统会删除由自动快照策略所生成的时间最早的自动快照点
         </p>
       </div>
       <div slot="footer" class="modal-footer-border">
@@ -2307,7 +2307,7 @@
               })
               this.showModal.bindIP = false
               this.$Message.info({
-                content: `<span style="color:#2A99F2">${this.hostCurrentSelected.computername}</span>云主机,正在绑定公网IP`
+                content: `<span style="color:#2A99F2">${this.hostCurrentSelected.computername}</span>云服务器,正在绑定公网IP`
               })
               this.$http.get('network/enableStaticNat.do', {
                 params: {
@@ -2636,7 +2636,7 @@
         })
         this.showModal.unbindIP = false
         this.$Message.info({
-          content: `<span style="color:#2A99F2">${this.hostCurrentSelected.computername}</span>云主机,正在解绑公网IP`
+          content: `<span style="color:#2A99F2">${this.hostCurrentSelected.computername}</span>云服务器,正在解绑公网IP`
         })
         this.$http.get('network/disableStaticNat.do', {
           params: {
@@ -2780,11 +2780,11 @@
             this.guideStep = 2
           } else {
             this.guideStep = 0
-            this.$Message.info('您还没有正常状态的云主机，无法查看指引提示，请先创建主机')
+            this.$Message.info('您还没有正常状态的云服务器，无法查看指引提示，请先请先创建服务器')
           }
         } else {
           this.guideStep = 0
-          this.$Message.info('您还没有云主机，无法查看指引提示，请先创建主机')
+          this.$Message.info('您还没有云服务器，无法查看指引提示，请先请先创建服务器')
         }
       },
       hintToManage() {

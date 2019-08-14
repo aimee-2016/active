@@ -114,7 +114,7 @@
               value: ''
             },
             {
-              questDesc: '您使用云主机相关产品多久？',
+              questDesc: '您使用云服务器相关产品多久？',
               answers: [
                 {key: 'a', value: '初步了解'},
                 {key: 'b', value: '使用一段时间'},
@@ -126,7 +126,7 @@
           // 多选
           checkBox: [
             {
-              questDesc: '您使用云主机的原因是什么？',
+              questDesc: '您使用云服务器的原因是什么？',
               answers: [
                 {key: 'a', value: '提高工作效率'},
                 {key: 'b', value: '减少软硬件成本'},
@@ -136,9 +136,9 @@
               select: []
             },
             {
-              questDesc: '您最看重云主机的哪些方面？',
+              questDesc: '您最看重云服务器的哪些方面？',
               answers: [
-                {key: 'a', value: '云主机性能'},
+                {key: 'a', value: '云服务器性能'},
                 {key: 'b', value: '价格'},
                 {key: 'c', value: '数据安全'},
                 {key: 'd', value: '操作方便'},
@@ -147,7 +147,7 @@
               select: []
             },
             {
-              questDesc: '您想要在云主机上部署什么应用？',
+              questDesc: '您想要在云服务器上部署什么应用？',
               answers: [
                 {key: 'a', value: '数据存储'},
                 {key: 'b', value: '应用程序'},
@@ -160,7 +160,7 @@
             {
               questDesc: '如果您把业务布置在新睿云，您最担心什么？',
               answers: [
-                {key: 'a', value: '云主机性能'},
+                {key: 'a', value: '云服务器性能'},
                 {key: 'b', value: '成本'},
                 {key: 'c', value: '安全性'},
                 {key: 'd', value: '客户服务'},
@@ -181,7 +181,7 @@
           ],
           text: [
             {
-              questDesc: '云主机操作系统有什么不便？',
+              questDesc: '云服务器操作系统有什么不便？',
               answer: ''
             },
             {

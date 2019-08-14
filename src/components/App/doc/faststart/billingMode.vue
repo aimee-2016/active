@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>云主机计费方式</h1>
+    <h1>云服务器计费方式</h1>
     <Table border :columns="columns" :data="data"></Table>
   </div>
 </template>

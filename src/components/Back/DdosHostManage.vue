@@ -2,7 +2,7 @@
   <div id="background">
     <div id="wrapper">
       <span class="title">云服务器 /
-         <span>高防云主机 / </span>
+         <span>高防云服务器 / </span>
         <span>管理</span>
       </span>
       <Alert type="warning" show-icon style="margin-bottom:10px" v-if="!auth">您尚未进行实名认证，只有认证用户才能对外提供服务，

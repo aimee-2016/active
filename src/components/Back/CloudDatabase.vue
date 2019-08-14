@@ -115,7 +115,7 @@
             </RadioGroup>
           </div>
         </Form> -->
-        <p class="modal-text-hint-bottom">提示：云主机备份为每块磁盘提供<span>8个</span>备份额度，当某个主机的备份数量达到额度上限，在创建新的备份任务时，系统会删除由自动备份策略所生成的时间最早的自动备份点
+        <p class="modal-text-hint-bottom">提示：云服务器备份为每块磁盘提供<span>8个</span>备份额度，当某个主机的备份数量达到额度上限，在创建新的备份任务时，系统会删除由自动备份策略所生成的时间最早的自动备份点
         </p>
       </div>
       <div slot="footer" class="modal-footer-border">

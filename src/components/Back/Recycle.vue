@@ -29,7 +29,7 @@
                   <Table :columns="columns" :data="allList" @on-selection-change="selectionChange"></Table>
                 </div>
               </Tab-pane>
-              <Tab-pane label="云主机" name="云主机">
+              <Tab-pane label="云服务器" name="云服务器">
                 <div class="all">
                   <Table :columns="columns" :data="hostList" @on-selection-change="selectionChange"></Table>
                 </div>
@@ -217,7 +217,7 @@
           case '全部':
             this.allSelection = selections
             break
-          case '云主机':
+          case '云服务器':
             this.hostSelection = selections
             break
           case '弹性IP':
@@ -253,7 +253,7 @@
           case '全部':
             operatingList = this.allSelection
             break
-          case '云主机':
+          case '云服务器':
             operatingList = this.hostSelection
             break
           case '弹性IP':
@@ -316,7 +316,7 @@
           case '全部':
             operatingList = this.allSelection
             break
-          case '云主机':
+          case '云服务器':
             operatingList = this.hostSelection
             break
           case '弹性IP':
