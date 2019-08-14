@@ -18,7 +18,7 @@
           </Steps>
           <div v-if="unfreezeStep === 0">
             <div class="unfreeze-hint">
-            <p><span class="blod">温馨提醒</span>：感谢您使用新睿云云服务器免费活动主机，本活动可支持  <span class="blue" @click="ToRenew">保证金一键转续费 </span>功能：<span>69元</span>保证金可<span>续费一个月</span>,
+            <p><span class="blod">温馨提醒</span>：感谢您使用新睿云云服务器免费活动云服务器，本活动可支持  <span class="blue" @click="ToRenew">保证金一键转续费 </span>功能：<span>69元</span>保证金可<span>续费一个月</span>,
             <span>569元</span>保证金可<span>续费一年</span>，操作简单方便，性价比超高，爆款云服务器等您继续使用！<span class="blue"  @click="ToRenew">立即续费 </span></p>
             </div>
             <p class="title">请问您退保证金的原因是什么？（可多选）</p>
@@ -594,7 +594,7 @@
     created() {
       this.unfreezeId = sessionStorage.getItem('unfreezeId')
       this.getQuestionnaire()
-      // 如果从主机页面过来，则是主机押金转续费
+      // 如果从云服务器页面过来，则是云服务器押金转续费
       if(this.$route.query.from){
         this.ToRenew()
       }

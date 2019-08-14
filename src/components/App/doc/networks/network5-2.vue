@@ -8,8 +8,8 @@
         <img src="../../../../assets/img/doc/networks/networks-img11.png" alt="添加私有网络"></li>
       <li>点击确定完成创建；
       </li>
-      <li>点击“创建主机”在私有网络中选择之前新建的私有网络</li>
-      <li>等待主机创建完成，为私有网络添加主机完成<br>
+      <li>点击“创建云服务器”在私有网络中选择之前新建的私有网络</li>
+      <li>等待云服务器创建完成，为私有网络添加云服务器完成<br>
         <img src="../../../../assets/img/doc/networks/networks-img12.png" alt="选择网络"></li>
     </ol>
   </div>

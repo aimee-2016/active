@@ -1,6 +1,6 @@
 <template>
   <div id="bhost">
-    <h1 id="hide-h1">DDoS高防护主机</h1>
+    <h1 id="hide-h1">DDoS高防护云服务器</h1>
     <div id="Pecs" class="ddos">
       <!--选择配置方式，快速配置、自定义配置-->
       <div style="height:60px;display: flex">
@@ -24,9 +24,9 @@
         </div>
         <!--快速配置主体页面-->
         <div v-show="createType=='fast'">
-          <!--主机规格选择-->
+          <!--云服务器规格选择-->
           <div style="border-bottom: 1px solid #EDEDED;margin-top: 20px;padding-bottom: 20px">
-            <h2>主机规格选择</h2>
+            <h2>云服务器规格选择</h2>
             <!--镜像选择-->
             <div class="item-wrapper">
               <div style="display: flex;">
@@ -110,9 +110,9 @@
         </div>
         <div v-show="createType=='custom'">
           <div>
-            <!--主机规格选择-->
+            <!--云服务器规格选择-->
             <div style="border-bottom: 1px solid #EDEDED;margin-top: 20px;padding-bottom: 20px">
-              <h2>主机规格选择</h2>
+              <h2>云服务器规格选择</h2>
               <div class="item-wrapper">
                 <div style="display: flex">
                   <div>
@@ -456,7 +456,7 @@
                   <div>
                     <p><span style="color:#2A99F2;cursor:pointer" @click="pushDisk">添加数据盘</span>
                       您还可以添加{{remainDisk}}块数据盘</p>
-                    <div class="tipsWorm">提示：创建完成后，须到主机设置里进行扩容才能使用，详细操作请参照 <a href="/support/products/">数据盘扩容文档</a></div>
+                    <div class="tipsWorm">提示：创建完成后，须到云服务器设置里进行扩容才能使用，详细操作请参照 <a href="/support/products/">数据盘扩容文档</a></div>
                   </div>
                 </div>
               </div>
@@ -481,9 +481,9 @@
             <div class="item-wrapper">
               <div style="display: flex">
                 <div>
-                  <p class="item-title" style="margin-top: 5px">主机名称</p>
+                  <p class="item-title" style="margin-top: 5px">云服务器名称</p>
                 </div>
-                <Input v-model="computerName" :maxlength="16" placeholder="请输入1-16位主机名称，可包含字母与数字" style="width: 300px"
+                <Input v-model="computerName" :maxlength="16" placeholder="请输入1-16位云服务器名称，可包含字母与数字" style="width: 300px"
                        @on-change="computerNameWarning=''"></Input>
                 <span style="line-height: 32px;color:red;margin-left:10px">{{computerNameWarning}}</span>
               </div>
@@ -499,7 +499,7 @@
             <div class="item-wrapper">
               <div style="display: flex">
                 <div>
-                  <p class="item-title" style="margin-top: 5px">主机密码</p>
+                  <p class="item-title" style="margin-top: 5px">云服务器密码</p>
                 </div>
                 <Input v-model="password" placeholder="请输入至少8位包含大小写与数字的密码"
                        style="width: 300px" :maxlength="30" @on-change="passwordWarning=''"  @on-focus="passwordForm.passwordHint = true" @on-blur="passwordForm.passwordHint = false"></Input>
@@ -632,7 +632,7 @@
   var debounce = require('throttle-debounce/debounce')
   export default {
     metaInfo: {
-      title: 'ecs云服务器租用价格 - 高防主机购买 - 高防主机费用报价 - 购买 - 新睿云', // set a title
+      title: 'ecs云服务器租用价格 - 高防云服务器购买 - 高防云服务器费用报价 - 购买 - 新睿云', // set a title
       meta: [{                 // set meta
         name: 'robots',
         content: 'noindex,nofollow'
@@ -827,14 +827,14 @@
         ],
         customProtectSecIndex: {name: '60GB', value: 60},
         customDdosSelectPrice: 0, // 自定义的防护价格
-        quickDdosHostPrice: 0, // 主机价格
+        quickDdosHostPrice: 0, // 云服务器价格
         // loginType: [{type: 'default', label: '默认设置'}, {type: 'custom', label: '自定义设置'}],
         currentLoginType: 'custom',
         // 系统用户名
         systemUsername: 'administrator',
-        // 主机名称
+        // 云服务器名称
         computerName: '',
-        // 主机名称提示信息
+        // 云服务器名称提示信息
         computerNameWarning: '',
         // 登录密码
         password: '',
@@ -850,11 +850,11 @@
         customProtectCoupon: 0,
 
         // 下面是自定义配置的数据================================================
-        // 主机类型
+        // 云服务器类型
         vmTypeList: [
           {label: '标准型', value: 'standard', content: '经典1：2与1：4配比，实现计算、网络与资源的良好平衡，高性价比。'},
           {label: '内存优化型', value: 'optimization', content: '内存优化型系统内存比例更高的实例，最高可达1：16，适用于对内存要求较高，数据量大的产品。'},
-          {label: '高I/O型', value: 'IO', content: '高I/O型提供更稳定，具备更高数据吞吐速度与读写速度的主机，适用于高吞吐量场景，如科学计算。'}
+          {label: '高I/O型', value: 'IO', content: '高I/O型提供更稳定，具备更高数据吞吐速度与读写速度的云服务器，适用于高吞吐量场景，如科学计算。'}
         ],
         vmType: 'standard',
 
@@ -863,10 +863,10 @@
           {label: 'SAS存储', value: 'sas'},
           {label: 'SSD存储', value: 'ssd'}
         ],
-        // 购买主机地区、核心数、内存关联配置，用于选择
-        // 主机RAM内存配置用于ajax请求
+        // 购买云服务器地区、核心数、内存关联配置，用于选择
+        // 云服务器RAM内存配置用于ajax请求
         RAMList: [],
-        // 自定义主机配置
+        // 自定义云服务器配置
         vmConfig: {
           diskType: 'ssd',
           kernel: 1,
@@ -923,7 +923,7 @@
     },
     created() {
       this.getFastMirror() // 得到镜像列表
-      this.queryQuick() // 计算快速配置的高防主机价格、计算防护配置价格及IP价格
+      this.queryQuick() // 计算快速配置的高防云服务器价格、计算防护配置价格及IP价格
       this.setTemplate()
       this.getProtectConfig() // 获取到自定义防护价格及ip价格
       this.queryCustomVM()
@@ -1119,7 +1119,7 @@
         }
         this.appList[arg[2]].selectSystem = arg[0]
       },
-      // 重新计算快速配置主机价格
+      // 重新计算快速配置云服务器价格
       queryQuick() {
         var params = {
           cpuNum: this.currentSystem.kernel,
@@ -1147,7 +1147,7 @@
         let protect = axios.post("device/QueryDdosPrice.do", protectParams)
         Promise.all([host, ip, protect]).then(response => {
           if(this.quickProtectSecIndex.value > 300){ // 防护配置按月或者年计算
-            // 设置主机价格
+            // 设置云服务器价格
             this.quickDdosHostPrice = (response[0].data.cost) + (response[1].data.cost)
             // 防护价格 + IP价格
             this.quickDdosSelectPrice = response[2].data.cost
@@ -1157,7 +1157,7 @@
               this.temFastCoupon = 0
             }
           } else { // 防护配置小于400GB的时候，按月或者年计算
-            // 设置主机价格
+            // 设置云服务器价格
             this.quickDdosHostPrice = response[0].data.cost + response[1].data.cost
             // 防护价格 + IP价格
             this.quickDdosSelectPrice = response[2].data.cost
@@ -1187,12 +1187,12 @@
           return
         }
         if (this.computerName.trim() == '') {
-          this.computerNameWarning = '请输入主机名称'
-          this.$Message.info('请输入主机名称')
+          this.computerNameWarning = '请输入云服务器名称'
+          this.$Message.info('请输入云服务器名称')
           return
         } else {
           if(this.computerName.trim().indexOf('&') != -1){
-            this.$Message.info('主机名不能包含\'&\'特殊字符')
+            this.$Message.info('云服务器名不能包含\'&\'特殊字符')
             return
           }
         }
@@ -1234,7 +1234,7 @@
         }
         this.$parent.cart.push(JSON.parse(JSON.stringify(prod)))
       },
-      // 购买主机
+      // 购买云服务器
       buy() {
         if (this.zone.buyover == 1) {
           this.$Message.info({
@@ -1258,12 +1258,12 @@
           return
         }
         if (!this.computerName||this.computerName.indexOf(" ") != -1) {
-          this.computerNameWarning = '请输入主机名称，不能包含空格'
-          this.$Message.info('请输入主机名称，不能包含空格')
+          this.computerNameWarning = '请输入云服务器名称，不能包含空格'
+          this.$Message.info('请输入云服务器名称，不能包含空格')
           return
         } else {
           if(this.computerName.trim().indexOf('&') != -1){
-            this.$Message.info('主机名不能包含\'&\'特殊字符')
+            this.$Message.info('云服务器名不能包含\'&\'特殊字符')
             return
           }
         }
@@ -1282,7 +1282,7 @@
           isAutoRenew: this.autoRenewal ? '1' : '0',
           count: this.purchCount
         }
-        // 快速创建高防主机
+        // 快速创建高防云服务器
         if (this.createType == 'fast') {
           params.cpuNum = this.currentSystem.kernel
           params.memory = this.currentSystem.RAM
@@ -1320,12 +1320,12 @@
             params.templateId = this.customMirror.systemtemplateid
           }
         }
-        // 设置了主机名和密码
+        // 设置了云服务器名和密码
         if (this.currentLoginType == 'custom') {
           params.VMName = this.computerName
           params.password = this.password
         }
-        // 新的高防主机生成订单接口 ddosImitationhost/createDdosHostServer.do  旧：information/deployVirtualMachine.do
+        // 新的高防云服务器生成订单接口 ddosImitationhost/createDdosHostServer.do  旧：information/deployVirtualMachine.do
         axios.get('ddosImitationhost/createDdosHostServer.do', {params}).then(response => {
           if (response.status == 200 && response.data.status == 1) {
             this.$router.push({
@@ -1432,7 +1432,7 @@
         }
       },
 
-      // 自定义主机的方法==========================================================================
+      // 自定义云服务器的方法==========================================================================
       // 三种推荐配置切换
       changeType(type) {
         this.vmType = type
@@ -1471,7 +1471,7 @@
         }
         this.vmConfig.RAM = value
       },
-      // 查询自定义主机价格
+      // 查询自定义云服务器价格
       queryCustomVM() {
         var params = {
           cpuNum: this.vmConfig.kernel.toString(),
@@ -1521,7 +1521,7 @@
           this.network = this.networkList[0].ipsegmentid
         })
       },
-      // 查看主机IP价格
+      // 查看云服务器IP价格
       queryIPPrice: debounce(500, function () {
         var params = {
           brand: this.IPConfig.bandWidth,
@@ -1545,11 +1545,11 @@
           }
         })
       }),
-      // 添加主机数据盘
+      // 添加云服务器数据盘
       pushDisk() {
         this.dataDiskList.push({type: 'ssd', size: 20, label: 'SSD存储'})
       },
-      // 删除主机数据盘
+      // 删除云服务器数据盘
       removeHostDisk(index) {
         this.dataDiskList.splice(index, 1)
       },
@@ -1644,7 +1644,7 @@
       customIpAndDdosSelectPrice() {
         return this.customDdosSelectPrice
       },
-      // 自定义主机总价
+      // 自定义云服务器总价
       totalCost() {
         return (this.vmConfig.cost + this.customIpAndDdosSelectPrice + this.dataDiskCost  + this.IPConfig.cost)*this.purchCount
       },

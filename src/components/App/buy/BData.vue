@@ -42,7 +42,7 @@
 
         <!--自定义配置主体页面-->
         <div>
-          <!--主机规格选择-->
+          <!--云服务器规格选择-->
           <div style="padding-bottom: 20px;border-bottom: 1px solid #EDEDED;margin-top: 20px">
             <h2>数据库版本类型</h2>
             <!--镜像选择-->
@@ -102,7 +102,7 @@
                 </div>
               </div>
             </div>
-            <!--自定义主机价格-->
+            <!--自定义云服务器价格-->
             <div class="item-wrapper" style="margin-top: 28px;">
               <div style="display: flex">
                 <div>
@@ -115,7 +115,7 @@
             </div>
           </div>
 
-          <!--主机网络与带宽-->
+          <!--云服务器网络与带宽-->
           <div style="margin-top:20px; border-bottom: 1px solid #D9D9D9;padding-bottom: 20px;">
             <h2>网络与带宽</h2>
             <!--虚拟私有云-->
@@ -532,7 +532,7 @@
           currentTimeType: 'annual',
           currentTimeValue: {label: '1月', value: '1', type: 'month'}
         },
-        // 购买主机地区、核心数、内存关联配置，用于选择
+        // 购买云服务器地区、核心数、内存关联配置，用于选择
         vpcList: [],
         networkList: [],
         // 数据库镜像列表
@@ -553,7 +553,7 @@
         // 选中的镜像
         system: {},
 
-        // 快速创建主机是否需要公网IP
+        // 快速创建云服务器是否需要公网IP
         publicIP: true,
 
         // 两种登录设置  默认设置/自定义设置
@@ -563,9 +563,9 @@
         safe: 'default',
 
         autoRenewal: true,
-        // 主机名称
+        // 云服务器名称
         password: '',
-        // 主机名称提示信息
+        // 云服务器名称提示信息
         passwordWarning: '',
 
         // 系统磁盘类型选择
@@ -678,7 +678,7 @@
         }
         this.vmConfig.RAM = ram
       },
-      // 查询自定义主机价格
+      // 查询自定义云服务器价格
       queryCustomVM() {
         var params = {
           cpuNum: this.vmConfig.kernel.toString(),
@@ -702,7 +702,7 @@
           }
         })
       },
-      // 添加主机数据盘
+      // 添加云服务器数据盘
       pushDisk() {
         this.dataDiskList.push({type: 'ssd', size: 20, label: 'SSD存储'})
       },

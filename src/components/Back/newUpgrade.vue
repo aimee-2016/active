@@ -15,7 +15,7 @@
         </div>
         <div class="host-config">
           <div class="config-top">
-            <p>主机名称：{{ hostInfo.computerName}}</p>
+            <p>云服务器名称：{{ hostInfo.computerName}}</p>
             <p>{{ hostInfo.cpuNum }}核CPU，{{ hostInfo.memory}}G内存，{{ hostInfo.rootDiskSize}}G硬盘，{{ hostInfo.bandwith}}M带宽 | {{ hostInfo.zoneName}}</p>
           </div>
           <div class="config-bottom">
@@ -58,8 +58,8 @@
         <div class="end-config">
           <h4>升级后配置</h4>
           <div class="end-info">
-            <p>主机CPU: <span> {{endCPU}}核</span></p>
-            <p>主机内存: <span> {{endMemory}}G</span></p>
+            <p>云服务器CPU: <span> {{endCPU}}核</span></p>
+            <p>云服务器内存: <span> {{endMemory}}G</span></p>
             <p>系统盘容量: <span> {{ systemDiskSize}}GB</span></p>
             <div class="price">
               <a href="/support_docs/kiRWuMFJd_kmeqtVSId.html" target="_blank">购买和计费说明</a>

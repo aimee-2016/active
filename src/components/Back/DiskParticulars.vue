@@ -17,7 +17,7 @@
             <li>容量：{{ diskInfo.disksize}} GB</li>
             <li>系统类型：{{ diskType}}</li>
             <li>状态：{{ diskState }}</li>
-            <li>挂载主机：<span>{{ mountHost}}</span></li>
+            <li>挂载云服务器：<span>{{ mountHost}}</span></li>
             <li>地区：{{ diskInfo.zonename}}</li>
           </ol>
           <ol style="width: 220px">
@@ -716,7 +716,7 @@
       diskState () {
         return (this.diskInfo.mounton&& this.diskInfo.mountonname) ? '已挂载' : '可挂载'
       },
-      // 挂载主机名
+      // 挂载云服务器名
       mountHost () {
         return (this.diskInfo.mounton && this.diskInfo.mountonname) ? this.diskInfo.mountonname : '----' 
       },

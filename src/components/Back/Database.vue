@@ -26,7 +26,7 @@
             @click="$router.push('/buy/database/')"
             style="margin-right:10px"
           >+ 创建</Button>
-          <Poptip confirm width="230" placement="right" @on-ok="hostDelete(1)" title="您确认删除选中的主机吗？">
+          <Poptip confirm width="230" placement="right" @on-ok="hostDelete(1)" title="您确认删除选中的云服务器吗？">
             <Button type="primary" :disabled="deleteDisabled">删除</Button>
           </Poptip>
         </div>
@@ -105,7 +105,7 @@
         >提示：个人用户账户可以升级为企业用户账户，但企业用户账户不能降级为个人用户账户。完成实名认证的用户才能享受上述资源建立额度与免费试用时长如需帮助请联系：400-050-5565</p>
       </div>
     </Modal>
-    <!-- 删除主机弹窗 -->
+    <!-- 删除云服务器弹窗 -->
     <Modal v-model="showModal.delHost" :scrollable="true" :closable="false" :width="390">
       <p slot="header" class="modal-header-border">
         <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
@@ -290,7 +290,7 @@
           <div class="renewal-info">
             <ul>
               <li>
-                <span>主机名称：</span>
+                <span>云服务器名称：</span>
                 {{this.hostCurrentSelected.computername}}
               </li>
               <li>
@@ -298,7 +298,7 @@
                 {{this.hostCurrentSelected.templatename}}
               </li>
               <li>
-                <span>主机配置：</span>
+                <span>云服务器配置：</span>
                 {{this.hostCurrentSelected.serviceoffername}}
               </li>
               <li>
@@ -700,7 +700,7 @@ export default {
           }
         },
         {
-          title: '主机配置',
+          title: '云服务器配置',
           key: 'serviceoffername',
           render: (h, params) => {
             let textArr = params.row.serviceoffername.split('+')
@@ -1003,7 +1003,7 @@ export default {
                                 if (this.hostCurrentSelected.publicip) {
                                   this.showModal.unbindIP = true
                                 } else {
-                                  this.$Message.warning('该主机没有绑定公网IP')
+                                  this.$Message.warning('该云服务器没有绑定公网IP')
                                 }
                                 break
                               case 'dilatation':
@@ -1126,7 +1126,7 @@ export default {
         serviceoffername: '',
         endtime: ''
       },
-      hostDelWay: 1, // 1：点击按钮删除主机 2： 点击更多操作删除；原因是参数传的不同
+      hostDelWay: 1, // 1：点击按钮删除云服务器 2： 点击更多操作删除；原因是参数传的不同
       bindForm: {
         publicIP: ''
       },
@@ -1363,7 +1363,7 @@ export default {
             let locality = res.data.result.info
             let flag = locality.some(item => {
               return item.status == 2 || item.status == -2
-            }) // 操作的主机中是否有过渡状态，没有就清除定时器，取消刷新
+            }) // 操作的云服务器中是否有过渡状态，没有就清除定时器，取消刷新
             if (!flag) {
               this.hostListData.forEach((host, index) => {
                 locality.forEach(item => {
@@ -1495,7 +1495,7 @@ export default {
     },
     bindIP () {
       if (this.hostCurrentSelected.publicip) {
-        this.$Message.warning('已绑定主机无法再次绑定!')
+        this.$Message.warning('已绑定云服务器无法再次绑定!')
       } else {
         this.bindForm.publicIP = ''
         axios.get('network/listPublicIp.do', {
@@ -1604,13 +1604,13 @@ export default {
       }
       return ids
     },
-    /* 根据主机状态确定可操作功能 */
+    /* 根据云服务器状态确定可操作功能 */
     deleteDisabled () {
       let len = this.hostSelection.length
       if (len === 0) {
         return true
       } else {
-        // 过渡状态主机不能再次删除
+        // 过渡状态云服务器不能再次删除
         return this.hostSelection.some(host => {
           return host.status == -2 || host.status == 2
         })

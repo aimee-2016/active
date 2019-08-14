@@ -90,7 +90,7 @@
               </Option>
             </Select>
           </FormItem>
-          <FormItem label="选择主机" prop="vm">
+          <FormItem label="选择云服务器" prop="vm">
             <Select v-model="createDNATForm.vm">
               <Option v-for="item in createDNATForm.vmOptions" :value="`${item.computerid}#${item.computername}`"
                       :key="item.computerid">
@@ -145,7 +145,7 @@
             {required: true, message: '请选择一个子网', trigger: 'change'}
           ],
           vm: [
-            {required: true, message: '请选择一台主机', trigger: 'change'}
+            {required: true, message: '请选择一台云服务器', trigger: 'change'}
           ]
         },
         ipId: [],
@@ -180,7 +180,7 @@
             }
           },
           {
-            title: '绑定主机',
+            title: '绑定云服务器',
             key: 'computername'
           },
           {
@@ -259,7 +259,7 @@
           // 选择子网
           subNetwork: '',
           subNetworkOptions: [],
-          // 选择主机
+          // 选择云服务器
           vm: '',
           vmOptions: []
         }

@@ -44,15 +44,15 @@
           </div>
           <div class="conf-wrapper">
             <h1>升级前配置</h1>
-            <span>主机名称 : {{hostname}}</span>
-            <span>主机配置 : {{currentCPUNum}}核{{currentRAMSize}}G</span>
+            <span>云服务器名称 : {{hostname}}</span>
+            <span>云服务器配置 : {{currentCPUNum}}核{{currentRAMSize}}G</span>
             <span>系统盘容量 : {{ rootdisksize }}G</span>
             <span>剩余时长 : {{endtime}}</span>
           </div>
           <div class="conf-wrapper">
             <h1>升级后配置</h1>
-            <span>主机名称 : {{hostname}}</span>
-            <span>主机配置 : {{CPUNum}}核{{RAMSize}}G</span>
+            <span>云服务器名称 : {{hostname}}</span>
+            <span>云服务器配置 : {{CPUNum}}核{{RAMSize}}G</span>
             <span>系统盘容量 : {{ systemDiskSize }}G</span>
             <span>剩余时长 : {{endtime}}</span>
             <span style="line-height:24px;">应付差价 :

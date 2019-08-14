@@ -242,7 +242,7 @@ const DDoSIpRuleAdd = () => import('@/components/Back/DDoSIpRuleAdd')
 const DDoSIPdetails = () => import('@/components/Back/DDoSIPdetails')
 const DDoSEModify   = () => import('@/components/Back/DDoSElasticModify')
 
-// DDOS 高防主机
+// DDOS 高防云服务器
 const BackDdos = () => import('@/components/Back/BackDdos')
 const protectUpgrade = () => import('@/components/Back/ProtectUpgrade')
 const DdosHostManage = () => import('@/components/Back/DdosHostManage')
@@ -515,7 +515,7 @@ var router = new Router({
         {path: 'ddosipruleadd', name: 'DDoSIpRuleAdd', component: DDoSIpRuleAdd},
         {path: 'ddosipdetails', name: 'DDoSIpDetails', component: DDoSIPdetails},
         {path: 'ddosemodify', name: 'DDoSEModify', component: DDoSEModify},
-        // DDOS 高防主机
+        // DDOS 高防云服务器
         {path: 'BackDdos', name: 'BackDdos', component: BackDdos},
         {path: 'protectUpgrade', name: 'ProtectUpgrade', component: protectUpgrade},
         {path: 'ddosHostManage', name: 'DdosHostManage', component: DdosHostManage}

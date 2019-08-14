@@ -28,7 +28,7 @@
           <TabPane label="私有镜像" name="own">
             <div class="operator-bar">
               <Button type="primary" @click="showModal.createMirror = true">制作镜像</Button>
-              <!-- <Button type="primary" @click="createHost">生成主机</Button> -->
+              <!-- <Button type="primary" @click="createHost">生成云服务器</Button> -->
               <Button type="primary" @click="deleteSelection">删除</Button>
             </div>
             <Table :columns="ownColumns" :data="ownData" @radio-change="selectionsChange"></Table>
@@ -46,7 +46,7 @@
       </div>
       <div class="universal-modal-content-flex">
         <Form :model="formItem" ref="formItem" :rules="ruleMirror" style="align-items:flex-end">
-          <FormItem label="主机" prop="vmInfo">
+          <FormItem label="云服务器" prop="vmInfo">
             <Select v-model="formItem.vmInfo">
               <Option v-for="item in hostName" :value="`${item.rootdiskid}#${item.zoneid}`"
                       :key="item.computerid">
@@ -63,7 +63,7 @@
           <FormItem v-else>
             <span style="color:#2A99F2;font-size:14px;padding-top:34px;">
               <span style="font-weight:800;font-size:20px;">+</span>
-              <span style="cursor:pointer;" @click="$router.push('buy')">购买主机</span>
+              <span style="cursor:pointer;" @click="$router.push('buy')">购买云服务器</span>
             </span>
           </FormItem>
           <FormItem label="镜像名称" prop="mirrorName">
@@ -321,7 +321,7 @@
                     color: '#495060',
                     cursor: 'not-allowed'
                   }
-                }, '生成主机'),
+                }, '生成云服务器'),
                   h('span', {
                     style: {
                       color: '#495060',
@@ -341,7 +341,7 @@
                       this.ownMirrorCreathost(params.row);
                     }
                   }
-                }, '生成主机'),
+                }, '生成云服务器'),
                   h('span', {
                     style: {
                       color: '#2A99F2',
@@ -368,7 +368,7 @@
         },
         ruleMirror: {
           vmInfo: [
-            {required: true, message: '请选择一台主机', trigger: 'change'}
+            {required: true, message: '请选择一台云服务器', trigger: 'change'}
           ],
           mirrorName: [
             {required: true, validator: validaRegisteredName, trigger: 'blur'}
@@ -430,7 +430,7 @@
           }
         })
       },
-      // 查询已关闭主机
+      // 查询已关闭云服务器
       closeHostList() {
         var vmcloselist = []
         this.hostName = []

@@ -20,7 +20,7 @@
       <div class="wrap">
         <div class="headline">
           <div>
-            低配爆款主机限时疯抢
+            低配爆款云服务器限时疯抢
           </div>
           <p>
             新用户专享 爆品秒杀 先到先得 低至一折

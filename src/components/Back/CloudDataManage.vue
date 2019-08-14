@@ -315,14 +315,14 @@
       <Modal v-model="showModal.rollback" :scrollable="true" :closable="false" :width="390">
         <p slot="header" class="modal-header-border">
           <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
-          <span class="universal-modal-title">主机回滚</span>
+          <span class="universal-modal-title">云服务器回滚</span>
         </p>
         <div class="modal-content-s">
           <div>
-            <p class="lh24">是否确定回滚主机</p>
+            <p class="lh24">是否确定回滚云服务器</p>
             <p class="lh24">提示：您正使用<span class="bluetext">{{snapsName}}</span>回滚<span
               class="bluetext">{{hostName}}</span>至<span
-              class="bluetext">{{hostCreatetime}}</span>，当您确认操作之后，此<span class="bluetext">时间点</span>之后的主机内的数据将丢失。</p>
+              class="bluetext">{{hostCreatetime}}</span>，当您确认操作之后，此<span class="bluetext">时间点</span>之后的云服务器内的数据将丢失。</p>
           </div>
         </div>
         <p slot="footer" class="modal-footer-s">
@@ -904,7 +904,7 @@
         this.logTime = time;
       },
       search() {
-        // log/queryLog.do    操作日志   pageSize(1页显示多少条),currentPage（第几页）,target（主机则传 host）  , queryTime（查询时间  格式： 开始时间 , 结束时间  非必传）
+        // log/queryLog.do    操作日志   pageSize(1页显示多少条),currentPage（第几页）,target（云服务器则传 host）  , queryTime（查询时间  格式： 开始时间 , 结束时间  非必传）
         this.$http.get('log/queryLog.do', {
           params: {
             pageSize: this.pageSize,
@@ -978,7 +978,7 @@
       // 回滚确认弹窗
       rollbackSubmit() {
         this.showModal.rollback = false
-        this.loadingMessage = '正在回滚主机'
+        this.loadingMessage = '正在回滚云服务器'
         this.loading = true
         axios.get('Snapshot/revertToVMSnapshot.do', {
           params: {
@@ -1021,7 +1021,7 @@
           this.reloadForm.password = ''
         })
       },
-      // 获取具体主机下的快照列表
+      // 获取具体云服务器下的快照列表
       getsnapsList() {
         axios.get('Snapshot/listVMSnapshot.do', {
           params: {
