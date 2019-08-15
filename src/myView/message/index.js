@@ -20,9 +20,9 @@ var namePathMap = {
   '虚拟专网VPN': 'vpn',
   '云硬盘': 'diskList',
   '云硬盘备份': 'diskBackup',
-  '云主机': 'host',
-  '云主机快照': 'snapshot',
-  '云主机镜像': 'mirror',
+  '云服务器': 'host',
+  '云服务器快照': 'snapshot',
+  '云服务器镜像': 'mirror',
   '用户中心': 'userCenter',
   '工单': 'work'
 }

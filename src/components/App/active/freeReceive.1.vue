@@ -33,7 +33,7 @@
           </div>
           <div style="padding:0 30px;">
             <p style="margin:80px 0 20px;text-align:left;font-size:18px;color:#fff;">
-              新用户专享，为防止恶意刷抢主机，遂需缴纳保证金，保证金随时可退
+              新用户专享，为防止恶意刷抢云服务器，遂需缴纳保证金，保证金随时可退
               <span
                 style="color:#53FFEF;cursor:pointer;text-decoration: underline;"
                 @click="showModal.rule=true"
@@ -440,7 +440,7 @@
           <strong>提示</strong>
           <p class="lh24">
             本免费活动充值保证金
-            <span style="color: #D0021B ">{{ cashPledge }}</span>元，主机到期或删除时保证金自动退还到账户余额。
+            <span style="color: #D0021B ">{{ cashPledge }}</span>元，云服务器到期或删除时保证金自动退还到账户余额。
           </p>
         </div>
       </div>
@@ -480,12 +480,12 @@
             <i class="ivu-icon ivu-icon-checkmark-circled"></i>
           </div>
           <strong>提示</strong>
-          <p class="lh24">恭喜您保证金已冻结完成，主机领取成功，主机在实名认证之前只可保留3天，请尽快使用。</p>
+          <p class="lh24">恭喜您保证金已冻结完成，云服务器领取成功，云服务器在实名认证之前只可保留3天，请尽快使用。</p>
         </div>
       </div>
       <p slot="footer" class="modal-footer-s">
         <Button @click="showModal.getSuccessModal = false">取消</Button>
-        <Button type="primary" @click="$router.push('/host')">查看主机</Button>
+        <Button type="primary" @click="$router.push('/host')">查看云服务器</Button>
       </p>
     </Modal>
     <!-- 支付充值失败 -->
@@ -757,7 +757,7 @@
               <dd>（1）每个用户只能参与一次，同一手机号对应的多个账号、同一实名认证用户等满足同一条件的均视为一个用户。</dd>
               <dd>（2）免费产品中的资源可随时进行升级，升级费用按新睿云标准收费进行收取。</dd>
               <dd>（3）在各产品免费使用期间，若对免费资源进行了销毁，则视为放弃免费使用权。</dd>
-              <dd>（4）免费主机不能申请备案，若您需要备案，请操作保证金转续，将免费主机转成付费主机之后在进行备案</dd>
+              <dd>（4）免费云服务器不能申请备案，若您需要备案，请操作保证金转续，将免费云服务器转成付费云服务器之后在进行备案</dd>
             </dl>
             <p>6、活动声明：为保证活动的公平公正，新睿云有权对恶意刷抢（如通过程序等技术手段）活动资源，领取后3天内未使用资源、利用资源从事违法违规行为的用户收回免费套餐使用资格。因此造成任何损失的，由该用户自行负责。</p>
           </div>
@@ -820,14 +820,14 @@ import VueQArt from 'vue-qart'
 import $ from 'jquery'
 export default {
       metaInfo: {
-      title: '云服务器免费体验试用 - 免费云主机试用可申请1年、6个月、3个月、30天 - 活动中心 - 新睿云', // set a title
+      title: '云服务器免费体验试用 - 免费云服务器试用可申请1年、6个月、3个月、30天 - 活动中心 - 新睿云', // set a title
       meta: [{                 // set meta
         name: 'keywords',
-        content: '云服务器免费,云服务器免费试用,免费云服务器试用一年,免费云主机试用一年,免费云主机申请,云主机免费体验'
+        content: '云服务器免费,云服务器免费试用,免费云服务器试用一年,免费云服务器试用一年,免费云服务器申请,云服务器免费体验'
       },
         {                 // set meta
           name: 'description',
-          content: '新睿云推出爆款云主机免费试用活动，2款云服务器产品最长免费试用1年，每天随时可领，押金随时可退，2018年8月3日开始，总量有限，先到先得！'
+          content: '新睿云推出爆款云服务器免费试用活动，2款云服务器产品最长免费试用1年，每天随时可领，押金随时可退，2018年8月3日开始，总量有限，先到先得！'
         }]
     },
   data () {
@@ -1177,7 +1177,7 @@ export default {
           width: 200,
           render: (h, params) => {
             let arr = []
-            let param3 = h('li', {}, '主机： ' + params.row.title)
+            let param3 = h('li', {}, '云服务器： ' + params.row.title)
             let param = h('li', {}, '带宽： ' + params.row.configs.config.bandwith) + 'M'
             let param1 = h('li', {}, '磁盘： ' + params.row.configs.config.disksize) + 'G SSD'
             let param2 = h('li', {}, '系统： ' + params.row.configs.system[0])
@@ -1751,7 +1751,7 @@ export default {
         }
       })
     },
-    // 查询自定义主机价格
+    // 查询自定义云服务器价格
     queryCustomVM () {
       var params = {}
       if (this.selectConfig.split(',').length == 3) {
@@ -1768,7 +1768,7 @@ export default {
           gpuSize: this.selectConfig.split(',')[2],
         }
       } else if (this.selectConfig.split(',').length == 2) {
-        // 主机
+        // 云服务器
         params = {
           cpuNum: this.selectConfig.split(',')[0],
           diskSize: '40',
@@ -1859,7 +1859,7 @@ export default {
         }
       })
     },
-    // 购买主机
+    // 购买云服务器
     pushOrderHost () {
       if (!this.$store.state.userInfo) {
         this.$LR({ type: 'register' })

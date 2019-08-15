@@ -192,7 +192,7 @@
                 <div class="price">
                   ￥
                   <span>{{item.price}}</span>
-                  /{{item.post.days%12==0?item.post.days/12+'年':'月'}}
+                  /{{item.post.days%12==0?item.post.days/12==1?'年':item.post.days/12+'年':item.post.days==1?'月':item.post.days+'月'}}
                   <i
                     v-if="item.post.explosives==1"
                   >爆款</i>
@@ -201,7 +201,7 @@
                 <div class="origin-price">
                   原价：￥
                   <span>{{item.originPrice}}</span>
-                  /{{item.post.days%12==0?item.post.days/12+'年':'月'}}
+                  /{{item.post.days%12==0?item.post.days/12==1?'年':item.post.days/12+'年':item.post.days==1?'月':item.post.days+'月'}}
                 </div>
                 <div>
                   <Button
@@ -1375,7 +1375,7 @@ export default {
         }
       })
     },
-    // 获取高仿主机的系统
+    // 获取高仿云服务器的系统
     getSystemDDOS () {
       let url = 'activity/getTemActInfoById.do'
       axios.get(url, {

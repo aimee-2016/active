@@ -35,9 +35,9 @@ var router = new Router({
         {path: 'activity/free', name: 'activity/free', component: FrActive,caseSensitive: true},
         {path: 'activity/objectstorage', name: 'activity/objectstorage', component: objStorageActive,caseSensitive: true},
         {path: 'activity/hotdatabase', name: 'activity/hotdatabase', component: DBActive,caseSensitive: true},
-        {path: 'activity/ddosactive',name: 'activity/ddosactive', component:ddosActive,caseSensitive: true},
+        {path: 'activity/ddosactive1',name: 'activity/ddosactive', component:ddosActive,caseSensitive: true},
         {path: 'activity/highcopy',name: 'activity/highcopy', component:ddosActiveM,caseSensitive: true},
-        {path: 'activity/ddosactive1',name: 'activity/ddosactive1', component:ddosActive1,caseSensitive: true},
+        {path: 'activity/ddosactive',name: 'activity/ddosactive1', component:ddosActive1,caseSensitive: true},
       ]
     },
     {path: '/*', name: '404', component: notFindPage},
