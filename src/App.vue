@@ -594,8 +594,8 @@
     </div>
     <!-- 客服浮动块 -->
     <div class="affix">
-      <div class="registerImg" @click="$router.push('/activity/free')">
-        <p>免费领主机</p>
+      <div class="registerImg" @click="$router.push('/activity/free/')">
+        <p>免费领云服务器</p>
       </div>
       <!--<img src="./assets/img/app/regiterTag.png"/>-->
       <span class="qq" @mouseenter="QME" @mouseleave="QML">
@@ -768,7 +768,7 @@
                   {title: 'ECS快照', desc: '稳定可靠、安全保障', path: '/ecssnapshot/'},
                   {title: 'GPU服务器', desc: 'Tesla P100、Tesla P40 GPU', path: '/gpu/'},
                   {title: '弹性伸缩', desc: '高可用、可视化、低成本', path: '/elasticscalable/'},
-                  {title: 'DDoS高防主机', desc: '最大800G超大防护', path: '/ddos'},
+                  {title: 'DDoS高防云服务器', desc: '最大800G超大防护', path: '/ddos'},
                   {title: '裸金属服务器（敬请期待）', desc: '专属物理服务器', path: '/'}
                 ]
               },
@@ -884,7 +884,7 @@
                 path: 'https://www.xrcloud.net/news/xianggangyunfuwuqi/'
               },
               {
-                prod: '虚拟主机',
+                prod: '虚拟云服务器',
                 path: 'https://www.xrcloud.net/news/xunizhuji/'
               },
               {
@@ -969,7 +969,7 @@
           {title: '云计算', url: 'https://www.xrcloud.net/news/yunjisuan/'},
           {title: '云安全', url: 'https://www.xrcloud.net/news/yunanquan/'},
           {title: '香港云服务器', url: 'https://www.xrcloud.net/news/xianggangyunfuwuqi/'},
-          {title: '虚拟主机', url: 'https://www.xrcloud.net/news/xunizhuji/'},
+          {title: '虚拟云服务器', url: 'https://www.xrcloud.net/news/xunizhuji/'},
           {title: '服务器虚拟化', url: 'https://www.xrcloud.net/news/fuwuqixunihua/'},
           {title: '域名交流', url: 'https://www.xrcloud.net/news/yumingjiaoliu/'}
         ],
@@ -1266,9 +1266,9 @@
       },
       linkService(){
         if(this.userInfo){
-          window.open(`https://im.xrcloud.net/im/text/0Jck1w.html?companyId=${this.userInfo.companyid}`)
+          window.open(`https://im.xrcloud.net/im/question/index.html?companyId=${this.userInfo.companyid}`)
         } else{
-          window.open('https://im.xrcloud.net/im/text/0Jck1w.html')
+          window.open('https://im.xrcloud.net/im/question/index.html')
         }
       }
     },

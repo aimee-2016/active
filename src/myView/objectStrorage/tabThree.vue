@@ -37,7 +37,7 @@ export default {
       //操作日志数据
       journalData: [
         {
-          caozuo: '添加云主机"yunrui"的"1cpu/1024M内存/0G数据盘"套餐,按需',
+          caozuo: '添加云服务器"yunrui"的"1cpu/1024M内存/0G数据盘"套餐,按需',
           jieguo: "成功",
           shijian: "2017-5-21"
         }
