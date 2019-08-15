@@ -1531,6 +1531,7 @@
 
 .nav-list .nav-left .np-bs .np-dis {
   color: #C5C0BF;
+  font-size: 14px;
 }
 
 .nav-list .nav-left .np-bs .np-item .buy-font {
