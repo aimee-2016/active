@@ -376,7 +376,7 @@
         }).then(res => {
           next(vm => {
             if (res.status == 200 && res.data.status != 1){
-              vm.$router.push('/ruicloud/down')
+              vm.$router.push('/activebefore')
             }
           })
         })
@@ -533,7 +533,7 @@
                 }
               }
               if (item.systemList.length >0 ) {
-                let tempSystem1 = item.systemList[1].name
+                let tempSystem1 = item.systemList[0].name
                 let tempSystem2 = item.systemList[1].value
                 item.systems[0] = tempSystem1
                 item.systems[1] = tempSystem2
@@ -645,7 +645,7 @@
               if (res.status == 200 && res.data.status == 1) {
                 sessionStorage.setItem('countOrder', item.price.toString())
                 sessionStorage.setItem('hignHost', 'hignHost')
-                this.$router.push('orderconfirm')
+                this.$router.push('/order')
               } else {
                 this.message  = res.data.message
                 this.msg = 'msg'
@@ -674,7 +674,7 @@
               if (res.status == 200 && res.data.status == 1) {
                 sessionStorage.setItem('countOrder', item.cost.toString())
                 sessionStorage.setItem('hignHost', 'hignHost')
-                this.$router.push('orderconfirm')
+                this.$router.push('/order')
               } else {
                 this.message  = res.data.message
                 this.msg = 'msg'
@@ -702,7 +702,7 @@
             }).then(res => {
               if (res.status == 200 && res.data.status == 1) {
                 sessionStorage.setItem('countOrder', item.cost.toString())
-                this.$router.push('orderconfirm')
+                this.$router.push('/order')
               } else {
                 this.message  = res.data.message
                 this.msg = 'msg'
@@ -731,7 +731,7 @@
               if (res.status == 200 && res.data.status == 1) {
                 sessionStorage.setItem('countOrder', item.cost.toString())
                 sessionStorage.setItem('hignHost', 'hignHost')
-                this.$router.push('orderconfirm')
+                this.$router.push('/order')
               } else {
                 this.message  = res.data.message
                 this.msg = 'msg'
@@ -758,7 +758,7 @@
               if (res.status == 200 && res.data.status == 1) {
                 sessionStorage.setItem('countOrder', item.cost.toString())
                 sessionStorage.setItem('hignHost', 'hignHost')
-                this.$router.push('orderconfirm')
+                this.$router.push('/order')
               } else {
                 this.message  = res.data.message
                 this.msg = 'msg'
