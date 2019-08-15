@@ -12,23 +12,23 @@
     <header>
           <div class='pc-top'>
                 <div class="pc-head">
-                    <a class="navbar-brand logo" href="#" alt='新睿云'>
+                    <a class="navbar-brand logo" href="https://www.xinruiyun.cn" alt='新睿云'>
                         <img src='./assets/img/home/logo.gif'>
                     </a>
                     <div class="p-collapse">
                         <div style="display: flex;">
-                            <a class="p-link" href="#">
+                            <a class="p-link" href="https://help.xinruiyun.cn" target="_blank">
                                 帮助文档
                             </a>
-                            <a class="p-link" href="#">
+                            <a class="p-link" href="https://www.xinruiyun.cn/news/" target="_blank"> 
                                 新闻动态
                             </a>
-                            <router-link class="p-link pb" to='/overview' title="控制台">
+                            <router-link class="p-link pb" to='https://i.xinruiyun.cn/overview' title="控制台">
                                 控制台
                             </router-link>
                             <div v-if='!userInfo'>
-                                <router-link class="lg-in" to="/login"  title="登陆">登录</router-link>
-                                <router-link class="lg-re" to="/register" title="注册">注册</router-link>
+                                <router-link class="lg-in" to="https://i.xinruiyun.cn/login"  title="登录">登录</router-link>
+                                <router-link class="lg-re" to="https://i.xinruiyun.cn/register" title="注册">注册</router-link>
                             </div>
 
                             <ul v-else class="user-list">
@@ -40,15 +40,15 @@
                                     </a>
                                     <DropdownMenu slot="list">
                                       <DropdownItem name="/usercenter">
-                                        <a to="/usercenter">用户中心</a>
+                                        <a to="https://i.xinruiyun.cn/usercenter">用户中心</a>
                                       </DropdownItem>
                                       <DropdownItem name="/expenses">
-                                        <a to="/expenses">费用中心</a>
+                                        <a to="https://i.xinruiyun.cn/expenses">费用中心</a>
                                       </DropdownItem>
-                                      <DropdownItem name="/msgcenter" style="position:relative">
+                                      <DropdownItem name="https://i.xinruiyun.cn/msgcenter" style="position:relative">
                                         <span>消息中心</span>
                                       </DropdownItem>
-                                      <DropdownItem name="/operationlog">
+                                      <DropdownItem name="https://i.xinruiyun.cn/operationlog">
                                         <span>操作日志</span>
                                       </DropdownItem>
                                       <DropdownItem divided name="exit">
@@ -64,10 +64,10 @@
                 <div class="nav-list">
                     <ul class="nav-left" @mouseleave='styleClass(-1,$event)'>
                         <li class="nav-item" @mouseenter='styleClass(0,$event)'>
-                            <router-link to="/activity" title="活动中心">活动中心</router-link>
+                            <router-link to="https://activity.xinruiyun.cn/activity" title="活动中心">活动中心</router-link>
                         </li>
                         <li class="nav-item" @mouseenter='styleClass(1,$event)'>
-                            <a href="#">首页</a>
+                            <a href="https://xinruiyun.cn">首页</a>
                         </li>
                         <Poptip placement="bottom-start" trigger="hover">
                             <li class="nav-item active" @mouseenter='styleClass(-1,$event)'>
@@ -75,23 +75,23 @@
                             </li>
                             <ul slot="content" class="np-bs" v-cloak>
                                 <li class="np-item">
-                                    <a>弹性云服务器ECS <img src="./assets/img/home/iconHot.png" /></a>
+                                    <a href="https://www.xinruiyun.cn/ecs/">弹性云服务器ECS <img src="./assets/img/home/iconHot.png" /></a>
                                     <div class="buy-box">
                                         <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                        <span class="buy-font">立即购买</span>
+                                        <a class="buy-font" href="https://i.xinruiyun.cn/buy/host/">立即购买</a>
                                     </div>
                                 </li>
                                 <li class="np-item">
-                                    <a>镜像服务</a>
+                                    <a href='https://www.xinruiyun.cn/ims/'>镜像服务</a>
                                 </li>
                                 <li class="np-item">
-                                    <a>云服务器快照</a>
+                                    <a href="https://www.xinruiyun.cn/ecss/">云服务器快照</a>
                                 </li>
                                 <li class="np-item">
-                                    <a>GPU加速云服务器</a>
+                                    <a href="https://www.xinruiyun.cn/gpu/">GPU加速云服务器</a>
                                     <div class="buy-box">
                                         <img class="buy-img" src='./assets/img/home/buy-icon.png' />
-                                        <span class="buy-font">立即购买</span>
+                                        <a class="buy-font" href="https://i.xinruiyun.cn/buy/gpu/">立即购买</a>
                                     </div>
                                 </li>
                                 <li class="np-dis">
@@ -110,23 +110,23 @@
                                 </div>
                                 <ul class="np-bs">
                                     <li class="np-item">
-                                        <a>虚拟私有云VPC</a>
+                                        <a href='https://www.xinruiyun.cn/vpc/'>虚拟私有云VPC</a>
                                     </li>
                                     <li class="np-item">
-                                        <a>NAT网关</a>
+                                        <a href='https://www.xinruiyun.cn/nat/'>NAT网关</a>
                                     </li>
                                     <li class="np-item">
-                                        <a>弹性公网IP</a>
+                                        <a href="https://www.xinruiyun.cn/eip/">弹性公网IP</a>
                                         <div class="buy-box">
                                             <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                            <span class="buy-font">立即购买</span>
+                                            <a class="buy-font" href='https://i.xinruiyun.cn/buy/elasticip'>立即购买</a>
                                         </div>
                                     </li>
                                     <li class="np-item">
-                                        <a>负载均衡</a>
+                                        <a href='https://www.xinruiyun.cn/slb/'>负载均衡</a>
                                     </li>
                                     <li class="np-item">
-                                        <a>虚拟专网VPN</a>
+                                        <a href='https://www.xinruiyun.cn/vpn/'>虚拟专网VPN</a>
                                     </li>
                                     <li class="np-dis">
                                         CDN(敬请期待)
@@ -137,7 +137,7 @@
                                 </div>
                                 <ul class="np-bs">
                                     <li class="np-item">
-                                        <a>防火墙</a>
+                                        <a href='https://www.xinruiyun.cn/fw/'>防火墙</a>
                                     </li>
                                     <li class="np-item">
                                         <a>SSL证书</a>
@@ -147,7 +147,11 @@
                                         </div>
                                     </li>
                                     <li class="np-item">
-                                        <a>DDoS高防IP</a>
+                                        <a href="https://www.xinruiyun.cn/ddos/">DDoS高防IP</a>
+                                        <div class="buy-box">
+                                            <img class="buy-img" src="./assets/img/home/buy-icon.png" />
+                                            <span class="buy-font">立即购买</span>
+                                        </div>
                                     </li>
                                 </ul>
                             </div>
@@ -159,21 +163,21 @@
                             </li>
                             <ul slot="content" class="np-bs" v-cloak>
                                 <li class="np-item">
-                                    <a>对象存储 <img src="./assets/img/home/iconNew.png" /></a>
+                                    <a href='https://www.xinruiyun.cn/oss/'>对象存储 <img src="./assets/img/home/iconNew.png" /></a>
                                     <div class="buy-box">
                                         <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                        <span class="buy-font">立即购买</span>
+                                        <a class="buy-font" href="https://i.xinruiyun.cn/buy/objectstorage">立即购买</a>
                                     </div>
                                 </li>
                                 <li class="np-item">
-                                    <a>云硬盘</a>
+                                    <a href='https://www.xinruiyun.cn/evs/'>云硬盘</a>
                                     <div class="buy-box">
                                         <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                        <span class="buy-font">立即购买</span>
+                                        <a class="buy-font" href="https://i.xinruiyun.cn/buy/disk">立即购买</a>
                                     </div>
                                 </li>
                                 <li class="np-item">
-                                    <a>云硬盘备份</a>
+                                    <a href='https://www.xinruiyun.cn/vbs/'>云硬盘备份</a>
                                 </li>
                             </ul>
                         </Poptip>
@@ -202,38 +206,38 @@
                                 </div>
                                 <ul class="np-bs">
                                     <li class="np-item">
-                                        <a>云数据库MySQL</a>
+                                        <a href='https://www.xinruiyun.cn/mysql/'>云数据库MySQL</a>
                                         <div class="buy-box">
                                             <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                            <span class="buy-font">立即购买</span>
+                                            <a class="buy-font" href="https://i.xinruiyun.cn/buy/database">立即购买</a>
                                         </div>
                                     </li>
                                     <li class="np-item">
-                                        <a>云数据库PostgreSQL</a>
+                                        <a href='https://www.xinruiyun.cn/postgresql/'>云数据库PostgreSQL</a>
                                         <div class="buy-box">
                                             <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                            <span class="buy-font">立即购买</span>
+                                            <a class="buy-font" href="https://i.xinruiyun.cn/buy/database">立即购买</a>
                                         </div>
                                     </li>
                                     <li class="np-item">
-                                        <a>云数据库SQLServer</a>
+                                        <a href='https://www.xinruiyun.cn/sqlserver/'>云数据库SQLServer</a>
                                         <div class="buy-box">
                                             <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                            <span class="buy-font">立即购买</span>
+                                            <a class="buy-font" href="https://i.xinruiyun.cn/buy/database">立即购买</a>
                                         </div>
                                     </li>
                                     <li class="np-item">
-                                        <a>云数据库MongoDB</a>
+                                        <a href='https://www.xinruiyun.cn/mongodb/'>云数据库MongoDB</a>
                                         <div class="buy-box">
                                             <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                            <span class="buy-font">立即购买</span>
+                                            <a class="buy-font" href="https://i.xinruiyun.cn/buy/database">立即购买</a>
                                         </div>
                                     </li>
                                     <li class="np-item">
-                                        <a>云数据库Redis</a>
+                                        <a href='https://www.xinruiyun.cn/redis/'>云数据库Redis</a>
                                         <div class="buy-box">
                                             <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                            <span class="buy-font">立即购买</span>
+                                            <a class="buy-font" href="https://i.xinruiyun.cn/buy/database">立即购买</a>
                                         </div>
                                     </li>
                                 </ul>
@@ -242,7 +246,7 @@
                                 </div>
                                 <ul class="np-bs">
                                     <li class="np-item">
-                                        <a>云监控</a>
+                                        <a href='https://www.xinruiyun.cn/cms/'>云监控</a>
                                     </li>
                                     <li class="np-dis">
                                         访问控制(敬请期待)
@@ -255,7 +259,7 @@
                             <a href="#">解决方案</a>
                         </li>
                         <li class="nav-item active" @mouseenter='styleClass(4,$event)'>
-                            <a href="#">定价</a>
+                            <a href="https://www.xinruiyun.cn/price/ecs/">定价</a>
                         </li>
                         <li class="nav-item active" @mouseenter='styleClass(5,$event)'>
                             <a href="#">云市场</a>
@@ -266,10 +270,10 @@
           </div>
 
           <div class="m-head">
-                <div class="mobile-head" v-cloak>
+                <div class="mobile-head" >
                     <div class="mh-top">
                         <div class="mr-icon" @click="mIcon = !mIcon">
-                            <Icon type="md-menu" size="40" color='#9B908E' :class="mIcon?'mhead-icons':'mhead-icon'" />
+                            <Icon type="navicon-round" size="40" color='#9B908E' :class="mIcon?'mhead-icons':'mhead-icon'" />
                         </div>
                         <a class="mobile-logo" href="#" alt='新睿云'>
                             <div class="mobile-limg">
@@ -278,28 +282,28 @@
                         </a>
                         <div class="m-logining" v-if="userInfo" @click='mLogin =!mLogin'>
                             <img src="./assets/img/home/logining.png">
-                            <div class="ml-text">名字有五个多字吗</div>
+                            <div class="ml-text">{{ userInfo?userInfo.realname:''}}</div>
                             <div :class="mLogin?'ml-block':'ml-blocks'"></div>
                         </div>
-                        <div class="m-pople" v-else>
-                            <Icon type="md-person" size='40' @click="userInfo = !userInfo" />
+                        <div class="m-pople" v-else @click="mLogin = !mLogin">
+                            <Icon type="person" size='40'  />
                         </div>
                     </div>
 
 
-                    <div class="m-login" :class='userInfo?"":"m-logins"' v-if="!userInfo">
+                    <div class="m-login" :class='mLogin?"":"m-logins"' v-if="!userInfo">
                         <div>
                             <a ref="external nofollow" target="_blank" href="https://wap.xrcloud.net/ruicloud/console?from=xinruiyun-kongzhitai" title="控制台">控制台</a>
                         </div>
                         <div>
-                            <a ref="external nofollow" target="_blank" href="https://wap.xrcloud.net/ruicloud/login?from=xinruiyun-denglu" title="登陆">登陆</a>
+                            <a ref="external nofollow" target="_blank" href="https://wap.xrcloud.net/ruicloud/login?from=xinruiyun-denglu" title="登录">登录</a>
                         </div>
                         <div>
                             <a ref="external nofollow" target="_blank" href="  https://wap.xrcloud.net/ruicloud/register?from=xinruiyun-zhuce" title="注册">注册</a>
                         </div>
                     </div>
                 </div>
-                <div class="ml-right" :class="mLogin?'ml-rights':''" v-cloak>
+                <div class="ml-right" :class="mLogin?'ml-rights':''" v-if="userInfo">
                     <ul class="m-list">
                         <li class="m-item">
                             <a href="#" alt="用户中心">用户中心</a>
@@ -321,7 +325,7 @@
                 <div class="mhead-list" :class="mIcon?'':'mhead-lists'">
                     <div style="text-align: center;">
                         <i-input style="width:87%;margin:20px 0;">
-                            <Icon type="ios-search" size='30' slot="suffix" />
+                            <Icon type="search" size='30' slot="suffix" />
                         </i-input>
                     </div>
 
@@ -590,6 +594,42 @@
             </li>
           </ul>
         </div>
+      </div>
+
+       <div class="m-bottom">
+          <div class="m-register">
+              <p>为您提供出众的上云实践机会和全面的尊贵服务</p>
+              <div class="m-button">立即注册</div>
+          </div>
+          <div class="m-we">
+              <div class="mwe-text">
+                  <div class="mwe-left">
+                      <div class="mwe-img">
+                          <img src="./assets/img/app/QR-code.jpg" alt="新睿云二维码">
+                      </div>
+                      <p>每周有1个神秘大奖哟</p>
+                  </div>
+                  <div class="mwe-right">
+                      <p><span>联系我们</span></p>
+                      <p><span>400-0505-565</span></p>
+                      <p><span>service@unionstech.cn</span></p>
+                      <p><span>北京海淀区东升大厦B座612室、519室</span></p>
+                  </div>
+              </div>
+          </div>
+          <div class="mb-text">
+              <div class="mb-top">
+                  <span>北京允睿讯通科技有限公司</span>
+                  <span style="margin-left: 10px;">
+                      <div class="mb-img">
+                          <img src="./assets/img/app/record.png" alt="备案号">
+                      </div>
+                      <a href="http://www.beian.miit.gov.cn/" target="_blank" rel = "nofollow"></a>京ICP备15035854号</a>
+                  </span>
+              </div>
+              <div><span>Copyright © 2019</span><span style="margin-left: 10px;">增值电信业务经营许可证B1-20180455</span>
+              </div>
+          </div>
       </div>
     </div>
     <!-- 客服浮动块 -->
@@ -1151,6 +1191,17 @@
                     arry2[index].className = 'active mhead-arrow2';
                 }
         },
+         getSelectDown2(index) {
+            let arry = document.querySelectorAll('.mhead-child .mhead-box');
+            let arry2 = document.querySelectorAll('.mhead-child .mhead-cdd .select');
+            if (arry[index].className == 'mhead-box mhead-boxs') {
+                arry[index].className = 'mhead-box';
+                arry2[index].className = 'select mhead-arrow';
+            } else {
+                arry[index].className = 'mhead-box mhead-boxs';
+                arry2[index].className = 'select mhead-arrow2';
+            }
+        },
 
       go(path) {
         if (path == 'exit') {
@@ -1334,7 +1385,7 @@
     }
 
     header {
-
+     
       .pc-head {
         width: 100%;
         background-color: #1D1716;
@@ -1480,6 +1531,7 @@
 
 .nav-list .nav-left .np-bs .np-dis {
   color: #C5C0BF;
+  font-size: 14px;
 }
 
 .nav-list .nav-left .np-bs .np-item .buy-font {
@@ -1521,10 +1573,20 @@
   .m-head {
     display: none;
     min-width: 320px;
-    position: absolute;
     width: 100%;
-    z-index: 999;
+    a{
+      color: #ffffff;
+    }
+    a:hover{
+      text-decoration: none;
+      color:#ffffff;
+    }
   }
+  .mobile-head .m-pople {
+  float: right;
+  padding: 10px;
+  color: #fff;
+}
     .mobile-head .mobile-logo {
     width: 103px;
     height: 60px;
@@ -1532,27 +1594,243 @@
 
   .mobile-head .mobile-logo .mobile-limg {
     width: 135px;
-    height: 40px;
+    height: 60px;
     display: inline-block;
     vertical-align: middle;
     overflow: hidden;
   }
+  .mobile-head .m-login {
+  display: flex;
+  background-color: #1D1716;
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+  width: 100%;
+  overflow: hidden;
+  max-height: 0px;
+  transition: max-height ease-in-out 0.3s;
+}
 
+.mobile-head .m-logins {
+  max-height: 39px;
+  transition: max-height ease-in-out 0.3s;
+}
+.mobile-head .m-login div:last-child {
+  background-color: #FF624B;
+  border-right: none;
+}
+  .mobile-head .m-logining {
+  padding-right: 20px;
+  float: right;
+  margin-top: 0.5rem;
+}
   .mobile-head .mobile-logo .mobile-limg img {
     width: 103px;
     height: auto;
     max-width: 86%;
     max-height: 66px;
     position: relative;
-    top: -11px;
+    top: -3px;
 }
-    .mobile-head .mr-icon{
-    height: 60px;
-    line-height: 60px;
-    }
+
+.mobile-head .m-logining .ml-text {
+  vertical-align: middle;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: inline-block;
+  font-size: 0.2rem;
+  width: 3rem;
+  color: #9B908E;
+}
+.ml-right {
+  background-color: #34302F;
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  transition: height ease-in-out 0.5s;
+}
+
+.ml-rights {
+  overflow: hidden;
+  height: 0;
+
+}
+
+.ml-right .m-item {
+  padding: 0.3rem 1rem;
+  color: #fff;
+  font-size: 0.2rem;
+  width: 8rem;
+}
+
+.ml-blocks {
+  border-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) #9B908E;
+  border-width: 7px;
+  border-style: solid;
+  height: 0px;
+  width: 0px;
+  display: inline-block;
+  transform: rotate(-180deg);
+  transition: transform ease-in-out 0.5s;
+}
+
+.mobile-head .m-logining .ml-block {
+  border-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) #9B908E;
+  border-width: 7px;
+  border-style: solid;
+  height: 0px;
+  width: 0px;
+  display: inline-block;
+  transform: rotate(0);
+  transition: transform ease-in-out 0.5s;
+}
+.mhead-list {
+  position: absolute;
+  z-index: 222;
+  width: 100%;
+  overflow: hidden;
+  background-color: #34302F;
+  max-height: 0px;
+  font-size: 14px;
+  transition: max-height ease-in-out 0.3s;
+}
+
+.mhead-lists {
+  max-height: 2000px;
+  font-size: 14px;
+  transition: max-height ease-in-out 0.3s;
+  background-color: #34302F;
+}
+
+.mhead-list .mhead-product {
+  background-color: #141211;
+  color: #fff;
+  box-shadow: 0px 1px 0px 0px rgba(111, 106, 106, 0.5);
+  font-size: 0.14px;
+}
+
+.mhead-lists .mhead-product {
+  background-color: #141211;
+  color: #fff;
+  box-shadow: 0px 1px 0px 0px rgba(111, 106, 106, 0.5);
+  overflow: hidden;
+}
+
+.mhead-list .mhead-products {
+  background-color: #141211;
+  color: #fff;
+  box-shadow: 0px 1px 0px 0px rgba(111, 106, 106, 0.5);
+  height: 0rem;
+  transition: height ease-in-out 0.5s;
+}
+
+.mhead-lists .mhead-products {
+  background-color: #141211;
+  color: #fff;
+  box-shadow: 0px 1px 0px 0px rgba(111, 106, 106, 0.5);
+  height: 0rem;
+  transition: height ease-in-out 0.5s;
+}
+
+.mhead-list,
+.mhead-lists .mhead-product .mhead-child {
+  background-color: #24201D;
+}
+
+.mhead-pone {
+  max-height: 68rem;
+  transition: max-height ease-in-out 0.3s;
+  -webkit-transition: max-height ease-in-out 0.3s;
+  -moz-transition: max-height ease-in-out 0.3s;
+  overflow: hidden;
+}
+
+.mhead-pones {
+  max-height: 0;
+  transition: max-height ease-in-out 0.3s;
+  -webkit-transition: max-height ease-in-out 0.3s;
+  -moz-transition: max-height ease-in-out 0.3s;
+  overflow: hidden;
+}
+
+.mhead-product span,a{
+  font-size: 14px;
+}
+.mhead-cdd {
+  box-shadow: 0px 1px 0px 0px rgba(111, 106, 106, 0.5);
+  padding: 10px;
+  background-color: #24201D;
+}
+.mhead-cdd a{
+  font-size: 14px;
+}
+.mhead-chd a{
+  font-size: 14px;
+}
+.mhead-chd {
+  background-color: #34302F;
+  padding: 10px 20px;
+}
+
+.mhead-arrow {
+  transform: rotate(-45deg);
+  transition: transform ease-in-out 0.5s;
+  float: right;
+  cursor: pointer;
+}
+
+.mhead-arrow2 {
+  transform: rotate(133deg);
+  transition: transform ease-in-out 0.5s;
+  float: right;
+  cursor: pointer;
+}
+
+.mhead-arrow2::before {
+  content: '';
+  width: 10px;
+  display: inline-block;
+  height: 10px;
+  border-radius: 2px;
+  border-top: 2px solid #C5C0BF;
+  border-right: 2px solid #C5C0BF;
+}
+
+.mhead-arrow::before {
+  content: '';
+  width: 10px;
+  display: inline-block;
+  height: 10px;
+  border-radius: 2px;
+  border-top: 2px solid #C5C0BF;
+  border-right: 2px solid #C5C0BF;
+}
+.mhead-box {
+  max-height: 320px;
+  transition: max-height ease-in-out 0.3s;
+  -webkit-transition: max-height ease-in-out 0.3s;
+  -moz-transition: max-height ease-in-out 0.3s;
+  overflow: hidden;
+}
+
+.mhead-boxs {
+  max-height: 0;
+}
+
+.mobile-head .m-login div {
+  width: 34%;
+  padding: 10px 0;
+  border-right: 1px solid #6F6A6A;
+}
+
+.mobile-head .mr-icon {
+  display: inline-block;
+  vertical-align: middle;
+}
     .mobile-head .mh-top {
       padding: 0 39px;
-      background-color: rgba(54, 58, 70, 0.24);
+      background-color: #1D1716;
       border-bottom: 1px solid rgba(220, 214, 213, 0.24);
     }
     .mobile-head .mhead-icons {
@@ -1929,6 +2207,100 @@
       }
     }
 }
+.m-bottom {
+    display: none;
+}
+
+.m-bottom img {
+    width: 100%;
+    height: 100%;
+    font-family: MicrosoftYaHei;
+}
+
+.m-bottom .m-register {
+    background-color: #FF624B;
+    text-align: center;
+    color: #fff;
+    padding: 0.7rem 0;
+}
+
+.m-bottom .m-register p {
+    font-size: 14px;
+}
+
+.m-bottom .m-register .m-button {
+    margin-top: 13px;
+    border: 1px solid #fff;
+    padding: 7px 25px;
+    font-size: 14px;
+    display: inline-block;
+    border-radius: 2px;
+}
+
+.m-bottom .m-we {
+    background-color: #1E1B1A;
+    padding: 20px;
+}
+
+.m-bottom .m-we .mwe-text {
+    display: flex;
+    justify-content: space-around;
+    max-width: 528px;
+    margin: 0 auto;
+}
+
+.m-bottom .m-we .mwe-text .mwe-left {
+    color: #fff;
+    font-size: 14px;
+    text-align: center;
+}
+
+.m-bottom .m-we .mwe-text .mwe-left .mwe-img {
+    width: 95px;
+    height: 90px;
+    display: inline-block;
+}
+
+.m-bottom .m-we .mwe-text .mwe-right {
+    margin-left: 20px;
+}
+
+.m-bottom .m-we .mwe-text .mwe-right p:nth-child(1) {
+    font-size: 18px;
+}
+
+.m-bottom .m-we .mwe-text .mwe-right p:nth-child(2) {
+    color: #FF624B;
+    font-size: 24px;
+}
+
+.m-bottom .m-we .mwe-text .mwe-right p {
+    color: #fff;
+    font-size: 14px;
+    margin-top: 7px;
+}
+
+.m-bottom .mb-text {
+    background-color: #0B0605;
+    padding: 11px 0;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 12px;
+    text-align: center;
+}
+.m-bottom .mb-text a{
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 12px;
+  }
+.m-bottom .mb-text .mb-top {
+    margin-bottom: 11px;
+}
+
+.m-bottom .mb-text .mb-top .mb-img {
+    width: 10px;
+    height: 10px;
+    vertical-align: top;
+    display: inline-block;
+}
 
 
 
@@ -1944,6 +2316,109 @@ p {
 
 span {
   font-family: "pingfang sc medium", Microsoft YaHei;
+}
+
+@media only screen and (max-width:1366px) {
+  .m-bottom {
+    display: none;
+  }
+  
+}
+
+@media only screen and (max-width:1023px) {
+  .ivu-input{
+    border: 1px solid rgba(96,87,86,1);
+    background-color: rgba(29,23,22,1);
+  }
+  #foot-footer{
+    display: none;
+  }
+  .bottom {
+    display: none;
+  }
+
+.m-bottom {
+        display: block;
+    }
+
+ #front header .pc-top {
+    display: none;
+  }
+
+ #front header .m-head {
+    display: block;
+  }
+
+ #front header .mp-pro {
+    display: block;
+    padding-top: 30px;
+    background-color: #F8F7F7;
+  }
+
+ #front header .m-product {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+ #front header  .m-product div {
+    width: 44%;
+    height: 44px;
+    line-height: 44px;
+    text-align: center;
+    background-color: #F8F7F7;
+    border: 1px solid #DCD6D5;
+    color: #1D1716;
+    font-size: 14px;
+    border-radius: 4px;
+    margin: 0 10px 10px 0;
+  }
+  #front header .m-bottom{
+    display: block;
+  }
+  #front header .mobile-head .mobile-logo {
+    width: 103px;
+    height: 60px;
+  }
+}
+
+@media only screen and (min-width:1024px)and (max-width:1365px) {
+
+  .ivu-input{
+    border: 1px solid rgba(96,87,86,1);
+    background-color: rgba(29,23,22,1);
+  }
+ #front header .m-head {
+    display: block;
+  }
+
+ #front header .m-product {
+    display: flex;
+    flex-wrap: wrap;
+  }
+#front header  .m-product div{
+    width: 31%;
+    height: 44px;
+    line-height: 44px;
+  }
+ #front header .pc-top {
+    display: none;
+  }
+ #front header .m-bottom {
+    display: block;
+  }
+
+ #front header .bottom {
+    display: none;
+  }
+
+ #front header .mp-pro {
+    display: block;
+  }
+.m-bottom {
+        display: block;
+    }
+
 }
 
 </style>
