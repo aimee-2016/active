@@ -303,13 +303,25 @@
       </p>
       <div class="universal-modal-content-flex">
         <Form>
-          <FormItem label="付费类型 :">
+          <FormItem label="付费类型 :" v-if="isCaseTypeDay">
+            <Select v-model="renewalType">
+              <Option v-for="(item,index) in timeOptionsDdosDay.renewalType" :value="item.value" :key="index">{{ item.label }}
+              </Option>
+            </Select>
+          </FormItem>
+          <FormItem label="付费类型 :" v-else>
             <Select v-model="renewalType">
               <Option v-for="(item,index) in timeOptions.renewalType" :value="item.value" :key="index">{{ item.label }}
               </Option>
             </Select>
           </FormItem>
-          <FormItem label="付费时长 :">
+          <FormItem label="付费时长 :" v-if="isCaseTypeDay">
+            <Select v-model="renewalTime">
+              <Option v-for="(item,index) in timeOptionsDdosDay.renewalTime" :value="item.value" :key="index">{{ item.label }}
+              </Option>
+            </Select>
+          </FormItem>
+          <FormItem label="付费时长 :" v-else>
             <Select v-model="renewalTime">
               <Option v-for="(item,index) in timeOptions.renewalTime" :value="item.value" :key="index">{{ item.label }}
               </Option>
@@ -336,95 +348,12 @@
         </Form>
         <div style="font-size:16px;">
           资费 <span style="color: #2b85e4; text-indent:4px;display:inline-block;">现价<span style="font-size:24px;">￥{{cost}}/</span></span>
-          <!-- <span v-if="renewalTime != ''">/</span>
-          <span style="font-size: 15px;">{{renewalTime}}<span v-if="renewalType == 'year' && renewalTime != ''">年</span>
-          <span v-if="renewalType == 'month' && renewalTime != ''">月</span></span> -->
           <span style="text-decoration: line-through">原价{{originCost}}</span>
         </div>
       </div>
       <div slot="footer" class="modal-footer-border">
         <Button type="ghost" @click="showModal.renewal = false">取消</Button>
         <Button type="primary" @click="renewalOk" :disabled="cost=='--'">确认续费</Button>
-      </div>
-    </Modal>
-    <!-- 实时续费 -->
-    <Modal v-model="showModal.Renew" width="590" :scrollable="true">
-      <div slot="header" class="modal-header-border">
-        <span class="universal-modal-title">续费云服务器</span>
-      </div>
-      <div class="universal-modal-content-flex">
-        <p style="margin-bottom: 20px">温馨提示：当前资源已欠费，如需激活需要<span class="bluetext">1小时费用</span></p>
-        <Form :model="RenewForm" label-position="left">
-          <Form-item label="所需资费">
-            <span style="font-size: 25px;color: #2b85e4;">￥{{RenewForm.cost}}</span>
-          </Form-item>
-        </Form>
-      </div>
-      <div slot="footer" class="modal-footer-border">
-        <Button type="ghost" @click="showModal.Renew = false">取消</Button>
-        <Button type="primary" @click="renewOk">确定
-        </Button>
-      </div>
-    </Modal>
-    
-    <!-- 高防主机包年包月续费弹窗 -->
-    <Modal v-model="showModal.renewalDdos" width="590" :scrollable="true">
-      <p slot="header" class="modal-header-border">
-        <span class="universal-modal-title">续费选择</span>
-      </p>
-      <div class="universal-modal-content-flex">
-        <Form>
-          <FormItem label="付费类型 :" v-if="isCaseTpeDay">
-            <Select v-model="renewalDdosType">
-              <Option v-for="(item,index) in timeDdosOptionsDay.renewalType" :value="item.value" :key="index">{{ item.label }}
-              </Option>
-            </Select>
-          </FormItem>
-          <FormItem label="付费类型 :" v-else>
-            <Select v-model="renewalDdosType">
-              <Option v-for="(item,index) in timeDdosOptions.renewalType" :value="item.value" :key="index">{{ item.label }}
-              </Option>
-            </Select>
-          </FormItem>
-          <FormItem label="付费时长 :" v-if="isCaseTpeDay">
-            <Select v-model="renewalDdosTime">
-              <Option v-for="(item,index) in timeDdosOptionsDay.renewalTime" :value="item.value" :key="index">{{ item.label }}
-              </Option>
-            </Select>
-          </FormItem>
-          <FormItem label="付费时长 :" v-else>
-            <Select v-model="renewalDdosTime">
-              <Option v-for="(item,index) in timeDdosOptions.renewalTime" :value="item.value" :key="index">{{ item.label }}
-              </Option>
-            </Select>
-          </FormItem>
-          <div class="renewal-info">
-            <ul>
-              <li><span>云服务器名称：</span>{{renewalDdosInfo.computername}}</li>
-              <li><span>操作系统：</span>{{renewalDdosInfo.templatename}}</li>
-              <li><span>云服务器配置：</span>{{renewalDdosInfo.serviceoffername}}</li>
-              <li><span>剩余时长：</span>{{renewalDdosInfo.endtime}}</li>
-            </ul>
-          </div>
-          <FormItem label="是否同时续费绑定IP与磁盘" v-if="isDdosDisks||isDdosIps">
-            <CheckboxGroup @on-change="bindDdosRenewal" v-model="bindDdosRenewalVal">
-              <Checkbox label="ip" v-if="isDdosIps">续费绑定IP</Checkbox>
-              <Checkbox label="disk" v-if="isDdosDisks">续费磁盘</Checkbox>
-            </CheckboxGroup>
-          </FormItem>
-          <div class="renewal-upgrade">
-            <p>如果现在配置内容不支持使用，可进行<span style="color:#333;cursor:not-allowed">云服务器升级</span>
-            </p>
-          </div>
-        </Form>
-        <div style="font-size:16px;">
-          资费 <span style="color: #2b85e4; text-indent:4px;display:inline-block;">现价<span style="font-size:24px;">￥{{Ddoscost}}/</span></span>
-          <span style="text-decoration: line-through">原价{{originDdosCost}}</span>
-        </div>
-      </div>
-      <div slot="footer" class="modal-footer-border">
-        <Button type="ghost" @click="showModal.renewalDdos = false">取消</Button>
-        <Button type="primary" @click="renewalDdosOk" :disabled="Ddoscost=='--'">确认续费</Button>
       </div>
     </Modal>
 
@@ -1571,24 +1500,11 @@
           renewalType: [{label: '包年', value: 'year'}, {label: '包月', value: 'month'}],
           renewalTime: [],
           year: [{label: '1年', value: 1}, {label: '2年', value: 2}, {label: '3年', value: 3}],
-          month: [{label: '1月', value: 1}, {label: '2月', value: 2}, {label: '3月', value: 3}, {
-            label: '4月',
-            value: 4
-          }, {label: '5月', value: 5}, {label: '6月', value: 6}, {label: '7月', value: 7}, {
-            label: '8月',
-            value: 8
-          }, {label: '9月', value: 9}, {label: '10月', value: 10}]
+          month: [{label: '1月', value: 1}, {label: '2月', value: 2}, {label: '3月', value: 3}, {label: '4月',value: 4},
+           {label: '5月', value: 5}, {label: '6月', value: 6}, {label: '7月', value: 7}, {label: '8月',value: 8},
+           {label: '9月', value: 9}, {label: '10月', value: 10}]
         },
-        // Ddos相关的选项
-        timeDdosOptions: {
-          renewalType: [{label: '包年', value: 'year'}, {label: '包月', value: 'month'}],
-          renewalTime: [],
-          year: [{label: '1年', value: 1}, {label: '2年', value: 2}, {label: '3年', value: 3}],
-          month: [{label: '1月', value: 1}, {label: '2月', value: 2}, {label: '3月', value: 3}, {label: '4月',value: 4}, 
-          {label: '5月', value: 5}, {label: '6月', value: 6}, {label: '7月', value: 7}, {label: '8月',value: 8}, 
-          {label: '9月', value: 9}, {label: '10月', value: 10}]
-        },
-        timeDdosOptionsDay: {
+        timeOptionsDdosDay: {
           renewalType: [{label: '包天', value: 'day'}],
           renewalTime: [],
           day: [
@@ -1600,15 +1516,7 @@
            {label: '25天', value: 25}, {label: '26天', value: 26}, {label: '27天', value: 27}, {label: '28天', value: 28}, {label: '29天', value: 29}, {label: '30天', value: 30}
           ]
         },
-        isCaseTpeDay: false,
-        renewalDdosType: '',
-        renewalDdosTime: '',
-        renewalDdosInfo: {},
-        Ddoscost: '--',
-        originDdosCost: '--',
-        isDdosDisks: '',
-        isDdosIps: '',
-        bindDdosRenewalVal: [],
+        isCaseTypeDay: false,
         // 变更资费相关
         ratesChangeType: '',
         ratesChangeTime: '',
@@ -1626,10 +1534,10 @@
         isIps: '',
         originCost: '--',
         cost: '--',
-        RenewForm: {
+        /* RenewForm: {
           cost: 0,
           id: ''
-        },
+        }, */
         backupForm: {
           name: '',
           memory: '1'
@@ -2574,7 +2482,7 @@
           })
         }
       },
-      // 包年/月云服务器续费(高防云服务器续费更改参数)
+      // 包年/月云服务器续费
       renewalOk() {
         var selectIp = ''
         var selectDisk = ''
@@ -2618,188 +2526,49 @@
           name: 'upgrade'
         })
       },
-      bindDdosRenewal() {
-        if (this.Ddoscost != '--') {
-          var selectDdosIp = ''
-          var selectDdosDisk = ''
-          for (var i = 0; i < this.bindDdosRenewalVal.length; i++) {
-            if (this.bindDdosRenewalVal[i] == 'ip') {
-              selectDdosIp = this.isIps
-            }
-            if (this.bindDdosRenewalVal[i] == 'disk') {
-              selectDdosDisk = this.isDisks
-            }
-          }
-          this.$http.get('information/getYjPrice.do', {
-            params: {
-              timeValue: this.renewalDdosTime,
-              timeType: this.renewalDdosType,
-              hostIdArr: this.hostCurrentSelected.id,
-              ipIdArr: selectDdosIp,
-              diskArr: selectDdosDisk
-            }
-          }).then((response) => {
-            if (response.status == 200 && response.data.status == 1) {
-              this.cost = response.data.result.toFixed(2)
-              this.originDdosCost = response.data.result
-              if (response.data.cuspon) {
-                this.originDdosCost = Number((this.originDdosCost + response.data.cuspon).toFixed(2))
-              }
-              if (response.data.continueDiscount) {
-                this.originDdosCost = (this.originDdosCost + response.data.continueDiscount).toFixed(2)
-              }
-            } else {
-              this.$message.info({
-                content: response.data.message
-              })
-            }
-          })
-        }
-      },
-      renewalDdosOk() {
-        // 包年/月高防云服务器续费
-        var selectIp = ''
-        var selectDisk = ''
-        for (var i = 0; i < this.bindRenewalVal.length; i++) {
-          if (this.bindRenewalVal[i] == 'ip') {
-            selectIp = this.isIps
-          }
-          if (this.bindRenewalVal[i] == 'disk') {
-            selectDisk = this.isDisks
-          }
-        }
-        var iplist = []
-        if (selectIp != '') {
-          iplist = selectIp.split(',').map(item => {
-            return {type: 2, id: parseInt(item)}
-          })
-        }
-        var disklist = []
-        if (selectDisk != '') {
-          disklist = selectDisk.split(',').map(item => {
-            return {type: 1, id: parseInt(item)}
-          })
-        }
-        var host = [
-          {type: 0, id: this.hostCurrentSelected.id}
-        ]
-        var list = host.concat(iplist, disklist)
-        list = JSON.stringify(list)
-        this.$http.post('continue/continueOrder.do', {
-          list: list,
-          timeType: this.renewalType,
-          timeValue: this.renewalTime + ''
-        }).then(response => {
-          if (response.status == 200 && response.data.status == 1) {
-            this.$router.push({path: 'order'})
-          }
-        })
-      },
       // 欠费云服务器续费
       renewHost(item) {
-        let that = this
-        if(this.$store.state.zone.gpuserver == 2){
-          // 高防区域的云服务器续费
-          if(item.caseType == 5){
-            this.isCaseTpeDay = true
-          } else {
-            this.isCaseTpeDay = false
-          }
-          this.renewalDdosInfo = {
-            computername: item.computername,
-            templatename: item.templatename,
-            serviceoffername: item.serviceoffername,
-            endtime: item.endtime
-          }
-          axios.get('information/listVirtualMachinesById.do', {
-            params: {
-              VMId: this.hostCurrentSelected.computerid,
-              zoneId: this.hostCurrentSelected.zoneid
-            }
-          }).then(response => {
-            if (response.status == 200 && response.data.status == 1) {
-              var diskarr = response.data.result[0].attachDisk.map(item => {
-                return item.id
-              })
-              that.isDdosDisks = diskarr.join()
-              var iparr = response.data.result[0].attachPublicIp.map(item => {
-                return item.id
-              })
-              debugger
-              that.isDdosIps = iparr.join()
-              // 清空续费弹窗数据
-              that.bindDdosRenewalVal = ['ip', 'disk']
-              that.Ddoscost = '--'
-              that.originDdosCost = '--'
-              that.renewalDdosType = ''
-              that.renewalDdosTime = ''
-              that.showModal.renewalDdos = true
-            }
-          })
+        // if(this.$store.state.zone.gpuserver == 2){
+        // 高防区域的云服务器续费
+        if(item.caseType == 5){
+          this.isCaseTypeDay = true
         } else {
-          // 普通云服务器的续费
-          if (item.caseType == 3) {
-            if (item.status == 0) {
-              this.showModal.Renew = true
-              this.RenewForm.id = item.id
-              this.RenewForm.cost = item.cpCase
-            } else {
-              this.$Message.info('请选择包年包月的资源进行续费')
-            }
-          } else {
-            this.renewalInfo = {
-              computername: item.computername,
-              templatename: item.templatename,
-              serviceoffername: item.serviceoffername,
-              endtime: item.endtime
-            }
-            this.renewType()
-            this.showModal.renewal = true
-          }
+          this.isCaseTypeDay = false
         }
+        this.renewalInfo = {
+          computername: item.computername,
+          templatename: item.templatename,
+          serviceoffername: item.serviceoffername,
+          endtime: item.endtime
+        }
+        this.renewType()
+        this.showModal.renewal = true
       },
       // 查询续费云服务器下是否有ip或磁盘
       renewType() {
+        let that = this
         axios.get('information/listVirtualMachinesById.do', {
           params: {
-            VMId: this.hostCurrentSelected.computerid,
-            zoneId: this.hostCurrentSelected.zoneid
+            VMId: that.hostCurrentSelected.computerid,
+            zoneId: that.hostCurrentSelected.zoneid
           }
         }).then(response => {
           if (response.status == 200 && response.data.status == 1) {
             var diskarr = response.data.result[0].attachDisk.map(item => {
               return item.id
             })
-            this.isDisks = diskarr.join()
+            that.isDisks = diskarr.join()
             var iparr = response.data.result[0].attachPublicIp.map(item => {
               return item.id
             })
-            this.isIps = iparr.join()
+            that.isIps = iparr.join()
             // 清空续费弹窗数据
-            this.bindRenewalVal = ['ip', 'disk']
-            this.cost = '--'
-            this.originCost = '--'
-            this.renewalType = ''
-            this.renewalTime = ''
-            this.showModal.renewal = true
-          }
-        })
-      },
-      // 实时欠费云服务器续费确认
-      renewOk() {
-        this.showModal.Renew = false
-        this.$http.get('information/vmRenew.do', {
-          params: {
-            id: this.RenewForm.id,
-          }
-        }).then(response => {
-          this.getHostList()
-          if (response.status == 200 && response.data.status == 1) {
-            this.$Message.success('云服务器续费成功')
-          } else {
-            this.$message.info({
-              content: response.data.message
-            })
+            that.bindRenewalVal = ['ip', 'disk']
+            that.cost = '--'
+            that.originCost = '--'
+            that.renewalType = ''
+            that.renewalTime = ''
+            that.showModal.renewal = true
           }
         })
       },
@@ -3158,7 +2927,11 @@
     watch: {
       renewalType(type) {
         this.renewalTime = ''
-        this.timeOptions.renewalTime = this.timeOptions[type]
+        if(this.isCaseTypeDay){
+          this.timeOptionsDdosDay.renewalTime = this.timeOptionsDdosDay[type]
+        } else {
+          this.timeOptions.renewalTime = this.timeOptions[type]
+        }
       },
       renewalTime(time) {
         if (time == '') {
@@ -3192,56 +2965,6 @@
               }
               if (response.data.continueDiscount) {
                 this.originCost = (this.originCost + response.data.continueDiscount).toFixed(2)
-              }
-            } else {
-              this.$message.info({
-                content: response.data.message
-              })
-            }
-          })
-        }
-      },
-      renewalDdosType(type) {
-        this.renewalDdosTime = ''
-        if(this.isCaseTpeDay){
-          this.timeDdosOptionsDay.renewalTime = this.timeDdosOptionsDay[type]
-        } else {
-          this.timeDdosOptions.renewalTime = this.timeDdosOptions[type]
-        }
-      },
-      // 高防区域
-      renewalDdosTime(time) {
-        if (time == '') {
-          this.Ddoscost = '--'
-          this.originDdosCost = '--'
-        } else {
-          var selectDdosIp = ''
-          var selectDdosDisk = ''
-          for (var i = 0; i < this.bindDdosRenewalVal.length; i++) {
-            if (this.bindDdosRenewalVal[i] == 'ip') {
-              selectDdosIp = this.isIps
-            }
-            if (this.bindDdosRenewalVal[i] == 'disk') {
-              selectDdosDisk = this.isDisks
-            }
-          }
-          this.$http.get('information/getYjPrice.do', {
-            params: {
-              timeValue: this.renewalDdosTime,
-              timeType: this.renewalDdosType,
-              hostIdArr: this.hostCurrentSelected.id,
-              ipIdArr: selectDdosIp,
-              diskArr: selectDdosDisk
-            }
-          }).then((response) => {
-            if (response.status == 200 && response.data.status == 1) {
-              this.Ddoscost = response.data.result.toFixed(2)
-              this.originDdosCost = response.data.result
-              if (response.data.cuspon) {
-                this.originDdosCost = Number((this.originDdosCost + response.data.cuspon).toFixed(2))
-              }
-              if (response.data.continueDiscount) {
-                this.originDdosCost = (this.originDdosCost + response.data.continueDiscount).toFixed(2)
               }
             } else {
               this.$message.info({
