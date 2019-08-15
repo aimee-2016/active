@@ -9,12 +9,24 @@ import App from '@/App'
 // 前台活动页面路由
 const ActiveCenter = () =>import('@/components/App/ActiveCenter')
 const activeBefore = () =>import('@/components/App/active/activeBefore')
-const FrActive = () =>import('@/components/App/active/freeReceive.1')
-const objStorageActive = () =>import('@/components/App/active/objStorageActive')
-const DBActive = () =>import('@/components/App/active/DatabaseActive')
-const ddosActive = () =>import('@/components/App/active/ddos')
-const ddosActiveM = () =>import('@/components/App/active/hignCopy')
-const ddosActive1 = () =>import('@/components/App/active/ddosA')
+const FrActive = () =>import('@/components/App/active/freeReceiveA')
+const FrActiveP = () =>import('@/components/App/active/freeReceive.1')
+const FrActiveM = () =>import('@/components/App/active/MfreeAnnual')
+const objStorageActive = () =>import('@/components/App/active/objStorageActiveA')
+const objStorageActiveP = () =>import('@/components/App/active/objStorageActive')
+const objStorageActiveM = () =>import('@/components/App/active/Mstorage')
+
+
+const DBActive = () =>import('@/components/App/active/DatabaseActiveA')
+const DBActiveP = () =>import('@/components/App/active/DatabaseActive')
+const DBActiveM = () =>import('@/components/App/active/Macdata')
+
+
+const ddosActive = () =>import('@/components/App/active/ddosA')
+const ddosActiveP = () =>import('@/components/App/active/ddos')
+const ddosActiveM = () =>import('@/components/App/active/MhignCopy')
+
+
 
 // 404
 const notFindPage = () => import('@/components/404')
@@ -33,11 +45,17 @@ var router = new Router({
         {path: 'activity', name: 'activity', component: ActiveCenter,caseSensitive: true},
         {path: 'activebefore',name: 'activebefore', component:activeBefore,caseSensitive: true},
         {path: 'activity/free', name: 'activity/free', component: FrActive,caseSensitive: true},
+        {path: 'activity/freem', name: 'activity/freem', component: FrActiveM,caseSensitive: true},
+        {path: 'activity/freep', name: 'activity/freep', component: FrActiveP,caseSensitive: true},
         {path: 'activity/objectstorage', name: 'activity/objectstorage', component: objStorageActive,caseSensitive: true},
+        {path: 'activity/objectstoragem', name: 'activity/objectstoragem', component: objStorageActiveM,caseSensitive: true},
+        {path: 'activity/objectstoragep', name: 'activity/objectstoragep', component: objStorageActiveP,caseSensitive: true},
         {path: 'activity/hotdatabase', name: 'activity/hotdatabase', component: DBActive,caseSensitive: true},
-        {path: 'activity/ddosactive1',name: 'activity/ddosactive', component:ddosActive,caseSensitive: true},
-        {path: 'activity/highcopy',name: 'activity/highcopy', component:ddosActiveM,caseSensitive: true},
-        {path: 'activity/ddosactive',name: 'activity/ddosactive1', component:ddosActive1,caseSensitive: true},
+        {path: 'activity/hotdatabasem', name: 'activity/hotdatabasem', component: DBActiveM,caseSensitive: true},
+        {path: 'activity/hotdatabasep', name: 'activity/hotdatabasep', component: DBActiveP,caseSensitive: true},
+        {path: 'activity/ddosactive',name: 'activity/ddosactive', component:ddosActive,caseSensitive: true},
+        {path: 'activity/ddosactivem',name: 'activity/ddosactivem', component:ddosActiveM,caseSensitive: true},
+        {path: 'activity/ddosactivep',name: 'activity/ddosactivep', component:ddosActiveP,caseSensitive: true},
       ]
     },
     {path: '/*', name: '404', component: notFindPage},

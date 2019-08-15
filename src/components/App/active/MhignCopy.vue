@@ -359,14 +359,14 @@
 </template>
 
 <script>
-    import {PopupPicker,Group, Cell } from 'vux'
+    import {PopupPicker,Group, Cell} from 'vux'
     import axios from 'axios'
     import $store from '@/vuex'
     export default{
       components: {
         PopupPicker,
         Group,
-        Cell
+        Cell,
       },
       beforeRouteEnter (to,from,next) {
         axios.get('activity/activityTime.do',{
@@ -862,7 +862,7 @@
             })
           }
         })
-      }
+      },
     }
 </script>
 
