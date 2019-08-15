@@ -157,6 +157,7 @@
             this.interfacePrice = response.data.price
             this.changeEndTime = response.data.endTime
           } else {
+            this.purchDay = this.purchDay - 1
             this.$Message.info(response.data.message)
           }
         })
@@ -206,9 +207,8 @@
       addCount() {
         let tempAddCount = this.purchDay + 1
         if(this.selectItem.value >= 400) {
-          if(new Date(this.changeEndTime) <= new Date(this.hostInfo.ddosProtectNumber)){
-            debugger;
-            this.$Message.info('扩容配置大于等于400GB时，天数选择不能大于防护到期时间');
+          if(tempAddCount > 30){
+            this.$Message.info('扩容配置大于等于400GB时，天数选择不能超过30天');
           } else {
             this.purchDay = tempAddCount
           }
