@@ -514,7 +514,7 @@
           return
         }
         if (this.registerForm.password.trim() == '' || !regExp.passwordVail(this.registerForm.password)) {
-          this.registerWarning = '请输入正确密码'
+          this.registerWarning = '密码长度不小于8位且必须包含大、小写字母和数字'
           return
         }
         if (this.registerForm.password != this.registerForm.passwordConfirm) {
