@@ -233,10 +233,10 @@
                     </li>
                 </ul>
             </div>
-            <div class="foot">
+            <!-- <div class="foot">
                 <p><span>Copyright &#169 2014-2017</span><span class="icpIcon">京ICP备15035854号</span></p>
                 <p class="company">北京允睿讯通科技有限公司</p>
-            </div>
+            </div> -->
         </div>
 
         <!--秒杀活动规则弹窗-->
