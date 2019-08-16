@@ -244,7 +244,7 @@
             <div class="alert1">
                 <div class="top">
                     <h1>秒杀活动规则</h1>
-                    <img src="../../../assets/img/active/ddos-m/close.png" alt="" @click="seckilling = ''">
+                    <img src="../../../assets/img/active/home-m/close.png" alt="" @click="seckilling = ''">
                 </div>
                 <ul class="rules">
                     <li><b>1、</b>活动时间：2019.7.25-2019.9.25，每天6场秒杀， 2点、6点、10点、14点、18点、22点开抢。</li>
@@ -265,7 +265,7 @@
             <div class="alert2">
                 <div class="top">
                     <h1>活动规则</h1>
-                    <img src="../../../assets/img/active/ddos-m/close.png" alt="" @click="favourable = ''">
+                    <img src="../../../assets/img/active/home-m/close.png" alt="" @click="favourable = ''">
                 </div>
                 <ul class="rules">
                     <li><b>1、</b>活动时间：2019.7.25-2019.9.25。</li>
@@ -283,7 +283,7 @@
             <div class="alert3">
                 <div class="top">
                     <h1>送域名活动规则</h1>
-                    <img src="../../../assets/img/active/ddos-m/close.png" alt="" @click="present = ''">
+                    <img src="../../../assets/img/active/home-m/close.png" alt="" @click="present = ''">
                 </div>
                 <ul class="rules">
                     <li><b>1、</b>活动时间：2019.7.25-2019.9.25。</li>
@@ -304,7 +304,7 @@
             <div class="alert4">
                 <div class="top">
                     <h1>提示</h1>
-                    <img src="../../../assets/img/active/ddos-m/close.png" alt="" @click="certify = ''">
+                    <img src="../../../assets/img/active/home-m/close.png" alt="" @click="certify = ''">
                 </div>
                 <div class="rules">
                     根据国家规定，使用公共互联网需进行实名认证。
@@ -319,7 +319,7 @@
             <div class="alert5">
                 <div class="top">
                     <h1>提示</h1>
-                    <img src="../../../assets/img/active/ddos-m/close.png" alt="" @click="msg = ''">
+                    <img src="../../../assets/img/active/home-m/close.png" alt="" @click="msg = ''">
                 </div>
                 <div class="rules">
                    {{message}}
@@ -334,7 +334,7 @@
             <div class="alert6">
                 <div class="top">
                     <h1>更多秒杀场次预告</h1>
-                    <img src="../../../assets/img/active/ddos-m/close.png" alt="" @click="showmore = ''">
+                    <img src="../../../assets/img/active/home-m/close.png" alt="" @click="showmore = ''">
                 </div>
                 <ul class="rules">
                     <li v-for="(item,index) in  showDatas" :key="item.date">
@@ -359,14 +359,14 @@
 </template>
 
 <script>
-    import {PopupPicker,Group, Cell } from 'vux'
+    import {PopupPicker,Group, Cell} from 'vux'
     import axios from 'axios'
     import $store from '@/vuex'
     export default{
       components: {
         PopupPicker,
         Group,
-        Cell
+        Cell,
       },
       beforeRouteEnter (to,from,next) {
         axios.get('activity/activityTime.do',{
@@ -421,10 +421,10 @@
             {title: '更多优惠', desc: '请前往PC端新睿云官网',value: ''},
           ],
           foots: [
-            {img: require('../../../assets/img/active/ddos-m/ft-1.png'), title: '7x24', name: '多渠道服务与支持'},
-            {img: require('../../../assets/img/active/ddos-m/ft-2.png'), title: '意见', name: '反馈与投诉建议'},
-            {img: require('../../../assets/img/active/ddos-m/ft-3.png'), title: '1v1', name: '一对一专项服务'},
-            {img: require('../../../assets/img/active/ddos-m/ft-4.png'), title: '退款', name: '7天无理由退款'},
+            {img: require('../../../assets/img/active/home-m/ft-1.png'), title: '7x24', name: '多渠道服务与支持'},
+            {img: require('../../../assets/img/active/home-m/ft-2.png'), title: '意见', name: '反馈与投诉建议'},
+            {img: require('../../../assets/img/active/home-m/ft-3.png'), title: '1v1', name: '一对一专项服务'},
+            {img: require('../../../assets/img/active/home-m/ft-4.png'), title: '退款', name: '7天无理由退款'},
           ],
           certify: '', // 未认证
           msg: '', // status 为2
@@ -645,7 +645,7 @@
               if (res.status == 200 && res.data.status == 1) {
                 sessionStorage.setItem('countOrder', item.price.toString())
                 sessionStorage.setItem('hignHost', 'hignHost')
-                this.$router.push('/order')
+                this.$router.push('orderconfirm')
               } else {
                 this.message  = res.data.message
                 this.msg = 'msg'
@@ -674,7 +674,7 @@
               if (res.status == 200 && res.data.status == 1) {
                 sessionStorage.setItem('countOrder', item.cost.toString())
                 sessionStorage.setItem('hignHost', 'hignHost')
-                this.$router.push('/order')
+                this.$router.push('orderconfirm')
               } else {
                 this.message  = res.data.message
                 this.msg = 'msg'
@@ -702,7 +702,7 @@
             }).then(res => {
               if (res.status == 200 && res.data.status == 1) {
                 sessionStorage.setItem('countOrder', item.cost.toString())
-                this.$router.push('/order')
+                this.$router.push('orderconfirm')
               } else {
                 this.message  = res.data.message
                 this.msg = 'msg'
@@ -731,7 +731,7 @@
               if (res.status == 200 && res.data.status == 1) {
                 sessionStorage.setItem('countOrder', item.cost.toString())
                 sessionStorage.setItem('hignHost', 'hignHost')
-                this.$router.push('/order')
+                this.$router.push('orderconfirm')
               } else {
                 this.message  = res.data.message
                 this.msg = 'msg'
@@ -758,14 +758,14 @@
               if (res.status == 200 && res.data.status == 1) {
                 sessionStorage.setItem('countOrder', item.cost.toString())
                 sessionStorage.setItem('hignHost', 'hignHost')
-                this.$router.push('/order')
+                this.$router.push('orderconfirm')
               } else {
                 this.message  = res.data.message
                 this.msg = 'msg'
               }
             })
           }
-        }
+        },
       },
       created () {
         this.timeRange()
@@ -862,7 +862,7 @@
             })
           }
         })
-      }
+      },
     }
 </script>
 
@@ -873,6 +873,7 @@
             background:rgba(42,41,54,1);
             img {
                 width: 100%;
+                height: 6.66rem;
             }
         }
 
@@ -880,7 +881,7 @@
             width: 100%;
             background:rgba(42,41,54,1);
             ul {
-                padding: 17px 30px 0 30px;
+                padding: .17rem .3rem 0 .3rem;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
@@ -888,16 +889,16 @@
                 li {
                     list-style: none;
                     position: relative;
-                    width: 340px;
-                    padding: 23px 0 19px 40px;
+                    width: 3.4rem;
+                    padding: .23rem 0 .19rem .4rem;
                     background:rgba(62,60,78,1);
                     border:1px solid rgba(84,82,104,1);
-                    margin-bottom: 10px;
+                    margin-bottom: .1rem;
                     p {
-                        font-size:26px;
+                        font-size:.26rem;
                         font-weight:600;
                         color:rgba(255,224,163,1);
-                        line-height:34px;
+                        line-height:.34rem;
                     }
                     span {
                         background:rgba(219,221,224,1);
@@ -905,11 +906,11 @@
                         position: absolute;
                         top: 0;
                         right: 0;
-                        font-size:20px;
+                        font-size:.2rem;
                         font-weight:bold;
                         color:rgba(52,51,69,1);
-                        line-height:28px;
-                        padding: 5px;
+                        line-height:.28rem;
+                        padding: 0 .05rem;
                     }
                 }
             }
@@ -919,19 +920,19 @@
             width: 100%;
             background:rgba(42,41,54,1);
             .title {
-                padding-top: 60px;
+                padding-top: .6rem;
                 img {
-                    width: 226px;
+                    width: 2.26rem;
                     display: block;
                     margin: 0 auto;
                 }
                 p {
-                    padding: 16px 44px 0 44px;
+                    padding: .16rem .44rem 0 .44rem;
                     text-align: center;
-                    font-size:26px;
+                    font-size:.26rem;
                     font-weight:400;
                     color:rgba(255,255,255,1);
-                    line-height:34px;
+                    line-height:.34rem;
                     span {
                         color: #FDC58F;
                         text-decoration: underline;
@@ -941,84 +942,79 @@
             .down {
                 display: flex;
                 justify-content: space-between;
-                flex-wrap: wrap;
                 align-items: baseline;
-                padding: 30px 30px 22px 30px;
+                padding: .3rem .3rem .22rem .3rem;
               p{
-                  font-size:24px;
+                  font-size:.24rem;
                   color:rgba(255,255,255,1);
-                  line-height:31px;
+                  line-height:.31rem;
                   span {
-                      margin-left: 10px;
+                      margin-left: .1rem;
                       display: inline-block;
-                      padding: 2px 8px;
-                      font-size:36px;
+                      padding: .02rem .08rem;
+                      font-size:.36rem;
                       font-weight:bold;
                       color:rgba(8,13,76,1);
-                      line-height:42px;
+                      line-height:.42rem;
                       background:linear-gradient(180deg,rgba(254,231,190,1) 0%,rgba(252,202,138,1) 100%);
                   }
-                &:nth-of-type(2) {
-                    margin: 10px 0;
-                }
               }
               .more {
                   color:rgba(255,208,140,1);
               }
             }
             .onlytime {
-                margin-top: 10px;
+                margin-top: .1rem;
                 ul {
-                    // width: 690px;
-                    width: 100%;
+                    width: 6.9rem;
                     margin: 0 auto;
                     li {
                         background:rgba(77,75,97,1);
                         list-style: none;
-                        margin-bottom: 30px;
+                        margin-bottom: .3rem;
                         .hign_host {
                             .top {
                                 background:rgba(84,81,106,1);
                                 position: relative;
-                                padding: 22px 0 23px 30px;
+                                padding: .22rem 0 .23rem .3rem;
                                 border-bottom: 1.2px dashed #625F76;
                                 p{
-                                    font-size:32px;
+                                    font-size:.32rem;
                                     font-weight:500;
                                     color:rgba(255,255,255,1);
-                                    line-height:45px;
+                                    line-height:.45rem;
                                 }
                                 span {
                                     display: inline-block;
-                                    font-size:22px;
+                                    font-size:.22rem;
                                     font-weight:bold;
                                     color:rgba(255,255,255,1);
-                                    line-height:30px;
+                                    line-height:.3rem;
                                     position: absolute;
-                                    top: 29px;
+                                    top: .29rem;
                                     right: 0;
                                     background:rgba(255,98,75,1);
-                                    padding: 8px;
+                                    padding: 0 .08rem;
                                 }
                                 .host {
-                                    height: 30px;
+                                    height: .3rem;
                                     overflow: hidden;
                                     display: block;
-                                    font-size:22px;
+                                    font-size:.22rem;
                                     font-weight:bold;
                                     color:rgba(255,255,255,1);
-                                    line-height:30px;
+                                    line-height:.3rem;
                                     position: absolute;
-                                    top: 29px;
+                                    top: .29rem;
                                     right: 0;
                                     background:rgba(255,98,75,1);
-                                    padding: 0 0 0 8px;
+                                    padding: 0 0 0 .08rem;
                                     a {
-                                        font-size:22px;
+                                        font-size:.22rem;
                                         background:rgba(255,224,163,1);
                                         color:rgba(51,51,51,1);
-                                        padding: 4px;
-                                        margin-left: 8px;
+                                        padding: 0 .04rem;
+                                        margin-left: .08rem;
                                     }
                                 }
                                 .gpu {
@@ -1028,24 +1024,24 @@
                                     }
                                 }
                                 .ip {
-                                    font-size:28px;
+                                    font-size:.28rem;
                                     font-weight:500;
                                     color:rgba(255,255,255,1);
-                                    line-height:40px;
-                                    padding-top: 10px;
+                                    line-height:.4rem;
+                                    padding-top: .1rem;
                                 }
                             }
                             .middle {
-                                padding: 20px 0;
+                                padding: .2rem 0;
                                 border-bottom: 1px solid #625F76;
                                 display: flex;
                                 justify-content: space-around;
                                 align-items: center;
                                 p {
-                                    font-size:28px;
+                                    font-size:.28rem;
                                     font-weight:400;
                                     color:rgba(255,240,222,1);
-                                    line-height:40px;
+                                    line-height:.4rem;
                                     span {
                                         font-weight: bold;
                                     }
@@ -1055,44 +1051,44 @@
                                 display: flex;
                                 justify-content: space-between;
                                 align-items: center;
-                                padding: 40px 30px 35px 20px;
+                                padding: .4rem .3rem .35rem .2rem;
                                 .price {
                                     p {
-                                        font-size:24px;
+                                        font-size:.24rem;
                                         font-weight:400;
                                         color:rgba(255,98,75,1);
-                                        line-height:32px;
+                                        line-height:.32rem;
                                         span {
                                             font-weight: bold;
-                                            font-size: 36px;
+                                            font-size: .36rem;
                                         }
                                         .old {
-                                            font-size:24px;
+                                            font-size:.24rem;
                                             font-weight:400;
-                                            line-height:32px;
+                                            line-height:.32rem;
                                             color:#FFFFFF;
                                             text-decoration: line-through;
-                                            padding-left: 5px;
+                                            padding-left: .05rem;
                                         }
                                     }
                                     .press {
-                                        padding-top: 15px;
-                                        font-size:24px;
+                                        padding-top: .15rem;
+                                        font-size:.24rem;
                                         font-weight:400;
                                         color:rgba(219,207,196,1);
-                                        line-height:32px;
+                                        line-height:.32rem;
                                     }
                                 }
                                 button {
                                     background:linear-gradient(90deg,rgba(249,239,184,1) 0%,rgba(227,183,111,1) 100%);
-                                    width: 230px;
-                                    font-size:32px;
+                                    width: 2.3rem;
+                                    font-size:.32rem;
                                     color:rgba(51,51,51,1);
-                                    line-height:45px;
+                                    line-height:.45rem;
                                     font-weight: bold;
                                     outline: none;
                                     border: none;
-                                    padding: 18px 0 17px 0;
+                                    padding: .18rem 0 .17rem 0;
                                     text-align: center;
                                 }
                                 .over {
@@ -1104,75 +1100,74 @@
                 }
             }
             .warn {
-                padding: 0 30px;
-                font-size:24px;
+                padding: 0 .3rem;
+                font-size:.24rem;
                 font-weight:400;
                 color:rgba(219,207,196,1);
-                line-height:34px;
+                line-height:.34rem;
             }
         }
 
         .eight {
             width: 100%;
             background:rgba(42,41,54,1);
-            padding-bottom: 10px;
+            padding-bottom: .1rem;
             .title {
-                padding-top: 60px;
+                padding-top: .6rem;
                 img {
-                    width: 500px;
+                    width: 5rem;
                     display: block;
                     margin: 0 auto;
                 }
                 p {
-                   padding-top: 20px;
+                   padding-top: .2rem;
                     text-align: center;
-                    font-size:24px;
+                    font-size:.24rem;
                     font-weight:400;
                     color:rgba(255,255,255,1);
-                    line-height:33px;
+                    line-height:.33rem;
                     span {
-                        padding-left: 20px;
+                        padding-left: .2rem;
                         color: #EED292;
                     }
                 }
             }
             .first {
-                // width: 690px;
-                width: 100%;
-                margin: 30px auto;
+                width: 6.9rem;
+                margin: .3rem auto;
                 ul {
                     .ftitle {
                         width: 100%;
                         background:rgba(62,60,78,1);
                         position: relative;
-                        padding: 22px 0 23px 30px;
-                        font-size:32px;
+                        padding: .22rem 0 .23rem .3rem;
+                        font-size:.32rem;
                         font-weight:500;
                         color:rgba(255,208,140,1);
-                        line-height:45px;
+                        line-height:.45rem;
                         img {
                             display: block;
                             position: absolute;
                             right: 0;
                             top: 0;
-                            width: 150px;
-                            height: 89px;
+                            width: 1.5rem;
+                            height: .89rem;
                         }
                     }
                     li{
                         list-style: none;
-                        margin-bottom: 20px;
+                        margin-bottom: .2rem;
                         .top {
-                            padding: 20px 0;
+                            padding: .2rem 0;
                             background:rgba(77,75,97,1);
                             display: flex;
                             align-items: center;
                             justify-content: space-around;
                             p{
-                                font-size:28px;
+                                font-size:.28rem;
                                 font-weight:400;
                                 color:rgba(255,240,222,1);
-                                line-height:40px;
+                                line-height:.4rem;
                                 span {
                                     font-weight: bold;
                                 }
@@ -1181,24 +1176,24 @@
                         .middle {
                             background: #FFFFFF;
                             .defense {
-                                padding: 20px 20px 0 20px;
-                                font-size:28px;
+                                padding: .2rem .2rem 0 .2rem;
+                                font-size:.28rem;
                                 font-weight:400;
                                 color:rgba(102,102,102,1);
                                 line-height:28px;
                                 p {
-                                    padding-bottom: 20px;
+                                    padding-bottom: .2rem;
                                     border-bottom: 1px solid #DBD9E9;
                                     span {
-                                        width: 170px;
+                                        width: 1.7rem;
                                         display: inline-block;
-                                        font-size:28px;
+                                        font-size:.28rem;
                                         font-weight:500;
                                         color:rgba(85,85,85,1);
-                                        line-height:40px;
-                                        padding: 10px 0;
+                                        line-height:.4rem;
+                                        padding: .1rem 0;
                                         border:1px solid rgba(238,210,146,1);
-                                        margin-left: 20px;
+                                        margin-left: .2rem;
                                         text-align: center;
                                     }
                                     .spanClick {
@@ -1209,56 +1204,56 @@
                         }
                         .btns {
                             background:rgba(255,255,255,1);
-                            padding: 40px 30px 40px 20px;
+                            padding: .4rem .3rem .4rem .2rem;
                             display: flex;
                             justify-content: space-between;
                             align-items: center;
                             .prices {
                                 .now {
-                                    font-size:24px;
+                                    font-size:.24rem;
                                     font-weight:400;
                                     color:rgba(255,98,75,1);
-                                    line-height:34px;
+                                    line-height:.34rem;
                                     span {
-                                        font-size: 36px;
+                                        font-size: .36rem;
                                         font-weight: bold;
                                     }
                                 }
                                 .old {
-                                    padding-top: 10px;
-                                    font-size:24px;
+                                    padding-top: .1rem;
+                                    font-size:.24rem;
                                     font-weight:400;
                                     color:#666666;
-                                    line-height:34px;
+                                    line-height:.34rem;
                                     text-decoration: line-through;
                                     .bot {
-                                        padding: 3px 8px;
-                                        margin-left: 20px;
+                                        padding: .03rem .08rem;
+                                        margin-left: .2rem;
                                         display: inline-block;
                                         text-decoration: none;
-                                        font-size:22px;
+                                        font-size:.22rem;
                                         font-weight:400;
                                         color:rgba(255,208,140,1);
-                                        line-height:22px;
+                                        line-height:.22rem;
                                         background:rgba(77,75,97,1);
                                     }
                                 }
                             }
                             button {
                                 display: block;
-                                width: 230px;
+                                width: 2.3rem;
                                 background:linear-gradient(128deg,rgba(249,239,184,1) 0%,rgba(227,183,111,1) 100%);
                                 outline: none;
                                 border: none;
-                                font-size:32px;
+                                font-size:.32rem;
                                 font-weight:bold;
                                 color:rgba(51,51,51,1);
-                                line-height:45px;
-                                padding: 18px 0 17px 0;
+                                line-height:.45rem;
+                                padding: .18rem 0 .17rem 0;
                                 img {
-                                    width: 26px;
+                                    width: .26rem;
                                     vertical-align: middle;
-                                    margin-left: 9px;
+                                    margin-left: .09rem;
                                 }
                             }
                         }
@@ -1270,116 +1265,115 @@
         .giving {
             width: 100%;
             background:rgba(226,228,240,1);
-            padding-bottom: 60px;
+            padding-bottom: .6rem;
             .title {
-                padding-top: 30px;
+                padding-top: .3rem;
                 img {
-                    width: 454px;
+                    width: 4.54rem;
                     display: block;
                     margin: 0 auto;
                 }
                 p {
-                    padding: 20px .7100px 0 .7100px;
+                    padding: .2rem .71rem 0 .71rem;
                     text-align: center;
-                    font-size:24px;
+                    font-size:.24rem;
                     font-weight:400;
                     color:rgba(102,102,102,1);
-                    line-height:33px;
+                    line-height:.33rem;
                     span {
                         color: #FF624B;
                     }
                 }
             }
             .cloudHost {
-            //    width: 690px;
-               width: 100%;
+               width: 6.9rem;
                 margin: 0 auto;
                 ul {
                     li {
                         list-style: none;
-                        margin-top: 30px;
+                        margin-top: .3rem;
                         background:rgba(255,255,255,1);
                         box-shadow:0px 4px 20px -5px rgba(0,0,0,0.3);
                         .top {
                             width: 100%;
                             background:rgba(62,60,78,1);
                             position: relative;
-                            padding: 22px 0 23px 30px;
+                            padding: .22rem 0 .23rem .3rem;
                             p {
-                                font-size:32px;
+                                font-size:.32rem;
                                 font-weight:500;
                                 color:rgba(255,208,140,1);
-                                line-height:45px;
+                                line-height:.45rem;
                             }
                             img {
                                 display: block;
                                 position: absolute;
                                 right: 0;
                                 top: 0;
-                                width: 261px;
-                                height: 89px;
+                                width: 2.61rem;
+                                height: .89rem;
                             }
                         }
                         .middle {
-                            padding: 20px 0;
+                            padding: .2rem 0;
                             border-bottom: 1px solid #DBD9E9;
                             display: flex;
                             justify-content: space-around;
                             align-items: center;
                             p {
-                                font-size:28px;
+                                font-size:.28rem;
                                 font-weight:400;
                                 color:rgba(62,60,78,1);
-                                line-height:40px;
+                                line-height:.4rem;
                                 span {
                                     font-weight: bold;
                                 }
                             }
                         }
                         .groups {
-                            margin: 0 20px;
+                            margin: 0 .2rem;
                         }
                         .btns {
-                            padding: 44px 30px 44px 20px;
+                            padding: .44rem .3rem .44rem .2rem;
                             display: flex;
                             justify-content: space-between;
                             align-items: center;
                             .prices {
                                 p {
-                                    font-size:24px;
+                                    font-size:.24rem;
                                     font-weight:400;
                                     color:rgba(255,98,75,1);
-                                    line-height:34px;
+                                    line-height:.34rem;
                                     span {
-                                        font-size: 36px;
+                                        font-size: .36rem;
                                         font-weight: bold;
                                         &:last-of-type {
-                                            font-size:24px;
+                                            font-size:.24rem;
                                             color: #666666;
                                             text-decoration: line-through;
                                         }
                                     }
                                     &:last-of-type {
-                                        padding-top: 14px;
+                                        padding-top: .14rem;
                                     }
                                 }
 
                             }
                             button {
                                 display: block;
-                                width: 230px;
+                                width: 2.3rem;
                                 background:linear-gradient(128deg,rgba(249,239,184,1) 0%,rgba(227,183,111,1) 100%);
                                 outline: none;
                                 border: none;
-                                font-size:32px;
+                                font-size:.32rem;
                                 font-weight:bold;
                                 color:rgba(51,51,51,1);
-                                line-height:45px;
-                                padding: 18px 0 17px 0;
+                                line-height:.45rem;
+                                padding: .18rem 0 .17rem 0;
                                 img {
-                                    width: 26px;
+                                    width: .26rem;
                                     vertical-align: middle;
-                                    margin-left: 9px;
+                                    margin-left: .09rem;
                                 }
                             }
                         }
@@ -1392,43 +1386,43 @@
         background: rgba(43, 43, 47, 1);
         text-align: center;
     .foot-top {
-        padding: 100px 0 99px 0;
+        padding: 1rem 0 .99rem 0;
     img {
-        width: 230px;
-        height: 230px;
+        width: 2.3rem;
+        height: 2.3rem;
     }
     h1 {
-        font-size: 32px;
+        font-size: .32rem;
         font-weight: 400;
         color: rgba(255, 255, 255, 1);
-        line-height: 45px;
-        padding-bottom: 40px;
+        line-height: .45rem;
+        padding-bottom: .4rem;
     }
     .phone {
-        font-size: 36px;
+        font-size: .36rem;
         font-weight: 500;
         color: rgba(55, 125, 255, 1);
-        line-height: 50px;
+        line-height: .5rem;
     a {
         text-decoration: none;
-        font-size: 36px;
+        font-size: .36rem;
         font-weight: 500;
         color: rgba(55, 125, 255, 1);
-        line-height: 50px;
+        line-height: .5rem;
     }
     }
     .addressEN {
-        font-size: 26px;
+        font-size: .26rem;
         font-weight: 500;
         color: rgba(255, 255, 255, 1);
-        line-height: 37px;
-        padding: 9px 0 8px 0;
+        line-height: .37rem;
+        padding: .09rem 0 .08rem 0;
     }
     .addressZH {
-        font-size: 26px;
+        font-size: .26rem;
         font-weight: 400;
         color: rgba(255, 255, 255, 1);
-        line-height: 37px;
+        line-height: .37rem;
     }
     }
     .foot-bottom {
@@ -1441,19 +1435,19 @@
     li {
         text-align: center;
         list-style: none;
-        padding: 58px 0;
+        padding: .58rem 0;
         width: 50%;
         border-bottom: 1px solid #999;
     img {
-        width: 60px;
-        height: 60px;
+        width: .6rem;
+        height: .6rem;
     }
     p {
-        font-size: 26px;
+        font-size: .26rem;
         font-weight: 400;
         color: rgba(255, 255, 255, 1);
-        line-height: 37px;
-    /*padding-top: 30px;*/
+        line-height: .37rem;
+    /*padding-top: .3rem;*/
     &:last-of-type {
          color: rgba(255, 255, 255, 0.7);
          padding: 0;
@@ -1475,30 +1469,30 @@
     .foot {
         background: rgba(20, 20, 23, 1);
         text-align: center;
-        padding: 18px 0 22px 0;
+        padding: .18rem 0 .22rem 0;
     p {
-        font-size: 20px;
+        font-size: .2rem;
         font-weight: 400;
         color: rgba(255, 255, 255, 0.5);
-        line-height: 28px;
-        padding-bottom: 4px;
+        line-height: .28rem;
+        padding-bottom: .04rem;
     span {
     &:first-of-type {
          display: inline-block;
-         padding-right: 20px;
+         padding-right: .2rem;
      }
     }
     .icpIcon {
         position: relative;
-        padding-left: 24px;
+        padding-left: .24rem;
     &:before {
          content: "";
          position: absolute;
          left: 0;
          top: 0;
-         width: 20px;
-         height: 20px;
-         background: url('../../../assets/img/active/ddos-m/record.png') no-repeat center top;
+         width: .2rem;
+         height: .2rem;
+         background: url('../../../assets/img/active/home-m/record.png') no-repeat center top;
          background-size: cover;
      }
     }
@@ -1525,63 +1519,63 @@
             .alert1 {
                 position: absolute;
                 left: 50%;
-                margin-left: -300px;
+                margin-left: -3rem;
                 top: 50%;
-                margin-top: -372px;
-                height: 850px;
-                width: 600px;
+                margin-top: -3.72rem;
+                height: 8.5rem;
+                width: 6rem;
                 transform: scale(1.2);
                 transition-property: transform;
                 transition-duration: 0.3s;
                 background: #FFFFFF;
-                border-radius:10px;
+                border-radius:.1rem;
                 .top {
                     background:linear-gradient(90deg,rgba(12,12,27,1) 0%,rgba(34,36,61,1) 55%,rgba(12,12,27,1) 100%);
-                    border-radius:10px 10px 0 0;
+                    border-radius:.1rem .1rem 0 0;
                     position: relative;
                     h1 {
-                        padding: 25px 0;
+                        padding: .25rem 0;
                         text-align: center;
-                        font-size:36px;
+                        font-size:.36rem;
                         font-weight:500;
                         color:rgba(234,179,128,1);
                     }
                     img {
-                        width: 30px;
-                        height: 30px;
+                        width: .3rem;
+                        height: .3rem;
                         display: block;
                         position: absolute;
-                        right: 35px;
-                        top: 35px;
+                        right: .35rem;
+                        top: .35rem;
                     }
                 }
                 .rules {
-                    height:640px;
-                    padding: 25px 30px 50px 30px;
+                    height:6.4rem;
+                    padding: .25rem .3rem .5rem .3rem;
                     border-bottom: 1px solid rgba(216,216,216,1);
                     overflow-y: auto;
                     li {
                         list-style: none;
-                        font-size:28px;
+                        font-size:.28rem;
                         font-weight:500;
                         color:rgba(51,51,51,1);
-                        line-height:36px;
+                        line-height:.36rem;
                     }
                 }
                 .foot {
                     button {
-                        width:220px;
+                        width:2.2rem;
                         background:linear-gradient(128deg,rgba(249,239,184,1) 0%,rgba(227,183,111,1) 100%);
-                        border-radius:6px;
+                        border-radius:.06rem;
                         display: block;
                         outline: none;
                         border: none;
-                        font-size:32px;
+                        font-size:.32rem;
                         font-weight:500;
                         color:rgba(34,34,34,1);
-                        line-height:45px;
-                        padding: 18px 0;
-                        margin: 10px auto;
+                        line-height:.45rem;
+                        padding: .18rem 0;
+                        margin: .1rem auto;
                     }
                 }
             }
@@ -1596,62 +1590,62 @@
             .alert2 {
                 position: absolute;
                 left: 50%;
-                margin-left: -300px;
+                margin-left: -3rem;
                 top: 50%;
-                margin-top: -372px;
+                margin-top: -3.72rem;
                 height: auto;
-                width: 600px;
+                width: 6rem;
                 transform: scale(1.2);
                 transition-property: transform;
                 transition-duration: 0.3s;
                 background: #FFFFFF;
-                border-radius:10px;
+                border-radius:.1rem;
                 .top {
                     background:linear-gradient(90deg,rgba(12,12,27,1) 0%,rgba(34,36,61,1) 55%,rgba(12,12,27,1) 100%);
-                    border-radius:10px 10px 0 0;
+                    border-radius:.1rem .1rem 0 0;
                     position: relative;
                     h1 {
-                        padding: 25px 0;
+                        padding: .25rem 0;
                         text-align: center;
-                        font-size:36px;
+                        font-size:.36rem;
                         font-weight:500;
                         color:rgba(234,179,128,1);
                     }
                     img {
-                        width: 30px;
-                        height: 30px;
+                        width: .3rem;
+                        height: .3rem;
                         display: block;
                         position: absolute;
-                        right: 35px;
-                        top: 35px;
+                        right: .35rem;
+                        top: .35rem;
                     }
                 }
                 .rules {
                     height:auto;
-                    padding: 25px 30px 50px 30px;
+                    padding: .25rem .3rem .5rem .3rem;
                     border-bottom: 1px solid rgba(216,216,216,1);
                     li {
                         list-style: none;
-                        font-size:28px;
+                        font-size:.28rem;
                         font-weight:500;
                         color:rgba(51,51,51,1);
-                        line-height:36px;
+                        line-height:.36rem;
                     }
                 }
                 .foot {
                     button {
-                        width:220px;
+                        width:2.2rem;
                         background:linear-gradient(128deg,rgba(249,239,184,1) 0%,rgba(227,183,111,1) 100%);
-                        border-radius:6px;
+                        border-radius:.06rem;
                         display: block;
                         outline: none;
                         border: none;
-                        font-size:32px;
+                        font-size:.32rem;
                         font-weight:500;
                         color:rgba(34,34,34,1);
-                        line-height:45px;
-                        padding: 18px 0;
-                        margin: 10px auto;
+                        line-height:.45rem;
+                        padding: .18rem 0;
+                        margin: .1rem auto;
                     }
                 }
             }
@@ -1666,62 +1660,62 @@
             .alert3 {
                 position: absolute;
                 left: 50%;
-                margin-left: -300px;
+                margin-left: -3rem;
                 top: 50%;
-                margin-top: -372px;
+                margin-top: -3.72rem;
                 height: auto;
-                width: 600px;
+                width: 6rem;
                 transform: scale(1.2);
                 transition-property: transform;
                 transition-duration: 0.3s;
                 background: #FFFFFF;
-                border-radius:10px;
+                border-radius:.1rem;
                 .top {
                     background:linear-gradient(90deg,rgba(12,12,27,1) 0%,rgba(34,36,61,1) 55%,rgba(12,12,27,1) 100%);
-                    border-radius:10px 10px 0 0;
+                    border-radius:.1rem .1rem 0 0;
                     position: relative;
                     h1 {
-                        padding: 25px 0;
+                        padding: .25rem 0;
                         text-align: center;
-                        font-size:36px;
+                        font-size:.36rem;
                         font-weight:500;
                         color:rgba(234,179,128,1);
                     }
                     img {
-                        width: 30px;
-                        height: 30px;
+                        width: .3rem;
+                        height: .3rem;
                         display: block;
                         position: absolute;
-                        right: 35px;
-                        top: 35px;
+                        right: .35rem;
+                        top: .35rem;
                     }
                 }
                 .rules {
                     height:auto;
-                    padding: 25px 30px 50px 30px;
+                    padding: .25rem .3rem .5rem .3rem;
                     border-bottom: 1px solid rgba(216,216,216,1);
                     li {
                         list-style: none;
-                        font-size:28px;
+                        font-size:.28rem;
                         font-weight:500;
                         color:rgba(51,51,51,1);
-                        line-height:36px;
+                        line-height:.36rem;
                     }
                 }
                 .foot {
                     button {
-                        width:220px;
+                        width:2.2rem;
                         background:linear-gradient(128deg,rgba(249,239,184,1) 0%,rgba(227,183,111,1) 100%);
-                        border-radius:6px;
+                        border-radius:.06rem;
                         display: block;
                         outline: none;
                         border: none;
-                        font-size:32px;
+                        font-size:.32rem;
                         font-weight:500;
                         color:rgba(34,34,34,1);
-                        line-height:45px;
-                        padding: 18px 0;
-                        margin: 10px auto;
+                        line-height:.45rem;
+                        padding: .18rem 0;
+                        margin: .1rem auto;
                     }
                 }
             }
@@ -1736,60 +1730,60 @@
             .alert4{
                 position: absolute;
                 left: 50%;
-                margin-left: -300px;
+                margin-left: -3rem;
                 top: 50%;
-                margin-top: -372px;
+                margin-top: -3.72rem;
                 height: auto;
-                width: 600px;
+                width: 6rem;
                 transform: scale(1.2);
                 transition-property: transform;
                 transition-duration: 0.3s;
                 background: #FFFFFF;
-                border-radius:10px;
+                border-radius:.1rem;
                 .top {
                     background:linear-gradient(90deg,rgba(12,12,27,1) 0%,rgba(34,36,61,1) 55%,rgba(12,12,27,1) 100%);
-                    border-radius:10px 10px 0 0;
+                    border-radius:.1rem .1rem 0 0;
                     position: relative;
                     h1 {
-                        padding: 25px 0;
+                        padding: .25rem 0;
                         text-align: center;
-                        font-size:36px;
+                        font-size:.36rem;
                         font-weight:500;
                         color:rgba(234,179,128,1);
                     }
                     img {
-                        width: 30px;
-                        height: 30px;
+                        width: .3rem;
+                        height: .3rem;
                         display: block;
                         position: absolute;
-                        right: 35px;
-                        top: 35px;
+                        right: .35rem;
+                        top: .35rem;
                     }
                 }
                 .rules {
                     height:auto;
-                    padding: 25px 30px 50px 30px;
+                    padding: .25rem .3rem .5rem .3rem;
                     border-bottom: 1px solid rgba(216,216,216,1);
-                    font-size:28px;
+                    font-size:.28rem;
                     font-weight:400;
                     color:rgba(51,51,51,1);
-                    line-height:36px;
-                    text-indent:40px;
+                    line-height:.36rem;
+                    text-indent:.4rem;
                 }
                 .foot {
                     button {
-                        width:220px;
+                        width:2.2rem;
                         background:linear-gradient(128deg,rgba(249,239,184,1) 0%,rgba(227,183,111,1) 100%);
-                        border-radius:6px;
+                        border-radius:.06rem;
                         display: block;
                         outline: none;
                         border: none;
-                        font-size:32px;
+                        font-size:.32rem;
                         font-weight:500;
                         color:rgba(34,34,34,1);
-                        line-height:45px;
-                        padding: 18px 0;
-                        margin: 10px auto;
+                        line-height:.45rem;
+                        padding: .18rem 0;
+                        margin: .1rem auto;
                     }
                 }
             }
@@ -1804,60 +1798,60 @@
             .alert5{
                 position: absolute;
                 left: 50%;
-                margin-left: -300px;
+                margin-left: -3rem;
                 top: 50%;
-                margin-top: -372px;
+                margin-top: -3.72rem;
                 height: auto;
-                width: 600px;
+                width: 6rem;
                 transform: scale(1.2);
                 transition-property: transform;
                 transition-duration: 0.3s;
                 background: #FFFFFF;
-                border-radius:10px;
+                border-radius:.1rem;
                 .top {
                     background:linear-gradient(90deg,rgba(12,12,27,1) 0%,rgba(34,36,61,1) 55%,rgba(12,12,27,1) 100%);
-                    border-radius:10px 10px 0 0;
+                    border-radius:.1rem .1rem 0 0;
                     position: relative;
                     h1 {
-                        padding: 25px 0;
+                        padding: .25rem 0;
                         text-align: center;
-                        font-size:36px;
+                        font-size:.36rem;
                         font-weight:500;
                         color:rgba(234,179,128,1);
                     }
                     img {
-                        width: 30px;
-                        height: 30px;
+                        width: .3rem;
+                        height: .3rem;
                         display: block;
                         position: absolute;
-                        right: 35px;
-                        top: 35px;
+                        right: .35rem;
+                        top: .35rem;
                     }
                 }
                 .rules {
                     height:auto;
-                    padding: 25px 30px 50px 30px;
+                    padding: .25rem .3rem .5rem .3rem;
                     border-bottom: 1px solid rgba(216,216,216,1);
-                    font-size:28px;
+                    font-size:.28rem;
                     font-weight:400;
                     color:rgba(51,51,51,1);
-                    line-height:36px;
-                    text-indent:40px;
+                    line-height:.36rem;
+                    text-indent:.4rem;
                 }
                 .foot {
                     button {
-                        width:220px;
+                        width:2.2rem;
                         background:linear-gradient(128deg,rgba(249,239,184,1) 0%,rgba(227,183,111,1) 100%);
-                        border-radius:6px;
+                        border-radius:.06rem;
                         display: block;
                         outline: none;
                         border: none;
-                        font-size:32px;
+                        font-size:.32rem;
                         font-weight:500;
                         color:rgba(34,34,34,1);
-                        line-height:45px;
-                        padding: 18px 0;
-                        margin: 10px auto;
+                        line-height:.45rem;
+                        padding: .18rem 0;
+                        margin: .1rem auto;
                     }
                 }
             }
@@ -1872,71 +1866,71 @@
             .alert6{
                 position: absolute;
                 left: 50%;
-                margin-left: -300px;
+                margin-left: -3rem;
                 top: 50%;
-                margin-top: -372px;
-                height: 880px;
-                width: 600px;
+                margin-top: -3.72rem;
+                height: 8.8rem;
+                width: 6rem;
                 transform: scale(1.2);
                 transition-property: transform;
                 transition-duration: 0.3s;
                 background: #FFFFFF;
-                border-radius:10px;
+                border-radius:.1rem;
                 .top {
                     background:linear-gradient(90deg,rgba(12,12,27,1) 0%,rgba(34,36,61,1) 55%,rgba(12,12,27,1) 100%);
-                    border-radius:10px 10px 0 0;
+                    border-radius:.1rem .1rem 0 0;
                     position: relative;
                     h1 {
-                        padding: 25px 0;
+                        padding: .25rem 0;
                         text-align: center;
-                        font-size:36px;
+                        font-size:.36rem;
                         font-weight:500;
                         color:rgba(234,179,128,1);
                     }
                     img {
-                        width: 30px;
-                        height: 30px;
+                        width: .3rem;
+                        height: .3rem;
                         display: block;
                         position: absolute;
-                        right: 35px;
-                        top: 35px;
+                        right: .35rem;
+                        top: .35rem;
                     }
                 }
                 .rules {
-                    height:670px;
+                    height:6.7rem;
                     overflow-y: auto;
-                    padding: 20px 20px 40px 20px;
+                    padding: .2rem .2rem .4rem .2rem;
                     border-bottom: 1px solid rgba(216,216,216,1);
                     li {
                         list-style: none;
                         border:1px solid rgba(219,207,196,1);
-                        margin-bottom: 10px;
+                        margin-bottom: .1rem;
                         .ing {
                             background:rgba(241,237,234,1);
                             border-bottom:1px solid rgba(219,207,196,1);
                             display: flex;
                             justify-content: space-between;
                             align-items: center;
-                            padding: 12px 20px;
-                            font-size:28px;
+                            padding: .12rem .2rem;
+                            font-size:.28rem;
                             font-weight: bold;
                             color:rgba(102,102,102,1);
-                            line-height:40px;
+                            line-height:.4rem;
                             .ising {
                                 color:rgba(255,136,28,1);
                             }
                         }
                         .flag {
                             line-height: 0;
-                            padding: 10px 20px;
+                            padding: .1rem .2rem;
                             p {
                                 display: inline-block;
-                                font-size:28px;
+                                font-size:.28rem;
                                 font-weight:400;
                                 color:rgba(102,102,102,1);
-                                line-height:40px;
+                                line-height:.4rem;
                                 span {
-                                    padding-left: 10px;
+                                    padding-left: .1rem;
                                 }
                             }
                         }
@@ -1944,18 +1938,18 @@
                 }
                 .foot {
                     button {
-                        width:220px;
+                        width:2.2rem;
                         background:linear-gradient(128deg,rgba(249,239,184,1) 0%,rgba(227,183,111,1) 100%);
-                        border-radius:6px;
+                        border-radius:.06rem;
                         display: block;
                         outline: none;
                         border: none;
-                        font-size:32px;
+                        font-size:.32rem;
                         font-weight:500;
                         color:rgba(34,34,34,1);
-                        line-height:45px;
-                        padding: 18px 0;
-                        margin: 10px auto;
+                        line-height:.45rem;
+                        padding: .18rem 0;
+                        margin: .1rem auto;
                     }
                 }
             }

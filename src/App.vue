@@ -64,7 +64,7 @@
                 <div class="nav-list">
                     <ul class="nav-left" @mouseleave='styleClass(-1,$event)'>
                         <li class="nav-item" @mouseenter='styleClass(0,$event)'>
-                            <router-link to="https://activity.xinruiyun.cn/activity" title="活动中心">活动中心</router-link>
+                            <router-link to="/activity" title="活动中心">活动中心</router-link>
                         </li>
                         <li class="nav-item" @mouseenter='styleClass(1,$event)'>
                             <a href="https://xinruiyun.cn">首页</a>
@@ -331,7 +331,7 @@
 
                     <div class="mhead-product">
                         <div style="padding: 10px 10px;">
-                            <a ref="external nofollow" target="_blank" href="https://wap.xrcloud.net/ruicloud/sort?from=xinruiyun-huodongzhongxin" title="活动中心">活动中心</a>
+                            <a ref="external nofollow" href="/activity" title="活动中心">活动中心</a>
                         </div>
                     </div>
                     <div class="mhead-product">
@@ -518,7 +518,7 @@
               <router-link to="vps" target="_blank">立即体验</router-link>
             </div>-->
       <!-- 客服支持、意见反馈 -->
-      <div id="foot-support">
+      <!-- <div id="foot-support">
         <div id="wrapper">
           <div v-for="(support,index) in support" class="flex-item" :key="index">
             <i class="iconfont" :class="support.img"></i>
@@ -528,9 +528,9 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
       <!--页面尾部-->
-      <div id="foot-footer">
+      <!-- <div id="foot-footer">
         <div class="footer-top">
           <div class="description">
             <div class="product">
@@ -594,7 +594,7 @@
             </li>
           </ul>
         </div>
-      </div>
+      </div> -->
 
        <div class="m-bottom">
           <div class="m-register">

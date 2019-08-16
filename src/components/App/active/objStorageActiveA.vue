@@ -6,8 +6,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-import pc from './ddos.vue'
-import mobile from './MhignCopy.vue'
+import pc from './objStorageActive.vue'
+import mobile from './Mstorage.vue'
 export default {
   data () {
     return {
@@ -53,17 +53,4 @@ export default {
     display: block;
   }
 }
-// @media screen and (min-width: 641px) {
-
-// }
-// @media screen and (max-width: 1366px) {
- 
-// }
-
-// @media screen and (max-width: 1024px) {
-// }
-
-// @media screen and (max-width: 640px) {
-
-// }
 </style>
