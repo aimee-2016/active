@@ -357,7 +357,7 @@
             type: 'storage',
             subItem: [
               // {subName: '对象存储', type: 'https://oss-console.xrcloud.net/ruirados/objectStorage'},
-              {subName: '对象存储', type: 'https://testoss-console.xrcloud.net/ruirados/objectStorage'},
+              {subName: '对象存储', type: 'https://oss.xinruiyun.cn/ruirados/objectStorage'},
               {subName: '云硬盘', type: 'diskList'},
               {subName: '云硬盘备份', type: 'diskBackupList'}
               /* {subName: '硬盘快照', type: 'diskSnapshot'} */
@@ -398,7 +398,7 @@
               {subName: '防火墙', type: 'firewallList'},
               {subName: '云监控', type: 'CloudMonitor'},
               {subName: 'DDoS高防IP', type: 'ddosipBack'},
-              {subName: 'SSL证书', type: 'https://test-domain.xrcloud.net/xrdomain/domainSSL'},
+              {subName: 'SSL证书', type: 'https://domain.xinruiyun.cn/xrdomain/domainSSL'},
               // {subName: 'SSL证书', type: 'https://domain.xrcloud.net/xrdomain/domainSSL'},
             ]
           },
@@ -410,10 +410,10 @@
               // {subName: '信息模版', type: 'https://domain.xrcloud.net/xrdomain/domainInfoTemplate'},
               // {subName: '域名转入', type: 'https://domain.xrcloud.net/xrdomain/domainTransfer'},
               // {subName: '域名转出', type: 'https://domain.xrcloud.net/xrdomain/domainTrunDetails'}
-               {subName: '域名管理', type: 'https://test-domain.xrcloud.net/xrdomain/domainGroup'},
-               {subName: '信息模版', type: 'https://test-domain.xrcloud.net/xrdomain/domainInfoTemplate'},
-               {subName: '域名转入', type: 'https://test-domain.xrcloud.net/xrdomain/domainTransfer'},
-               {subName: '域名转出', type: 'https://test-domain.xrcloud.net/xrdomain/domainTrunDetails'},
+               {subName: '域名管理', type: 'https://domain.xinruiyun.cn/xrdomain/domainGroup'},
+               {subName: '信息模版', type: 'https://domain.xinruiyun.cn/xrdomain/domainInfoTemplate'},
+               {subName: '域名转入', type: 'https://domain.xinruiyun.cn/xrdomain/domainTransfer'},
+               {subName: '域名转出', type: 'https://domain.xinruiyun.cn/xrdomain/domainTrunDetails'},
             ]
           },
           {
