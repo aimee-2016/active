@@ -97,7 +97,7 @@
                                 <li class="np-item">
                                     <a href="#">DDoS高防云服务器</a>
                                     <div class="buy-box">
-                                        <!-- <img class="buy-img" src='./assets/img/home/buy-icon.png' /> -->
+                                        <img class="buy-img" src='./assets/img/home/buy-icon.png' />
                                         <a class="buy-font" href="https://i.xinruiyun.cn/buy/ddos/">立即购买</a>
                                     </div>
                                 </li>
@@ -365,6 +365,9 @@
                                     </div>
                                     <div class="mhead-chd">
                                         <a href="#" target="blank"> GPU加速服务器</a>
+                                    </div>
+                                    <div class="mhead-chd">
+                                        <a href="#" target="blank"> DDoS高防云服务器</a>
                                     </div>
                                 </div>
                             </div>
@@ -2421,15 +2424,13 @@
 .bottom .bottom-register {
   background-color: #FF7F4B;
   text-align: center;
-  padding: 26px 0 0 0;
-  height: 149px;
+  padding: 36px 0 0 0;
 }
 .bottom .bottom-register .br-bg{
   max-width: 1920px;
   background: url('./assets/img/home/bottom-bg.png') no-repeat top center;
   background-size: 100%;
-  height: 140px;
-  margin: 5px auto;
+  height: 146px;
 }
 .bottom .bottom-register .br-bg .box{
   width: 1200px;
@@ -2444,13 +2445,13 @@
 }
 
 .bottom .bottom-register .bottom-button {
-  padding: 11px 50px 11px 50px;
+  padding: 9px 50px 9px 50px;
   border: 1px solid #FFFFFF;
   border-radius: 4px;
   color: #FFFFFF;
   display: inline-block;
   font-size: 18px;
-  margin: 20px 0 0 0;
+  margin: 36px 0 0 0;
   cursor: pointer;
 }
 
@@ -2458,6 +2459,7 @@
   background-color: #1C1A1E;
   padding: 20px 118px 20px 120px;
   box-shadow: -3px 3px 8px 2px rgba(0, 0, 0, 0.5);
+  transform: translate3d(0,0,0);
 }
 .bottom .bottom-support .bottom-box{
   max-width: 1200px;
