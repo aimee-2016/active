@@ -94,6 +94,13 @@
                                         <a class="buy-font" href="https://i.xinruiyun.cn/buy/gpu/">立即购买</a>
                                     </div>
                                 </li>
+                                <li class="np-item">
+                                    <a href="#">DDoS高防云服务器</a>
+                                    <div class="buy-box">
+                                        <!-- <img class="buy-img" src='./assets/img/home/buy-icon.png' /> -->
+                                        <a class="buy-font" href="https://i.xinruiyun.cn/buy/ddos/">立即购买</a>
+                                    </div>
+                                </li>
                                 <li class="np-dis">
                                     裸金属服务器(敬请期待)
                                 </li>
@@ -530,71 +537,272 @@
         </div>
       </div> -->
       <!--页面尾部-->
-      <!-- <div id="foot-footer">
-        <div class="footer-top">
-          <div class="description">
-            <div class="product">
-              <p>产品</p>
-              <div v-for="(item,index) in description" :key="index">
-                <ul>
-                  <span>{{item.title}}</span>
-                  <li v-for="(subItem,subIndex) in item.desc" :key="subIndex">
-                    <a v-if="subItem.url!=''" :href="subItem.url">{{subItem.subTitle}}
-                    </a>
-                    <a v-else :href="subItem.url">{{subItem.subTitle}}</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class="document">
-              <p>新闻动态</p>
-              <a v-for="(d,index) in document" :key="index" :href="d.url" target="_blank">
-                {{d.title}}
-              </a>
-            </div>
-            <div class="document">
-              <p>文档</p>
-              <a v-for="(d,index) in notice" :key="index" :href="d.url" target="_blank">
-                {{d.title}}
-              </a>
-            </div>
-            <div class="contact">
-              <span>联系我们</span>
-              <span>服务热线：400-0505-565</span>
-              <span>企业邮箱：service@unionstech.cn</span>
-              <span>企业地址：北京市海淀区东升大厦AB座611、612</span>
-              <img src="./assets/img/app/QR-code.jpg" alt="新睿云二维码">
-            </div>
-          </div>
-          <div class="page-links">
-            <div class="links-tit">友情链接</div>
-            <div class="links-info">
-              <a v-for="(item,index) in links" :key="index" :href="item.linkurl" target="_blank">{{ item.linkname }}</a>
-            </div>
-          </div>
+      <div class="bottom">
+        <div class="bottom-register">
+                <div class="br-bg">
+                    <div class="box">
+                        <p class="title">为您提供出众的上云实践机会和全面的尊贵服务</p>
+                        <div class="bottom-button">立即注册</div>
+                    </div>
+                </div>
         </div>
-        <div class="footer-bottom">
-          <ul v-for="(item,index) in Preparation " :key="index">
-            <p style="margin:0px;margin-right: 20px;">{{item.time}}</p>
-            <li style="cursor: auto">{{item.title}}</li>
-            <li>
-              <a href="http://www.beian.miit.gov.cn/" target="_blank" rel="nofollow">{{item.preparation}}</a>
-            </li>
-            <li>
-              <a href="http://www.beian.miit.gov.cn" rel="nofollow" target="_blank"
-              >
-                <img src="./assets/img/app/record.png" alt="京公网安备">{{item.desc}}
-              </a>
-            </li>
-            <li>
-              <a href="javascript:void(0)" target="_blank" style="cursor: auto">增值电信业务经营许可证B1-20180455</a>
-            </li>
-            <li>
-              <a href="https://www.xrcloud.net/about/" rel="nofollow">关于我们</a>
-            </li>
-          </ul>
+        <div class="bottom-support">
+            <div class="bottom-box">
+                <div class="support">
+                    <div style="margin-right: 9px;">
+                        <img src="./assets/img/home/b-icon.png" alt="24小时客服">
+                    </div>
+                    <div>
+                        <p>7*24</p>
+                        <p>多渠道服务与支持</p>
+                    </div>
+                </div>
+                <div class="support">
+                    <div style="margin-right: 9px;">
+                        <img src="./assets/img/home/b-icon2.png" alt="投诉建议">
+                    </div>
+                    <div>
+                        <p>意见</p>
+                        <p>反馈与投诉建议</p>
+                    </div>
+                </div>
+                <div class="support">
+                    <div style="margin-right: 9px;">
+                        <img src="./assets/img/home/b-icon3.png" alt="专项服务">
+                    </div>
+                    <div>
+                        <p>1V1</p>
+                        <p>专项服务</p>
+                    </div>
+                </div>
+                <div class="support">
+                    <div style="margin-right: 9px;">
+                        <img src="./assets/img/home/b-icon4.png" alt="7天无理由退款">
+                    </div>
+                    <div>
+                        <p>退款</p>
+                        <p>7天无理由退款</p>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div> -->
+        <div class="bottom-black">
+            <div class="bottom-product">
+                <div class="cloud-product-bg">
+                    <div class="bg">
+                        <div class="bg-title">
+                            产品
+                        </div>
+                        <div class="bg-content">
+                            <div>
+                                <p class="p_true"><a href="https://www.xinruiyun.cn/ecs/">弹性云服务器ECS</a></p>
+                            </div>
+                            <div>
+                                <p class="p_true"><a href="https://www.xinruiyun.cn/ims/">镜像服务</a></p>
+                            </div>
+                            <div>
+                                <p class="p_true"><a href="https://www.xinruiyun.cn/ecss/">云服务器快照</a></p>
+                            </div>
+                            <div>
+                                <p class="p_true"><a href="https://www.xinruiyun.cn/gpu/">GPU加速云服务器</a></p>
+                            </div>
+                            <div>
+                                <p class="p_true"><a href="https://www.xinruiyun.cn/ddos/">DDoS高防IP</a></p>
+                            </div>
+                            <div>
+                                <p class="p_true"><a href="https://www.xinruiyun.cn/oss/">对象存储</a></p>
+                            </div>
+                            <div>
+                                <p class="p_true"><a href="https://www.xinruiyun.cn/evs/">云硬盘</a></p>
+                            </div>
+                            <div>
+                                <p class="p_true"><a href="https://www.xinruiyun.cn/vbs/">云硬盘备份</a></p>
+                            </div>
+                            <div>
+                                <p class="p_true"><a href="https://www.xinruiyun.cn/fw/">防火墙</a></p>
+                            </div>
+                            <div>
+                                <p class="p_true"><a href="#">DDoS基础防护</a></p>
+                            </div>
+                            <div>
+                                <p class="p_true"><a href="https://www.xinruiyun.cn/ess/">弹性伸缩</a></p>
+                            </div>
+                            <div>
+                                <p class="p_true"><a href="https://www.xinruiyun.cn/cms/">云监控</a></p>
+                            </div>
+                            <div>
+                                <p class="p_true"><a href="https://www.xinruiyun.cn/vpc/">虚拟私有云VPC</a></p>
+                            </div>
+                            <div>
+                                <p class="p_true"><a href="https://www.xinruiyun.cn/nat/">NAT网关</a></p>
+                            </div>
+                            <div>
+                                <p class="p_true"><a href="https://www.xinruiyun.cn/eip/">弹性公网IP</a></p>
+                            </div>
+                            <div>
+                                <p class="p_true"><a href="https://www.xinruiyun.cn/slb/">负载均衡</a></p>
+                            </div>
+                            <div>
+                                <p class="p_true"><a href="https://www.xinruiyun.cn/vpn/">虚拟专网VPN</a></p>
+                            </div>
+                            <div>
+                                <p class="p_true"><a href="https://www.xinruiyun.cn/mysql/">云数据库MySQL</a></p>
+                            </div>
+                            <div>
+                                <p class="p_true"><a href="https://www.xinruiyun.cn/postgresql/">云数据库PostgreSQL</a></p>
+                            </div>
+                            <div>
+                                <p class="p_true"><a href="https://www.xinruiyun.cn/mongodb/">云数据库MongoDB</a></p>
+                            </div>
+                            <div>
+                                <p class="p_true"><a href="https://www.xinruiyun.cn/redis/">云数据库Redis</a></p>
+                            </div>
+                            <div>
+                                    <p class="p_true"><a href="https://www.xinruiyun.cn/sqlserver/">云数据库SQLServer</a></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg">
+                        <div class="bg-title">
+                            快速入口
+                        </div>
+                        <div class="bg-content">
+                            <div>
+                                <p class="p_true"><a ref="external nofollow" target="_blank" href="https://i.xinruiyun.cn/brecords">备案管理</a></p>
+                            </div>
+                            <div>
+                                <p class="p_true"><a target="_blank" href="https://www.xinruiyun.cn/price/ecs">定价说明</a></p>
+                            </div>
+                            <div>
+                                <p class="p_true"><a target="_blank" href="https://help.xinruiyun.cn/quick/">快速入门</a></p>
+                            </div>
+                            <div>
+                                <p class="p_true"><a target="_blank" href="https://help.xinruiyun.cn/">使用文档</a></p>
+                            </div>
+                            <div>
+                                <p class="p_true"><a target="_blank" href="https://help.xinruiyun.cn/ask/">常见问题</a></p>
+                            </div>
+                            <div>
+                                <p class="p_true"><a href="https://www.xinruiyun.cn/about/">公司介绍</a></p>
+                            </div>
+                            <div>
+                                <p class="p_true"><a href="#">资质认证</a></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg">
+                        <div class="bg-title">
+                            管理与支持
+                        </div>
+                        <div class="bg-content">
+                            <div>
+                                <p class="p_true"><a href="https://i.xinruiyun.cn/overview">控制台</a></p>
+                            </div>
+                            <div>
+                                <p class="p_true"><a href="https://i.xinruiyun.cn/usercenter">用户中心</a></p>
+                            </div>
+                            <div>
+                                <p class="p_true"><a href="https://i.xinruiyun.cn/expenses">费用中心</a></p>
+                            </div>
+                            <div>
+                                <p class="p_true"><a href="https://i.xinruiyun.cn/work">工单管理</a></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg">
+                        <div class="bg-title">
+                            服务与公告
+                        </div>
+                        <div class="bg-content">
+                            <div>
+                                <p class="p_true"><a href="#">产品公告</a></p>
+                            </div>
+                            <div>
+                                <p class="p_true"><a href="https://activity.xinruiyun.cn">最新活动</a></p>
+                            </div>
+                            <div>
+                                <p class="p_true"><a href="#">技术支持</a></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg">
+                        <div class="bg-title">
+                            联系我们
+                        </div>
+                        <div class="bg-content">
+                            <div>
+                                <p>企业电话：400-0505-565</p>
+                            </div>
+                            <div>
+                                <p>企业邮箱：service@unionstech.cn</p>
+                            </div>
+                            <div>
+                                <p>企业地址：辽宁省沈阳市青年大街185号茂业公寓1720室</p>
+                            </div>
+                            <div>
+                                <img src="./assets/img/app/QR-code.jpg" alt="新睿云二维码">
+                                <p>每周有1个神秘大奖哟！</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bc-box">
+                    <div class="friendship">
+                        <div style="width: 10%;">
+                            <span>友情链接</span>
+                        </div>
+                        <div style="width: 87%;text-align: justify;">
+                            <span v-for="(item,index) in links" :key="index"> <a :href="item.linkurl" target="_blank">{{ item.linkname }}</a></span>
+                        </div>
+                    </div>
+                    <div class="share">
+                        <span>分享给好友：</span>
+                        <div>
+                            <img src="./assets/img/home/weibo.png" alt="微博">
+                            <img src="./assets/img/home/weixin.png" alt="微信">
+                            <img src="./assets/img/home/qq.png" @click='share' alt="QQ">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="bottom-info">
+            <div class="bi-box">
+                <div class="support">
+                    <div>
+                        <p><a href="#">©2019</a></p>
+                    </div>
+                </div>
+                <div class="support">
+                    <div>
+                        <p><a href="#" target="_blank">允睿讯通科技有限公司</a></p>
+                    </div>
+                </div>
+                <div class="support">
+                    <div>
+                        <p><a href="http://www.beian.miit.gov.cn/" target="_blank" rel = "nofollow">京ICP备15035854号</a></p>
+                    </div>
+                </div>
+                <div class="support">
+                    <div>
+                        <p><a href="http://www.beian.miit.gov.cn/" target="_blank" rel = "nofollow">京公网安备11010802024922号</a></p>
+                    </div>
+                </div>
+                <div class="support">
+                    <div>
+                        <p><a href="#" rel = "nofollow">增值电信业务经营许可证 B1-20180455</a></p>
+                    </div>
+                </div>
+                <div class="support">
+                    <div>
+                        <p><a href="https://www.xinruiyun.cn/about/" target="_blank">关于我们</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
 
        <div class="m-bottom">
           <div class="m-register">
@@ -1021,7 +1229,7 @@
         ],
         // 友情链接
         links: [
-          {href: 'https://www.xrcloud.net/', text: '新睿云'}
+          {linkurl: 'https://www.xrcloud.net/', linkname: '新睿云'}
         ],
         Preparation: [
           {
@@ -1167,18 +1375,6 @@
       PML() {
         this.$refs.phoneE.style.width = '0px'
       },
-      styleClass(index, event) {
-          if (index != -1) {
-                    this.lineStyle.transition = 'all  .3s';
-                    this.lineStyle.left = event.target.offsetLeft + 'px';
-                    this.lineStyle.width = event.target.clientWidth + 'px';
-                    this.lineIndex = index;
-          } else {
-                    this.lineStyle.width = '0px';
-                    this.lineIndex = -1;
-          }
-        },
-
          // 移动端头部产品手风琴动效
         getSelectDown(index) {
                 let arry = document.querySelectorAll('.mhead-product .mhead-pone');
@@ -1202,7 +1398,16 @@
                 arry2[index].className = 'select mhead-arrow2';
             }
         },
-
+    styleClass:function (index, event) {
+          if (index != -1) {
+                    this.lineStyle.transition = 'all  .3s';
+                    this.lineStyle.left = event.target.offsetLeft + 'px';
+                    this.lineStyle.width = event.target.clientWidth + 'px';
+          } else {
+                    this.lineStyle.width = '0px';
+                    this.lineIndex = -1;
+          }
+      },
       go(path) {
         if (path == 'exit') {
           this.exit()
@@ -1321,7 +1526,12 @@
         } else{
           window.open('https://im.xrcloud.net/im/question/index.html')
         }
-      }
+      },
+      share() {
+            window.open('http://connect.qq.com/widget/shareqq/index.html?url=' +
+                'http://www.yrclouds.cn' + '&sharesource=qzone&title=' + '新睿云云服务器' + '&desc=' +
+                '便宜实惠的云服务器');
+        },
     },
     computed: mapState({
       userInfo: state => state.userInfo
@@ -2207,6 +2417,201 @@
       }
     }
 }
+
+.bottom .bottom-register {
+  background-color: #FF7F4B;
+  text-align: center;
+  padding: 26px 0 0 0;
+  height: 149px;
+}
+.bottom .bottom-register .br-bg{
+  max-width: 1920px;
+  background: url('./assets/img/home/bottom-bg.png') no-repeat top center;
+  background-size: 100%;
+  height: 140px;
+  margin: 5px auto;
+}
+.bottom .bottom-register .br-bg .box{
+  width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+.bottom .bottom-register .title {
+  font-size: 24px;
+  font-weight: normal;
+  color: #fff;
+  text-align: center;
+}
+
+.bottom .bottom-register .bottom-button {
+  padding: 11px 50px 11px 50px;
+  border: 1px solid #FFFFFF;
+  border-radius: 4px;
+  color: #FFFFFF;
+  display: inline-block;
+  font-size: 18px;
+  margin: 20px 0 0 0;
+  cursor: pointer;
+}
+
+.bottom .bottom-support {
+  background-color: #1C1A1E;
+  padding: 20px 118px 20px 120px;
+  box-shadow: -3px 3px 8px 2px rgba(0, 0, 0, 0.5);
+}
+.bottom .bottom-support .bottom-box{
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.bottom .bottom-support .support {
+  display: flex;
+  justify-content: space-between;
+  color: #FFFFFF;
+  font-size: 14px;
+}
+
+.bottom .bottom-black {
+  background-color: #1E1B1A;
+  padding: 40px 0 60px 0;
+}
+
+.bottom .bottom-black .bottom-product {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.bottom .bottom-black .bottom-product .cloud-product-bg {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.bottom .bottom-black .bottom-product .cloud-product-bg .bg {
+  font-size: 14px;
+  min-width: 136px;
+}
+
+.bottom .bottom-black .bottom-product .cloud-product-bg .bg .bg-title {
+  color: #fff;
+  font-weight: 500;
+  padding-bottom: 20px;
+}
+.bottom .bottom-black .bottom-product .cloud-product-bg .bg:nth-child(1) {
+  width: 215px;
+}
+.bottom .bottom-black .bottom-product .cloud-product-bg .bg .bg-content {
+  border-top: 1px solid #666666;
+  color: #C8C8C8;
+  padding-top: 21px;
+  flex-wrap: wrap;
+  display: flex;
+  flex-direction: column;
+  padding-right: 50px;
+  height: 400px;
+}
+
+.bottom .bottom-black .bottom-product .cloud-product-bg .bg .bg-content img {
+  width: 72px;
+  height: 72px;
+}
+
+.bottom .bottom-black .bottom-product .cloud-product-bg .bg .bg-content p {
+  line-height: 33px;
+  margin-right: 30px;
+}
+.bottom .bottom-black .bottom-product .cloud-product-bg .bg .bg-content p span{
+  font-size: 12px;
+  color: #999999;
+}
+.bottom .bottom-black .bottom-product .cloud-product-bg .bg .bg-content p a {
+  color: #999999;
+  font-size: 12px;
+}
+
+.bottom .bottom-black .bottom-product .cloud-product-bg .bg .bg-content .p_true {
+  cursor: pointer;
+}
+
+.bottom .bottom-black .bottom-product .cloud-product-bg .bg .bg-content .p_true a:hover {
+  color: #FF624B;
+}
+
+.bottom .bottom-black .bottom-product .cloud-product-bg .bg .bg-content .p_false {
+  cursor: default;
+}
+.bottom .bottom-black .bottom-product .bc-box{
+  display: flex;
+}
+.bottom .bottom-black .bottom-product .friendship {
+  width: 73%;
+  margin-top: 50px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.bottom .bottom-black .bottom-product .friendship span {
+  color: #999999;
+  font-size: 14px;
+  height: 20px;
+  line-height: 20px;
+}
+.bottom .bottom-black .bottom-product .friendship span:nth-child(1) {
+  color: #FFF;
+  font-size: 18px;
+  font-weight: 500;
+  margin-left: 0;
+}
+.bottom .bottom-black .bottom-product .share{
+  width: 21%;
+  margin: 47px 0 0 0;
+}
+.bottom .bottom-black .bottom-product .share span{
+  font-size: 14px;
+  color: #fff;
+  vertical-align: middle;
+}
+.bottom .bottom-black .bottom-product .friendship span a{
+  font-size: 14px;
+  color: #999;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+.bottom .bottom-black .bottom-product .share div{
+  display: inline-block;
+  vertical-align: middle;
+}
+.bottom .bottom-black .bottom-product .share div img{
+  cursor: pointer;
+  margin-right: 20px;
+}
+
+
+.bottom .bottom-black .bottom-product .friendship span:nth-child(1) {
+  color: #FFF;
+  font-size: 18px;
+  font-weight: 500;
+  margin-left: 0;
+}
+
+.bottom .bottom-info {
+  background-color: #0B0605;
+ 
+  padding: 20px 0;
+}
+.bottom .bottom-info .bi-box{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  max-width: 1200px;
+  margin:0 auto;
+}
+.bottom .bottom-info .support a{
+  color: #FFFFFF;
+  font-size: 14px;
+}
+
 .m-bottom {
     display: none;
 }
