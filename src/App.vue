@@ -23,17 +23,27 @@
                             <a class="p-link" href="https://www.xinruiyun.cn/news/" target="_blank"> 
                                 新闻动态
                             </a>
-                            <router-link class="p-link pb" to='https://i.xinruiyun.cn/overview' title="控制台">
+                            <!-- <router-link class="p-link pb" to='https://i.xinruiyun.cn/overview' title="控制台">
                                 控制台
-                            </router-link>
+                            </router-link> -->
+                            <a class="p-link pb" href="https://i.xinruiyun.cn/overview"> 
+                                控制台
+                            </a>
                             <div v-if='!userInfo'>
-                                <router-link class="lg-in" to="https://i.xinruiyun.cn/login"  title="登录">登录</router-link>
-                                <router-link class="lg-re" to="https://i.xinruiyun.cn/register" title="注册">注册</router-link>
+                                <!-- <router-link class="lg-in" to="https://i.xinruiyun.cn/login"  title="登录">登录</router-link>
+                                <router-link class="lg-re" to="https://i.xinruiyun.cn/register" title="注册">注册</router-link> -->
+                                <a class="lg-in" href="https://i.xinruiyun.cn/login"> 
+                                    登录
+                                </a>
+                                <a class="lg-re" href="https://i.xinruiyun.cn/register"> 
+                                    注册
+                                </a>
+                                
                             </div>
 
                             <ul v-else class="user-list">
                                 <li >
-                                  <Dropdown> <!-- @on-click="go"-->
+                                  <Dropdown> 
                                     <a href="javascript:void(0)" class="user-fn">
                                       {{ userInfo?userInfo.realname:''}}
                                       <Icon type="arrow-down-b"></Icon>
@@ -195,10 +205,10 @@
                             </li>
                             <ul slot="content" class="np-bs" v-cloak>
                                 <li class="np-item">
-                                    <a>镜像服务</a>
+                                    <a href="https://i.xinruiyun.cn/domain">域名注册</a>
                                 </li>
                                 <li class="np-item">
-                                    <a>云服务器快照</a>
+                                    <a href="https://i.xinruiyun.cn/icp">域名备案</a>
                                 </li>
                             </ul>
                         </Poptip>
@@ -269,7 +279,7 @@
                             <a href="https://www.xinruiyun.cn/price/ecs/">定价</a>
                         </li>
                         <li class="nav-item active" @mouseenter='styleClass(5,$event)'>
-                            <a href="#">云市场</a>
+                            <a href="https://i.xinruiyun.cn/market">云市场</a>
                         </li>
                     </ul>
                     <div class="line" :style='lineStyle'></div>
@@ -300,13 +310,13 @@
 
                     <div class="m-login" :class='mLogin?"":"m-logins"' v-if="!userInfo">
                         <div>
-                            <a ref="external nofollow" target="_blank" href="https://wap.xrcloud.net/ruicloud/console?from=xinruiyun-kongzhitai" title="控制台">控制台</a>
+                            <a ref="external nofollow" target="_blank" href="https://m.xinruiyun.cn/console?from=xinruiyun-kongzhitai" title="控制台">控制台</a>
                         </div>
                         <div>
-                            <a ref="external nofollow" target="_blank" href="https://wap.xrcloud.net/ruicloud/login?from=xinruiyun-denglu" title="登录">登录</a>
+                            <a ref="external nofollow" target="_blank" href="https://m.xinruiyun.cn/login?from=xinruiyun-denglu" title="登录">登录</a>
                         </div>
                         <div>
-                            <a ref="external nofollow" target="_blank" href="  https://wap.xrcloud.net/ruicloud/register?from=xinruiyun-zhuce" title="注册">注册</a>
+                            <a ref="external nofollow" target="_blank" href="https://m.xinruiyun.cn/register?from=xinruiyun-zhuce" title="注册">注册</a>
                         </div>
                     </div>
                 </div>
@@ -346,7 +356,6 @@
                             <span>产品</span>
                             <span class="active mhead-arrow2"></span>
                         </div>
-
                         <div class="mhead-pone mhead-pones">
                             <div class="mhead-child">
                                 <div class="mhead-cdd" @click="getSelectDown2(0)">
@@ -355,16 +364,16 @@
                                 </div>
                                 <div class="mhead-box mhead-boxs">
                                     <div class="mhead-chd">
-                                        <a href="#" target="blank">弹性云服务器ECS</a>
+                                        <a href="https://www.xinruiyun.cn/ecs/" target="blank">弹性云服务器ECS</a>
                                     </div>
                                     <div class="mhead-chd">
-                                        <a href="#" target="blank">镜像服务器</a>
+                                        <a href="https://www.xinruiyun.cn/ims/" target="blank">镜像服务器</a>
                                     </div>
                                     <div class="mhead-chd">
-                                        <a href="#" target="blank"> 云服务器快照</a>
+                                        <a href="https://www.xinruiyun.cn/ecss/" target="blank"> 云服务器快照</a>
                                     </div>
                                     <div class="mhead-chd">
-                                        <a href="#" target="blank"> GPU加速服务器</a>
+                                        <a href="https://www.xinruiyun.cn/gpu/" target="blank"> GPU加速服务器</a>
                                     </div>
                                 </div>
                             </div>
@@ -375,13 +384,13 @@
                                 </div>
                                 <div class="mhead-box mhead-boxs">
                                     <div class="mhead-chd">
-                                        <a href="#" target="blank"> 对象存储</a>
+                                        <a href="https://www.xinruiyun.cn/oss/" target="blank"> 对象存储</a>
                                     </div>
                                     <div class="mhead-chd">
-                                        <a href="#" target="blank"> 云硬盘</a>
+                                        <a href="https://www.xinruiyun.cn/evs/" target="blank"> 云硬盘</a>
                                     </div>
                                     <div class="mhead-chd">
-                                        <a href="#" target="blank">云硬盘备份</a>
+                                        <a href="https://www.xinruiyun.cn/vbs/" target="blank">云硬盘备份</a>
                                     </div>
                                 </div>
                             </div>
@@ -392,13 +401,13 @@
                                 </div>
                                 <div class="mhead-box mhead-boxs">
                                     <div class="mhead-chd">
-                                        <a href="#" target="blank"> 防火墙</a>
+                                        <a href="https://www.xinruiyun.cn/fw/" target="blank"> 防火墙</a>
                                     </div>
                                     <div class="mhead-chd">
-                                        <a href="#" target="blank"> DDoS基础防护</a>
+                                        <a href="#" target="blank">SSL证书</a>
                                     </div>
                                     <div class="mhead-chd">
-                                        <a href="#" target="blank">DDoS高防IP</a>
+                                        <a href="https://www.xinruiyun.cn/ddos/" target="blank">DDoS高防IP</a>
                                     </div>
                                 </div>
                             </div>
@@ -409,19 +418,19 @@
                                 </div>
                                 <div class="mhead-box mhead-boxs">
                                     <div class="mhead-chd">
-                                        <a href="#" target="blank"> 虚拟私有云VPC</a>
+                                        <a href="https://www.xinruiyun.cn/vpc/" target="blank"> 虚拟私有云VPC</a>
                                     </div>
                                     <div class="mhead-chd">
-                                        <a href="#" target="blank"> NAT网关</a>
+                                        <a href="https://www.xinruiyun.cn/nat/" target="blank"> NAT网关</a>
                                     </div>
                                     <div class="mhead-chd">
-                                        <a href="#" target="blank">弹性公网IP</a>
+                                        <a href="https://www.xinruiyun.cn/eip/" target="blank">弹性公网IP</a>
                                     </div>
                                     <div class="mhead-chd">
-                                        <a href="#" target="blank"> 负载均衡</a>
+                                        <a href="https://www.xinruiyun.cn/slb/" target="blank"> 负载均衡</a>
                                     </div>
                                     <div class="mhead-chd">
-                                        <a href="#" target="blank">虚拟专网VPN</a>
+                                        <a href="https://www.xinruiyun.cn/vpn/" target="blank">虚拟专网VPN</a>
                                     </div>
                                     <div class="mhead-chd">
                                         <a href="#" target="blank"> CDN（敬请期待）</a>
@@ -435,7 +444,7 @@
                                 </div>
                                 <div class="mhead-box mhead-boxs">
                                     <div class="mhead-chd">
-                                        <a href="#" target="blank"> 云监控</a>
+                                        <a href="https://www.xinruiyun.cn/cms/" target="blank"> 云监控</a>
                                     </div>
                                     <div class="mhead-chd">
                                         <a href="#" target="blank"> 访问控制（敬请期待）</a>
@@ -449,13 +458,19 @@
                                 </div>
                                 <div class="mhead-box mhead-boxs">
                                     <div class="mhead-chd">
-                                        <a href="#" target="blank">云数据库MySQL</a>
+                                        <a href="https://www.xinruiyun.cn/mysql/" target="blank">云数据库MySQL</a>
                                     </div>
                                     <div class="mhead-chd">
-                                        <a href="#" target="blank"> 云数据库PostgreSQL</a>
+                                        <a href="https://www.xinruiyun.cn/postgresql/" target="blank"> 云数据库PostgreSQL</a>
                                     </div>
                                     <div class="mhead-chd">
-                                        <a href="#" target="blank"> 云数据库Redis</a>
+                                        <a href="https://www.xinruiyun.cn/sqlserver/" target="blank"> 云数据库Redis</a>
+                                    </div>
+                                    <div class="mhead-chd">
+                                        <a href='https://www.xinruiyun.cn/mongodb/' target="blank">云数据库MongoDB</a>
+                                    </div>
+                                    <div class="mhead-chd">
+                                        <a href='https://www.xinruiyun.cn/redis/' target="blank">云数据库Redis</a>
                                     </div>
                                 </div>
                             </div>
@@ -471,12 +486,12 @@
                                 <div class="mhead-child">
                                     <div class="mhead-cdd">
                                         <span>
-                                            <a href="#" target="blank">域名注册</a>
+                                            <a href="https://i.xinruiyun.cn/domain" target="blank">域名注册</a>
                                         </span>
                                     </div>
                                     <div class="mhead-cdd">
                                         <span>
-                                            <a href="#" target="blank">域名备案</a>
+                                            <a href="https://i.xinruiyun.cn/icp" target="blank">域名备案</a>
                                         </span>
                                     </div>
                                 </div>
@@ -490,24 +505,24 @@
                     </div>
                     <div class="mhead-product">
                         <div style="padding: 10px 10px;">
-                            <span>定价</span>
+                            <a href="https://www.xinruiyun.cn/price/ecs/">定价</a>
                         </div>
                     </div>
                     <div class="mhead-product">
                         <div style="padding: 10px 10px;">
-                            <span>云市场</span>
+                            <a href="https://i.xinruiyun.cn/market">云市场</a>
                             <!-- <span :class='item.itemShow?"mhead-arrow":"mhead-arrow2"'></span> -->
                         </div>
                     </div>
                     <div class="mhead-product">
                         <div style="padding: 10px 10px;">
-                            <span>帮助文档</span>
+                            <a href="https://help.xinruiyun.cn">帮助文档</a>
                             <!-- <span :class='item.itemShow?"mhead-arrow":"mhead-arrow2"'></span> -->
                         </div>
                     </div>
                     <div class="mhead-product">
                         <div style="padding: 10px 10px;">
-                            <span>新闻动态</span>
+                            <a href="https://www.xinruiyun.cn/news/">新闻动态</a>
                             <!-- <span :class='item.itemShow?"mhead-arrow":"mhead-arrow2"'></span> -->
                         </div>
                     </div>
@@ -804,7 +819,7 @@
         </div>
       </div>
 
-       <div class="m-bottom">
+      <div class="m-bottom">
           <div class="m-register">
               <p>为您提供出众的上云实践机会和全面的尊贵服务</p>
               <div class="m-button">立即注册</div>
@@ -2416,9 +2431,7 @@
         color: #fff;
       }
     }
-}
-
-.bottom .bottom-register {
+}.bottom .bottom-register {
   background-color: #FF7F4B;
   text-align: center;
   padding: 26px 0 0 0;

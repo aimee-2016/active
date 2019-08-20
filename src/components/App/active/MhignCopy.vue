@@ -880,7 +880,7 @@
             width: 100%;
             background:rgba(42,41,54,1);
             ul {
-                padding: 17px 30px 0 30px;
+                padding: 8px 15px 0 15px;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
@@ -888,16 +888,16 @@
                 li {
                     list-style: none;
                     position: relative;
-                    width: 340px;
-                    padding: 23px 0 19px 40px;
+                    width: 170px;
+                    padding: 12px 0 10px 20px;
                     background:rgba(62,60,78,1);
                     border:1px solid rgba(84,82,104,1);
                     margin-bottom: 10px;
                     p {
-                        font-size:26px;
+                        font-size: 13px;
                         font-weight:600;
                         color:rgba(255,224,163,1);
-                        line-height:34px;
+                        line-height:17px;
                     }
                     span {
                         background:rgba(219,221,224,1);
@@ -905,10 +905,10 @@
                         position: absolute;
                         top: 0;
                         right: 0;
-                        font-size:20px;
+                        font-size: 12px;
                         font-weight:bold;
                         color:rgba(52,51,69,1);
-                        line-height:28px;
+                        line-height:14px;
                         padding: 5px;
                     }
                 }
@@ -918,20 +918,21 @@
         .miaosha {
             width: 100%;
             background:rgba(42,41,54,1);
+            padding: 0 10px;
             .title {
-                padding-top: 60px;
+                padding-top: 30px;
                 img {
-                    width: 226px;
+                    width: 113px;
                     display: block;
                     margin: 0 auto;
                 }
                 p {
-                    padding: 16px 44px 0 44px;
+                    padding: 8px 22px 0 22px;
                     text-align: center;
-                    font-size:26px;
+                    font-size: 13px;
                     font-weight:400;
                     color:rgba(255,255,255,1);
-                    line-height:34px;
+                    line-height:17px;
                     span {
                         color: #FDC58F;
                         text-decoration: underline;
@@ -943,23 +944,23 @@
                 justify-content: space-between;
                 flex-wrap: wrap;
                 align-items: baseline;
-                padding: 30px 30px 22px 30px;
+                padding: 10px;
               p{
-                  font-size:24px;
+                  font-size:12px;
                   color:rgba(255,255,255,1);
-                  line-height:31px;
+                  line-height:15px;
                   span {
-                      margin-left: 10px;
+                      margin-left: 5px;
                       display: inline-block;
-                      padding: 2px 8px;
-                      font-size:36px;
+                      padding: 2px 4px;
+                      font-size:18px;
                       font-weight:bold;
                       color:rgba(8,13,76,1);
-                      line-height:42px;
+                      line-height:20px;
                       background:linear-gradient(180deg,rgba(254,231,190,1) 0%,rgba(252,202,138,1) 100%);
                   }
                 &:nth-of-type(2) {
-                    margin: 10px 0;
+                    margin: 5px 0;
                 }
               }
               .more {
@@ -980,45 +981,45 @@
                             .top {
                                 background:rgba(84,81,106,1);
                                 position: relative;
-                                padding: 22px 0 23px 30px;
+                                padding: 11px 0 12px 15px;
                                 border-bottom: 1.2px dashed #625F76;
                                 p{
-                                    font-size:32px;
+                                    font-size: 16px;
                                     font-weight:500;
                                     color:rgba(255,255,255,1);
-                                    line-height:45px;
+                                    line-height: 22px;
                                 }
                                 span {
                                     display: inline-block;
-                                    font-size:22px;
+                                    font-size:12px;
                                     font-weight:bold;
                                     color:rgba(255,255,255,1);
-                                    line-height:30px;
+                                    line-height:15px;
                                     position: absolute;
-                                    top: 29px;
+                                    top: 10px;
                                     right: 0;
                                     background:rgba(255,98,75,1);
-                                    padding: 8px;
+                                    padding: 4px;
                                 }
                                 .host {
-                                    height: 30px;
+                                    // height: 30px;
                                     overflow: hidden;
                                     display: block;
                                     font-size:22px;
                                     font-weight:bold;
                                     color:rgba(255,255,255,1);
-                                    line-height:30px;
+                                    line-height:15px;
                                     position: absolute;
-                                    top: 29px;
+                                    top: 14px;
                                     right: 0;
-                                    background:rgba(255,98,75,1);
+                                    background:none;
                                     padding: 0 0 0 8px;
                                     a {
-                                        font-size:22px;
+                                        font-size:12px;
                                         background:rgba(255,224,163,1);
                                         color:rgba(51,51,51,1);
-                                        padding: 4px;
-                                        margin-left: 8px;
+                                        padding: 2px;
+                                        margin-left: 4px;
                                     }
                                 }
                                 .gpu {
@@ -1028,24 +1029,24 @@
                                     }
                                 }
                                 .ip {
-                                    font-size:28px;
+                                    font-size:14px;
                                     font-weight:500;
                                     color:rgba(255,255,255,1);
-                                    line-height:40px;
-                                    padding-top: 10px;
+                                    line-height:20px;
+                                    padding-top: 5px;
                                 }
                             }
                             .middle {
-                                padding: 20px 0;
+                                padding: 5px 0;
                                 border-bottom: 1px solid #625F76;
                                 display: flex;
                                 justify-content: space-around;
                                 align-items: center;
                                 p {
-                                    font-size:28px;
+                                    font-size:14px;
                                     font-weight:400;
                                     color:rgba(255,240,222,1);
-                                    line-height:40px;
+                                    line-height:20px;
                                     span {
                                         font-weight: bold;
                                     }
@@ -1055,21 +1056,21 @@
                                 display: flex;
                                 justify-content: space-between;
                                 align-items: center;
-                                padding: 40px 30px 35px 20px;
+                                padding: 20px 15px 17px 10px;
                                 .price {
                                     p {
-                                        font-size:24px;
+                                        font-size:12px;
                                         font-weight:400;
                                         color:rgba(255,98,75,1);
-                                        line-height:32px;
+                                        line-height:16px;
                                         span {
                                             font-weight: bold;
-                                            font-size: 36px;
+                                            font-size: 18px;
                                         }
                                         .old {
-                                            font-size:24px;
+                                            font-size:12px;
                                             font-weight:400;
-                                            line-height:32px;
+                                            line-height:16px;
                                             color:#FFFFFF;
                                             text-decoration: line-through;
                                             padding-left: 5px;
@@ -1077,22 +1078,22 @@
                                     }
                                     .press {
                                         padding-top: 15px;
-                                        font-size:24px;
+                                        font-size:12px;
                                         font-weight:400;
                                         color:rgba(219,207,196,1);
-                                        line-height:32px;
+                                        line-height:16px;
                                     }
                                 }
                                 button {
                                     background:linear-gradient(90deg,rgba(249,239,184,1) 0%,rgba(227,183,111,1) 100%);
-                                    width: 230px;
-                                    font-size:32px;
+                                    width: 115px;
+                                    font-size: 16px;
                                     color:rgba(51,51,51,1);
-                                    line-height:45px;
+                                    line-height: 22px;
                                     font-weight: bold;
                                     outline: none;
                                     border: none;
-                                    padding: 18px 0 17px 0;
+                                    padding: 10px 0 8px 0;
                                     text-align: center;
                                 }
                                 .over {
@@ -1105,33 +1106,34 @@
             }
             .warn {
                 padding: 0 30px;
-                font-size:24px;
+                font-size:12px;
                 font-weight:400;
                 color:rgba(219,207,196,1);
-                line-height:34px;
+                line-height:17px;
             }
         }
 
         .eight {
             width: 100%;
             background:rgba(42,41,54,1);
-            padding-bottom: 10px;
+            padding: 0 10px;
+            padding-bottom: 5px;
             .title {
-                padding-top: 60px;
+                padding-top: 30px;
                 img {
-                    width: 500px;
+                    width: 250px;
                     display: block;
                     margin: 0 auto;
                 }
                 p {
-                   padding-top: 20px;
+                   padding-top: 5px;
                     text-align: center;
-                    font-size:24px;
+                    font-size:12px;
                     font-weight:400;
                     color:rgba(255,255,255,1);
-                    line-height:33px;
+                    line-height:24px;
                     span {
-                        padding-left: 20px;
+                        padding-left: 10px;
                         color: #EED292;
                     }
                 }
@@ -1139,40 +1141,40 @@
             .first {
                 // width: 690px;
                 width: 100%;
-                margin: 30px auto;
+                margin: 15px auto;
                 ul {
                     .ftitle {
                         width: 100%;
                         background:rgba(62,60,78,1);
                         position: relative;
-                        padding: 22px 0 23px 30px;
-                        font-size:32px;
+                        padding: 11px 0 12px 15px;
+                        font-size: 16px;
                         font-weight:500;
                         color:rgba(255,208,140,1);
-                        line-height:45px;
+                        line-height: 22px;
                         img {
                             display: block;
                             position: absolute;
                             right: 0;
                             top: 0;
-                            width: 150px;
-                            height: 89px;
+                            width: 75px;
+                            height: 45px;
                         }
                     }
                     li{
                         list-style: none;
-                        margin-bottom: 20px;
+                        margin-bottom: 10px;
                         .top {
-                            padding: 20px 0;
+                            padding: 10px 0;
                             background:rgba(77,75,97,1);
                             display: flex;
                             align-items: center;
                             justify-content: space-around;
                             p{
-                                font-size:28px;
+                                font-size:14px;
                                 font-weight:400;
                                 color:rgba(255,240,222,1);
-                                line-height:40px;
+                                line-height:20px;
                                 span {
                                     font-weight: bold;
                                 }
@@ -1181,24 +1183,24 @@
                         .middle {
                             background: #FFFFFF;
                             .defense {
-                                padding: 20px 20px 0 20px;
-                                font-size:28px;
+                                padding: 10px 10px 0 10px;
+                                font-size:14px;
                                 font-weight:400;
                                 color:rgba(102,102,102,1);
-                                line-height:28px;
+                                line-height:14px;
                                 p {
-                                    padding-bottom: 20px;
+                                    padding-bottom: 10px;
                                     border-bottom: 1px solid #DBD9E9;
                                     span {
-                                        width: 170px;
+                                        width: 85px;
                                         display: inline-block;
-                                        font-size:28px;
+                                        font-size:14px;
                                         font-weight:500;
                                         color:rgba(85,85,85,1);
-                                        line-height:40px;
-                                        padding: 10px 0;
+                                        line-height:20px;
+                                        padding: 5px 0;
                                         border:1px solid rgba(238,210,146,1);
-                                        margin-left: 20px;
+                                        margin-left: 10px;
                                         text-align: center;
                                     }
                                     .spanClick {
@@ -1215,50 +1217,49 @@
                             align-items: center;
                             .prices {
                                 .now {
-                                    font-size:24px;
+                                    font-size:12px;
                                     font-weight:400;
                                     color:rgba(255,98,75,1);
-                                    line-height:34px;
+                                    line-height:17px;
                                     span {
-                                        font-size: 36px;
+                                        font-size: 18px;
                                         font-weight: bold;
                                     }
                                 }
                                 .old {
                                     padding-top: 10px;
-                                    font-size:24px;
+                                    font-size:12px;
                                     font-weight:400;
                                     color:#666666;
-                                    line-height:34px;
+                                    line-height:17px;
                                     text-decoration: line-through;
                                     .bot {
-                                        padding: 3px 8px;
-                                        margin-left: 20px;
+                                        padding: 2px 4px;
+                                        margin-left: 10px;
                                         display: inline-block;
                                         text-decoration: none;
-                                        font-size:22px;
+                                        font-size:12px;
                                         font-weight:400;
                                         color:rgba(255,208,140,1);
-                                        line-height:22px;
                                         background:rgba(77,75,97,1);
                                     }
                                 }
                             }
                             button {
                                 display: block;
-                                width: 230px;
+                                width: 115px;
                                 background:linear-gradient(128deg,rgba(249,239,184,1) 0%,rgba(227,183,111,1) 100%);
                                 outline: none;
                                 border: none;
-                                font-size:32px;
+                                font-size: 16px;
                                 font-weight:bold;
                                 color:rgba(51,51,51,1);
-                                line-height:45px;
-                                padding: 18px 0 17px 0;
+                                line-height: 22px;
+                                padding: 10px 0 8px 0;
                                 img {
-                                    width: 26px;
+                                    width: 13px;
                                     vertical-align: middle;
-                                    margin-left: 9px;
+                                    margin-left: 4px;
                                 }
                             }
                         }
@@ -1270,21 +1271,21 @@
         .giving {
             width: 100%;
             background:rgba(226,228,240,1);
-            padding-bottom: 60px;
+            padding-bottom: 30px;
             .title {
-                padding-top: 30px;
+                padding-top: 15px;
                 img {
-                    width: 454px;
+                    width: 227px;
                     display: block;
                     margin: 0 auto;
                 }
                 p {
-                    padding: 20px .7100px 0 .7100px;
+                    padding: 10px 35px 0 35px;
                     text-align: center;
-                    font-size:24px;
+                    font-size:12px;
                     font-weight:400;
                     color:rgba(102,102,102,1);
-                    line-height:33px;
+                    line-height:24px;
                     span {
                         color: #FF624B;
                     }
@@ -1295,91 +1296,92 @@
                width: 100%;
                 margin: 0 auto;
                 ul {
+                  padding: 0 10px;
                     li {
                         list-style: none;
-                        margin-top: 30px;
+                        margin-top: 15px;
                         background:rgba(255,255,255,1);
-                        box-shadow:0px 4px 20px -5px rgba(0,0,0,0.3);
+                        box-shadow:0px 2px 10px -2px rgba(0,0,0,0.3);
                         .top {
                             width: 100%;
                             background:rgba(62,60,78,1);
                             position: relative;
-                            padding: 22px 0 23px 30px;
+                            padding: 11px 0 12px 15px;
                             p {
-                                font-size:32px;
+                                font-size: 16px;
                                 font-weight:500;
                                 color:rgba(255,208,140,1);
-                                line-height:45px;
+                                line-height: 22px;
                             }
                             img {
                                 display: block;
                                 position: absolute;
                                 right: 0;
                                 top: 0;
-                                width: 261px;
-                                height: 89px;
+                                width: 130px;
+                                height: 45px;
                             }
                         }
                         .middle {
-                            padding: 20px 0;
+                            padding: 10px 0;
                             border-bottom: 1px solid #DBD9E9;
                             display: flex;
                             justify-content: space-around;
                             align-items: center;
                             p {
-                                font-size:28px;
+                                font-size:14px;
                                 font-weight:400;
                                 color:rgba(62,60,78,1);
-                                line-height:40px;
+                                line-height:20px;
                                 span {
                                     font-weight: bold;
                                 }
                             }
                         }
                         .groups {
-                            margin: 0 20px;
+                            margin: 0 10px;
                         }
                         .btns {
-                            padding: 44px 30px 44px 20px;
+                            padding: 22px 15px 22px 10px;
                             display: flex;
                             justify-content: space-between;
                             align-items: center;
                             .prices {
                                 p {
-                                    font-size:24px;
+                                    font-size:12px;
                                     font-weight:400;
                                     color:rgba(255,98,75,1);
-                                    line-height:34px;
+                                    line-height:17px;
                                     span {
-                                        font-size: 36px;
+                                        font-size: 18px;
                                         font-weight: bold;
                                         &:last-of-type {
-                                            font-size:24px;
+                                            font-size:12px;
                                             color: #666666;
                                             text-decoration: line-through;
                                         }
                                     }
                                     &:last-of-type {
-                                        padding-top: 14px;
+                                        padding-top: 7px;
                                     }
                                 }
 
                             }
                             button {
                                 display: block;
-                                width: 230px;
+                                width: 115px;
                                 background:linear-gradient(128deg,rgba(249,239,184,1) 0%,rgba(227,183,111,1) 100%);
                                 outline: none;
                                 border: none;
-                                font-size:32px;
+                                font-size: 16px;
                                 font-weight:bold;
                                 color:rgba(51,51,51,1);
-                                line-height:45px;
-                                padding: 18px 0 17px 0;
+                                line-height: 22px;
+                                padding: 9px 0 8px 0;
                                 img {
-                                    width: 26px;
+                                    width: 13px;
                                     vertical-align: middle;
-                                    margin-left: 9px;
+                                    margin-left: 4px;
                                 }
                             }
                         }
@@ -1392,43 +1394,43 @@
         background: rgba(43, 43, 47, 1);
         text-align: center;
     .foot-top {
-        padding: 100px 0 99px 0;
+        padding: 50px 0 45px 0;
     img {
-        width: 230px;
-        height: 230px;
+        width: 115px;
+        height: 115px;
     }
     h1 {
-        font-size: 32px;
+        font-size: 16px;
         font-weight: 400;
         color: rgba(255, 255, 255, 1);
-        line-height: 45px;
-        padding-bottom: 40px;
+        line-height: 22px;
+        padding-bottom: 20px;
     }
     .phone {
-        font-size: 36px;
+        font-size: 18px;
         font-weight: 500;
         color: rgba(55, 125, 255, 1);
-        line-height: 50px;
+        line-height: 25px;
     a {
         text-decoration: none;
-        font-size: 36px;
+        font-size: 18px;
         font-weight: 500;
         color: rgba(55, 125, 255, 1);
-        line-height: 50px;
+        line-height: 25px;
     }
     }
     .addressEN {
-        font-size: 26px;
+        font-size: 13px;
         font-weight: 500;
         color: rgba(255, 255, 255, 1);
-        line-height: 37px;
-        padding: 9px 0 8px 0;
+        line-height: 18px;
+        padding: 5px 0 4px 0;
     }
     .addressZH {
-        font-size: 26px;
+        font-size: 13px;
         font-weight: 400;
         color: rgba(255, 255, 255, 1);
-        line-height: 37px;
+        line-height: 18px;
     }
     }
     .foot-bottom {
@@ -1441,18 +1443,18 @@
     li {
         text-align: center;
         list-style: none;
-        padding: 58px 0;
+        padding: 29px 0;
         width: 50%;
         border-bottom: 1px solid #999;
     img {
-        width: 60px;
-        height: 60px;
+        width: 15px;
+        // height: 60px;
     }
     p {
-        font-size: 26px;
+        font-size: 13px;
         font-weight: 400;
         color: rgba(255, 255, 255, 1);
-        line-height: 37px;
+        line-height: 18px;
     /*padding-top: 30px;*/
     &:last-of-type {
          color: rgba(255, 255, 255, 0.7);
@@ -1475,29 +1477,29 @@
     .foot {
         background: rgba(20, 20, 23, 1);
         text-align: center;
-        padding: 18px 0 22px 0;
+        padding: 10px 0 11px 0;
     p {
-        font-size: 20px;
+        font-size: 12px;
         font-weight: 400;
         color: rgba(255, 255, 255, 0.5);
-        line-height: 28px;
+        line-height:14px;
         padding-bottom: 4px;
     span {
     &:first-of-type {
          display: inline-block;
-         padding-right: 20px;
+         padding-right: 10px;
      }
     }
     .icpIcon {
         position: relative;
-        padding-left: 24px;
+        padding-left: 12px;
     &:before {
          content: "";
          position: absolute;
          left: 0;
          top: 0;
-         width: 20px;
-         height: 20px;
+         width: 10px;
+         height: 10px;
          background: url('../../../assets/img/active/home-m/record.png') no-repeat center top;
          background-size: cover;
      }
@@ -1525,11 +1527,11 @@
             .alert1 {
                 position: absolute;
                 left: 50%;
-                margin-left: -300px;
+                margin-left: -150px;
                 top: 50%;
-                margin-top: -372px;
-                height: 850px;
-                width: 600px;
+                margin-top: -186px;
+                height: 425px;
+                width: 300px;
                 transform: scale(1.2);
                 transition-property: transform;
                 transition-duration: 0.3s;
@@ -1540,48 +1542,48 @@
                     border-radius:10px 10px 0 0;
                     position: relative;
                     h1 {
-                        padding: 25px 0;
+                        padding: 12px 0;
                         text-align: center;
-                        font-size:36px;
+                        font-size:18px;
                         font-weight:500;
                         color:rgba(234,179,128,1);
                     }
                     img {
-                        width: 30px;
-                        height: 30px;
+                        width: 15px;
+                        // height: 30px;
                         display: block;
                         position: absolute;
-                        right: 35px;
-                        top: 35px;
+                        right: 18px;
+                        top: 18px;
                     }
                 }
                 .rules {
-                    height:640px;
-                    padding: 25px 30px 50px 30px;
+                    height:320px;
+                    padding: 12px 15px 25px 15px;
                     border-bottom: 1px solid rgba(216,216,216,1);
                     overflow-y: auto;
                     li {
                         list-style: none;
-                        font-size:28px;
+                        font-size:14px;
                         font-weight:500;
                         color:rgba(51,51,51,1);
-                        line-height:36px;
+                        line-height:18px;
                     }
                 }
                 .foot {
                     button {
-                        width:220px;
+                        width:110px;
                         background:linear-gradient(128deg,rgba(249,239,184,1) 0%,rgba(227,183,111,1) 100%);
                         border-radius:6px;
                         display: block;
                         outline: none;
                         border: none;
-                        font-size:32px;
+                        font-size: 16px;
                         font-weight:500;
                         color:rgba(34,34,34,1);
-                        line-height:45px;
-                        padding: 18px 0;
-                        margin: 10px auto;
+                        line-height: 22px;
+                        padding: 10px 0;
+                        margin: 5px auto;
                     }
                 }
             }
@@ -1596,11 +1598,11 @@
             .alert2 {
                 position: absolute;
                 left: 50%;
-                margin-left: -300px;
+                margin-left: -150px;
                 top: 50%;
-                margin-top: -372px;
+                margin-top: -186px;
                 height: auto;
-                width: 600px;
+                width: 300px;
                 transform: scale(1.2);
                 transition-property: transform;
                 transition-duration: 0.3s;
@@ -1611,47 +1613,47 @@
                     border-radius:10px 10px 0 0;
                     position: relative;
                     h1 {
-                        padding: 25px 0;
+                        padding: 12px 0;
                         text-align: center;
-                        font-size:36px;
+                        font-size:18px;
                         font-weight:500;
                         color:rgba(234,179,128,1);
                     }
                     img {
-                        width: 30px;
-                        height: 30px;
+                        width: 15px;
+                        // height: 30px;
                         display: block;
                         position: absolute;
-                        right: 35px;
-                        top: 35px;
+                        right: 18px;
+                        top: 18px;
                     }
                 }
                 .rules {
                     height:auto;
-                    padding: 25px 30px 50px 30px;
+                    padding: 12px 15px 25px 15px;
                     border-bottom: 1px solid rgba(216,216,216,1);
                     li {
                         list-style: none;
-                        font-size:28px;
+                        font-size:14px;
                         font-weight:500;
                         color:rgba(51,51,51,1);
-                        line-height:36px;
+                        line-height:18px;
                     }
                 }
                 .foot {
                     button {
-                        width:220px;
+                        width:110px;
                         background:linear-gradient(128deg,rgba(249,239,184,1) 0%,rgba(227,183,111,1) 100%);
                         border-radius:6px;
                         display: block;
                         outline: none;
                         border: none;
-                        font-size:32px;
+                        font-size: 16px;
                         font-weight:500;
                         color:rgba(34,34,34,1);
-                        line-height:45px;
-                        padding: 18px 0;
-                        margin: 10px auto;
+                        line-height: 22px;
+                        padding: 10px 0;
+                        margin: 5px auto;
                     }
                 }
             }
@@ -1666,11 +1668,11 @@
             .alert3 {
                 position: absolute;
                 left: 50%;
-                margin-left: -300px;
+                margin-left: -150px;
                 top: 50%;
-                margin-top: -372px;
+                margin-top: -186px;
                 height: auto;
-                width: 600px;
+                width: 300px;
                 transform: scale(1.2);
                 transition-property: transform;
                 transition-duration: 0.3s;
@@ -1681,47 +1683,47 @@
                     border-radius:10px 10px 0 0;
                     position: relative;
                     h1 {
-                        padding: 25px 0;
+                        padding: 12px 0;
                         text-align: center;
-                        font-size:36px;
+                        font-size:18px;
                         font-weight:500;
                         color:rgba(234,179,128,1);
                     }
                     img {
-                        width: 30px;
-                        height: 30px;
+                        width: 15px;
+                        height: 15px;
                         display: block;
                         position: absolute;
-                        right: 35px;
-                        top: 35px;
+                        right: 18px;
+                        top: 18px;
                     }
                 }
                 .rules {
                     height:auto;
-                    padding: 25px 30px 50px 30px;
+                    padding: 12px 15px 25px 15px;
                     border-bottom: 1px solid rgba(216,216,216,1);
                     li {
                         list-style: none;
-                        font-size:28px;
+                        font-size:14px;
                         font-weight:500;
                         color:rgba(51,51,51,1);
-                        line-height:36px;
+                        line-height:18px;
                     }
                 }
                 .foot {
                     button {
-                        width:220px;
+                        width:110px;
                         background:linear-gradient(128deg,rgba(249,239,184,1) 0%,rgba(227,183,111,1) 100%);
                         border-radius:6px;
                         display: block;
                         outline: none;
                         border: none;
-                        font-size:32px;
+                        font-size: 16px;
                         font-weight:500;
                         color:rgba(34,34,34,1);
-                        line-height:45px;
-                        padding: 18px 0;
-                        margin: 10px auto;
+                        line-height: 22px;
+                        padding: 10px 0;
+                        margin: 5px auto;
                     }
                 }
             }
@@ -1736,11 +1738,11 @@
             .alert4{
                 position: absolute;
                 left: 50%;
-                margin-left: -300px;
+                margin-left: -150px;
                 top: 50%;
-                margin-top: -372px;
+                margin-top: -186px;
                 height: auto;
-                width: 600px;
+                width: 300px;
                 transform: scale(1.2);
                 transition-property: transform;
                 transition-duration: 0.3s;
@@ -1751,45 +1753,45 @@
                     border-radius:10px 10px 0 0;
                     position: relative;
                     h1 {
-                        padding: 25px 0;
+                        padding: 12px 0;
                         text-align: center;
-                        font-size:36px;
+                        font-size:18px;
                         font-weight:500;
                         color:rgba(234,179,128,1);
                     }
                     img {
-                        width: 30px;
-                        height: 30px;
+                        width: 15px;
+                        height: 15px;
                         display: block;
                         position: absolute;
-                        right: 35px;
-                        top: 35px;
+                        right: 18px;
+                        top: 18px;
                     }
                 }
                 .rules {
                     height:auto;
-                    padding: 25px 30px 50px 30px;
+                    padding: 12px 15px 25px 15px;
                     border-bottom: 1px solid rgba(216,216,216,1);
-                    font-size:28px;
+                    font-size:14px;
                     font-weight:400;
                     color:rgba(51,51,51,1);
-                    line-height:36px;
-                    text-indent:40px;
+                    line-height:18px;
+                    text-indent:20px;
                 }
                 .foot {
                     button {
-                        width:220px;
+                        width:110px;
                         background:linear-gradient(128deg,rgba(249,239,184,1) 0%,rgba(227,183,111,1) 100%);
                         border-radius:6px;
                         display: block;
                         outline: none;
                         border: none;
-                        font-size:32px;
+                        font-size: 16px;
                         font-weight:500;
                         color:rgba(34,34,34,1);
-                        line-height:45px;
-                        padding: 18px 0;
-                        margin: 10px auto;
+                        line-height: 22px;
+                        padding: 10px 0;
+                        margin: 5px auto;
                     }
                 }
             }
@@ -1804,11 +1806,11 @@
             .alert5{
                 position: absolute;
                 left: 50%;
-                margin-left: -300px;
+                margin-left: -150px;
                 top: 50%;
-                margin-top: -372px;
+                margin-top: -186px;
                 height: auto;
-                width: 600px;
+                width: 300px;
                 transform: scale(1.2);
                 transition-property: transform;
                 transition-duration: 0.3s;
@@ -1819,45 +1821,45 @@
                     border-radius:10px 10px 0 0;
                     position: relative;
                     h1 {
-                        padding: 25px 0;
+                        padding: 12px 0;
                         text-align: center;
-                        font-size:36px;
+                        font-size:18px;
                         font-weight:500;
                         color:rgba(234,179,128,1);
                     }
                     img {
-                        width: 30px;
-                        height: 30px;
+                        width: 15px;
+                        // height: 30px;
                         display: block;
                         position: absolute;
-                        right: 35px;
-                        top: 35px;
+                        right: 18px;
+                        top: 18px;
                     }
                 }
                 .rules {
                     height:auto;
-                    padding: 25px 30px 50px 30px;
+                    padding: 12px 15px 25px 15px;
                     border-bottom: 1px solid rgba(216,216,216,1);
-                    font-size:28px;
+                    font-size:14px;
                     font-weight:400;
                     color:rgba(51,51,51,1);
-                    line-height:36px;
-                    text-indent:40px;
+                    line-height:18px;
+                    text-indent:20px;
                 }
                 .foot {
                     button {
-                        width:220px;
+                        width:110px;
                         background:linear-gradient(128deg,rgba(249,239,184,1) 0%,rgba(227,183,111,1) 100%);
                         border-radius:6px;
                         display: block;
                         outline: none;
                         border: none;
-                        font-size:32px;
+                        font-size: 16px;
                         font-weight:500;
                         color:rgba(34,34,34,1);
-                        line-height:45px;
-                        padding: 18px 0;
-                        margin: 10px auto;
+                        line-height: 22px;
+                        padding: 10px 0;
+                        margin: 5px auto;
                     }
                 }
             }
@@ -1872,11 +1874,11 @@
             .alert6{
                 position: absolute;
                 left: 50%;
-                margin-left: -300px;
+                margin-left: -150px;
                 top: 50%;
-                margin-top: -372px;
-                height: 880px;
-                width: 600px;
+                margin-top: -186px;
+                height: 440px;
+                width: 300px;
                 transform: scale(1.2);
                 transition-property: transform;
                 transition-duration: 0.3s;
@@ -1887,25 +1889,25 @@
                     border-radius:10px 10px 0 0;
                     position: relative;
                     h1 {
-                        padding: 25px 0;
+                        padding: 12px 0;
                         text-align: center;
-                        font-size:36px;
+                        font-size:18px;
                         font-weight:500;
                         color:rgba(234,179,128,1);
                     }
                     img {
-                        width: 30px;
-                        height: 30px;
+                        width: 15px;
+                        // height: 30px;
                         display: block;
                         position: absolute;
-                        right: 35px;
-                        top: 35px;
+                        right: 18px;
+                        top: 18px;
                     }
                 }
                 .rules {
-                    height:670px;
+                    height:335px;
                     overflow-y: auto;
-                    padding: 20px 20px 40px 20px;
+                    padding: 10px 10px 20px 10px;
                     border-bottom: 1px solid rgba(216,216,216,1);
                     li {
                         list-style: none;
@@ -1918,10 +1920,10 @@
                             justify-content: space-between;
                             align-items: center;
                             padding: 12px 20px;
-                            font-size:28px;
+                            font-size:14px;
                             font-weight: bold;
                             color:rgba(102,102,102,1);
-                            line-height:40px;
+                            line-height:20px;
                             .ising {
                                 color:rgba(255,136,28,1);
                             }
@@ -1931,10 +1933,10 @@
                             padding: 10px 20px;
                             p {
                                 display: inline-block;
-                                font-size:28px;
+                                font-size:14px;
                                 font-weight:400;
                                 color:rgba(102,102,102,1);
-                                line-height:40px;
+                                line-height:20px;
                                 span {
                                     padding-left: 10px;
                                 }
@@ -1944,18 +1946,18 @@
                 }
                 .foot {
                     button {
-                        width:220px;
+                        width:110px;
                         background:linear-gradient(128deg,rgba(249,239,184,1) 0%,rgba(227,183,111,1) 100%);
                         border-radius:6px;
                         display: block;
                         outline: none;
                         border: none;
-                        font-size:32px;
+                        font-size: 16px;
                         font-weight:500;
                         color:rgba(34,34,34,1);
-                        line-height:45px;
-                        padding: 18px 0;
-                        margin: 10px auto;
+                        line-height: 22px;
+                        padding: 10px 0;
+                        margin: 5px auto;
                     }
                 }
             }

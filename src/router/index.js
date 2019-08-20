@@ -7,7 +7,9 @@ import App from '@/App'
 // import LR from '@/LR'
 
 // 前台活动页面路由
-const ActiveCenter = () =>import('@/components/App/ActiveCenter')
+const ActiveCenterP = () =>import('@/components/App/ActiveCenter')
+const ActiveCenterM = () =>import('@/components/App/Sort')
+const ActiveCenter = () =>import('@/components/App/activeA')
 const activeBefore = () =>import('@/components/App/active/activeBefore')
 const FrActive = () =>import('@/components/App/active/freeReceiveA')
 const FrActiveP = () =>import('@/components/App/active/freeReceive.1')
@@ -43,6 +45,8 @@ var router = new Router({
       children: [
         {path: '/', name: 'activity', component: ActiveCenter,caseSensitive: true},
         {path: 'activity', name: 'activity', component: ActiveCenter,caseSensitive: true},
+        {path: 'activityp', name: 'activityp', component: ActiveCenterP,caseSensitive: true},
+        {path: 'activitym', name: 'activitym', component: ActiveCenterM,caseSensitive: true},
         {path: 'activebefore',name: 'activebefore', component:activeBefore,caseSensitive: true},
         {path: 'activity/free', name: 'activity/free', component: FrActive,caseSensitive: true},
         {path: 'activity/freem', name: 'activity/freem', component: FrActiveM,caseSensitive: true},
