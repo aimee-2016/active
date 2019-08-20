@@ -312,45 +312,45 @@
   .banner {
     position: relative;
     width: 100%;
-    height: 3rem;
+    height: 150px;
     background: linear-gradient(270deg, rgba(255, 235, 222, 1) 0%, rgba(255, 253, 251, 1) 100%);
     .banner-img {
       position: absolute;
       top: 0;
       right: 0;
       z-index: 1;
-      width: 3.53rem;
-      height: 3rem;
+      width: 176px;
+      height: 150px;
       background: url(../../../assets/img/active/acdata/banner-i.png) no-repeat center top;
       background-size: cover;
     }
     .bannercon {
-      padding: .78rem .3rem 0 .3rem;
+      padding: 39px 15px 0 15px;
       position: absolute;
       top: 0;
       left: 0;
       z-index: 3;
       width: 100%;
-      height: 3rem;
+      height: 150px;
       .bancon1 {
-        font-size: .24rem;
+        font-size: 12px;
         font-weight: 400;
-        line-height: .33rem;
+        line-height: 17px;
         color: #462121;
       }
       .bancon2 {
-        margin-top: .13rem;
-        font-size: .32rem;
+        margin-top: 7px;
+        font-size: 16px;
         font-weight: bold;
-        line-height: .45rem;
+        line-height: 22px;
         color: #462121;
       }
       .bancon3 {
-        margin-top: .12rem;
-        font-size: .26rem;
+        margin-top: 6px;
+        font-size: 13px;
         color: #FF462B;
         font-weight: 500;
-        line-height: .37rem;
+        line-height: 19px;
         span {
           color: #462121;
         }
@@ -359,59 +359,59 @@
   }
 
   .top {
-    padding: .3rem .3rem .2rem .3rem;
+    padding: 15px 15px 10px 15px;
     text-align: center;
     h1 {
       width: 100%;
-      font-size: .32rem;
+      font-size: 16px;
       font-weight: bold;
       color: #333;
-      line-height: .5rem;
+      line-height: 25px;
       span {
-        margin-left: .2rem;
+        margin-left: 10px;
         color: #FF624B;
       }
     }
     p {
-      padding: .06rem 0 0 0;
+      padding: 3px 0 0 0;
       width: 100%;
-      font-size: .2rem;
+      font-size: 10px;
       font-weight: 400;
       color: #666666;
-      line-height: .28rem;
+      line-height: 14px;
     }
   }
 
   .list {
-    padding: 0 .3rem;
+    padding: 0 15px;
     width: 100%;
     height: auto;
     .list-item {
-      margin-bottom: .3rem;
+      margin-bottom: 15px;
       box-sizing: border-box;
       width: 100%;
-      height: 3.8rem;
+      height: 190px;
       .listimg-st {
-        padding: .18rem .24rem .18rem .24rem;
+        padding: 9px 12px 9px 12px;
         overflow: hidden;
         width: 100%;
-        height: 1rem;
+        height: 50px;
         background: url(../../../assets/img/active/acdata/listimg-01.png) no-repeat center top;
         background-size: cover;
         h6 {
           margin: 0;
-          font-size: .24rem;
+          font-size: 12px;
           font-weight: bold;
           color: rgba(255, 255, 255, 1);
-          line-height: .3rem;
+          line-height: 15px;
         }
         p {
           margin: 0;
-          margin-top: .04rem;
-          font-size: .22rem;
+          margin-top: 2px;
+          font-size: 11px;
           font-weight: 400;
           color: rgba(255, 255, 255, 1);
-          line-height: .3rem;
+          line-height: 15px;
         }
       }
       .sc {
@@ -419,26 +419,26 @@
       }
       .listinfo {
         width: 100%;
-        min-height: 2.8rem;
+        min-height: 14px;
         border-bottom: 1px solid #ccc;
         border-right: 1px solid #ccc;
         border-left: 1px solid #ccc;
         .iteminfo {
-          padding: 0 .24rem;
+          padding: 0 12px;
           width: 100%;
-          height: .8rem;
-          line-height: .8rem;
+          height: 40px;
+          line-height: 40px;
           overflow: hidden;
           div {
             float: left;
             width: 26%;
-            height: .8rem;
+            height: 40px;
             text-align: center;
-            font-size: .2rem;
+            font-size: 10px;
             color: #666666;
             span {
               font-weight: bold;
-              font-size: .24rem;
+              font-size: 12px;
               color: #000;
             }
           }
@@ -454,25 +454,25 @@
       }
       .data-cen {
         padding: 0;
-        margin-top: -.17rem !important;
+        margin-top: -9px !important;
         width: 100%;
-        height: .8rem;
+        height: 40px;
         color: #666666;
-        font-size: .24rem;
-        line-height: .8rem;
+        font-size: 12px;
+        line-height: 40px;
         .data-des {
           float: right;
           position: relative;
-          padding-right: .3rem;
+          padding-right: 15px;
           color: #333333;
-          font-size: .24rem;
+          font-size: 12px;
           font-weight: 400;
           &:after {
             content: "";
             position: absolute;
             right: 0;
             top: 50%;
-            margin-top: -.1rem;
+            margin-top: -.50px;
             width: .12rem;
             height: .2rem;
             background: url(../../../assets/img/active/acdata/desc.png) no-repeat center top;
@@ -482,14 +482,14 @@
       }
       .data-bot {
         position: relative;
-        padding: .21rem .4rem .2rem .3rem;
+        padding: 10px 20px 10px 15px;
         width: 100%;
-        height: 1.2rem;
+        height: 60px;
         h4 {
           font-style: normal;
           font-weight: normal;
-          font-size: .28rem;
-          line-height: .4rem;
+          font-size: 14px;
+          line-height: 20px;
           color: #000;
           span {
             font-weight: bold;
@@ -498,20 +498,20 @@
         p {
           margin: 0;
           color: #666;
-          font-size: .28rem;
+          font-size: 14px;
           text-decoration: line-through;
-          line-height: .4rem;
+          line-height: 20px;
         }
         .freebtn {
           position: absolute;
-          right: .4rem;
+          right: 20px;
           top: 50%;
-          margin-top: -.4rem;
-          width: 2.2rem;
-          height: .8rem;
-          line-height: .8rem;
+          margin-top: -20px;
+          width: 110px;
+          height: 40px;
+          line-height: 40px;
           text-align: center;
-          font-size: .28rem;
+          font-size: 14px;
           border: none;
           color: #fff;
           background: rgba(255, 55, 47, 1);
@@ -524,81 +524,81 @@
   }
 
   .product {
-    padding: .5rem .3rem .2rem .3rem;
+    padding: 25px 15px 10px 15px;
     width: 100%;
     height: auto;
-    font-size: .32rem;
+    font-size: 16px;
     font-weight: 500;
     color: #333;
-    line-height: .45rem;
+    line-height: 23px;
     text-align: center;
   }
 
   .pro-box {
-    padding: 0 .3rem;
+    padding: 0 15px;
     width: 100%;
     height: auto;
     overflow: hidden;
     list-style: none;
     .pro-item {
       float: left;
-      padding: .3rem .15rem;
-      margin-bottom: .1rem;
+      padding: 15px 8px;
+      margin-bottom: 5px;
       list-style: none;
       width: 49%;
-      min-height: 4.2rem;
-      border-radius: .06rem;
+      min-height:210px;
+      border-radius: 3px;
       border: 1px solid #ccc;
       &:nth-child(2n) {
         float: right;
       }
       &:last-child {
         width: 100% !important;
-        min-height: 3rem !important;
+        min-height: 150px !important;
       }
       .pro-img {
         margin: 0 auto;
-        width: .9rem;
-        height: .9rem;
+        width: 45px;
+        height: 45px;
         background-repeat: no-repeat;
         background-position: center top;
         background-size: cover;
         img {
-          width: .9rem;
-          height: .9rem;
+          width: 45px;
+          height: 45px;
         }
       }
       h6 {
-        margin-top: .2rem;
-        margin-bottom: .1rem;
-        font-size: .24rem;
+        margin-top: 10px;
+        margin-bottom: 5px;
+        font-size: 12px;
         font-weight: 500;
         text-align: center;
         color: rgba(51, 51, 51, 1);
-        line-height: .33rem;
+        line-height: 17px;
       }
       p {
-        font-size: .24rem;
+        font-size: 12px;
         font-weight: 400;
         text-align: center;
         color: rgba(104, 97, 96, 1);
-        line-height: .35rem;
+        line-height: 17px;
       }
     }
   }
 
   .apply {
-    padding: 0 .3rem;
+    padding: 0 15px;
     width: 100%;
     height: auto;
     list-style: none;
     li {
       position: relative;
-      padding: .4rem .15rem .4rem .26rem;
-      margin-bottom: .2rem;
+      padding: 20px 8px 20px 13px;
+      margin-bottom: 10px;
       width: 100%;
-      min-height: 2.3rem;
-      border-radius: .06rem;
+      min-height: 120px;
+      border-radius: 3px;
       border-top: 1px solid #ccc;
       border-right: 1px solid #ccc;
       border-bottom: 1px solid #ccc;
@@ -607,54 +607,54 @@
         position: absolute;
         left: 0;
         top: 0;
-        width: .06rem;
+        width: 3px;
         height: 100%;
-        border-radius: .06rem;
+        border-radius: 3px;
         background: linear-gradient(360deg, rgba(255, 75, 75, 1) 0%, rgba(255, 137, 120, 1) 100%);
       }
       h5 {
-        font-size: .28rem;
+        font-size: 14px;
         font-weight: 500;
         color: rgba(51, 51, 51, 1);
-        line-height: .4rem;
+        line-height: 20px;
       }
       p {
-        margin-top: .1rem;
-        font-size: .24rem;
+        margin-top: 5px;
+        font-size: 12px;
         color: #665f5e;
-        line-height: .36rem;
+        line-height: 18px;
       }
     }
   }
 
   .activity {
-    margin-top: .36rem;
+    margin-top: 18px;
     width: 100%;
-    padding: 0 .42rem .5rem .56rem;
+    padding: 0 21px 25px 28px;
     height: auto;
     background: linear-gradient(360deg, rgba(255, 237, 234, 1) 0%, rgba(255, 255, 255, 1) 100%);
     .act-tit {
       width: 100%;
       height: auto;
-      font-size: .32rem;
+      font-size: 16px;
       font-weight: 500;
       color: rgba(51, 51, 51, 1);
-      line-height: .45rem;
+      line-height: 23px;
       text-align: center;
     }
     p {
       margin: 0;
-      margin-bottom: .4rem;
-      font-size: .24rem;
+      margin-bottom: 20px;
+      font-size: 12px;
       font-weight: 500;
       color: #333333;
-      line-height: .34rem;
+      line-height: 17px;
       span {
         color: #FF624B;
       }
     }
     .pst1 {
-      margin-top: .2rem;
+      margin-top: 1px;
     }
     .last1 {
       margin-bottom: 0 !important;
@@ -663,50 +663,50 @@
 
   .cancel {
     position: absolute;
-    top: .1rem;
-    right: .4rem;
+    top: 5px;
+    right: 20px;
     background: none;
     border: 0;
-    font-size: .36rem;
+    font-size: 18px;
     font-weight: 400;
     color: #999;
-    line-height: .5rem;
+    line-height: 25px;
   }
 
   .calimg1 {
     margin: 0 auto;
-    margin-top: 1.8rem;
-    width: .9rem;
-    height: .9rem;
+    margin-top: 90px;
+    width: 45px;
+    height: 45px;
     background: url(../../../assets/img/active/acdata/alert1.png) no-repeat center top;
     background-size: cover;
   }
 
   .alert-info {
-    margin-top: .3rem;
-    margin-bottom: .4rem;
+    margin-top: 15px;
+    margin-bottom: 20px;
     width: auto;
     height: auto;
-    font-size: .24rem;
+    font-size: 12px;
     font-weight: 400;
     color: rgba(102, 102, 102, 1);
-    line-height: .33rem;
+    line-height: 17px;
   }
 
   .calimg2 {
     margin: 0 auto;
-    margin-top: 1.8rem;
-    width: .9rem;
-    height: .9rem;
+    margin-top: 90px;
+    width: 45px;
+    height: 45px;
     background: url(../../../assets/img/active/acdata/alert2.png) no-repeat center top;
     background-size: cover;
   }
 
   .calimg3 {
     margin: 0 auto;
-    margin-top: 1.8rem;
-    width: .86rem;
-    height: .72rem;
+    margin-top: 90px;
+    width: 43px;
+    height: 36px;
     background: url(../../../assets/img/active/acdata/alert3.png) no-repeat center top;
     background-size: cover;
   }

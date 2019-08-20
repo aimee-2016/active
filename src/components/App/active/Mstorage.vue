@@ -63,7 +63,7 @@
         应用场景
         <img src="../../../assets/img/active/objstorage-active-m/obj-lr.png">
       </h1>
-      <tab :line-width="2" active-color="#FF624B" style="margin-top: .3rem">
+      <tab :line-width="2" active-color="#FF624B" style="margin-top: 15px">
         <tab-item selected @on-item-click="stageInfo.showBf=true,stageInfo.showFz=false,stageInfo.showFf=false">
           <h6 class="tab-item">数据加速分发</h6>
         </tab-item>
@@ -238,28 +238,28 @@
     .banner {
       width: 100%;
       background: linear-gradient(90deg, rgba(255, 235, 222, 1) 0%, rgba(255, 255, 255, 1) 100%);
-      padding: .6rem 0 .6rem .3rem;
+      padding: 30px 0 30px 15px;
       position: relative;
       h1 {
-        font-size: .36rem;
+        font-size: 18px;
         font-weight: 500;
         color: rgba(51, 51, 51, 1);
-        line-height: .48rem;
+        line-height: 24px;
       }
       p {
-        width: 4.4rem;
-        font-size: .24rem;
+        width: 220px;
+        font-size: 12px;
         font-weight: 400;
         color: rgba(51, 51, 51, 1);
-        line-height: .33rem;
-        padding: .38rem 0 .3rem 0;
+        line-height: 16px;
+        padding: 19px 0 15px 0;
       }
       span {
         display: flex;
-        font-size: .24rem;
+        font-size: 12px;
         font-weight: 500;
         color: rgba(51, 51, 51, 1);
-        line-height: .18rem;
+        line-height: 9px;
         span {
           display: inline;
           color: #FF624B;
@@ -270,144 +270,144 @@
         right: 0;
         bottom: 0;
         display: block;
-        width: 4.81rem;
-        height: 1.84rem;
+        width: 240px;
+        height: 90px;
 
       }
     }
 
     .tab {
-      padding-top: 1rem;
+      padding-top: 50px;
       h1 {
-        font-size: .48rem;
+        font-size: 24px;
         font-weight: 400;
         color: rgba(51, 51, 51, 1);
-        line-height: .67rem;
+        line-height: 34px;
         text-align: center;
-        margin-bottom: .5rem;
+        margin-bottom: 25px;
       }
       img {
-        width: 3.23rem;
-        height: 2.5rem;
+        width: 171px;
+        height: 125px;
         display: block;
         margin: 0 auto;
       }
       p {
-        margin-top: .4rem;
-        padding: 0 .5rem;
-        font-size: .24rem;
+        margin-top: 20px;
+        padding: 0 25px;
+        font-size: 12px;
         font-weight: 400;
         color: rgba(51, 51, 51, 1);
-        line-height: .33rem;
+        line-height: 16px;
       }
     }
 
     .active-pro {
-      padding-top: 1rem;
+      padding-top: 50px;
       h1 {
         text-align: center;
-        font-size: .48rem;
+        font-size: 24px;
         font-weight: 400;
         color: rgba(51, 51, 51, 1);
-        line-height: .67rem;
+        line-height: 35px;
         img {
-          width: .41rem;
-          height: .41rem;
+          width: 20px;
+          height: 20px;
           display: inline-block;
           &:first-of-type {
-            margin-right: .3rem;
+            margin-right: 15px;
           }
           &:last-of-type {
-            margin-left: .3rem;
+            margin-left: 15px;
           }
         }
       }
       .desc {
         text-align: center;
-        font-size: .22rem;
+        font-size: 11px;
         font-weight: 400;
         color: rgba(51, 51, 51, 1);
-        line-height: .3rem;
-        width: 6.46rem;
-        margin: .3rem auto;
+        line-height: 14px;
+        width: 323px;
+        margin: 15px auto;
       }
       .product {
         text-align: center;
-        width: 7rem;
+        width: 350px;
         margin: 0 auto;
         background: rgba(255, 255, 255, 1);
         box-shadow: 0px 2px 10px 6px rgba(255, 90, 28, 0.22);
         h1 {
           width: 100%;
-          font-size: .32rem;
+          font-size: 16px;
           font-weight: 400;
           color: rgba(255, 255, 255, 1);
-          line-height: .45rem;
+          line-height: 22px;
           background: url(../../../assets/img/active/objstorage-active-m/obj-mask.png) no-repeat center;
-          padding: .26rem 0 .29rem 0;
+          padding: 13px 0 14px 0;
         }
         span {
-          font-size: .24rem;
+          font-size: 12px;
           font-weight: 400;
           color: rgba(51, 51, 51, 1);
-          line-height: .33rem;
+          line-height: 16px;
           display: block;
-          padding-top: .4rem;
+          padding-top: 20px;
         }
         p {
-          padding-bottom: .28rem;
-          font-size: .32rem;
+          padding-bottom: 14px;
+          font-size: 16px;
           font-weight: 600;
           color: #333;
-          line-height: .45rem;
+          line-height: 22px;
           .numG {
-            font-size: .32rem;
+            font-size: 16px;
             color: #FF0000;
             display: inline-block;
           }
         }
         button {
           background: rgba(255, 57, 42, 1);
-          font-size: .32rem;
+          font-size: 16px;
           font-weight: 500;
           color: rgba(255, 255, 255, 1);
-          line-height: .45rem;
-          padding: .16rem .81rem .19rem .81rem;
+          line-height: 22px;
+          padding: 13px 40px 10px 40px;
           outline: none;
           border: none;
           display: block;
           margin: 0 auto;
         }
         .creatBtn {
-          margin-top: .2rem;
+          margin-top: 10px;
         }
         .onlyOne {
-          padding: .41rem 0 .15rem 0;
-          font-size: .24rem;
+          padding: 20px 0 12px 0;
+          font-size: 12px;
           font-weight: 400;
           color: rgba(153, 153, 153, 1);
-          line-height: .33rem;
+          line-height: 16px;
         }
       }
     }
 
     .advantage {
-      padding-top: 1rem;
+      padding-top: 50px;
       h1 {
         text-align: center;
-        font-size: .48rem;
+        font-size: 24px;
         font-weight: 400;
         color: rgba(51, 51, 51, 1);
-        line-height: .67rem;
+        line-height: 34px;
         img {
-          width: .41rem;
-          height: .41rem;
+          width: 20px;
+          height: 20px;
           display: inline-block;
           &:first-of-type {
-            margin-right: .3rem;
+            margin-right: 15px;
           }
           &:last-of-type {
-            margin-left: .3rem;
+            margin-left: 15px;
           }
         }
 
@@ -415,28 +415,28 @@
       ul {
         li {
           list-style: none;
-          padding-top: .53rem;
+          padding-top: 26px;
           img {
-            width: .68rem;
-            height: .68rem;
+            width: 34px;
+            height: 34px;
             display: block;
             margin: 0 auto;
           }
           h2 {
             text-align: center;
-            font-size: .32rem;
+            font-size: 16px;
             font-weight: 400;
             color: rgba(51, 51, 51, 1);
-            line-height: .45rem;
-            padding: .2rem 0;
+            line-height: 22px;
+            padding: 10px 0;
           }
           p {
-            font-size: .24rem;
+            font-size: 12px;
             font-weight: 400;
             color: rgba(51, 51, 51, 1);
-            line-height: .33rem;
-            padding-bottom: .5rem;
-            width: 6.5rem;
+            line-height: 16px;
+            padding-bottom: 25px;
+            width: 325px;
             margin: 0 auto;
 
           }
@@ -447,49 +447,49 @@
     .apply {
       h1 {
         text-align: center;
-        font-size: .48rem;
+        font-size: 24px;
         font-weight: 400;
         color: rgba(51, 51, 51, 1);
-        line-height: .67rem;
+        line-height: 34px;
         img {
-          width: .41rem;
-          height: .41rem;
+          width: 20px;
+          height: 20px;
           display: inline-block;
           &:first-of-type {
-            margin-right: .3rem;
+            margin-right: 15px;
           }
           &:last-of-type {
-            margin-left: .3rem;
+            margin-left: 15px;
           }
         }
 
       }
       .describe {
-        width: 5.02rem;
+        width: 250px;
         margin: 0 auto;
-        padding: .73rem 0 1.03rem 0;
+        padding: 36px 0 50px 0;
         position: relative;
         ul {
           li {
             list-style: none;
-            font-size: .24rem;
+            font-size: 12px;
             font-weight: 400;
             color: rgba(51, 51, 51, 1);
-            line-height: .33rem;
+            line-height: 16px;
           }
         }
         img {
-          width: .54rem;
-          height: .46rem;
+          width: 27px;
+          height: 23px;
           display: block;
           position: absolute;
           &:first-of-type {
-            top: .5rem;
-            left: -.8rem;
+            top: 25px;
+            left: -40px;
           }
           &:last-of-type {
-            bottom: .8rem;
-            right: -.8rem;
+            bottom: 40px;
+            right: -40px;
           }
         }
       }
