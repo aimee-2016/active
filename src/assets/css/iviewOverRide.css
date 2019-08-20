@@ -699,3 +699,8 @@ box-shadow:0px 2px 3px 0px rgba(115,115,115,0.4);
 .ddos-system-b .ivu-input {
   border: 1px solid #FFD08C;
 }
+
+/*押金活动*/
+#freeAnnual .weui-cells {
+    margin-top: 0;
+}

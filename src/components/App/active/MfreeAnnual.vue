@@ -696,7 +696,7 @@
                 this.freeSys.push({name: e.templatename, value: e.systemtemplateid, parent: type})
               })
             }
-            let name = this.freeSys[1].name
+            let name = this.freeSys[0].name
             let value = this.freeSys[1].value
 
             item.list[0] = name
@@ -865,7 +865,7 @@
                 this.systemInfoServer.push({name: e.templatename, value: e.systemtemplateid, parent: type})
               })
             }
-            let tempSystem1 = this.systemInfoServer[1].name
+            let tempSystem1 = this.systemInfoServer[0].name
             let tempSystem2 = this.systemInfoServer[1].value
 
             item[0].list[0] = tempSystem1
@@ -894,12 +894,12 @@
                 this.systemList.push({name: e.templatename, value: e.systemtemplateid, parent: type})
               })
             }
-            let tempSystem1 = this.gpuConfigs[1].name
+            let tempSystem1 = this.gpuConfigs[0].name
             let tempSystem2 = this.gpuConfigs[1].value
             gpuData.defaultSys[0] = tempSystem1
             gpuData.defaultSys[1] = tempSystem2
-            // 云服务器购买默认选择系统
-            this.sysTem[0] = this.gpuConfigs[1].name
+            //云服务器购买默认选择系统
+            this.sysTem[0] = this.gpuConfigs[0].name
             this.sysTem[1] = this.gpuConfigs[1].value
           }
         })
@@ -926,6 +926,7 @@
             })
             // 把改变后的值给一个默认值
             this.serverData.config[0] = this.serverTempArr[0].value
+            console.log(resArr)
           }
         })
       },
