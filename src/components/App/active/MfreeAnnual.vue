@@ -1740,10 +1740,10 @@
       .alert {
           position: absolute;
           left: 50%;
-          margin-left: -335px;
+          margin-left: -166px;
           top: 120px;
-          height: 850px;
-          width: 670px;
+          height: 425px;
+          width: 335px;
           transform: scale(1.2);
           transition-property: transform;
           transition-duration: 0.3s;
@@ -1751,37 +1751,37 @@
           box-shadow:0px 1px 0px 0px rgba(229,229,229,1);
           border-radius:10px 10px 0px 0px;
           .head {
-              padding: 25px  30px;
+              padding: 12px 15px;
               position: relative;
               p {
                   text-align: center;
                   font-size: 18px;
                   font-weight:600;
                   color:rgba(2,3,38,1);
-                  line-height:25px;
+                  line-height:24px;
               }
               img {
                   position: absolute;
                   top: 35%;
-                  right: 30px;
-                  width: 30px;
-                  height: 30px;
+                  right: 15px;
+                  width: 15px;
+                  height: 15px;
                   display: block;
               }
           }
           .content {
-              height:650px;
-              padding: 25px 30px 50px 30px;
+              height:325px;
+              padding: 12px 15px 25px 15px;
               border-top: 1px solid rgba(216,216,216,1);
               border-bottom: 1px solid rgba(216,216,216,1);
               overflow-y: auto;
               li {
                   text-align: left;
                   list-style: none;
-                  font-size: 14px;
+                  font-size: 16px;
                   font-weight:500;
                   color:rgba(2,3,38,1);
-                  line-height:36px;
+                  line-height:24px;
               }
           }
           .foot {
@@ -1791,15 +1791,15 @@
                   margin: 0 auto;
                   outline: none;
                   border: none;
-                  width: 220px;
-                  height: 80px;
+                  width: 110px;
+                  height: 40px;
                   text-align: center;
                   background:rgba(25,18,117,1);
                   border-radius:6px;
                   font-size: 16px;
                   font-weight:500;
                   color:rgba(255,255,255,1);
-                  line-height:45px;
+                  line-height:22px;
 
               }
           }
