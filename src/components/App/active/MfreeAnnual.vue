@@ -11,9 +11,9 @@
           <span>{{index+1}}</span>{{item}}
         </div>
       </div>
-      <div class="banner-logo" @click="$router.push('may')">
+      <!-- <div class="banner-logo" @click="$router.push('may')">
         <img src="../../../assets/img/active/freeAnnual/logo.png" />
-      </div>
+      </div> -->
     </div>
     <!--修改--活动主题-->
     <div class="top" ref="top">
@@ -139,13 +139,14 @@
           <popup-picker title="GPU配置" :data="gpuTempArr" :columns="1" v-model="gpuData.config" show-name @on-change="gpuPriceChange ()" v-if="syStemstatus == 2"></popup-picker>
           <popup-picker title="选择区域" :data="serverList" :columns="3" v-model="server" show-name @on-change="serverChange"></popup-picker>
           <popup-picker title="带宽" :data="bandwidthListAll" :columns="1" v-model="parameter.bandwidth" :show-name="true" @on-change="bandChange"></popup-picker> <!-- @on-change="getServerPrice(serverData)" -->
-          <popup-picker title="系统" :data="systemList" :columns="2" v-model="sysTem" show-name></popup-picker><!-- gpuData.defaultSys -->
+          <popup-picker title="系统" :data="systemList" :columns="2" v-model="sysTem" show-name></popup-picker>
+          <!-- gpuData.defaultSys -->
           <popup-picker title="SSD数据盘" :data="diskSSD" :columns="2" v-model="parameter.ssd" :show-name="true" @on-change="ssdChange"></popup-picker> <!-- @on-change="getServerPrice(serverData)" -->
           <popup-picker title="购买时长" :data="useTime" :columns="3" v-model="parameter.defaultUse" show-name @on-change="changeTime"></popup-picker>
           <popup-picker title="购买数量" :data="number" :columns="1" v-model="parameter.number" :show-name="true" @on-change="numChange()"></popup-picker>
           <div class="deposit">
             <div class="deposit-left">
-               <p>价格：￥<span style="font-size: .48rem;color: #e6001b;font-weight: 600;text-decoration:none">{{allPrice}}</span></p>
+               <p>价格：￥<span style="font-size: 24px;color: #e6001b;font-weight: 600;text-decoration:none">{{allPrice}}</span></p>
             </div>
             <button @click="oneBuy">立即购买</button>
           </div>
@@ -159,16 +160,10 @@
         <p><span @click="couponRules = 'couponRules'">活动规则></span></p>
       </div>
       <div class="coupon-coupon">
-        <div class="item">
+        <div class="img-wrap">
           <img src="../../../assets/img/active/freeAnnual/coupon-1.png" />
-        </div>
-        <div class="item">
           <img src="../../../assets/img/active/freeAnnual/coupon-2.png" />
-        </div>
-        <div class="item">
           <img src="../../../assets/img/active/freeAnnual/coupon-3.png" />
-        </div>
-        <div class="item">
           <img src="../../../assets/img/active/freeAnnual/coupon-4.png" />
         </div>
         <div class="btn">
@@ -311,8 +306,8 @@
     <div v-transfer-dom>
       <confirm v-model="inconformity" :show-cancel-button="false" confirm-text="去活动中心" @on-confirm="$router.push('sort')">
         <div style="text-align:center;">
-          <p style="font-size:.28rem;font-weight:500;color:#333;line-height:.4rem;" slot="title">提示</p>
-          <p style="font-size:.28rem;font-weight:400;color:rgba(51,51,51,1);line-height:.32rem;padding-top: .43rem">
+          <p style="font-size: 14px;font-weight:500;color:#333;line-height:40px;" slot="title">提示</p>
+          <p style="font-size: 14px;font-weight:400;color:rgba(51,51,51,1);line-height:32px;padding-top: 43px">
             您好，您不符合本活动的参与条件，去
             <span style="color: #F56B23" @click="$router.push('sort')">活动中心</span>看看其他活动吧！如果有其他需要可联系我们销售或者客服。
           </p>
@@ -1289,105 +1284,102 @@
 <style rel="stylesheet/less" lang="less" scoped>
   .banner {
       width: 100%;
-      height: 4.84rem;
+      padding-bottom:25px; 
       background: url('../../../assets/img/active/freeAnnual/bannerbg.png') no-repeat,linear-gradient(180deg, #3b9ff6 0%, #3b9bf1 2%);//url('../../../assets/img/active/freeAnnual/bannerbg.png') no-repeat,
-      background-size: 100% 3.33rem;
+      background-size: 100% 333px;
       position: relative;
       .banner-top {
         width: 100%;
         text-align: center;
-        padding-top: .5rem;
+        padding-top: 50px;
         box-sizing: border-box;
         img {
-          width: 4.38rem;
-          height: 2.12rem;
+          width: 220px;
         }
       }
       .banner-nav{
-        padding: 0 .4rem;
+        padding-left: 10px;
         box-sizing: border-box;
         display: flex;
         flex-wrap: wrap;
-        justify-content: space-between;
-        margin-top: .2rem;
+        justify-content: center;
+        margin-top: 20px;
         .banner-nav-item{
-          width: 3.2rem;
-          height: .6rem;
+          width: 160px;
+          height: 30px;
           background: url('../../../assets/img/active/freeAnnual/num.png') no-repeat;
           background-size: cover;
-          margin-top: .2rem;
-          font-size: .24rem;
+          margin-top: 10px;
+          margin-left: 10px;
+          font-size: 12px;
           color: white;
-          line-height: .6rem;
-          padding-left: .5rem;
+          line-height:30px;
           box-sizing: border-box;
           display: flex;
           span{
-            font-size: .5rem;
+            font-size: 25px;
             font-weight: bold;
-            line-height: .35rem;
-            margin-top: .14rem;
-            margin-right: .1rem;
+            line-height:18px;
+            margin: 6px 5px 0 26px;
             display: block;
           }
         }
       }
-      .banner-logo{
-        position: fixed;
-        right: .1rem;
-        z-index: 99;
-        img{
-          width: 1.4rem;
-          height: 1.3rem;
-        }
-      }
+      // .banner-logo{
+      //   position: fixed;
+      //   right: 10px;
+      //   z-index: 99;
+      //   img{
+      //     width: 25%;
+      //     height: 25%;
+      //   }
+      // }
   }
 
   .top {
-    padding: .5rem 0 .3rem 0;
+    padding: 25px 0 15px 0;
     text-align: center;
     h1 {
-        font-size:.36rem;
+        font-size: 18px;
         font-weight:600;
         color:rgba(2,3,38,1);
-        line-height:.5rem;
+        line-height:25px;
     }
     p {
-        font-size:.24rem;
+        font-size: 12px;
         font-weight:400;
         color:rgba(51,51,51,1);
-        width: 5rem;
-        line-height: .4rem;
-        margin: 0 auto;
+        line-height: 20px;
     }
     span {
-        font-size:.24rem;
+        font-size: 12px;
         font-weight:400;
         color:rgba(248,94,29,1);
-        line-height:.33rem;
+        line-height:16px;
     }
   }
 
   .content {
     .content-top {
-      margin: 0 .2rem .5rem .2rem;
+      margin: 0 10px 25px 10px;
       .item-top {
-        padding: .24rem 1.74rem .26rem .3rem;
+        padding: 12px 0px 13px 15px;
         p {
-          font-size: .36rem;
+          font-size: 18px;
           font-weight: 600;
           color: rgba(255, 255, 255, 1);
-          line-height: .5rem;
+          line-height:25px;
         }
         span {
-          font-size: .24rem;
+          font-size: 12px;
           font-weight: 400;
           color: rgba(255, 255, 255, 1);
-          line-height: .33rem;
+          line-height:16px;
         }
       }
       .indexOne {
         background: url('../../../assets/img/active/freeAnnual/head-1.png') no-repeat center;
+        background-size:cover;
       }
       .indexTwo {
         background: url('../../../assets/img/active/freeAnnual/head-3.png') no-repeat center;
@@ -1399,30 +1391,30 @@
       }
       .item-choose {
           background:rgba(255,255,255,1);
-          box-shadow:0 .05rem .16rem -.06rem rgba(56,84,206,0.5);
+          box-shadow:0 5px 16px -6px rgba(56,84,206,0.5);
           border:1px solid rgba(218,218,218,1);
-          margin-bottom: .2rem;
+          margin-bottom: 20px;
           .configs {
               background: #FFFFFF;
               display: flex;
               align-items: center;
               justify-content: space-between;
-              padding: .38rem .9rem .38rem .5rem;
+              padding: 19px 45px 19px 25px;
               border-bottom: 1px solid #dadada;
               p{
-                  font-size:.32rem;
+                  font-size: 16px;
                   font-weight:500;
                   color:rgba(2,3,38,1);
-                  line-height:.45rem;
+                  line-height:28px;
                   span {
                       color: #9B9B9B;
-                      font-size: .24rem;
+                      font-size: 12px;
                   }
               }
           }
          .deposit {
-          margin-left: .3rem;
-          padding: .48rem .5rem .38rem .15rem;
+          margin-left: 15px;
+          padding: 24px 25px 19px 0px;
           display: flex;
           justify-content: space-between;
           align-items: center;
@@ -1430,27 +1422,27 @@
           .deposit-left {
             p {
                 &:first-of-type{
-                   font-size:.28rem;
+                   font-size: 14px;
                    font-weight:400;
                    color:rgba(230,0,27,1);
-                   line-height:.4rem;
+                   line-height:20px;
                    span {
-                       font-size: .48rem;
+                       font-size: 24px;
                        font-weight: 600;
                    }
                }
                 &:last-of-type {
                      span {
                          text-decoration: line-through;
-                         font-size:.28rem;
+                         font-size: 14px;
                          font-weight:400;
                          color:rgba(153,153,153,1);
-                         line-height:.4rem;
+                         line-height:40px;
                          display: block;
                     }
                      .money {
                          display: inline-block;
-                         padding-right: .1rem;
+                         padding-right: 5px;
                          color:rgba(102,102,102,1);
                          text-decoration: none;
                     }
@@ -1461,13 +1453,11 @@
             background:rgba(246,109,89,1);
             outline: none;
             border: none;
-            font-size: .28rem;
+            font-size: 14px;
             font-weight: 400;
             color: rgba(255, 255, 255, 1);
-            line-height: .4rem;
-            padding: .2rem .48rem;
-            width: 2.54rem;
-            height: .8rem;
+            line-height: 20px;
+            padding: 10px 24px;
           }
         }
       }
@@ -1476,12 +1466,12 @@
   }
 
   .warns {
-      margin: .2rem .2rem .5rem .2rem;
+      margin: 10px 10px 25px 10px;
       p {
-          font-size:.24rem;
+          font-size: 12px;
           font-weight:500;
           color:rgba(90,87,125,1);
-          line-height:.33rem;
+          line-height:16px;
           span {
               color: #F66D59;
           }
@@ -1490,18 +1480,17 @@
 
   .steps {
       width: 100%;
-      height:4.70rem;
       background:rgba(25,18,117,1);
-      padding-top: .5rem;
+      padding-top: 50px;
       h1 {
-          font-size:.36rem;
+          font-size: 18px;
           font-weight:600;
           color:rgba(255,255,255,1);
-          line-height:.5rem;
+          line-height:25px;
           text-align: center;
       }
       ul {
-          margin: .4rem .45rem .1rem .45rem;
+          margin: 40px 10px 10px 10px;
           display: flex;
           justify-content: space-between;
           align-items: center;
@@ -1509,10 +1498,10 @@
           li {
               width: 33.3%;
               list-style: none;
-              margin-bottom: .4rem;
+              margin-bottom: 40px;
               img {
-                  width: 1.6rem;
-                  height: 1.2rem;
+                  width: 80px;
+                  height: 60px;
                   display: block;
                   margin: 0 auto;
               }
@@ -1523,23 +1512,20 @@
   .sell{
     .sell-header {
       text-align: center;
-      padding: .6rem 0 .3rem 0;
+      padding: 15px 0 15px 0;
       box-sizing: border-box;
       width: 100%;
-      height: 1.79rem;
       >p {
         display: block;
         &:first-of-type {
-          font-size: .36rem;
+          font-size: 18px;
           font-weight: bold;
-          height: .5rem;
-          line-height: .5rem;
-          margin-bottom: .1rem;
+          line-height:25px;
+          margin-bottom: 10px;
         }
         &:last-of-type {
-          font-size: .24rem;
-          height: .33rem;
-          line-height: .33rem;
+          font-size: 12px;
+          line-height:16px;
           span{
             color: #f85e1d;
           }
@@ -1550,44 +1536,40 @@
 
   .aggregate {
     width: 100%;
-    height: 12.28rem;
     background: rgba(242,248,255,1);
-    padding: 0 .2rem;
+    padding: 0 10px 10px 10px;
     box-sizing: border-box;
     .aggregate-head {
       text-align: center;
-      height: 1.52rem;
-      padding: .3rem 0;
+      padding: 15px 0;
       box-sizing: border-box;
       p {
         &:first-of-type {
-          font-size: .36rem;
+          font-size: 18px;
           font-weight: 600;
-          height: .5rem;
-          line-height: .5rem;
-          margin-bottom: .1rem;
+          line-height:25px;
+          margin-bottom: 10px;
         }
         &:last-of-type {
-          font-size: .27rem;
+          font-size: 14px;
           font-weight: 400;
-          height: .33rem;
-          line-height: .33rem;
+          line-height:16px;
         }
       }
     }
     .item-top {
-      padding: .24rem 1.74rem .26rem .3rem;
+      padding: 12px 0px 13px 15px;
       p {
-        font-size: .36rem;
+        font-size: 18px;
         font-weight: 600;
         color: rgba(255, 255, 255, 1);
-        line-height: .5rem;
+        line-height:25px;
       }
       span {
-        font-size: .24rem;
+        font-size: 12px;
         font-weight: 400;
         color: rgba(255, 255, 255, 1);
-        line-height: .33rem;
+        line-height:16px;
       }
     }
     .indexFoure {
@@ -1596,11 +1578,11 @@
     }
     .item-choose {
         background:rgba(255,255,255,1);
-        box-shadow:0 .05rem .16rem -.06rem rgba(56,84,206,0.5);
+        box-shadow:0 5px 16px -6px rgba(56,84,206,0.5);
         border:1px solid rgba(218,218,218,1);
        .deposit {
-        margin-left: .3rem;
-        padding: .48rem .5rem .38rem .15rem;
+        margin-left: 15px;
+        padding: 24px 25px 19px 8px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -1608,25 +1590,25 @@
         .deposit-left {
           p {
               &:first-of-type{
-                 font-size:.28rem;
+                 font-size: 14px;
                  font-weight:400;
                  color:rgba(230,0,27,1);
-                 line-height:.4rem;
+                 line-height:20px;
                  span {
-                     font-size: .48rem;
+                     font-size: 24px;
                  }
              }
               &:last-of-type {
                    span {
                        text-decoration: line-through;
-                       font-size:.28rem;
+                       font-size: 14px;
                        font-weight:400;
                        color:rgba(153,153,153,1);
-                       line-height:.4rem;
+                       line-height:20px;
                   }
                    .money {
                        display: inline-block;
-                       padding-right: .3rem;
+                       padding-right: 15px;
                        color:rgba(102,102,102,1);
                        text-decoration: none;
                   }
@@ -1637,11 +1619,11 @@
           background:rgba(246,109,89,1);
           outline: none;
           border: none;
-          font-size: .28rem;
+          font-size: 14px;
           font-weight: 400;
           color: rgba(255, 255, 255, 1);
-          line-height: .4rem;
-          padding: .2rem .48rem;
+          line-height: 20px;
+          padding: 10px 24px;
         }
       }
     }
@@ -1649,36 +1631,35 @@
 
   .coupon {
     width: 100%;
-    height: 7.1rem;
     background: rgba(255,255,255,1);
     .coupon-title {
-      font-size: .36rem;
+      font-size: 18px;
       font-weight: 600;
       text-align: center;
-      padding: .3rem 0;
+      padding: 15px 0;
       box-sizing: border-box;
-      line-height: .5rem;
+      line-height:25px;
       span{
         color: #f85e1d;
-        font-size: .24rem;
+        font-size: 12px;
         font-weight: 500;
       }
     }
     .coupon-box {
       display: flex;
       justify-content: space-between;
-      padding: 0 .1rem;
+      padding: 0 10px;
       box-sizing: border-box;
       div{
-        width: 3.45rem;
+        width: 345px;
         .left,.right  {
-          padding: .39rem 0;
+          padding: 39px 0;
           box-sizing: border-box;
           width: 100%;
           height: 100%;
-          font-size: .28rem;
+          font-size: 14px;
           text-align: center;
-          line-height: .3rem;
+          line-height: 30px;
           span{
             font-weight: 600;
           }
@@ -1692,50 +1673,50 @@
           background-size: cover;
         }
         .btn {
-          height: .7rem;
+          height: 70px;
           width: 100%;
           box-shadow: 0px 3px 10px -3px rgba(237,190,175,0.7);
           button {
-            width: 2rem;
-            height: .5rem;
+            width: 200px;
+            height: 50px;
             background: rgba(254,98,75,1);
-            border-radius: .03rem;
+            border-radius: 3px;
             outline: none;
             border: none;
             color: white;
-            margin: .1rem .72rem;
+            margin: 10px 72px;
           }
         }
       }
     }
     .coupon-coupon {
-      padding: .1rem .1rem;
+      padding: 10px 10px;
       box-sizing: border-box;
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-between;
-      .item {
-        width: 3.59rem;
-        height: 1.66rem;
-        justify-content: space-between;
-        margin: .05rem 0;
+      justify-content: center;
+      .img-wrap {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
         img {
-          width: 3.59rem;
-          height: 1.66rem;
+          width: 180px;
+          height: 83px;
         }
       }
       .btn {
         width: 100%;
-        padding: .31rem 1.75rem .8rem 1.75rem;
+        padding: 20px 0;
         box-sizing: border-box;
+        text-align: center;
         button {
-          width: 4rem;
-          height: .8rem;
+          width: 200px;
+          height: 40px;
           background: rgba(254,98,75,1);
-          border-radius: .4rem;
+          border-radius: 20px;
           border: 1px solid rgba(151,151,151,1);
           color: white;
-          font-size: .32rem;
+          font-size: 16px;
           border: none;
           outline: none;
         }
@@ -1759,66 +1740,66 @@
       .alert {
           position: absolute;
           left: 50%;
-          margin-left: -3.35rem;
-          top: 1.2rem;
-          height: 8.5rem;
-          width: 6.7rem;
+          margin-left: -335px;
+          top: 120px;
+          height: 850px;
+          width: 670px;
           transform: scale(1.2);
           transition-property: transform;
           transition-duration: 0.3s;
           background:rgba(255,255,255,1);
           box-shadow:0px 1px 0px 0px rgba(229,229,229,1);
-          border-radius:.1rem .1rem 0px 0px;
+          border-radius:10px 10px 0px 0px;
           .head {
-              padding: .25rem  .3rem;
+              padding: 25px  30px;
               position: relative;
               p {
                   text-align: center;
-                  font-size:.36rem;
+                  font-size: 18px;
                   font-weight:600;
                   color:rgba(2,3,38,1);
-                  line-height:.5rem;
+                  line-height:25px;
               }
               img {
                   position: absolute;
                   top: 35%;
-                  right: .3rem;
-                  width: .3rem;
-                  height: .3rem;
+                  right: 30px;
+                  width: 30px;
+                  height: 30px;
                   display: block;
               }
           }
           .content {
-              height:6.5rem;
-              padding: .25rem .3rem .5rem .3rem;
+              height:650px;
+              padding: 25px 30px 50px 30px;
               border-top: 1px solid rgba(216,216,216,1);
               border-bottom: 1px solid rgba(216,216,216,1);
               overflow-y: auto;
               li {
                   text-align: left;
                   list-style: none;
-                  font-size:.28rem;
+                  font-size: 14px;
                   font-weight:500;
                   color:rgba(2,3,38,1);
-                  line-height:.36rem;
+                  line-height:36px;
               }
           }
           .foot {
-              margin: .1rem 0;
+              margin: 10px 0;
               button {
                   display: block;
                   margin: 0 auto;
                   outline: none;
                   border: none;
-                  width: 2.2rem;
-                  height: .8rem;
+                  width: 220px;
+                  height: 80px;
                   text-align: center;
                   background:rgba(25,18,117,1);
                   border-radius:6px;
-                  font-size:.32rem;
+                  font-size: 16px;
                   font-weight:500;
                   color:rgba(255,255,255,1);
-                  line-height:.45rem;
+                  line-height:45px;
 
               }
           }
@@ -1852,47 +1833,47 @@
   .footer {
     text-align: center;
     h1 {
-      font-size: .4rem;
+      font-size: 20px;
       font-weight: 600;
       color: rgba(34, 34, 34, 1);
-      line-height: .56rem;
-      padding: .24rem 0 .3rem 0;
+      line-height: 56px;
+      padding: 24px 0 30px 0;
     }
     .foot-top {
       background: rgba(32, 32, 35, 1);
-      padding: .74rem 0 .64rem 0;
+      padding: 74px 0 64px 0;
       border-top: 1px dashed #e7e7e7;
       border-bottom: 1px dashed #e7e7e7;
       img {
-        width: 2.4rem;
-        height: 2.4rem;
+        width: 240px;
+        height: 240px;
         display: block;
         margin: 0 auto;
       }
       h1 {
-        font-size: .28rem;
+        font-size: 14px;
         font-weight: 400;
         color: rgba(255, 255, 255, 1);
-        line-height: .4rem;
-        padding: .2rem 0 .66rem 0;
+        line-height: 40px;
+        padding: 20px 0 66px 0;
       }
       p {
-        font-size: .24rem;
+        font-size: 12px;
         font-weight: 400;
         color: rgba(255, 255, 255, 1);
-        line-height: .34rem;
+        line-height: 34px;
         a {
-          font-size: .24rem;
+          font-size: 12px;
           font-weight: 400;
           color: rgba(255, 255, 255, 1);
-          line-height: .34rem;
+          line-height: 34px;
         }
       }
       .addressEN {
-        padding-top: .14rem;
+        padding-top: 14px;
       }
       .addressZH {
-        padding-top: .16rem;
+        padding-top: 16px;
       }
     }
     .foot-bottom {
@@ -1905,26 +1886,26 @@
         li {
           text-align: center;
           list-style: none;
-          padding: .78rem 0 .64rem 0;
+          padding: 39px 0 32px 0;
           width: 50%;
           border-bottom: 1px solid #e7e7e7;
           img {
-            width: .6rem;
-            height: .6rem;
+            width: 30px;
+            height: 30px;
             display: block;
             margin: 0 auto;
           }
           p {
-            font-size: .28rem;
+            font-size: 14px;
             font-weight: 600;
             color: rgba(255, 255, 255, 1);
-            line-height: .4rem;
-            padding-top: .1rem;
+            line-height: 40px;
+            padding-top: 10px;
             &:last-of-type {
-              font-size: .24rem;
+              font-size: 12px;
               font-weight: 400;
               color: rgba(255, 255, 255, 0.7);
-              line-height: .34rem;
+              line-height: 34px;
               padding-top: 0;
             }
           }
@@ -1944,29 +1925,29 @@
     .foot {
       background: rgba(20, 20, 23, 1);
       text-align: center;
-      padding: .18rem 0;
+      padding: 18px 0;
       p {
-        font-size: .2rem;
+        font-size: 20px;
         font-weight: 400;
         color: rgba(255, 255, 255, 0.5);
-        line-height: .28rem;
-        padding-bottom: .08rem;
+        line-height: 28px;
+        padding-bottom: 8px;
         span {
           &:first-of-type {
             display: inline-block;
-            padding-right: .2rem;
+            padding-right: 20px;
           }
         }
         .icpIcon {
           position: relative;
-          padding-left: .24rem;
+          padding-left: 24px;
           &:before {
             content: "";
             position: absolute;
             left: 0;
             top: 0;
-            width: .2rem;
-            height: .2rem;
+            width: 20px;
+            height: 20px;
             background: url('../../../assets/img/active/home-m/record.png') no-repeat center top;
             background-size: cover;
           }
@@ -1990,60 +1971,60 @@
     .alert5 {
       position: absolute;
       left: 50%;
-      margin-left: -3rem;
+      margin-left: -300px;
       top: 50%;
-      margin-top: -3.72rem;
-      height: 3.6rem;
+      margin-top: -372px;
+      height: 360px;
       width: 6rem;
       transform: scale(1.2);
       transition-property: transform;
       transition-duration: 0.3s;
       background: #FFFFFF;
-      border-radius:.1rem;
+      border-radius:10px;
       .top {
         background:linear-gradient(90deg,rgba(12,12,27,1) 0%,rgba(34,36,61,1) 55%,rgba(12,12,27,1) 100%);
-        border-radius:.1rem .1rem 0 0;
+        border-radius:10px 10px 0 0;
         position: relative;
         padding: 0;
         h1 {
-          padding: .25rem 0;
+          padding: 25px 0;
           text-align: center;
-          font-size:.36rem;
+          font-size: 18px;
           font-weight:500;
           color:rgba(234,179,128,1);
         }
         img {
-          width: .3rem;
-          height: .3rem;
+          width: 30px;
+          height: 30px;
           display: block;
           position: absolute;
-          right: .35rem;
-          top: .35rem;
+          right: 35px;
+          top: 35px;
         }
       }
       .rules {
-        text-indent: .4rem;
-        font-size:.28rem;
+        text-indent: 40px;
+        font-size: 14px;
         font-weight:400;
         color:rgba(51,51,51,1);
-        line-height:.36rem;
-        padding: .25rem .3rem .5rem .3rem;
+        line-height:36px;
+        padding: 25px 30px 50px 30px;
         border-bottom: 1px solid rgba(216,216,216,1);
       }
       .foot {
         button {
-          width:2.2rem;
+          width:220px;
           background:linear-gradient(90deg,rgba(248,191,136,1) 0%,rgba(255,209,140,1) 36%,rgba(248,191,136,1) 100%);
           border-radius:.06rem;
           display: block;
           outline: none;
           border: none;
-          font-size:.32rem;
+          font-size: 16px;
           font-weight:500;
           color:rgba(255,255,255,1);
-          line-height:.45rem;
-          padding: .18rem 0;
-          margin: .1rem auto;
+          line-height:45px;
+          padding: 18px 0;
+          margin: 10px auto;
         }
       }
     }
