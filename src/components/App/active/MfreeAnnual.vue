@@ -107,10 +107,10 @@
             <popup-picker title="选择区域" :data="areaList" :columns="3" v-model="item[0].area" show-name
                           @on-change="changeArea(item,index)">
             </popup-picker>
-            <popup-picker title="使用时长" v-model="timeValue1" @on-change="change1(item,index)" :data="timeList1" show-name :columns="2" v-if="index==0"></popup-picker>
-            <popup-picker title="使用时长" v-model="timeValue2" @on-change="change1(item,index)" :data="timeList2" show-name :columns="3" v-if="index==1"></popup-picker>
-            <popup-picker title="使用时长" v-model="timeValue3" @on-change="change1(item,index)" :data="timeList3" show-name :columns="3" v-if="index==2"></popup-picker>
-            <popup-picker title="使用时长" v-model="timeValue4" @on-change="change1(item,index)" :data="timeList4" show-name :columns="3" v-if="index==3"></popup-picker>
+            <popup-picker title="使用时长" v-model="timeValue1" @on-hide="changeHide(item,index)" :data="timeList1" show-name :columns="2" v-if="index==0"></popup-picker>
+            <popup-picker title="使用时长" v-model="timeValue2" @on-hide="changeHide(item,index)" :data="timeList2" show-name :columns="3" v-if="index==1"></popup-picker>
+            <popup-picker title="使用时长" v-model="timeValue3" @on-hide="changeHide(item,index)" :data="timeList3" show-name :columns="3" v-if="index==2"></popup-picker>
+            <popup-picker title="使用时长" v-model="timeValue4" @on-hide="changeHide(item,index)" :data="timeList4" show-name :columns="3" v-if="index==3"></popup-picker>
             <div class="deposit">
               <div class="deposit-left">
                  <p>价格：￥<span v-if="item[0].price">{{item[0].price.toFixed(2)}}</span></p>
@@ -134,16 +134,16 @@
       </div>
       <div class="item-choose">
         <Group>
-          <popup-picker title="服务器类型" :data="sysTpye" :columns="3" v-model="sysTemChoose" show-name @on-change="chooseSystem"></popup-picker>
-          <popup-picker title="云服务器配置" :data="serverTempArr" :columns="1" v-model="serverData.config" show-name @on-change="getServerPrice()" v-if="syStemstatus == 1"></popup-picker>
-          <popup-picker title="GPU配置" :data="gpuTempArr" :columns="1" v-model="gpuData.config" show-name @on-change="gpuPriceChange ()" v-if="syStemstatus == 2"></popup-picker>
-          <popup-picker title="选择区域" :data="serverList" :columns="3" v-model="server" show-name @on-change="serverChange"></popup-picker>
-          <popup-picker title="带宽" :data="bandwidthListAll" :columns="1" v-model="parameter.bandwidth" :show-name="true" @on-change="bandChange"></popup-picker> <!-- @on-change="getServerPrice(serverData)" -->
+          <popup-picker title="服务器类型" :data="sysTpye" :columns="3" v-model="sysTemChoose" show-name @on-hide="chooseSystem"></popup-picker>
+          <popup-picker title="云服务器配置" :data="serverTempArr" :columns="1" v-model="serverData.config" show-name @on-hide="getServerPrice()" v-if="syStemstatus == 1"></popup-picker>
+          <popup-picker title="GPU配置" :data="gpuTempArr" :columns="1" v-model="gpuData.config" show-name @on-hide="gpuPriceChange ()" v-if="syStemstatus == 2"></popup-picker>
+          <popup-picker title="选择区域" :data="serverList" :columns="3" v-model="server" show-name @on-hide="serverChange"></popup-picker>
+          <popup-picker title="带宽" :data="bandwidthListAll" :columns="1" v-model="parameter.bandwidth" :show-name="true" @on-hide="bandChange"></popup-picker>
           <popup-picker title="系统" :data="systemList" :columns="2" v-model="sysTem" show-name></popup-picker>
           <!-- gpuData.defaultSys -->
-          <popup-picker title="SSD数据盘" :data="diskSSD" :columns="2" v-model="parameter.ssd" :show-name="true" @on-change="ssdChange"></popup-picker> <!-- @on-change="getServerPrice(serverData)" -->
-          <popup-picker title="购买时长" :data="useTime" :columns="3" v-model="parameter.defaultUse" show-name @on-change="changeTime"></popup-picker>
-          <popup-picker title="购买数量" :data="number" :columns="1" v-model="parameter.number" :show-name="true" @on-change="numChange()"></popup-picker>
+          <popup-picker title="SSD数据盘" :data="diskSSD" :columns="2" v-model="parameter.ssd" :show-name="true" @on-hide="ssdChange"></popup-picker>
+          <popup-picker title="购买时长" :data="useTime" :columns="3" v-model="parameter.defaultUse" show-name @on-hide="changeTime"></popup-picker>
+          <popup-picker title="购买数量" :data="number" :columns="1" v-model="parameter.number" :show-name="true" @on-hide="numChange()"></popup-picker>
           <div class="deposit">
             <div class="deposit-left">
                <p>价格：￥<span style="font-size: 24px;color: #e6001b;font-weight: 600;text-decoration:none">{{allPrice}}</span></p>
@@ -779,7 +779,7 @@
         }
       },
       //选择使用时长
-      change1 (item,index) {
+      changeHide (item,index) {
         this.getPirce(item,index)
       },
       // 获取价格
@@ -921,6 +921,7 @@
             })
             // 把改变后的值给一个默认值
             this.serverData.config[0] = this.serverTempArr[0].value
+            console.log(resArr)
           }
         })
       },
@@ -1284,7 +1285,7 @@
 <style rel="stylesheet/less" lang="less" scoped>
   .banner {
       width: 100%;
-      padding-bottom:25px; 
+      padding-bottom:25px;
       background: url('../../../assets/img/active/freeAnnual/bannerbg.png') no-repeat,linear-gradient(180deg, #3b9ff6 0%, #3b9bf1 2%);//url('../../../assets/img/active/freeAnnual/bannerbg.png') no-repeat,
       background-size: 100% 333px;
       position: relative;
