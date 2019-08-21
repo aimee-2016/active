@@ -7,7 +7,9 @@ import App from '@/App'
 // import LR from '@/LR'
 
 // 前台活动页面路由
-const ActiveCenter = () =>import('@/components/App/ActiveCenter')
+const ActiveCenterP = () =>import('@/components/App/ActiveCenter')
+const ActiveCenterM = () =>import('@/components/App/Sort')
+const ActiveCenter = () =>import('@/components/App/activeA')
 const activeBefore = () =>import('@/components/App/active/activeBefore')
 const FrActive = () =>import('@/components/App/active/freeReceiveA')
 const FrActiveP = () =>import('@/components/App/active/freeReceive.1')
@@ -43,14 +45,16 @@ var router = new Router({
       children: [
         {path: '/', name: 'activity', component: ActiveCenter,caseSensitive: true},
         {path: 'activity', name: 'activity', component: ActiveCenter,caseSensitive: true},
+        {path: 'activityp', name: 'activityp', component: ActiveCenterP,caseSensitive: true},
+        {path: 'activitym', name: 'activitym', component: ActiveCenterM,caseSensitive: true},
         {path: 'activebefore',name: 'activebefore', component:activeBefore,caseSensitive: true},
         {path: 'activity/free', name: 'activity/free', component: FrActive,caseSensitive: true},
         {path: 'activity/freem', name: 'activity/freem', component: FrActiveM,caseSensitive: true},
         {path: 'activity/freep', name: 'activity/freep', component: FrActiveP,caseSensitive: true},
-        {path: 'activity/objectstorage', name: 'activity/objectstorage', component: objStorageActive,caseSensitive: true},
+        {path: 'activity/objectstorage', name: 'activity/objectstorage', component: objStorageActiveP,caseSensitive: true},
         {path: 'activity/objectstoragem', name: 'activity/objectstoragem', component: objStorageActiveM,caseSensitive: true},
         {path: 'activity/objectstoragep', name: 'activity/objectstoragep', component: objStorageActiveP,caseSensitive: true},
-        {path: 'activity/hotdatabase', name: 'activity/hotdatabase', component: DBActive,caseSensitive: true},
+        {path: 'activity/hotdatabase', name: 'activity/hotdatabase', component: DBActiveP,caseSensitive: true},
         {path: 'activity/hotdatabasem', name: 'activity/hotdatabasem', component: DBActiveM,caseSensitive: true},
         {path: 'activity/hotdatabasep', name: 'activity/hotdatabasep', component: DBActiveP,caseSensitive: true},
         {path: 'activity/ddosactive',name: 'activity/ddosactive', component:ddosActive,caseSensitive: true},

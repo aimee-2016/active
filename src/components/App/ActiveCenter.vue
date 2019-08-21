@@ -219,7 +219,7 @@
             imgPath: require('../../assets/img/active/ddos/ddos-ac.png'),
             name: '高防云服务器限时秒杀',
             desc: '更有首月8折等超多优惠',
-            time: '019.7.25-2019.9.25',
+            time: '2019.7.25-2019.9.25',
             activeObj: '新老用户皆可参与',
             url: '/activity/ddosactive',
             isStart: true,
