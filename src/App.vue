@@ -23,33 +23,33 @@
                             <a class="p-link" href="https://www.xinruiyun.cn/news/" target="_blank"> 
                                 新闻动态
                             </a>
-                            <router-link class="p-link pb" to='https://i.xinruiyun.cn/overview' title="控制台">
+                            <a class="p-link pb" href='https://i.xinruiyun.cn/overview' title="控制台">
                                 控制台
-                            </router-link>
+                            </a>
                             <div v-if='!userInfo'>
-                                <router-link class="lg-in" to="https://i.xinruiyun.cn/login"  title="登录">登录</router-link>
-                                <router-link class="lg-re" to="https://i.xinruiyun.cn/register" title="注册">注册</router-link>
+                                <a class="lg-in" href="https://i.xinruiyun.cn/login"  title="登录">登录</a>
+                                <a class="lg-re" href="https://i.xinruiyun.cn/register" title="注册">注册</a>
                             </div>
 
                             <ul v-else class="user-list">
                                 <li >
-                                  <Dropdown> <!-- @on-click="go"-->
+                                  <Dropdown @on-click="go">
                                     <a href="javascript:void(0)" class="user-fn">
                                       {{ userInfo?userInfo.realname:''}}
                                       <Icon type="arrow-down-b"></Icon>
                                     </a>
                                     <DropdownMenu slot="list">
-                                      <DropdownItem name="/usercenter">
-                                        <a to="https://i.xinruiyun.cn/usercenter">用户中心</a>
+                                      <DropdownItem name="usercenter">
+                                        <a href="https://i.xinruiyun.cn/usercenter">用户中心</a>
                                       </DropdownItem>
-                                      <DropdownItem name="/expenses">
-                                        <a to="https://i.xinruiyun.cn/expenses">费用中心</a>
+                                      <DropdownItem name="expenses">
+                                        <a href="https://i.xinruiyun.cn/expenses">费用中心</a>
                                       </DropdownItem>
-                                      <DropdownItem name="https://i.xinruiyun.cn/msgcenter" style="position:relative">
-                                        <span>消息中心</span>
+                                      <DropdownItem name="msgcenter" style="position:relative">
+                                        <a href="https://i.xinruiyun.cn/msgcenter">消息中心</a>
                                       </DropdownItem>
-                                      <DropdownItem name="https://i.xinruiyun.cn/operationlog">
-                                        <span>操作日志</span>
+                                      <DropdownItem name="operationlog">
+                                        <a href="https://i.xinruiyun.cn/operationlog">操作日志</a>
                                       </DropdownItem>
                                       <DropdownItem divided name="exit">
                                         <span style="color:#666;">退出</span>
