@@ -1335,7 +1335,7 @@ export default {
         if (res.status == 200 && res.data.status == 1) {
           res.data.result.forEach((itemed, index) => {
             if (itemed.freevmconfigId == this.killHostList[index].post.id) {
-              this.killHostList[index].num = (itemed.receive / itemed.total) * 100
+              this.killHostList[index].num = parseInt((itemed.receive / itemed.total) * 100)
             }
           })
         }
