@@ -921,7 +921,6 @@
             })
             // 把改变后的值给一个默认值
             this.serverData.config[0] = this.serverTempArr[0].value
-            console.log(resArr)
           }
         })
       },
