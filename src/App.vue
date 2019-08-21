@@ -23,43 +23,33 @@
                             <a class="p-link" href="https://www.xinruiyun.cn/news/" target="_blank"> 
                                 新闻动态
                             </a>
-                            <!-- <router-link class="p-link pb" to='https://i.xinruiyun.cn/overview' title="控制台">
-                                控制台
-                            </router-link> -->
-                            <a class="p-link pb" href="https://i.xinruiyun.cn/overview"> 
+                            <a class="p-link pb" href='https://i.xinruiyun.cn/overview' title="控制台">
                                 控制台
                             </a>
                             <div v-if='!userInfo'>
-                                <!-- <router-link class="lg-in" to="https://i.xinruiyun.cn/login"  title="登录">登录</router-link>
-                                <router-link class="lg-re" to="https://i.xinruiyun.cn/register" title="注册">注册</router-link> -->
-                                <a class="lg-in" href="https://i.xinruiyun.cn/login"> 
-                                    登录
-                                </a>
-                                <a class="lg-re" href="https://i.xinruiyun.cn/register"> 
-                                    注册
-                                </a>
-                                
+                                <a class="lg-in" href="https://i.xinruiyun.cn/login"  title="登录">登录</a>
+                                <a class="lg-re" href="https://i.xinruiyun.cn/register" title="注册">注册</a>
                             </div>
 
                             <ul v-else class="user-list">
                                 <li >
-                                  <Dropdown> 
+                                  <Dropdown @on-click="go">
                                     <a href="javascript:void(0)" class="user-fn">
                                       {{ userInfo?userInfo.realname:''}}
                                       <Icon type="arrow-down-b"></Icon>
                                     </a>
                                     <DropdownMenu slot="list">
-                                      <DropdownItem name="/usercenter">
-                                        <a to="https://i.xinruiyun.cn/usercenter">用户中心</a>
+                                      <DropdownItem name="usercenter">
+                                        <a href="https://i.xinruiyun.cn/usercenter">用户中心</a>
                                       </DropdownItem>
-                                      <DropdownItem name="/expenses">
-                                        <a to="https://i.xinruiyun.cn/expenses">费用中心</a>
+                                      <DropdownItem name="expenses">
+                                        <a href="https://i.xinruiyun.cn/expenses">费用中心</a>
                                       </DropdownItem>
-                                      <DropdownItem name="https://i.xinruiyun.cn/msgcenter" style="position:relative">
-                                        <span>消息中心</span>
+                                      <DropdownItem name="msgcenter" style="position:relative">
+                                        <a href="https://i.xinruiyun.cn/msgcenter">消息中心</a>
                                       </DropdownItem>
-                                      <DropdownItem name="https://i.xinruiyun.cn/operationlog">
-                                        <span>操作日志</span>
+                                      <DropdownItem name="operationlog">
+                                        <a href="https://i.xinruiyun.cn/operationlog">操作日志</a>
                                       </DropdownItem>
                                       <DropdownItem divided name="exit">
                                         <span style="color:#666;">退出</span>
@@ -107,7 +97,7 @@
                                 <li class="np-item">
                                     <a href="#">DDoS高防云服务器</a>
                                     <div class="buy-box">
-                                        <!-- <img class="buy-img" src='./assets/img/home/buy-icon.png' /> -->
+                                        <img class="buy-img" src='./assets/img/home/buy-icon.png' />
                                         <a class="buy-font" href="https://i.xinruiyun.cn/buy/ddos/">立即购买</a>
                                     </div>
                                 </li>
@@ -298,10 +288,11 @@
                             </div>
                         </a>
                         <div class="m-logining" v-if="userInfo" @click='mLogin =!mLogin'>
-                            <img src="./assets/img/home/logining.png">
+                            <img :src="userInfo.headportrait">
                             <div class="ml-text">{{ userInfo?userInfo.realname:''}}</div>
-                            <div :class="mLogin?'ml-block':'ml-blocks'"></div>
+                            <div :class="mLogin?'ml-block':'ml-blocks'" ></div>
                         </div>
+                        
                         <div class="m-pople" v-else @click="mLogin = !mLogin">
                             <Icon type="person" size='40'  />
                         </div>
@@ -323,19 +314,19 @@
                 <div class="ml-right" :class="mLogin?'ml-rights':''" v-if="userInfo">
                     <ul class="m-list">
                         <li class="m-item">
-                            <a href="#" alt="用户中心">用户中心</a>
+                             <a href="https://i.xinruiyun.cn/usercenter">用户中心</a>
                         </li>
                         <li class="m-item">
-                            <a href="#" alt="费用中心">费用中心</a>
+                             <a href="https://i.xinruiyun.cn/expenses">费用中心</a>
                         </li>
                         <li class="m-item">
-                            <a href="#" alt="消息中心">消息中心</a>
+                            <a href="https://i.xinruiyun.cn/msgcenter">消息中心</a>
                         </li>
                         <li class="m-item">
-                            <a href="" alt="操作日志">操作日志</a>
+                            <a href="https://i.xinruiyun.cn/operationlog">操作日志</a>
                         </li>
                         <li class="m-item">
-                            <a href="" alt="退出登录">退出登录</a>
+                            <span @click="go('exit')">退出登录</span>
                         </li>
                     </ul>
                 </div>
@@ -374,6 +365,9 @@
                                     </div>
                                     <div class="mhead-chd">
                                         <a href="https://www.xinruiyun.cn/gpu/" target="blank"> GPU加速服务器</a>
+                                    </div>
+                                    <div class="mhead-chd">
+                                        <a href="#" target="blank"> DDoS高防云服务器</a>
                                     </div>
                                 </div>
                             </div>
@@ -1818,7 +1812,6 @@
   }
 
   .mobile-head .mobile-logo .mobile-limg {
-    width: 135px;
     height: 60px;
     display: inline-block;
     vertical-align: middle;
@@ -1845,14 +1838,16 @@
   border-right: none;
 }
   .mobile-head .m-logining {
-  padding-right: 20px;
   float: right;
-  margin-top: 0.5rem;
+  margin-top: 15px;
 }
+ .mobile-head .m-logining img{
+    border-radius: 50%;
+    width: 30px;
+    vertical-align: middle;
+ }
   .mobile-head .mobile-logo .mobile-limg img {
-    width: 103px;
-    height: auto;
-    max-width: 86%;
+    max-width: 100%;
     max-height: 66px;
     position: relative;
     top: -3px;
@@ -1864,8 +1859,8 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   display: inline-block;
-  font-size: 0.2rem;
-  width: 3rem;
+  font-size: 12px;
+  width: 76px;
   color: #9B908E;
 }
 .ml-right {
@@ -2054,7 +2049,7 @@
   vertical-align: middle;
 }
     .mobile-head .mh-top {
-      padding: 0 39px;
+      padding: 0 20px;
       background-color: #1D1716;
       border-bottom: 1px solid rgba(220, 214, 213, 0.24);
     }
@@ -2434,15 +2429,13 @@
 }.bottom .bottom-register {
   background-color: #FF7F4B;
   text-align: center;
-  padding: 26px 0 0 0;
-  height: 149px;
+  padding: 36px 0 0 0;
 }
 .bottom .bottom-register .br-bg{
   max-width: 1920px;
   background: url('./assets/img/home/bottom-bg.png') no-repeat top center;
   background-size: 100%;
-  height: 140px;
-  margin: 5px auto;
+  height: 146px;
 }
 .bottom .bottom-register .br-bg .box{
   width: 1200px;
@@ -2457,13 +2450,13 @@
 }
 
 .bottom .bottom-register .bottom-button {
-  padding: 11px 50px 11px 50px;
+  padding: 9px 50px 9px 50px;
   border: 1px solid #FFFFFF;
   border-radius: 4px;
   color: #FFFFFF;
   display: inline-block;
   font-size: 18px;
-  margin: 20px 0 0 0;
+  margin: 36px 0 0 0;
   cursor: pointer;
 }
 
@@ -2471,6 +2464,7 @@
   background-color: #1C1A1E;
   padding: 20px 118px 20px 120px;
   box-shadow: -3px 3px 8px 2px rgba(0, 0, 0, 0.5);
+  transform: translate3d(0,0,0);
 }
 .bottom .bottom-support .bottom-box{
   max-width: 1200px;

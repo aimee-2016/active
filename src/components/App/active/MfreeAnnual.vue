@@ -1171,9 +1171,6 @@
       }
     },
     created () {
-      // var pxPreRem = 750 / 100;
-      // var fontSize = document.documentElement.clientWidth / pxPreRem || document.body.clientWidth / pxPreRem
-      // document.documentElement.style.fontSize = fontSize + 'px';
       axios.get('activity/getTemActInfoById.do', {
         params: {
           activityNum: '48'
