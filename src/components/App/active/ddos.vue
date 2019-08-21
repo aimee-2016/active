@@ -1249,9 +1249,11 @@ export default {
             } else if (item.post.servicetype == 'host') {
               item.zoneList = res.data.result.optionalArea
               item.zone = res.data.result.optionalArea[0].value
+              this.changeZoneKill(item,index,'killHostList')
             } else if (item.post.servicetype == 'G5500') {
               item.zoneList = res.data.result.optionalAreaGpu
               item.zone = res.data.result.optionalAreaGpu[0].value
+              this.changeZoneKill(item,index,'killHostList')
             } else if (item.post.servicetype == 'high_ip') {
               this.getPriceDDOSIP(item)
             }
@@ -1358,6 +1360,8 @@ export default {
         url = 'activity/getDiskcountHighPreventionMv.do'
       } else if (item.post.servicetype == 'high_ip') {
         url = 'activity/getDiskcountHighIP.do'
+      } else if(item.post.servicetype == 'G5500') {
+        url = 'activity/getDiskcountGPU.do'
       }
       axios.get(url, {
         params: {
