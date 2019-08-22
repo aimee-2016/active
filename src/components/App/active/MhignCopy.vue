@@ -645,7 +645,8 @@
               if (res.status == 200 && res.data.status == 1) {
                 sessionStorage.setItem('countOrder', item.price.toString())
                 sessionStorage.setItem('hignHost', 'hignHost')
-                this.$router.push('orderconfirm')
+                //this.$router.push('orderconfirm')
+                window.open('https://wap.xrcloud.net/ruicloud/orderconfirm','_self')
               } else {
                 this.message  = res.data.message
                 this.msg = 'msg'
@@ -674,7 +675,8 @@
               if (res.status == 200 && res.data.status == 1) {
                 sessionStorage.setItem('countOrder', item.cost.toString())
                 sessionStorage.setItem('hignHost', 'hignHost')
-                this.$router.push('orderconfirm')
+                //this.$router.push('orderconfirm')
+                window.open('https://wap.xrcloud.net/ruicloud/orderconfirm','_self')
               } else {
                 this.message  = res.data.message
                 this.msg = 'msg'
@@ -702,7 +704,8 @@
             }).then(res => {
               if (res.status == 200 && res.data.status == 1) {
                 sessionStorage.setItem('countOrder', item.cost.toString())
-                this.$router.push('orderconfirm')
+                //this.$router.push('orderconfirm')
+                window.open('https://wap.xrcloud.net/ruicloud/orderconfirm','_self')
               } else {
                 this.message  = res.data.message
                 this.msg = 'msg'
@@ -731,7 +734,8 @@
               if (res.status == 200 && res.data.status == 1) {
                 sessionStorage.setItem('countOrder', item.cost.toString())
                 sessionStorage.setItem('hignHost', 'hignHost')
-                this.$router.push('orderconfirm')
+                //this.$router.push('orderconfirm')
+                window.open('https://wap.xrcloud.net/ruicloud/orderconfirm','_self')
               } else {
                 this.message  = res.data.message
                 this.msg = 'msg'
@@ -758,7 +762,8 @@
               if (res.status == 200 && res.data.status == 1) {
                 sessionStorage.setItem('countOrder', item.cost.toString())
                 sessionStorage.setItem('hignHost', 'hignHost')
-                this.$router.push('orderconfirm')
+                //this.$router.push('orderconfirm')
+                window.open('https://wap.xrcloud.net/ruicloud/orderconfirm','_self')
               } else {
                 this.message  = res.data.message
                 this.msg = 'msg'

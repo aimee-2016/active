@@ -40,7 +40,7 @@
             </div>
           <Group>
             <popup-picker title="区域节点" :data="freeAreaList" :columns="3" v-model="item.area" show-name
-              @on-change="changesNode(index,item)">
+              @on-hide="changesNode(index,item)">
             </popup-picker>
             <popup-picker title="系统" :data="item.systems" :columns="3" v-model="item.list" show-name></popup-picker>
             <cell title="使用时长"  value="1个月" v-if="item.days == 30"></cell>
@@ -101,9 +101,6 @@
           </div>
           <Group class="sysChoose">
             <popup-picker title="系统" :data="item[0].systems" :columns="3" v-model="item[0].list" show-name></popup-picker>
-            <!-- <popup-picker title="系统" :data="systemInfoServer" :columns="3" v-model="sysTemList.sys2" show-name placeholder="请选择系统" v-if="index == 1"></popup-picker>
-            <popup-picker title="系统" :data="systemInfoServer" :columns="3" v-model="sysTemList.sys3" show-name placeholder="请选择系统" v-if="index == 2"></popup-picker>
-            <popup-picker title="系统" :data="systemInfoServer" :columns="3" v-model="sysTemList.sys4" show-name placeholder="请选择系统" v-if="index == 3"></popup-picker> -->
             <popup-picker title="选择区域" :data="areaList" :columns="3" v-model="item[0].area" show-name
                           @on-change="changeArea(item,index)">
             </popup-picker>
@@ -134,13 +131,12 @@
       </div>
       <div class="item-choose">
         <Group>
-          <popup-picker title="服务器类型" :data="sysTpye" :columns="3" v-model="sysTemChoose" show-name @on-hide="chooseSystem"></popup-picker>
+          <popup-picker title="服务器类型" :data="sysTpye" :columns="3" v-model="sysTemChoose" show-name @on-change="chooseSystem"></popup-picker>
           <popup-picker title="云服务器配置" :data="serverTempArr" :columns="1" v-model="serverData.config" show-name @on-hide="getServerPrice()" v-if="syStemstatus == 1"></popup-picker>
           <popup-picker title="GPU配置" :data="gpuTempArr" :columns="1" v-model="gpuData.config" show-name @on-hide="gpuPriceChange ()" v-if="syStemstatus == 2"></popup-picker>
           <popup-picker title="选择区域" :data="serverList" :columns="3" v-model="server" show-name @on-hide="serverChange"></popup-picker>
           <popup-picker title="带宽" :data="bandwidthListAll" :columns="1" v-model="parameter.bandwidth" :show-name="true" @on-hide="bandChange"></popup-picker>
           <popup-picker title="系统" :data="systemList" :columns="2" v-model="sysTem" show-name></popup-picker>
-          <!-- gpuData.defaultSys -->
           <popup-picker title="SSD数据盘" :data="diskSSD" :columns="2" v-model="parameter.ssd" :show-name="true" @on-hide="ssdChange"></popup-picker>
           <popup-picker title="购买时长" :data="useTime" :columns="3" v-model="parameter.defaultUse" show-name @on-hide="changeTime"></popup-picker>
           <popup-picker title="购买数量" :data="number" :columns="1" v-model="parameter.number" :show-name="true" @on-hide="numChange()"></popup-picker>
@@ -470,6 +466,7 @@
         navlist: ['免费领云服务器', '热销云服务器', '云服务器大集合', '优惠券随时领'],
         // 热销云服务器
         sellList: [],
+        hotArea: [],
         // 使用时长
         timeList1: [],
         timeValue1: [],
@@ -730,7 +727,8 @@
                 sessionStorage.setItem('vmConfigId', item.id)
                 sessionStorage.setItem('system', item.list[1])
                 sessionStorage.setItem('brand', item.bandwith+'M')
-                this.$router.push('freeBuy')
+                // this.$router.push('freeBuy')
+                window.open('https://wap.xrcloud.net/ruicloud/freeBuy','_self')
               } else {
                 this.inconformity = true
               }
@@ -756,7 +754,8 @@
       buy (item,index) {
         if (this.$store.state.userInfo == null) {
           // 未登录
-          return this.$router.push('Register')
+          //return this.$router.push('Register')
+          window.open('https://wap.xrcloud.net/ruicloud/register', '_self')
         } else if(this.$store.state.isCheck) {
           // 未认证
           this.certify = 'certify'
@@ -771,7 +770,8 @@
           }).then(res => {
             if (res.status == 200 && res.data.status == 1) {
               sessionStorage.setItem('countOrder', item[0].price.toString())
-              this.$router.push('orderconfirm')
+              //this.$router.push('orderconfirm')
+              window.open('https://wap.xrcloud.net/ruicloud/orderconfirm','_self')
             } else if (res.status == 200 && res.data.status == 2){
               this.$vux.toast.text(res.data.message, 'middle')
             }
@@ -819,7 +819,8 @@
       getCoupon () {
         if (this.$store.state.userInfo == null) {
           // 未登录
-          return this.$router.push('Register')
+          //return this.$router.push('Register')
+          window.open('https://wap.xrcloud.net/ruicloud/register', '_self')
         } else if(this.$store.state.isCheck) {
           // 未认证
           this.certify = 'certify'
@@ -921,7 +922,6 @@
             })
             // 把改变后的值给一个默认值
             this.serverData.config[0] = this.serverTempArr[0].value
-            console.log(resArr)
           }
         })
       },
@@ -953,7 +953,7 @@
         if (val[0] == 1) {
           //区域
           this.server[0] = this.area[0]
-          this.serverList = this.areaList
+          this.serverList = this.hotArea
           //系统
           this.sysTem[0] = this.sellList[0][0].list[0]
           this.sysTem[1] = this.sellList[0][0].list[1]
@@ -1082,7 +1082,6 @@
               this.allPrice = (this.serverData.defalutPrice * this.buyNums).toFixed(2)
               this.originalPrice = this.serverData.defalutPrice
               this.allPrice = (parseFloat(this.allPrice) + (parseFloat(this.diskSizePrice) * this.buyNums)).toFixed(2)
-
             } else {
               this.gpuData.defalutPrice = res.data.cost + this.brandPrice
               this.allPrice = (this.gpuData.defalutPrice * this.buyNums).toFixed(2)
@@ -1096,7 +1095,8 @@
       oneBuy () {
         if (this.$store.state.userInfo == null) {
           // 未登录
-          return this.$router.push('Register')
+          //return this.$router.push('Register')
+          window.open('https://wap.xrcloud.net/ruicloud/register', '_self')
         } else if(this.$store.state.isCheck) {
           // 未认证
           this.certify = 'certify'
@@ -1104,7 +1104,6 @@
         } else {
           //云服务器
           if (this.syStemstatus == 1) {
-            console.log(this.parameter.ssd)
             axios.get('information/deployVirtualMachine.do', {
               params: {
                 zoneId: this.server[0],
@@ -1126,7 +1125,8 @@
             }).then(res => {
               if (res.status == 200 && res.data.status == 1) {
                 sessionStorage.setItem('countOrder', this.allPrice.toString())
-                this.$router.push('orderconfirm')
+                //this.$router.push('orderconfirm')
+                window.open('https://wap.xrcloud.net/ruicloud/orderconfirm','_self')
               } else if (res.status == 200 && res.data.status == 2) {
                 this.$vux.toast.text(res.data.message, 'middle')
               }
@@ -1263,13 +1263,17 @@
         }
       })
       // 获取GPU区域
-      axios.get('activity/getTemActInfoById.do', {
-        params: {
-          activityNum: 43
-        }
-      }).then(res => {
+      axios.get('information/zone.do', { params: { t: new Date().getTime() } }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
-          this.gpuList = res.data.result.optionalArea
+          var areaList = res.data.result
+          for (let i = 0; i < areaList.length; i++) {
+            if (areaList[i].gpuserver === 1) {
+              this.gpuList.push({name: areaList[i].zonename, value: areaList[i].zoneid})
+            }
+            if (areaList[i].gpuserver === 0) {
+              this.hotArea.push({name: areaList[i].zonename, value: areaList[i].zoneid})
+            }
+          }
           this.gpu[0] = this.gpuList[0].value
           this.gpuData.defaultDis[0] = this.gpuList[0].value
           this.getGpu(this.gpuData)
@@ -1398,7 +1402,6 @@
               align-items: center;
               justify-content: space-between;
               padding: 19px 45px 19px 25px;
-              border-bottom: 1px solid #dadada;
               p{
                   font-size: 16px;
                   font-weight:500;
