@@ -48,7 +48,7 @@ var router = new Router({
         {path: 'activityp', name: 'activityp', component: ActiveCenterP,caseSensitive: true},
         {path: 'activitym', name: 'activitym', component: ActiveCenterM,caseSensitive: true},
         {path: 'activebefore',name: 'activebefore', component:activeBefore,caseSensitive: true},
-        {path: 'activity/freeAnnual', name: 'activity/freeAnnual', component: FrActive,caseSensitive: true},
+        {path: 'activity/free', name: 'activity/free', component: FrActive,caseSensitive: true},
         {path: 'activity/freem', name: 'activity/freem', component: FrActiveM,caseSensitive: true},
         {path: 'activity/freep', name: 'activity/freep', component: FrActiveP,caseSensitive: true},
         {path: 'activity/objectstorage', name: 'activity/objectstorage', component: objStorageActiveP,caseSensitive: true},
@@ -57,7 +57,7 @@ var router = new Router({
         {path: 'activity/hotdatabase', name: 'activity/hotdatabase', component: DBActiveP,caseSensitive: true},
         {path: 'activity/hotdatabasem', name: 'activity/hotdatabasem', component: DBActiveM,caseSensitive: true},
         {path: 'activity/hotdatabasep', name: 'activity/hotdatabasep', component: DBActiveP,caseSensitive: true},
-        {path: 'activity/hignCopy',name: 'activity/hignCopy', component:ddosActive,caseSensitive: true},
+        {path: 'activity/ddosactive',name: 'activity/ddosactive', component:ddosActive,caseSensitive: true},
         {path: 'activity/ddosactivem',name: 'activity/ddosactivem', component:ddosActiveM,caseSensitive: true},
         {path: 'activity/ddosactivep',name: 'activity/ddosactivep', component:ddosActiveP,caseSensitive: true},
       ]
