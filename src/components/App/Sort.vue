@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="active-box">
-      <router-link v-for="(item,index) in actives" :key="index" :to="'/activity/'+item.url" v-show="item.isStart!=2">
+      <router-link v-for="(item,index) in actives" :key="index" :to="'/activity/'+item.newurl" v-show="item.isStart!=2">
         <div class="active-item">
           <img :src="item.mobileImgPathUrl" class="item-img">
           <h6>{{item.name}}</h6>
