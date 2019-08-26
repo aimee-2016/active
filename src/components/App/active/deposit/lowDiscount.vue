@@ -347,7 +347,7 @@ export default {
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
           this.$Message.success('创建订单成功')
-          this.$router.push('/order')
+          window.open('https://i.xinruiyun.cn/order','_self')
         } else {
           this.$message.info({
             content: res.data.message
