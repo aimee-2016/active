@@ -138,7 +138,7 @@
             <span>NOVICE TO CLOUD</span>
           </div>
           <div class="box-wrap">
-            <router-link v-for="(item,index) in activeData" :key="index" :class="{'box':true}"
+            <!-- <router-link v-for="(item,index) in activeData" :key="index" :class="{'box':true}"
                          :to="item.isStart?item.url:''" :style="{background:'url('+item.imgPath+')',backgroundRepeat:'no-repeat'}">
               <div class="box-head" :style="{color:item.color}">
                 <div v-if="item.name">
@@ -154,6 +154,25 @@
               <div class="box-bottom">
                 <div>
                   <p>活动时间：{{item.time}}</p>
+                  <p>活动对象：{{item.activeObj}}</p>
+                </div>
+                <button v-if="item.isStart">立即参与 →</button>
+                <button v-else>敬请期待</button>
+              </div>
+            </router-link> -->
+            <router-link v-for="(item,index) in allActive" :key="index" :class="{'box':true}"
+                         :to="'/activity/'+item.newurl" :style="{background:'url('+item.imgCenter+')',backgroundRepeat:'no-repeat'}">
+              <div class="box-head" :style="{color:item.namecolor}">
+                <div v-if="item.name">
+                  <p>
+                    {{item.name}}
+                  </p>
+                  <p :style="{color:item.colortwo}">{{item.actdesc}}</p>
+                </div>
+              </div>
+              <div class="box-bottom">
+                <div>
+                  <p>{{item.des}}</p>
                   <p>活动对象：{{item.activeObj}}</p>
                 </div>
                 <button v-if="item.isStart">立即参与 →</button>
@@ -214,6 +233,7 @@
     data () {
       return {
         active: [],
+        allActive: [],
         activedata: [
           {
             imgPath: require('../../assets/img/active/ddos/ddos-ac.png'),
@@ -336,6 +356,17 @@
         return arry
       }
     },
+    created () {
+      axios.get('/activity/getActivitys.do', {
+        params: {
+          isStart: 2
+        }
+      }).then(res => {
+        if (res.status === 200 && res.data.status === 1) {
+          this.allActive = res.data.result
+        }
+      })
+    },
     watch: {},
     components: {}
   }
@@ -413,7 +444,7 @@
                   margin:0 auto;
                   display: flex;
                   justify-content: space-between;
-                 
+
                   .text{
                   >p{
                     font-size:50px;

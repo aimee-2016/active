@@ -624,7 +624,8 @@
         HignHostBuy (item,num) {
           if (this.$store.state.userInfo == null) {
             // 未登录
-            return this.$router.push('login')
+            //return this.$router.push('login')
+            window.open('https://m.xinruiyun.cn/Login','_self')
           } else if(this.$store.state.isCheck) {
             // 未认证
             this.certify = 'certify'
@@ -659,7 +660,8 @@
         m_Hign (item) {
           if (this.$store.state.userInfo == null) {
             // 未登录
-            return this.$router.push('login')
+            //return this.$router.push('login')
+            window.open('https://m.xinruiyun.cn/Login','_self')
           } else if(this.$store.state.isCheck) {
             // 未认证
             this.certify = 'certify'
@@ -689,7 +691,8 @@
         m_Host (item) {
           if (this.$store.state.userInfo == null) {
             // 未登录
-            return this.$router.push('login')
+            //return this.$router.push('login')
+            window.open('https://m.xinruiyun.cn/Login','_self')
           } else if(this.$store.state.isCheck) {
             // 未认证
             this.certify = 'certify'
@@ -718,7 +721,8 @@
         m_Gpu (item) {
           if (this.$store.state.userInfo == null) {
             // 未登录
-            return this.$router.push('login')
+            //return this.$router.push('login')
+            window.open('https://m.xinruiyun.cn/Login','_self')
           } else if(this.$store.state.isCheck) {
             // 未认证
             this.certify = 'certify'
@@ -748,7 +752,8 @@
         m_Ip (item) {
           if (this.$store.state.userInfo == null) {
             // 未登录
-            return this.$router.push('login')
+            //return this.$router.push('login')
+            window.open('https://m.xinruiyun.cn/Login','_self')
           } else if(this.$store.state.isCheck) {
             // 未认证
             this.certify = 'certify'
