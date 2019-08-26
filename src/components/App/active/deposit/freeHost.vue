@@ -5,76 +5,93 @@
         <div class="product">
           <div v-for="(item,index) in hotHostList" :key="index">
             <div class="head">
-              <h3>云服务器</h3>
-              <span>100%性能可用，更低价格，拒绝套路</span>
+              <span class="cer" v-if="item.post.certification==3">企业用户专享</span>
+              <h3>{{killTitle(item.post)}}</h3>
+              <p v-if="item.post.servicetype=='G5500'"><span>{{item.post.bandwith}}M带宽</span><span>{{item.post.disksize}}G系统盘</span></p>
             </div>
-            <div class="body">
+            <div class="body" v-if="item.post.servicetype!='G5500'">
               <div class="configure">
                 <ul>
                   <li>
                     <i>CPU</i>
-                    <span>{{item.config.cpu}}核</span>
+                    <span>{{item.post.cpu}}核</span>
                   </li>
                   <li>
                     <i>内存</i>
-                    <span>{{item.config.mem}}G</span>
+                    <span>{{item.post.mem}}G</span>
                   </li>
-                  <li>
+                  <li v-if="item.post.servicetype!='db'">
                     <i>宽带</i>
-                    <span>{{item.config.bandwith}}M</span>
+                    <span>{{item.post.bandwith}}M</span>
                   </li>
                   <li>
                     <i>系统盘</i>
-                    <span>
-                      {{item.config.disksize}}G
+                    <span v-if="item.post.servicetype!='db'">
+                      {{item.post.disksize}}G
                       <span>SSD</span>
+                    </span>
+                    <span v-else>
+                      40G
+                    </span>
+                  </li>
+                  <li v-if="item.post.servicetype=='db'">
+                    <i>数据盘</i>
+                    <span>
+                      100G
                     </span>
                   </li>
                 </ul>
               </div>
             </div>
             <div class="body">
-              <div>
+              <div v-if="item.post.servicetype=='G5500'" class="mb15 mt5">
+                <span class="label">配置：</span>
+                <Select
+                        v-model="item.gpuConfigIndex"
+                        style="width:184px"
+                        placeholder=" "
+                        @on-change="changConfigGPU(item)"
+                      >
+                        <Option
+                          v-for="(item1,index1) in item.postArr"
+                          :value="index1"
+                          :key="index1"
+                        >{{ item1.cpu+'核'+item1.mem+'G'+' '+item1.gpusize+'*NVIDIA P100' }}</Option>
+                      </Select>
+              </div>
+              <div class="mb15">
                 <span class="label">区域：</span>
                 <Select
-                  v-model="item.zone"
-                  style="width:237px"
-                  @on-change="changeZoneHot(item,index,'hotHostList')"
+                  v-model="item.zoneId"
+                  style="width:184px"
+                  @on-change="changeZoneHot(item)"
                 >
                   <Option
-                    v-for="item in zoneListHot"
-                    :value="item.value"
-                    :key="item.value"
-                  >{{ item.name }}</Option>
+                    v-for="item1 in item.zoneList"
+                    :value="item1.value"
+                    :key="item1.value"
+                  >{{ item1.name }}</Option>
                 </Select>
               </div>
-              <div>
-                <span class="label">系统：</span>
-                <Cascader :data="item.systemList" v-model="item.system" style="width:237px;"></Cascader>
-              </div>
-              <div class="time">
-                <span class="label">时长：</span>
-                <ul>
-                  <li
-                    v-for="(item1,index1) in item.timeList"
-                    :key="index1"
-                    :class="{'selected':item.configId==item1.id}"
-                    @click="changgeTimeHot(item,item1)"
-                  >
-                    {{month(item1.days)}}
-                    <span>{{item1.discount*10}}折</span>
-                  </li>
-                </ul>
+              <div class="mb15">
+                <span class="label" v-if="item.post.servicetype=='db'">镜像系统：</span>
+                <span class="label" v-else>系统：</span>
+                <Cascader :data="item.systemList" v-model="item.system" style="width:184px;"></Cascader>
               </div>
               <div class="price">
-                价格：￥
-                <span>{{item.price}}</span>
+                价格：¥
+                <span>{{0+'/'}}</span>
+                {{month(item.post.days)}}
               </div>
               <div class="origin-price">
-                原价：￥
-                <span>{{item.originPrice+'/'+month(item.time)}}</span>
+                保证金：¥
+                <span>{{item.price+'/'+month(item.post.days)}}</span>
               </div>
-              <Button @click="pushOrderHot(item)">立即购买</Button>
+              <div class="origin-price line-thr">
+                原价：¥
+                <span>{{item.originPrice}}</span>
+              </div>
+              <Button @click="pushOrderHot(item)">免费领取</Button>
             </div>
           </div>
         </div>
@@ -250,11 +267,17 @@ export default {
       ],
       hotHostList: [
         {
-          headline: '包月云服务器',
-          subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
-          config: {},
-          timeList: [],
-          time: 180,
+          post: {
+            servicetype: "host",
+            bandwith: 2,
+            cost: 69,
+            cpu: 2,
+            mem: 4,
+            days: 30,
+            disksize: 40,
+            disktype: "ssd",
+            id: 497
+          },
           systemList: [{
             value: 'window',
             label: 'Windows',
@@ -275,17 +298,23 @@ export default {
             children: [],
           }],
           system: [],
-          zone: '',
+          zoneList: [],
+          zoneId: '',
           price: '69',
           originPrice: '176.72',
-          configId: ''
         },
         {
-          headline: '包年云服务器',
-          subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
-          config: {},
-          timeList: [],
-          time: 180,
+          post: {
+            servicetype: "host",
+            bandwith: 2,
+            cost: 69,
+            cpu: 2,
+            mem: 8,
+            days: 360,
+            disksize: 40,
+            disktype: "ssd",
+            id: 497
+          },
           systemList: [{
             value: 'window',
             label: 'Windows',
@@ -306,17 +335,24 @@ export default {
             children: [],
           }],
           system: [],
-          zone: '',
+          zoneList: [],
+          zoneId: '',
           price: '69',
           originPrice: '176.72',
-          configId: ''
         },
         {
-          headline: '包月云服务器',
-          subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
-          config: {},
-          timeList: [],
-          time: 180,
+          post: {
+            servicetype: "host",
+            bandwith: 2,
+            certification: 3,
+            cost: 69,
+            cpu: 2,
+            mem: 8,
+            days: 360,
+            disksize: 40,
+            disktype: "ssd",
+            id: 497
+          },
           systemList: [{
             value: 'window',
             label: 'Windows',
@@ -337,17 +373,58 @@ export default {
             children: [],
           }],
           system: [],
-          zone: '',
+          zoneList: [],
+          zoneId: '',
           price: '69',
           originPrice: '176.72',
-          configId: ''
         },
         {
-          headline: '包年云服务器',
-          subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
-          config: {},
-          timeList: [],
-          time: 180,
+          post: {
+            servicetype: "db",
+            bandwith: 2,
+            cost: 69,
+            cpu: 2,
+            mem: 8,
+            days: 60,
+            disksize: 40,
+            disktype: "ssd",
+            id: 497
+          },
+          systemList: [
+            {
+              value: 'mysql',
+              label: 'mysql',
+              children: [],
+            },
+            {
+              value: 'redis',
+              label: 'redis',
+              children: []
+            }, {
+              value: 'postgresql',
+              label: 'postgresql',
+              children: [],
+            }
+         ],
+          system: [],
+          zoneList: [],
+          zoneId: '',
+          price: '69',
+          originPrice: '176.72',
+        },
+        {
+          post: {
+            servicetype: "G5500",
+            bandwith: 2,
+            cost: 69,
+            cpu: 2,
+            mem: 8,
+            days: 3,
+            disksize: 40,
+            disktype: "ssd",
+            id: 497
+          },
+          postArr:[],
           systemList: [{
             value: 'window',
             label: 'Windows',
@@ -368,17 +445,24 @@ export default {
             children: [],
           }],
           system: [],
-          zone: '',
+          zoneList: [],
+          zoneId: '',
           price: '69',
           originPrice: '176.72',
-          configId: ''
-        }
+          gpuConfigIndex: 0,
+        },
       ],
       zoneListHot: [],
     }
   },
   created () {
-
+    this.getConfigureHot()
+    let url = 'activity/getTemActInfoById.do'
+    axios.get(url, {
+      params: {
+        activityNum: '58'
+      }
+    }).then(res => {})
   },
   mounted () {
 
@@ -389,82 +473,77 @@ export default {
       let url = 'activity/getTemActInfoById.do'
       axios.get(url, {
         params: {
-          activityNum: '48'
+          activityNum: '57'
         }
       }).then(res => {
         if (res.data.status == 1 && res.status == 200) {
-          // 处理数组格式
-          let originArr = res.data.result.freevmconfigs
-          let timeList = []
-          originArr.forEach((item, index) => {
-            if ((index + 1) % 2 != 0) {
-              timeList = []
-            }
-            let rObj = {};
-            rObj['id'] = item.id;
-            rObj['discount'] = item.discount;
-            rObj['days'] = item.days;
-            timeList.push(rObj)
-            if ((index + 1) % 2 == 0) {
-              let num = index - (index + 1) / 2
-              this.hotHostList[num].config = item
-              this.hotHostList[num].timeList = timeList
-            }
+          let gpuConfigList = res.data.result.freevmconfigs.filter((item,index) => {
+            return item.servicetype == 'G5500'
           })
-          // 获取区域列表
-          this.zoneListHot = res.data.result.optionalArea
-          // console.log(this.hotHostList)
-        }
-        //默认选择
-        this.hotHostList.forEach(item => {
-          // console.log(item)
-          item.configId = item.timeList[0].id
-          item.time = item.timeList[0].days
-          item.zone = this.zoneListHot[0].value
-          this.changgeTimeHot(item, item.timeList[0])
+          // console.log(gpuConfigList)
+          this.hotHostList.forEach((item,index) => {
+            item.post = res.data.result.freevmconfigs[index]
+            if (item.post.servicetype == 'G5500') {
+              item.zoneList = res.data.result.optionalAreaGpu
+              item.postArr = gpuConfigList
+            } else {
+              item.zoneList = res.data.result.optionalArea
+            }
+            if(item.zoneList.length>0) {
+              // 设置默认区域
+              item.zoneId = item.zoneList[0].value
+              // 设置默认系统
+              this.changeZoneHost(item)
+            }
         })
+      }
       })
     },
-    changgeTimeHot (item, innerItem) {
-      item.configId = innerItem.id
-      item.time = innerItem.days
-      this.getPriceHot(item)
-    },
-    changeZoneHot (item, index, name) {
-      this.changeZoneHost(item, index, name)
+    changeZoneHot (item) {
+      this.changeZoneHost(item)
       this.getPriceHot(item)
     },
     // 根据区域获得不同系统
-    changeZoneHost (item, index, name) {
-      axios.get('information/listTemplates.do', {
+    changeZoneHost (item) {
+      let url = ''
+      let systemType = ''
+      let showName = ''
+      if(item.post.servicetype == 'db') {
+        url = 'database/listDbTemplates.do'
+        systemType = 'mysql'
+        showName = 'dbname'
+      } else{
+        url = 'information/listTemplates.do'
+        systemType = 'window'
+        showName = 'templatedescript'
+      }
+      axios.get(url, {
         params: {
-          zoneId: item.zone,
+          zoneId: item.zoneId,
         }
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
           var x
           for (x in res.data.result) {
-            this[name][index].systemList.forEach(item => {
+            item.systemList.forEach(item => {
               if (item.value == x) {
                 item.children = res.data.result[x]
               }
             })
           }
-          this[name][index].systemList.forEach(item => {
+          item.systemList.forEach(item => {
             item.children.forEach(item => {
               item.value = item.systemtemplateid
-              item.label = item.templatedescript
+              item.label = item[showName]
             })
           })
-          this[name][index].systemList.forEach((item, index) => {
+          item.systemList.forEach((item, index) => {
             if (item.children.length == 0) {
               item.disabled = true
             }
           })
           // 设置默认系统
-          this[name].forEach(item => {
-            item.system = ['window', res.data.result.window[0].systemtemplateid]
-          })
+          item.system = [systemType, res.data.result[systemType][0].systemtemplateid]
         }
       })
     },
@@ -472,9 +551,9 @@ export default {
       // console.log(item.zone)
       axios.get('activity/getOriginalPrice.do', {
         params: {
-          zoneId: item.zone,
-          vmConfigId: item.configId,
-          month: item.time / 30
+          zoneId: item.zoneId,
+          vmConfigId: item.post.id,
+          month: item.post.days / 30
         }
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
@@ -494,14 +573,14 @@ export default {
       }
       axios.get('information/getDiskcountMv.do', {
         params: {
-          defzoneid: item.zone,
-          vmConfigId: item.configId,
+          defzoneid: item.zoneId,
+          vmConfigId: item.post.id,
           osType: item.system[1]
         }
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
           this.$Message.success('创建订单成功')
-          this.$router.push('/order')
+          window.open('https://i.xinruiyun.cn/order','_self')
         } else {
           this.$message.info({
             content: res.data.message
@@ -509,12 +588,62 @@ export default {
         }
       })
     },
+    changConfigGPU(item) {
+      item.post = item.postArr[item.gpuConfigIndex]
+      // console.log(item.post.cpu)
+    },
     month (val) {
-      return val >= 360 ? val / 360 + '年' : val / 30 + '个月'
+      let text = ''
+      if (val>=360) {
+        text = '年'
+        if(val/360>1) {
+          text = val/360+'年'
+        }
+      } else if(val>=30){
+        text = '月'
+        if(val/30>1) {
+          text = val/30+'个月'
+        }
+      } else {
+        text = '天'
+        if(val>1) {
+          text = val+'天'
+        }
+      }
+      return text
+    },
+    killTitle (val) {
+      let result = ''
+      switch (val.servicetype) {
+        case 'host':
+          if(val.days==360) {
+            result = '包年云服务器'
+          } else if(val.days==30)
+            result = '包月云服务器'
+          break
+        case 'db':
+          result = '云数据库'
+          break
+        case 'G5500':
+          result = 'GPU服务器'
+          break
+        default:
+          result = ''
+      }
+      
+      return result
     },
   },
   computed: {
-
+    authInfo () {
+      return this.$store.state.authInfo ? this.$store.state.authInfo : null
+    },
+    authInfoPersion () {
+      return this.$store.state.authInfoPersion
+    },
+    userInfo () {
+      return this.$store.state.userInfo
+    },
   },
   watch: {
 
@@ -538,20 +667,56 @@ export default {
     background: #fff;
     padding-bottom: 10px;
     > div {
-      width: 277px;
+      width: 224px;
       box-shadow: 0px 3px 10px -3px rgba(195, 205, 230, 0.7);
       border: 1px solid rgba(220, 226, 242, 1);
+      &:nth-of-type(1) .head {
+        background: url("../../../../assets/img/active/deposit/head-bg-1.png");
+      }
+      &:nth-of-type(2) .head{
+        background: url("../../../../assets/img/active/deposit/head-bg-2.png");
+      }
+      &:nth-of-type(3) .head{
+        background: url("../../../../assets/img/active/deposit/head-bg-3.png");
+      }
+      &:nth-of-type(4) .head{
+        background: url("../../../../assets/img/active/deposit/head-bg-4.png");
+      }
+      &:nth-of-type(5) .head{
+        background: url("../../../../assets/img/active/deposit/head-bg-5.png");
+      }
     }
     .head {
-      padding: 15px 20px;
+      position: relative;
+      padding: 0 46px 0 20px;
+      height: 80px;
+      display: flex;
+      flex-direction: column; 
+      justify-content: center;
       color: #fff;
-      background: url("../../../../assets/img/active/freeToReceive.1/hot-host-product-bg.png");
       h3 {
-        margin-bottom: 6px;
         font-size: 18px;
       }
-      span {
-        font-size: 14px;
+      p {
+        margin-top: 6px;
+        display: flex;
+        justify-content: space-between;
+      }
+      >span {
+        display: inline-block;
+        line-height: 20px;
+        font-size: 12px;
+        text-align: center;
+        &:nth-of-type(1) {
+          position: absolute;
+          right: 0;
+          top: 0;
+        }
+      }
+      .cer {
+        width: 86px;
+        background:linear-gradient(270deg,rgba(255,57,42,1) 0%,rgba(255,189,118,1) 100%);
+        color: #fff;
       }
     }
     .body {
@@ -564,86 +729,88 @@ export default {
         border-top: 1px solid rgba(220, 226, 242, 1);
       }
       > div {
-        margin-bottom: 15px;
+        margin-bottom: 10px;
       }
       .label {
         display: block;
-        margin-bottom: 8px;
+        margin-bottom: 7px;
         width: 70px;
-        font-size: 14px;
+        font-size: 12px;
         color: #222274;
       }
       .configure {
+        // margin-bottom: 10px;
         ul {
           display: flex;
           justify-content: space-between;
           li {
+              color: #0F0F68;
+              font-size: 12px;
             i {
               margin-bottom: 10px;
               display: block;
               font-style: normal;
-              color: #0f0f68;
-              font-size: 12px;
-            }
-            span {
-              color: #0f0f68;
-              font-size: 18px;
-              span {
-                font-size: 14px;
-              }
             }
           }
         }
       }
-      .time {
-        ul {
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: space-between;
-          li {
-            position: relative;
-            width: 110px;
-            height: 34px;
-            margin-bottom: 10px;
-            line-height: 32px;
-            border-radius: 2px;
-            border: 1px solid rgba(125, 161, 217, 1);
-            text-align: center;
-            color: #4b3c3d;
-            cursor: pointer;
-            &:nth-child(3n + 3) {
-              margin-right: 0;
-            }
-            span {
-              position: absolute;
-              top: -14px;
-              right: 5px;
-              display: inline-block;
-              width: 38px;
-              height: 20px;
-              background: rgba(246, 109, 89, 1);
-              font-size: 14px;
-              color: rgba(255, 255, 255, 1);
-              line-height: 19px;
-            }
-          }
-          .selected {
-            background: rgba(56, 125, 255, 1);
-            color: #fff;
-          }
-        }
+      // .time {
+      //   ul {
+      //     display: flex;
+      //     flex-wrap: wrap;
+      //     justify-content: space-between;
+      //     li {
+      //       position: relative;
+      //       width: 110px;
+      //       height: 34px;
+      //       margin-bottom: 10px;
+      //       line-height: 32px;
+      //       border-radius: 2px;
+      //       border: 1px solid rgba(125, 161, 217, 1);
+      //       text-align: center;
+      //       color: #4b3c3d;
+      //       cursor: pointer;
+      //       &:nth-child(3n + 3) {
+      //         margin-right: 0;
+      //       }
+      //       span {
+      //         position: absolute;
+      //         top: -14px;
+      //         right: 5px;
+      //         display: inline-block;
+      //         width: 38px;
+      //         height: 20px;
+      //         background: rgba(246, 109, 89, 1);
+      //         font-size: 14px;
+      //         color: rgba(255, 255, 255, 1);
+      //         line-height: 19px;
+      //       }
+      //     }
+      //     .selected {
+      //       background: rgba(56, 125, 255, 1);
+      //       color: #fff;
+      //     }
+      //   }
+      // }
+      .mb15{
+        margin-bottom: 15px;
+      }
+      .mt5 {
+        margin-top: 5px;
       }
       .price {
         color: #e70520;
-        font-size: 12px;
+        font-size: 14px;
         span {
           font-size: 24px;
           font-weight: bold;
         }
       }
       .origin-price {
-        font-size: 12px;
+        font-size: 14px;
         color: #0f0f68;
+      }
+      .line-thr{
         text-decoration: line-through;
       }
       button {
@@ -653,7 +820,7 @@ export default {
         border-radius: 0px;
         color: #fff;
         height: 40px;
-        font-size: 18px;
+        font-size: 16px;
       }
     }
   }

@@ -49,13 +49,13 @@ Vue.use(ToastPlugin, {time: 2000})
 import {TransferDom} from 'vux'
 Vue.directive('transfer-dom', TransferDom)
 
-function setRem() {
-  var pxPreRem = 750 / 100;
-  var fontSize = document.documentElement.clientWidth / pxPreRem || document.body.clientWidth / pxPreRem
-  document.documentElement.style.fontSize = fontSize + 'px';
-}
-setRem()
-window.addEventListener('resize', setRem, false)
+// function setRem() {
+//   var pxPreRem = 750 / 100;
+//   var fontSize = document.documentElement.clientWidth / pxPreRem || document.body.clientWidth / pxPreRem
+//   document.documentElement.style.fontSize = fontSize + 'px';
+// }
+// setRem()
+// window.addEventListener('resize', setRem, false)
 
 // 结束
 
@@ -66,8 +66,8 @@ Vue.config.productionTip = false
 
 // axios.defaults.withCredentials = true
 
-// axios.defaults.baseURL = 'https://huodong.xrcloud.net/'
-axios.defaults.baseURL = 'https://activity.xinruiyun.cn/'
+axios.defaults.baseURL = 'https://huodong.xrcloud.net/'
+// axios.defaults.baseURL = 'https://activity.xinruiyun.cn/'
 
 // window.eventBus = new Vue();
 
