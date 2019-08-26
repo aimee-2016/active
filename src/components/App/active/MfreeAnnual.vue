@@ -728,7 +728,7 @@
                 sessionStorage.setItem('system', item.list[1])
                 sessionStorage.setItem('brand', item.bandwith+'M')
                 // this.$router.push('freeBuy')
-                window.open('https://wap.xrcloud.net/ruicloud/freeBuy','_self')
+                window.open('https://m.xinruiyun.cn/orderconfirm','_self')
               } else {
                 this.inconformity = true
               }
@@ -755,7 +755,7 @@
         if (this.$store.state.userInfo == null) {
           // 未登录
           //return this.$router.push('Register')
-          window.open('https://wap.xrcloud.net/ruicloud/register', '_self')
+          window.open('https://m.xinruiyun.cn/Register', '_self')
         } else if(this.$store.state.isCheck) {
           // 未认证
           this.certify = 'certify'
@@ -771,7 +771,7 @@
             if (res.status == 200 && res.data.status == 1) {
               sessionStorage.setItem('countOrder', item[0].price.toString())
               //this.$router.push('orderconfirm')
-              window.open('https://wap.xrcloud.net/ruicloud/orderconfirm','_self')
+              window.open('https://m.xinruiyun.cn/orderconfirm','_self')
             } else if (res.status == 200 && res.data.status == 2){
               this.$vux.toast.text(res.data.message, 'middle')
             }
@@ -820,7 +820,7 @@
         if (this.$store.state.userInfo == null) {
           // 未登录
           //return this.$router.push('Register')
-          window.open('https://wap.xrcloud.net/ruicloud/register', '_self')
+          window.open('https://m.xinruiyun.cn/Register', '_self')
         } else if(this.$store.state.isCheck) {
           // 未认证
           this.certify = 'certify'
@@ -1096,7 +1096,7 @@
         if (this.$store.state.userInfo == null) {
           // 未登录
           //return this.$router.push('Register')
-          window.open('https://wap.xrcloud.net/ruicloud/register', '_self')
+          window.open('https://m.xinruiyun.cn/Register', '_self')
         } else if(this.$store.state.isCheck) {
           // 未认证
           this.certify = 'certify'
@@ -1126,7 +1126,7 @@
               if (res.status == 200 && res.data.status == 1) {
                 sessionStorage.setItem('countOrder', this.allPrice.toString())
                 //this.$router.push('orderconfirm')
-                window.open('https://wap.xrcloud.net/ruicloud/orderconfirm','_self')
+                window.open('https://m.xinruiyun.cn/orderconfirm','_self')
               } else if (res.status == 200 && res.data.status == 2) {
                 this.$vux.toast.text(res.data.message, 'middle')
               }
