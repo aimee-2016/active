@@ -132,7 +132,7 @@
                   <div class="row">
                     <i>带宽</i>
                     <div>
-                      <RadioGroup v-model="item.bandwidth" type="button" v-if="item.bandwidthList.length!=1">
+                      <RadioGroup v-model="item.bandwidth" type="button" v-if="item.bandwidth!=5" @on-change="changeBandwith(item.bandwidth,item)">
                           <Radio  v-for="(item1,index) in item.bandwidthList" :key="index" :label="item1">{{item1}}M</Radio>
                       </RadioGroup>
                       <span class="bold" v-else>{{item.bandwidth}}M</span>
@@ -452,17 +452,18 @@ export default {
           gpuConfigIndex: 0,
         },
       ],
-      zoneListHot: [],
     }
   },
   created () {
     this.getConfigureHot()
-    let url = 'activity/getTemActInfoById.do'
-    axios.get(url, {
-      params: {
-        activityNum: '58'
-      }
-    }).then(res => {})
+    this.getRenew()
+    this.getUpgrade()
+    // let url = 'activity/getActInfo.do'
+    // axios.get(url, {
+    //   params: {
+    //     activityNum: '58'
+    //   }
+    // }).then(res => {})
   },
   mounted () {
 
@@ -497,6 +498,32 @@ export default {
             }
         })
       }
+      })
+    },
+    // 获取升级配置
+    getUpgrade () {
+      let url = 'activity/getUpgrade.do'
+      axios.get(url, {
+        params: {
+          activityNum: '59'
+        }
+      }).then(res => {
+        if (res.data.status == 1 && res.status == 200) {
+         
+        }
+      })
+    },
+    // 获取升级配置
+    getRenew () {
+      let url = 'activity/getRenewal.do'
+      axios.get(url, {
+        params: {
+          activityNum: '60'
+        }
+      }).then(res => {
+        if (res.data.status == 1 && res.status == 200) {
+         
+        }
       })
     },
     changeZoneHot (item) {
@@ -548,13 +575,21 @@ export default {
       })
     },
     getPriceHot (item) {
-      // console.log(item.zone)
-      axios.get('activity/getOriginalPrice.do', {
-        params: {
+      let params = {}
+      if(item.post.servicetype=='G5500'){
+        params= {
+            zoneId: item.zoneId,
+            vmConfigId: item.post.id,
+          }
+      } else {
+        params = {
           zoneId: item.zoneId,
           vmConfigId: item.post.id,
           month: item.post.days / 30
         }
+      }
+      axios.get('activity/getOriginalPrice.do', {
+        params: params
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
           item.price = res.data.result.cost;
@@ -590,7 +625,14 @@ export default {
     },
     changConfigGPU(item) {
       item.post = item.postArr[item.gpuConfigIndex]
-      // console.log(item.post.cpu)
+      this.getPriceHot(item)
+    },
+    changeBandwith(val,item) {
+      if (val==2) {
+        item.timeList = [30,90,180,360,720]
+      } else {
+        item.timeList = [360]
+      }
     },
     month (val) {
       let text = ''

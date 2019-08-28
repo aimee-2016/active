@@ -5,40 +5,18 @@
         <div class="product">
           <div v-for="(item,index) in hotHostList" :key="index">
             <div class="head">
-              <h3>云服务器</h3>
-              <span>100%性能可用，更低价格，拒绝套路</span>
+              <h3>{{killTitle(item)}}<span>{{item.post.cpu+'核'+item.post.mem+'G'}}</span></h3>
             </div>
             <div class="body">
-              <div class="configure">
-                <ul>
-                  <li>
-                    <i>CPU</i>
-                    <span>{{item.config.cpu}}核</span>
-                  </li>
-                  <li>
-                    <i>内存</i>
-                    <span>{{item.config.mem}}G</span>
-                  </li>
-                  <li>
-                    <i>宽带</i>
-                    <span>{{item.config.bandwith}}M</span>
-                  </li>
-                  <li>
-                    <i>系统盘</i>
-                    <span>
-                      {{item.config.disksize}}G
-                      <span>SSD</span>
-                    </span>
-                  </li>
-                </ul>
+              <div>
+                <span class="label">带宽：</span>
+                {{item.post.bandwith}}M
               </div>
-            </div>
-            <div class="body">
               <div>
                 <span class="label">区域：</span>
                 <Select
                   v-model="item.zone"
-                  style="width:237px"
+                  style="width:142px"
                   @on-change="changeZoneHot(item,index,'hotHostList')"
                 >
                   <Option
@@ -50,7 +28,7 @@
               </div>
               <div>
                 <span class="label">系统：</span>
-                <Cascader :data="item.systemList" v-model="item.system" style="width:237px;"></Cascader>
+                <Cascader :data="item.systemList" v-model="item.system" style="width:142px;"></Cascader>
               </div>
               <div class="time">
                 <span class="label">时长：</span>
@@ -62,7 +40,7 @@
                     @click="changgeTimeHot(item,item1)"
                   >
                     {{month(item1.days)}}
-                    <span>{{item1.discount*10}}折</span>
+                    <span>{{item1.discount}}折</span>
                   </li>
                 </ul>
               </div>
@@ -70,10 +48,10 @@
                 价格：￥
                 <span>{{item.price}}</span>
               </div>
-              <div class="origin-price">
+              <!-- <div class="origin-price">
                 原价：￥
                 <span>{{item.originPrice+'/'+month(item.time)}}</span>
-              </div>
+              </div> -->
               <Button @click="pushOrderHot(item)">立即购买</Button>
             </div>
           </div>
@@ -96,11 +74,17 @@ export default {
     return {
       hotHostList: [
         {
-          headline: '包月云服务器',
-          subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
-          config: {},
-          timeList: [],
-          time: 180,
+          post: {
+            servicetype: "host",
+            bandwith: 2,
+            cost: 69,
+            cpu: 2,
+            mem: 4,
+            days: 30,
+            disksize: 40,
+            disktype: "ssd",
+            id: 497
+          },
           systemList: [{
             value: 'window',
             label: 'Windows',
@@ -121,17 +105,23 @@ export default {
             children: [],
           }],
           system: [],
-          zone: '',
+          zoneList: [],
+          zoneId: '',
           price: '69',
           originPrice: '176.72',
-          configId: ''
         },
         {
-          headline: '包年云服务器',
-          subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
-          config: {},
-          timeList: [],
-          time: 180,
+          post: {
+            servicetype: "host",
+            bandwith: 2,
+            cost: 69,
+            cpu: 2,
+            mem: 8,
+            days: 360,
+            disksize: 40,
+            disktype: "ssd",
+            id: 497
+          },
           systemList: [{
             value: 'window',
             label: 'Windows',
@@ -152,17 +142,24 @@ export default {
             children: [],
           }],
           system: [],
-          zone: '',
+          zoneList: [],
+          zoneId: '',
           price: '69',
           originPrice: '176.72',
-          configId: ''
         },
         {
-          headline: '包月云服务器',
-          subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
-          config: {},
-          timeList: [],
-          time: 180,
+          post: {
+            servicetype: "host",
+            bandwith: 2,
+            certification: 3,
+            cost: 69,
+            cpu: 2,
+            mem: 8,
+            days: 360,
+            disksize: 40,
+            disktype: "ssd",
+            id: 497
+          },
           systemList: [{
             value: 'window',
             label: 'Windows',
@@ -183,17 +180,58 @@ export default {
             children: [],
           }],
           system: [],
-          zone: '',
+          zoneList: [],
+          zoneId: '',
           price: '69',
           originPrice: '176.72',
-          configId: ''
         },
         {
-          headline: '包年云服务器',
-          subtitle: '适用于：日常运营活动、小型开发测试环境、普通数据处理服务等场景。',
-          config: {},
-          timeList: [],
-          time: 180,
+          post: {
+            servicetype: "db",
+            bandwith: 2,
+            cost: 69,
+            cpu: 2,
+            mem: 8,
+            days: 60,
+            disksize: 40,
+            disktype: "ssd",
+            id: 497
+          },
+          systemList: [
+            {
+              value: 'mysql',
+              label: 'mysql',
+              children: [],
+            },
+            {
+              value: 'redis',
+              label: 'redis',
+              children: []
+            }, {
+              value: 'postgresql',
+              label: 'postgresql',
+              children: [],
+            }
+         ],
+          system: [],
+          zoneList: [],
+          zoneId: '',
+          price: '69',
+          originPrice: '176.72',
+        },
+        {
+          post: {
+            servicetype: "G5500",
+            bandwith: 2,
+            cost: 69,
+            cpu: 2,
+            mem: 8,
+            days: 3,
+            disksize: 40,
+            disktype: "ssd",
+            id: 497
+          },
+          postArr:[],
           systemList: [{
             value: 'window',
             label: 'Windows',
@@ -214,17 +252,203 @@ export default {
             children: [],
           }],
           system: [],
-          zone: '',
+          zoneList: [],
+          zoneId: '',
           price: '69',
           originPrice: '176.72',
-          configId: ''
-        }
+          gpuConfigIndex: 0,
+        },
+         {
+          post: {
+            servicetype: "host",
+            bandwith: 2,
+            cost: 69,
+            cpu: 2,
+            mem: 4,
+            days: 30,
+            disksize: 40,
+            disktype: "ssd",
+            id: 497
+          },
+          systemList: [{
+            value: 'window',
+            label: 'Windows',
+            children: []
+          }, {
+            value: 'centos',
+            label: 'Centos',
+            children: [],
+          },
+          {
+            value: 'debian',
+            label: 'Debian',
+            children: [],
+          },
+          {
+            value: 'ubuntu',
+            label: 'Ubuntu',
+            children: [],
+          }],
+          system: [],
+          zoneList: [],
+          zoneId: '',
+          price: '69',
+          originPrice: '176.72',
+        },
+        {
+          post: {
+            servicetype: "host",
+            bandwith: 2,
+            cost: 69,
+            cpu: 2,
+            mem: 8,
+            days: 360,
+            disksize: 40,
+            disktype: "ssd",
+            id: 497
+          },
+          systemList: [{
+            value: 'window',
+            label: 'Windows',
+            children: []
+          }, {
+            value: 'centos',
+            label: 'Centos',
+            children: [],
+          },
+          {
+            value: 'debian',
+            label: 'Debian',
+            children: [],
+          },
+          {
+            value: 'ubuntu',
+            label: 'Ubuntu',
+            children: [],
+          }],
+          system: [],
+          zoneList: [],
+          zoneId: '',
+          price: '69',
+          originPrice: '176.72',
+        },
+        {
+          post: {
+            servicetype: "host",
+            bandwith: 2,
+            certification: 3,
+            cost: 69,
+            cpu: 2,
+            mem: 8,
+            days: 360,
+            disksize: 40,
+            disktype: "ssd",
+            id: 497
+          },
+          systemList: [{
+            value: 'window',
+            label: 'Windows',
+            children: []
+          }, {
+            value: 'centos',
+            label: 'Centos',
+            children: [],
+          },
+          {
+            value: 'debian',
+            label: 'Debian',
+            children: [],
+          },
+          {
+            value: 'ubuntu',
+            label: 'Ubuntu',
+            children: [],
+          }],
+          system: [],
+          zoneList: [],
+          zoneId: '',
+          price: '69',
+          originPrice: '176.72',
+        },
+        {
+          post: {
+            servicetype: "db",
+            bandwith: 2,
+            cost: 69,
+            cpu: 2,
+            mem: 8,
+            days: 60,
+            disksize: 40,
+            disktype: "ssd",
+            id: 497
+          },
+          systemList: [
+            {
+              value: 'mysql',
+              label: 'mysql',
+              children: [],
+            },
+            {
+              value: 'redis',
+              label: 'redis',
+              children: []
+            }, {
+              value: 'postgresql',
+              label: 'postgresql',
+              children: [],
+            }
+         ],
+          system: [],
+          zoneList: [],
+          zoneId: '',
+          price: '69',
+          originPrice: '176.72',
+        },
+        {
+          post: {
+            servicetype: "G5500",
+            bandwith: 2,
+            cost: 69,
+            cpu: 2,
+            mem: 8,
+            days: 3,
+            disksize: 40,
+            disktype: "ssd",
+            id: 497
+          },
+          postArr:[],
+          systemList: [{
+            value: 'window',
+            label: 'Windows',
+            children: []
+          }, {
+            value: 'centos',
+            label: 'Centos',
+            children: [],
+          },
+          {
+            value: 'debian',
+            label: 'Debian',
+            children: [],
+          },
+          {
+            value: 'ubuntu',
+            label: 'Ubuntu',
+            children: [],
+          }],
+          system: [],
+          zoneList: [],
+          zoneId: '',
+          price: '69',
+          originPrice: '176.72',
+          gpuConfigIndex: 0,
+        },
       ],
       zoneListHot: [],
     }
   },
   created() {
-
+    this.getConfigureHot()
   },
   mounted() {
 
@@ -232,10 +456,10 @@ export default {
   methods: {
     // 获取活动配置,区域
     getConfigureHot () {
-      let url = 'activity/getTemActInfoById.do'
+      let url = 'activity/getActInfo.do'
       axios.get(url, {
         params: {
-          activityNum: '48'
+          activityNum: '58'
         }
       }).then(res => {
         if (res.data.status == 1 && res.status == 200) {
@@ -358,6 +582,23 @@ export default {
     month (val) {
       return val >= 360 ? val / 360 + '年' : val / 30 + '个月'
     },
+    killTitle (val) {
+      let result = ''
+      switch (val.post.servicetype) {
+        case 'host':
+          result = '云服务器'
+          break
+        case 'db':
+          result = '云数据库'
+          break
+        case 'G5500':
+          result = 'GPU云服务器'
+          break
+        default:
+          result = '1213'
+      }
+      return result
+    },
   },
   computed: {
 
@@ -376,44 +617,50 @@ export default {
   .product {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap; 
     text-align: left;
     background: #fff;
     padding-bottom: 10px;
     > div {
-      width: 277px;
+      width: 224px;
       box-shadow: 0px 3px 10px -3px rgba(195, 205, 230, 0.7);
       border: 1px solid rgba(220, 226, 242, 1);
     }
     .head {
-      padding: 15px 20px;
-      color: #fff;
-      background: url("../../../../assets/img/active/freeToReceive.1/hot-host-product-bg.png");
+      height: 65px;
+      padding: 25px 0 0 16px;
+      // color: #fff;
+      // background: url("../../../../assets/img/active/freeToReceive.1/hot-host-product-bg.png");
       h3 {
-        margin-bottom: 6px;
+        // margin-bottom: 6px;
         font-size: 18px;
       }
-      span {
-        font-size: 14px;
-      }
+      // span {
+      //   font-size: 14px;
+      // }
     }
     .body {
-      padding: 15px 20px 20px 20px;
+      padding: 10px 16px 20px 16px;
       background: #fff;
-      &:nth-of-type(2) {
-        padding-bottom: 0;
-      }
-      &:nth-of-type(3) {
-        border-top: 1px solid rgba(220, 226, 242, 1);
-      }
+      // &:nth-of-type(2) {
+      //   padding-bottom: 0;
+      // }
+      // &:nth-of-type(3) {
+      //   border-top: 1px solid rgba(220, 226, 242, 1);
+      // }
       > div {
         margin-bottom: 15px;
+        display: flex;
+        line-height: 32px;
+        font-size: 14px;
       }
       .label {
         display: block;
-        margin-bottom: 8px;
-        width: 70px;
+        // margin-bottom: 8px;
+        width: 44px;
+        line-height: 32px;
         font-size: 14px;
-        color: #222274;
+        color:rgba(102,102,102,1);
       }
       .configure {
         ul {
@@ -444,7 +691,7 @@ export default {
           justify-content: space-between;
           li {
             position: relative;
-            width: 110px;
+            width: 70px;
             height: 34px;
             margin-bottom: 10px;
             line-height: 32px;

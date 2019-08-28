@@ -204,17 +204,17 @@
                   /{{item.post.days%12==0?item.post.days/12==1?'年':item.post.days/12+'年':item.post.days==1?'月':item.post.days+'月'}}
                 </div>
                 <div>
-                  <Button
+                  <!-- <Button
                     class="btn"
                     v-if="item.num==100"
                     style="background:linear-gradient(90deg,rgba(206,206,206,1) 0%,rgba(168,168,168,1) 100%)"
-                  >已抢完</Button>
-                  <Button class="btn" @click="pushOrderKill(item)" v-else>立即购买</Button>
+                  >已抢完</Button> -->
+                  <Button class="btn" @click="pushOrderKill(item)">立即购买</Button>
                 </div>
               </div>
-              <div class="percentage">
+              <!-- <div class="percentage">
                 <span>已抢购{{item.num}}%</span>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
