@@ -262,9 +262,9 @@
                             </div>
                         </Poptip>
 
-                        <li class="nav-item active" @mouseenter='styleClass(3,$event)'>
+                        <!-- <li class="nav-item active" @mouseenter='styleClass(3,$event)'>
                             <a href="#">解决方案</a>
-                        </li>
+                        </li> -->
                         <li class="nav-item active" @mouseenter='styleClass(4,$event)'>
                             <a href="https://www.xinruiyun.cn/price/ecs/">定价</a>
                         </li>
@@ -492,11 +492,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="mhead-product">
+                    <!-- <div class="mhead-product">
                         <div style="padding: 10px 10px;">
                             <span>解决方案</span>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="mhead-product">
                         <div style="padding: 10px 10px;">
                             <a href="https://www.xinruiyun.cn/price/ecs/">定价</a>

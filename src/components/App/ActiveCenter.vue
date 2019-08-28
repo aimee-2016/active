@@ -161,7 +161,7 @@
               </div>
             </router-link> -->
             <router-link v-for="(item,index) in allActive" :key="index" :class="{'box':true}"
-                         :to="'/'+item.newurl" :style="{background:'url('+item.imgCenter+')',backgroundRepeat:'no-repeat'}">
+                         :to="'/'+item.newurl+'/'" :style="{background:'url('+item.imgCenter+')',backgroundRepeat:'no-repeat'}">
               <div class="box-head" :style="{color:item.namecolor}">
                 <div v-if="item.name">
                   <p>
