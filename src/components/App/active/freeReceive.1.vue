@@ -1289,12 +1289,12 @@ export default {
         {
           text: '对象存储免费领取',
           config: '50G',
-          url: '/activity/objectstorage',
+          url: '/objectstorage/',
         },
         {
           text: '云数据库免费试用',
           config: '60天',
-          url: '/activity/objectstorage',
+          url: '/hotdatabase/',
         }
       ],
       inConformityModalMsg: '您好！本活动仅限新注册或者一直未使用过平台资源（第三方产品除外）及未参加过其他免费活动用户参与。'
@@ -1616,7 +1616,7 @@ export default {
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
           this.$Message.success('创建订单成功')
-          this.$router.push('/order')
+          window.open('https://i.xinruiyun.cn/order','_self')
         } else {
           this.$message.info({
             content: res.data.message
@@ -1851,7 +1851,7 @@ export default {
       // console.log(params)
       axios.get('gpuserver/createGpuServer.do', { params }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          this.$router.push('/order')
+          window.open('https://i.xinruiyun.cn/order','_self')
         } else {
           this.$message.info({
             content: response.data.message
@@ -1884,9 +1884,7 @@ export default {
       // console.log(params)
       axios.get('information/deployVirtualMachine.do', { params }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          this.$router.push({
-            path: '/order'
-          })
+          window.open('https://i.xinruiyun.cn/order','_self')
         } else {
           this.$message.info({
             content: response.data.message

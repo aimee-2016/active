@@ -1,10 +1,10 @@
 <template>
   <div id="background">
-		<div id="wrapper">
+		<div class="wrapper">
 			<img src="../assets/img/back/404.png" class="imgg" />
 			<h1>Error，页面出错啦！请点击返回首页或者刷新页面～</h1>
-			<Button @click="$router.push('/')" class="btn1">返回首页</Button>
-			 <Button type="primary" @click="$router.history.go(0)" class="btn2">刷新页面</Button>
+			<Button onclick="window.open('https://www.xinruiyun.cn/', '_self')" class="btn1">返回首页</Button>
+			<Button type="primary" @click="$router.history.go(0)" class="btn2">刷新页面</Button>
 		</div>
   </div>
 </template>
@@ -21,7 +21,7 @@
 		@diff: 101px;
 		min-height: calc(~"100% - @{diff}");
 	}
-	#wrapper {
+	.wrapper {
 		width: 100%;
 		margin: 0px auto;
 		text-align: center;
@@ -51,4 +51,25 @@
 		font-size:18px;
 		margin-top: 40px;
 	}
+  @media screen and (max-width: 1220px) {
+    #background {
+    	background:rgba(42,153,242,0.12);
+      width: 100%;
+      height: 100%;
+    }
+    .wrapper {
+    	width: 100%;
+    	margin: 0px auto;
+    	text-align: center;
+    	justify-content: center;
+    }
+    .imgg{
+    	margin-top: 80px;
+      width: 200px;
+    }
+    h1{
+    	margin-top: 40px;
+      font-size: 14px;
+    }
+  }
 </style>

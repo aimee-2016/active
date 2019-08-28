@@ -13,7 +13,7 @@
               </div>
             </my-carousel-item>
             <my-carousel-item class="carousel-item">
-              <div @click="$router.push('activity/free/')" class="fr-active">
+              <div @click="$router.push('/free/')" class="fr-active">
               </div>
             </my-carousel-item>
           </my-carousel>

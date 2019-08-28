@@ -131,12 +131,12 @@ const webpackConfig = merge(baseWebpackConfig, {
     //   staticDir: path.join(__dirname, '../dist'),
     //   // 对应自己的路由文件，比如a有参数，就需要写成 /a/param1。
     //   // 活动路由
-    //   //routes: ['/activity/free', '/activity/objectstorage', '/activity/hotdatabase'],
+    //   //routes: ['/free/', '/objectstorage/', '/hotdatabase/'],
     //   // 八大场景路由
     //   //routes: ['/yundiannao','/selfhelpbuildingwebsite','/storagedisk','/softwaredevelopment','/gameservice','/graphicdesign','/ai','/supercomputing'],
     //   //产品路由
     //   //routes: ['/ecs','/mirrorservice','/ecssnapshot','/gpu','/elasticscalable','/vpc','/elasticip','/loadbalancing','/natgateway','/vpn'],
-    //   //routes: ['/disk','/diskbackup','/objectstorage','/database','/firewall','/ddos','/ssl','/monitor'],
+    //   //routes: ['/disk','/diskbackup','/objectstorage/','/database','/firewall','/ddos','/ssl','/monitor'],
     //   //首页相关路由
     //   routes: ['/','/about','/activity','/scene','/domain'],
     //   // 这个很重要，如果没有配置这段，也不会进行预编译

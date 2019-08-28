@@ -624,7 +624,8 @@
         HignHostBuy (item,num) {
           if (this.$store.state.userInfo == null) {
             // 未登录
-            return this.$router.push('login')
+            //return this.$router.push('login')
+            window.open('https://m.xinruiyun.cn/Login','_self')
           } else if(this.$store.state.isCheck) {
             // 未认证
             this.certify = 'certify'
@@ -645,7 +646,8 @@
               if (res.status == 200 && res.data.status == 1) {
                 sessionStorage.setItem('countOrder', item.price.toString())
                 sessionStorage.setItem('hignHost', 'hignHost')
-                this.$router.push('orderconfirm')
+                //this.$router.push('orderconfirm')
+                window.open('https://m.xinruiyun.cn/orderconfirm','_self')
               } else {
                 this.message  = res.data.message
                 this.msg = 'msg'
@@ -658,7 +660,8 @@
         m_Hign (item) {
           if (this.$store.state.userInfo == null) {
             // 未登录
-            return this.$router.push('login')
+            //return this.$router.push('login')
+            window.open('https://m.xinruiyun.cn/Login','_self')
           } else if(this.$store.state.isCheck) {
             // 未认证
             this.certify = 'certify'
@@ -674,7 +677,8 @@
               if (res.status == 200 && res.data.status == 1) {
                 sessionStorage.setItem('countOrder', item.cost.toString())
                 sessionStorage.setItem('hignHost', 'hignHost')
-                this.$router.push('orderconfirm')
+                //this.$router.push('orderconfirm')
+                window.open('https://m.xinruiyun.cn/orderconfirm','_self')
               } else {
                 this.message  = res.data.message
                 this.msg = 'msg'
@@ -687,7 +691,8 @@
         m_Host (item) {
           if (this.$store.state.userInfo == null) {
             // 未登录
-            return this.$router.push('login')
+            //return this.$router.push('login')
+            window.open('https://m.xinruiyun.cn/Login','_self')
           } else if(this.$store.state.isCheck) {
             // 未认证
             this.certify = 'certify'
@@ -702,7 +707,8 @@
             }).then(res => {
               if (res.status == 200 && res.data.status == 1) {
                 sessionStorage.setItem('countOrder', item.cost.toString())
-                this.$router.push('orderconfirm')
+                //this.$router.push('orderconfirm')
+                window.open('https://m.xinruiyun.cn/orderconfirm','_self')
               } else {
                 this.message  = res.data.message
                 this.msg = 'msg'
@@ -715,7 +721,8 @@
         m_Gpu (item) {
           if (this.$store.state.userInfo == null) {
             // 未登录
-            return this.$router.push('login')
+            //return this.$router.push('login')
+            window.open('https://m.xinruiyun.cn/Login','_self')
           } else if(this.$store.state.isCheck) {
             // 未认证
             this.certify = 'certify'
@@ -731,7 +738,8 @@
               if (res.status == 200 && res.data.status == 1) {
                 sessionStorage.setItem('countOrder', item.cost.toString())
                 sessionStorage.setItem('hignHost', 'hignHost')
-                this.$router.push('orderconfirm')
+                //this.$router.push('orderconfirm')
+                window.open('https://m.xinruiyun.cn/orderconfirm','_self')
               } else {
                 this.message  = res.data.message
                 this.msg = 'msg'
@@ -744,7 +752,8 @@
         m_Ip (item) {
           if (this.$store.state.userInfo == null) {
             // 未登录
-            return this.$router.push('login')
+            //return this.$router.push('login')
+            window.open('https://m.xinruiyun.cn/Login','_self')
           } else if(this.$store.state.isCheck) {
             // 未认证
             this.certify = 'certify'
@@ -758,7 +767,8 @@
               if (res.status == 200 && res.data.status == 1) {
                 sessionStorage.setItem('countOrder', item.cost.toString())
                 sessionStorage.setItem('hignHost', 'hignHost')
-                this.$router.push('orderconfirm')
+                //this.$router.push('orderconfirm')
+                window.open('https://m.xinruiyun.cn/orderconfirm','_self')
               } else {
                 this.message  = res.data.message
                 this.msg = 'msg'

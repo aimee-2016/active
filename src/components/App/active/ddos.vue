@@ -204,17 +204,17 @@
                   /{{item.post.days%12==0?item.post.days/12==1?'年':item.post.days/12+'年':item.post.days==1?'月':item.post.days+'月'}}
                 </div>
                 <div>
-                  <Button
+                  <!-- <Button
                     class="btn"
                     v-if="item.num==100"
                     style="background:linear-gradient(90deg,rgba(206,206,206,1) 0%,rgba(168,168,168,1) 100%)"
-                  >已抢完</Button>
-                  <Button class="btn" @click="pushOrderKill(item)" v-else>立即购买</Button>
+                  >已抢完</Button> -->
+                  <Button class="btn" @click="pushOrderKill(item)">立即购买</Button>
                 </div>
               </div>
-              <div class="percentage">
+              <!-- <div class="percentage">
                 <span>已抢购{{item.num}}%</span>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -401,7 +401,7 @@
                   <i>折</i>
                 </div>
               </div>
-              <Button class="btn" @click="$router.push('/buy/ddos/')">立即选购</Button>
+              <a href="https://i.xinruiyun.cn/buy/ddos/" class="btn">立即选购</a>
             </li>
             <li>
               <div class="top">
@@ -418,7 +418,7 @@
                   <i>折</i>
                 </div>
               </div>
-              <Button class="btn" @click="$router.push('/buy/ddos/')">立即选购</Button>
+              <a href="https://i.xinruiyun.cn/buy/ddos/" class="btn">立即选购</a>
             </li>
           </ul>
         </div>
@@ -433,9 +433,9 @@
             <img src=../../../assets/img/active/ddos/ddos-close-icon.png alt="关闭图标" @click.stop="showModal.ruleKill=false">
           </div>
           <div class="body">
-            <p>1、活动时间：2019.8.15-2019.11.15，每天6场秒杀， 2点、6点、10点、14点、18点、22点开抢。</p>
-            <p>2、活动对象：新老用户皆可参与，其中云服务器、GPU服务器仅限于新用户。</p>
-            <p>3、数量限制：活动期间同一用户（同一手机、邮箱、实名认证用户视为同一用户）按照不同的配置进行秒杀，其中云服务器和GPU服务器仅限新用户抢购，每次秒杀每款配置限抢购1台。</p>
+            <p>1、活动时间：2019.8.16-2019.11.16，每天6场秒杀， 2点、6点、10点、14点、18点、22点开抢。</p>
+            <p>2、活动对象：新老用户皆可参与。</p>
+            <p>3、数量限制：活动期间同一用户（同一手机、邮箱、实名认证用户视为同一用户）按照不同的配置进行秒杀,每次秒杀每款配置限抢购1台。</p>
             <p>4、参与本次活动购买的产品不能进行退款。</p>
             <p>5、此次活动产品不能用于转售，不能用于第三方业务，只能用于自身业务。如若利用资源从事违法违规行为的用户，新睿云有权收回使用资格，并且不予退款。</p>
             <p>6、购买时不可使用任何优惠券和现金券，秒杀活动不支持会员折扣。</p>
@@ -591,11 +591,11 @@
               class="spanaa"
               @click="showModal.modifyPhoneID = true;showModal.cashverification=false"
             >通过身份证号码验证</span>或
-            <span class="spanaa" @click="$router.push('/work')">提交工单</span>更改手机号。
+            <span class="spanaa" @click="$router.push('/work/')">提交工单</span>更改手机号。
           </p>
           <p v-if="!authInfo||authInfo&&authInfo.checkstatus!=0" style="line-height:24px;">
             2、如果手机已丢失或停机，请
-            <span class="spanaa" @click="$router.push('/work')">提交工单</span>或
+            <span class="spanaa" @click="$router.push('/work/')">提交工单</span>或
             <a
               target="_blank"
               :href="`tencent://message/?uin=${$store.state.qq.qqnumber}&amp;Site=www.cloudsoar.com&amp;Menu=yes`"
@@ -1372,7 +1372,7 @@ export default {
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
           this.$Message.success('创建订单成功')
-          this.$router.push('/order')
+          window.open('https://i.xinruiyun.cn/order','_self')
         } else {
           this.hintMsg = res.data.message
           this.showModal.hint = true
@@ -1508,7 +1508,7 @@ export default {
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
           this.$Message.success('创建订单成功')
-          this.$router.push('/order')
+          window.open('https://i.xinruiyun.cn/order','_self')
         } else {
           this.hintMsg = res.data.message
           this.showModal.hint = true
@@ -2423,9 +2423,11 @@ export default {
         }
       }
     }
-    button {
+    a {
+      display: block;
       width: 100%;
       height: 52px;
+      line-height: 52px;
       font-size: 20px;
       background: rgba(250, 221, 152, 1);
     }

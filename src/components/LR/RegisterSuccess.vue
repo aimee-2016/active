@@ -40,7 +40,7 @@
           {
             title:'免费云服务器 不限量领取',
             text:'交押金最长可用1年，押金闪退！',
-            src:'/activity/free/',
+            src:'/free/',
             srctext:'立即抢购'
           },
         ]

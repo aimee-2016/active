@@ -704,3 +704,12 @@ box-shadow:0px 2px 3px 0px rgba(115,115,115,0.4);
 #freeAnnual .weui-cells {
     margin-top: 0;
 }
+
+/*高防主机*/
+#higncopy .weui-cells{
+  margin-top: 0;
+}
+#higncopy .onlytime .weui-cell {
+  background: #54516a;
+  color: white;
+}

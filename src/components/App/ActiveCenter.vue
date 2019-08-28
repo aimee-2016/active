@@ -4,7 +4,7 @@
     <div class="banner">
       <my-carousel :interval=5000 class="carousel" @on-change="change">
         <my-carousel-item class="carousel-item">
-          <div @click="push('/activity/ddosactive')"
+          <div @click="push('/ddosactive/')"
                style="cursor: pointer;">
             <div class="ddos">
               <div class="wrap">
@@ -64,7 +64,7 @@
           </div>
         </my-carousel-item> -->
         <my-carousel-item class="carousel-item">
-          <div @click="push('/activity/free')"
+          <div @click="push('/free/')"
                style="cursor: pointer;background: #F56B23;">
             <div class="free-receive">
               <div class="wrap">
@@ -80,7 +80,7 @@
           </div>
         </my-carousel-item>
         <my-carousel-item class="carousel-item">
-          <div  @click="push('/activity/objectstorage')"
+          <div  @click="push('/objectstorage/')"
             style="cursor: pointer;">
             <div class="obj-storage">
               <div class="wrap">
@@ -138,7 +138,7 @@
             <span>NOVICE TO CLOUD</span>
           </div>
           <div class="box-wrap">
-            <router-link v-for="(item,index) in activeData" :key="index" :class="{'box':true}"
+            <!-- <router-link v-for="(item,index) in activeData" :key="index" :class="{'box':true}"
                          :to="item.isStart?item.url:''" :style="{background:'url('+item.imgPath+')',backgroundRepeat:'no-repeat'}">
               <div class="box-head" :style="{color:item.color}">
                 <div v-if="item.name">
@@ -155,6 +155,25 @@
                 <div>
                   <p>活动时间：{{item.time}}</p>
                   <p>活动对象：{{item.activeObj}}</p>
+                </div>
+                <button v-if="item.isStart">立即参与 →</button>
+                <button v-else>敬请期待</button>
+              </div>
+            </router-link> -->
+            <router-link v-for="(item,index) in allActive" :key="index" :class="{'box':true}"
+                         :to="'/'+item.newurl+'/'" :style="{background:'url('+item.imgCenter+')',backgroundRepeat:'no-repeat'}">
+              <div class="box-head" :style="{color:item.namecolor}">
+                <div v-if="item.name">
+                  <p>
+                    {{item.name}}
+                  </p>
+                  <p :style="{color:item.colortwo}">{{item.actdesc}}</p>
+                </div>
+              </div>
+              <div class="box-bottom">
+                <div>
+                  <p>{{item.des}}</p>
+                  <p style="line-height:1.2">活动对象：{{item.activeObj}}</p>
                 </div>
                 <button v-if="item.isStart">立即参与 →</button>
                 <button v-else>敬请期待</button>
@@ -214,6 +233,7 @@
     data () {
       return {
         active: [],
+        allActive: [],
         activedata: [
           {
             imgPath: require('../../assets/img/active/ddos/ddos-ac.png'),
@@ -221,7 +241,7 @@
             desc: '更有首月8折等超多优惠',
             time: '2019.7.25-2019.9.25',
             activeObj: '新老用户皆可参与',
-            url: '/activity/ddosactive',
+            url: '/ddosactive/',
             isStart: true,
             weight: '1',
             color: 'rgba(252,202,138,1)',
@@ -261,7 +281,7 @@
             desc: '保证金闪退',
             time: '2019.06.26开始',
             activeObj: '云服务器 新注册用户',
-            url: '/activity/free/',
+            url: '/free/',
             isStart: true,
             weight: '1'
           },
@@ -280,7 +300,7 @@
             desc: '安全稳定高效的云端存储服务 免费试用50G',
             time: ' 2018年8月1日',
             activeObj: '对象存储 新老用户',
-            url: '/activity/objectstorage',
+            url: '/objectstorage/',
             isStart: true,
             weight: '1',
             color: 'black'
@@ -292,7 +312,7 @@
             time: '2018.10.19开始',
             // time: '即将上线',
             activeObj: '云数据库 新老用户',
-            url: '/activity/hotdatabase',
+            url: '/hotdatabase/',
             isStart: true,
             weight: '1',
             color: 'black'
@@ -335,6 +355,17 @@
         })
         return arry
       }
+    },
+    created () {
+      axios.get('/activity/getActivitys.do', {
+        params: {
+          isStart: 2
+        }
+      }).then(res => {
+        if (res.status === 200 && res.data.status === 1) {
+          this.allActive = res.data.result
+        }
+      })
     },
     watch: {},
     components: {}
@@ -413,7 +444,7 @@
                   margin:0 auto;
                   display: flex;
                   justify-content: space-between;
-                 
+
                   .text{
                   >p{
                     font-size:50px;
