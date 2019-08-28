@@ -1294,7 +1294,7 @@ export default {
         {
           text: '云数据库免费试用',
           config: '60天',
-          url: '/objectstorage/',
+          url: '/hotdatabase/',
         }
       ],
       inConformityModalMsg: '您好！本活动仅限新注册或者一直未使用过平台资源（第三方产品除外）及未参加过其他免费活动用户参与。'

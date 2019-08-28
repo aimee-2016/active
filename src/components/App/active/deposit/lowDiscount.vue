@@ -3,27 +3,32 @@
     <div class="hot-host">
       <div class="wrap">
         <div class="product">
-          <div v-for="(item,index) in hotHostList" :key="index">
+          <div v-for="(item,index) in allList" :key="index">
             <div class="head">
-              <h3>{{killTitle(item)}}<span>{{item.post.cpu+'核'+item.post.mem+'G'}}</span></h3>
+                <h3>{{killTitle(item)}}
+                <span v-if="item.post.servicetype!='ticket'">{{item.post.cpu+'核'+item.post.mem+'G'}}</span></h3>
             </div>
-            <div class="body">
+            <div class="body" v-if="item.post.servicetype!='ticket'">
               <div>
                 <span class="label">带宽：</span>
                 {{item.post.bandwith}}M
               </div>
+              <div v-if="item.post.servicetype=='G5500'">
+                <span class="label">配置：</span>
+                {{item.post.gpusize}}* NVIDIA P100
+              </div>
               <div>
                 <span class="label">区域：</span>
                 <Select
-                  v-model="item.zone"
+                  v-model="item.zoneId"
                   style="width:142px"
-                  @on-change="changeZoneHot(item,index,'hotHostList')"
+                  @on-change="changeZoneHot(item)"
                 >
                   <Option
-                    v-for="item in zoneListHot"
-                    :value="item.value"
-                    :key="item.value"
-                  >{{ item.name }}</Option>
+                    v-for="item1 in item.zoneList"
+                    :value="item1.value"
+                    :key="item1.value"
+                  >{{ item1.name }}</Option>
                 </Select>
               </div>
               <div>
@@ -32,15 +37,18 @@
               </div>
               <div class="time">
                 <span class="label">时长：</span>
-                <ul>
+                 <i v-if="item.postArr.length<2" style="font-style:normal">
+                  {{month(item.post.days)}}
+                </i>
+                <ul v-else>
                   <li
-                    v-for="(item1,index1) in item.timeList"
+                    v-for="(item1,index1) in item.postArr"
                     :key="index1"
-                    :class="{'selected':item.configId==item1.id}"
+                    :class="{'selected':item.post.days==item1.days}"
                     @click="changgeTimeHot(item,item1)"
                   >
                     {{month(item1.days)}}
-                    <span>{{item1.discount}}折</span>
+                    <!-- <span>{{item1.discount}}折</span> -->
                   </li>
                 </ul>
               </div>
@@ -52,7 +60,26 @@
                 原价：￥
                 <span>{{item.originPrice+'/'+month(item.time)}}</span>
               </div> -->
-              <Button @click="pushOrderHot(item)">立即购买</Button>
+              <Button @click="pushOrderHot(item)">立即抢购</Button>
+            </div>
+            <div class="body coupen" v-else>
+              <div>
+                <span class="label" style="width:70px">抵扣金额：</span>
+                {{item.post.money}}元
+              </div>
+              <div>
+                <span class="label" style="width:70px">使用条件：</span>
+                无门槛
+              </div>
+              <div>
+                <span class="label" style="width:70px">使用方法：</span>
+                <div>购买域名时抵扣</div>
+              </div>
+              <div>
+                <span class="label" style="width:70px">使用时间：</span>
+                <div>自领取之日1个月内使用</div>
+              </div>
+              <Button @click="pushOrderHot(item)">立即抢购</Button>
             </div>
           </div>
         </div>
@@ -72,6 +99,7 @@ import $ from 'jquery'
 export default {
   data() {
     return {
+      allList: [],
       hotHostList: [
         {
           post: {
@@ -85,6 +113,7 @@ export default {
             disktype: "ssd",
             id: 497
           },
+          postArr: [],
           systemList: [{
             value: 'window',
             label: 'Windows',
@@ -122,6 +151,7 @@ export default {
             disktype: "ssd",
             id: 497
           },
+          postArr: [],
           systemList: [{
             value: 'window',
             label: 'Windows',
@@ -160,6 +190,7 @@ export default {
             disktype: "ssd",
             id: 497
           },
+          postArr: [],
           systemList: [{
             value: 'window',
             label: 'Windows',
@@ -197,22 +228,26 @@ export default {
             disktype: "ssd",
             id: 497
           },
-          systemList: [
-            {
-              value: 'mysql',
-              label: 'mysql',
-              children: [],
-            },
-            {
-              value: 'redis',
-              label: 'redis',
-              children: []
-            }, {
-              value: 'postgresql',
-              label: 'postgresql',
-              children: [],
-            }
-         ],
+          postArr: [],
+          systemList: [{
+            value: 'window',
+            label: 'Windows',
+            children: []
+          }, {
+            value: 'centos',
+            label: 'Centos',
+            children: [],
+          },
+          {
+            value: 'debian',
+            label: 'Debian',
+            children: [],
+          },
+          {
+            value: 'ubuntu',
+            label: 'Ubuntu',
+            children: [],
+          }],
           system: [],
           zoneList: [],
           zoneId: '',
@@ -270,6 +305,7 @@ export default {
             disktype: "ssd",
             id: 497
           },
+          postArr: [],
           systemList: [{
             value: 'window',
             label: 'Windows',
@@ -307,6 +343,7 @@ export default {
             disktype: "ssd",
             id: 497
           },
+          postArr: [],
           systemList: [{
             value: 'window',
             label: 'Windows',
@@ -345,6 +382,7 @@ export default {
             disktype: "ssd",
             id: 497
           },
+          postArr: [],
           systemList: [{
             value: 'window',
             label: 'Windows',
@@ -370,53 +408,21 @@ export default {
           price: '69',
           originPrice: '176.72',
         },
+      ],
+      gpuList: [
         {
           post: {
-            servicetype: "db",
+            servicetype: "host",
             bandwith: 2,
             cost: 69,
             cpu: 2,
-            mem: 8,
-            days: 60,
+            mem: 4,
+            days: 30,
             disksize: 40,
             disktype: "ssd",
             id: 497
           },
-          systemList: [
-            {
-              value: 'mysql',
-              label: 'mysql',
-              children: [],
-            },
-            {
-              value: 'redis',
-              label: 'redis',
-              children: []
-            }, {
-              value: 'postgresql',
-              label: 'postgresql',
-              children: [],
-            }
-         ],
-          system: [],
-          zoneList: [],
-          zoneId: '',
-          price: '69',
-          originPrice: '176.72',
-        },
-        {
-          post: {
-            servicetype: "G5500",
-            bandwith: 2,
-            cost: 69,
-            cpu: 2,
-            mem: 8,
-            days: 3,
-            disksize: 40,
-            disktype: "ssd",
-            id: 497
-          },
-          postArr:[],
+          postArr: [],
           systemList: [{
             value: 'window',
             label: 'Windows',
@@ -441,111 +447,203 @@ export default {
           zoneId: '',
           price: '69',
           originPrice: '176.72',
-          gpuConfigIndex: 0,
         },
       ],
       zoneListHot: [],
+      coupenList: [
+        {post: {}}
+      ],
     }
   },
   created() {
-    this.getConfigureHot()
+    
+    this.promise()
   },
   mounted() {
 
   },
   methods: {
-    // 获取活动配置,区域
-    getConfigureHot () {
-      let url = 'activity/getActInfo.do'
-      axios.get(url, {
+    promise() {
+      let reshost = axios.get('activity/getActInfo.do', {
         params: {
           activityNum: '58'
         }
-      }).then(res => {
+      })
+      let resgpu = axios.get('activity/getActInfo.do', {
+        params: {
+          activityNum: '61'
+        }
+      })
+      let rescoupen = axios.get('activity/getActTicket.do', {
+        params: {
+          activityNum: '62'
+        }
+      })
+      Promise.all([reshost,resgpu,rescoupen]).then(res => {
+        if (res[0].status == 200 && res[0].data.status == 1 && res[1].status == 200 && res[1].data.status == 1 && res[2].status == 200 && res[2].data.status == 1) {
+          // this.$Message.success('订单提交成功')
+          // this.$router.push({
+          //   path: '/order', query: {
+          //     countOrder
+          //   }
+          // })
+          this.getConfigureHot(res[0])
+          this.getConfigureGPU(res[1])
+          this.getCoupen(res[2])
+        }
+      })
+
+    },
+    // 获取活动配置,区域
+    getConfigureHot (res) {
+      // let url = 'activity/getActInfo.do'
+      // axios.get(url, {
+      //   params: {
+      //     activityNum: '58'
+      //   }
+      // }).then(res => {
         if (res.data.status == 1 && res.status == 200) {
-          // 处理数组格式
-          let originArr = res.data.result.freevmconfigs
-          let timeList = []
-          originArr.forEach((item, index) => {
-            if ((index + 1) % 2 != 0) {
-              timeList = []
+          let receiveVal =  res.data.result.freevmconfigs
+          let newArr = []
+          // 数组去重（相同配置的）
+          for(var i=0;i<receiveVal.length;i++) {
+            for(var j=0;j<newArr.length;j++){
+              if(receiveVal[i].cpu==newArr[j].cpu&&receiveVal[i].mem==newArr[j].mem&&receiveVal[i].bandwith==newArr[j].bandwith) {
+                break
+              }
             }
-            let rObj = {};
-            rObj['id'] = item.id;
-            rObj['discount'] = item.discount;
-            rObj['days'] = item.days;
-            timeList.push(rObj)
-            if ((index + 1) % 2 == 0) {
-              let num = index - (index + 1) / 2
-              this.hotHostList[num].config = item
-              this.hotHostList[num].timeList = timeList
+            if (j == newArr.length) {
+              newArr[newArr.length] = receiveVal[i];
             }
+          }
+          // console.log(newArr)
+          this.hotHostList.forEach((item,index)=> {
+            item.post = newArr[index]
+            item.zoneList = res.data.result.optionalArea
+            // 设置默认区域
+            item.zoneId = item.zoneList[0].value
+            // 设置默认系统
+            this.changeZoneHot(item)
           })
-          // 获取区域列表
-          this.zoneListHot = res.data.result.optionalArea
+          for(var i=0;i<receiveVal.length;i++) {
+            for(var j=0;j<this.hotHostList.length;j++){
+              if(receiveVal[i].cpu==this.hotHostList[j].post.cpu&&receiveVal[i].mem==this.hotHostList[j].post.mem&&receiveVal[i].bandwith==this.hotHostList[j].post.bandwith) {
+                this.hotHostList[j].postArr.push(receiveVal[i])
+              }
+            }
+          }
           // console.log(this.hotHostList)
         }
-        //默认选择
-        this.hotHostList.forEach(item => {
-          // console.log(item)
-          item.configId = item.timeList[0].id
-          item.time = item.timeList[0].days
-          item.zone = this.zoneListHot[0].value
-          this.changgeTimeHot(item, item.timeList[0])
-        })
-      })
+      // })
     },
-    changgeTimeHot (item, innerItem) {
-      item.configId = innerItem.id
-      item.time = innerItem.days
+    
+    // 获取gpu配置,区域
+    getConfigureGPU (res) {
+      // let url = 'activity/getActInfo.do'
+      // axios.get(url, {
+      //   params: {
+      //     activityNum: '61'
+      //   }
+      // }).then(res => {
+        if (res.data.status == 1 && res.status == 200) {
+          this.gpuList.forEach((item,index)=> {
+            item.post = res.data.result.freevmconfigs[index]
+            item.zoneList = res.data.result.optionalAreaGpu
+            // 设置默认区域
+            item.zoneId = item.zoneList[0].value
+            // 设置默认系统
+            this.changeZoneHot(item)
+          })
+          // console.log(this.allList)
+        }
+      // })
+    },
+    // 获取优惠券配置
+    getCoupen (res) {
+      // let url = 'activity/getActTicket.do'
+      // axios.get(url, { 
+      //   params: {
+      //     activityNum: '62'
+      //   }
+      // }).then(res => {
+        if (res.data.status == 1 && res.status == 200) {
+          this.coupenList.forEach((item,index)=> {
+            item.post = res.data.result.freevmconfigs[index]
+          })
+          console.log(this.coupenList)
+          this.allList = (this.hotHostList.concat(this.gpuList)).concat(this.coupenList)
+        }
+      // })
+    },
+    changgeTimeHot (item,select) {
+      // console.log(item)
+      item.post = select
       this.getPriceHot(item)
     },
-    changeZoneHot (item, index, name) {
-      this.changeZoneHost(item, index, name)
+    changeZoneHot (item) {
+      this.changeZoneHost(item)
       this.getPriceHot(item)
     },
     // 根据区域获得不同系统
-    changeZoneHost (item, index, name) {
-      axios.get('information/listTemplates.do', {
+    changeZoneHost (item) {
+      let url = ''
+      let systemType = ''
+      let showName = ''
+      if(item.post.servicetype == 'db') {
+        url = 'database/listDbTemplates.do'
+        systemType = 'mysql'
+        showName = 'dbname'
+      } else{
+        url = 'information/listTemplates.do'
+        systemType = 'window'
+        showName = 'templatedescript'
+      }
+      axios.get(url, {
         params: {
-          zoneId: item.zone,
+          zoneId: item.zoneId,
         }
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
           var x
           for (x in res.data.result) {
-            this[name][index].systemList.forEach(item => {
+            item.systemList.forEach(item => {
               if (item.value == x) {
                 item.children = res.data.result[x]
               }
             })
           }
-          this[name][index].systemList.forEach(item => {
+          item.systemList.forEach(item => {
             item.children.forEach(item => {
               item.value = item.systemtemplateid
-              item.label = item.templatedescript
+              item.label = item[showName]
             })
           })
-          this[name][index].systemList.forEach((item, index) => {
+          item.systemList.forEach((item, index) => {
             if (item.children.length == 0) {
               item.disabled = true
             }
           })
           // 设置默认系统
-          this[name].forEach(item => {
-            item.system = ['window', res.data.result.window[0].systemtemplateid]
-          })
+          item.system = [systemType, res.data.result[systemType][0].systemtemplateid]
         }
       })
     },
     getPriceHot (item) {
-      // console.log(item.zone)
-      axios.get('activity/getOriginalPrice.do', {
-        params: {
-          zoneId: item.zone,
-          vmConfigId: item.configId,
-          month: item.time / 30
+      let params = {}
+      if(item.post.days<=7){
+        params= {
+            zoneId: item.zoneId,
+            vmConfigId: item.post.id,
+          }
+      } else {
+        params = {
+          zoneId: item.zoneId,
+          vmConfigId: item.post.id,
+          month: item.post.days / 30
         }
+      }
+      axios.get('activity/getOriginalPrice.do', {
+        params: params
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
           item.price = res.data.result.cost;
@@ -562,12 +660,23 @@ export default {
         this.showModal.authentication = true
         return
       }
-      axios.get('information/getDiskcountMv.do', {
-        params: {
-          defzoneid: item.zone,
-          vmConfigId: item.configId,
+      let url = 'information/getDiskcountMv.do'
+      let params = {
+          defzoneid: item.zoneId,
+          vmConfigId: item.post.id,
           osType: item.system[1]
         }
+      if (item.post.servicetype == 'ticket') {
+        // url = 'activity/getDiskcountHighPreventionMv.do'
+        params = {}
+      } else if (item.post.servicetype == 'high_ip') {
+        url = 'activity/getDiskcountHighIP.do'
+      } else if(item.post.servicetype == 'G5500') {
+        url = 'activity/getDiskcountGPU.do'
+      }
+      
+      axios.get(url, {
+        params:params
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
           this.$Message.success('创建订单成功')
@@ -580,16 +689,25 @@ export default {
       })
     },
     month (val) {
-      return val >= 360 ? val / 360 + '年' : val / 30 + '个月'
+      let text = ''
+      if (val>=360) {
+        text = val/360+'年'
+      } else if(val>=30){
+        text = val/30+'个月'
+      } else {
+        text = val+'天'
+      }
+      return text
     },
     killTitle (val) {
+      // console.log(val.post)
       let result = ''
       switch (val.post.servicetype) {
         case 'host':
           result = '云服务器'
           break
-        case 'db':
-          result = '云数据库'
+        case 'ticket':
+          result = '域名抵用券'
           break
         case 'G5500':
           result = 'GPU云服务器'
@@ -601,7 +719,15 @@ export default {
     },
   },
   computed: {
-
+    authInfo () {
+      return this.$store.state.authInfo ? this.$store.state.authInfo : null
+    },
+    authInfoPersion () {
+      return this.$store.state.authInfoPersion
+    },
+    userInfo () {
+      return this.$store.state.userInfo
+    },
   },
   watch: {
 
@@ -614,9 +740,12 @@ export default {
 
 <style rel="stylesheet/less" lang="less" scoped>
 .hot-host {
+  .product-wrap {
+    // display: flex;
+  }
   .product {
     display: flex;
-    justify-content: space-between;
+    // justify-content: space-between;
     flex-wrap: wrap; 
     text-align: left;
     background: #fff;
@@ -625,6 +754,11 @@ export default {
       width: 224px;
       box-shadow: 0px 3px 10px -3px rgba(195, 205, 230, 0.7);
       border: 1px solid rgba(220, 226, 242, 1);
+      margin-bottom: 20px;
+      margin-right: 20px;
+      &:nth-of-type(5n+5){
+        margin-right: 0;
+      }
     }
     .head {
       height: 65px;
@@ -639,6 +773,7 @@ export default {
       //   font-size: 14px;
       // }
     }
+    
     .body {
       padding: 10px 16px 20px 16px;
       background: #fff;
@@ -695,11 +830,13 @@ export default {
             height: 34px;
             margin-bottom: 10px;
             line-height: 32px;
-            border-radius: 2px;
             border: 1px solid rgba(125, 161, 217, 1);
             text-align: center;
             color: #4b3c3d;
             cursor: pointer;
+            &:nth-of-type(1) {
+              border-right: none;
+            }
             &:nth-child(3n + 3) {
               margin-right: 0;
             }
@@ -743,6 +880,20 @@ export default {
         color: #fff;
         height: 40px;
         font-size: 18px;
+      }
+    }
+    .coupen {
+      >div {
+        display: block;
+        div {
+          padding-left: 10px;
+          border-radius:2px;
+          border:1px dashed rgba(125,161,217,1);
+        }
+      }
+      .label {
+        display: inline-block;
+        width: 70px;
       }
     }
   }
