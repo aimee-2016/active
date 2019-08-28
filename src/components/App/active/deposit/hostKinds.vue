@@ -2,7 +2,8 @@
   <div>
     <div class="free-host">
       <div class="wrap">
-        <img src="../../../../assets/img/active/freeToReceive.1/free-host-text.png" />
+        <img class="pc" src="../../../../assets/img/active/freeToReceive.1/free-host-text.png" />
+        <img class='mobile' src="../../../../assets/img/active/deposit/m-banner.png" />
         <div class="main">
           <div class="tabs">
             <div :class="{selected:currentView=='child1'}">
@@ -51,7 +52,6 @@
                     <div ref="summary-host-select">
                       <Select
                         v-model="selectConfig"
-                        style="width:476px"
                         placeholder=" "
                         @on-change="changConfigGPU"
                       >
@@ -89,7 +89,7 @@
                 <div class="right">
                   <div>
                     <span class="label">带宽选择</span>
-                    <Select v-model="selectBandWidth" style="width:408px">
+                    <Select v-model="selectBandWidth">
                       <Option v-for="item in bandWidthList" :value="item" :key="item">{{item}}M</Option>
                     </Select>
                   </div>
@@ -98,7 +98,6 @@
                     <Cascader
                       :data="summarySystemList"
                       v-model="selectSummarySystem"
-                      style="width:408px;"
                     ></Cascader>
                   </div>
                   <div class="ssd">
@@ -114,7 +113,7 @@
                   </div>
                   <div>
                     <span class="label">购买时长</span>
-                    <Select v-model="selectTime" style="width:408px">
+                    <Select v-model="selectTime">
                       <Option
                         v-for="(item,index) in hostTimeList"
                         :value="item"
@@ -215,7 +214,7 @@ export default {
     }
   },
   created () {
-
+    this.getZoneList()
   },
   mounted () {
 
@@ -267,29 +266,6 @@ export default {
         if (res.status == 200 && res.data.status == 1) {
           item.cashPledge = res.data.result.cost;
           item.originPrice = res.data.result.originalPrice;
-        }
-      })
-    },
-    getHost (index1) {
-      if (!this.$store.state.userInfo) {
-        this.$LR({ type: 'register' })
-        return
-      }
-      if ((!this.authInfo) || (this.authInfo && this.authInfo.authtype == 0 && this.authInfo.checkstatus != 0) || (!this.authInfoPersion && this.authInfo && this.authInfo.authtype == 1 && this.authInfo.checkstatus != 0) || (this.authInfoPersion && this.authInfoPersion.checkstatus != 0 && this.authInfo && this.authInfo.checkstatus != 0)) {
-        this.showModal.authentication = true
-        return
-      }
-      this.$http.post('device/DescribeWalletsBalance.do').then(response => {
-        if (response.status == 200 && response.data.status == '1') {
-          this.balance = Number(response.data.data.remainder)
-          this.index1 = index1
-          this.time = this.depositList[index1].time
-          this.cashPledge = this.depositList[index1].cashPledge
-          this.showModal.rechargeHint = true
-        } else {
-          this.$message.info({
-            content: response.data.message
-          })
         }
       })
     },
@@ -519,6 +495,9 @@ export default {
       }
       if ((!this.authInfo) || (this.authInfo && this.authInfo.authtype == 0 && this.authInfo.checkstatus != 0) || (!this.authInfoPersion && this.authInfo && this.authInfo.authtype == 1 && this.authInfo.checkstatus != 0) || (this.authInfoPersion && this.authInfoPersion.checkstatus != 0 && this.authInfo && this.authInfo.checkstatus != 0)) {
         this.showModal.authentication = true
+        // this.$message.info({
+        //       content: '未实名认证'
+        //     })
         return
       }
       axios.get('information/getDiskcountMv.do', {
@@ -798,9 +777,7 @@ export default {
       // console.log(params)
       axios.get('information/deployVirtualMachine.do', { params }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          this.$router.push({
-            path: '/order'
-          })
+          window.open('https://i.xinruiyun.cn/order','_self')
         } else {
           this.$message.info({
             content: response.data.message
@@ -987,7 +964,7 @@ export default {
   }
   .container {
     width: 100%;
-    padding: 30px;
+    padding: 30px 10px 30px 30px;
     background: rgba(242, 248, 255, 1);
   }
 }
@@ -1017,7 +994,7 @@ export default {
       color: #fff;
       background: url("../../../../assets/img/active/freeToReceive.1/summary-product-bg.png")
         no-repeat;
-      // background-size: cover;
+      background-size: 100%;
       h3 {
         font-size: 22px;
       }
@@ -1038,6 +1015,7 @@ export default {
       }
       .left {
         padding-top: 40px;
+        width: 50%;
         > div {
           margin-bottom: 40px;
         }
@@ -1055,7 +1033,7 @@ export default {
         ul {
           display: flex;
           flex-wrap: wrap;
-          width: 476px;
+          width: 100%;
           li {
             width: 110px;
             height: 34px;
@@ -1122,4 +1100,63 @@ export default {
     }
   }
 }
+@media screen and (max-width: 1281px) {
+  .wrap {
+    width: 100%;
+  }
+  .summary-host {
+    .wrap {
+      width: 100%;
+    }
+    .product {
+      >div {
+        width: 95%;
+      }
+      .body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  }
+}
+@media screen and (min-width: 1280px) {
+  .wrap {
+    width: 1260px;
+  }
+  
+}
+@media screen and (max-width: 1020px) {
+  .pc {
+    display: none;
+  }
+  .mobile {
+    display: inline-block;
+  }
+}
+@media screen and (min-width: 1021px) {
+  .pc {
+    display: inline-block;
+  }
+  .mobile {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .summary-host {
+    .product {
+      .body {
+        padding: 0 10px;
+        .left {
+          width: 100%;
+          // padding: 0 2px;
+        }
+      }
+    }
+  }
+}
+
+
+
 </style>

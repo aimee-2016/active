@@ -658,6 +658,9 @@ export default {
       }
       if ((!this.authInfo) || (this.authInfo && this.authInfo.authtype == 0 && this.authInfo.checkstatus != 0) || (!this.authInfoPersion && this.authInfo && this.authInfo.authtype == 1 && this.authInfo.checkstatus != 0) || (this.authInfoPersion && this.authInfoPersion.checkstatus != 0 && this.authInfo && this.authInfo.checkstatus != 0)) {
         this.showModal.authentication = true
+        // this.$message.info({
+        //       content: '未实名认证'
+        //     })
         return
       }
       let url = 'information/getDiskcountMv.do'
@@ -667,20 +670,23 @@ export default {
           osType: item.system[1]
         }
       if (item.post.servicetype == 'ticket') {
-        // url = 'activity/getDiskcountHighPreventionMv.do'
-        params = {}
-      } else if (item.post.servicetype == 'high_ip') {
-        url = 'activity/getDiskcountHighIP.do'
+        url = 'activity/getActTicket.do'
+        params = {activityNum:62}
       } else if(item.post.servicetype == 'G5500') {
         url = 'activity/getDiskcountGPU.do'
       }
-      
       axios.get(url, {
         params:params
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
-          this.$Message.success('创建订单成功')
-          window.open('https://i.xinruiyun.cn/order','_self')
+          if (item.post.servicetype == 'ticket') {
+            this.$message.info({
+              content: res.data.message
+            })
+          }else{
+            this.$Message.success('创建订单成功')
+            window.open('https://i.xinruiyun.cn/order','_self')
+          }
         } else {
           this.$message.info({
             content: res.data.message
@@ -745,10 +751,10 @@ export default {
   }
   .product {
     display: flex;
-    // justify-content: space-between;
+    justify-content: center;
     flex-wrap: wrap; 
     text-align: left;
-    background: #fff;
+    // background: #fff;
     padding-bottom: 10px;
     > div {
       width: 224px;
@@ -756,13 +762,14 @@ export default {
       border: 1px solid rgba(220, 226, 242, 1);
       margin-bottom: 20px;
       margin-right: 20px;
-      &:nth-of-type(5n+5){
-        margin-right: 0;
-      }
+      // &:nth-of-type(5n+5){
+      //   margin-right: 0;
+      // }
     }
     .head {
       height: 65px;
       padding: 25px 0 0 16px;
+      background: #fff;
       // color: #fff;
       // background: url("../../../../assets/img/active/freeToReceive.1/hot-host-product-bg.png");
       h3 {

@@ -97,14 +97,19 @@
         </div>
         <div class="tips">
           新用户专享，为防止恶意刷抢免费云资源，遂需缴纳保证金，保证金随时可退
-          <span class="blue">活动规则></span>
+          <span class="blue" @click="showModal.rule=true">活动规则></span>
           <span class="red">领取优惠券></span>
         </div>
         <div class="tips">
           温馨提示：使用期间若到“百度口碑”发布使用体验等相关评论，截图联系发送至在线客服，可领取满200减100优惠券
-          <span
+          <a
+                href="https://koubei.baidu.com/s/510a4f5f6316c2d0f81b3e63bc75b537?fr=search"
+                target="blank"
+                style="text-decoration: underline;"
+              >点击发布评论></a>
+          <!-- <span
             class="blue under-line"
-          >点击发布评论></span>
+          >点击发布评论></span> -->
         </div>
         <div class="renew">
           <div class="head-g">
@@ -112,8 +117,7 @@
             <div>
               <h3>续费尊享 看看你能省多少</h3>
               <p>
-                已参与免费领云产品的用户续费享更多优惠
-                <span>活动规则></span>
+                <span @click="showModal.ruleHost=true">活动规则></span>
               </p>
             </div>
           </div>
@@ -173,7 +177,7 @@
               <h3>升级配置 立享优惠</h3>
               <p>
                 已参与免费领云产品的用户，升级云服务器配置或带宽即可享受优惠
-                <span>活动规则></span>
+                <span @click="showModal.ruleCoupon=true">活动规则></span>
               </p>
             </div>
           </div>
@@ -198,6 +202,87 @@
         </div>
       </div>
     </div>
+    <!-- 活动规则 -->
+    <transition name="fade">
+      <div class="overlay" @click.stop="showModal.rule=true" v-if="showModal.rule">
+        <div class="rule-modal" style="max-height: 80%;overflow-y: auto;">
+          <div class="header">
+            <span>活动规则</span>
+            <img src=../../../../assets/img/active/freeToReceive.1/close-icon.png alt="关闭图标" @click.stop="showModal.rule=false">
+          </div>
+          <div class="body">
+            <p>1、活动时间：2019年5月7日开始，总量有限，先到先得！</p>
+            <p>2、活动对象：新注册或者一直未使用过平台资源（第三方产品除外）及未参加过其他免费活动并已通过实名认证的用户。</p>
+            <dl>
+              <dt>3、活动内容：</dt>
+              <dd>（1）活动产品需充值对应的保证金后方可使用；云服务器未到期可自行删除，删除后或者云服务器使用到期后，用户可解冻保证金。 </dd>
+              <dd>（2）若您需要续费保证金云服务器，可选择在云服务器未到期之前将保证金转换为云服务器续费费用，续费后云服务器最长可使用3年。</dd>
+            </dl>
+            <p>4、解冻操作流程：进入控制台，点击右上角用户名，选择【费用中心】，在账户概览中点击【历史冻结记录】，在弹出的弹窗中选择需要解冻的保证金，点击【申请解冻】，根据弹窗提示完成操作。</p>
+            <dl>
+              <dt>5、活动规则：</dt>
+              <dd>（1）每个用户只能参与一次，同一手机号对应的多个账号、同一实名认证用户等满足同一条件的均视为一个用户。</dd>
+              <dd>（2）免费产品中的资源可随时进行升级，升级费用按新睿云标准收费进行收取。 </dd>
+              <dd>（3）在各产品免费使用期间，若对免费资源进行了销毁，则视为放弃免费使用权。</dd>
+            </dl>
+            <p>6、活动声明：为保证活动的公平公正，新睿云有权对恶意刷抢（如通过程序等技术手段）活动资源，领取后3天内未使用资源、利用资源从事违法违规行为的用户收回免费套餐使用资格。因此造成任何损失的，由该用户自行负责。</p>
+            <p>7、请注意：在未支付订单情况下，系统会对您的资格造成误判，需要您将账号下未支付订单作废后，即可正常参与。</p>
+          </div>
+          <div class="footer">
+            <span @click.stop="showModal.rule=false">知道了</span>
+          </div>
+        </div>
+      </div>
+    </transition>
+    <!-- 活动规则 -->
+    <transition name="fade">
+      <div class="overlay" @click.stop="showModal.ruleHost=true" v-if="showModal.ruleHost">
+        <div class="rule-modal">
+          <div class="header">
+            <span>活动规则</span>
+            <img src=../../../../assets/img/active/freeToReceive.1/close-icon.png alt="关闭图标" @click.stop="showModal.ruleHost=false">
+          </div>
+          <div class="body">
+            <p>1、活动时间：2019年8月28日开始。</p>
+            <p>2、活动对象：已参与免费活动的用户。</p>
+            <dl>
+              <dt>3、活动内容：</dt>
+              <dd>（1）若免费产品快到期时后期不再使用，将删除资源或者云服务器使用到期后，用户可解冻保证金。</dd>
+              <dd>（2）若您需要续费保证金云服务器，可选择在云服务器未到期之前将保证金转换为云服务器续费费用，续费后云服务器最长可使用3年。</dd>
+              <dd>（3）续费金额将按照选择的时间进行保证金抵扣续费。</dd>
+              <dd>（4）保证金转续费时间说明：续费时间根据用户到期后加上续费的日期，不影响免费的使用时长。</dd>
+            </dl>
+            <p>4、此次活动产品不能用于转售，如若利用资源从事违法违规行为的用户，新睿云有权收回使用资格，并且不予退款。</p>
+            <p>5、请注意：在未支付订单情况下，系统会对您的资格造成误判，需要您将账号下未支付订单作废后，即可正常参与。<a href="https://i.xinruiyun.cn/expenses" style="color:#2A99F2">去订单管理</a></p>
+            <p>6、活动最终解释权为新睿云所有。</p>
+          </div>
+          <div class="footer">
+            <span @click.stop="showModal.ruleHost=false">知道了</span>
+          </div>
+        </div>
+      </div>
+    </transition>
+    <!-- 活动规则 -->
+    <transition name="fade">
+      <div class="overlay" @click.stop="showModal.ruleCoupon=true" v-if="showModal.ruleCoupon">
+        <div class="rule-modal">
+          <div class="header">
+            <span>活动规则</span>
+            <img src=../../../../assets/img/active/freeToReceive.1/close-icon.png alt="关闭图标" @click.stop="showModal.ruleCoupon=false">
+          </div>
+          <div class="body">
+            <p>1、活动时间：2019年8月28日开始。</p>
+            <p>2、活动对象：已参与免费活动的用户。</p>
+            <p>3、数量限制：每个用户限领取一次，有效期为1年。</p>
+            <p>4、配置升级说明：参与免费用1年的用户在升级CPU及带宽后，需要到期后才能退换保证金，不能提前退还，升级费用不予退款。</p>
+            <p>5、活动最终解释权为新睿云所有。</p>
+          </div>
+          <div class="footer">
+            <span @click.stop="showModal.ruleCoupon=false">知道了</span>
+          </div>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -209,6 +294,21 @@ import $ from 'jquery'
 export default {
   data () {
     return {
+      showModal: {
+        // rechargeHint: false,
+        // inConformityModal: false,
+        // getSuccessModal: false,
+        // payDefeatedModal: false,
+        // paySuccessModal: false,
+        // weChatRechargeModal: false,
+        // orderConfirmationModal: false,
+        // authentication: false,
+        // authenticationSuccess: false,
+        // authenticationError: false,
+        rule: false,
+        ruleHost: false,
+        ruleCoupon: false,
+      },
       updateList: [
         {
           name: '云服务器任意配置升级至以下配置',
@@ -469,6 +569,18 @@ export default {
 
   },
   methods: {
+    getRenewPrice () {
+      let url = '/activity/getRenewalOriginalPrice.do'
+      axios.get(url, {
+        params: {
+          vmConfigId: '59'
+        }
+      }).then(res => {
+        if (res.data.status == 1 && res.status == 200) {
+         
+        }
+      })
+    },
     // 获取活动配置,区域
     getConfigureHot () {
       let url = 'activity/getTemActInfoById.do'
@@ -501,18 +613,18 @@ export default {
       })
     },
     // 获取升级配置
-    getUpgrade () {
-      let url = 'activity/getUpgrade.do'
-      axios.get(url, {
-        params: {
-          activityNum: '59'
-        }
-      }).then(res => {
-        if (res.data.status == 1 && res.status == 200) {
+    // getUpgrade () {
+    //   let url = 'activity/getUpgrade.do'
+    //   axios.get(url, {
+    //     params: {
+    //       activityNum: '59'
+    //     }
+    //   }).then(res => {
+    //     if (res.data.status == 1 && res.status == 200) {
          
-        }
-      })
-    },
+    //     }
+    //   })
+    // },
     // 获取升级配置
     getRenew () {
       let url = 'activity/getRenewal.do'
@@ -604,6 +716,9 @@ export default {
       }
       if ((!this.authInfo) || (this.authInfo && this.authInfo.authtype == 0 && this.authInfo.checkstatus != 0) || (!this.authInfoPersion && this.authInfo && this.authInfo.authtype == 1 && this.authInfo.checkstatus != 0) || (this.authInfoPersion && this.authInfoPersion.checkstatus != 0 && this.authInfo && this.authInfo.checkstatus != 0)) {
         this.showModal.authentication = true
+        // this.$message.info({
+        //       content: '未实名认证'
+        //     })
         return
       }
       axios.get('information/getDiskcountMv.do', {
@@ -704,12 +819,15 @@ export default {
 .hot-host {
   .product {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    flex-wrap: wrap;
     text-align: left;
-    background: #fff;
+    // background: #fff;
     padding-bottom: 10px;
     > div {
       width: 224px;
+      margin-right: 20px;
+      margin-bottom: 20px;
       box-shadow: 0px 3px 10px -3px rgba(195, 205, 230, 0.7);
       border: 1px solid rgba(220, 226, 242, 1);
       &:nth-of-type(1) .head {
@@ -908,14 +1026,18 @@ export default {
   text-align: left;
   .content {
     display: flex;
-    justify-content: space-between;
-    background: url("../../../../assets/img/active/deposit/right-top-icon.png")
-      no-repeat top right;
+    justify-content: center;
+    flex-wrap: wrap;
+    // background: url("../../../../assets/img/active/deposit/right-top-icon.png")
+    //   no-repeat top right;
     .item {
       width: 583px;
       padding: 20px 0 20px 20px;
       box-shadow: 0px 3px 10px -3px rgba(195, 205, 230, 0.7);
       background: #fff;
+      margin-bottom: 20px;
+      position: relative;
+      margin-right: 20px;
     }
     .icon-text {
       float: right;
@@ -980,13 +1102,16 @@ export default {
   text-align: left;
   .content {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    flex-wrap: wrap;
     text-align: center;
     > div {
       width: 583px;
+      margin-bottom: 20px;
       background: #fff;
       padding: 30px 0;
       box-shadow: 0px 3px 10px -3px rgba(195, 205, 230, 0.7);
+      margin-right: 20px;
     }
     h4 {
       font-size: 20px;
@@ -1029,5 +1154,80 @@ export default {
       }
     }
   }
+}
+// 弹窗公共样式
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(55, 55, 55, 0.3);
+  height: 100%;
+  z-index: 1000;
+  > div {
+    position: relative;
+    margin: 0 auto;
+    top: 15%;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    font-size: 14px;
+  }
+}
+.rule-modal {
+  width: 680px;
+  .header {
+    height: 66px;
+    padding-top: 20px;
+    padding-right: 30px;
+    font-size: 20px;
+    color: rgba(31, 31, 114, 1);
+    span {
+      margin-left: 20px;
+    }
+    img {
+      float: right;
+      cursor: pointer;
+    }
+  }
+  .body {
+    padding: 30px;
+    padding-top: 0;
+    text-align: left;
+    font-size: 14px;
+    color: rgba(31, 31, 114, 1);
+    p {
+      margin-bottom: 10px;
+      line-height: 19px;
+    }
+    dl {
+      margin-bottom: 10px;
+      dd {
+        line-height: 19px;
+      }
+    }
+  }
+  .footer {
+    height: 60px;
+    padding-top: 18px;
+    background: rgba(242, 248, 255, 1);
+    font-size: 18px;
+    color: rgba(31, 31, 114, 1);
+    span {
+      cursor: pointer;
+    }
+  }
+}
+@media screen and (max-width: 1281px) {
+  .head-g {
+    justify-content: center;
+  }
+}
+@media screen and (min-width: 1280px) {
+  .head-g {
+    justify-content: flex-start;
+  }
+  
 }
 </style>
