@@ -104,6 +104,16 @@
                                 <li class="np-dis">
                                     裸金属服务器(敬请期待)
                                 </li>
+                                <li class="np-item">
+                                    <a href='https://www.xinruiyun.cn/evs/'>云硬盘</a>
+                                    <div class="buy-box">
+                                        <img class="buy-img" src="./assets/img/home/buy-icon.png" />
+                                        <a class="buy-font" href="https://i.xinruiyun.cn/buy/disk">立即购买</a>
+                                    </div>
+                                </li>
+                                <li class="np-item">
+                                    <a href='https://www.xinruiyun.cn/vbs/'>云硬盘备份</a>
+                                </li>
                             </ul>
                         </Poptip>
 
@@ -164,30 +174,10 @@
                             </div>
                         </Poptip>
 
-                        <Poptip placement="bottom-start" trigger="hover">
-                            <li class="nav-item active" @mouseenter='styleClass(-1,$event)'>
-                                <a>云存储</a>
-                            </li>
-                            <ul slot="content" class="np-bs" v-cloak>
-                                <li class="np-item">
-                                    <a href='https://www.xinruiyun.cn/oss/'>对象存储 <img src="./assets/img/home/iconNew.png" /></a>
-                                    <div class="buy-box">
-                                        <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                        <a class="buy-font" href="https://i.xinruiyun.cn/buy/objectstorage/">立即购买</a>
-                                    </div>
-                                </li>
-                                <li class="np-item">
-                                    <a href='https://www.xinruiyun.cn/evs/'>云硬盘</a>
-                                    <div class="buy-box">
-                                        <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                        <a class="buy-font" href="https://i.xinruiyun.cn/buy/disk/">立即购买</a>
-                                    </div>
-                                </li>
-                                <li class="np-item">
-                                    <a href='https://www.xinruiyun.cn/vbs/'>云硬盘备份</a>
-                                </li>
-                            </ul>
-                        </Poptip>
+                    
+                        <li class="nav-item active" @mouseenter='styleClass(3,$event)'>
+                          <a href='https://www.xinruiyun.cn/oss/'>对象存储</a>
+                        </li>
 
                         <Poptip placement="bottom-start" trigger="hover">
                             <li class="nav-item active" @mouseenter='styleClass(-1,$event)'>
@@ -265,12 +255,12 @@
                         <!-- <li class="nav-item active" @mouseenter='styleClass(3,$event)'>
                             <a href="#">解决方案</a>
                         </li> -->
-                        <li class="nav-item active" @mouseenter='styleClass(4,$event)'>
+                         <li class="nav-item active" @mouseenter='styleClass(4,$event)'>
                             <a href="https://www.xinruiyun.cn/price/ecs/">定价</a>
                         </li>
                         <!-- <li class="nav-item active" @mouseenter='styleClass(5,$event)'>
-                            <a href="https://i.xinruiyun.cn/market/">云市场</a>
-                        </li> -->
+                            <a href="https://i.xinruiyun.cn/market">云市场</a>
+                        </li>  -->
                     </ul>
                     <div class="line" :style='lineStyle'></div>
                 </div>
@@ -504,7 +494,8 @@
                     </div>
                     <!-- <div class="mhead-product">
                         <div style="padding: 10px 10px;">
-                            <a href="https://i.xinruiyun.cn/market/">云市场</a>
+                            <a href="https://i.xinruiyun.cn/market">云市场</a>
+                            <span :class='item.itemShow?"mhead-arrow":"mhead-arrow2"'></span>
                         </div>
                     </div> -->
                     <div class="mhead-product">
@@ -723,7 +714,7 @@
                         </div>
                         <div class="bg-content">
                             <div>
-                                <p class="p_true"><a href="#">产品公告</a></p>
+                                <p class="p_true"><a href="https://www.xinruiyun.cn/hdgg/">产品公告</a></p>
                             </div>
                             <div>
                                 <p class="p_true"><a href="https://activity.xinruiyun.cn/">最新活动</a></p>
@@ -766,9 +757,9 @@
                     <div class="share">
                         <span>分享给好友：</span>
                         <div>
-                            <img src="./assets/img/home/weibo.png" alt="微博">
+                            <img src="./assets/img/home/weibo.png"  @click='share("weibo")' alt="微博">
                             <img src="./assets/img/home/weixin.png" alt="微信">
-                            <img src="./assets/img/home/qq.png" @click='share' alt="QQ">
+                            <img src="./assets/img/home/qq.png" @click='share("qq")' alt="QQ">
                         </div>
                     </div>
                 </div>
@@ -1535,10 +1526,16 @@
           window.open('https://im.xrcloud.net/im/question/index.html')
         }
       },
-      share() {
-            window.open('http://connect.qq.com/widget/shareqq/index.html?url=' +
+      share(name) {
+        if(name == "qq"){
+          window.open('http://connect.qq.com/widget/shareqq/index.html?url=' +
                 'http://www.yrclouds.cn' + '&sharesource=qzone&title=' + '新睿云云服务器' + '&desc=' +
                 '便宜实惠的云服务器');
+        }else if(name == 'weibo'){
+            window.open('http://service.weibo.com/share/share.php?url=http://www.xinruiyun.cn&title=' + 
+            '新睿云 - 提供免费云服务器租用、便宜弹性云主机试用等云产品服务！' + '&pic=' + '' + '&searchPic=false')
+        }
+            
         },
     },
     computed: mapState({
