@@ -527,6 +527,307 @@
         </div>
       </div>
     </transition>
+    <!-- 领取提示 -->
+    <Modal v-model="showModal.rechargeHint" :scrollable="true" :closable="false" :width="390">
+      <div class="modal-content-s" style="padding: 30px 30px 0 50px">
+        <div>
+          <div
+            class="ivu-modal-confirm-body-icon ivu-modal-confirm-body-icon-success"
+            style="top: 48px;left: 30px;"
+          >
+            <i class="ivu-icon ivu-icon-checkmark-circled"></i>
+          </div>
+          <strong>提示</strong>
+          <p class="lh24">
+            本免费活动充值保证金
+            <span style="color: #D0021B ">{{ cashPledge }}</span>元，云服务器到期或删除时保证金自动退还到账户余额。
+          </p>
+        </div>
+      </div>
+      <p slot="footer" class="modal-footer-s">
+        <Button @click="showModal.rechargeHint = false">取消</Button>
+        <Button type="primary" @click="nextStep">下一步</Button>
+      </p>
+    </Modal>
+    <!-- 不满足条件-->
+    <Modal v-model="showModal.inConformityModal" :scrollable="true" :closable="false" :width="390">
+      <div class="modal-content-s" style="padding: 30px 30px 0 50px">
+        <div>
+          <div
+            class="ivu-modal-confirm-body-icon ivu-modal-confirm-body-icon-warning"
+            style="top: 48px;left: 30px;"
+          >
+            <i class="ivu-icon ivu-icon-android-alert"></i>
+          </div>
+          <p class="lh24">
+           {{inConformityModalMsg}}您还可以去看看其他活动。
+          </p>
+        </div>
+      </div>
+      <p slot="footer" class="modal-footer-s">
+        <Button @click="showModal.inConformityModal = false">取消</Button>
+        <Button type="primary" @click="$router.push('/activity/')">现在就去</Button>
+      </p>
+    </Modal>
+    <!-- 领取成功 -->
+    <Modal v-model="showModal.getSuccessModal" :scrollable="true" :closable="false" :width="390">
+      <div class="modal-content-s" style="padding: 30px 30px 0 50px">
+        <div>
+          <div
+            class="ivu-modal-confirm-body-icon ivu-modal-confirm-body-icon-success"
+            style="top: 48px;left: 30px;"
+          >
+            <i class="ivu-icon ivu-icon-checkmark-circled"></i>
+          </div>
+          <strong>提示</strong>
+          <p class="lh24">恭喜您保证金已冻结完成，云服务器领取成功，云服务器在实名认证之前只可保留3天，请尽快使用。</p>
+        </div>
+      </div>
+      <p slot="footer" class="modal-footer-s">
+        <Button @click="showModal.getSuccessModal = false">取消</Button>
+        <Button type="primary" @click="$router.push('/host')">查看云服务器</Button>
+      </p>
+    </Modal>
+    <!-- 支付充值失败 -->
+    <Modal v-model="showModal.payDefeatedModal" width="640" :scrollable="true">
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">支付/充值</span>
+      </p>
+      <div class="universal-modal-content-flex">
+        <div class="modal-p">
+          <Steps :current="2" status="error">
+            <Step title="订单确认"></Step>
+            <Step title="支付"></Step>
+            <Step title="支付失败"></Step>
+          </Steps>
+          <p>
+            <img src="../../../../assets/img/sceneInfo/si-defeated.png" alt="支付失败">
+            <span>抱歉，支付失败，请再次尝试！</span>
+          </p>
+        </div>
+      </div>
+      <div slot="footer" class="modal-footer-border">
+        <Button
+          type="primary"
+          @click="showModal.payDefeatedModal = false,showModal.orderConfirmationModal = true"
+        >再次支付</Button>
+      </div>
+    </Modal>
+    <!-- 支付充值成功 -->
+    <Modal
+      v-model="showModal.paySuccessModal"
+      width="640"
+      :scrollable="true"
+      :closable="false"
+      :mask-closable="false"
+    >
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">支付/充值</span>
+      </p>
+      <div class="universal-modal-content-flex">
+        <div class="modal-p">
+          <Steps :current="2">
+            <Step title="订单确认"></Step>
+            <Step title="支付"></Step>
+            <Step title="支付成功"></Step>
+          </Steps>
+          <p>
+            <img src="../../../../assets/img/sceneInfo/si-success.png" alt="支付成功">
+            <span>恭喜您支付成功！我们即将冻结保证金</span>
+            <span style="color: #D0021B;margin-left: 0">{{ cashPledge }}</span>
+            <span style="margin-left: 0">元</span>
+          </p>
+        </div>
+      </div>
+      <div slot="footer" class="modal-footer-border">
+        <Button type="primary" @click="getFreeHost">确认冻结</Button>
+      </div>
+    </Modal>
+
+    <!-- 微信支付弹窗 -->
+    <Modal
+      v-model="showModal.weChatRechargeModal"
+      width="640"
+      :scrollable="true"
+      :mask-closable="false"
+    >
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">微信支付/充值</span>
+      </p>
+      <div class="universal-modal-content-flex">
+        <div class="modal-p">
+          <Steps :current="1">
+            <Step title="订单确认"></Step>
+            <Step title="支付"></Step>
+            <Step title="支付成功"></Step>
+          </Steps>
+          <div class="payInfo">
+            <div id="code">
+              <vue-q-art :config="config" v-if="config.value!=''"></vue-q-art>
+            </div>
+            <div class="pay-p">
+              <p>
+                应付金额(元)：
+                <span>{{cashPledge}}</span>
+              </p>
+              <p>请使用微信扫一扫，扫描二维码支付</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div slot="footer" class="modal-footer-border">
+        <Button @click="isPay">已完成支付</Button>
+        <Button
+          type="primary"
+          @click="showModal.weChatRechargeModal = false,showModal.orderConfirmationModal = true"
+        >更换支付方式</Button>
+      </div>
+    </Modal>
+
+    <!-- 订单确认弹窗 -->
+    <Modal
+      v-model="showModal.orderConfirmationModal"
+      width="640"
+      :scrollable="true"
+      :mask-closable="false"
+    >
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">订单确认</span>
+      </p>
+      <div>
+        <div class="modal-p">
+          <Steps :current="0">
+            <Step title="订单确认"></Step>
+            <Step title="支付"></Step>
+            <Step title="支付成功"></Step>
+          </Steps>
+        </div>
+        <Table :columns="orderColumns" :data="orderData" style="margin-top: 30px"></Table>
+        <div class="pay-wap">
+          <p>选择支付方式</p>
+          <RadioGroup v-model="payWay" vertical @on-change="payWayChange">
+            <Radio label="balancePay">
+              <span style="color:rgba(51,51,51,1);font-size: 14px;margin-right: 40px">余额支付</span>
+              <span style="color:rgba(102,102,102,1);font-size: 14px">账户余额：</span>
+              <span style="color:#D0021B;font-size: 14px">¥{{ balance }}</span>
+            </Radio>
+            <Radio label="otherPay" class="pw-img" :disabled="balance >= cashPledge">
+              <span style="color:rgba(51,51,51,1);font-size: 14px;margin-right: 25px">第三方支付</span>
+              <img
+                src="../../../../assets/img/payresult/alipay.png"
+                :class="{selected: otherPayWay == 'zfb'}"
+                @click="balance < cashPledge?otherPayWay = 'zfb':null"
+                alt="支付宝"
+              >
+              <img
+                src="../../../../assets/img/payresult/wxpay.png"
+                :class="{selected: otherPayWay == 'wx'}"
+                @click="balance < cashPledge?otherPayWay = 'wx':null"
+                alt="微信"
+              >
+            </Radio>
+          </RadioGroup>
+        </div>
+      </div>
+      <div slot="footer" class="modal-footer-border">
+        <Button type="primary" @click="getHost_ok">确认</Button>
+      </div>
+    </Modal>
+    <!-- 购买前实名认证 -->
+    <Modal v-model="showModal.authentication" width="640" :scrollable="true">
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">实名认证</span>
+      </p>
+      <Form
+        :model="quicklyAuthForm"
+        :label-width="100"
+        ref="quicklyAuth"
+        :rules="quicklyAuthFormValidate"
+        style="width:450px;margin-top:20px;"
+      >
+        <FormItem label="真实姓名" prop="name" style="width: 100%">
+          <Input v-model="quicklyAuthForm.name" placeholder="请输入姓名"></Input>
+        </FormItem>
+        <FormItem label="身份证号" prop="IDCard" style="width: 100%">
+          <Input v-model="quicklyAuthForm.IDCard" placeholder="请输入身份证号"></Input>
+        </FormItem>
+        <Form
+          :model="quicklyAuthForm"
+          :rules="quicklyAuthFormValidate"
+          ref="sendCode"
+          :label-width="100"
+        >
+          <FormItem label="图形验证码" prop="pictureCode">
+            <div style="display: flex">
+              <Input
+                v-model="quicklyAuthForm.pictureCode"
+                placeholder="请输入图片验证码"
+                style="width:250px;margin-right: 10px"
+              ></Input>
+              <img
+                :src="imgSrc"
+                style="height:33px;"
+                @click="imgSrc=`https://kaifa.xrcloud.net/user/getKaptchaImage.do?t=${new Date().getTime()}`"
+              >
+            </div>
+          </FormItem>
+          <FormItem label="手机号码" prop="phone" style="width: 100%">
+            <Input v-model="quicklyAuthForm.phone" placeholder="请输入以该身份证开户的手机号码"></Input>
+          </FormItem>
+        </Form>
+        <FormItem label="验证码" prop="validateCode" style="width: 100%">
+          <div style="display: flex;justify-content: space-between">
+            <Input
+              v-model="quicklyAuthForm.validateCode"
+              placeholder="请输入验证码"
+              style="width:260px;margin-right: 10px"
+            ></Input>
+            <Button
+              type="primary"
+              @click="sendCode"
+              :disabled="quicklyAuthForm.sendCodeText!='获取验证码'"
+            >{{quicklyAuthForm.sendCodeText}}</Button>
+          </div>
+        </FormItem>
+      </Form>
+      <div slot="footer" class="modal-footer-border">
+        <Button type="primary" @click="quicklyAuth">提交</Button>
+      </div>
+    </Modal>
+    <!-- 实名认证成功 -->
+    <Modal v-model="showModal.authenticationSuccess" width="640" :scrollable="true">
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">实名认证</span>
+      </p>
+      <div style="text-align:center;padding:40px 0;">
+        <img
+          src="../../../../assets/img/payresult/paySuccess.png"
+          style="width:36px;vertical-align:middle;margin-right:10px;"
+          alt="实名认证成功"
+        >
+        <span style="font-size:14px;line-height:36px">恭喜您，实名认证成功！</span>
+      </div>
+      <div slot="footer" class="modal-footer-border">
+        <Button type="primary" @click="showModal.authenticationSuccess=false">确认</Button>
+      </div>
+    </Modal>
+    <!-- 实名认证失败 -->
+    <Modal v-model="showModal.authenticationError" width="640" :scrollable="true">
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">实名认证</span>
+      </p>
+      <div style="text-align:center;padding:40px 0;">
+        <img
+          src="../../../../assets/img/payresult/payFail.png"
+          style="width:36px;vertical-align:middle;margin-right:10px;"
+          alt="实名认证失败"
+        >
+        <span style="font-size:14px;line-height:36px">抱歉，实名认证失败，原因：{{authErrorText}}</span>
+      </div>
+      <div slot="footer" class="modal-footer-border">
+        <Button type="primary" @click="showModal.authenticationError=false">确认</Button>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -539,22 +840,147 @@ import VueQArt from 'vue-qart'
 import $ from 'jquery'
 export default {
   data () {
+    const validaRegisteredPhone = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('电话号码不能为空'));
+      }
+      if (!(/^1(3|4|5|7|8|9)\d{9}$/.test(value)) && !(/^0\d{2,3}-?\d{7,8}$/.test(value))) {
+        callback(new Error('请输入正确的电话号码'));
+      } else {
+        callback()
+      }
+    }
+    const validaRegisteredID = (rule, value, callback) => {
+      if (!reg.IDCardVail(value)) {
+        callback(new Error('请输入正确的身份证号码'));
+      } else {
+        callback()
+      }
+    }
+    const validaRegisteredName = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('联系人不能为空'));
+      }
+      if ((/[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im.test(value)) || (/[·！#￥（——）：；“”‘、，|《。》？、【】[\]]/im.test(value)) || (/\s+/.test(value)) || (/^[0-9]*$/.test(value))) {
+        callback(new Error('输入姓名不能包含特殊字符、空格或是纯数字'));
+      } else {
+        callback()
+      }
+    }
     return {
       showModal: {
-        // rechargeHint: false,
-        // inConformityModal: false,
-        // getSuccessModal: false,
-        // payDefeatedModal: false,
-        // paySuccessModal: false,
-        // weChatRechargeModal: false,
-        // orderConfirmationModal: false,
-        // authentication: false,
-        // authenticationSuccess: false,
-        // authenticationError: false,
+        rechargeHint: false,
+        inConformityModal: false,
+        getSuccessModal: false,
+        payDefeatedModal: false,
+        paySuccessModal: false,
+        weChatRechargeModal: false,
+        orderConfirmationModal: false,
+        authentication: false,
+        authenticationSuccess: false,
+        authenticationError: false,
         rule: false,
         ruleHost: false,
         ruleCoupon: false,
       },
+      quicklyAuthForm: {
+        name: '',
+        IDCard: '',
+        pictureCode: '',
+        phone: '',
+        validateCode: '',
+        sendCodeText: '获取验证码'
+      },
+      // 快速认证表单验证
+      quicklyAuthFormValidate: {
+        name: [
+          { required: true, message: '请输入姓名' },
+          { validator: validaRegisteredName }
+        ],
+        IDCard: [
+          { required: true, message: '请输入身份证号' },
+          { validator: validaRegisteredID }
+        ],
+        pictureCode: [
+          { required: true, message: '请输入图片验证码' }
+        ],
+        phone: [
+          { required: true, message: '请输入以该身份证开户的手机号码' },
+          { validator: validaRegisteredPhone }
+        ],
+        validateCode: [
+          { required: true, message: '请输入验证码' }
+        ]
+      },
+       orderColumns: [
+        {
+          title: '产品类型',
+          key: 'productType'
+        },
+        {
+          title: '资源',
+          width: 200,
+          render: (h, params) => {
+            let arr = []
+            let param3 = h('li', {}, '云服务器： ' + params.row.title)
+            let param = h('li', {}, '带宽： ' + params.row.configs.config.bandwith) + 'M'
+            let param1 = h('li', {}, '磁盘： ' + params.row.configs.config.disksize) + 'G SSD'
+            let param2 = h('li', {}, '系统： ' + params.row.configs.system[0])
+            arr.push(param3)
+            arr.push(param)
+            arr.push(param1)
+            arr.push(param2)
+            return h('ul', {}, arr)
+          }
+        },
+        {
+          title: '计费类型',
+          render: (h, params) => {
+            return h('span', {}, '包年包月')
+          }
+        },
+        {
+          title: '购买时长',
+          key: 'time'
+        },
+        {
+          title: '保证金金额',
+          width: 130,
+          render: (h, params) => {
+            let arr = []
+            let param1 = h('li', {
+              style: {
+                textDecoration: 'line-through'
+              }
+            }, '原价：¥' + params.row.originalPrice)
+            let param2 = h('li', {
+              style: {
+                color: '#D0021B'
+              }
+            }, '¥' + params.row.cashPledge)
+            arr.push(param1)
+            arr.push(param2)
+            return h('ul', {}, arr)
+          }
+        },
+      ],
+      imgSrc: 'https://kaifa.xrcloud.net/user/getKaptchaImage.do',
+      indexD: '',
+      onStep: 0,
+      time: '',
+      config: {
+        value: '',
+        imagePath: require('../../../../assets/img/pay/payBackground.png'),
+        filter: 'black',
+        size: 500
+      },
+      cashPledge: 0,
+      orderData: [],
+      payWay: 'balancePay',
+      otherPayWay: '',
+      balance: '0.0',
+      authErrorText: '',
+      inConformityModalMsg: '您好！本活动仅限新注册或者一直未使用过平台资源（第三方产品除外）及未参加过其他免费活动用户参与。',
       // 天天特惠参数
       allList: [],
       lowHostList: [
@@ -1227,6 +1653,16 @@ export default {
 
   },
   methods: {
+    tabChange (tabItem) {
+      this.currentView = tabItem;
+    },
+    init () {
+      axios.get('user/GetUserInfo.do').then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          this.$store.commit('setAuthInfo', { authInfo: response.data.authInfo, userInfo: response.data.result, authInfoPersion: response.data.authInfo_persion })
+        }
+      })
+    },
     // 天天特惠函数
     promise () {
       let reshost = axios.get('activity/getActInfo.do', {
@@ -1584,8 +2020,21 @@ export default {
         }
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
-          this.$Message.success('创建订单成功')
-          window.open('https://i.xinruiyun.cn/order', '_self')
+          // this.$Message.success('创建订单成功')
+          // window.open('https://i.xinruiyun.cn/order', '_self')
+          this.$http.post('device/DescribeWalletsBalance.do').then(response => {
+            if (response.status == 200 && response.data.status == '1') {
+              this.balance = Number(response.data.data.remainder)
+              this.indexD = indexD
+              this.time = this.depositList[indexD].time
+              this.cashPledge = this.depositList[indexD].cashPledge
+              this.showModal.rechargeHint = true
+            } else {
+              this.$message.info({
+                content: response.data.message
+              })
+            }
+          })
         } else {
           this.$message.info({
             content: res.data.message
@@ -1673,13 +2122,76 @@ export default {
       return text
     },
     //结束
-    tabChange (tabItem) {
-      this.currentView = tabItem;
+    // 快速认证时发送验证码
+    sendCode () {
+      this.$refs.sendCode.validate(validate => {
+        if (validate) {
+          axios.get('user/code.do', {
+            params: {
+              aim: this.quicklyAuthForm.phone,
+              isemail: 0,
+              vailCode: this.quicklyAuthForm.pictureCode
+            }
+          }).then(response => {
+            // 发送成功，进入倒计时
+            if (response.status == 200 && response.data.status == 1) {
+              var countdown = 60
+              this.quicklyAuthForm.sendCodeText = `重新发送(${countdown})S`
+              var Interval = setInterval(() => {
+                countdown--
+                this.quicklyAuthForm.sendCodeText = `重新发送(${countdown})S`
+                if (countdown == 0) {
+                  clearInterval(Interval)
+                  this.quicklyAuthForm.sendCodeText = '获取验证码'
+                }
+              }, 1000)
+            } else {
+              this.$Message.error(response.data.message)
+            }
+          })
+        }
+      })
     },
-    init () {
-      axios.get('user/GetUserInfo.do').then(response => {
+    // 快速认证
+    quicklyAuth () {
+      var quicklyAuth = this.$refs.quicklyAuth.validate(validate => {
+        return Promise.resolve(validate)
+      })
+      var sendCode = this.$refs.sendCode.validate(validate => {
+        return Promise.resolve(validate)
+      })
+      Promise.all([quicklyAuth, sendCode]).then(results => {
+        if (results[0] === true && results[1] === true) {
+          axios.post('user/personalAttest.do', {
+            cardID: this.quicklyAuthForm.IDCard,
+            name: this.quicklyAuthForm.name,
+            phone: this.quicklyAuthForm.phone,
+            phoneCode: this.quicklyAuthForm.validateCode,
+            type: '0'
+          }).then(response => {
+            if (response.status == 200 && response.data.status == 1) {
+              this.showModal.authentication = false
+              this.showModal.authenticationSuccess = true
+              this.init()
+            } else {
+              this.showModal.authenticationError = true
+              this.authErrorText = response.data.message
+            }
+          })
+        }
+      })
+    },
+    isPay () {
+      axios.get('user/payStatus.do', {
+        params: {
+          serialNum: this.serialNum
+        }
+      }).then(response => {
+        this.showModal.weChatRechargeModal = false
         if (response.status == 200 && response.data.status == 1) {
-          this.$store.commit('setAuthInfo', { authInfo: response.data.authInfo, userInfo: response.data.result, authInfoPersion: response.data.authInfo_persion })
+          this.showModal.paySuccessModal = true
+        } else {
+          this.showModal.payDefeatedModal = true
         }
       })
     },
@@ -1688,7 +2200,7 @@ export default {
       axios.get('activity/jdugeTeam.do', {
         params: {
           sign: 'freeReceive',
-          vmConfigId: this.depositList[this.index1].config.id
+          vmConfigId: this.depositList[this.indexD].config.id
         }
       }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
@@ -1696,10 +2208,10 @@ export default {
             this.orderData = []
             this.orderData.push({
               productType: '云服务器',
-              configs: this.depositList[this.index1],
-              originalPrice: this.depositList[this.index1].originPrice,
+              configs: this.depositList[this.indexD],
+              originalPrice: this.depositList[this.indexD].originPrice,
               time: this.time,
-              title: this.depositList[this.index1].headline,
+              title: this.depositList[this.indexD].headline,
               cashPledge: Number(this.cashPledge)
             })
             this.showModal.rechargeHint = false
@@ -1778,14 +2290,14 @@ export default {
       let url = 'activity/getFreeHostNew.do'
       axios.get(url, {
         params: {
-          vmConfigId: this.depositList[this.index1].config.id,
-          osType: this.depositList[this.index1].system[1],
-          defzoneid: this.depositList[this.index1].zone
+          vmConfigId: this.depositList[this.indexD].config.id,
+          osType: this.depositList[this.indexD].system[1],
+          defzoneid: this.depositList[this.indexD].zone
         }
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
           this.showModal.getSuccessModal = true
-          this.toggleZone(this.depositList[this.index1].zone)
+          this.toggleZone(this.depositList[this.indexD].zone)
         } else {
           this.$message.info({
             content: res.data.message
