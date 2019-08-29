@@ -3,7 +3,7 @@
     <div class="free-host">
       <div class="wrap">
         <img class="pc" src="../../../../assets/img/active/freeToReceive.1/free-host-text.png" />
-        <img class="mobile" src="../../../../assets/img/active/deposit/m-banner.png" />
+        <img class="mobile" src="../../../../assets/img/active/deposit/m-banner.png" style="width:300px;" />
         <div class="main">
           <div class="tabs">
             <div :class="{selected:currentView=='child1'}">
@@ -28,7 +28,7 @@
                         <span>{{item.post.disksize}}G系统盘</span>
                       </p>
                     </div>
-                    <div class="body" v-if="item.post.servicetype!='G5500'">
+                    <div class="body bodyt" v-if="item.post.servicetype!='G5500'">
                       <div class="configure">
                         <ul>
                           <li>
@@ -58,12 +58,11 @@
                         </ul>
                       </div>
                     </div>
-                    <div class="body">
+                    <div class="body bodyb">
                       <div v-if="item.post.servicetype=='G5500'" class="mb15 mt5">
                         <span class="label">配置：</span>
                         <Select
                           v-model="item.gpuConfigIndex"
-                          style="width:184px"
                           placeholder=" "
                           @on-change="changConfigGPUD(item)"
                         >
@@ -76,9 +75,8 @@
                       </div>
                       <div class="mb15">
                         <span class="label">区域：</span>
-                        <Select
+                        <Select class="systemw"
                           v-model="item.zoneId"
-                          style="width:184px"
                           @on-change="changeZoneD(item)"
                         >
                           <Option
@@ -89,12 +87,11 @@
                         </Select>
                       </div>
                       <div class="mb15">
-                        <span class="label" v-if="item.post.servicetype=='db'">镜像系统：</span>
+                        <span class="label-db" v-if="item.post.servicetype=='db'">镜像系统：</span>
                         <span class="label" v-else>系统：</span>
-                        <Cascader
+                        <Cascader class="systemw"
                           :data="item.systemList"
                           v-model="item.system"
-                          style="width:184px;"
                         ></Cascader>
                       </div>
                       <div class="price">
@@ -142,7 +139,9 @@
                   </div>
                   <div class="content">
                     <div v-for="(item,index) in renewHostList" :key="index" class="item">
-                      <div class="icon-text">个人/企业续费优惠</div>
+                      <div class="icon-bg">
+                        <div class="icon-text">{{item.text}}</div>
+                      </div>
                       <h4>{{item.cpu+'核'+item.memery+'G云服务器'}}</h4>
                       <div class="box">
                         <div class="left">
@@ -239,6 +238,9 @@
                 <div class="product">
                   <div v-for="(item,index) in allList" :key="index">
                     <div class="head">
+                      <div class="icon-bg" v-if="item.post.cpu==1&&item.post.bandwith==1&&item.post.mem==1">
+                        <div class="icon-text">爆款</div>
+                      </div>
                       <h3>
                         {{titleL(item)}}
                         <span
@@ -257,9 +259,8 @@
                       </div>
                       <div>
                         <span class="label">区域：</span>
-                        <Select
+                        <Select class="select-w"
                           v-model="item.zoneId"
-                          style="width:142px"
                           @on-change="changeZoneL(item)"
                         >
                           <Option
@@ -271,10 +272,9 @@
                       </div>
                       <div>
                         <span class="label">系统：</span>
-                        <Cascader
+                        <Cascader class="select-w"
                           :data="item.systemList"
                           v-model="item.system"
-                          style="width:142px;"
                         ></Cascader>
                       </div>
                       <div class="time">
@@ -826,45 +826,45 @@ export default {
           price: '69',
           originPrice: '176.72',
         },
-        // {
-        //   post: {
-        //     servicetype: "host",
-        //     bandwith: 2,
-        //     certification: 3,
-        //     cost: 69,
-        //     cpu: 2,
-        //     mem: 8,
-        //     days: 360,
-        //     disksize: 40,
-        //     disktype: "ssd",
-        //     id: 497
-        //   },
-        //   postArr: [],
-        //   systemList: [{
-        //     value: 'window',
-        //     label: 'Windows',
-        //     children: []
-        //   }, {
-        //     value: 'centos',
-        //     label: 'Centos',
-        //     children: [],
-        //   },
-        //   {
-        //     value: 'debian',
-        //     label: 'Debian',
-        //     children: [],
-        //   },
-        //   {
-        //     value: 'ubuntu',
-        //     label: 'Ubuntu',
-        //     children: [],
-        //   }],
-        //   system: [],
-        //   zoneList: [],
-        //   zoneId: '',
-        //   price: '69',
-        //   originPrice: '176.72',
-        // },
+        {
+          post: {
+            servicetype: "host",
+            bandwith: 2,
+            certification: 3,
+            cost: 69,
+            cpu: 2,
+            mem: 8,
+            days: 360,
+            disksize: 40,
+            disktype: "ssd",
+            id: 497
+          },
+          postArr: [],
+          systemList: [{
+            value: 'window',
+            label: 'Windows',
+            children: []
+          }, {
+            value: 'centos',
+            label: 'Centos',
+            children: [],
+          },
+          {
+            value: 'debian',
+            label: 'Debian',
+            children: [],
+          },
+          {
+            value: 'ubuntu',
+            label: 'Ubuntu',
+            children: [],
+          }],
+          system: [],
+          zoneList: [],
+          zoneId: '',
+          price: '69',
+          originPrice: '176.72',
+        },
       ],
       gpuList: [
         {
@@ -945,6 +945,7 @@ export default {
       ],
       renewHostList: [
         {
+          text: '个人/企业续费优惠',
           cpu: 2,
           memery: 4,
           ssd: '40',
@@ -956,6 +957,7 @@ export default {
           originPrice: 5201.28,
         },
         {
+          text: '企业续费优惠',
           cpu: 4,
           memery: 8,
           ssd: '40',
@@ -2212,7 +2214,8 @@ export default {
       color: #fff;
       background: url("../../../../assets/img/active/freeToReceive.1/summary-product-bg.png")
         no-repeat;
-      background-size: 100%;
+      background-size: cover;
+      border-radius: 10px 10px 0 0;
       h3 {
         font-size: 22px;
       }
@@ -2256,7 +2259,7 @@ export default {
             width: 110px;
             height: 34px;
             margin-right: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             line-height: 32px;
             border-radius: 2px;
             border: 1px solid rgba(125, 161, 217, 1);
@@ -2290,7 +2293,7 @@ export default {
       .ssd {
         ul {
           li {
-            margin-bottom: 0;
+            // margin-bottom: 0;
             width: 74px;
             &:nth-child(5n) {
               margin-right: 0;
@@ -2326,7 +2329,7 @@ export default {
 .deposite-host {
   .product {
     display: flex;
-    justify-content: center;
+    // justify-content: center;
     flex-wrap: wrap;
     text-align: left;
     // background: #fff;
@@ -2337,6 +2340,7 @@ export default {
       margin-bottom: 20px;
       box-shadow: 0px 3px 10px -3px rgba(195, 205, 230, 0.7);
       border: 1px solid rgba(220, 226, 242, 1);
+      background: #fff;
       &:nth-of-type(1) .head {
         background: url("../../../../assets/img/active/deposit/head-bg-1.png") no-repeat;
         background-size: cover;
@@ -2398,12 +2402,6 @@ export default {
     .body {
       padding: 15px 20px 20px 20px;
       background: #fff;
-      &:nth-of-type(2) {
-        padding-bottom: 0;
-      }
-      &:nth-of-type(3) {
-        border-top: 1px solid rgba(220, 226, 242, 1);
-      }
       > div {
         margin-bottom: 10px;
       }
@@ -2413,6 +2411,9 @@ export default {
         width: 70px;
         font-size: 12px;
         color: #222274;
+      }
+      .label-db {
+        line-height: 32px;
       }
       .configure {
         // margin-bottom: 10px;
@@ -2445,6 +2446,7 @@ export default {
         }
       }
       .origin-price {
+        line-height: 1;
         font-size: 14px;
         color: #0f0f68;
       }
@@ -2461,13 +2463,19 @@ export default {
         font-size: 16px;
       }
     }
+    .bodyt {
+      padding-bottom: 0;
+    }
+    .bodyb {
+      border-top: 1px solid rgba(220, 226, 242, 1);
+    }
   }
   .tips {
-    margin-top: 15px;
+    margin-top: 10px;
     text-align: left;
     font-size: 16px;
     color: #4f557b;
-    line-height: 1;
+    // line-height: 1;
     .blue {
       color: #5893ff;
     }
@@ -2491,7 +2499,7 @@ export default {
       p {
         font-size: 14px;
         color: rgba(102, 102, 102, 1);
-        line-height: 1;
+        line-height: 1.5;
         span {
           color: #5893ff;
         }
@@ -2503,10 +2511,8 @@ export default {
     text-align: left;
     .content {
       display: flex;
-      justify-content: center;
+      justify-content: flex-start;
       flex-wrap: wrap;
-      // background: url("../../../../assets/img/active/deposit/right-top-icon.png")
-      //   no-repeat top right;
       .item {
         width: 583px;
         padding: 20px 0 20px 20px;
@@ -2516,13 +2522,22 @@ export default {
         position: relative;
         margin-right: 20px;
       }
+      .icon-bg {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100px;
+        height: 100px;
+        background: url("../../../../assets/img/active/deposit/right-top-icon.png")
+        no-repeat top right;
+      }
       .icon-text {
-        float: right;
-        width: 110px;
+        width: 100px;
         height: 100px;
         transform: rotate(0.125turn);
-        transform-origin: 40px 34px;
+        transform-origin: 10px 38px;
         color: #fff;
+        text-align: center;
       }
       h4 {
         font-size: 20px;
@@ -2566,6 +2581,7 @@ export default {
         }
       }
       .right {
+        margin-right: 40px;
         span {
           font-size: 22px;
           font-weight: bold;
@@ -2579,7 +2595,7 @@ export default {
     text-align: left;
     .content {
       display: flex;
-      justify-content: center;
+      justify-content: flex-start;
       flex-wrap: wrap;
       text-align: center;
       > div {
@@ -2624,6 +2640,7 @@ export default {
           }
           p {
             font-size: 16px;
+            line-height: 1.5;
             span {
               color: #ff624b;
             }
@@ -2718,8 +2735,26 @@ export default {
       height: 65px;
       padding: 25px 0 0 16px;
       background: #fff;
+      position: relative;
       h3 {
         font-size: 18px;
+      }
+      .icon-bg {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 65px;
+        height: 65px;
+        background: url("../../../../assets/img/active/deposit/low-icon-bg.png")
+        no-repeat top right;
+      }
+      .icon-text {
+        width: 65px;
+        height: 65px;
+        transform: rotate(0.125turn);
+        transform-origin: 14px 26px;
+        color: #fff;
+        text-align: center;
       }
     }
 
@@ -2731,6 +2766,9 @@ export default {
         display: flex;
         line-height: 32px;
         font-size: 14px;
+        .select-w {
+          width: 142px;
+        }
       }
       // .mb0 {
       //   margin-bottom: 0;
@@ -2864,18 +2902,50 @@ export default {
   .wrap {
     width: 100%;
   }
+  .deposite-host .renew .content{
+    justify-content: center;
+    .item {
+      margin-right: 0;
+    }
+  } 
+  .deposite-host .update .content {
+    justify-content: center;
+    > div{
+      margin-right: 0;
+    }
+  }
   .summary-host {
     .wrap {
+      padding: 0 20px;
       width: 100%;
     }
     .product {
       > div {
-        width: 95%;
+        width: 100%;
       }
       .body {
         display: flex;
         flex-direction: column;
-        align-items: center;
+        // align-items: center;
+        .left {
+          width: 100%;
+          >div {
+            margin-bottom: 20px;
+          }
+        }
+        .right {
+          padding-top: 0;
+        }
+        .configure,
+        .area {
+          ul {
+            li {
+              &:nth-child(4n) {
+                margin-right: 12px;
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -2887,6 +2957,7 @@ export default {
   .wrap {
     width: 1260px;
   }
+  
 }
 @media screen and (max-width: 1020px) {
   .pc {
@@ -2906,23 +2977,21 @@ export default {
 }
 
 @media screen and (max-width: 540px) {
-  .summary-host {
-    .product {
-      .body {
-        padding: 0 10px;
-        .left {
-          width: 100%;
-          // padding: 0 2px;
-        }
-      }
-    }
-  }
+  
 }
 @media screen and (max-width: 640px) {
   .free-host .container {
     padding: 30px 10px 10px 10px;
   }
- 
+  .deposite-host .renew .content{
+    .box {
+      flex-wrap: wrap; 
+    }
+    .item {
+      width: 100%;
+      // margin-right: 0;
+    }
+  } 
   .deposite-host .product{
     >div {
       width: 100%;
@@ -2950,26 +3019,53 @@ export default {
       }
     }
     .body{
-      &:nth-of-type(1) {
-        >div {
-
-        }
-      }
-      &:nth-of-type(3) {
-        >div {
-          display: flex;
-        }
-      }
       >div {
         
-        // justify-items: center;
-        // justify-content: space-between;
       }
       .label {
         display: inline;
-        // width: 0;
-        margin-bottom: 0px;
+        margin-bottom: 0;
         line-height: 32px;
+      }
+    }
+    .bodyb {
+      >div {
+        display: flex;
+        .systemw {
+          flex-grow:1
+        }
+      }
+    }
+  }
+  .low-discount {
+    .product {
+      > div {
+      width: 100%;
+      margin-right: 0;
+      }
+      .body {
+        >div .select-w {
+          // width: 100%;
+          flex-grow:1
+        }
+      }
+    }
+  }
+  .summary-host {
+    .wrap {
+      padding: 0 10px;
+    }
+    .product {
+      >div {
+        box-shadow: none;
+      }
+      .body {
+        padding: 0 10px;
+        .left {
+          // padding-top: 20px;
+        }
+       
+        
       }
     }
   }
