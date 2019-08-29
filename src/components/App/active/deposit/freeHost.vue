@@ -557,7 +557,7 @@ export default {
   created () {
     this.getConfigureHot()
     this.getRenew()
-    this.getUpgrade()
+    // this.getUpgrade()
     // let url = 'activity/getActInfo.do'
     // axios.get(url, {
     //   params: {

@@ -369,45 +369,45 @@ export default {
           price: '69',
           originPrice: '176.72',
         },
-        {
-          post: {
-            servicetype: "host",
-            bandwith: 2,
-            certification: 3,
-            cost: 69,
-            cpu: 2,
-            mem: 8,
-            days: 360,
-            disksize: 40,
-            disktype: "ssd",
-            id: 497
-          },
-          postArr: [],
-          systemList: [{
-            value: 'window',
-            label: 'Windows',
-            children: []
-          }, {
-            value: 'centos',
-            label: 'Centos',
-            children: [],
-          },
-          {
-            value: 'debian',
-            label: 'Debian',
-            children: [],
-          },
-          {
-            value: 'ubuntu',
-            label: 'Ubuntu',
-            children: [],
-          }],
-          system: [],
-          zoneList: [],
-          zoneId: '',
-          price: '69',
-          originPrice: '176.72',
-        },
+        // {
+        //   post: {
+        //     servicetype: "host",
+        //     bandwith: 2,
+        //     certification: 3,
+        //     cost: 69,
+        //     cpu: 2,
+        //     mem: 8,
+        //     days: 360,
+        //     disksize: 40,
+        //     disktype: "ssd",
+        //     id: 497
+        //   },
+        //   postArr: [],
+        //   systemList: [{
+        //     value: 'window',
+        //     label: 'Windows',
+        //     children: []
+        //   }, {
+        //     value: 'centos',
+        //     label: 'Centos',
+        //     children: [],
+        //   },
+        //   {
+        //     value: 'debian',
+        //     label: 'Debian',
+        //     children: [],
+        //   },
+        //   {
+        //     value: 'ubuntu',
+        //     label: 'Ubuntu',
+        //     children: [],
+        //   }],
+        //   system: [],
+        //   zoneList: [],
+        //   zoneId: '',
+        //   price: '69',
+        //   originPrice: '176.72',
+        // },
       ],
       gpuList: [
         {
@@ -758,6 +758,7 @@ export default {
     padding-bottom: 10px;
     > div {
       width: 224px;
+      height: 380px;
       box-shadow: 0px 3px 10px -3px rgba(195, 205, 230, 0.7);
       border: 1px solid rgba(220, 226, 242, 1);
       margin-bottom: 20px;
