@@ -145,12 +145,12 @@
                   <div class="row">
                     <i>续费时长</i>
                     <div>
-                      <Select v-model="item.time" style="width:200px">
+                      <Select v-model="item.time" style="width:200px" @on-change="getRenewPrice(item)">
                         <Option
                           v-for="item1 in item.timeList"
                           :value="item1"
                           :key="item1"
-                        >{{ item1 }}</Option>
+                        >{{ renewtime(item1) }}</Option>
                       </Select>
                     </div>
                   </div>
@@ -348,8 +348,8 @@ export default {
           ssd: '40',
           bandwidthList: [1, 2],
           bandwidth: 1,
-          timeList: [24, 12, 6, 3, 1],
-          time: 24,
+          timeList: [360],
+          time: 360,
           price: 1099.00,
           originPrice: 5201.28,
         },
@@ -359,8 +359,8 @@ export default {
           ssd: '40',
           bandwidthList: [5],
           bandwidth: 5,
-          timeList: [24, 12, 6],
-          time: 24,
+          timeList: [180, 360, 720],
+          time: 180,
           price: 1269.00,
           originPrice: 3112.31,
         },
@@ -556,31 +556,11 @@ export default {
   },
   created () {
     this.getConfigureHot()
-    this.getRenew()
-    // this.getUpgrade()
-    // let url = 'activity/getActInfo.do'
-    // axios.get(url, {
-    //   params: {
-    //     activityNum: '58'
-    //   }
-    // }).then(res => {})
   },
   mounted () {
 
   },
   methods: {
-    getRenewPrice () {
-      let url = '/activity/getRenewalOriginalPrice.do'
-      axios.get(url, {
-        params: {
-          vmConfigId: '59'
-        }
-      }).then(res => {
-        if (res.data.status == 1 && res.status == 200) {
-         
-        }
-      })
-    },
     // 获取活动配置,区域
     getConfigureHot () {
       let url = 'activity/getTemActInfoById.do'
@@ -610,32 +590,6 @@ export default {
             }
         })
       }
-      })
-    },
-    // 获取升级配置
-    // getUpgrade () {
-    //   let url = 'activity/getUpgrade.do'
-    //   axios.get(url, {
-    //     params: {
-    //       activityNum: '59'
-    //     }
-    //   }).then(res => {
-    //     if (res.data.status == 1 && res.status == 200) {
-         
-    //     }
-    //   })
-    // },
-    // 获取升级配置
-    getRenew () {
-      let url = 'activity/getRenewal.do'
-      axios.get(url, {
-        params: {
-          activityNum: '60'
-        }
-      }).then(res => {
-        if (res.data.status == 1 && res.status == 200) {
-         
-        }
       })
     },
     changeZoneHot (item) {
@@ -748,6 +702,25 @@ export default {
       } else {
         item.timeList = [360]
       }
+      item.time = item.timeList[0]
+      this.getRenewPrice(item)
+    },
+    getRenewPrice (item) {
+      let url = 'activity/getRenewalOriginalPrice.do'
+      axios.get(url, {
+        params: {
+          cpu: item.cpu,
+          mem: item.memery,
+          bandwith: item.bandwidth,
+          days: item.time,
+          activityNum: '60'
+        }
+      }).then(res => {
+        if (res.data.status == 1 && res.status == 200) {
+         item.price = res.data.result.cost
+         item.originPrice = res.data.result.originalPrice
+        }
+      })
     },
     month (val) {
       let text = ''
@@ -787,8 +760,16 @@ export default {
         default:
           result = ''
       }
-      
       return result
+    },
+    renewtime(val) {
+      let text = ''
+      if (val>=360) {
+        text = val/360+'年'
+      } else if(val>=30){
+        text = val/30+'个月'
+      }
+      return text
     },
   },
   computed: {
@@ -914,44 +895,6 @@ export default {
           }
         }
       }
-      // .time {
-      //   ul {
-      //     display: flex;
-      //     flex-wrap: wrap;
-      //     justify-content: space-between;
-      //     li {
-      //       position: relative;
-      //       width: 110px;
-      //       height: 34px;
-      //       margin-bottom: 10px;
-      //       line-height: 32px;
-      //       border-radius: 2px;
-      //       border: 1px solid rgba(125, 161, 217, 1);
-      //       text-align: center;
-      //       color: #4b3c3d;
-      //       cursor: pointer;
-      //       &:nth-child(3n + 3) {
-      //         margin-right: 0;
-      //       }
-      //       span {
-      //         position: absolute;
-      //         top: -14px;
-      //         right: 5px;
-      //         display: inline-block;
-      //         width: 38px;
-      //         height: 20px;
-      //         background: rgba(246, 109, 89, 1);
-      //         font-size: 14px;
-      //         color: rgba(255, 255, 255, 1);
-      //         line-height: 19px;
-      //       }
-      //     }
-      //     .selected {
-      //       background: rgba(56, 125, 255, 1);
-      //       color: #fff;
-      //     }
-      //   }
-      // }
       .mb15{
         margin-bottom: 15px;
       }
