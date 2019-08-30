@@ -1948,7 +1948,7 @@
                                 color:rgba(102,102,102,1);
                                 line-height:20px;
                                 span {
-                                    padding-left: 10px;
+                                    padding: 0 10px;
                                 }
                             }
                         }
