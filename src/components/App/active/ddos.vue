@@ -288,7 +288,7 @@
           </ul>
           <div class="tips">
             以上配置皆包含40G SSD系统盘
-            <span @click="$router.push('/buy/ddos/')">查看更多配置>></span>
+            <a href="https://i.xinruiyun.cn/buy/ddos/" style="color:#ffd08c">查看更多配置>></a>
           </div>
         </div>
       </div>
@@ -370,7 +370,7 @@
           </div>
         </div>
         <div class="tips">
-          <span @click="$router.push('/buy/ddos/')">查看更多配置>></span>
+          <a href="https://i.xinruiyun.cn/buy/ddos/" style="color:#606682">查看更多配置>></a>
         </div>
       </div>
     </div>
@@ -401,7 +401,7 @@
                   <i>折</i>
                 </div>
               </div>
-              <a href="https://kaifa.xrcloud.net/buy/ddos/" class="btn">立即选购</a>
+              <a href="https://i.xinruiyun.cn/buy/ddos/" class="btn">立即选购</a>
             </li>
             <li>
               <div class="top">
@@ -418,7 +418,7 @@
                   <i>折</i>
                 </div>
               </div>
-              <a href="https://kaifa.xrcloud.net/buy/ddos/" class="btn">立即选购</a>
+              <a href="https://i.xinruiyun.cn/buy/ddos/" class="btn">立即选购</a>
             </li>
           </ul>
         </div>
@@ -591,11 +591,11 @@
               class="spanaa"
               @click="showModal.modifyPhoneID = true;showModal.cashverification=false"
             >通过身份证号码验证</span>或
-            <span class="spanaa" @click="$router.push('/work/')">提交工单</span>更改手机号。
+            <a href="https://i.xinruiyun.cn/work/">提交工单</a>更改手机号。
           </p>
           <p v-if="!authInfo||authInfo&&authInfo.checkstatus!=0" style="line-height:24px;">
             2、如果手机已丢失或停机，请
-            <span class="spanaa" @click="$router.push('/work/')">提交工单</span>或
+            <a href="https://i.xinruiyun.cn/work/">提交工单</a>或
             <a
               target="_blank"
               :href="`tencent://message/?uin=${$store.state.qq.qqnumber}&amp;Site=www.cloudsoar.com&amp;Menu=yes`"
@@ -1173,7 +1173,7 @@ export default {
         }
       ],
       dataForcast: [],
-      imgSrc: 'https://huodong.xrcloud.net/user/getKaptchaImage.do',
+      imgSrc: 'https://activity.xinruiyun.cn/user/getKaptchaImage.do',
       authErrorText: ''
     }
   },
@@ -1372,7 +1372,7 @@ export default {
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
           this.$Message.success('创建订单成功')
-          window.open('https://kaifa.xrcloud.net/order','_self')
+          window.open('https://i.xinruiyun.cn/order','_self')
         } else {
           this.hintMsg = res.data.message
           this.showModal.hint = true
@@ -1508,7 +1508,7 @@ export default {
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
           this.$Message.success('创建订单成功')
-          window.open('https://kaifa.xrcloud.net/order','_self')
+          window.open('https://i.xinruiyun.cn/order','_self')
         } else {
           this.hintMsg = res.data.message
           this.showModal.hint = true
@@ -1789,7 +1789,7 @@ export default {
         usercenter: 'certification',
         expenses: 'accountSummary'
       }
-      this.$router.push('/usercenter')
+      window.open('https://i.xinruiyun.cn/usercenter/','_self')
       this.$store.commit('setPane', paneStatue)
     }
   },
