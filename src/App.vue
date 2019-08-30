@@ -108,7 +108,7 @@
                                     <a href='https://www.xinruiyun.cn/evs/'>云硬盘</a>
                                     <div class="buy-box">
                                         <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                        <a class="buy-font" href="https://i.xinruiyun.cn/buy/disk">立即购买</a>
+                                        <a class="buy-font" href="https://i.xinruiyun.cn/buy/disk/">立即购买</a>
                                     </div>
                                 </li>
                                 <li class="np-item">
@@ -319,7 +319,7 @@
                             <a href="https://i.xinruiyun.cn/operationlog/">操作日志</a>
                         </li>
                         <li class="m-item">
-                            <span @click="go('exit')">退出登录</span>
+                            <span @click="go('exit')" style="font-size:14px">退出登录</span>
                         </li>
                     </ul>
                 </div>
@@ -550,7 +550,7 @@
                 <div class="br-bg">
                     <div class="box">
                         <p class="title">为您提供出众的上云实践机会和全面的尊贵服务</p>
-                        <a href="https://i.xinruiyun.cn/register"><div class="bottom-button">立即注册</div></a>
+                        <a href="https://i.xinruiyun.cn/register/"><div class="bottom-button">立即注册</div></a>
                     </div>
                 </div>
         </div>
@@ -816,7 +816,7 @@
       <div class="m-bottom">
           <div class="m-register">
               <p>为您提供出众的上云实践机会和全面的尊贵服务</p>
-              <a href='https://i.xinruiyun.cn/register'><div class="m-button">立即注册</div></a>
+              <a href='https://i.xinruiyun.cn/register/' style="color:#fff"><div class="m-button">立即注册</div></a>
           </div>
           <div class="m-we">
               <div class="mwe-text">
@@ -1305,9 +1305,9 @@
 
     },
     created() {
-      if(!localStorage.getItem('isLogin')){
-        this.getloginPromptMessage()
-      }
+      // if(!localStorage.getItem('isLogin')){
+      //   this.getloginPromptMessage()
+      // }
       // if (sessionStorage.getItem('hintShow') == null) {
       //   sessionStorage.setItem('hintShow', 'true')
       // }
