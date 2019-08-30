@@ -752,6 +752,24 @@
       },
       // 立即购买
       buy (item,index) {
+        var configId = 0
+        if (this.timeValue1[0].split(',')[0] == 6 && index == 0) {
+          configId = item[0].id
+        } else if (this.timeValue1[0].split(',')[0] == 12 && index == 0){
+          configId = item[1].id
+        } else if (this.timeValue2[0].split(',')[0] == 6 && index == 1){
+          configId = item[0].id
+        } else if (this.timeValue2[0].split(',')[0] == 12 && index == 1){
+          configId = item[1].id
+        } else if (this.timeValue3[0].split(',')[0] == 6 && index == 2){
+          configId = item[0].id
+        } else if (this.timeValue3[0].split(',')[0] == 12 && index == 2){
+          configId = item[1].id
+        } else if (this.timeValue4[0].split(',')[0] == 6 && index == 3){
+          configId = item[0].id
+        } else if (this.timeValue4[0].split(',')[0] == 12 && index == 3){
+          configId = item[1].id
+        }
         if (this.$store.state.userInfo == null) {
           // 未登录
           //return this.$router.push('Register')
@@ -763,17 +781,18 @@
         } else {
           axios.get('information/getDiskcountMv.do', {
             params: {
-              vmConfigId: this.configId,
+              vmConfigId: configId,
               osType: item[0].list[1],
               defzoneid: item[0].area[0]
             }
           }).then(res => {
+            console.log(res)
             if (res.status == 200 && res.data.status == 1) {
               sessionStorage.setItem('countOrder', item[0].price.toString())
               //this.$router.push('orderconfirm')
               window.open('https://m.xinruiyun.cn/orderconfirm','_self')
-            } else if (res.status == 200 && res.data.status == 2){
-              this.$vux.toast.text(res.data.message, 'middle')
+            } else {
+              this.$vux.toast.text('您已经提交订单', 'middle')
             }
           })
         }
