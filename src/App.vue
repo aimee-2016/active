@@ -67,7 +67,7 @@
                             <router-link to="/activity/" title="活动中心">活动中心</router-link>
                         </li>
                         <li class="nav-item" @mouseenter='styleClass(1,$event)'>
-                            <a href="https://xinruiyun.cn/">首页</a>
+                            <a href="https://www.xinruiyun.cn/">首页</a>
                         </li>
                         <Poptip placement="bottom-start" trigger="hover">
                             <li class="nav-item active" @mouseenter='styleClass(-1,$event)'>
@@ -95,7 +95,7 @@
                                     </div>
                                 </li>
                                 <li class="np-item">
-                                    <a href="#">DDoS高防云服务器</a>
+                                    <a href="https://www.xinruiyun.cn/ddos/">DDoS高防云服务器</a>
                                     <div class="buy-box">
                                         <img class="buy-img" src='./assets/img/home/buy-icon.png' />
                                         <a class="buy-font" href="https://i.xinruiyun.cn/buy/ddos/">立即购买</a>
@@ -164,7 +164,7 @@
                                         </div>
                                     </li>
                                     <li class="np-item">
-                                        <a href="https://www.xinruiyun.cn/ddos/">DDoS高防IP</a>
+                                        <a href="https://www.xinruiyun.cn/ddosip/">DDoS高防IP</a>
                                         <div class="buy-box">
                                             <img class="buy-img" src="./assets/img/home/buy-icon.png" />
                                             <span class="buy-font">立即购买</span>
@@ -258,6 +258,9 @@
                          <li class="nav-item active" @mouseenter='styleClass(4,$event)'>
                             <a href="https://www.xinruiyun.cn/price/ecs/">定价</a>
                         </li>
+                        <li class="nav-item active" @mouseenter='styleClass(4,$event)'>
+                            <a href="https://www.xinruiyun.cn/about/">关于我们</a>
+                        </li>
                         <!-- <li class="nav-item active" @mouseenter='styleClass(5,$event)'>
                             <a href="https://i.xinruiyun.cn/market">云市场</a>
                         </li>  -->
@@ -272,7 +275,7 @@
                         <div class="mr-icon" @click="mIcon = !mIcon">
                             <Icon type="navicon-round" size="40" color='#9B908E' :class="mIcon?'mhead-icons':'mhead-icon'" />
                         </div>
-                        <a class="mobile-logo" href="#" alt='新睿云'>
+                        <a class="mobile-logo" href="https://www.xinruiyun.cn/" alt='新睿云'>
                             <div class="mobile-limg">
                                 <img src='./assets/img/home/logo.gif'>
                             </div>
@@ -357,7 +360,7 @@
                                         <a href="https://www.xinruiyun.cn/gpu/" target="blank"> GPU加速服务器</a>
                                     </div>
                                     <div class="mhead-chd">
-                                        <a href="#" target="blank"> DDoS高防云服务器</a>
+                                        <a href="https://www.xinruiyun.cn/ddos/" target="blank"> DDoS高防云服务器</a>
                                     </div>
                                 </div>
                             </div>
@@ -391,7 +394,7 @@
                                         <a href="#" target="blank">SSL证书</a>
                                     </div>
                                     <div class="mhead-chd">
-                                        <a href="https://www.xinruiyun.cn/ddos/" target="blank">DDoS高防IP</a>
+                                        <a href="https://www.xinruiyun.cn/ddosip/" target="blank">DDoS高防IP</a>
                                     </div>
                                 </div>
                             </div>
@@ -510,6 +513,12 @@
                             <!-- <span :class='item.itemShow?"mhead-arrow":"mhead-arrow2"'></span> -->
                         </div>
                     </div>
+                    <div class="mhead-product">
+                        <div style="padding: 10px 10px;">
+                            <a href="https://www.xinruiyun.cn/about/">关于我们</a>
+                            <!-- <span :class='item.itemShow?"mhead-arrow":"mhead-arrow2"'></span> -->
+                        </div>
+                    </div>
                 </div>
           </div>
     </header>
@@ -541,7 +550,7 @@
                 <div class="br-bg">
                     <div class="box">
                         <p class="title">为您提供出众的上云实践机会和全面的尊贵服务</p>
-                        <div class="bottom-button">立即注册</div>
+                        <a href="https://i.xinruiyun.cn/register"><div class="bottom-button">立即注册</div></a>
                     </div>
                 </div>
         </div>
@@ -621,7 +630,7 @@
                                 <p class="p_true"><a href="https://www.xinruiyun.cn/fw/">防火墙</a></p>
                             </div>
                             <div>
-                                <p class="p_true"><a href="#">DDoS基础防护</a></p>
+                                <p class="p_true"><a href="https://www.xinruiyun.cn/ddos/">DDoS高防云服务器</a></p>
                             </div>
                             <div>
                                 <p class="p_true"><a href="https://www.xinruiyun.cn/ess/">弹性伸缩</a></p>
@@ -720,7 +729,7 @@
                                 <p class="p_true"><a href="https://activity.xinruiyun.cn/">最新活动</a></p>
                             </div>
                             <div>
-                                <p class="p_true"><a href="#">技术支持</a></p>
+                                <p class="p_true"><a href="https://im.xrcloud.net/im/question/index.html" target="_blank">技术支持</a></p>
                             </div>
                         </div>
                     </div>
@@ -736,7 +745,7 @@
                                 <p>企业邮箱：service@unionstech.cn</p>
                             </div>
                             <div>
-                                <p>企业地址：辽宁省沈阳市青年大街185号茂业公寓1720室</p>
+                                <p>总部地址：北京海淀区东升大厦AB座611室、612室</p>
                             </div>
                             <div>
                                 <img src="./assets/img/app/QR-code.jpg" alt="新睿云二维码">
@@ -758,8 +767,9 @@
                         <span>分享给好友：</span>
                         <div>
                             <img src="./assets/img/home/weibo.png"  @click='share("weibo")' alt="微博">
-                            <img src="./assets/img/home/weixin.png" alt="微信">
+                            <img src="./assets/img/home/weixin.png" @click='share("weixin")' alt="微信">
                             <img src="./assets/img/home/qq.png" @click='share("qq")' alt="QQ">
+                            <img class="showweixinpic" v-if="isweixinShow" src="./assets/img/home/shareweixin.png"/>
                         </div>
                     </div>
                 </div>
@@ -784,11 +794,11 @@
                         <p><a href="http://www.beian.miit.gov.cn/" target="_blank" rel = "nofollow">京ICP备15035854号</a></p>
                     </div>
                 </div>
-                <div class="support">
+                <!-- <div class="support">
                     <div>
                         <p><a href="http://www.beian.miit.gov.cn/" target="_blank" rel = "nofollow">京公网安备11010802024922号</a></p>
                     </div>
-                </div>
+                </div> -->
                 <div class="support">
                     <div>
                         <p><a href="#" rel = "nofollow">增值电信业务经营许可证 B1-20180455</a></p>
@@ -806,7 +816,7 @@
       <div class="m-bottom">
           <div class="m-register">
               <p>为您提供出众的上云实践机会和全面的尊贵服务</p>
-              <div class="m-button">立即注册</div>
+              <a href='https://i.xinruiyun.cn/register'><div class="m-button">立即注册</div></a>
           </div>
           <div class="m-we">
               <div class="mwe-text">
@@ -1276,6 +1286,7 @@
             {required: true, validator: validPhoneNumber, trigger: 'blur'}
           ]
         },
+        isweixinShow:false,
       }
     },
     mounted() {
@@ -1534,8 +1545,9 @@
         }else if(name == 'weibo'){
             window.open('http://service.weibo.com/share/share.php?url=http://www.xinruiyun.cn&title=' + 
             '新睿云 - 提供免费云服务器租用、便宜弹性云主机试用等云产品服务！' + '&pic=' + '' + '&searchPic=false')
-        }
-            
+        }else if(name == 'weixin'){
+          this.isweixinShow = !this.isweixinShow;
+        } 
         },
     },
     computed: mapState({
@@ -2569,6 +2581,7 @@
 .bottom .bottom-black .bottom-product .share{
   width: 21%;
   margin: 47px 0 0 0;
+  position:relative;
 }
 .bottom .bottom-black .bottom-product .share span{
   font-size: 14px;
@@ -2828,5 +2841,11 @@ span {
     }
 
 }
-
+.showweixinpic {
+    position: absolute;
+    top: 40px;
+    left: 109px;
+    width: 100px;
+    height: 100px;
+  }
 </style>
