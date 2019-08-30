@@ -2747,9 +2747,9 @@ span {
 }
 
 @media only screen and (max-width:1023px) {
-  .ivu-input{
-    // border: 1px solid rgba(96,87,86,1);
-    // background-color: rgba(29,23,22,1);
+ #front .ivu-input{
+    border: 1px solid rgba(96,87,86,1);
+    background-color: rgba(29,23,22,1);
   }
   #foot-footer{
     display: none;
