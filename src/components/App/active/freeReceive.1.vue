@@ -485,7 +485,7 @@
       </div>
       <p slot="footer" class="modal-footer-s">
         <Button @click="showModal.getSuccessModal = false">取消</Button>
-        <Button type="primary" @click="$router.push('/host')">查看云服务器</Button>
+        <a href="https://i.xinruiyun.cn/host/"><Button type="primary">查看云服务器</Button></a>
       </p>
     </Modal>
     <!-- 支付充值失败 -->

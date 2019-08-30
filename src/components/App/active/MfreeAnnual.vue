@@ -300,12 +300,12 @@
     </div>
     <!--不符合条件弹窗-->
     <div v-transfer-dom>
-      <confirm v-model="inconformity" :show-cancel-button="false" confirm-text="去活动中心" @on-confirm="$router.push('sort')">
+      <confirm v-model="inconformity" :show-cancel-button="false" confirm-text="去活动中心" @on-confirm="$router.push('/activity/')">
         <div style="text-align:center;">
           <p style="font-size: 14px;font-weight:500;color:#333;line-height:40px;" slot="title">提示</p>
           <p style="font-size: 14px;font-weight:400;color:rgba(51,51,51,1);line-height:32px;padding-top: 43px">
             您好，您不符合本活动的参与条件，去
-            <span style="color: #F56B23" @click="$router.push('sort')">活动中心</span>看看其他活动吧！如果有其他需要可联系我们销售或者客服。
+            <span style="color: #F56B23" @click="$router.push('/activity/')">活动中心</span>看看其他活动吧！如果有其他需要可联系我们销售或者客服。
           </p>
         </div>
       </confirm>
@@ -610,9 +610,9 @@
       }
     },
     methods: {
-      goBack(){
-        this.$router.push('home')
-      },
+      // goBack(){
+      //   this.$router.push('home')
+      // },
       openOther () {
         window.open('https://koubei.baidu.com/s/510a4f5f6316c2d0f81b3e63bc75b537?fr=search')
       },
@@ -1155,7 +1155,7 @@
             }).then(res => {
               if (res.status == 200 && res.data.status == 1) {
                 sessionStorage.setItem('countOrder', this.allPrice.toString())
-                this.$router.push('orderconfirm')
+                window.open('https://m.xinruiyun.cn/orderconfirm','_self')
               } else {
                 this.$vux.toast.text(res.data.message, 'middle')
               }
@@ -1163,12 +1163,12 @@
           }
         }
       },
-      toStorage () {
-        this.$router.push('Storage')
-      },
-      toAcdata () {
-        this.$router.push('acdata')
-      }
+      // toStorage () {
+      //   this.$router.push('Storage')
+      // },
+      // toAcdata () {
+      //   this.$router.push('acdata')
+      // }
     },
     created () {
       axios.get('activity/getTemActInfoById.do', {

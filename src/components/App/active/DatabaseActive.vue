@@ -102,13 +102,13 @@
           <div class="ivu-modal-confirm-body-icon ivu-modal-confirm-body-icon-warning" style="top: 48px;left: 30px;">
             <i class="ivu-icon ivu-icon-android-alert"></i>
           </div>
-          <p class="lh24">您好，您不符合本活动的参与条件，去<span style="color: #2A99F2;cursor: pointer" @click="$router.push('activity')">活动中心</span>看看其他活动吧！如果有其他需要可联系我们销售或者客服。
+          <p class="lh24">您好，您不符合本活动的参与条件，去<span style="color: #2A99F2;cursor: pointer" @click="$router.push('/activity/')">活动中心</span>看看其他活动吧！如果有其他需要可联系我们销售或者客服。
           </p>
         </div>
       </div>
       <p slot="footer" class="modal-footer-s">
         <Button @click="showModal.inConformityModal = false">取消</Button>
-        <Button type="primary" @click="$router.push('/activity')">去活动中心</Button>
+        <Button type="primary" @click="$router.push('/activity/')">去活动中心</Button>
       </p>
     </Modal>
     <!-- 领取成功 -->
@@ -125,7 +125,7 @@
       </div>
       <p slot="footer" class="modal-footer-s">
         <Button @click="showModal.getSuccessModal = false">取消</Button>
-        <Button type="primary" @click="$router.push('/cloudDatabase')">查看数据库</Button>
+        <a href="https://i.xinruiyun.cn/clouddatabase/"><Button type="primary">查看数据库</Button></a>
       </p>
     </Modal>
     <!-- 支付充值失败 -->
@@ -257,7 +257,7 @@
               <Input v-model="quicklyAuthForm.pictureCode" placeholder="请输入图片验证码"
                      style="width:250px;margin-right: 10px"></Input>
               <img :src="imgSrc" style="height:33px;"
-                   @click="imgSrc=`https://www.xrcloud.net/user/getKaptchaImage.do?t=${new Date().getTime()}`">
+                   @click="imgSrc=`https://activity.xinruiyun.cn/user/getKaptchaImage.do?t=${new Date().getTime()}`">
             </div>
           </FormItem>
           <FormItem label="手机号码" prop="phone" style="width: 100%">
@@ -360,7 +360,7 @@
       }
       return {
         authErrorText: '',
-        imgSrc: 'https://www.xrcloud.net/user/getKaptchaImage.do',
+        imgSrc: 'https://activity.xinruiyun.cn/user/getKaptchaImage.do',
         flows: [
           {
             src: require('../../../assets/img/active/dbActive/dba-icon1.png'),
@@ -594,7 +594,7 @@
             {required: true, message: '请输入验证码'}
           ]
         },
-        imgSrc: 'https://www.xrcloud.net/user/getKaptchaImage.do',
+        imgSrc: 'https://activity.xinruiyun.cn/user/getKaptchaImage.do',
         index1: ''
       }
     },
