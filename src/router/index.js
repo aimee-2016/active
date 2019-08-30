@@ -49,7 +49,7 @@ var router = new Router({
         {path: 'activityp', name: 'activityp', component: ActiveCenterP,caseSensitive: true},
         {path: 'activitym', name: 'activitym', component: ActiveCenterM,caseSensitive: true},
         {path: 'activebefore',name: 'activebefore', component:activeBefore,caseSensitive: true},
-        {path: 'free', name: 'free', component: FrActive1,caseSensitive: true},
+        {path: 'free', name: 'free', component: FrActive,caseSensitive: true},
         {path: 'freem', name: 'freem', component: FrActiveM,caseSensitive: true},
         {path: 'freep', name: 'freep', component: FrActiveP,caseSensitive: true},
         {path: 'objectstorage', name: 'objectstorage', component: objStorageActiveP,caseSensitive: true},

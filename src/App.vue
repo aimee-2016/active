@@ -23,12 +23,12 @@
                             <a class="p-link" href="https://www.xinruiyun.cn/news/" target="_blank"> 
                                 新闻动态
                             </a>
-                            <a class="p-link pb" href='https://kaifa.xrcloud.net/overview/' title="控制台">
+                            <a class="p-link pb" href='https://i.xinruiyun.cn/overview/' title="控制台">
                                 控制台
                             </a>
                             <div v-if='!userInfo'>
-                                <a class="lg-in" href="https://kaifa.xrcloud.net/login/"  title="登录">登录</a>
-                                <a class="lg-re" href="https://kaifa.xrcloud.net/register/" title="注册">注册</a>
+                                <a class="lg-in" href="https://i.xinruiyun.cn/login/"  title="登录">登录</a>
+                                <a class="lg-re" href="https://i.xinruiyun.cn/register/" title="注册">注册</a>
                             </div>
 
                             <ul v-else class="user-list">
@@ -40,16 +40,16 @@
                                     </a>
                                     <DropdownMenu slot="list">
                                       <DropdownItem name="usercenter">
-                                        <a href="https://kaifa.xrcloud.net/usercenter/">用户中心</a>
+                                        <a href="https://i.xinruiyun.cn/usercenter/">用户中心</a>
                                       </DropdownItem>
                                       <DropdownItem name="expenses">
-                                        <a href="https://kaifa.xrcloud.net/expenses/">费用中心</a>
+                                        <a href="https://i.xinruiyun.cn/expenses/">费用中心</a>
                                       </DropdownItem>
                                       <DropdownItem name="msgcenter" style="position:relative">
-                                        <a href="https://kaifa.xrcloud.net/msgcenter/">消息中心</a>
+                                        <a href="https://i.xinruiyun.cn/msgcenter/">消息中心</a>
                                       </DropdownItem>
                                       <DropdownItem name="operationlog">
-                                        <a href="https://kaifa.xrcloud.net/operationlog/">操作日志</a>
+                                        <a href="https://i.xinruiyun.cn/operationlog/">操作日志</a>
                                       </DropdownItem>
                                       <DropdownItem divided name="exit">
                                         <span style="color:#666;">退出</span>
@@ -78,7 +78,7 @@
                                     <a href="https://www.xinruiyun.cn/ecs/">弹性云服务器ECS <img src="./assets/img/home/iconHot.png" /></a>
                                     <div class="buy-box">
                                         <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                        <a class="buy-font" href="https://kaifa.xrcloud.net/buy/host/">立即购买</a>
+                                        <a class="buy-font" href="https://i.xinruiyun.cn/buy/host/">立即购买</a>
                                     </div>
                                 </li>
                                 <li class="np-item">
@@ -91,14 +91,14 @@
                                     <a href="https://www.xinruiyun.cn/gpu/">GPU加速云服务器</a>
                                     <div class="buy-box">
                                         <img class="buy-img" src='./assets/img/home/buy-icon.png' />
-                                        <a class="buy-font" href="https://kaifa.xrcloud.net/buy/gpu/">立即购买</a>
+                                        <a class="buy-font" href="https://i.xinruiyun.cn/buy/gpu/">立即购买</a>
                                     </div>
                                 </li>
                                 <li class="np-item">
                                     <a href="#">DDoS高防云服务器</a>
                                     <div class="buy-box">
                                         <img class="buy-img" src='./assets/img/home/buy-icon.png' />
-                                        <a class="buy-font" href="https://kaifa.xrcloud.net/buy/ddos/">立即购买</a>
+                                        <a class="buy-font" href="https://i.xinruiyun.cn/buy/ddos/">立即购买</a>
                                     </div>
                                 </li>
                                 <li class="np-dis">
@@ -108,7 +108,7 @@
                                     <a href='https://www.xinruiyun.cn/evs/'>云硬盘</a>
                                     <div class="buy-box">
                                         <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                        <a class="buy-font" href="https://kaifa.xrcloud.net/buy/disk">立即购买</a>
+                                        <a class="buy-font" href="https://i.xinruiyun.cn/buy/disk">立即购买</a>
                                     </div>
                                 </li>
                                 <li class="np-item">
@@ -136,7 +136,7 @@
                                         <a href="https://www.xinruiyun.cn/eip/">弹性公网IP</a>
                                         <div class="buy-box">
                                             <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                            <a class="buy-font" href='https://kaifa.xrcloud.net/buy/elasticip/'>立即购买</a>
+                                            <a class="buy-font" href='https://i.xinruiyun.cn/buy/elasticip/'>立即购买</a>
                                         </div>
                                     </li>
                                     <li class="np-item">
@@ -185,10 +185,10 @@
                             </li>
                             <ul slot="content" class="np-bs" v-cloak>
                                 <li class="np-item">
-                                    <a href="https://kaifa.xrcloud.net/domain/">域名注册</a>
+                                    <a href="https://i.xinruiyun.cn/domain/">域名注册</a>
                                 </li>
                                 <li class="np-item">
-                                    <a href="https://kaifa.xrcloud.net/icp/">域名备案</a>
+                                    <a href="https://i.xinruiyun.cn/icp/">域名备案</a>
                                 </li>
                             </ul>
                         </Poptip>
@@ -206,35 +206,35 @@
                                         <a href='https://www.xinruiyun.cn/mysql/'>云数据库MySQL</a>
                                         <div class="buy-box">
                                             <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                            <a class="buy-font" href="https://kaifa.xrcloud.net/buy/database/">立即购买</a>
+                                            <a class="buy-font" href="https://i.xinruiyun.cn/buy/database/">立即购买</a>
                                         </div>
                                     </li>
                                     <li class="np-item">
                                         <a href='https://www.xinruiyun.cn/postgresql/'>云数据库PostgreSQL</a>
                                         <div class="buy-box">
                                             <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                            <a class="buy-font" href="https://kaifa.xrcloud.net/buy/database/">立即购买</a>
+                                            <a class="buy-font" href="https://i.xinruiyun.cn/buy/database/">立即购买</a>
                                         </div>
                                     </li>
                                     <li class="np-item">
                                         <a href='https://www.xinruiyun.cn/sqlserver/'>云数据库SQLServer</a>
                                         <div class="buy-box">
                                             <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                            <a class="buy-font" href="https://kaifa.xrcloud.net/buy/database/">立即购买</a>
+                                            <a class="buy-font" href="https://i.xinruiyun.cn/buy/database/">立即购买</a>
                                         </div>
                                     </li>
                                     <li class="np-item">
                                         <a href='https://www.xinruiyun.cn/mongodb/'>云数据库MongoDB</a>
                                         <div class="buy-box">
                                             <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                            <a class="buy-font" href="https://kaifa.xrcloud.net/buy/database/">立即购买</a>
+                                            <a class="buy-font" href="https://i.xinruiyun.cn/buy/database/">立即购买</a>
                                         </div>
                                     </li>
                                     <li class="np-item">
                                         <a href='https://www.xinruiyun.cn/redis/'>云数据库Redis</a>
                                         <div class="buy-box">
                                             <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                            <a class="buy-font" href="https://kaifa.xrcloud.net/buy/database/">立即购买</a>
+                                            <a class="buy-font" href="https://i.xinruiyun.cn/buy/database/">立即购买</a>
                                         </div>
                                     </li>
                                 </ul>
@@ -259,7 +259,7 @@
                             <a href="https://www.xinruiyun.cn/price/ecs/">定价</a>
                         </li>
                         <!-- <li class="nav-item active" @mouseenter='styleClass(5,$event)'>
-                            <a href="https://kaifa.xrcloud.net/market">云市场</a>
+                            <a href="https://i.xinruiyun.cn/market">云市场</a>
                         </li>  -->
                     </ul>
                     <div class="line" :style='lineStyle'></div>
@@ -304,16 +304,16 @@
                 <div class="ml-right" :class="mLogin?'ml-rights':''" v-if="userInfo">
                     <ul class="m-list">
                         <li class="m-item">
-                             <a href="https://kaifa.xrcloud.net/usercenter/">用户中心</a>
+                             <a href="https://i.xinruiyun.cn/usercenter/">用户中心</a>
                         </li>
                         <li class="m-item">
-                             <a href="https://kaifa.xrcloud.net/expenses/">费用中心</a>
+                             <a href="https://i.xinruiyun.cn/expenses/">费用中心</a>
                         </li>
                         <li class="m-item">
-                            <a href="https://kaifa.xrcloud.net/msgcenter/">消息中心</a>
+                            <a href="https://i.xinruiyun.cn/msgcenter/">消息中心</a>
                         </li>
                         <li class="m-item">
-                            <a href="https://kaifa.xrcloud.net/operationlog/">操作日志</a>
+                            <a href="https://i.xinruiyun.cn/operationlog/">操作日志</a>
                         </li>
                         <li class="m-item">
                             <span @click="go('exit')">退出登录</span>
@@ -470,12 +470,12 @@
                                 <div class="mhead-child">
                                     <div class="mhead-cdd">
                                         <span>
-                                            <a href="https://kaifa.xrcloud.net/domain/" target="blank">域名注册</a>
+                                            <a href="https://i.xinruiyun.cn/domain/" target="blank">域名注册</a>
                                         </span>
                                     </div>
                                     <div class="mhead-cdd">
                                         <span>
-                                            <a href="https://kaifa.xrcloud.net/icp/" target="blank">域名备案</a>
+                                            <a href="https://i.xinruiyun.cn/icp/" target="blank">域名备案</a>
                                         </span>
                                     </div>
                                 </div>
@@ -494,7 +494,7 @@
                     </div>
                     <!-- <div class="mhead-product">
                         <div style="padding: 10px 10px;">
-                            <a href="https://kaifa.xrcloud.net/market">云市场</a>
+                            <a href="https://i.xinruiyun.cn/market">云市场</a>
                             <span :class='item.itemShow?"mhead-arrow":"mhead-arrow2"'></span>
                         </div>
                     </div> -->
@@ -667,7 +667,7 @@
                         </div>
                         <div class="bg-content">
                             <div>
-                                <p class="p_true"><a ref="external nofollow" target="_blank" href="https://kaifa.xrcloud.net/brecords/">备案管理</a></p>
+                                <p class="p_true"><a ref="external nofollow" target="_blank" href="https://i.xinruiyun.cn/brecords/">备案管理</a></p>
                             </div>
                             <div>
                                 <p class="p_true"><a target="_blank" href="https://www.xinruiyun.cn/price/ecs/">定价说明</a></p>
@@ -695,16 +695,16 @@
                         </div>
                         <div class="bg-content">
                             <div>
-                                <p class="p_true"><a href="https://kaifa.xrcloud.net/overview/">控制台</a></p>
+                                <p class="p_true"><a href="https://i.xinruiyun.cn/overview/">控制台</a></p>
                             </div>
                             <div>
-                                <p class="p_true"><a href="https://kaifa.xrcloud.net/usercenter/">用户中心</a></p>
+                                <p class="p_true"><a href="https://i.xinruiyun.cn/usercenter/">用户中心</a></p>
                             </div>
                             <div>
-                                <p class="p_true"><a href="https://kaifa.xrcloud.net/expenses/">费用中心</a></p>
+                                <p class="p_true"><a href="https://i.xinruiyun.cn/expenses/">费用中心</a></p>
                             </div>
                             <div>
-                                <p class="p_true"><a href="https://kaifa.xrcloud.net/work/">工单管理</a></p>
+                                <p class="p_true"><a href="https://i.xinruiyun.cn/work/">工单管理</a></p>
                             </div>
                         </div>
                     </div>

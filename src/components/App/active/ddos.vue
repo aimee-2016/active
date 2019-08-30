@@ -401,7 +401,7 @@
                   <i>折</i>
                 </div>
               </div>
-              <a href="https://kaifa.xrcloud.net/buy/ddos/" class="btn">立即选购</a>
+              <a href="https://i.xinruiyun.cn/buy/ddos/" class="btn">立即选购</a>
             </li>
             <li>
               <div class="top">
@@ -418,7 +418,7 @@
                   <i>折</i>
                 </div>
               </div>
-              <a href="https://kaifa.xrcloud.net/buy/ddos/" class="btn">立即选购</a>
+              <a href="https://i.xinruiyun.cn/buy/ddos/" class="btn">立即选购</a>
             </li>
           </ul>
         </div>
@@ -1173,7 +1173,7 @@ export default {
         }
       ],
       dataForcast: [],
-      imgSrc: 'https://huodong.xrcloud.net/user/getKaptchaImage.do',
+      imgSrc: 'https://activity.xinruiyun.cn/user/getKaptchaImage.do',
       authErrorText: ''
     }
   },
@@ -1372,7 +1372,7 @@ export default {
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
           this.$Message.success('创建订单成功')
-          window.open('https://kaifa.xrcloud.net/order','_self')
+          window.open('https://i.xinruiyun.cn/order','_self')
         } else {
           this.hintMsg = res.data.message
           this.showModal.hint = true
@@ -1508,7 +1508,7 @@ export default {
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
           this.$Message.success('创建订单成功')
-          window.open('https://kaifa.xrcloud.net/order','_self')
+          window.open('https://i.xinruiyun.cn/order','_self')
         } else {
           this.hintMsg = res.data.message
           this.showModal.hint = true
