@@ -964,11 +964,11 @@
           </Form-item>
         </Form>
       </div>
-      <div v-show="complaintForm.step==2" class="complain-modal">
-        <img src="./assets/img/payresult/paySuccess.png"/>
-        <p>—您的烦恼我们已经收到—</p>
-        <p>我们会将处理结果发送至您的手机</p>
-        <p>请耐心等待</p>
+      <div v-show="complaintForm.step==2" class="complain-modal" style="text-align:center;font-size:14px;">
+        <img src="./assets/img/payresult/paySuccess.png" style="width:40px;height:40px;" />
+        <p style="text-align:center;line-height:1.5">—您的烦恼我们已经收到—</p>
+        <p style="text-align:center;line-height:1.5">我们会将处理结果发送至您的手机</p>
+        <p style="text-align:center;line-height:1.5">请耐心等待</p>
       </div>
       <div slot="footer" class="modal-footer-border">
         <Button type="ghost" @click="showModal.complaintModal = false">取消</Button>
