@@ -494,7 +494,7 @@
             <p>
               5、请注意：在未支付订单情况下，系统会对您的资格造成误判，需要您将账号下未支付订单作废后，即可正常参与。
               <a
-                href="https://i.xinruiyun.cn/expenses"
+                href="https://kaifa.xrcloud.net/expenses"
                 style="color:#2A99F2"
               >去订单管理</a>
             </p>
@@ -767,7 +767,7 @@
               <img
                 :src="imgSrc"
                 style="height:33px;"
-                @click="imgSrc=`https://kaifa.xrcloud.net/user/getKaptchaImage.do?t=${new Date().getTime()}`"
+                @click="imgSrc=`https://huodong.xrcloud.net/user/getKaptchaImage.do?t=${new Date().getTime()}`"
               >
             </div>
           </FormItem>
@@ -964,7 +964,7 @@ export default {
           }
         },
       ],
-      imgSrc: 'https://kaifa.xrcloud.net/user/getKaptchaImage.do',
+      imgSrc: 'https://huodong.xrcloud.net/user/getKaptchaImage.do',
       indexD: '',
       onStep: 0,
       time: '',
@@ -1860,7 +1860,7 @@ export default {
             })
           } else {
             this.$Message.success('创建订单成功')
-            window.open('https://i.xinruiyun.cn/order', '_self')
+            window.open('https://kaifa.xrcloud.net/order', '_self')
           }
         } else {
           this.$message.info({
@@ -2021,7 +2021,7 @@ export default {
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
           // this.$Message.success('创建订单成功')
-          // window.open('https://i.xinruiyun.cn/order', '_self')
+          // window.open('https://kaifa.xrcloud.net/order', '_self')
           this.$http.post('device/DescribeWalletsBalance.do').then(response => {
             if (response.status == 200 && response.data.status == '1') {
               this.balance = Number(response.data.data.remainder)
@@ -2467,7 +2467,7 @@ export default {
       // console.log(params)
       axios.get('gpuserver/createGpuServer.do', { params }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          window.open('https://i.xinruiyun.cn/order', '_self')
+          window.open('https://kaifa.xrcloud.net/order', '_self')
         } else {
           this.$message.info({
             content: response.data.message
@@ -2500,7 +2500,7 @@ export default {
       // console.log(params)
       axios.get('information/deployVirtualMachine.do', { params }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          window.open('https://i.xinruiyun.cn/order', '_self')
+          window.open('https://kaifa.xrcloud.net/order', '_self')
         } else {
           this.$message.info({
             content: response.data.message
