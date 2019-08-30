@@ -20,15 +20,15 @@
                             <a class="p-link" href="https://help.xinruiyun.cn/" target="_blank">
                                 帮助文档
                             </a>
-                            <a class="p-link" href="https://www.xinruiyun.cn/news/" target="_blank"> 
+                            <a class="p-link" href="https://www.xinruiyun.cn/news" target="_blank"> 
                                 新闻动态
                             </a>
-                            <a class="p-link pb" href='https://i.xinruiyun.cn/overview/' title="控制台">
+                            <a class="p-link pb" href='https://i.xinruiyun.cn/overview' title="控制台">
                                 控制台
                             </a>
                             <div v-if='!userInfo'>
-                                <a class="lg-in" href="https://i.xinruiyun.cn/login/"  title="登录">登录</a>
-                                <a class="lg-re" href="https://i.xinruiyun.cn/register/" title="注册">注册</a>
+                                <a class="lg-in" href="https://i.xinruiyun.cn/login"  title="登录">登录</a>
+                                <a class="lg-re" href="https://i.xinruiyun.cn/register" title="注册">注册</a>
                             </div>
 
                             <ul v-else class="user-list">
@@ -40,16 +40,16 @@
                                     </a>
                                     <DropdownMenu slot="list">
                                       <DropdownItem name="usercenter">
-                                        <a href="https://i.xinruiyun.cn/usercenter/">用户中心</a>
+                                        <a href="https://i.xinruiyun.cn/usercenter">用户中心</a>
                                       </DropdownItem>
                                       <DropdownItem name="expenses">
-                                        <a href="https://i.xinruiyun.cn/expenses/">费用中心</a>
+                                        <a href="https://i.xinruiyun.cn/expenses">费用中心</a>
                                       </DropdownItem>
                                       <DropdownItem name="msgcenter" style="position:relative">
-                                        <a href="https://i.xinruiyun.cn/msgcenter/">消息中心</a>
+                                        <a href="https://i.xinruiyun.cn/msgcenter">消息中心</a>
                                       </DropdownItem>
                                       <DropdownItem name="operationlog">
-                                        <a href="https://i.xinruiyun.cn/operationlog/">操作日志</a>
+                                        <a href="https://i.xinruiyun.cn/operationlog">操作日志</a>
                                       </DropdownItem>
                                       <DropdownItem divided name="exit">
                                         <span style="color:#666;">退出</span>
@@ -91,14 +91,14 @@
                                     <a href="https://www.xinruiyun.cn/gpu/">GPU加速云服务器</a>
                                     <div class="buy-box">
                                         <img class="buy-img" src='./assets/img/home/buy-icon.png' />
-                                        <a class="buy-font" href="https://i.xinruiyun.cn/buy/gpu/">立即购买</a>
+                                        <a class="buy-font" href="https://i.xinruiyun.cn/buy/gpu">立即购买</a>
                                     </div>
                                 </li>
                                 <li class="np-item">
                                     <a href="https://www.xinruiyun.cn/ddos/">DDoS高防云服务器</a>
                                     <div class="buy-box">
                                         <img class="buy-img" src='./assets/img/home/buy-icon.png' />
-                                        <a class="buy-font" href="https://i.xinruiyun.cn/buy/ddos/">立即购买</a>
+                                        <a class="buy-font" href="https://i.xinruiyun.cn/buy/ddos">立即购买</a>
                                     </div>
                                 </li>
                                 <li class="np-dis">
@@ -112,7 +112,7 @@
                                     </div>
                                 </li>
                                 <li class="np-item">
-                                    <a href='https://www.xinruiyun.cn/vbs/'>云硬盘备份</a>
+                                    <a href='https://www.xinruiyun.cn/vbs'>云硬盘备份</a>
                                 </li>
                             </ul>
                         </Poptip>
@@ -136,7 +136,7 @@
                                         <a href="https://www.xinruiyun.cn/eip/">弹性公网IP</a>
                                         <div class="buy-box">
                                             <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                            <a class="buy-font" href='https://i.xinruiyun.cn/buy/elasticip/'>立即购买</a>
+                                            <a class="buy-font" href='https://i.xinruiyun.cn/buy/elasticip'>立即购买</a>
                                         </div>
                                     </li>
                                     <li class="np-item">
@@ -167,7 +167,7 @@
                                         <a href="https://www.xinruiyun.cn/ddosip/">DDoS高防IP</a>
                                         <div class="buy-box">
                                             <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                            <span class="buy-font">立即购买</span>
+                                             <a class="buy-font" href='https://i.xinruiyun.cn/buy/ddosip'>立即购买</a>
                                         </div>
                                     </li>
                                 </ul>
@@ -206,35 +206,35 @@
                                         <a href='https://www.xinruiyun.cn/mysql/'>云数据库MySQL</a>
                                         <div class="buy-box">
                                             <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                            <a class="buy-font" href="https://i.xinruiyun.cn/buy/database/">立即购买</a>
+                                            <a class="buy-font" href="https://i.xinruiyun.cn/buy/database">立即购买</a>
                                         </div>
                                     </li>
                                     <li class="np-item">
                                         <a href='https://www.xinruiyun.cn/postgresql/'>云数据库PostgreSQL</a>
                                         <div class="buy-box">
                                             <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                            <a class="buy-font" href="https://i.xinruiyun.cn/buy/database/">立即购买</a>
+                                            <a class="buy-font" href="https://i.xinruiyun.cn/buy/database">立即购买</a>
                                         </div>
                                     </li>
                                     <li class="np-item">
                                         <a href='https://www.xinruiyun.cn/sqlserver/'>云数据库SQLServer</a>
                                         <div class="buy-box">
                                             <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                            <a class="buy-font" href="https://i.xinruiyun.cn/buy/database/">立即购买</a>
+                                            <a class="buy-font" href="https://i.xinruiyun.cn/buy/database">立即购买</a>
                                         </div>
                                     </li>
                                     <li class="np-item">
                                         <a href='https://www.xinruiyun.cn/mongodb/'>云数据库MongoDB</a>
                                         <div class="buy-box">
                                             <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                            <a class="buy-font" href="https://i.xinruiyun.cn/buy/database/">立即购买</a>
+                                            <a class="buy-font" href="https://i.xinruiyun.cn/buy/database">立即购买</a>
                                         </div>
                                     </li>
                                     <li class="np-item">
                                         <a href='https://www.xinruiyun.cn/redis/'>云数据库Redis</a>
                                         <div class="buy-box">
                                             <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                            <a class="buy-font" href="https://i.xinruiyun.cn/buy/database/">立即购买</a>
+                                            <a class="buy-font" href="https://i.xinruiyun.cn/buy/database">立即购买</a>
                                         </div>
                                     </li>
                                 </ul>
@@ -1888,7 +1888,7 @@
 .ml-right .m-item {
   padding: 0.3rem 1rem;
   color: #fff;
-  font-size: 0.2rem;
+  font-size: 14px;
   width: 8rem;
 }
 
@@ -2656,6 +2656,7 @@
     font-size: 14px;
     display: inline-block;
     border-radius: 2px;
+    color: #fff;
 }
 
 .m-bottom .m-we {

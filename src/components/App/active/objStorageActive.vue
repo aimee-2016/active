@@ -129,13 +129,13 @@
         <div>
           <!--span class="checkBox" :class="{agree:agree}" @click="toggle"></span>&nbsp;<span>我已阅读并同意</span><span
           style="color:#0EB4FA;cursor:pointer;" @click="showRules">《睿云用户使用协议》</span-->
-          <router-link to="register" target="_blank" class="btn-register">
+          <a href="https://i.xinruiyun.cn/register" target="_blank" class="btn-register">
             立即注册
             <span>注册完成之后记得回到活动页面领取50G存储包哦！</span>
-          </router-link>
-          <router-link to="reset"  target="_blank" style="color:#0EB4FA;cursor:pointer;margin-top: 10px;float:right;font-size:14px">
+          </a>
+          <a href="https://i.xinruiyun.cn/resetnew"  target="_blank" style="color:#0EB4FA;cursor:pointer;margin-top: 10px;float:right;font-size:14px">
             忘记密码
-          </router-link>
+          </a>
         </div>
       </div>
     </Modal>
@@ -315,7 +315,7 @@ export default {
     createdKey () {
       this.$store.commit('setPane', {vpc: 'VPC', vpn: 'remote', usercenter: 'key'})
       // this.$router.push('/userCenter')
-      window.open('https://i.xinruiyun.cn/usercenter/', 'self')
+      window.open('https://i.xinruiyun.cn/usercenter', 'self')
     },
     vail (field) {
       var text = this.form[field];
