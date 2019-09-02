@@ -300,12 +300,12 @@
     </div>
     <!--不符合条件弹窗-->
     <div v-transfer-dom>
-      <confirm v-model="inconformity" :show-cancel-button="false" confirm-text="去活动中心" @on-confirm="$router.push('/activity/')">
+      <confirm v-model="inconformity" :show-cancel-button="false" confirm-text="去活动中心" onclick="window.open('https://activity.xinruiyun.cn/', '_self')" class="comfirm">
         <div style="text-align:center;">
           <p style="font-size: 14px;font-weight:500;color:#333;line-height:40px;" slot="title">提示</p>
-          <p style="font-size: 14px;font-weight:400;color:rgba(51,51,51,1);line-height:32px;padding-top: 43px">
+          <p style="font-size: 14px;font-weight:400;color:rgba(51,51,51,1);line-height:32px;">
             您好，您不符合本活动的参与条件，去
-            <span style="color: #F56B23" @click="$router.push('/activity/')">活动中心</span>看看其他活动吧！如果有其他需要可联系我们销售或者客服。
+            <span style="color: #F56B23" onclick="window.open('https://activity.xinruiyun.cn/', '_self')">活动中心</span>看看其他活动吧！如果有其他需要可联系我们销售或者客服。
           </p>
         </div>
       </confirm>
@@ -321,7 +321,7 @@
           根据国家规定，使用公共互联网需进行实名认证。
         </div>
         <div class="foot">
-          <button @click="$router.push('certification')">实名认证</button>
+          <button onclick="window.open('https://m.xinruiyun.cn/certification', '_self')">实名认证</button>
         </div>
       </div>
     </div>
@@ -704,7 +704,7 @@
       freeGet(item,index){
         if (this.$store.state.userInfo == null) {
           sessionStorage.setItem('routerName', 'freeAnnual')
-          return this.$router.push('Register')
+          window.open('https://m.xinruiyun.cn/Register', '_self')
         } else if(this.$store.state.isCheck) {
           // 未认证
           this.certify = 'certify'
@@ -728,7 +728,7 @@
                 sessionStorage.setItem('system', item.list[1])
                 sessionStorage.setItem('brand', item.bandwith+'M')
                 // this.$router.push('freeBuy')
-                window.open('https://m.xinruiyun.cn/orderconfirm','_self')
+                window.open('https://m.xinruiyun.cn/freeBuy','_self')
               } else {
                 this.inconformity = true
               }
@@ -791,7 +791,10 @@
               //this.$router.push('orderconfirm')
               window.open('https://m.xinruiyun.cn/orderconfirm','_self')
             } else {
-              this.$vux.toast.text(res.data.message, 'middle')
+              // this.$vux.toast.text(res.data.message, 'middle')
+              this.$message.info({
+                content: res.data.message
+              })
             }
           })
         }
