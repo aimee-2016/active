@@ -786,13 +786,12 @@
               defzoneid: item[0].area[0]
             }
           }).then(res => {
-            console.log(res)
             if (res.status == 200 && res.data.status == 1) {
               sessionStorage.setItem('countOrder', item[0].price.toString())
               //this.$router.push('orderconfirm')
               window.open('https://m.xinruiyun.cn/orderconfirm','_self')
             } else {
-              this.$vux.toast.text('您已经提交订单', 'middle')
+              this.$vux.toast.text(res.data.message, 'middle')
             }
           })
         }
