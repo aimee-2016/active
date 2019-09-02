@@ -1004,6 +1004,7 @@
         }
       };
       return {
+        links:'',
         currentItem: -1, // 当前选中item  默认为-1(未选中)
         lineStyle: {
           width: '0px',
