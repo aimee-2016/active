@@ -17,7 +17,7 @@
           </div>
           <div class="container">
             <div class="deposite-host" v-if="currentView=='child1'">
-              <div class="wrap">
+              <div class="wrap-inner">
                 <div class="product">
                   <div v-for="(item,index) in depositeList" :key="index">
                     <div class="head">
@@ -88,7 +88,7 @@
                       </div>
                       <div class="mb15">
                         <span class="label-db" v-if="item.post.servicetype=='db'">镜像系统：</span>
-                        <span class="label" v-else>系统：</span>
+                        <span class="label-db" v-else>系统：</span>
                         <Cascader class="systemw"
                           :data="item.systemList"
                           v-model="item.system"
@@ -234,7 +234,7 @@
               </div>
             </div>
             <div class="low-discount" v-if="currentView=='child2'">
-              <div class="wrap">
+              <div class="wrap-inner">
                 <div class="product">
                   <div v-for="(item,index) in allList" :key="index">
                     <div class="head">
@@ -2839,13 +2839,15 @@ export default {
 }
 
 .deposite-host {
+  // background: blue;
   .product {
+    margin: 0 auto;
+    // background:violet;
     display: flex;
-    // justify-content: center;
     flex-wrap: wrap;
     text-align: left;
-    // background: #fff;
     padding-bottom: 10px;
+    width: 1220px;
     > div {
       width: 224px;
       margin-right: 20px;
@@ -3230,8 +3232,9 @@ export default {
 
 .low-discount {
   .product {
+    // background: red;
+    margin: 0 auto;
     display: flex;
-    // justify-content: center;
     flex-wrap: wrap;
     text-align: left;
     padding-bottom: 10px;
@@ -3414,6 +3417,12 @@ export default {
   .wrap {
     width: 100%;
   }
+  .wrap-inner {
+    width: 100%;
+  }
+  .deposite-host .product,.low-discount .product{
+    width: 978px;
+  }
   .deposite-host .renew .content{
     justify-content: center;
     .item {
@@ -3462,12 +3471,23 @@ export default {
     }
   }
 }
+@media screen and (max-width: 1028px) {
+  .deposite-host,.low-discount{
+    .product {
+      width: 732px;
+    }
+  }
+}
+@media screen and (max-width: 786px) {
+  .deposite-host,.low-discount{
+    .product {
+      width: 488px;
+    }
+  }
+}
 @media screen and (min-width: 1281px) {
   .head-g {
     justify-content: flex-start;
-  }
-  .wrap {
-    width: 1260px;
   }
   
 }
@@ -3501,10 +3521,13 @@ export default {
     }
     .item {
       width: 100%;
-      // margin-right: 0;
     }
   } 
+  .deposite-host .wrap-inner,.low-discount .wrap-inner{
+    width: 100%;
+  }
   .deposite-host .product{
+    width: 100%;
     >div {
       width: 100%;
       margin-right: 0px;
@@ -3531,13 +3554,11 @@ export default {
       }
     }
     .body{
-      >div {
-        
-      }
       .label {
         display: inline;
         margin-bottom: 0;
         line-height: 32px;
+        width: 41px;
       }
     }
     .bodyb {
@@ -3551,6 +3572,7 @@ export default {
   }
   .low-discount {
     .product {
+      width: 100%;
       > div {
       width: 100%;
       margin-right: 0;
@@ -3573,11 +3595,6 @@ export default {
       }
       .body {
         padding: 0 10px;
-        .left {
-          // padding-top: 20px;
-        }
-       
-        
       }
     }
   }

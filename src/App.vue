@@ -851,13 +851,13 @@
     </div>
     <!-- 客服浮动块 -->
     <div class="affix">
-      <div class="registerImg" @click="$router.push('/free/')">
+      <div class="registerImg mobileq" @click="$router.push('/free/')">
         <p>免费领云服务器</p>
       </div>
       <!--<img src="./assets/img/app/regiterTag.png"/>-->
-      <span class="qq" @mouseenter="QME" @mouseleave="QML">
+      <span class="qq mobileq" @mouseenter="QME" @mouseleave="QML">
         <div ref="qq" style="overflow: hidden;" class="qq-position">
-          <div class="wrapper mobileq" v-if="QQInfo.length>0">
+          <div class="wrapper " v-if="QQInfo.length>0">
             <div>
               <span class="title">人工客服</span>
               <div class="info-wrapper">
@@ -875,12 +875,12 @@
               </div>
             </div>
           </div>
-            <div class="wrapper  mobileq">
+            <div class="wrapper">
             <div style="padding:0 20px;cursor:pointer" @click="linkService">
             <span class="title">在线客服&nbsp&nbsp&nbsp<img style="vertical-align: bottom;" src="./assets/img/app/kefu-icon.png" /></span>
               </div>
           </div>
-          <div class="wrapper mobileq" v-if="xiaoshouInfo.length>0">
+          <div class="wrapper" v-if="xiaoshouInfo.length>0">
             <div>
               <span class="title">售前咨询</span>
               <div class="info-wrapper">
@@ -925,7 +925,7 @@
           </div>
         </div>
       </span>
-      <span class="phone" @click="getOrderType" @mouseenter="PME" @mouseleave="PML">
+      <span class="phone mobileq" @click="getOrderType" @mouseenter="PME" @mouseleave="PML">
         <div ref="phoneE" style="overflow: hidden;bottom:5px;">
           <div class="wrapper">
             <div>
@@ -1399,7 +1399,7 @@
   }
 </script>
 
-<style rel="stylesheet/less" lang="less">
+<style rel="stylesheet/less" lang="less" scoped>
   #front {
     .app-hint {
       height: 0;
@@ -2275,7 +2275,7 @@
   height: 146px;
 }
 .bottom .bottom-register .br-bg .box{
-  width: 1200px;
+  max-width: 1200px;
   margin: 0 auto;
   text-align: center;
 }
@@ -2679,14 +2679,11 @@ span {
     height: 100px;
   }
 @media only screen and (max-width:640px) {
-  .mobileq {
+  #front .affix > .mobileq {
     display: none;
   }
-  //  #front .affix .qq > div {
-  //    padding-top: 10px;
-  //  }
-  #front .affix .qq .qq-position{
-      bottom: 0;
+  .mobileq {
+    display: none;
   }
 }
 </style>
