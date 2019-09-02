@@ -5,7 +5,6 @@
         <div class="banner">
             <img src="../../../assets/img/active/ddos-m/hign-banner.png" alt="">
         </div>
-
         <!--活动tab-->
         <div class="tabs">
            <ul>
@@ -310,7 +309,7 @@
                     根据国家规定，使用公共互联网需进行实名认证。
                 </div>
                 <div class="foot">
-                    <button @click="$router.push('certification')">实名认证</button>
+                    <button onclick="window.open('https://m.xinruiyun.cn/certification', '_self')">实名认证</button>
                 </div>
             </div>
         </div>
@@ -923,6 +922,16 @@
                     }
                 }
             }
+        }
+
+        @media screen and (max-width: 370px) {
+          .tabs {
+            ul {
+              li {
+                width: 100%;
+              }
+            }
+          }
         }
 
         .miaosha {
