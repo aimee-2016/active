@@ -718,17 +718,17 @@
           }).then(response => {
             if (response.status == 200 && response.data.status == 1) {
               if (response.data.result.flag) {
-                sessionStorage.setItem('nodes', item.area[0])
-                sessionStorage.setItem('day', item.days == 30 ? '1个月' : '1年')
-                sessionStorage.setItem('cpu',  item.cpu+'核')
-                sessionStorage.setItem('memory', item.mem+'G')
-                sessionStorage.setItem('price', item.cost)
-                sessionStorage.setItem('priceOld', item.oldPrice)
-                sessionStorage.setItem('vmConfigId', item.id)
-                sessionStorage.setItem('system', item.list[1])
-                sessionStorage.setItem('brand', item.bandwith+'M')
-                // this.$router.push('freeBuy')
-                window.open('https://m.xinruiyun.cn/freeBuy','_self')
+                axios.get('/activity/createFreevmTemp.do', {
+                  params: {
+                    vmConfigId: item.id,
+                    osType: item.list[1],
+                    defzoneid: item.area[0]
+                  }
+                }).then(res => {
+                  if (res.status == 200 && res.data.status == 1) {
+                    window.open('https://m.xinruiyun.cn/freeBuy','_self')
+                  }
+                })
               } else {
                 this.inconformity = true
               }

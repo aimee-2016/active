@@ -71,7 +71,7 @@
                             </div>
                             <div class="miao-group">
                                 <Group>
-                                    <popup-picker title="区域" :data="zoiendListH" :columns="3" v-model="item.zoneId" show-name @on-change="getSys(item,53)"></popup-picker>
+                                    <popup-picker title="区域" :data="zoiendListH" :columns="3" v-model="item.zoneId" show-name @on-hide="getSys(item,53)"></popup-picker>
                                     <popup-picker title="系统" :data="item.systemList" :columns="3" v-model="item.systems" show-name></popup-picker>
                                 </Group>
                             </div>
@@ -97,7 +97,7 @@
                             </div>
                             <div class="miao-group">
                                 <Group>
-                                    <popup-picker title="区域" :data="zoiendListG" :columns="3" v-model="item.zoneId" show-name @on-change="getSys(item,53)"></popup-picker>
+                                    <popup-picker title="区域" :data="zoiendListG" :columns="3" v-model="item.zoneId" show-name @on-hide="getSys(item,53)"></popup-picker>
                                     <popup-picker title="系统" :data="item.systemList" :columns="3" v-model="item.systems" show-name></popup-picker>
                                 </Group>
                             </div>
@@ -197,7 +197,7 @@
                            <Group class="giving-Group">
                                <popup-picker title="区域" :data="hHzoinedList" :columns="3" v-model="item.zoneId" show-name @on-change="getSys(item,55)"></popup-picker>
                                <popup-picker title="系统" :data="item.systemList" :columns="3" v-model="item.systems" show-name></popup-picker>
-                               <popup-picker title="时长" :data="timeList" :columns="3" v-model="item.times" show-name @on-change="ShignHostPrices(item)"></popup-picker>
+                               <popup-picker title="时长" :data="timeList" :columns="3" v-model="item.times" show-name @on-hide="ShignHostPrices(item)"></popup-picker>
                                <cell title="防御" :value="item.defense+'G'"></cell>
                            </Group>
                         </div>
