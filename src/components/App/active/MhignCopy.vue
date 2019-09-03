@@ -1957,7 +1957,7 @@
                                 color:rgba(102,102,102,1);
                                 line-height:20px;
                                 span {
-                                    padding: 0 10px;
+                                    padding: 0 20px;
                                 }
                             }
                         }
