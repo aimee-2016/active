@@ -5,7 +5,6 @@
         <div class="banner">
             <img src="../../../assets/img/active/ddos-m/hign-banner.png" alt="">
         </div>
-
         <!--活动tab-->
         <div class="tabs">
            <ul>
@@ -72,7 +71,7 @@
                             </div>
                             <div class="miao-group">
                                 <Group>
-                                    <popup-picker title="区域" :data="zoiendListH" :columns="3" v-model="item.zoneId" show-name @on-change="getSys(item,53)"></popup-picker>
+                                    <popup-picker title="区域" :data="zoiendListH" :columns="3" v-model="item.zoneId" show-name @on-hide="getSys(item,53)"></popup-picker>
                                     <popup-picker title="系统" :data="item.systemList" :columns="3" v-model="item.systems" show-name></popup-picker>
                                 </Group>
                             </div>
@@ -98,7 +97,7 @@
                             </div>
                             <div class="miao-group">
                                 <Group>
-                                    <popup-picker title="区域" :data="zoiendListG" :columns="3" v-model="item.zoneId" show-name @on-change="getSys(item,53)"></popup-picker>
+                                    <popup-picker title="区域" :data="zoiendListG" :columns="3" v-model="item.zoneId" show-name @on-hide="getSys(item,53)"></popup-picker>
                                     <popup-picker title="系统" :data="item.systemList" :columns="3" v-model="item.systems" show-name></popup-picker>
                                 </Group>
                             </div>
@@ -198,7 +197,7 @@
                            <Group class="giving-Group">
                                <popup-picker title="区域" :data="hHzoinedList" :columns="3" v-model="item.zoneId" show-name @on-change="getSys(item,55)"></popup-picker>
                                <popup-picker title="系统" :data="item.systemList" :columns="3" v-model="item.systems" show-name></popup-picker>
-                               <popup-picker title="时长" :data="timeList" :columns="3" v-model="item.times" show-name @on-change="ShignHostPrices(item)"></popup-picker>
+                               <popup-picker title="时长" :data="timeList" :columns="3" v-model="item.times" show-name @on-hide="ShignHostPrices(item)"></popup-picker>
                                <cell title="防御" :value="item.defense+'G'"></cell>
                            </Group>
                         </div>
@@ -310,7 +309,7 @@
                     根据国家规定，使用公共互联网需进行实名认证。
                 </div>
                 <div class="foot">
-                    <button @click="$router.push('certification')">实名认证</button>
+                    <button onclick="window.open('https://m.xinruiyun.cn/certification', '_self')">实名认证</button>
                 </div>
             </div>
         </div>
@@ -923,6 +922,16 @@
                     }
                 }
             }
+        }
+
+        @media screen and (max-width: 370px) {
+          .tabs {
+            ul {
+              li {
+                width: 100%;
+              }
+            }
+          }
         }
 
         .miaosha {
@@ -1948,7 +1957,7 @@
                                 color:rgba(102,102,102,1);
                                 line-height:20px;
                                 span {
-                                    padding: 0 10px;
+                                    padding: 0 20px;
                                 }
                             }
                         }

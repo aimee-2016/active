@@ -16,53 +16,6 @@
             </div>
           </div>
         </my-carousel-item>
-        <!-- <my-carousel-item class="carousel-item">
-          <div class="ss-active" @click="push('/activity/2019spring/')">
-            <div class="wrap">
-              <div class="container flex-vertical-center">
-                <div class="left">
-                  <h2>云产品新春采购季</h2>
-                  <p>
-                    低至
-                    <i>1折</i>
-                    更有会员折上折
-                  </p>
-                  <span @click="push('/activity/2019spring/')">立即购买</span>
-                </div>
-                <img src="../../assets/img/active/schoolSeason/schoolseason_banner.png" alt="云产品新春采购季">
-              </div>
-            </div>
-          </div>
-        </my-carousel-item> -->
-        <!-- <my-carousel-item class="carousel-item">
-          <div class="xian-active" @click="push('/activity/xian/')">
-            <div class="wrap">
-              <div class="container flex-vertical-center">
-                <div class="left">
-                  <img src="../../assets/img/active/xianNode/banner-text.png" alt=" 新节点云服务器">
-                  <p>
-                     新节点云服务器
-                    <i>折扣特惠</i>，
-                    100%资源可用、100%性能可用！
-                  </p>
-                  <span @click="$router.push('/activity/xian')">立即参与</span>
-                </div>
-                <img src="../../assets/img/active/xianNode/xian-node-banner.png" alt="新节点云服务器">
-              </div>
-            </div>
-          </div>
-        </my-carousel-item> -->
-        <!-- <my-carousel-item class="carousel-item">
-          <div @click="push('/activity/BlacKActivities')"
-               style="cursor: pointer;background: linear-gradient(90deg, #F7FAFF, #FFE3D9);">
-            <div class="free-black">
-              <div class="wrap">
-              <div class="text">
-             </div>
-            </div>
-            </div>
-          </div>
-        </my-carousel-item> -->
         <my-carousel-item class="carousel-item">
           <div @click="push('/free/')"
                style="cursor: pointer;background: #F56B23;">
@@ -94,40 +47,6 @@
             </div>
           </div>
         </my-carousel-item>
-        <!-- <my-carousel-item class="carousel-item">
-          <div @click="push('/activity/share/')"
-               style="cursor: pointer;background: #FA846E;">
-            <div class="groupBook">
-              <div>
-                <div>
-                  <img src="../../assets/img/active/group-booking/gb-banner7.png" alt="云服务器特惠计划"/>
-                  <p>云服务器特惠计划</p>
-                  <p>分享赚时长 一年只需<span>59</span>元</p>
-                  <p>59元首月开通，<span>0</span>元续费 ，便宜好用尽在新睿云</p>
-                  <button>点击了解</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </my-carousel-item> -->
-        <!-- <my-carousel-item class="carousel-item">
-          <div @click="push('/activity/zero/')" style="cursor: pointer;linear-gradient(90deg, rgba(255, 251, 250, 1), rgba(255, 248, 246, 1));">
-            <div class="head-banner">
-              <div>
-                <div><p><img style="padding-top: 0" src="../../assets/img/active/active_1/ziti2.png" alt="ziti"></p>
-                  <button>立即领取</button>
-                </div>
-                <img src="../../assets/img/home/home-banner4.png" alt="立即领取"></div>
-            </div>
-          </div>
-        </my-carousel-item> -->
-       <!-- <my-carousel-item class="carousel-item">
-          <div @click="push('/anniversaryActive')"
-               style="cursor: pointer;background: #F56B23;">
-            <div class="anniversary-active">
-            </div>
-          </div>
-        </my-carousel-item>-->
       </my-carousel>
     </div>
     <div class="center-active box-g">
@@ -138,28 +57,6 @@
             <span>NOVICE TO CLOUD</span>
           </div>
           <div class="box-wrap">
-            <!-- <router-link v-for="(item,index) in activeData" :key="index" :class="{'box':true}"
-                         :to="item.isStart?item.url:''" :style="{background:'url('+item.imgPath+')',backgroundRepeat:'no-repeat'}">
-              <div class="box-head" :style="{color:item.color}">
-                <div v-if="item.name">
-                  <p>
-                    {{item.name}}
-                  </p>
-                  <p v-html="item.desc" :style="{color:item.colortwo}"></p>
-                  <p v-if="item.secDesc">{{item.secDesc}}</p>
-                </div>
-                <img :src="item.textImg"  v-else>
-
-              </div>
-              <div class="box-bottom">
-                <div>
-                  <p>活动时间：{{item.time}}</p>
-                  <p>活动对象：{{item.activeObj}}</p>
-                </div>
-                <button v-if="item.isStart">立即参与 →</button>
-                <button v-else>敬请期待</button>
-              </div>
-            </router-link> -->
             <router-link v-for="(item,index) in allActive" :key="index" :class="{'box':true}"
                          :to="'/'+item.newurl+'/'" :style="{background:'url('+item.imgCenter+')',backgroundRepeat:'no-repeat'}">
               <div class="box-head" :style="{color:item.namecolor}">
@@ -220,12 +117,12 @@
     //   })
     // },
     metaInfo: {
-      title: '云服务器低价优惠活动 - 特价云服务器体验 - 活动中心 - 新睿云', // set a title
-      meta: [{                 // set meta
+      title: '云服务器低价优惠活动 - 特价云服务器体验 - 活动中心 - 新睿云',
+      meta: [{                
         name: 'keywords',
         content: '云服务器活动,云服务器活动,低价云服务器,云服务器体验,云服务器优惠,特价云服务器'
       },
-        {                 // set meta
+        {                
           name: 'description',
           content: '新睿云活动中心汇聚了云服务器,云数据库,对象存储等产品,推出新春采购季、免费云服务器、打折促销,分享赚时长等多种优惠活动！'
         }]
@@ -247,34 +144,6 @@
             color: 'rgba(252,202,138,1)',
             colortwo: '#FFEDD2'
           },
-         /* {
-            imgPath: require('../../assets/img/activecenter/bg-card-kaixue.png'),
-            time: '2019.3.1-2019.4.30',
-            activeObj: '新老用户皆可参与',
-            url: '/activity/2019spring/',
-            isStart: true,
-            weight: '1',
-          },*/
-          // {
-          //   imgPath: require('../../assets/img/activecenter/bg-card-6.png'),
-          //   time: '2019.1.28-2019.03.01',
-          //   activeObj: '仅限新用户',
-          //   url: '/activity/xian/',
-          //   isStart: true,
-          //   weight: '1',
-          // },
-        //   {
-        //     imgPath: require('../../assets/img/activecenter/blackact.png'),
-        //     name: '低价秒杀 买一赠一',
-        //     desc: '云电脑惊喜上市 提前预约 抢先体验',
-        //     time: '2019.5.29-2019.7.19',
-        //     activeObj: '新老用户皆可参加',
-        //     url: '/activity/BlacKActivities',
-        //     isStart: true,
-        //     weight: '1',
-        //     color: '#FFE5C0',
-        //     colortwo: '#FFBF82'
-        //   },
           {
             imgPath: require('../../assets/img/activecenter/bg-card-2.png'),
             name: '免费云服务器 不限量领取',
@@ -285,15 +154,6 @@
             isStart: true,
             weight: '1'
           },
-          // {
-          //   imgPath: require('../../assets/img/activecenter/bg-card-1.png'),
-          //   textImg: require('../../assets/img/activecenter/text-1.png'),
-          //   time: '2018年12月7日开始',
-          //   activeObj: '新老用户',
-          //   url: '/activity/zero/',
-          //   isStart: true,
-          //   weight: '1',
-          // },
           {
             imgPath: require('../../assets/img/activecenter/bg-card-3.png'),
             name: '对象存储 重磅上线',
@@ -317,16 +177,6 @@
             weight: '1',
             color: 'black'
           },
-          // {
-          //   imgPath: require('../../assets/img/activecenter/bg-card-onsale.png'),
-          //   name: '分享好“云” 你赚时长',
-          //   desc: '每成功一位即赠送一个月 最多可领12个月',
-          //   time: '2018.07.19开始',
-          //   activeObj: '云服务器 新老用户',
-          //   url: '/activity/share/',
-          //   isStart: true,
-          //   weight: '2'
-          // }
         ]
       }
     },
@@ -392,29 +242,6 @@
             cursor: pointer;
             background: #FEEDE0 url("../../assets/img/active/anniversary/aa-banner22.png") center no-repeat;
           }
-          .dan-receive{
-            height: 400px;
-            background: rgb(249, 118, 89) url("../../assets/img/active/doubleDenier/dan_banner.png") center no-repeat;
-            .w_button{
-              position: relative;
-              top: 217px;
-              left: 37px;
-              color: rgba(26, 42, 210, 1);
-              font-weight: 500;
-              font-size: 13px;
-              width: 140px;
-              line-height: 43px;
-              letter-spacing:3px;
-              text-align: center;
-              height: 43px;
-              background: rgb(255, 222, 42);
-              // box-shadow: 0px 2px 2px 1px rgb(136, 20, 17);
-              cursor: pointer;
-            }
-            .w_button:hover{
-              box-shadow: 0px 2px 2px 1px #881411;
-            }
-          }
           .ddos {
             height: 400px;
             background:  url("../../assets/img/active/ddos/ddos-ac-bg.png") center no-repeat;
@@ -435,38 +262,6 @@
                   }
                 }
               }
-          }
-          .free-black {
-            height: 400px;
-            background:  url("../../assets/img/active/freeToReceive/centerimg.png") center no-repeat;
-                .wrap{
-                  width: 1200px;
-                  margin:0 auto;
-                  display: flex;
-                  justify-content: space-between;
-
-                  .text{
-                  >p{
-                    font-size:50px;
-                    font-family:"Microsoft YaHei", "微软雅黑";
-                    font-weight:600;
-                    color:rgba(51,51,51,1);
-                  }
-                  p:nth-child(1){
-                    margin-top: 140px;
-                    font-size:48px;
-                    font-weight:400;
-                  }
-                  p:nth-child(2){
-                    font-size:24px;
-                    margin-top: 25px;
-                    font-weight: normal;
-                  }
-                  }
-                  .img{
-                    padding-top: 30px;
-                  }
-                }
           }
           .free-receive {
             height: 400px;
@@ -553,50 +348,6 @@
                 }
                 p:nth-child(3) {
                   font-weight: 700;
-                }
-              }
-            }
-          }
-          .groupBook {
-            background: #fa846e url("../../assets/img/active/group-booking/gb-banner6.png") no-repeat center;
-            height: 400px;
-            > div {
-              width: 1200px;
-              margin: 0 auto;
-              > div {
-                width: 900px;
-                margin: 0 auto;
-                padding-top: 70px;
-                position: relative;
-                img {
-                  position: absolute;
-                  right: -100px;
-                  top: 15px;
-                }
-                p {
-                  font-size: 24px;
-                  font-family: "Microsoft YaHei", "微软雅黑";
-                  color: rgba(255, 255, 255, 1);
-                  margin-bottom: 20px;
-                  span {
-                    color: #ffe177;
-                    font-size: 36px;
-                  }
-                }
-                p:nth-child(2) {
-                  font-size: 36px;
-                }
-                button {
-                  font-size: 18px;
-                  font-family: "Microsoft YaHei", "微软雅黑";
-                  color: rgba(254, 79, 74, 1);
-                  padding: 8px 30px;
-                  background: rgba(255, 255, 255, 1);
-                  border-radius: 27px;
-                  border: none;
-                  outline: none;
-                  cursor: pointer;
-                  margin-top: 40px;
                 }
               }
             }
@@ -750,7 +501,8 @@
   }
 
   .center-active {
-    background: url("../../assets/img/activecenter/bg-center.png") no-repeat center;
+    // background: url("../../assets/img/activecenter/bg-center.png") no-repeat center;
+    background:linear-gradient(0deg,#fee5d8 0%,#fffefe 100%);
     background-size: cover;
     .box {
       &:hover {

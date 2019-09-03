@@ -108,7 +108,7 @@
                                     <a href='https://www.xinruiyun.cn/evs/'>云硬盘</a>
                                     <div class="buy-box">
                                         <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                        <a class="buy-font" href="https://i.xinruiyun.cn/buy/disk">立即购买</a>
+                                        <a class="buy-font" href="https://i.xinruiyun.cn/buy/disk/">立即购买</a>
                                     </div>
                                 </li>
                                 <li class="np-item">
@@ -319,7 +319,7 @@
                             <a href="https://i.xinruiyun.cn/operationlog/">操作日志</a>
                         </li>
                         <li class="m-item">
-                            <span @click="go('exit')">退出登录</span>
+                            <span @click="go('exit')" style="font-size:14px">退出登录</span>
                         </li>
                     </ul>
                 </div>
@@ -550,7 +550,7 @@
                 <div class="br-bg">
                     <div class="box">
                         <p class="title">为您提供出众的上云实践机会和全面的尊贵服务</p>
-                        <a href="https://i.xinruiyun.cn/register"><div class="bottom-button">立即注册</div></a>
+                        <a href="https://i.xinruiyun.cn/register/"><div class="bottom-button">立即注册</div></a>
                     </div>
                 </div>
         </div>
@@ -816,7 +816,7 @@
       <div class="m-bottom">
           <div class="m-register">
               <p>为您提供出众的上云实践机会和全面的尊贵服务</p>
-              <a href='https://i.xinruiyun.cn/register'><div class="m-button">立即注册</div></a>
+              <a href='https://i.xinruiyun.cn/register/' style="color:#fff"><div class="m-button">立即注册</div></a>
           </div>
           <div class="m-we">
               <div class="mwe-text">
@@ -851,20 +851,20 @@
     </div>
     <!-- 客服浮动块 -->
     <div class="affix">
-      <div class="registerImg" @click="$router.push('/free/')">
+      <div class="registerImg mobileq" @click="$router.push('/free/')">
         <p>免费领云服务器</p>
       </div>
       <!--<img src="./assets/img/app/regiterTag.png"/>-->
-      <span class="qq" @mouseenter="QME" @mouseleave="QML">
-        <div ref="qq" style="overflow: hidden;bottom:-48px;">
-          <div class="wrapper" v-if="QQInfo.length>0">
+      <span class="qq mobileq" @mouseenter="QME" @mouseleave="QML">
+        <div ref="qq" style="overflow: hidden;" class="qq-position">
+          <div class="wrapper " v-if="QQInfo.length>0">
             <div>
               <span class="title">人工客服</span>
               <div class="info-wrapper">
                 <div v-for="(qq,index) of QQInfo" :key="index">
               <Tooltip :content="qq.qqstatus?'在线咨询':'请留言'" placement="top">
                 <a target="_blank"
-                   :href="`tencent://message/?uin=${qq.qqnumber}&amp;Site=www.xrcloud.net&amp;Menu=yes`"
+                   :href="`tencent://message/?uin=${qq.qqnumber}&amp;Site=www.xinruiyun.cn&amp;Menu=yes`"
                    style="color:rgb(73, 80, 96)" rel="nofollow">
                 <img src="./assets/img/app/qq-blue.png" v-if="qq.qqstatus" alt="人工客服">
                   <img src="./assets/img/app/qq-gray.png" v-else alt="人工客服">
@@ -887,7 +887,7 @@
                 <div v-for="(qq,index) of xiaoshouInfo" :key="index">
               <Tooltip :content="qq.qqstatus?'在线咨询':'请留言'" placement="top">
                 <a target="_blank"
-                   :href="`tencent://message/?uin=${qq.qqnumber}&amp;Site=www.xrcloud.net&amp;Menu=yes`"
+                   :href="`tencent://message/?uin=${qq.qqnumber}&amp;Site=www.xinruiyun.cn&amp;Menu=yes`"
                    style="color:rgb(73, 80, 96)" rel="nofollow">
                  <img src="./assets/img/app/qq-red.png" v-if="qq.qqstatus" alt="售前咨询">
                   <img src="./assets/img/app/qq-gray.png" v-else alt="售前咨询">
@@ -906,7 +906,7 @@
                 <div v-for="(qq,index) of yunweiInfo" :key="index">
               <Tooltip :content="qq.qqstatus?'在线咨询':'请留言'" placement="top">
                 <a target="_blank"
-                   :href="`tencent://message/?uin=${qq.qqnumber}&amp;Site=www.xrcloud.net&amp;Menu=yes`"
+                   :href="`tencent://message/?uin=${qq.qqnumber}&amp;Site=www.xinruiyun.cn&amp;Menu=yes`"
                    style="color:rgb(73, 80, 96)" rel="nofollow">
                  <img src="./assets/img/app/qq-blue.png" v-if="qq.qqstatus" alt="技术支持">
                   <img src="./assets/img/app/qq-gray.png" v-else alt="技术支持">
@@ -925,7 +925,7 @@
           </div>
         </div>
       </span>
-      <span class="phone" @click="getOrderType" @mouseenter="PME" @mouseleave="PML">
+      <span class="phone mobileq" @click="getOrderType" @mouseenter="PME" @mouseleave="PML">
         <div ref="phoneE" style="overflow: hidden;bottom:5px;">
           <div class="wrapper">
             <div>
@@ -964,11 +964,11 @@
           </Form-item>
         </Form>
       </div>
-      <div v-show="complaintForm.step==2" class="complain-modal">
-        <img src="./assets/img/payresult/paySuccess.png"/>
-        <p>—您的烦恼我们已经收到—</p>
-        <p>我们会将处理结果发送至您的手机</p>
-        <p>请耐心等待</p>
+      <div v-show="complaintForm.step==2" class="complain-modal" style="text-align:center;font-size:14px;">
+        <img src="./assets/img/payresult/paySuccess.png" style="width:40px;height:40px;" />
+        <p style="text-align:center;line-height:1.5">—您的烦恼我们已经收到—</p>
+        <p style="text-align:center;line-height:1.5">我们会将处理结果发送至您的手机</p>
+        <p style="text-align:center;line-height:1.5">请耐心等待</p>
       </div>
       <div slot="footer" class="modal-footer-border">
         <Button type="ghost" @click="showModal.complaintModal = false">取消</Button>
@@ -1004,162 +1004,7 @@
         }
       };
       return {
-        titleItem: [
-          {
-            title: '活动中心',
-            path: '/activity/'
-          },
-          {
-            title: '首页',
-            path: '/'
-          },
-          {
-            title: '产品',
-            path: '',
-            content: [
-              {
-                prod: '云计算',
-                prodItem: [
-                  {title: '弹性云服务器（ECS）', desc: '通用型、内存优化型、高IO型', path: '/ecs/'},
-                  {title: '镜像服务', desc: '公共镜像、功能镜像、自定义镜像', path: '/mirrorservice/'},
-                  {title: 'ECS快照', desc: '稳定可靠、安全保障', path: '/ecssnapshot/'},
-                  {title: 'GPU服务器', desc: 'Tesla P100、Tesla P40 GPU', path: '/gpu/'},
-                  {title: '弹性伸缩', desc: '高可用、可视化、低成本', path: '/elasticscalable/'},
-                  {title: 'DDoS高防云服务器', desc: '最大800G超大防护', path: '/ddos'},
-                  {title: '裸金属服务器（敬请期待）', desc: '专属物理服务器', path: '/'}
-                ]
-              },
-              {
-                prod: '云网络',
-                prodItem: [
-                  {title: '虚拟私有云VPC', desc: '网络隔离、分配子网', path: '/vpc/'},
-                  {title: '弹性IP', desc: '绑定与解绑IP、扩容', path: '/elasticip/'},
-                  {title: '负载均衡', desc: '源算法、轮询、最小连接数', path: '/loadbalancing/'},
-                  {title: 'NAT网关', desc: 'TCP/HTTP协议、多对一支持', path: '/natgateway/'},
-                  {title: '虚拟专网VPN', desc: '跨VPC连接', path: '/vpn/'},
-                  {title: 'CDN（敬请期待）', desc: '节点丰富、安全易用', path: '/'}
-                ]
-              },
-              {
-                prod: '云存储',
-                prodItem: [
-                  {title: '云硬盘', desc: '性能型、超高性能型、存储型', path: '/disk/'},
-                  {title: '云硬盘备份', desc: '高可用保障、敏捷易用', path: '/diskbackup/'},
-                  {title: '对象存储', desc: '安全稳定，海量便捷', path: '/objectstorage/'}
-                ]
-              },
-              {
-                prod: '云数据库',
-                prodItem: [
-                  {
-                    title: '云数据库',
-                    desc: 'MySQL、PostgreSQL、mongoDB、Redis',
-                    path: '/database/'
-                  },
-                ],
-                subProd: [
-                  {
-                    prod: '域名与备案',
-                    prodItem: [
-                      {
-                        title: '域名注册',
-                        desc: '自定义域名注册、查询',
-                        path: '/domain/'
-                      },
-                      {
-                        title: '域名备案',
-                        desc: '高效贴心的域名备案服务',
-                        path: '/icp/'
-                      },
-                    ]
-                  },
-                ]
-              },
-              {
-                prod: '云安全',
-                prodItem: [
-                  {title: '防火墙', desc: '自定义规则、协议、端口', path: '/firewall/'},
-                  {title: 'DDOS高防IP', desc: '最高10T防护容量', path: '/ddosip/'},
-                  {
-                    title: 'SSL证书',
-                    desc: '网站可信身份认证与安全数据传输',
-                    path: '/ssl/'
-                  },
-                ],
-                subProd: [
-                  {
-                    prod: '云运维',
-                    prodItem: [
-                      {title: '云监控', desc: '自定义监控项、多告警推送方式', path: '/monitor/'},
-                      {title: '访问控制（敬请期待）', desc: '权限管理、精准控制', path: '/'}
-                    ]
-                  }
-                ]
-              },
-            ]
-          },
-          // {
-          //   title: '云市场',
-          //   path: '/market'
-          // },
-          {
-            title: '帮助文档',
-            path: 'https://www.xrcloud.net/support/products/',
-            content: [
-              {
-                prod: '产品文档',
-                path: 'https://www.xrcloud.net/support/products/'
-              },
-              {
-                prod: '常见问题',
-                path: 'https://www.xrcloud.net/support/asks/'
-              },
-              {
-                prod: '快速入门',
-                path: 'https://www.xrcloud.net/support/quick/'
-              }
-            ]
-          },
-          {
-            title: '新闻动态',
-            path: 'https://www.xrcloud.net/news/',
-            content: [
-              {
-                prod: '云服务器',
-                path: 'https://www.xrcloud.net/news/yunfuwuqi/'
-              },
-              {
-                prod: '云计算',
-                path: 'https://www.xrcloud.net/news/yunjisuan/'
-              },
-              {
-                prod: '云安全',
-                path: 'https://www.xrcloud.net/news/yunanquan/'
-              },
-              {
-                prod: '香港云服务器 ',
-                path: 'https://www.xrcloud.net/news/xianggangyunfuwuqi/'
-              },
-              {
-                prod: '虚拟云服务器',
-                path: 'https://www.xrcloud.net/news/xunizhuji/'
-              },
-              {
-                prod: '服务器虚拟化',
-                path: 'https://www.xrcloud.net/news/fuwuqixunihua/'
-              },
-
-              {
-                prod: '域名交流',
-                path: 'https://www.xrcloud.net/news/yumingjiaoliu/'
-              }
-            ]
-          },
-          {
-            title: '关于我们',
-            path: 'https://www.xrcloud.net/about/'
-          }
-        ], // banner item
+        links:'',
         currentItem: -1, // 当前选中item  默认为-1(未选中)
         lineStyle: {
           width: '0px',
@@ -1221,25 +1066,6 @@
             ]
           }
         ], // 页尾列表详情
-        document: [
-          {title: '云服务器', url: 'https://www.xrcloud.net/news/yunfuwuqi/'},
-          {title: '云计算', url: 'https://www.xrcloud.net/news/yunjisuan/'},
-          {title: '云安全', url: 'https://www.xrcloud.net/news/yunanquan/'},
-          {title: '香港云服务器', url: 'https://www.xrcloud.net/news/xianggangyunfuwuqi/'},
-          {title: '虚拟云服务器', url: 'https://www.xrcloud.net/news/xunizhuji/'},
-          {title: '服务器虚拟化', url: 'https://www.xrcloud.net/news/fuwuqixunihua/'},
-          {title: '域名交流', url: 'https://www.xrcloud.net/news/yumingjiaoliu/'}
-        ],
-        // 服务与公告
-        notice: [
-          {title: '产品文档', url: 'https://www.xrcloud.net/support/products/'},
-          {title: '常见问题', url: 'https://www.xrcloud.net/support/asks/'},
-          {title: '快速入门', url: 'https://www.xrcloud.net/support/quick/'},
-        ],
-        // 友情链接
-        links: [
-          {linkurl: 'https://www.xrcloud.net/', linkname: '新睿云'}
-        ],
         Preparation: [
           {
             time: '©2019',
@@ -1305,9 +1131,9 @@
 
     },
     created() {
-      if(!localStorage.getItem('isLogin')){
-        this.getloginPromptMessage()
-      }
+      // if(!localStorage.getItem('isLogin')){
+      //   this.getloginPromptMessage()
+      // }
       // if (sessionStorage.getItem('hintShow') == null) {
       //   sessionStorage.setItem('hintShow', 'true')
       // }
@@ -1428,8 +1254,26 @@
       exit() {
         localStorage.removeItem("realname")
         axios.get('user/logout.do').then(response => {
+          this.delCookie('XRYSYAN')
           window.location.reload()
         })
+      },
+      getCookie(name) {
+        var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+        if (arr = document.cookie.match(reg)){
+          return true;
+          // return (arr[2]);
+        }else{
+          return false
+        }
+      },
+      //删除cookie
+      delCookie (name) {
+        var exp = new Date();
+        exp.setTime(exp.getTime() - 1);
+        var cval = this.getCookie(name);
+        if (cval != null)
+        document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString() + ";domain=.xinruiyun.cn;path=/";
       },
       closeHeadHint() {
         this.hintShow = false
@@ -1573,7 +1417,7 @@
   }
 </script>
 
-<style rel="stylesheet/less" lang="less">
+<style rel="stylesheet/less" lang="less" scoped>
   #front {
     .app-hint {
       height: 0;
@@ -2294,6 +2138,9 @@
         /*&:hover {
           background: #2A99F2 url('./assets/img/app/qq-hover.png') no-repeat center;
         }*/
+        .qq-position {
+          bottom:-48px;
+        }
         > div {
           position: absolute;
           width: 0px;
@@ -2446,7 +2293,7 @@
   height: 146px;
 }
 .bottom .bottom-register .br-bg .box{
-  width: 1200px;
+  max-width: 1200px;
   margin: 0 auto;
   text-align: center;
 }
@@ -2849,4 +2696,12 @@ span {
     width: 100px;
     height: 100px;
   }
+@media only screen and (max-width:640px) {
+  #front .affix > .mobileq {
+    display: none;
+  }
+  .mobileq {
+    display: none;
+  }
+}
 </style>
