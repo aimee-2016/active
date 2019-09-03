@@ -1254,8 +1254,26 @@
       exit() {
         localStorage.removeItem("realname")
         axios.get('user/logout.do').then(response => {
+          this.delCookie('XRYSYAN')
           window.location.reload()
         })
+      },
+      getCookie(name) {
+        var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+        if (arr = document.cookie.match(reg)){
+          return true;
+          // return (arr[2]);
+        }else{
+          return false
+        }
+      },
+      //删除cookie
+      delCookie (name) {
+        var exp = new Date();
+        exp.setTime(exp.getTime() - 1);
+        var cval = this.getCookie(name);
+        if (cval != null)
+        document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString() + ";domain=.xinruiyun.cn;path=/";
       },
       closeHeadHint() {
         this.hintShow = false
