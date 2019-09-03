@@ -1874,7 +1874,7 @@
 .ml-right {
   background-color: #34302F;
   position: absolute;
-  z-index: 2;
+  z-index: 999;
   right: 0;
   transition: height ease-in-out 0.5s;
 }
