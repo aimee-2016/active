@@ -107,8 +107,8 @@
                         原价：¥
                         <span>{{item.originPrice}}</span>
                       </div>
-                      <Button @click="pushOrderD(item,'p')" class="pc-btn">免费领取</Button>
-                      <Button @click="pushOrderD(item,'m')" class="mobile-btn">免费领取</Button>
+                      <Button @click="pushOrderD(item,'p')" class="pc-640">免费领取</Button>
+                      <Button @click="pushOrderD(item,'m')" class="mobile-640">免费领取</Button>
                     </div>
                   </div>
                 </div>
@@ -300,8 +300,8 @@
                         {{item.post.days==7?'7天体验价':'价格'}}：￥
                         <span>{{item.price}}</span>
                       </div>
-                      <Button @click="pushOrderL(item,'p')" class="pc-btn">立即抢购</Button>
-                      <Button @click="pushOrderL(item,'m')" class="mobile-btn">立即抢购</Button>
+                      <Button @click="pushOrderL(item,'p')" class="pc-640">立即抢购</Button>
+                      <Button @click="pushOrderL(item,'m')" class="mobile-640">立即抢购</Button>
                     </div>
                     <div class="body coupen" v-else>
                       <div style="margin-bottom:5px;">
@@ -321,8 +321,8 @@
                         <div>自领取之日{{item.post.expday/30}}个月内使用</div>
                       </div>
                       <div v-if="item.post.ticketType!=3" style="height:22px;"></div>
-                      <Button @click="pushOrderL(item,'p')" class="pc-btn">立即抢购</Button>
-                      <Button @click="pushOrderL(item,'m')" class="mobile-btn">立即抢购</Button>
+                      <Button @click="pushOrderL(item,'p')" class="pc-640">立即抢购</Button>
+                      <Button @click="pushOrderL(item,'m')" class="mobile-640">立即抢购</Button>
                     </div>
                   </div>
                 </div>
@@ -550,7 +550,8 @@
       </div>
       <p slot="footer" class="modal-footer-s">
         <Button @click="showModal.rechargeHint = false">取消</Button>
-        <Button type="primary" @click="nextStep">下一步</Button>
+        <Button type="primary" @click="nextStep('p')" class="pc-640-inline">下一步</Button>
+        <Button type="primary" @click="nextStep('m')" class="mobile-640-inline">下一步</Button>
       </p>
     </Modal>
     <!-- 不满足条件-->
@@ -589,7 +590,8 @@
       </div>
       <p slot="footer" class="modal-footer-s">
         <Button @click="showModal.getSuccessModal = false">取消</Button>
-        <Button type="primary" @click="$router.push('/host')">查看云服务器</Button>
+        <a href="https://i.xinruiyun.cn/host/">
+        <Button type="primary">查看云服务器</Button></a>
       </p>
     </Modal>
     <!-- 支付充值失败 -->
@@ -743,7 +745,7 @@
       :scrollable="true"
       :closable="true"
       :width="520"
-      :mask-closable="false">
+      :mask-closable="false" class="person-check">
       <p slot="header" class="modal-header-border">
         <span class="universal-modal-title">身份验证</span>
       </p>
@@ -767,14 +769,14 @@
             <Input
               v-model="formCustom.VerificationPhone"
               placeholder="请输入手机号码"
-              style="width: 300px;"
+              class="w300"
             ></Input>
           </FormItem>
           <FormItem prop="Verificationcode">
             <Input
               v-model="formCustom.Verificationcode"
               placeholder="请输入随机验证码"
-              style="width: 300px;"
+              class="w300"
             ></Input>
             <img
               :src="imgSrc"
@@ -783,7 +785,7 @@
             >
           </FormItem>
           <FormItem prop="messagecode">
-            <Input v-model="formCustom.messagecode" placeholder="请输入收到的验证码" style="width: 300px;"></Input>
+            <Input v-model="formCustom.messagecode" placeholder="请输入收到的验证码" class="w300"></Input>
             <Button
               type="primary"
               @click="getPhoneCode('code')"
@@ -868,23 +870,6 @@
         <Button type="primary" @click="showModal.qrCode = false">确定</Button>
       </div>
     </Modal>
-    <!-- 弹窗提示 -->
-    <transition name="fade">
-      <div class="overlay" @click.stop="showModal.authHint=true" v-if="showModal.authHint">
-        <div class="rule-modal" style="width:400px;">
-          <div class="header">
-            <span>提示</span>
-            <img src=../../../../assets/img/active/freeToReceive.1/close-icon.png alt="关闭图标" @click.stop="showModal.authHint=false">
-          </div>
-          <div class="body" style="text-align:center">
-            <div>抱歉，人脸识别实名认证失败！您也可以 前往用户中心上传身份证照片进行实名认证。</div>
-          </div>
-          <div class="footer">
-            <Button type="primary" @click.stop="toAuthPage()">去实名认证</Button>
-          </div>
-        </div>
-      </div>
-    </transition>
   </div>
 </template>
 
@@ -935,10 +920,9 @@ export default {
         weChatRechargeModal: false,
         orderConfirmationModal: false,
         qrCode: false,
-        //需要修改
         cashverification: false,
         // 用公共组件
-        authHint: false,
+        // authHint: true,
         // 规则弹窗都需要修改
         rule: false,
         ruleHost: false,
@@ -988,58 +972,6 @@ export default {
         email: /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/,
         password: /(?!(^[^a-z]+$))(?!(^[^A-Z]+$))(?!(^[^\d]+$))^[\w`~!#$%_()^&*,-<>?@.+=]{8,32}$/
       },
-       orderColumns: [
-        {
-          title: '产品类型',
-          key: 'productType'
-        },
-        {
-          title: '资源',
-          width: 200,
-          render: (h, params) => {
-            let arr = []
-            let param3 = h('li', {}, '云服务器： ' + params.row.title)
-            let param = h('li', {}, '带宽： ' + params.row.configs.config.bandwith) + 'M'
-            let param1 = h('li', {}, '磁盘： ' + params.row.configs.config.disksize) + 'G SSD'
-            let param2 = h('li', {}, '系统： ' + params.row.configs.system[0])
-            arr.push(param3)
-            arr.push(param)
-            arr.push(param1)
-            arr.push(param2)
-            return h('ul', {}, arr)
-          }
-        },
-        {
-          title: '计费类型',
-          render: (h, params) => {
-            return h('span', {}, '包年包月')
-          }
-        },
-        {
-          title: '购买时长',
-          key: 'time'
-        },
-        {
-          title: '保证金金额',
-          width: 130,
-          render: (h, params) => {
-            let arr = []
-            let param1 = h('li', {
-              style: {
-                textDecoration: 'line-through'
-              }
-            }, '原价：¥' + params.row.originalPrice)
-            let param2 = h('li', {
-              style: {
-                color: '#D0021B'
-              }
-            }, '¥' + params.row.cashPledge)
-            arr.push(param1)
-            arr.push(param2)
-            return h('ul', {}, arr)
-          }
-        },
-      ],
       imgSrc: 'https://activity.xinruiyun.cn/user/getKaptchaImage.do',
       indexD: '',
       onStep: 0,
@@ -1051,6 +983,81 @@ export default {
         size: 500
       },
       cashPledge: 0,
+       orderColumns: [
+        {
+          title: '产品类型',
+          key: 'productType',
+           render: (h, params) => {
+             let result = ''
+            switch (params.row.post.servicetype) {
+              case 'host':
+                result = '云服务器'
+                break
+              case 'db':
+                result = '云数据库'
+                break
+              case 'G5500':
+                result = 'GPU服务器'
+                break
+            }
+            return h('span', {}, result)
+          }
+        },
+        {
+          title: '资源',
+          width: 150,
+          render: (h, params) => {
+            let arr = []
+            let param = h('li', {}, '带宽： ' + params.row.post.bandwith+ 'M') 
+            let param1 = h('li', {}, '磁盘： ' + params.row.post.disksize+ 'G SSD') 
+            let param2 = h('li', {}, '系统： ' + params.row.system[0])
+            arr=[param,param1,param2]
+            return h('ul', {}, arr)
+          }
+        },
+        {
+          title: '计费类型',
+          render: (h, params) => {
+           
+            return h('span', {}, '包年包月')
+          }
+        },
+        {
+          title: '购买时长',
+          key: 'time',
+          render: (h, params) => {
+            let text = this.monthD(params.row.post.days)
+            if(text == '年') {
+              text = '1年'
+            } else if(text == '月') {
+              text = '1个月'
+            } else if(text == '天') {
+              text = '1天'
+            }
+            return h('span', {}, text)
+          }
+        },
+        {
+          title: '保证金金额',
+          width: 130,
+          render: (h, params) => {
+            let arr = []
+            let param1 = h('li', {
+              style: {
+                textDecoration: 'line-through'
+              }
+            }, '原价：¥' + params.row.originPrice)
+            let param2 = h('li', {
+              style: {
+                color: '#D0021B'
+              }
+            }, '¥' + params.row.price)
+            arr.push(param1)
+            arr.push(param2)
+            return h('ul', {}, arr)
+          }
+        },
+      ],
       orderData: [],
       payWay: 'balancePay',
       otherPayWay: '',
@@ -2104,29 +2111,131 @@ export default {
           window.open('https://m.xinruiyun.cn/faceindex','self')
         }
       }
-      axios.get('information/getDiskcountMv.do', {
+      axios.get('activity/jdugeTeam.do', {
         params: {
-          defzoneid: item.zoneId,
-          vmConfigId: item.post.id,
-          osType: item.system[1]
+          sign: 'freeReceive',
+          vmConfigId: item.post.id
+        }
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          if (response.data.result.flag) {
+            this.orderData = [item]
+            console.log(this.orderData)
+            this.cashPledge = item.price
+            this.showModal.rechargeHint = true
+          } else {
+            this.$message.info({
+              content: response.data.result.info
+            })
+          }
+        } else {
+          this.$message.info({
+            content: response.data.message
+          })
+        }
+      })
+    },
+    nextStep (type) {
+      if(type=='p') {
+        this.showModal.rechargeHint = false
+        this.showModal.orderConfirmationModal = true
+      } else {
+        axios.get('/activity/createFreevmTemp.do', {
+          params: {
+            vmConfigId: this.orderData[0].post.id,
+            osType: this.orderData[0].system[1],
+            defzoneid: this.orderData[0].zoneId
+          }
+        }).then(res => {
+          if (res.status == 200 && res.data.status == 1) {
+            window.open('https://m.xinruiyun.cn/freeBuy','_self')
+          }
+        })
+      }
+    },
+    getHost_ok () {
+      if (this.payWay == 'balancePay') {
+        if (this.balance < this.cashPledge) {
+          this.$Message.info('可用余额不足')
+        } else {
+          this.showModal.orderConfirmationModal = false
+          this.getFreeHost()
+        }
+      } else {
+        switch (this.otherPayWay) {
+          case '':
+            this.$Message.info('请选择一个支付方式')
+            break
+          case 'zfb':
+            window.open(`/zfb/alipayapi.do?total_fee=${this.cashPledge}`)
+            this.pageTimer = setInterval(() => {
+              axios.get('activity/compareForMoney.do', {
+                params: { freezeMoney: this.cashPledge }
+              }).then(val => {
+                if (val.data.status == 1) {
+                  this.showModal.orderConfirmationModal = false
+                  clearInterval(this.pageTimer)
+                  this.showModal.paySuccessModal = true
+                }
+              })
+            }, 2000)
+            break
+          case 'wx':
+            clearInterval(this.pageTimer)
+            axios.get('wx/wxpayapi.do', {
+              params: {
+                total_fee: this.cashPledge
+              }
+            }).then(response => {
+              if (response.status == 200 && response.data.status == 1) {
+                this.serialNum = response.data.result.serialNum
+                this.config.value = response.data.result.codeUrl
+                this.showModal.orderConfirmationModal = false
+                this.showModal.weChatRechargeModal = true
+              } else {
+                this.$message.info({
+                  content: response.data.message
+                })
+              }
+            })
+            break
+        }
+      }
+    },
+     isPay () {
+      axios.get('user/payStatus.do', {
+        params: {
+          serialNum: this.serialNum
+        }
+      }).then(response => {
+        this.showModal.weChatRechargeModal = false
+        if (response.status == 200 && response.data.status == 1) {
+          this.showModal.paySuccessModal = true
+        } else {
+          this.showModal.payDefeatedModal = true
+        }
+      })
+    },
+    payWayChange () {
+      if (this.payWay == 'otherPay' && this.otherPayWay == '') {
+        this.otherPayWay = 'zfb'
+      } else if (this.payWay == 'balancePay') {
+        this.otherPayWay = ''
+      }
+    },
+    getFreeHost () {
+      this.showModal.paySuccessModal = false
+      let url = 'activity/getFreeHostNew.do'
+      axios.get(url, {
+        params: {
+          vmConfigId: this.orderData[0].post.id,
+          osType: this.orderData[0].system[1],
+          defzoneid: this.orderData[0].zoneId
         }
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
-          // this.$Message.success('创建订单成功')
-          // window.open('https://i.xinruiyun.cn/order', '_self')
-          this.$http.post('device/DescribeWalletsBalance.do').then(response => {
-            if (response.status == 200 && response.data.status == '1') {
-              this.balance = Number(response.data.data.remainder)
-              this.indexD = indexD
-              this.time = this.depositList[indexD].time
-              this.cashPledge = this.depositList[indexD].cashPledge
-              this.showModal.rechargeHint = true
-            } else {
-              this.$message.info({
-                content: response.data.message
-              })
-            }
-          })
+          this.showModal.getSuccessModal = true
+          this.toggleZone(this.orderData[0].zoneId)
         } else {
           this.$message.info({
             content: res.data.message
@@ -2214,130 +2323,7 @@ export default {
       return text
     },
     //结束
-    isPay () {
-      axios.get('user/payStatus.do', {
-        params: {
-          serialNum: this.serialNum
-        }
-      }).then(response => {
-        this.showModal.weChatRechargeModal = false
-        if (response.status == 200 && response.data.status == 1) {
-          this.showModal.paySuccessModal = true
-        } else {
-          this.showModal.payDefeatedModal = true
-        }
-      })
-    },
-    nextStep () {
-      // 判断新老用户
-      axios.get('activity/jdugeTeam.do', {
-        params: {
-          sign: 'freeReceive',
-          vmConfigId: this.depositList[this.indexD].config.id
-        }
-      }).then(response => {
-        if (response.status == 200 && response.data.status == 1) {
-          if (response.data.result.flag) {
-            this.orderData = []
-            this.orderData.push({
-              productType: '云服务器',
-              configs: this.depositList[this.indexD],
-              originalPrice: this.depositList[this.indexD].originPrice,
-              time: this.time,
-              title: this.depositList[this.indexD].headline,
-              cashPledge: Number(this.cashPledge)
-            })
-            this.showModal.rechargeHint = false
-            this.showModal.orderConfirmationModal = true
-          } else {
-            this.inConformityModalMsg = response.data.result.info
-            this.showModal.rechargeHint = false
-            this.showModal.inConformityModal = true
-          }
-        } else {
-          this.$message.info({
-            content: response.data.message
-          })
-        }
-      })
-    },
-    getHost_ok () {
-      if (this.payWay == 'balancePay') {
-        if (this.balance < this.cashPledge) {
-          this.$Message.info('可用余额不足')
-        } else {
-          this.showModal.orderConfirmationModal = false
-          this.getFreeHost()
-        }
-      } else {
-        switch (this.otherPayWay) {
-          case '':
-            this.$Message.info('请选择一个支付方式')
-            break
-          case 'zfb':
-            window.open(`/zfb/alipayapi.do?total_fee=${this.cashPledge}`)
-            this.pageTimer = setInterval(() => {
-              axios.get('activity/compareForMoney.do', {
-                params: { freezeMoney: this.cashPledge }
-              }).then(val => {
-                if (val.data.status == 1) {
-                  this.showModal.orderConfirmationModal = false
-                  clearInterval(this.pageTimer)
-                  this.showModal.paySuccessModal = true
-                }
-              })
-            }, 2000)
-            break
-          case 'wx':
-            clearInterval(this.pageTimer)
-            axios.get('wx/wxpayapi.do', {
-              params: {
-                total_fee: this.cashPledge
-              }
-            }).then(response => {
-              if (response.status == 200 && response.data.status == 1) {
-                this.serialNum = response.data.result.serialNum
-                this.config.value = response.data.result.codeUrl
-                this.showModal.orderConfirmationModal = false
-                this.showModal.weChatRechargeModal = true
-              } else {
-                this.$message.info({
-                  content: response.data.message
-                })
-              }
-            })
-            break
-        }
-      }
-    },
-    payWayChange () {
-      if (this.payWay == 'otherPay' && this.otherPayWay == '') {
-        this.otherPayWay = 'zfb'
-      } else if (this.payWay == 'balancePay') {
-        this.otherPayWay = ''
-      }
-    },
-    getFreeHost () {
-      this.showModal.paySuccessModal = false
-
-      let url = 'activity/getFreeHostNew.do'
-      axios.get(url, {
-        params: {
-          vmConfigId: this.depositList[this.indexD].config.id,
-          osType: this.depositList[this.indexD].system[1],
-          defzoneid: this.depositList[this.indexD].zone
-        }
-      }).then(res => {
-        if (res.status == 200 && res.data.status == 1) {
-          this.showModal.getSuccessModal = true
-          this.toggleZone(this.depositList[this.indexD].zone)
-        } else {
-          this.$message.info({
-            content: res.data.message
-          })
-        }
-      })
-    },
+   
     toggleZone (zoneId) {
       // 切换默认区域
       axios.get('user/setDefaultZone.do', { params: { zoneId: zoneId } }).then(response => {
@@ -2599,7 +2585,15 @@ export default {
             if (res.data.result.authStatus == 0) {
               this.authStatus = true
             } else if (res.data.result.authStatus == 3) {
-              this.showModal.authHint = true
+              // this.showModal.authHint = true
+              this.$message.confirm({
+                title: '提示',
+                content: '抱歉，人脸识别实名认证失败！您也可以前往用户中心上传身份证照片进行实名认证。',
+                okText: '去实名认证',
+                onOk: () => {
+                  window.open('https://i.xinruiyun.cn/usercenter/','_self')
+                }
+              })
             }
           }
         })
@@ -3746,19 +3740,41 @@ export default {
 @media screen and (max-width: 540px) {
   
 }
-.pc-btn {
+.pc-640 {
   display: block;
 }
-.mobile-btn {
+.mobile-640 {
   display: none;
 }
+.pc-640-inline {
+  display: inline-block;
+}
+.mobile-640-inline {
+  display: none;
+}
+.person-check {
+  .w300 {
+    width: 300px;
+  }
+}
 @media screen and (max-width: 640px) {
-  .pc-btn {
+  .pc-640 {
     display: none;
   }
-  .mobile-btn {
+  .mobile-640 {
     display: block;
   }
+  .pc-640-inline {
+  display: none;
+}
+.mobile-640-inline {
+  display: inline-block;
+}
+.person-check {
+  .w300 {
+    width: 150px;
+  }
+}
   .free-host .container {
     padding: 30px 10px 10px 10px;
   }
