@@ -498,7 +498,7 @@
             <p>
               5、请注意：在未支付订单情况下，系统会对您的资格造成误判，需要您将账号下未支付订单作废后，即可正常参与。
               <a
-                href="https://i.xinruiyun.cn/expenses"
+                href="https://kaifa.xrcloud.net/expenses"
                 style="color:#2A99F2"
               >去订单管理</a>
             </p>
@@ -590,7 +590,7 @@
       </div>
       <p slot="footer" class="modal-footer-s">
         <Button @click="showModal.getSuccessModal = false">取消</Button>
-        <a href="https://i.xinruiyun.cn/host/">
+        <a href="https://kaifa.xrcloud.net/host/">
         <Button type="primary">查看云服务器</Button></a>
       </p>
     </Modal>
@@ -820,11 +820,11 @@
               class="spanaa"
               @click="showModal.modifyPhoneID = true;showModal.cashverification=false"
             >通过身份证号码验证</span>或
-            <a href="https://i.xinruiyun.cn/work/">提交工单</a>更改手机号。
+            <a href="https://kaifa.xrcloud.net/work/">提交工单</a>更改手机号。
           </p>
           <p v-if="!authInfo||authInfo&&authInfo.checkstatus!=0" style="line-height:24px;">
             2、如果手机已丢失或停机，请
-            <a href="https://i.xinruiyun.cn/work/">提交工单</a>或
+            <a href="https://kaifa.xrcloud.net/work/">提交工单</a>或
             <a
               target="_blank"
               :href="`tencent://message/?uin=${$store.state.qq.qqnumber}&amp;Site=www.cloudsoar.com&amp;Menu=yes`"
@@ -972,7 +972,7 @@ export default {
         email: /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/,
         password: /(?!(^[^a-z]+$))(?!(^[^A-Z]+$))(?!(^[^\d]+$))^[\w`~!#$%_()^&*,-<>?@.+=]{8,32}$/
       },
-      imgSrc: 'https://activity.xinruiyun.cn/user/getKaptchaImage.do',
+      imgSrc: 'https://huodong.xrcloud.ne/user/getKaptchaImage.do',
       indexD: '',
       onStep: 0,
       time: '',
@@ -1928,7 +1928,7 @@ export default {
           }
           return
         } else {
-          window.open('https://m.xinruiyun.cn/faceindex','self')
+          window.open('https://pan.xrcloud.net/ruicloud/faceindex','self')
         }
       }
       let url = 'information/getDiskcountMv.do'
@@ -1953,7 +1953,7 @@ export default {
             })
           } else {
             this.$Message.success('创建订单成功')
-            window.open('https://i.xinruiyun.cn/order', '_self')
+            window.open('https://kaifa.xrcloud.net/order', '_self')
           }
         } else {
           this.$message.info({
@@ -2108,7 +2108,7 @@ export default {
           }
           return
         } else {
-          window.open('https://m.xinruiyun.cn/faceindex','self')
+          window.open('https://pan.xrcloud.net/ruicloud/faceindex','self')
         }
       }
       axios.get('activity/jdugeTeam.do', {
@@ -2157,7 +2157,7 @@ export default {
           }
         }).then(res => {
           if (res.status == 200 && res.data.status == 1) {
-            window.open('https://m.xinruiyun.cn/freeBuy','_self')
+            window.open('https://pan.xrcloud.net/ruicloud/freeBuy','_self')
           }
         })
       }
@@ -2495,7 +2495,7 @@ export default {
       // console.log(params)
       axios.get('gpuserver/createGpuServer.do', { params }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          window.open('https://i.xinruiyun.cn/order', '_self')
+          window.open('https://kaifa.xrcloud.net/order', '_self')
         } else {
           this.$message.info({
             content: response.data.message
@@ -2528,7 +2528,7 @@ export default {
       // console.log(params)
       axios.get('information/deployVirtualMachine.do', { params }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          window.open('https://i.xinruiyun.cn/order', '_self')
+          window.open('https://kaifa.xrcloud.net/order', '_self')
         } else {
           this.$message.info({
             content: response.data.message
@@ -2600,7 +2600,7 @@ export default {
                 content: '抱歉，人脸识别实名认证失败！您也可以前往用户中心上传身份证照片进行实名认证。',
                 okText: '去实名认证',
                 onOk: () => {
-                  window.open('https://i.xinruiyun.cn/usercenter/','_self')
+                  window.open('https://kaifa.xrcloud.net/usercenter/','_self')
                 }
               })
             }
@@ -2773,7 +2773,7 @@ export default {
         usercenter: 'certification',
         expenses: 'accountSummary'
       }
-      window.open('https://i.xinruiyun.cn/usercenter/','_self')
+      window.open('https://kaifa.xrcloud.net/usercenter/','_self')
       this.$store.commit('setPane', paneStatue)
     }
   },

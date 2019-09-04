@@ -125,7 +125,7 @@
       </div>
       <p slot="footer" class="modal-footer-s">
         <Button @click="showModal.getSuccessModal = false">取消</Button>
-        <a href="https://i.xinruiyun.cn/clouddatabase/"><Button type="primary">查看数据库</Button></a>
+        <a href="https://kaifa.xrcloud.net/clouddatabase/"><Button type="primary">查看数据库</Button></a>
       </p>
     </Modal>
     <!-- 支付充值失败 -->
@@ -257,7 +257,7 @@
               <Input v-model="quicklyAuthForm.pictureCode" placeholder="请输入图片验证码"
                      style="width:250px;margin-right: 10px"></Input>
               <img :src="imgSrc" style="height:33px;"
-                   @click="imgSrc=`https://activity.xinruiyun.cn/user/getKaptchaImage.do?t=${new Date().getTime()}`">
+                   @click="imgSrc=`https://huodong.xrcloud.ne/user/getKaptchaImage.do?t=${new Date().getTime()}`">
             </div>
           </FormItem>
           <FormItem label="手机号码" prop="phone" style="width: 100%">
@@ -360,7 +360,7 @@
       }
       return {
         authErrorText: '',
-        imgSrc: 'https://activity.xinruiyun.cn/user/getKaptchaImage.do',
+        imgSrc: 'https://huodong.xrcloud.ne/user/getKaptchaImage.do',
         flows: [
           {
             src: require('../../../assets/img/active/dbActive/dba-icon1.png'),
@@ -594,7 +594,7 @@
             {required: true, message: '请输入验证码'}
           ]
         },
-        imgSrc: 'https://activity.xinruiyun.cn/user/getKaptchaImage.do',
+        imgSrc: 'https://huodong.xrcloud.ne/user/getKaptchaImage.do',
         index1: ''
       }
     },
