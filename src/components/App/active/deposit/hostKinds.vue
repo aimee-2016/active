@@ -3,7 +3,11 @@
     <div class="free-host">
       <div class="wrap">
         <img class="pc" src="../../../../assets/img/active/freeToReceive.1/free-host-text.png" />
-        <img class="mobile" src="../../../../assets/img/active/deposit/m-banner.png" style="width:300px;" />
+        <img
+          class="mobile"
+          src="../../../../assets/img/active/deposit/m-banner.png"
+          style="width:300px;"
+        />
         <div class="main">
           <div class="tabs">
             <div :class="{selected:currentView=='child1'}">
@@ -75,7 +79,8 @@
                       </div>
                       <div class="mb15">
                         <span class="label">区域：</span>
-                        <Select class="systemw"
+                        <Select
+                          class="systemw"
                           v-model="item.zoneId"
                           @on-change="changeZoneD(item)"
                         >
@@ -89,10 +94,7 @@
                       <div class="mb15">
                         <span class="label-db" v-if="item.post.servicetype=='db'">镜像系统：</span>
                         <span class="label-db" v-else>系统：</span>
-                        <Cascader class="systemw"
-                          :data="item.systemList"
-                          v-model="item.system"
-                        ></Cascader>
+                        <Cascader class="systemw" :data="item.systemList" v-model="item.system"></Cascader>
                       </div>
                       <div class="price">
                         价格：¥
@@ -118,7 +120,7 @@
                     class="blue"
                     @click="showModal.rule=true"
                   >活动规则></span>
-                  <span class="red">领取优惠券></span>
+                  <!-- <span class="red">领取优惠券></span> -->
                 </div>
                 <div class="tips">
                   温馨提示：使用期间若到“百度口碑”发布使用体验等相关评论，截图联系发送至在线客服，可领取满200减100优惠券
@@ -134,7 +136,7 @@
                     <div>
                       <h3>续费尊享 看看你能省多少</h3>
                       <p>
-                        <span @click="showModal.ruleHost=true">活动规则></span>
+                        <span @click="showModal.ruleHost=true" style="cursor:pointer">活动规则></span>
                       </p>
                     </div>
                   </div>
@@ -239,7 +241,10 @@
                 <div class="product">
                   <div v-for="(item,index) in allList" :key="index">
                     <div class="head">
-                      <div class="icon-bg" v-if="item.post.cpu==1&&item.post.bandwith==1&&item.post.mem==1">
+                      <div
+                        class="icon-bg"
+                        v-if="item.post.cpu==1&&item.post.bandwith==1&&item.post.mem==1"
+                      >
                         <div class="icon-text">爆款</div>
                       </div>
                       <h3>
@@ -254,13 +259,17 @@
                         <span class="label">带宽：</span>
                         {{item.post.bandwith}}M
                       </div>
-                      <div v-if="item.post.servicetype=='G5500'" style="margin-top:-20px;margin-bottom:0px;">
+                      <div
+                        v-if="item.post.servicetype=='G5500'"
+                        style="margin-top:-20px;margin-bottom:0px;"
+                      >
                         <span class="label">配置：</span>
                         {{item.post.gpusize}}* NVIDIA P100
                       </div>
                       <div>
                         <span class="label">区域：</span>
-                        <Select class="select-w"
+                        <Select
+                          class="select-w"
                           v-model="item.zoneId"
                           @on-change="changeZoneL(item)"
                         >
@@ -273,16 +282,14 @@
                       </div>
                       <div>
                         <span class="label">系统：</span>
-                        <Cascader class="select-w"
-                          :data="item.systemList"
-                          v-model="item.system"
-                        ></Cascader>
+                        <Cascader class="select-w" :data="item.systemList" v-model="item.system"></Cascader>
                       </div>
                       <div class="time">
                         <span class="label">时长：</span>
                         <i
                           v-if="item.postArr.length<2"
-                          style="font-style:normal;" :style="{marginBottom:item.post.servicetype=='G5500'?'0px':'12px'}"
+                          style="font-style:normal;"
+                          :style="{marginBottom:item.post.servicetype=='G5500'?'0px':'12px'}"
                         >{{monthL(item.post.days)}}</i>
                         <ul v-else>
                           <li
@@ -467,7 +474,13 @@
               <dd>（2）免费产品中的资源可随时进行升级，升级费用按新睿云标准收费进行收取。</dd>
               <dd>（3）在各产品免费使用期间，若对免费资源进行了销毁，则视为放弃免费使用权。</dd>
             </dl>
-            <p>6、活动声明：为保证活动的公平公正，新睿云有权对恶意刷抢（如通过程序等技术手段）活动资源，领取后3天内未使用资源、利用资源从事违法违规行为的用户收回免费套餐使用资格。因此造成任何损失的，由该用户自行负责。</p>
+            <p>
+              6、活动声明：为保证活动的公平公正，新睿云有权对恶意刷抢（如通过程序等技术手段）活动资源，领取后3天内未使用资源、利用资源从事违法违规行为的用户收回免费套餐使用资格。因此造成任何损失的，由该用户自行负责。
+              <a
+                href="https://kaifa.xrcloud.net/expenses"
+                style="color:#2A99F2"
+              >去订单管理</a>
+            </p>
             <p>7、请注意：在未支付订单情况下，系统会对您的资格造成误判，需要您将账号下未支付订单作废后，即可正常参与。</p>
           </div>
           <div class="footer">
@@ -564,9 +577,7 @@
           >
             <i class="ivu-icon ivu-icon-android-alert"></i>
           </div>
-          <p class="lh24">
-           {{inConformityModalMsg}}您还可以去看看其他活动。
-          </p>
+          <p class="lh24">{{inConformityModalMsg}}您还可以去看看其他活动。</p>
         </div>
       </div>
       <p slot="footer" class="modal-footer-s">
@@ -591,7 +602,8 @@
       <p slot="footer" class="modal-footer-s">
         <Button @click="showModal.getSuccessModal = false">取消</Button>
         <a href="https://kaifa.xrcloud.net/host/">
-        <Button type="primary">查看云服务器</Button></a>
+          <Button type="primary">查看云服务器</Button>
+        </a>
       </p>
     </Modal>
     <!-- 支付充值失败 -->
@@ -607,7 +619,7 @@
             <Step title="支付失败"></Step>
           </Steps>
           <p>
-            <img src="../../../../assets/img/sceneInfo/si-defeated.png" alt="支付失败">
+            <img src="../../../../assets/img/sceneInfo/si-defeated.png" alt="支付失败" />
             <span>抱歉，支付失败，请再次尝试！</span>
           </p>
         </div>
@@ -638,7 +650,7 @@
             <Step title="支付成功"></Step>
           </Steps>
           <p>
-            <img src="../../../../assets/img/sceneInfo/si-success.png" alt="支付成功">
+            <img src="../../../../assets/img/sceneInfo/si-success.png" alt="支付成功" />
             <span>恭喜您支付成功！我们即将冻结保证金</span>
             <span style="color: #D0021B;margin-left: 0">{{ cashPledge }}</span>
             <span style="margin-left: 0">元</span>
@@ -724,13 +736,13 @@
                 :class="{selected: otherPayWay == 'zfb'}"
                 @click="balance < cashPledge?otherPayWay = 'zfb':null"
                 alt="支付宝"
-              >
+              />
               <img
                 src="../../../../assets/img/payresult/wxpay.png"
                 :class="{selected: otherPayWay == 'wx'}"
                 @click="balance < cashPledge?otherPayWay = 'wx':null"
                 alt="微信"
-              >
+              />
             </Radio>
           </RadioGroup>
         </div>
@@ -739,13 +751,15 @@
         <Button type="primary" @click="getHost_ok">确认</Button>
       </div>
     </Modal>
-     <!-- 身份验证弹窗 -->
+    <!-- 身份验证弹窗 -->
     <Modal
       v-model="showModal.cashverification"
       :scrollable="true"
       :closable="true"
       :width="520"
-      :mask-closable="false" class="person-check">
+      :mask-closable="false"
+      class="person-check"
+    >
       <p slot="header" class="modal-header-border">
         <span class="universal-modal-title">身份验证</span>
       </p>
@@ -766,23 +780,15 @@
           style="width: 500px;"
         >
           <FormItem prop="VerificationPhone">
-            <Input
-              v-model="formCustom.VerificationPhone"
-              placeholder="请输入手机号码"
-              class="w300"
-            ></Input>
+            <Input v-model="formCustom.VerificationPhone" placeholder="请输入手机号码" class="w300"></Input>
           </FormItem>
           <FormItem prop="Verificationcode">
-            <Input
-              v-model="formCustom.Verificationcode"
-              placeholder="请输入随机验证码"
-              class="w300"
-            ></Input>
+            <Input v-model="formCustom.Verificationcode" placeholder="请输入随机验证码" class="w300"></Input>
             <img
               :src="imgSrc"
               @click="imgSrc=`user/getKaptchaImage.do?t=${new Date().getTime()}`"
               style="height:32px;vertical-align: middle;margin-left: 10px;"
-            >
+            />
           </FormItem>
           <FormItem prop="messagecode">
             <Input v-model="formCustom.messagecode" placeholder="请输入收到的验证码" class="w300"></Input>
@@ -800,7 +806,7 @@
           style="width: 91%;margin-left: 4%;margin-top: 10px;font-size: 14px;margin-bottom: 20px;"
         >
           <p style="float: left;line-height:24px;">没有收到验证码？</p>
-          <br>
+          <br />
           <p style="line-height:24px;">
             1、网络异常可能会造成短信丢失，请
             <span
@@ -845,7 +851,8 @@
       width="550"
       :scrollable="true"
       :mask-closable="false"
-      :closable="false">
+      :closable="false"
+    >
       <p slot="header" class="modal-header-border">
         <span class="universal-modal-title">扫码认证</span>
       </p>
@@ -983,12 +990,12 @@ export default {
         size: 500
       },
       cashPledge: 0,
-       orderColumns: [
+      orderColumns: [
         {
           title: '产品类型',
           key: 'productType',
-           render: (h, params) => {
-             let result = ''
+          render: (h, params) => {
+            let result = ''
             switch (params.row.post.servicetype) {
               case 'host':
                 result = '云服务器'
@@ -1008,17 +1015,17 @@ export default {
           width: 150,
           render: (h, params) => {
             let arr = []
-            let param = h('li', {}, '带宽： ' + params.row.post.bandwith+ 'M') 
-            let param1 = h('li', {}, '磁盘： ' + params.row.post.disksize+ 'G SSD') 
+            let param = h('li', {}, '带宽： ' + params.row.post.bandwith + 'M')
+            let param1 = h('li', {}, '磁盘： ' + params.row.post.disksize + 'G SSD')
             let param2 = h('li', {}, '系统： ' + params.row.system[0])
-            arr=[param,param1,param2]
+            arr = [param, param1, param2]
             return h('ul', {}, arr)
           }
         },
         {
           title: '计费类型',
           render: (h, params) => {
-           
+
             return h('span', {}, '包年包月')
           }
         },
@@ -1027,11 +1034,11 @@ export default {
           key: 'time',
           render: (h, params) => {
             let text = this.monthD(params.row.post.days)
-            if(text == '年') {
+            if (text == '年') {
               text = '1年'
-            } else if(text == '月') {
+            } else if (text == '月') {
               text = '1个月'
-            } else if(text == '天') {
+            } else if (text == '天') {
               text = '1天'
             }
             return h('span', {}, text)
@@ -1737,10 +1744,10 @@ export default {
 
   },
   methods: {
-    getParams() {
-      if(this.$route.query.tab=='free') {
+    getParams () {
+      if (this.$route.query.tab == 'free') {
         this.currentView = 'child1'
-      } else if(this.$route.query.tab=='discount') {
+      } else if (this.$route.query.tab == 'discount') {
         this.currentView = 'child2'
       } else {
         this.currentView = 'child1'
@@ -1919,7 +1926,7 @@ export default {
         return
       }
       if ((!this.authInfo) || (this.authInfo && this.authInfo.authtype == 0 && this.authInfo.checkstatus != 0) || (!this.authInfoPersion && this.authInfo && this.authInfo.authtype == 1 && this.authInfo.checkstatus != 0) || (this.authInfoPersion && this.authInfoPersion.checkstatus != 0 && this.authInfo && this.authInfo.checkstatus != 0)) {
-        if(type == 'p') {
+        if (type == 'p') {
           if (!this.userInfo.phone) {
             this.showModal.cashverification = true
           } else {
@@ -1928,20 +1935,28 @@ export default {
           }
           return
         } else {
-          window.open('https://pan.xrcloud.net/ruicloud/faceindex','self')
+          window.open('https://pan.xrcloud.net/ruicloud/faceindex', 'self')
         }
       }
-      let url = 'information/getDiskcountMv.do'
-      let params = {
-        defzoneid: item.zoneId,
-        vmConfigId: item.post.id,
-        osType: item.system[1]
-      }
+      let url = ''
+      let params = {}
       if (item.post.servicetype == 'ticket') {
         url = 'activity/getActTicket.do'
         params = { activityNum: 62 }
       } else if (item.post.servicetype == 'G5500') {
         url = 'activity/getDiskcountGPU.do'
+        params = {
+          defzoneid: item.zoneId,
+          vmConfigId: item.post.id,
+          osType: item.system[1]
+        }
+      } else if (item.post.servicetype == 'host') {
+        url = 'information/getDiskcountMv.do'
+        params = {
+          defzoneid: item.zoneId,
+          vmConfigId: item.post.id,
+          osType: item.system[1]
+        }
       }
       axios.get(url, {
         params: params
@@ -2093,13 +2108,13 @@ export default {
         }
       })
     },
-    pushOrderD (item,type) {
+    pushOrderD (item, type) {
       if (!this.$store.state.userInfo) {
         this.$LR({ type: 'register' })
         return
       }
       if ((!this.authInfo) || (this.authInfo && this.authInfo.authtype == 0 && this.authInfo.checkstatus != 0) || (!this.authInfoPersion && this.authInfo && this.authInfo.authtype == 1 && this.authInfo.checkstatus != 0) || (this.authInfoPersion && this.authInfoPersion.checkstatus != 0 && this.authInfo && this.authInfo.checkstatus != 0)) {
-        if(type == 'p') {
+        if (type == 'p') {
           if (!this.userInfo.phone) {
             this.showModal.cashverification = true
           } else {
@@ -2108,10 +2123,16 @@ export default {
           }
           return
         } else {
-          window.open('https://pan.xrcloud.net/ruicloud/faceindex','self')
+          window.open('https://pan.xrcloud.net/ruicloud/faceindex', 'self')
         }
       }
-      axios.get('activity/jdugeTeam.do', {
+      let url = ''
+      if (item.post.servicetype == 'db') {
+        url = 'activity/judgeDatabase.do'
+      } else {
+        url = 'activity/jdugeTeam.do'
+      }
+      axios.get(url, {
         params: {
           sign: 'freeReceive',
           vmConfigId: item.post.id
@@ -2136,7 +2157,7 @@ export default {
       })
     },
     nextStep (type) {
-      if(type=='p') {
+      if (type == 'p') {
         this.$http.post('device/DescribeWalletsBalance.do').then(response => {
           if (response.status == 200 && response.data.status == '1') {
             this.balance = Number(response.data.data.remainder)
@@ -2157,7 +2178,7 @@ export default {
           }
         }).then(res => {
           if (res.status == 200 && res.data.status == 1) {
-            window.open('https://pan.xrcloud.net/ruicloud/freeBuy','_self')
+            window.open('https://pan.xrcloud.net/ruicloud/freeBuy', '_self')
           }
         })
       }
@@ -2211,7 +2232,7 @@ export default {
         }
       }
     },
-     isPay () {
+    isPay () {
       axios.get('user/payStatus.do', {
         params: {
           serialNum: this.serialNum
@@ -2233,8 +2254,16 @@ export default {
       }
     },
     getFreeHost () {
+      let servicetype = this.orderData[0].post.servicetype
+      let url = ''
+      if (servicetype == 'db') {
+        url = 'activity/getFreeDBNew.do'
+      } else if (servicetype == 'G5500') {
+        url = 'activity/getFreeGPUNew.do'
+      } else {
+        url = 'activity/getFreeHostNew.do'
+      }
       this.showModal.paySuccessModal = false
-      let url = 'activity/getFreeHostNew.do'
       axios.get(url, {
         params: {
           vmConfigId: this.orderData[0].post.id,
@@ -2332,7 +2361,7 @@ export default {
       return text
     },
     //结束
-   
+
     toggleZone (zoneId) {
       // 切换默认区域
       axios.get('user/setDefaultZone.do', { params: { zoneId: zoneId } }).then(response => {
@@ -2600,7 +2629,7 @@ export default {
                 content: '抱歉，人脸识别实名认证失败！您也可以前往用户中心上传身份证照片进行实名认证。',
                 okText: '去实名认证',
                 onOk: () => {
-                  window.open('https://kaifa.xrcloud.net/usercenter/','_self')
+                  window.open('https://kaifa.xrcloud.net/usercenter/', '_self')
                 }
               })
             }
@@ -2773,7 +2802,7 @@ export default {
         usercenter: 'certification',
         expenses: 'accountSummary'
       }
-      window.open('https://kaifa.xrcloud.net/usercenter/','_self')
+      window.open('https://kaifa.xrcloud.net/usercenter/', '_self')
       this.$store.commit('setPane', paneStatue)
     }
   },
@@ -3092,23 +3121,28 @@ export default {
       border: 1px solid rgba(220, 226, 242, 1);
       background: #fff;
       &:nth-of-type(1) .head {
-        background: url("../../../../assets/img/active/deposit/head-bg-1.png") no-repeat;
+        background: url("../../../../assets/img/active/deposit/head-bg-1.png")
+          no-repeat;
         background-size: cover;
       }
       &:nth-of-type(2) .head {
-        background: url("../../../../assets/img/active/deposit/head-bg-2.png") no-repeat;
+        background: url("../../../../assets/img/active/deposit/head-bg-2.png")
+          no-repeat;
         background-size: cover;
       }
       &:nth-of-type(3) .head {
-        background: url("../../../../assets/img/active/deposit/head-bg-3.png") no-repeat;
+        background: url("../../../../assets/img/active/deposit/head-bg-3.png")
+          no-repeat;
         background-size: cover;
       }
       &:nth-of-type(4) .head {
-        background: url("../../../../assets/img/active/deposit/head-bg-4.png") no-repeat;
+        background: url("../../../../assets/img/active/deposit/head-bg-4.png")
+          no-repeat;
         background-size: cover;
       }
       &:nth-of-type(5) .head {
-        background: url("../../../../assets/img/active/deposit/head-bg-5.png") no-repeat;
+        background: url("../../../../assets/img/active/deposit/head-bg-5.png")
+          no-repeat;
         background-size: cover;
       }
     }
@@ -3226,6 +3260,9 @@ export default {
     font-size: 16px;
     color: #4f557b;
     // line-height: 1;
+    span {
+      cursor: pointer;
+    }
     .blue {
       color: #5893ff;
     }
@@ -3279,7 +3316,7 @@ export default {
         width: 100px;
         height: 100px;
         background: url("../../../../assets/img/active/deposit/right-top-icon.png")
-        no-repeat top right;
+          no-repeat top right;
       }
       .icon-text {
         width: 100px;
@@ -3499,7 +3536,7 @@ export default {
         width: 65px;
         height: 65px;
         background: url("../../../../assets/img/active/deposit/low-icon-bg.png")
-        no-repeat top right;
+          no-repeat top right;
       }
       .icon-text {
         width: 65px;
@@ -3639,6 +3676,9 @@ export default {
     font-size: 16px;
     color: #4f557b;
     line-height: 1;
+    span {
+      cursor: pointer;
+    }
     .blue {
       color: #5893ff;
     }
@@ -3658,18 +3698,19 @@ export default {
   .wrap-inner {
     width: 100%;
   }
-  .deposite-host .product,.low-discount .product{
+  .deposite-host .product,
+  .low-discount .product {
     width: 978px;
   }
-  .deposite-host .renew .content{
+  .deposite-host .renew .content {
     justify-content: center;
     .item {
       margin-right: 0;
     }
-  } 
+  }
   .deposite-host .update .content {
     justify-content: center;
-    > div{
+    > div {
       margin-right: 0;
     }
   }
@@ -3688,7 +3729,7 @@ export default {
         // align-items: center;
         .left {
           width: 100%;
-          >div {
+          > div {
             margin-bottom: 20px;
           }
         }
@@ -3710,14 +3751,16 @@ export default {
   }
 }
 @media screen and (max-width: 1028px) {
-  .deposite-host,.low-discount{
+  .deposite-host,
+  .low-discount {
     .product {
       width: 732px;
     }
   }
 }
 @media screen and (max-width: 786px) {
-  .deposite-host,.low-discount{
+  .deposite-host,
+  .low-discount {
     .product {
       width: 488px;
     }
@@ -3727,7 +3770,6 @@ export default {
   .head-g {
     justify-content: flex-start;
   }
-  
 }
 @media screen and (max-width: 1020px) {
   .pc {
@@ -3747,7 +3789,6 @@ export default {
 }
 
 @media screen and (max-width: 540px) {
-  
 }
 .pc-640 {
   display: block;
@@ -3774,58 +3815,64 @@ export default {
     display: block;
   }
   .pc-640-inline {
-  display: none;
-}
-.mobile-640-inline {
-  display: inline-block;
-}
-.person-check {
-  .w300 {
-    width: 150px;
+    display: none;
   }
-}
+  .mobile-640-inline {
+    display: inline-block;
+  }
+  .person-check {
+    .w300 {
+      width: 150px;
+    }
+  }
   .free-host .container {
     padding: 30px 10px 10px 10px;
   }
-  .deposite-host .renew .content{
+  .deposite-host .renew .content {
     .box {
-      flex-wrap: wrap; 
+      flex-wrap: wrap;
     }
     .item {
       width: 100%;
     }
-  } 
-  .deposite-host .wrap-inner,.low-discount .wrap-inner{
+  }
+  .deposite-host .wrap-inner,
+  .low-discount .wrap-inner {
     width: 100%;
   }
-  .deposite-host .product{
+  .deposite-host .product {
     width: 100%;
-    >div {
+    > div {
       width: 100%;
       margin-right: 0px;
       background: #fff;
       &:nth-of-type(1) .head {
-        background: url("../../../../assets/img/active/deposit/head-bg-1m.png") no-repeat;
+        background: url("../../../../assets/img/active/deposit/head-bg-1m.png")
+          no-repeat;
         background-size: cover;
       }
       &:nth-of-type(2) .head {
-        background: url("../../../../assets/img/active/deposit/head-bg-2m.png") no-repeat;
+        background: url("../../../../assets/img/active/deposit/head-bg-2m.png")
+          no-repeat;
         background-size: cover;
       }
       &:nth-of-type(3) .head {
-        background: url("../../../../assets/img/active/deposit/head-bg-3m.png") no-repeat;
+        background: url("../../../../assets/img/active/deposit/head-bg-3m.png")
+          no-repeat;
         background-size: cover;
       }
       &:nth-of-type(4) .head {
-        background: url("../../../../assets/img/active/deposit/head-bg-4m.png") no-repeat;
+        background: url("../../../../assets/img/active/deposit/head-bg-4m.png")
+          no-repeat;
         background-size: cover;
       }
       &:nth-of-type(5) .head {
-        background: url("../../../../assets/img/active/deposit/head-bg-4m.png") no-repeat;
+        background: url("../../../../assets/img/active/deposit/head-bg-4m.png")
+          no-repeat;
         background-size: cover;
       }
     }
-    .body{
+    .body {
       .label {
         display: inline;
         margin-bottom: 0;
@@ -3834,10 +3881,10 @@ export default {
       }
     }
     .bodyb {
-      >div {
+      > div {
         display: flex;
         .systemw {
-          flex-grow:1
+          flex-grow: 1;
         }
       }
     }
@@ -3846,13 +3893,13 @@ export default {
     .product {
       width: 100%;
       > div {
-      width: 100%;
-      margin-right: 0;
+        width: 100%;
+        margin-right: 0;
       }
       .body {
-        >div .select-w {
+        > div .select-w {
           // width: 100%;
-          flex-grow:1
+          flex-grow: 1;
         }
       }
     }
@@ -3862,7 +3909,7 @@ export default {
       padding: 0 10px;
     }
     .product {
-      >div {
+      > div {
         box-shadow: none;
       }
       .body {
