@@ -66,7 +66,7 @@ Vue.config.productionTip = false
 
 // axios.defaults.withCredentials = true
 
-axios.defaults.baseURL = 'https://activity.xinruiyun.cn/'
+axios.defaults.baseURL = 'https://huodong.xrcloud.net/'
 
 // window.eventBus = new Vue();
 

@@ -1,37 +1,54 @@
 <template>
   <div>
-    <pc class="pc"></pc>
-    <mobile class="mobile"></mobile>
+    <before v-if="time"></before>
+    <div v-else>
+      <pc class="pc"></pc>
+      <mobile class="mobile"></mobile>
+    </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import pc from './ddos.vue'
 import mobile from './MhignCopy.vue'
+import before from './activeBefore.vue'
+import axios from 'axios'
 export default {
   data () {
     return {
-
+      time: ''
     }
   },
   created () {
-
+    this.checkTime()
   },
   mounted () {
 
   },
   methods: {
-
+    checkTime() {
+      axios.get('activity/activityTime.do', {
+        params: {
+          activityId: '53'
+        }
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          this.time = false
+        } else {
+          this.time = true
+        }
+      })
+    }
   },
   computed: {
-
   },
   watch: {
 
   },
   components: {
     pc,
-    mobile
+    mobile,
+    before
   },
 }
 </script>

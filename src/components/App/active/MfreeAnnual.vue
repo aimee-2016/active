@@ -352,38 +352,6 @@
       CheckIcon,
       Toast
     },
-    beforeRouteEnter(to, from, next){
-      axios.post('activity/getTemActInfo.do', {activityName: '免费领主机'}).then(response => {
-        next(vm => {
-          if (response.status == 200 && response.data.status == 1) {
-            vm.nodeList = response.data.result.optionalArea
-            vm.nodes[0] = vm.nodeList[0].value
-            axios.get('information/listTemplates.do', {
-              params: {
-                zoneId: vm.nodes[0],
-                user: '0'
-              }
-           }).then(res => {
-             if(res.status == 200 && res.data.status == 1){
-               vm.systemGroup = []
-               for (let type in res.data.result) {
-                 if (res.data.result[type].length > 0) {
-                   vm.systemGroup.push({name: type, value: type, parent: 0})
-                 }
-                 res.data.result[type].forEach(e => {
-                   vm.systemGroup.push({name: e.templatename, value: e.systemtemplateid, parent: type})
-                 })
-               }
-               let tempSystem1 = vm.systemGroup[1].name
-               let tempSystem2 = vm.systemGroup[1].value
-               vm.system[0] = tempSystem1
-               vm.system[1] = tempSystem2
-             }
-           })
-          }
-        })
-      })
-    },
     data(){
       window.scrollTo(0, 0);
       return {

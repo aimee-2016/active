@@ -685,19 +685,6 @@ import VueQArt from 'vue-qart'
 import $ from 'jquery'
 import throttle from 'throttle-debounce/debounce'
 export default {
-  beforeRouteEnter (to, from, next) {
-    axios.get('activity/activityTime.do', {
-      params: {
-        activityId: '53'
-      }
-    }).then(response => {
-      if (response.status == 200 && response.data.status == 1) {
-        next()
-      } else {
-        next({ path: '/activebefore' })
-      }
-    })
-  },
   data () {
     const validaRegisteredPhone = (rule, value, callback) => {
       if (!value) {

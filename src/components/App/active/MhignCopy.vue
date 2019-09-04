@@ -367,19 +367,6 @@
         Group,
         Cell,
       },
-      beforeRouteEnter (to,from,next) {
-        axios.get('activity/activityTime.do',{
-          params: {
-            activityId: 53
-          }
-        }).then(res => {
-          next(vm => {
-            if (res.status == 200 && res.data.status != 1){
-              vm.$router.push('/activebefore')
-            }
-          })
-        })
-      },
       data () {
         return {
           overH: 0,

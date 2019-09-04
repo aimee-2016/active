@@ -2137,8 +2137,17 @@ export default {
     },
     nextStep (type) {
       if(type=='p') {
-        this.showModal.rechargeHint = false
-        this.showModal.orderConfirmationModal = true
+        this.$http.post('device/DescribeWalletsBalance.do').then(response => {
+          if (response.status == 200 && response.data.status == '1') {
+            this.balance = Number(response.data.data.remainder)
+            this.showModal.rechargeHint = false
+            this.showModal.orderConfirmationModal = true
+          } else {
+            this.$message.info({
+              content: response.data.message
+            })
+          }
+        })
       } else {
         axios.get('/activity/createFreevmTemp.do', {
           params: {

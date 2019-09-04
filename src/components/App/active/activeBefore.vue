@@ -37,7 +37,7 @@ export default {
 
 <style rel="stylesheet/less" lang="less" scoped>
 .active-before {
-  padding: 50px 0 300px 0;
+  padding: 50px 10px 300px 10px;
   background: rgba(255, 255, 255, 1);
   text-align: center;
   p {
@@ -45,6 +45,17 @@ export default {
     margin-bottom: 40px;
     font-size: 28px;
     font-family: MicrosoftYaHei;
+    line-height: 1.5;
+  }
+}
+@media screen and (max-width: 640px) {
+  .active-before {
+    img {
+      width: 300px;
+    }
+  p {
+      font-size: 22px;
+    }
   }
 }
 </style>

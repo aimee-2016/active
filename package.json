@@ -29,6 +29,7 @@
     "npm": "^6.4.1",
     "pinyin": "^2.8.3",
     "prerender-spa-plugin": "^3.4.0",
+    "puppeteer": "^1.19.0",
     "qartjs": "github:kciter/qart.js",
     "throttle-debounce": "^1.0.1",
     "timeago": "^1.6.1",
