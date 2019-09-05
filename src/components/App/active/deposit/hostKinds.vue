@@ -211,7 +211,7 @@
                       <h3>升级配置 立享优惠</h3>
                       <p>
                         已参与免费领云产品的用户，升级云服务器配置或带宽即可享受优惠
-                        <span @click="showModal.ruleCoupon=true">活动规则></span>
+                        <span @click="showModal.ruleCoupon=true" style="cursor:pointer">活动规则></span>
                       </p>
                     </div>
                   </div>
@@ -333,7 +333,9 @@
                     </div>
                   </div>
                 </div>
-                <div class="tips">*以上配置GPU云服务器为128G系统盘，其他弹性云服务器均为40G SSD系统盘。</div>
+                <div class="tips">*以上配置GPU云服务器为128G系统盘，其他弹性云服务器均为40G SSD系统盘。
+                  <span @click="showModal.dayHost=true" class="blue">活动规则></span>
+                </div>
               </div>
             </div>
           </div>
@@ -476,12 +478,12 @@
             </dl>
             <p>
               6、活动声明：为保证活动的公平公正，新睿云有权对恶意刷抢（如通过程序等技术手段）活动资源，领取后3天内未使用资源、利用资源从事违法违规行为的用户收回免费套餐使用资格。因此造成任何损失的，由该用户自行负责。
+            </p>
+            <p>7、请注意：在未支付订单情况下，系统会对您的资格造成误判，需要您将账号下未支付订单作废后，即可正常参与。 
               <a
                 href="https://kaifa.xrcloud.net/expenses"
                 style="color:#2A99F2"
-              >去订单管理</a>
-            </p>
-            <p>7、请注意：在未支付订单情况下，系统会对您的资格造成误判，需要您将账号下未支付订单作废后，即可正常参与。</p>
+              >去订单管理</a></p>
           </div>
           <div class="footer">
             <span @click.stop="showModal.rule=false">知道了</span>
@@ -544,6 +546,37 @@
         </div>
       </div>
     </transition>
+     <!-- 活动规则 -->
+    <transition name="fade">
+      <div class="overlay" @click.stop="showModal.dayHost=true" v-if="showModal.dayHost">
+        <div class="rule-modal">
+          <div class="header">
+            <span>活动规则</span>
+            <img src=../../../../assets/img/active/freeToReceive.1/close-icon.png alt="关闭图标" @click.stop="showModal.dayHost=false">
+          </div>
+          <div class="body">
+            <p>1、活动时间：2019年8月28日开始，总量有限，先到先得！</p>
+            <p>2、平台已完成实名认证的新老用户。</p>
+            <p>3、数量限制：活动期间同一用户（同一手机、邮箱、实名认证用户视为同一用户）按照不同的配置进行按需购买，同配置产品可以同时购买不同时长，但每款配置同一时长只能购买一次。数量有限，先到先得（实名认证后每个用户云服务器最多可拥有7台）。</p>
+            <p>4、参与本次活动购买的产品不支持退款。</p>
+            <p>5、此次活动产品不能用于转售，如若利用资源从事违法违规行为的用户，新睿云有权收回使用资格，并且不予退款。</p>
+            <p>6、购买时不可使用任何优惠券和现金券，特惠产品不支持会员折扣。</p>
+            <p>7、域名无门槛抵扣券每次只能使用1张，有效期为1个月；续费&升级券也是每次只能使用1张，有效期为1年。此次活动券仅用于支付新睿云平台订单支付时，抵减应支付的订单金额，不能进行兑现或其他用途。</p>
+            <p>
+              8、请注意：在未支付订单情况下，系统会对您的资格造成误判，需要您将账号下未支付订单作废后，即可正常参与。
+              <a
+                href="https://kaifa.xrcloud.net/expenses"
+                style="color:#2A99F2"
+              >去订单管理</a>
+            </p>
+            <p>6、活动最终解释权为新睿云所有。</p>
+          </div>
+          <div class="footer">
+            <span @click.stop="showModal.dayHost=false">知道了</span>
+          </div>
+        </div>
+      </div>
+    </transition>
     <!-- 领取提示 -->
     <Modal v-model="showModal.rechargeHint" :scrollable="true" :closable="false" :width="390">
       <div class="modal-content-s" style="padding: 30px 30px 0 50px">
@@ -582,7 +615,7 @@
       </div>
       <p slot="footer" class="modal-footer-s">
         <Button @click="showModal.inConformityModal = false">取消</Button>
-        <Button type="primary" @click="$router.push('/activity/')">现在就去</Button>
+        <Button type="primary" @click="$router.push('/')">现在就去</Button>
       </p>
     </Modal>
     <!-- 领取成功 -->
@@ -601,7 +634,7 @@
       </div>
       <p slot="footer" class="modal-footer-s">
         <Button @click="showModal.getSuccessModal = false">取消</Button>
-        <a href="https://kaifa.xrcloud.net/host/">
+        <a href="https://kaifa.xrcloud.net/host">
           <Button type="primary">查看云服务器</Button>
         </a>
       </p>
@@ -826,11 +859,11 @@
               class="spanaa"
               @click="showModal.modifyPhoneID = true;showModal.cashverification=false"
             >通过身份证号码验证</span>或
-            <a href="https://kaifa.xrcloud.net/work/">提交工单</a>更改手机号。
+            <a href="https://kaifa.xrcloud.net/work">提交工单</a>更改手机号。
           </p>
           <p v-if="!authInfo||authInfo&&authInfo.checkstatus!=0" style="line-height:24px;">
             2、如果手机已丢失或停机，请
-            <a href="https://kaifa.xrcloud.net/work/">提交工单</a>或
+            <a href="https://kaifa.xrcloud.net/work">提交工单</a>或
             <a
               target="_blank"
               :href="`tencent://message/?uin=${$store.state.qq.qqnumber}&amp;Site=www.cloudsoar.com&amp;Menu=yes`"
@@ -933,6 +966,7 @@ export default {
         // 规则弹窗都需要修改
         rule: false,
         ruleHost: false,
+        dayHost: false,
         ruleCoupon: false,
       },
       hintMsg: '',
@@ -1941,7 +1975,7 @@ export default {
       let url = ''
       let params = {}
       if (item.post.servicetype == 'ticket') {
-        url = 'activity/getActTicket.do'
+        url = 'ticket/getTicketForActivity.do'
         params = { activityNum: 62 }
       } else if (item.post.servicetype == 'G5500') {
         url = 'activity/getDiskcountGPU.do'
@@ -2629,7 +2663,7 @@ export default {
                 content: '抱歉，人脸识别实名认证失败！您也可以前往用户中心上传身份证照片进行实名认证。',
                 okText: '去实名认证',
                 onOk: () => {
-                  window.open('https://kaifa.xrcloud.net/usercenter/', '_self')
+                  window.open('https://kaifa.xrcloud.net/usercenter', '_self')
                 }
               })
             }
@@ -2802,7 +2836,7 @@ export default {
         usercenter: 'certification',
         expenses: 'accountSummary'
       }
-      window.open('https://kaifa.xrcloud.net/usercenter/', '_self')
+      window.open('https://kaifa.xrcloud.net/usercenter', '_self')
       this.$store.commit('setPane', paneStatue)
     }
   },
@@ -3271,7 +3305,9 @@ export default {
     }
   }
   .head-g {
+    width: 583px;
     display: flex;
+    justify-content: flex-start;
     align-items: center;
     margin-bottom: 20px;
     > div {
@@ -3299,7 +3335,6 @@ export default {
     .content {
       display: flex;
       justify-content: flex-start;
-      flex-wrap: wrap;
       .item {
         width: 583px;
         padding: 20px 0 20px 20px;
@@ -3383,7 +3418,6 @@ export default {
     .content {
       display: flex;
       justify-content: flex-start;
-      flex-wrap: wrap;
       text-align: center;
       > div {
         width: 583px;
@@ -3440,6 +3474,7 @@ export default {
 
 // 弹窗公共样式
 .overlay {
+  padding: 0 10px;
   position: fixed;
   top: 0;
   bottom: 0;
@@ -3463,7 +3498,7 @@ export default {
   .header {
     height: 66px;
     padding-top: 20px;
-    padding-right: 30px;
+    padding-right: 20px;
     font-size: 20px;
     color: rgba(31, 31, 114, 1);
     text-align: center;
@@ -3689,9 +3724,6 @@ export default {
 }
 
 @media screen and (max-width: 1280px) {
-  .head-g {
-    justify-content: center;
-  }
   .wrap {
     width: 100%;
   }
@@ -3702,18 +3734,7 @@ export default {
   .low-discount .product {
     width: 978px;
   }
-  .deposite-host .renew .content {
-    justify-content: center;
-    .item {
-      margin-right: 0;
-    }
-  }
-  .deposite-host .update .content {
-    justify-content: center;
-    > div {
-      margin-right: 0;
-    }
-  }
+  
   .summary-host {
     .wrap {
       padding: 0 20px;
@@ -3766,17 +3787,29 @@ export default {
     }
   }
 }
-@media screen and (min-width: 1281px) {
-  .head-g {
-    justify-content: flex-start;
-  }
-}
 @media screen and (max-width: 1020px) {
   .pc {
     display: none;
   }
   .mobile {
     display: inline-block;
+  }
+  .head-g {
+    margin: 0 auto;
+  }
+   .deposite-host .renew .content {
+    flex-wrap:wrap; 
+    justify-content: center;
+    .item {
+      margin-right: 0;
+    }
+  }
+  .deposite-host .update .content {
+    flex-wrap:wrap;
+    justify-content: center;
+    > div {
+      margin-right: 0;
+    }
   }
 }
 @media screen and (min-width: 1021px) {
@@ -3788,7 +3821,10 @@ export default {
   }
 }
 
-@media screen and (max-width: 540px) {
+@media screen and (max-width: 700px) {
+  .rule-modal {
+     width: 100%;
+  }
 }
 .pc-640 {
   display: block;

@@ -294,7 +294,7 @@ export default {
           content: '您好，你还未进行实名认证，请先实名认证即可参加此活动。<a href="userCenter">立即认证</a>',
           onOk: () => {
             // this.$router.push('/userCenter')
-            window.open('https://kaifa.xrcloud.net/usercenter/', 'self')
+            window.open('https://kaifa.xrcloud.net/usercenter', 'self')
           }
         })
         return

@@ -3,7 +3,7 @@
     <div class="wrapper">
       <img src="../../../assets/img/active/actice-before-banner.png">
       <p>活动已经结束咯，去活动中心看看其它活动吧！</p>
-      <Button type="primary" @click="$router.push('/activity/')">去活动中心</Button>
+      <Button type="primary" @click="$router.push('/')">去活动中心</Button>
     </div>
   </div>
 </template>

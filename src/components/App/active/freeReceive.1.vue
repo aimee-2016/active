@@ -466,7 +466,7 @@
       </div>
       <p slot="footer" class="modal-footer-s">
         <Button @click="showModal.inConformityModal = false">取消</Button>
-        <Button type="primary" @click="$router.push('/activity/')">现在就去</Button>
+        <Button type="primary" @click="$router.push('/')">现在就去</Button>
       </p>
     </Modal>
     <!-- 领取成功 -->
@@ -485,7 +485,7 @@
       </div>
       <p slot="footer" class="modal-footer-s">
         <Button @click="showModal.getSuccessModal = false">取消</Button>
-        <a href="https://kaifa.xrcloud.net/host/"><Button type="primary">查看云服务器</Button></a>
+        <a href="https://kaifa.xrcloud.net/host"><Button type="primary">查看云服务器</Button></a>
       </p>
     </Modal>
     <!-- 支付充值失败 -->

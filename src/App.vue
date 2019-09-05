@@ -64,7 +64,7 @@
                 <div class="nav-list">
                     <ul class="nav-left" @mouseleave='styleClass(-1,$event)'>
                         <li class="nav-item" @mouseenter='styleClass(0,$event)'>
-                            <router-link to="/activity/" title="活动中心">活动中心</router-link>
+                            <router-link to="/" title="活动中心">活动中心</router-link>
                         </li>
                         <li class="nav-item" @mouseenter='styleClass(1,$event)'>
                             <a href="https://www.xinruiyun.cn/">首页</a>
@@ -78,7 +78,7 @@
                                     <a href="https://www.xinruiyun.cn/ecs/">弹性云服务器ECS <img src="./assets/img/home/iconHot.png" /></a>
                                     <div class="buy-box">
                                         <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                        <a class="buy-font" href="https://kaifa.xrcloud.net/buy/host/">立即购买</a>
+                                        <a class="buy-font" href="https://kaifa.xrcloud.net/buy/host">立即购买</a>
                                     </div>
                                 </li>
                                 <li class="np-item">
@@ -108,7 +108,7 @@
                                     <a href='https://www.xinruiyun.cn/evs/'>云硬盘</a>
                                     <div class="buy-box">
                                         <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                        <a class="buy-font" href="https://kaifa.xrcloud.net/buy/disk/">立即购买</a>
+                                        <a class="buy-font" href="https://kaifa.xrcloud.net/buy/disk">立即购买</a>
                                     </div>
                                 </li>
                                 <li class="np-item">
@@ -307,16 +307,16 @@
                 <div class="ml-right" :class="mLogin?'ml-rights':''" v-if="userInfo">
                     <ul class="m-list">
                         <li class="m-item">
-                             <a href="https://kaifa.xrcloud.net/usercenter/">用户中心</a>
+                             <a href="https://kaifa.xrcloud.net/usercenter">用户中心</a>
                         </li>
                         <li class="m-item">
-                             <a href="https://kaifa.xrcloud.net/expenses/">费用中心</a>
+                             <a href="https://kaifa.xrcloud.net/expenses">费用中心</a>
                         </li>
                         <li class="m-item">
-                            <a href="https://kaifa.xrcloud.net/msgcenter/">消息中心</a>
+                            <a href="https://kaifa.xrcloud.net/msgcenter">消息中心</a>
                         </li>
                         <li class="m-item">
-                            <a href="https://kaifa.xrcloud.net/operationlog/">操作日志</a>
+                            <a href="https://kaifa.xrcloud.net/operationlog">操作日志</a>
                         </li>
                         <li class="m-item">
                             <span @click="go('exit')" style="font-size:14px">退出登录</span>
@@ -332,7 +332,7 @@
 
                     <div class="mhead-product">
                         <div style="padding: 10px 10px;">
-                            <a ref="external nofollow" href="/activity/" title="活动中心">活动中心</a>
+                            <a ref="external nofollow" href="/" title="活动中心">活动中心</a>
                         </div>
                     </div>
                     <div class="mhead-product">
@@ -704,16 +704,16 @@
                         </div>
                         <div class="bg-content">
                             <div>
-                                <p class="p_true"><a href="https://kaifa.xrcloud.net/overview/">控制台</a></p>
+                                <p class="p_true"><a href="https://kaifa.xrcloud.net/overview">控制台</a></p>
                             </div>
                             <div>
-                                <p class="p_true"><a href="https://kaifa.xrcloud.net/usercenter/">用户中心</a></p>
+                                <p class="p_true"><a href="https://kaifa.xrcloud.net/usercenter">用户中心</a></p>
                             </div>
                             <div>
-                                <p class="p_true"><a href="https://kaifa.xrcloud.net/expenses/">费用中心</a></p>
+                                <p class="p_true"><a href="https://kaifa.xrcloud.net/expenses">费用中心</a></p>
                             </div>
                             <div>
-                                <p class="p_true"><a href="https://kaifa.xrcloud.net/work/">工单管理</a></p>
+                                <p class="p_true"><a href="https://kaifa.xrcloud.net/work">工单管理</a></p>
                             </div>
                         </div>
                     </div>

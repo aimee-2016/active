@@ -45,7 +45,6 @@ var router = new Router({
       component: App,
       children: [
         {path: '/', name: 'activity', component: ActiveCenter,caseSensitive: true},
-        {path: 'activity', name: 'activity', component: ActiveCenter,caseSensitive: true},
         // {path: 'activityp', name: 'activityp', component: ActiveCenterP,caseSensitive: true},
         // {path: 'activitym', name: 'activitym', component: ActiveCenterM,caseSensitive: true},
         {path: 'activebefore',name: 'activebefore', component:activeBefore,caseSensitive: true},

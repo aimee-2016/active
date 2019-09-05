@@ -591,11 +591,11 @@
               class="spanaa"
               @click="showModal.modifyPhoneID = true;showModal.cashverification=false"
             >通过身份证号码验证</span>或
-            <a href="https://kaifa.xrcloud.net/work/">提交工单</a>更改手机号。
+            <a href="https://kaifa.xrcloud.net/work">提交工单</a>更改手机号。
           </p>
           <p v-if="!authInfo||authInfo&&authInfo.checkstatus!=0" style="line-height:24px;">
             2、如果手机已丢失或停机，请
-            <a href="https://kaifa.xrcloud.net/work/">提交工单</a>或
+            <a href="https://kaifa.xrcloud.net/work">提交工单</a>或
             <a
               target="_blank"
               :href="`tencent://message/?uin=${$store.state.qq.qqnumber}&amp;Site=www.cloudsoar.com&amp;Menu=yes`"
@@ -1776,7 +1776,7 @@ export default {
         usercenter: 'certification',
         expenses: 'accountSummary'
       }
-      window.open('https://kaifa.xrcloud.net/usercenter/','_self')
+      window.open('https://kaifa.xrcloud.net/usercenter','_self')
       this.$store.commit('setPane', paneStatue)
     }
   },
