@@ -12,11 +12,16 @@
           <div class="tabs">
             <div :class="{selected:currentView=='child1'}">
               <span class="bar"></span>
-              <a href="javascript:void(0)" @click="tabChange('child1')">免费领云产品</a>
+              <a href="javascript:void(0)" @click="tabChange('child1')">
+                <span>免费领云产品</span>
+              </a>
             </div>
             <div :class="{selected:currentView=='child2'}">
               <span class="bar"></span>
-              <a href="javascript:void(0)" @click="tabChange('child2')">天天特惠活动</a>
+              <a href="javascript:void(0)" @click="tabChange('child2')">
+                <span>天天特惠活动</span>
+                <i>1核1G 1M云服务器 7天只需1.9元 数量有限，按需抢购</i>
+              </a>
             </div>
           </div>
           <div class="container">
@@ -211,7 +216,10 @@
                       <h3>升级配置 立享优惠</h3>
                       <p>
                         已参与免费领云产品的用户，升级云服务器配置或带宽即可享受优惠
-                        <span @click="showModal.ruleCoupon=true" style="cursor:pointer">活动规则></span>
+                        <span
+                          @click="showModal.ruleCoupon=true"
+                          style="cursor:pointer"
+                        >活动规则></span>
                       </p>
                     </div>
                   </div>
@@ -247,12 +255,11 @@
                       >
                         <div class="icon-text">爆款</div>
                       </div>
-                      <h3>
+                      <h3 v-if="item.post.servicetype!='ticket'">
                         {{titleL(item)}}
-                        <span
-                          v-if="item.post.servicetype!='ticket'"
-                        >{{item.post.cpu+'核'+item.post.mem+'G'}}</span>
+                        <span>{{item.post.cpu+'核'+item.post.mem+'G'}}</span>
                       </h3>
+                      <h3 v-else>{{item.post.ticketDescript}}</h3>
                     </div>
                     <div class="body" v-if="item.post.servicetype!='ticket'">
                       <div>
@@ -311,30 +318,34 @@
                       <Button @click="pushOrderL(item,'m')" class="mobile-640">立即抢购</Button>
                     </div>
                     <div class="body coupen" v-else>
-                      <div style="margin-bottom:5px;">
+                      <div style="margin-bottom:5px;" v-if="item.post.useType == 7">
                         <span class="label" style="width:70px">抵扣金额：</span>
                         <i style="font-style:normal;color:#FF392A">{{item.post.money}}元</i>
                       </div>
-                      <div style="margin-bottom:5px;" v-if="item.post.ticketType==3">
+                      <div style="margin-bottom:5px;">
                         <span class="label" style="width:70px">使用条件：</span>
-                        <i style="font-style:normal;color:#FF392A">无门槛</i>
+                        <i style="font-style:normal;color:#FF392A">{{item.post.userCondition}}</i>
                       </div>
                       <div>
                         <span class="label" style="width:70px">使用方法：</span>
-                        <div>{{item.post.useType==7?'购买域名时抵扣':'产品升级或者续费时使用'}}</div>
+                        <div>{{item.post.useMethod}}</div>
                       </div>
                       <div style="margin-bottom:25px;">
                         <span class="label" style="width:70px">使用时间：</span>
                         <div>自领取之日{{item.post.expday/30}}个月内使用</div>
                       </div>
-                      <div v-if="item.post.ticketType!=3" style="height:22px;"></div>
+                      <div v-if="item.post.useType == 9" style="height:22px;"></div>
                       <Button @click="pushOrderL(item,'p')" class="pc-640">立即抢购</Button>
                       <Button @click="pushOrderL(item,'m')" class="mobile-640">立即抢购</Button>
                     </div>
                   </div>
                 </div>
-                <div class="tips">*以上配置GPU云服务器为128G系统盘，其他弹性云服务器均为40G SSD系统盘。
-                  <span @click="showModal.dayHost=true" class="blue">活动规则></span>
+                <div class="tips">
+                  *以上配置GPU云服务器为128G系统盘，其他弹性云服务器均为40G SSD系统盘。
+                  <span
+                    @click="showModal.dayHost=true"
+                    class="blue"
+                  >活动规则></span>
                 </div>
               </div>
             </div>
@@ -445,8 +456,10 @@
                   ￥
                   <span>{{(totalDataCost*count).toFixed(2)}}</span>
                 </div>
-                <Button @click="pushOrderHost()" v-if="configLength==2">立即购买</Button>
-                <Button @click="pushOrderGpu()" v-else>立即购买</Button>
+                <Button @click="pushOrderHost('p')" v-if="configLength==2" class="pc-640">立即购买</Button>
+                <Button @click="pushOrderGpu('p')" v-else class="pc-640">立即购买pgpu</Button>
+                <Button @click="pushOrderHost('m')" v-if="configLength==2" class="mobile-640">立即购买</Button>
+                <Button @click="pushOrderGpu('m')" v-else class="mobile-640">立即购买mgpu</Button>
               </div>
             </div>
           </div>
@@ -476,14 +489,14 @@
               <dd>（2）免费产品中的资源可随时进行升级，升级费用按新睿云标准收费进行收取。</dd>
               <dd>（3）在各产品免费使用期间，若对免费资源进行了销毁，则视为放弃免费使用权。</dd>
             </dl>
+            <p>6、活动声明：为保证活动的公平公正，新睿云有权对恶意刷抢（如通过程序等技术手段）活动资源，领取后3天内未使用资源、利用资源从事违法违规行为的用户收回免费套餐使用资格。因此造成任何损失的，由该用户自行负责。</p>
             <p>
-              6、活动声明：为保证活动的公平公正，新睿云有权对恶意刷抢（如通过程序等技术手段）活动资源，领取后3天内未使用资源、利用资源从事违法违规行为的用户收回免费套餐使用资格。因此造成任何损失的，由该用户自行负责。
-            </p>
-            <p>7、请注意：在未支付订单情况下，系统会对您的资格造成误判，需要您将账号下未支付订单作废后，即可正常参与。 
+              7、请注意：在未支付订单情况下，系统会对您的资格造成误判，需要您将账号下未支付订单作废后，即可正常参与。
               <a
                 href="https://kaifa.xrcloud.net/expenses"
                 style="color:#2A99F2"
-              >去订单管理</a></p>
+              >去订单管理</a>
+            </p>
           </div>
           <div class="footer">
             <span @click.stop="showModal.rule=false">知道了</span>
@@ -546,7 +559,7 @@
         </div>
       </div>
     </transition>
-     <!-- 活动规则 -->
+    <!-- 活动规则 -->
     <transition name="fade">
       <div class="overlay" @click.stop="showModal.dayHost=true" v-if="showModal.dayHost">
         <div class="rule-modal">
@@ -1956,7 +1969,11 @@ export default {
     },
     pushOrderL (item, type) {
       if (!this.$store.state.userInfo) {
-        this.$LR({ type: 'register' })
+        if (type == 'p') {
+          this.$LR({ type: 'register' })
+        } else {
+          window.open('https://pan.xrcloud.net/ruicloud/login', '_self')
+        }
         return
       }
       if ((!this.authInfo) || (this.authInfo && this.authInfo.authtype == 0 && this.authInfo.checkstatus != 0) || (!this.authInfoPersion && this.authInfo && this.authInfo.authtype == 1 && this.authInfo.checkstatus != 0) || (this.authInfoPersion && this.authInfoPersion.checkstatus != 0 && this.authInfo && this.authInfo.checkstatus != 0)) {
@@ -1969,7 +1986,7 @@ export default {
           }
           return
         } else {
-          window.open('https://pan.xrcloud.net/ruicloud/faceindex', 'self')
+          window.open('https://pan.xrcloud.net/ruicloud/faceindex', '_self')
         }
       }
       let url = ''
@@ -2002,7 +2019,11 @@ export default {
             })
           } else {
             this.$Message.success('创建订单成功')
-            window.open('https://kaifa.xrcloud.net/order', '_self')
+            if (type == 'p') {
+              window.open('https://kaifa.xrcloud.net/order', '_self')
+            } else {
+              window.open('https://pan.xrcloud.net/ruicloud/orderconfirm', '_self')
+            }
           }
         } else {
           this.$message.info({
@@ -2144,7 +2165,11 @@ export default {
     },
     pushOrderD (item, type) {
       if (!this.$store.state.userInfo) {
-        this.$LR({ type: 'register' })
+        if (type == 'p') {
+          this.$LR({ type: 'register' })
+        } else {
+          window.open('https://pan.xrcloud.net/ruicloud/login', '_self')
+        }
         return
       }
       if ((!this.authInfo) || (this.authInfo && this.authInfo.authtype == 0 && this.authInfo.checkstatus != 0) || (!this.authInfoPersion && this.authInfo && this.authInfo.authtype == 1 && this.authInfo.checkstatus != 0) || (this.authInfoPersion && this.authInfoPersion.checkstatus != 0 && this.authInfo && this.authInfo.checkstatus != 0)) {
@@ -2157,7 +2182,7 @@ export default {
           }
           return
         } else {
-          window.open('https://pan.xrcloud.net/ruicloud/faceindex', 'self')
+          window.open('https://pan.xrcloud.net/ruicloud/faceindex', '_self')
         }
       }
       let url = ''
@@ -2532,9 +2557,14 @@ export default {
         }
       })
     },
-    pushOrderGpu () {
+    pushOrderGpu (type) {
+      console.log(type)
       if (!this.$store.state.userInfo) {
-        this.$LR({ type: 'register' })
+        if (type == 'p') {
+          this.$LR({ type: 'register' })
+        } else {
+          window.open('https://pan.xrcloud.net/ruicloud/login', '_self')
+        }
         return
       }
       let params = {
@@ -2558,7 +2588,11 @@ export default {
       // console.log(params)
       axios.get('gpuserver/createGpuServer.do', { params }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          window.open('https://kaifa.xrcloud.net/order', '_self')
+          if (type == 'p') {
+            window.open('https://kaifa.xrcloud.net/order', '_self')
+          } else {
+            window.open('https://pan.xrcloud.net/ruicloud/orderconfirm', '_self')
+          }
         } else {
           this.$message.info({
             content: response.data.message
@@ -2567,9 +2601,13 @@ export default {
       })
     },
     // 购买云服务器
-    pushOrderHost () {
+    pushOrderHost (type) {
       if (!this.$store.state.userInfo) {
-        this.$LR({ type: 'register' })
+        if (type == 'p') {
+          this.$LR({ type: 'register' })
+        } else {
+          window.open('https://pan.xrcloud.net/ruicloud/login', '_self')
+        }
         return
       }
       let params = {
@@ -2591,7 +2629,11 @@ export default {
       // console.log(params)
       axios.get('information/deployVirtualMachine.do', { params }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          window.open('https://kaifa.xrcloud.net/order', '_self')
+          if (type == 'p') {
+            window.open('https://kaifa.xrcloud.net/order', '_self')
+          } else {
+            window.open('https://pan.xrcloud.net/ruicloud/orderconfirm', '_self')
+          }
         } else {
           this.$message.info({
             content: response.data.message
@@ -2965,8 +3007,10 @@ export default {
     display: flex;
     > div {
       flex-grow: 1;
+      width: 50%;
+      // width: 50%;
       &.selected {
-        span {
+        > span {
           background: linear-gradient(
             160deg,
             rgba(145, 255, 223, 1) 0%,
@@ -2977,19 +3021,28 @@ export default {
           background: rgba(242, 248, 255, 1);
         }
       }
-      span {
+      > span {
         display: block;
         height: 6px;
       }
       a {
         display: block;
+        padding-top: 20px;
         height: 64px;
-        line-height: 64px;
-        font-size: 20px;
         font-family: MicrosoftYaHei;
-        font-weight: bold;
         color: rgba(52, 57, 101, 1);
         background: rgba(218, 221, 237, 1);
+        span {
+          font-weight: bold;
+          font-size: 20px;
+          display: block;
+        }
+        i {
+          display: inline-block;
+          margin-top: 4px;
+          font-size: 12px;
+          font-style: normal;
+        }
       }
     }
   }
@@ -3734,7 +3787,7 @@ export default {
   .low-discount .product {
     width: 978px;
   }
-  
+
   .summary-host {
     .wrap {
       padding: 0 20px;
@@ -3797,15 +3850,15 @@ export default {
   .head-g {
     margin: 0 auto;
   }
-   .deposite-host .renew .content {
-    flex-wrap:wrap; 
+  .deposite-host .renew .content {
+    flex-wrap: wrap;
     justify-content: center;
     .item {
       margin-right: 0;
     }
   }
   .deposite-host .update .content {
-    flex-wrap:wrap;
+    flex-wrap: wrap;
     justify-content: center;
     > div {
       margin-right: 0;
@@ -3823,7 +3876,7 @@ export default {
 
 @media screen and (max-width: 700px) {
   .rule-modal {
-     width: 100%;
+    width: 100%;
   }
 }
 .pc-640 {
@@ -3844,6 +3897,9 @@ export default {
   }
 }
 @media screen and (max-width: 640px) {
+  .free-host .tabs > div a i {
+    display: none;
+  }
   .pc-640 {
     display: none;
   }
