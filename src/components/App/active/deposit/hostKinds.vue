@@ -1794,12 +1794,10 @@ export default {
   },
   methods: {
     getParams () {
-      if (this.$route.query.tab == 'free') {
-        this.currentView = 'child1'
-      } else if (this.$route.query.tab == 'discount') {
-        this.currentView = 'child2'
-      } else {
-        this.currentView = 'child1'
+      if (this.$route.hash) {
+        if (this.$route.hash.split('#')[1].slice(0,4)=='days') {
+          this.currentView = 'child2'
+        }
       }
     },
     tabChange (tabItem) {
