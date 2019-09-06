@@ -66,7 +66,7 @@ Vue.config.productionTip = false
 
 // axios.defaults.withCredentials = true
 
-axios.defaults.baseURL = 'https://huodong.xrcloud.net/'
+axios.defaults.baseURL = 'https://activity.xinruiyun.cn/'
 
 // window.eventBus = new Vue();
 
@@ -74,6 +74,7 @@ axios.defaults.baseURL = 'https://huodong.xrcloud.net/'
 Vue.prototype.$http = axios.create({
   params: {}
 })
+
 
 /* 抛出全局异常*/
 const errorHandler = (error, vm) => {

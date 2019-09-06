@@ -374,7 +374,7 @@
                         v-for="(item,index) in configureList"
                         :key="index"
                         :class="{'selected':selectConfig==item.cpu+','+item.mem}"
-                        @click="changConfigHost(item.cpu+','+item.mem)"
+                        @click="changConfigHost(item.cpu+','+item.mem)" v-if="!(hideconfig&&item.cpu==64&&item.mem==256)"
                       >{{ item.cpu+'核'+item.mem+'G'}}</li>
                     </ul>
                     <span class="tips">*以上配置皆包含40G SSD系统盘</span>
@@ -394,13 +394,13 @@
                   </div>
                 </RadioGroup>
                 <div class="area" v-if="configLength==2">
-                  <span class="label">区域选择</span>
+                  <span class="label">区域选择12</span>
                   <ul>
                     <li
                       v-for="(item,index) in hostZoneList"
                       :key="index"
                       :class="{'selected':selectZone==item.zoneid}"
-                      @click="changzone(item.zoneid)"
+                      @click="changzone(item.zoneid,item.zonename)"
                     >{{item.zonename}}</li>
                   </ul>
                 </div>
@@ -475,7 +475,7 @@
             <img src=../../../../assets/img/active/freeToReceive.1/close-icon.png alt="关闭图标" @click.stop="showModal.rule=false">
           </div>
           <div class="body">
-            <p>1、活动时间：2019年5月7日开始，总量有限，先到先得！</p>
+            <p>1、活动时间：2019年9月6日开始，总量有限，先到先得！</p>
             <p>2、活动对象：新注册或者一直未使用过平台资源（第三方产品除外）及未参加过其他免费活动并已通过实名认证的用户。</p>
             <dl>
               <dt>3、活动内容：</dt>
@@ -513,7 +513,7 @@
             <img src=../../../../assets/img/active/freeToReceive.1/close-icon.png alt="关闭图标" @click.stop="showModal.ruleHost=false">
           </div>
           <div class="body">
-            <p>1、活动时间：2019年8月28日开始。</p>
+            <p>1、活动时间：2019年9月6日开始。</p>
             <p>2、活动对象：已参与免费活动的用户。</p>
             <dl>
               <dt>3、活动内容：</dt>
@@ -547,7 +547,7 @@
             <img src=../../../../assets/img/active/freeToReceive.1/close-icon.png alt="关闭图标" @click.stop="showModal.ruleCoupon=false">
           </div>
           <div class="body">
-            <p>1、活动时间：2019年8月28日开始。</p>
+            <p>1、活动时间：2019年9月6日开始。</p>
             <p>2、活动对象：已参与免费活动的用户。</p>
             <p>3、数量限制：每个用户限领取一次，有效期为1年。</p>
             <p>4、配置升级说明：参与免费用1年的用户在升级CPU及带宽后，需要到期后才能退换保证金，不能提前退还，升级费用不予退款。</p>
@@ -568,7 +568,7 @@
             <img src=../../../../assets/img/active/freeToReceive.1/close-icon.png alt="关闭图标" @click.stop="showModal.dayHost=false">
           </div>
           <div class="body">
-            <p>1、活动时间：2019年8月28日开始，总量有限，先到先得！</p>
+            <p>1、活动时间：2019年9月6日开始，总量有限，先到先得！</p>
             <p>2、平台已完成实名认证的新老用户。</p>
             <p>3、数量限制：活动期间同一用户（同一手机、邮箱、实名认证用户视为同一用户）按照不同的配置进行按需购买，同配置产品可以同时购买不同时长，但每款配置同一时长只能购买一次。数量有限，先到先得（实名认证后每个用户云服务器最多可拥有7台）。</p>
             <p>4、参与本次活动购买的产品不支持退款。</p>
@@ -1719,6 +1719,7 @@ export default {
           gpuConfigIndex: 0,
         },
       ],
+      hideconfig: false,
       //结束
       // 云服务器大集合参数
       currentView: 'child1',
@@ -1993,6 +1994,7 @@ export default {
               window.open('https://i.xinruiyun.cn/usercenter', '_self')
             }
           })
+          return false
         } else {
           window.open('https://m.xinruiyun.cn/faceindex', '_self')
         }
@@ -2197,6 +2199,7 @@ export default {
               window.open('https://i.xinruiyun.cn/usercenter', '_self')
             }
           })
+          return false
         } else {
           window.open('https://m.xinruiyun.cn/faceindex', '_self')
         }
@@ -2216,7 +2219,7 @@ export default {
         if (response.status == 200 && response.data.status == 1) {
           if (response.data.result.flag) {
             this.orderData = [item]
-            console.log(this.orderData)
+            // console.log(this.orderData)
             this.cashPledge = item.price
             this.showModal.rechargeHint = true
           } else {
@@ -2329,22 +2332,35 @@ export default {
       }
     },
     getFreeHost () {
+      // console.log(this.orderData[0])
       let servicetype = this.orderData[0].post.servicetype
       let url = ''
+      let params = {}
       if (servicetype == 'db') {
         url = 'activity/getFreeDBNew.do'
+        params = {
+          vmConfigId: this.orderData[0].post.id,
+          dbVersion: this.orderData[0].system[0],
+          defzoneid: this.orderData[0].zoneId
+        }
       } else if (servicetype == 'G5500') {
         url = 'activity/getFreeGPUNew.do'
-      } else {
-        url = 'activity/getFreeHostNew.do'
-      }
-      this.showModal.paySuccessModal = false
-      axios.get(url, {
-        params: {
+        params = {
           vmConfigId: this.orderData[0].post.id,
           osType: this.orderData[0].system[1],
           defzoneid: this.orderData[0].zoneId
         }
+      } else {
+        url = 'activity/getFreeHostNew.do'
+        params = {
+          vmConfigId: this.orderData[0].post.id,
+          osType: this.orderData[0].system[1],
+          defzoneid: this.orderData[0].zoneId
+        }
+      }
+      this.showModal.paySuccessModal = false
+      axios.get(url, {
+        params
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
           this.showModal.getSuccessModal = true
@@ -2465,6 +2481,7 @@ export default {
       let originLength = this.configLength
       this.configLength = config.split(',').length
       this.selectConfig = config
+      // console.log(this.hostZoneList)
       if (this.configLength != originLength) {
         // console.log('进入2')
         this.changzone(this.hostZoneList[0].zoneid)
@@ -2479,9 +2496,14 @@ export default {
         this.changzone(this.gpuZoneList[0].zoneid)
       }
     },
-    changzone (zoneid) {
+    changzone (zoneid,name) {
       this.selectZone = zoneid
       this.setTemplateHost(zoneid)
+      if(name == '北方一区') {
+        this.hideconfig = true
+      } else {
+        this.hideconfig = false
+      }
     },
     getZoneList () {
       axios.get('information/zone.do', { params: { t: new Date().getTime() } }).then(res => {
