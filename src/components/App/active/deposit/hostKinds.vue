@@ -374,7 +374,7 @@
                         v-for="(item,index) in configureList"
                         :key="index"
                         :class="{'selected':selectConfig==item.cpu+','+item.mem}"
-                        @click="changConfigHost(item.cpu+','+item.mem)" v-if="!(hideconfig&&item.cpu==64&&item.mem==256)"
+                        @click="changConfigHost(item.cpu+','+item.mem)" v-if="!((hideconfig&&item.cpu==64&&item.mem==256)||(hideconfig&&item.cpu==32&&item.mem==64))"
                       >{{ item.cpu+'核'+item.mem+'G'}}</li>
                     </ul>
                     <span class="tips">*以上配置皆包含40G SSD系统盘</span>
@@ -394,7 +394,7 @@
                   </div>
                 </RadioGroup>
                 <div class="area" v-if="configLength==2">
-                  <span class="label">区域选择12</span>
+                  <span class="label">区域选择</span>
                   <ul>
                     <li
                       v-for="(item,index) in hostZoneList"
