@@ -1786,6 +1786,8 @@ export default {
     this.getConfigureD()
     this.promise()
     this.getParams()
+    this.getRenewPrice(this.renewHostList[0])
+    this.getRenewPrice(this.renewHostList[1])
   },
   mounted () {
 
