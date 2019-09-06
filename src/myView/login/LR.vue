@@ -133,6 +133,7 @@
               v-model="registerForm.password"
               type="password"
               ref="registerPasInput"
+              maxlength="20"
               placeholder="请输入至少8位含大小写字母与数字的密码"
               @focus="registerForm.passwordHint = true"
               @blur="registerPasswordBlur"
@@ -178,6 +179,7 @@
             <input
               v-model="registerForm.passwordConfirm"
               type="password"
+              maxlength="20"
               ref="registerPasInputAffirm"
               @input="registerForm.errorMsg=''"
               placeholder="请确认密码"
@@ -230,7 +232,7 @@
           @click="close"
         >确认登录</button>
       </div>
-      <img src="./img/LR-bottom.png" />
+  
     </form>
     <div v-if="T=='protocol'" class="protocol-wrapper">
       <div class="rulesContent">
@@ -1254,7 +1256,7 @@ export default {
   z-index: 1000;
   display: flex;
   form {
-    padding: 40px 40px 80px;
+    padding: 40px;
     position: relative;
     background: rgba(255, 255, 255, 1);
     box-shadow: 0px 4px 18px -4px rgba(197, 197, 197, 0.5);

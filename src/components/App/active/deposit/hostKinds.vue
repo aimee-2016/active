@@ -457,9 +457,9 @@
                   <span>{{(totalDataCost*count).toFixed(2)}}</span>
                 </div>
                 <Button @click="pushOrderHost('p')" v-if="configLength==2" class="pc-640">立即购买</Button>
-                <Button @click="pushOrderGpu('p')" v-else class="pc-640">立即购买pgpu</Button>
+                <Button @click="pushOrderGpu('p')" v-else class="pc-640">立即购买</Button>
                 <Button @click="pushOrderHost('m')" v-if="configLength==2" class="mobile-640">立即购买</Button>
-                <Button @click="pushOrderGpu('m')" v-else class="mobile-640">立即购买mgpu</Button>
+                <Button @click="pushOrderGpu('m')" v-else class="mobile-640">立即购买</Button>
               </div>
             </div>
           </div>
@@ -1493,7 +1493,7 @@ export default {
           ],
         },
         {
-          name: '弹性IP任意配置升级至以下配置',
+          name: '弹性IP任意带宽升级至以下带宽',
           configs: [
             {
               params: '5M带宽',
@@ -1782,10 +1782,10 @@ export default {
     }
   },
   created () {
+    this.getParams()
     this.getZoneList()
     this.getConfigureD()
     this.promise()
-    this.getParams()
     this.getRenewPrice(this.renewHostList[0])
     this.getRenewPrice(this.renewHostList[1])
   },
@@ -1978,13 +1978,21 @@ export default {
       }
       if ((!this.authInfo) || (this.authInfo && this.authInfo.authtype == 0 && this.authInfo.checkstatus != 0) || (!this.authInfoPersion && this.authInfo && this.authInfo.authtype == 1 && this.authInfo.checkstatus != 0) || (this.authInfoPersion && this.authInfoPersion.checkstatus != 0 && this.authInfo && this.authInfo.checkstatus != 0)) {
         if (type == 'p') {
-          if (!this.userInfo.phone) {
-            this.showModal.cashverification = true
-          } else {
-            this.showModal.qrCode = true
-            this.refreshUserStatus()
-          }
-          return
+          // if (!this.userInfo.phone) {
+          //   this.showModal.cashverification = true
+          // } else {
+          //   this.showModal.qrCode = true
+          //   this.refreshUserStatus()
+          // }
+          // return
+          this.$message.confirm({
+            title: '提示',
+            content: '抱歉，只有实名认证用户才可以参加活动',
+            okText: '去实名认证',
+            onOk: () => {
+              window.open('https://kaifa.xrcloud.net/usercenter', '_self')
+            }
+          })
         } else {
           window.open('https://pan.xrcloud.net/ruicloud/faceindex', '_self')
         }
@@ -2174,13 +2182,21 @@ export default {
       }
       if ((!this.authInfo) || (this.authInfo && this.authInfo.authtype == 0 && this.authInfo.checkstatus != 0) || (!this.authInfoPersion && this.authInfo && this.authInfo.authtype == 1 && this.authInfo.checkstatus != 0) || (this.authInfoPersion && this.authInfoPersion.checkstatus != 0 && this.authInfo && this.authInfo.checkstatus != 0)) {
         if (type == 'p') {
-          if (!this.userInfo.phone) {
-            this.showModal.cashverification = true
-          } else {
-            this.showModal.qrCode = true
-            this.refreshUserStatus()
-          }
-          return
+          // if (!this.userInfo.phone) {
+          //   this.showModal.cashverification = true
+          // } else {
+          //   this.showModal.qrCode = true
+          //   this.refreshUserStatus()
+          // }
+          // return
+          this.$message.confirm({
+            title: '提示',
+            content: '抱歉，只有实名认证用户才可以参加活动',
+            okText: '去实名认证',
+            onOk: () => {
+              window.open('https://kaifa.xrcloud.net/usercenter', '_self')
+            }
+          })
         } else {
           window.open('https://pan.xrcloud.net/ruicloud/faceindex', '_self')
         }
