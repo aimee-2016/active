@@ -2332,10 +2332,11 @@ export default {
       }
     },
     getFreeHost () {
-      // console.log(this.orderData[0])
       let servicetype = this.orderData[0].post.servicetype
       let url = ''
       let params = {}
+      let text = ''
+      let pushurl = ''
       if (servicetype == 'db') {
         url = 'activity/getFreeDBNew.do'
         params = {
@@ -2343,6 +2344,8 @@ export default {
           dbVersion: this.orderData[0].system[0],
           defzoneid: this.orderData[0].zoneId
         }
+        text = '云数据库'
+        pushurl = 'clouddatabase'
       } else if (servicetype == 'G5500') {
         url = 'activity/getFreeGPUNew.do'
         params = {
@@ -2350,6 +2353,8 @@ export default {
           osType: this.orderData[0].system[1],
           defzoneid: this.orderData[0].zoneId
         }
+        text = 'GPU服务器'
+        pushurl = 'gpulist'
       } else {
         url = 'activity/getFreeHostNew.do'
         params = {
@@ -2357,13 +2362,23 @@ export default {
           osType: this.orderData[0].system[1],
           defzoneid: this.orderData[0].zoneId
         }
+        text = '云服务器'
+        pushurl = 'host'
       }
       this.showModal.paySuccessModal = false
       axios.get(url, {
         params
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
-          this.showModal.getSuccessModal = true
+          // this.showModal.getSuccessModal = true
+          this.$message.confirm({
+                title: '提示',
+                content: `恭喜您保证金已冻结完成，${text}领取成功，云服务器在实名认证之前只可保留3天，请尽快使用。`,
+                okText: `查看${text}`,
+                onOk: () => {
+                  window.open('https://i.xinruiyun.cn/'+pushurl,'_self')
+                }
+              })
           this.toggleZone(this.orderData[0].zoneId)
         } else {
           this.$message.info({
