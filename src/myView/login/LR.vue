@@ -1103,11 +1103,11 @@ export default {
             username: this.registerForm.loginPhone,
             password: this.registerForm.password
           };
-          if (localStorage.getItem("comefrom")) {
-            params.qdCode = localStorage.getItem("comefrom");
+          if (this.getCookie('comefrom')) {
+            params.qdCode = this.getCookie('comefrom');
           }
-          if (localStorage.getItem("sellCode")) {
-            params.sellCode = localStorage.getItem("sellCode");
+          if (this.getCookie('sellCode')) {
+            params.sellCode = this.getCookie('sellCode');
           }
           axios.post("user/register.do", params).then(response => {
             if (response.status === 200 && response.data.status === 1) {
@@ -1133,6 +1133,20 @@ export default {
           this.registerWarning = res.data.message;
         }
       });
+    },
+    getCookie(c_name){
+      if (document.cookie.length>0){
+        var c_start=document.cookie.indexOf(c_name + "=");
+          if (c_start!=-1){
+              c_start=c_start + c_name.length+1;
+              var c_end=document.cookie.indexOf(";",c_start);
+              if (c_end==-1){ 
+                  c_end=document.cookie.length;
+              }
+              return unescape(document.cookie.substring(c_start,c_end));
+          }
+      }
+      return "";
     },
     // 展示协议
     showProtocol() {

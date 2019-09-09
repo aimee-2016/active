@@ -1113,6 +1113,8 @@
           ]
         },
         isweixinShow:false,
+        from: '',
+        sellCode: ''
       }
     },
     mounted() {
@@ -1137,16 +1139,6 @@
       // if (sessionStorage.getItem('hintShow') == null) {
       //   sessionStorage.setItem('hintShow', 'true')
       // }
-      let from = window.location.href.split('from=')[1] ? window.location.href.split('from=')[1] : ''
-      let sellCode = window.location.href.split('sellCode=')[1] ? window.location.href.split('sellCode=')[1] : ''
-      if (from) {
-        // 流量来源记录
-        localStorage.setItem('comefrom', from)
-      }
-      if (sellCode) {
-        // 销售来源渠道
-        localStorage.setItem('sellCode', sellCode)
-      }
       window.UUID = uuid.v4()
       let params = {
         batchNumber: window.UUID,
@@ -1193,8 +1185,27 @@
       this.$http.get('friendshipLink.do').then(response => {
         this.links = response.data.result
       })
+      this.from = window.location.href.split('from=')[1] ? window.location.href.split('from=')[1] : ''
+      this.sellCode = window.location.href.split('sellCode=')[1] ? window.location.href.split('sellCode=')[1] : ''
+      // if (this.from) {
+      //   // 流量来源记录
+      //   localStorage.setItem('comefrom', this.from)
+      // }
+      // if (this.sellCode) {
+      //   // 销售来源渠道
+      //   localStorage.setItem('sellCode', this.sellCode)
+      // }
+      this.setCookie('sellCode',this.sellCode,1);
+      this.setCookie('comefrom',this.from,1);
     },
     methods: {
+    // 获取销售数据与流量
+     setCookie(c_name,value,expiredays){
+        var exdate=new Date();
+        exdate.setDate(exdate.getDate()+expiredays);
+        document.cookie=c_name+ "=" +escape(value)+
+        ((expiredays==null) ? "" : ";expires="+exdate.toGMTString())
+    },
        login () {
         this.$router.push('login')
       },
