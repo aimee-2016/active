@@ -2373,7 +2373,7 @@ export default {
           // this.showModal.getSuccessModal = true
           this.$message.confirm({
                 title: '提示',
-                content: `恭喜您保证金已冻结完成，${text}领取成功，云服务器在实名认证之前只可保留3天，请尽快使用。`,
+                content: `恭喜您保证金已冻结完成，${text}领取成功，${text}在实名认证之前只可保留3天，请尽快使用。`,
                 okText: `查看${text}`,
                 onOk: () => {
                   window.open('https://i.xinruiyun.cn/'+pushurl,'_self')
