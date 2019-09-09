@@ -3950,6 +3950,9 @@ export default {
   }
 }
 @media screen and (max-width: 640px) {
+  .deposite-host .head-g {
+    width:100%;
+  }
   .free-host .tabs > div a i {
     display: none;
   }
