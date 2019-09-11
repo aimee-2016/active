@@ -25,7 +25,7 @@
             </div>
           </div>
           <div class="container">
-            <div class="deposite-host" v-if="currentView=='child1'">
+            <div class="deposite-host" v-show="currentView=='child1'">
               <div class="wrap-inner">
                 <div class="product">
                   <div v-for="(item,index) in depositeList" :key="index">
@@ -244,7 +244,7 @@
                 </div>
               </div>
             </div>
-            <div class="low-discount" v-if="currentView=='child2'">
+            <div class="low-discount" v-show="currentView=='child2'">
               <div class="wrap-inner">
                 <div class="product">
                   <div v-for="(item,index) in allList" :key="index">

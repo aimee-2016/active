@@ -225,7 +225,7 @@
         >
           恭喜您注册成功，现在完成
           <a href="https://i.xinruiyun.cn/usercenter">实名认证</a>即可获得156元专属优惠券，还可参加
-          <a href="/activity/free/">多款云服务器免费领</a>活动
+          <a href="/free/">多款云服务器免费领</a>活动
         </p>
         <button
           style="font-size:18px;font-weight:400;color:rgba(255,255,255,1);line-height:18px;margin-bottom: 24px;"
