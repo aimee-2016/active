@@ -3020,6 +3020,10 @@ export default {
   },
   components: {
     VueQArt
+  },
+   beforeRouteLeave (to, from, next) {
+    clearInterval(this.codeTimer)
+    next()
   }
 }
 </script>
