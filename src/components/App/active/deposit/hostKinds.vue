@@ -1979,22 +1979,22 @@ export default {
       }
       if ((!this.authInfo) || (this.authInfo && this.authInfo.authtype == 0 && this.authInfo.checkstatus != 0) || (!this.authInfoPersion && this.authInfo && this.authInfo.authtype == 1 && this.authInfo.checkstatus != 0) || (this.authInfoPersion && this.authInfoPersion.checkstatus != 0 && this.authInfo && this.authInfo.checkstatus != 0)) {
         if (type == 'p') {
-          // if (!this.userInfo.phone) {
-          //   this.showModal.cashverification = true
-          // } else {
-          //   this.showModal.qrCode = true
-          //   this.refreshUserStatus()
-          // }
-          // return
-          this.$message.confirm({
-            title: '提示',
-            content: '抱歉，只有实名认证用户才可以参加活动',
-            okText: '去实名认证',
-            onOk: () => {
-              window.open('https://i.xinruiyun.cn/usercenter', '_self')
-            }
-          })
-          return false
+          if (!this.userInfo.phone) {
+            this.showModal.cashverification = true
+          } else {
+            this.showModal.qrCode = true
+            this.refreshUserStatus()
+          }
+          return
+          // this.$message.confirm({
+          //   title: '提示',
+          //   content: '抱歉，只有实名认证用户才可以参加活动',
+          //   okText: '去实名认证',
+          //   onOk: () => {
+          //     window.open('https://i.xinruiyun.cn/usercenter', '_self')
+          //   }
+          // })
+          // return false
         } else {
           window.open('https://m.xinruiyun.cn/faceindex', '_self')
         }
@@ -2184,22 +2184,22 @@ export default {
       }
       if ((!this.authInfo) || (this.authInfo && this.authInfo.authtype == 0 && this.authInfo.checkstatus != 0) || (!this.authInfoPersion && this.authInfo && this.authInfo.authtype == 1 && this.authInfo.checkstatus != 0) || (this.authInfoPersion && this.authInfoPersion.checkstatus != 0 && this.authInfo && this.authInfo.checkstatus != 0)) {
         if (type == 'p') {
-          // if (!this.userInfo.phone) {
-          //   this.showModal.cashverification = true
-          // } else {
-          //   this.showModal.qrCode = true
-          //   this.refreshUserStatus()
-          // }
-          // return
-          this.$message.confirm({
-            title: '提示',
-            content: '抱歉，只有实名认证用户才可以参加活动',
-            okText: '去实名认证',
-            onOk: () => {
-              window.open('https://i.xinruiyun.cn/usercenter', '_self')
-            }
-          })
-          return false
+          if (!this.userInfo.phone) {
+            this.showModal.cashverification = true
+          } else {
+            this.showModal.qrCode = true
+            this.refreshUserStatus()
+          }
+          return
+          // this.$message.confirm({
+          //   title: '提示',
+          //   content: '抱歉，只有实名认证用户才可以参加活动',
+          //   okText: '去实名认证',
+          //   onOk: () => {
+          //     window.open('https://i.xinruiyun.cn/usercenter', '_self')
+          //   }
+          // })
+          // return false
         } else {
           window.open('https://m.xinruiyun.cn/faceindex', '_self')
         }
@@ -2733,7 +2733,6 @@ export default {
     },
     // 刷新用户认证状态
     refreshUserStatus () {
-      // console.log('refreshQRCode')
       clearInterval(this.codeTimer)
       this.codeTimer = setInterval(() => {
         this.$http.get('/faceRecognition/getAllStatus.do', { params: { tempCode: this.tempCode } }).then(res => {
