@@ -485,7 +485,7 @@
       </div>
       <p slot="footer" class="modal-footer-s">
         <Button @click="showModal.getSuccessModal = false">取消</Button>
-        <a href="https://kaifa.xrcloud.net/host"><Button type="primary">查看云服务器</Button></a>
+        <a href="https://kfi.xrcloud.net/host"><Button type="primary">查看云服务器</Button></a>
       </p>
     </Modal>
     <!-- 支付充值失败 -->
@@ -1616,7 +1616,7 @@ export default {
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
           this.$Message.success('创建订单成功')
-          window.open('https://kaifa.xrcloud.net/order','_self')
+          window.open('https://kfi.xrcloud.net/order','_self')
         } else {
           this.$message.info({
             content: res.data.message
@@ -1851,7 +1851,7 @@ export default {
       // console.log(params)
       axios.get('gpuserver/createGpuServer.do', { params }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          window.open('https://kaifa.xrcloud.net/order','_self')
+          window.open('https://kfi.xrcloud.net/order','_self')
         } else {
           this.$message.info({
             content: response.data.message
@@ -1884,7 +1884,7 @@ export default {
       // console.log(params)
       axios.get('information/deployVirtualMachine.do', { params }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          window.open('https://kaifa.xrcloud.net/order','_self')
+          window.open('https://kfi.xrcloud.net/order','_self')
         } else {
           this.$message.info({
             content: response.data.message

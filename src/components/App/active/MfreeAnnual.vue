@@ -321,7 +321,7 @@
           根据国家规定，使用公共互联网需进行实名认证。
         </div>
         <div class="foot">
-          <button onclick="window.open('https://pan.xrcloud.net/ruicloud/certification', '_self')">实名认证</button>
+          <button onclick="window.open('https://kfm.xrcloud.net/certification', '_self')">实名认证</button>
         </div>
       </div>
     </div>
@@ -672,7 +672,7 @@
       freeGet(item,index){
         if (this.$store.state.userInfo == null) {
           sessionStorage.setItem('routerName', 'freeAnnual')
-          window.open('https://pan.xrcloud.net/ruicloud/Register', '_self')
+          window.open('https://kfm.xrcloud.net/Register', '_self')
         } else if(this.$store.state.isCheck) {
           // 未认证
           this.certify = 'certify'
@@ -694,7 +694,7 @@
                   }
                 }).then(res => {
                   if (res.status == 200 && res.data.status == 1) {
-                    window.open('https://pan.xrcloud.net/ruicloud/freeBuy','_self')
+                    window.open('https://kfm.xrcloud.net/freeBuy','_self')
                   }
                 })
               } else {
@@ -741,7 +741,7 @@
         if (this.$store.state.userInfo == null) {
           // 未登录
           //return this.$router.push('Register')
-          window.open('https://pan.xrcloud.net/ruicloud/Register', '_self')
+          window.open('https://kfm.xrcloud.net/Register', '_self')
         } else if(this.$store.state.isCheck) {
           // 未认证
           this.certify = 'certify'
@@ -757,7 +757,7 @@
             if (res.status == 200 && res.data.status == 1) {
               sessionStorage.setItem('countOrder', item[0].price.toString())
               //this.$router.push('orderconfirm')
-              window.open('https://pan.xrcloud.net/ruicloud/orderconfirm','_self')
+              window.open('https://kfm.xrcloud.net/orderconfirm','_self')
             } else {
               // this.$vux.toast.text(res.data.message, 'middle')
               this.$message.info({
@@ -809,7 +809,7 @@
         if (this.$store.state.userInfo == null) {
           // 未登录
           //return this.$router.push('Register')
-          window.open('https://pan.xrcloud.net/ruicloud/Register', '_self')
+          window.open('https://kfm.xrcloud.net/Register', '_self')
         } else if(this.$store.state.isCheck) {
           // 未认证
           this.certify = 'certify'
@@ -1085,7 +1085,7 @@
         if (this.$store.state.userInfo == null) {
           // 未登录
           //return this.$router.push('Register')
-          window.open('https://pan.xrcloud.net/ruicloud/Register', '_self')
+          window.open('https://kfm.xrcloud.net/Register', '_self')
         } else if(this.$store.state.isCheck) {
           // 未认证
           this.certify = 'certify'
@@ -1115,7 +1115,7 @@
               if (res.status == 200 && res.data.status == 1) {
                 sessionStorage.setItem('countOrder', this.allPrice.toString())
                 //this.$router.push('orderconfirm')
-                window.open('https://pan.xrcloud.net/ruicloud/orderconfirm','_self')
+                window.open('https://kfm.xrcloud.net/orderconfirm','_self')
               } else if (res.status == 200 && res.data.status == 2) {
                 this.$vux.toast.text(res.data.message, 'middle')
               }
@@ -1144,7 +1144,7 @@
             }).then(res => {
               if (res.status == 200 && res.data.status == 1) {
                 sessionStorage.setItem('countOrder', this.allPrice.toString())
-                window.open('https://pan.xrcloud.net/ruicloud/orderconfirm','_self')
+                window.open('https://kfm.xrcloud.net/orderconfirm','_self')
               } else {
                 this.$vux.toast.text(res.data.message, 'middle')
               }

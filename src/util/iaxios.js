@@ -44,10 +44,10 @@ function macIntercept(config) {
 }
 axios.interceptors.request.use(macIntercept)
 
-axios.defaults.baseURL = 'https://pan.xrcloud.net/ruicloud/'
+axios.defaults.baseURL = 'https://kfm.xrcloud.net/'
 // axios.defaults.baseURL = 'https://wap.xrcloud.net/ruicloud/'
 // axios.defaults.baseURL = 'https://zschj.xrcloud.net/ruicloud/'
-// axios.defaults.baseURL = 'https://kaifa.xrcloud.net/ruicloud/'
+// axios.defaults.baseURL = 'https://kfi.xrcloud.net/ruicloud/'
 // axios.defaults.withCredentials = true
 
 export default axios

@@ -125,7 +125,7 @@
       </div>
       <p slot="footer" class="modal-footer-s">
         <Button @click="showModal.getSuccessModal = false">取消</Button>
-        <a href="https://kaifa.xrcloud.net/clouddatabase/"><Button type="primary">查看数据库</Button></a>
+        <a href="https://kfi.xrcloud.net/clouddatabase/"><Button type="primary">查看数据库</Button></a>
       </p>
     </Modal>
     <!-- 支付充值失败 -->

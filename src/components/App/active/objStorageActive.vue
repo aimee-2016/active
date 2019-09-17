@@ -129,11 +129,11 @@
         <div>
           <!--span class="checkBox" :class="{agree:agree}" @click="toggle"></span>&nbsp;<span>我已阅读并同意</span><span
           style="color:#0EB4FA;cursor:pointer;" @click="showRules">《睿云用户使用协议》</span-->
-          <a href="https://kaifa.xrcloud.net/register" target="_blank" class="btn-register">
+          <a href="https://kfi.xrcloud.net/register" target="_blank" class="btn-register">
             立即注册
             <span>注册完成之后记得回到活动页面领取50G存储包哦！</span>
           </a>
-          <a href="https://kaifa.xrcloud.net/resetnew"  target="_blank" style="color:#0EB4FA;cursor:pointer;margin-top: 10px;float:right;font-size:14px">
+          <a href="https://kfi.xrcloud.net/resetnew"  target="_blank" style="color:#0EB4FA;cursor:pointer;margin-top: 10px;float:right;font-size:14px">
             忘记密码
           </a>
         </div>
@@ -294,7 +294,7 @@ export default {
           content: '您好，你还未进行实名认证，请先实名认证即可参加此活动。<a href="userCenter">立即认证</a>',
           onOk: () => {
             // this.$router.push('/userCenter')
-            window.open('https://kaifa.xrcloud.net/usercenter', 'self')
+            window.open('https://kfi.xrcloud.net/usercenter', 'self')
           }
         })
         return
@@ -315,7 +315,7 @@ export default {
     createdKey () {
       this.$store.commit('setPane', {vpc: 'VPC', vpn: 'remote', usercenter: 'key'})
       // this.$router.push('/userCenter')
-      window.open('https://kaifa.xrcloud.net/usercenter', 'self')
+      window.open('https://kfi.xrcloud.net/usercenter', 'self')
     },
     vail (field) {
       var text = this.form[field];
