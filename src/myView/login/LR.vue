@@ -224,7 +224,7 @@
           style="width:340px;line-height: 28px;text-align: center;margin-bottom:80px;font-size: 14px;"
         >
           恭喜您注册成功，现在完成
-          <a href="https://i.xinruiyun.cn/usercenter">实名认证</a>即可获得156元专属优惠券，还可参加
+          <a href="https://kaifa.xrcloud.net/usercenter">实名认证</a>即可获得156元专属优惠券，还可参加
           <a href="/free/">多款云服务器免费领</a>活动
         </p>
         <button
