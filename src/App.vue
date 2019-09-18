@@ -852,7 +852,7 @@
     <!-- 客服浮动块 -->
     <div class="affix">
       <div class="registerImg mobileq" @click="$router.push('/free/')">
-        <p>免费领云服务器</p>
+        <p>云服务器免费用</p>
       </div>
       <!--<img src="./assets/img/app/regiterTag.png"/>-->
       <span class="qq mobileq" @mouseenter="QME" @mouseleave="QML">
@@ -2135,7 +2135,7 @@
           font-size:14px;
           font-family:MicrosoftYaHei-Bold;
           font-weight:bold;
-          color:rgba(255,255,255,1);
+          // color:rgba(255,255,255,1);
           line-height:16px;
           width: 14px;
           padding: 9px 17px;

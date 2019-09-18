@@ -12,7 +12,7 @@ import App from '@/App'
 const ActiveCenter = () =>import('@/components/App/activeA')
 const activeBefore = () =>import('@/components/App/active/activeBefore')
 const FrActive = () =>import('@/components/App/active/freeReceiveA')
-const FrActive1 = () =>import('@/components/App/active/deposit/hostKinds')
+const FrActive1 = () =>import('@/components/App/active/hostKinds')
 // const FrActiveP = () =>import('@/components/App/active/freeReceive.1')
 // const FrActiveM = () =>import('@/components/App/active/MfreeAnnual')
 // const objStorageActive = () =>import('@/components/App/active/objStorageActiveA')

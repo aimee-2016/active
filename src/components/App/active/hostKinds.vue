@@ -2,25 +2,26 @@
   <div>
     <div class="free-host">
       <div class="wrap">
-        <img class="pc" src="../../../../assets/img/active/freeToReceive.1/free-host-text.png" />
+        <img class="pc" src="../../../assets/img/active/freeToReceive.1/free-host-text.png" />
         <img
           class="mobile"
-          src="../../../../assets/img/active/deposit/m-banner.png"
+          src="../../../assets/img/active/deposit/m-banner.png"
           style="width:300px;"
         />
         <div class="main">
           <div class="tabs">
             <div :class="{selected:currentView=='child1'}">
               <span class="bar"></span>
-              <a href="javascript:void(0)" @click="tabChange('child1')">
+              <a href="javascript:void(0)" @mouseover="tabChange('child1')">
                 <span>免费领云产品</span>
+                <i>4核8G 5M  云服务器免费用1年</i>
               </a>
             </div>
             <div :class="{selected:currentView=='child2'}">
               <span class="bar"></span>
-              <a href="javascript:void(0)" @click="tabChange('child2')">
+              <a href="javascript:void(0)" @mouseover="tabChange('child2')">
                 <span>天天特惠活动</span>
-                <i>1核1G 1M云服务器 7天只需1.9元 数量有限，按需抢购</i>
+                <i>4核8G 10M云服务器 7天只需33.9元 数量有限，按需抢购</i>
               </a>
             </div>
           </div>
@@ -137,7 +138,7 @@
                 </div>
                 <div class="renew">
                   <div class="head-g">
-                    <img src="../../../../assets/img/active/deposit/num1.png" alt="数字1" />
+                    <img src="../../../assets/img/active/deposit/num1.png" alt="数字1" />
                     <div>
                       <h3>续费尊享 看看你能省多少</h3>
                       <p>
@@ -211,7 +212,7 @@
                 </div>
                 <div class="update">
                   <div class="head-g">
-                    <img src="../../../../assets/img/active/deposit/num2.png" alt="数字2" />
+                    <img src="../../../assets/img/active/deposit/num2.png" alt="数字2" />
                     <div>
                       <h3>升级配置 立享优惠</h3>
                       <p>
@@ -472,7 +473,7 @@
         <div class="rule-modal" style="max-height: 80%;overflow-y: auto;">
           <div class="header">
             <span>活动规则</span>
-            <img src=../../../../assets/img/active/freeToReceive.1/close-icon.png alt="关闭图标" @click.stop="showModal.rule=false">
+            <img src=../../../assets/img/active/freeToReceive.1/close-icon.png alt="关闭图标" @click.stop="showModal.rule=false">
           </div>
           <div class="body">
             <p>1、活动时间：2019年9月6日开始，总量有限，先到先得！</p>
@@ -510,7 +511,7 @@
         <div class="rule-modal">
           <div class="header">
             <span>活动规则</span>
-            <img src=../../../../assets/img/active/freeToReceive.1/close-icon.png alt="关闭图标" @click.stop="showModal.ruleHost=false">
+            <img src=../../../assets/img/active/freeToReceive.1/close-icon.png alt="关闭图标" @click.stop="showModal.ruleHost=false">
           </div>
           <div class="body">
             <p>1、活动时间：2019年9月6日开始。</p>
@@ -544,7 +545,7 @@
         <div class="rule-modal">
           <div class="header">
             <span>活动规则</span>
-            <img src=../../../../assets/img/active/freeToReceive.1/close-icon.png alt="关闭图标" @click.stop="showModal.ruleCoupon=false">
+            <img src=../../../assets/img/active/freeToReceive.1/close-icon.png alt="关闭图标" @click.stop="showModal.ruleCoupon=false">
           </div>
           <div class="body">
             <p>1、活动时间：2019年9月6日开始。</p>
@@ -565,7 +566,7 @@
         <div class="rule-modal">
           <div class="header">
             <span>活动规则</span>
-            <img src=../../../../assets/img/active/freeToReceive.1/close-icon.png alt="关闭图标" @click.stop="showModal.dayHost=false">
+            <img src=../../../assets/img/active/freeToReceive.1/close-icon.png alt="关闭图标" @click.stop="showModal.dayHost=false">
           </div>
           <div class="body">
             <p>1、活动时间：2019年9月6日开始，总量有限，先到先得！</p>
@@ -665,7 +666,7 @@
             <Step title="支付失败"></Step>
           </Steps>
           <p>
-            <img src="../../../../assets/img/sceneInfo/si-defeated.png" alt="支付失败" />
+            <img src="../../../assets/img/sceneInfo/si-defeated.png" alt="支付失败" />
             <span>抱歉，支付失败，请再次尝试！</span>
           </p>
         </div>
@@ -696,7 +697,7 @@
             <Step title="支付成功"></Step>
           </Steps>
           <p>
-            <img src="../../../../assets/img/sceneInfo/si-success.png" alt="支付成功" />
+            <img src="../../../assets/img/sceneInfo/si-success.png" alt="支付成功" />
             <span>恭喜您支付成功！我们即将冻结保证金</span>
             <span style="color: #D0021B;margin-left: 0">{{ cashPledge }}</span>
             <span style="margin-left: 0">元</span>
@@ -778,13 +779,13 @@
             <Radio label="otherPay" class="pw-img" :disabled="balance >= cashPledge">
               <span style="color:rgba(51,51,51,1);font-size: 14px;margin-right: 25px">第三方支付</span>
               <img
-                src="../../../../assets/img/payresult/alipay.png"
+                src="../../../assets/img/payresult/alipay.png"
                 :class="{selected: otherPayWay == 'zfb'}"
                 @click="balance < cashPledge?otherPayWay = 'zfb':null"
                 alt="支付宝"
               />
               <img
-                src="../../../../assets/img/payresult/wxpay.png"
+                src="../../../assets/img/payresult/wxpay.png"
                 :class="{selected: otherPayWay == 'wx'}"
                 @click="balance < cashPledge?otherPayWay = 'wx':null"
                 alt="微信"
@@ -930,7 +931,7 @@
 // import child1 from './freeHost';
 // import child2 from './lowDiscount';
 import axios from 'axios'
-import reg from '../../../../util/regExp'
+import reg from '../../../util/regExp'
 import VueQArt from 'vue-qart'
 import $ from 'jquery'
 import throttle from 'throttle-debounce/debounce'
@@ -985,7 +986,7 @@ export default {
       hintMsg: '',
       qrConfig: {
         value: '',
-        imagePath: require('../../../../assets/img/pay/payBackground.png'),
+        imagePath: require('../../../assets/img/pay/payBackground.png'),
         filter: 'black',
         size: 500
       },
@@ -1032,7 +1033,7 @@ export default {
       time: '',
       config: {
         value: '',
-        imagePath: require('../../../../assets/img/pay/payBackground.png'),
+        imagePath: require('../../../assets/img/pay/payBackground.png'),
         filter: 'black',
         size: 500
       },
@@ -3048,11 +3049,11 @@ export default {
 .free-host {
   margin: 0 auto;
   padding: 60px 0 40px;
-  background: url("../../../../assets/img/active/freeToReceive.1/free-host-bg.png")
+  background: url("../../../assets/img/active/freeToReceive.1/free-host-bg.png")
       top no-repeat,
-    url("../../../../assets/img/active/freeToReceive.1/circle-left.png") 0%
+    url("../../../assets/img/active/freeToReceive.1/circle-left.png") 0%
       500px no-repeat,
-    url("../../../../assets/img/active/freeToReceive.1/circle-right.png") 100%
+    url("../../../assets/img/active/freeToReceive.1/circle-right.png") 100%
       800px no-repeat;
   background-color: #395fc5;
   text-align: center;
@@ -3065,7 +3066,7 @@ export default {
       flex-grow: 1;
       width: 50%;
       // width: 50%;
-      &.selected {
+      &.selected,&:hover{
         > span {
           background: linear-gradient(
             160deg,
@@ -3115,7 +3116,7 @@ export default {
   // height: 839px;
   padding-bottom: 50px;
   background: #f2f8ff
-    url("../../../../assets/img/active/freeToReceive.1/summary-host-bg.png")
+    url("../../../assets/img/active/freeToReceive.1/summary-host-bg.png")
     center no-repeat;
   background-size: cover;
   .product {
@@ -3132,7 +3133,7 @@ export default {
       padding-left: 40px;
       line-height: 80px;
       color: #fff;
-      background: url("../../../../assets/img/active/freeToReceive.1/summary-product-bg.png")
+      background: url("../../../assets/img/active/freeToReceive.1/summary-product-bg.png")
         no-repeat;
       background-size: cover;
       border-radius: 10px 10px 0 0;
@@ -3264,27 +3265,27 @@ export default {
       border: 1px solid rgba(220, 226, 242, 1);
       background: #fff;
       &:nth-of-type(1) .head {
-        background: url("../../../../assets/img/active/deposit/head-bg-1.png")
+        background: url("../../../assets/img/active/deposit/head-bg-1.png")
           no-repeat;
         background-size: cover;
       }
       &:nth-of-type(2) .head {
-        background: url("../../../../assets/img/active/deposit/head-bg-2.png")
+        background: url("../../../assets/img/active/deposit/head-bg-2.png")
           no-repeat;
         background-size: cover;
       }
       &:nth-of-type(3) .head {
-        background: url("../../../../assets/img/active/deposit/head-bg-3.png")
+        background: url("../../../assets/img/active/deposit/head-bg-3.png")
           no-repeat;
         background-size: cover;
       }
       &:nth-of-type(4) .head {
-        background: url("../../../../assets/img/active/deposit/head-bg-4.png")
+        background: url("../../../assets/img/active/deposit/head-bg-4.png")
           no-repeat;
         background-size: cover;
       }
       &:nth-of-type(5) .head {
-        background: url("../../../../assets/img/active/deposit/head-bg-5.png")
+        background: url("../../../assets/img/active/deposit/head-bg-5.png")
           no-repeat;
         background-size: cover;
       }
@@ -3459,7 +3460,7 @@ export default {
         right: 0;
         width: 100px;
         height: 100px;
-        background: url("../../../../assets/img/active/deposit/right-top-icon.png")
+        background: url("../../../assets/img/active/deposit/right-top-icon.png")
           no-repeat top right;
       }
       .icon-text {
@@ -3679,7 +3680,7 @@ export default {
         right: 0;
         width: 65px;
         height: 65px;
-        background: url("../../../../assets/img/active/deposit/low-icon-bg.png")
+        background: url("../../../assets/img/active/deposit/low-icon-bg.png")
           no-repeat top right;
       }
       .icon-text {
@@ -3998,27 +3999,27 @@ export default {
       margin-right: 0px;
       background: #fff;
       &:nth-of-type(1) .head {
-        background: url("../../../../assets/img/active/deposit/head-bg-1m.png")
+        background: url("../../../assets/img/active/deposit/head-bg-1m.png")
           no-repeat;
         background-size: cover;
       }
       &:nth-of-type(2) .head {
-        background: url("../../../../assets/img/active/deposit/head-bg-2m.png")
+        background: url("../../../assets/img/active/deposit/head-bg-2m.png")
           no-repeat;
         background-size: cover;
       }
       &:nth-of-type(3) .head {
-        background: url("../../../../assets/img/active/deposit/head-bg-3m.png")
+        background: url("../../../assets/img/active/deposit/head-bg-3m.png")
           no-repeat;
         background-size: cover;
       }
       &:nth-of-type(4) .head {
-        background: url("../../../../assets/img/active/deposit/head-bg-4m.png")
+        background: url("../../../assets/img/active/deposit/head-bg-4m.png")
           no-repeat;
         background-size: cover;
       }
       &:nth-of-type(5) .head {
-        background: url("../../../../assets/img/active/deposit/head-bg-4m.png")
+        background: url("../../../assets/img/active/deposit/head-bg-4m.png")
           no-repeat;
         background-size: cover;
       }
@@ -4135,7 +4136,7 @@ export default {
   .qr-code {
     height: 198px;
     width: 197px;
-    background: url("../../../../assets/img/app/auth_background.png") no-repeat
+    background: url("../../../assets/img/app/auth_background.png") no-repeat
       center;
     margin: 30px auto;
     position: relative;
@@ -4144,9 +4145,9 @@ export default {
       top: 0;
       height: 198px;
       width: 197px;
-      background: url("../../../../assets/img/app/lose_efficacy.png") center;
+      background: url("../../../assets/img/app/lose_efficacy.png") center;
       &.scanSuccess {
-        background: url("../../../../assets/img/app/scan_success.png") center;
+        background: url("../../../assets/img/app/scan_success.png") center;
       }
     }
   }
