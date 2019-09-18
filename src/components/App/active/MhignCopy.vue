@@ -309,7 +309,7 @@
                     根据国家规定，使用公共互联网需进行实名认证。
                 </div>
                 <div class="foot">
-                    <button onclick="window.open('https://kfm.xrcloud.net/certification', '_self')">实名认证</button>
+                    <button onclick="window.open('https://m.xinruiyun.cn/certification', '_self')">实名认证</button>
                 </div>
             </div>
         </div>
@@ -611,7 +611,7 @@
           if (this.$store.state.userInfo == null) {
             // 未登录
             //return this.$router.push('login')
-            window.open('https://kfm.xrcloud.net/Login','_self')
+            window.open('https://m.xinruiyun.cn/Login','_self')
           } else if(this.$store.state.isCheck) {
             // 未认证
             this.certify = 'certify'
@@ -633,7 +633,7 @@
                 sessionStorage.setItem('countOrder', item.price.toString())
                 sessionStorage.setItem('hignHost', 'hignHost')
                 //this.$router.push('orderconfirm')
-                window.open('https://kfm.xrcloud.net/orderconfirm','_self')
+                window.open('https://m.xinruiyun.cn/orderconfirm','_self')
               } else {
                 this.message  = res.data.message
                 this.msg = 'msg'
@@ -647,7 +647,7 @@
           if (this.$store.state.userInfo == null) {
             // 未登录
             //return this.$router.push('login')
-            window.open('https://kfm.xrcloud.net/Login','_self')
+            window.open('https://m.xinruiyun.cn/Login','_self')
           } else if(this.$store.state.isCheck) {
             // 未认证
             this.certify = 'certify'
@@ -664,7 +664,7 @@
                 sessionStorage.setItem('countOrder', item.cost.toString())
                 sessionStorage.setItem('hignHost', 'hignHost')
                 //this.$router.push('orderconfirm')
-                window.open('https://kfm.xrcloud.net/orderconfirm','_self')
+                window.open('https://m.xinruiyun.cn/orderconfirm','_self')
               } else {
                 this.message  = res.data.message
                 this.msg = 'msg'
@@ -678,7 +678,7 @@
           if (this.$store.state.userInfo == null) {
             // 未登录
             //return this.$router.push('login')
-            window.open('https://kfm.xrcloud.net/Login','_self')
+            window.open('https://m.xinruiyun.cn/Login','_self')
           } else if(this.$store.state.isCheck) {
             // 未认证
             this.certify = 'certify'
@@ -694,7 +694,7 @@
               if (res.status == 200 && res.data.status == 1) {
                 sessionStorage.setItem('countOrder', item.cost.toString())
                 //this.$router.push('orderconfirm')
-                window.open('https://kfm.xrcloud.net/orderconfirm','_self')
+                window.open('https://m.xinruiyun.cn/orderconfirm','_self')
               } else {
                 this.message  = res.data.message
                 this.msg = 'msg'
@@ -708,7 +708,7 @@
           if (this.$store.state.userInfo == null) {
             // 未登录
             //return this.$router.push('login')
-            window.open('https://kfm.xrcloud.net/Login','_self')
+            window.open('https://m.xinruiyun.cn/Login','_self')
           } else if(this.$store.state.isCheck) {
             // 未认证
             this.certify = 'certify'
@@ -725,7 +725,7 @@
                 sessionStorage.setItem('countOrder', item.cost.toString())
                 sessionStorage.setItem('hignHost', 'hignHost')
                 //this.$router.push('orderconfirm')
-                window.open('https://kfm.xrcloud.net/orderconfirm','_self')
+                window.open('https://m.xinruiyun.cn/orderconfirm','_self')
               } else {
                 this.message  = res.data.message
                 this.msg = 'msg'
@@ -739,7 +739,7 @@
           if (this.$store.state.userInfo == null) {
             // 未登录
             //return this.$router.push('login')
-            window.open('https://kfm.xrcloud.net/Login','_self')
+            window.open('https://m.xinruiyun.cn/Login','_self')
           } else if(this.$store.state.isCheck) {
             // 未认证
             this.certify = 'certify'
@@ -754,7 +754,7 @@
                 sessionStorage.setItem('countOrder', item.cost.toString())
                 sessionStorage.setItem('hignHost', 'hignHost')
                 //this.$router.push('orderconfirm')
-                window.open('https://kfm.xrcloud.net/orderconfirm','_self')
+                window.open('https://m.xinruiyun.cn/orderconfirm','_self')
               } else {
                 this.message  = res.data.message
                 this.msg = 'msg'
