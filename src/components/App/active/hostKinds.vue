@@ -21,7 +21,7 @@
               <span class="bar"></span>
               <a href="javascript:void(0)" @mouseover="tabChange('child2')">
                 <span>天天特惠活动</span>
-                <i>4核8G 10M云服务器 7天只需33.9元 数量有限，按需抢购</i>
+                <i>4核8G 10M云服务器 7天只需39.9元 数量有限，按需抢购</i>
               </a>
             </div>
           </div>
@@ -252,7 +252,7 @@
                     <div class="head">
                       <div
                         class="icon-bg"
-                        v-if="item.post.cpu==1&&item.post.bandwith==1&&item.post.mem==1"
+                        v-if="item.post.cpu==4&&item.post.bandwith==10&&item.post.mem==8"
                       >
                         <div class="icon-text">爆款</div>
                       </div>
