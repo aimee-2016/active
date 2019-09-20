@@ -745,7 +745,7 @@
                                 <p>企业邮箱：service@unionstech.cn</p>
                             </div>
                             <div>
-                                <p>总部地址：北京海淀区东升大厦AB座611室、612室</p>
+                                <p>总部地址：北京海淀区东升大厦B座612室、519室</p>
                             </div>
                             <div>
                                 <img src="./assets/img/app/QR-code.jpg" alt="新睿云二维码">
@@ -768,7 +768,7 @@
                         <div>
                             <img src="./assets/img/home/weibo.png"  @click='share("weibo")' alt="微博">
                             <img src="./assets/img/home/weixin.png" @click='share("weixin")' alt="微信">
-                            <img src="./assets/img/home/qq.png" @click='share("qq")' alt="QQ">
+                            <img src="./assets/img/home/QQ.png" @click='share("qq")' alt="QQ">
                             <img class="showweixinpic" v-if="isweixinShow" src="./assets/img/home/shareweixin.png"/>
                         </div>
                     </div>
@@ -2135,7 +2135,7 @@
           font-size:14px;
           font-family:MicrosoftYaHei-Bold;
           font-weight:bold;
-          // color:rgba(255,255,255,1);
+          color:rgba(255,255,255,1);
           line-height:16px;
           width: 14px;
           padding: 9px 17px;
