@@ -850,96 +850,71 @@
       </div>
     </div>
     <!-- 客服浮动块 -->
-    <div class="affix">
-      <div class="registerImg mobileq" @click="$router.push('/free/')">
-        <p>云服务器免费用</p>
-      </div>
-      <!--<img src="./assets/img/app/regiterTag.png"/>-->
-      <span class="qq mobileq" @mouseenter="QME" @mouseleave="QML">
-        <div ref="qq" style="overflow: hidden;" class="qq-position">
-          <div class="wrapper " v-if="QQInfo.length>0">
-            <div>
-              <span class="title">人工客服</span>
-              <div class="info-wrapper">
-                <div v-for="(qq,index) of QQInfo" :key="index">
-              <Tooltip :content="qq.qqstatus?'在线咨询':'请留言'" placement="top">
-                <a target="_blank"
-                   :href="`tencent://message/?uin=${qq.qqnumber}&amp;Site=www.xinruiyun.cn&amp;Menu=yes`"
-                   style="color:rgb(73, 80, 96)" rel="nofollow">
-                <img src="./assets/img/app/qq-blue.png" v-if="qq.qqstatus" alt="人工客服">
-                  <img src="./assets/img/app/qq-gray.png" v-else alt="人工客服">
-                <span style="width: 56px;display: inline-block;">{{qq.servicename}}</span>
-                </a>
-              </Tooltip>
+    <div class="ph-left">
+            <div class="ph-gg">
+                <h3>免费用</h3>
+                <a class="ph-button" @click="$router.push('/free/')">立即领取</a>
             </div>
-              </div>
+            <div style="background-color: #FCECE0;padding: 10px 9px;margin-top: -1px;">
+                <div class="ph-cs">
+                    <img class="ke-black" src="./assets/img/home/kefu.png">
+                    <span>联系客服</span>
+                    <div class="ph-connect">
+                        <div v-if="QQInfo.length > 0">
+                            <div style="padding: 20px;width: 200px;">
+                                <span class="q-tile">人工客服</span>
+                                <div class="info-wrapper">
+                                    <div v-for="(qq,index) of QQInfo" :key="index">
+                                        <Tooltip :content="qq.qqstatus?'在线咨询':'请留言'" placement="top">
+                                            <a target="_blank"
+                                                :href="`tencent://message/?uin=${qq.qqnumber}&amp;Site=www.xrcloud.net&amp;Menu=yes`"
+                                                style="color:rgb(73, 80, 96)" rel="nofollow">
+                                                <img src="./assets/img/home/qq-blue.png" v-if="qq.qqstatus" alt="人工客服">
+                                                <img src="./assets/img/home/qq-6.png" v-else alt="人工客服">
+                                                <span
+                                                    style="width: 56px;display: inline-block;font-size: 12px;">{{qq.servicename}}</span>
+                                            </a>
+                                        </Tooltip>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="padding:0 20px;cursor:pointer;width:200px;" @click="linkService">
+                            <span class="q-tile">在线客服&nbsp&nbsp&nbsp<img style="vertical-align: bottom;"
+                                    src="./assets/img/home//tubiao-.png" /></span>
+                        </div>
+                        <div v-if="xiaoshouInfo.length>0">
+                            <div style="padding: 20px;width: 200px;clear: both;">
+                                <span class="q-tile">售前咨询</span>
+                                <div class="info-wrapper">
+                                    <div v-for="(qq,index) of xiaoshouInfo" :key="index">
+                                        <Tooltip :content="qq.qqstatus?'在线咨询':'请留言'" placement="top">
+                                            <a target="_blank"
+                                                :href="`tencent://message/?uin=${qq.qqnumber}&amp;Site=www.xrcloud.net&amp;Menu=yes`"
+                                                style="color:rgb(73, 80, 96)" rel="nofollow">
+                                                <img src="./assets/img/home/qq-blue.png" v-if="qq.qqstatus" alt="售前咨询">
+                                                <img src="./assets/img/home/qq-6.png" v-else alt="售前咨询">
+                                                <span>{{qq.servicename}}</span>
+                                                <i :class="{inline:qq.qqstatus}"></i>
+                                            </a>
+                                        </Tooltip>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ph-cs" @click="showModal.complaintModal = true">
+                    <img class="bo-black" src="./assets/img/home/icon-bookb.png">
+                    <span>反馈意见</span>
+                </div>
+                <div class="ph-cs" @click='toTopBtn'>
+                    <img class="ke-black" src="./assets/img/home/backtop.png"> 
+                    <span>返回顶部</span>
+                </div>
             </div>
-          </div>
-            <div class="wrapper">
-            <div style="padding:0 20px;cursor:pointer" @click="linkService">
-            <span class="title">在线客服&nbsp&nbsp&nbsp<img style="vertical-align: bottom;" src="./assets/img/app/kefu-icon.png" /></span>
-              </div>
-          </div>
-          <div class="wrapper" v-if="xiaoshouInfo.length>0">
-            <div>
-              <span class="title">售前咨询</span>
-              <div class="info-wrapper">
-                <div v-for="(qq,index) of xiaoshouInfo" :key="index">
-              <Tooltip :content="qq.qqstatus?'在线咨询':'请留言'" placement="top">
-                <a target="_blank"
-                   :href="`tencent://message/?uin=${qq.qqnumber}&amp;Site=www.xinruiyun.cn&amp;Menu=yes`"
-                   style="color:rgb(73, 80, 96)" rel="nofollow">
-                 <img src="./assets/img/app/qq-red.png" v-if="qq.qqstatus" alt="售前咨询">
-                  <img src="./assets/img/app/qq-gray.png" v-else alt="售前咨询">
-                <span>{{qq.servicename}}</span>
-                <i :class="{inline:qq.qqstatus}"></i>
-                </a>
-              </Tooltip>
-            </div>
-              </div>
-            </div>
-          </div>
-          <div class="wrapper" v-if="yunweiInfo.length>0">
-            <div>
-              <span class="title">技术支持</span>
-              <div class="info-wrapper">
-                <div v-for="(qq,index) of yunweiInfo" :key="index">
-              <Tooltip :content="qq.qqstatus?'在线咨询':'请留言'" placement="top">
-                <a target="_blank"
-                   :href="`tencent://message/?uin=${qq.qqnumber}&amp;Site=www.xinruiyun.cn&amp;Menu=yes`"
-                   style="color:rgb(73, 80, 96)" rel="nofollow">
-                 <img src="./assets/img/app/qq-blue.png" v-if="qq.qqstatus" alt="技术支持">
-                  <img src="./assets/img/app/qq-gray.png" v-else alt="技术支持">
-                <span>{{qq.servicename}}</span>
-                <i :class="{inline:qq.qqstatus}"></i>
-                </a>
-              </Tooltip>
-            </div>
-              </div>
-            </div>
-          </div>
-          <div class="wrapper">
-            <div>
-            <span class="title">咨询热线 <span>400-0505-565</span></span>
-              </div>
-          </div>
+            
         </div>
-      </span>
-      <span class="phone mobileq" @click="getOrderType" @mouseenter="PME" @mouseleave="PML">
-        <div ref="phoneE" style="overflow: hidden;bottom:5px;">
-          <div class="wrapper">
-            <div>
-            <span class="title">投诉与建议</span>
-              </div>
-          </div>
-        </div>
-      </span>
-      <div>
-        <BackTop :bottom="161" :right="50" :duration="300" :height="1000" style="position: unset">
-          <span class="topLink"></span>
-        </BackTop>
-      </div>
-    </div>
     <!-- 投诉框 -->
     <Modal v-model="showModal.complaintModal" width="500" :scrollable="true" :mask-closable="false">
       <p slot="header" class="modal-header-border">
@@ -983,504 +958,566 @@
 </template>
 
 <script>
-  import axios from '@/util/axiosInterceptor'
-  import $store from './vuex'
-  import {mapState} from 'vuex'
-  import debounce from 'throttle-debounce/debounce'
-  import '@/assets/iconfont/frontend/iconfont.css'
-  import '@/assets/iconfont/frontend/iconfont.js'
-  import uuid from 'uuid'
-  import regExp from './util/regExp'
+import axios from "@/util/axiosInterceptor";
+import $store from "./vuex";
+import { mapState } from "vuex";
+import debounce from "throttle-debounce/debounce";
+import "@/assets/iconfont/frontend/iconfont.css";
+import "@/assets/iconfont/frontend/iconfont.js";
+import uuid from "uuid";
+import regExp from "./util/regExp";
 
-  export default {
-    name: 'app',
-    data() {
-      const validPhoneNumber = (rule, value, callback) => {
-        let reg = /^1[3|5|7|8|9|6|7]\d{9}$/;
-        if (!reg.test(this.complaintForm.phone)) {
-          return callback(new Error("请输入正确的手机号码"));
-        } else {
-          callback();
+export default {
+  name: "app",
+  data() {
+    const validPhoneNumber = (rule, value, callback) => {
+      let reg = /^1[3|5|7|8|9|6|7]\d{9}$/;
+      if (!reg.test(this.complaintForm.phone)) {
+        return callback(new Error("请输入正确的手机号码"));
+      } else {
+        callback();
+      }
+    };
+    return {
+      links: "",
+      currentItem: -1, // 当前选中item  默认为-1(未选中)
+      lineStyle: {
+        width: "0px",
+        left: "0px",
+        transition: "width .3s"
+      }, // line的width和left属性
+      lineIndex: 0,
+      mLogin: true,
+      mIcon: true,
+      support: [
+        {
+          img: "icon-duoqudaofuwuyuzhichi",
+          title: "7*24",
+          subTitle: "多渠道服务与支持"
+        },
+        {
+          img: "icon-fankuiyutousujianyiA",
+          title: "意见",
+          subTitle: "反馈与投诉建议"
+        },
+        { img: "icon-zhuanxiangfuwu", title: "1V1", subTitle: "专项服务" },
+        {
+          img: "icon-tianwuliyoutuihuo",
+          title: "退款",
+          subTitle: "7天无理由退款"
         }
-      };
-      return {
-        links:'',
-        currentItem: -1, // 当前选中item  默认为-1(未选中)
-        lineStyle: {
-          width: '0px',
-          left: '0px',
-          transition: 'width .3s'
-        }, // line的width和left属性
-        lineIndex:0,
-        mLogin:true,
-        mIcon: true,
-        support: [
-          {img: 'icon-duoqudaofuwuyuzhichi', title: '7*24', subTitle: '多渠道服务与支持'},
-          {img: 'icon-fankuiyutousujianyiA', title: '意见', subTitle: '反馈与投诉建议'},
-          {img: 'icon-zhuanxiangfuwu', title: '1V1', subTitle: '专项服务'},
-          {img: 'icon-tianwuliyoutuihuo', title: '退款', subTitle: '7天无理由退款'}
-        ],
-        description: [
-          {
-            title: '云计算',
-            desc: [
-              {subTitle: '弹性云服务器（ECS）', url: '/ecs/'},
-              {subTitle: '镜像服务', url: '/mirrorservice/'},
-              {subTitle: 'ESC快照', url: '/ecssnapshot/'},
-              {subTitle: 'GPU服务器', url: '/gpu/'},
-              {subTitle: '弹性伸缩', url: '/elasticscalable/'},
-              {subTitle: '裸金属服务器（敬请期待）', url: '/'},
-            ]
-          },
-          {
-            title: '云网络',
-            desc: [
-              {subTitle: '虚拟私有云VPC', url: '/vpc/'},
-              {subTitle: '弹性IP', url: '/elasticip/'},
-              {subTitle: '负载均衡', url: '/loadbalancing/'},
-              {subTitle: 'NAT网关', url: '/natgateway/'},
-              {subTitle: '虚拟专网VPN', url: '/vpn/'},
-              {subTitle: 'CDN（敬请期待）', url: '/'}
-            ]
-          },
-          {
-            title: '云储存',
-            desc: [
-              {subTitle: '云硬盘', url: '/disk/'},
-              {subTitle: '云硬盘备份', url: '/diskbackup/'},
-              {title: '对象存储', url: '/objectstorage/'}
-            ]
-          },
-          {
-            title: '云安全',
-            desc: [
-              {subTitle: '防火墙', url: '/firewall/'},
-              {subTitle: 'DDOS高防IP', url: '/ddosip/'}
-            ]
-          },
-          {
-            title: '云维护',
-            desc: [
-              {subTitle: '云监控', url: '/monitor/'},
-              {subTitle: '访问监控（敬请期待）', url: '/'}
-            ]
-          }
-        ], // 页尾列表详情
-        Preparation: [
-          {
-            time: '©2019',
-            title: '北京允睿讯通科技有限公司',
-            preparation: '京ICP备15035854号',
-            desc: '京公网安备11010802024922号',
-            msg: '关于我们'
-          }
-        ], // footer-bottom
-        kfURL: '',  // 客服url地址
-        QQInfo: [],  // QQ客服在线情况
-        xiaoshouInfo: [],  // QQ销售在线情况
-        yunweiInfo: [],  // QQ运维在线情况,
-        /* 倒计时参数 */
-        day: '00',
-        hour: '00',
-        minute: '00',
-        second: '00',
-        hintShow: false,
-        timer: null,
-        UUID: '',
-        showModal: {
-          complaintModal: false
-        },
-        complaintForm: {
-          complaintTitle: '',
-          issueType: '',
-          typeList: [],
-          issueDesc: '',
-          phone: '',
-          step: 1
-        },
-        complaintFormRule: {
-          complaintTitle: [
-            {required: true, validator: regExp.validaRegisteredName, trigger: 'blur'}
-          ],
-          issueType: [
-            {required: true, message: '请选择问题类型', trigger: 'change'}
-          ],
-          issueDesc: [
-            {required: true, message: '请描述一下您的问题', trigger: 'blur'}
-          ],
-          phone: [
-            {required: true, validator: validPhoneNumber, trigger: 'blur'}
+      ],
+      description: [
+        {
+          title: "云计算",
+          desc: [
+            { subTitle: "弹性云服务器（ECS）", url: "/ecs/" },
+            { subTitle: "镜像服务", url: "/mirrorservice/" },
+            { subTitle: "ESC快照", url: "/ecssnapshot/" },
+            { subTitle: "GPU服务器", url: "/gpu/" },
+            { subTitle: "弹性伸缩", url: "/elasticscalable/" },
+            { subTitle: "裸金属服务器（敬请期待）", url: "/" }
           ]
         },
-        isweixinShow:false,
-        from: '',
-        sellCode: ''
-      }
-    },
-    mounted() {
-      // this.hintShow = sessionStorage.getItem('hintShow') == 'true' ? true : false
-      // if (sessionStorage.getItem('hintShow') == 'true') {
-      //   this.$refs.hint.style.height = '80px'
-      // }
-      //this.setTime()
-      let params = {
-        batchNumber: window.UUID,
-        type: '1',
-        pageURL:window.location.href ,
-      }
-      // 获取入口信息
-      axios.post('information/webReachableRecord.do', params)
-
-    },
-    created() {
-      // if(!localStorage.getItem('isLogin')){
-      //   this.getloginPromptMessage()
-      // }
-      // if (sessionStorage.getItem('hintShow') == null) {
-      //   sessionStorage.setItem('hintShow', 'true')
-      // }
-      window.UUID = uuid.v4()
-      let params = {
-        batchNumber: window.UUID,
-        type: '0',
-        pageURL: window.location.href
-      }
-      // 写入入口信息
-      axios.post('information/webReachableRecord.do', params
-      )
-      // 获取所有后台需要的基本信息
-      // 获取用户信息
-      var userInfo = axios.get('user/GetUserInfo.do', {params: {t: new Date().getTime()}})
-      // 获取zone信息
-      var zoneList = axios.get('information/zone.do', {params: {t: new Date().getTime(),buy: '1'}})
-      Promise.all([userInfo, zoneList]).then(values => {
-        if (values[0].data.status == 1 && values[0].status == 200) {
-          $store.commit('setAuthInfo', {authInfo: values[0].data.authInfo, userInfo: values[0].data.result, authInfoPersion: values[0].data.authInfo_persion})
-          localStorage.setItem('realname', values[0].data.result.realname)
+        {
+          title: "云网络",
+          desc: [
+            { subTitle: "虚拟私有云VPC", url: "/vpc/" },
+            { subTitle: "弹性IP", url: "/elasticip/" },
+            { subTitle: "负载均衡", url: "/loadbalancing/" },
+            { subTitle: "NAT网关", url: "/natgateway/" },
+            { subTitle: "虚拟专网VPN", url: "/vpn/" },
+            { subTitle: "CDN（敬请期待）", url: "/" }
+          ]
+        },
+        {
+          title: "云储存",
+          desc: [
+            { subTitle: "云硬盘", url: "/disk/" },
+            { subTitle: "云硬盘备份", url: "/diskbackup/" },
+            { title: "对象存储", url: "/objectstorage/" }
+          ]
+        },
+        {
+          title: "云安全",
+          desc: [
+            { subTitle: "防火墙", url: "/firewall/" },
+            { subTitle: "DDOS高防IP", url: "/ddosip/" }
+          ]
+        },
+        {
+          title: "云维护",
+          desc: [
+            { subTitle: "云监控", url: "/monitor/" },
+            { subTitle: "访问监控（敬请期待）", url: "/" }
+          ]
         }
-        if (values[1].data.status == 1 && values[1].status == 200) {
-          $store.commit('setZoneList', values[1].data.result)
+      ], // 页尾列表详情
+      Preparation: [
+        {
+          time: "©2019",
+          title: "北京允睿讯通科技有限公司",
+          preparation: "京ICP备15035854号",
+          desc: "京公网安备11010802024922号",
+          msg: "关于我们"
         }
-      },)
-      this.$http.get('user/getKfAdd.do',{
-        params:{
-          type:''
+      ], // footer-bottom
+      kfURL: "", // 客服url地址
+      QQInfo: [], // QQ客服在线情况
+      xiaoshouInfo: [], // QQ销售在线情况
+      yunweiInfo: [], // QQ运维在线情况,
+      /* 倒计时参数 */
+      day: "00",
+      hour: "00",
+      minute: "00",
+      second: "00",
+      hintShow: false,
+      timer: null,
+      UUID: "",
+      showModal: {
+        complaintModal: false
+      },
+      complaintForm: {
+        complaintTitle: "",
+        issueType: "",
+        typeList: [],
+        issueDesc: "",
+        phone: "",
+        step: 1
+      },
+      complaintFormRule: {
+        complaintTitle: [
+          {
+            required: true,
+            validator: regExp.validaRegisteredName,
+            trigger: "blur"
+          }
+        ],
+        issueType: [
+          { required: true, message: "请选择问题类型", trigger: "change" }
+        ],
+        issueDesc: [
+          { required: true, message: "请描述一下您的问题", trigger: "blur" }
+        ],
+        phone: [
+          { required: true, validator: validPhoneNumber, trigger: "blur" }
+        ]
+      },
+      isweixinShow: false,
+      from: "",
+      sellCode: ""
+    };
+  },
+  mounted() {
+    // this.hintShow = sessionStorage.getItem('hintShow') == 'true' ? true : false
+    // if (sessionStorage.getItem('hintShow') == 'true') {
+    //   this.$refs.hint.style.height = '80px'
+    // }
+    //this.setTime()
+    let params = {
+      batchNumber: window.UUID,
+      type: "1",
+      pageURL: window.location.href
+    };
+    // 获取入口信息
+    axios.post("information/webReachableRecord.do", params);
+  },
+  created() {
+    // if(!localStorage.getItem('isLogin')){
+    //   this.getloginPromptMessage()
+    // }
+    // if (sessionStorage.getItem('hintShow') == null) {
+    //   sessionStorage.setItem('hintShow', 'true')
+    // }
+    window.UUID = uuid.v4();
+    let params = {
+      batchNumber: window.UUID,
+      type: "0",
+      pageURL: window.location.href
+    };
+    // 写入入口信息
+    axios.post("information/webReachableRecord.do", params);
+    // 获取所有后台需要的基本信息
+    // 获取用户信息
+    var userInfo = axios.get("user/GetUserInfo.do", {
+      params: { t: new Date().getTime() }
+    });
+    // 获取zone信息
+    var zoneList = axios.get("information/zone.do", {
+      params: { t: new Date().getTime(), buy: "1" }
+    });
+    Promise.all([userInfo, zoneList]).then(values => {
+      if (values[0].data.status == 1 && values[0].status == 200) {
+        $store.commit("setAuthInfo", {
+          authInfo: values[0].data.authInfo,
+          userInfo: values[0].data.result,
+          authInfoPersion: values[0].data.authInfo_persion
+        });
+        localStorage.setItem("realname", values[0].data.result.realname);
+      }
+      if (values[1].data.status == 1 && values[1].status == 200) {
+        $store.commit("setZoneList", values[1].data.result);
+      }
+    });
+    this.$http
+      .get("user/getKfAdd.do", {
+        params: {
+          type: ""
         }
-      }).then(response => {
-        this.kfURL = response.data.result
       })
-      // QQ客服在线情况
-      this.$http.get('network/getQQCustomerServiceStatus.do').then(response => {
-        this.QQInfo = response.data.kefu
-        this.xiaoshouInfo = response.data.xiaoshou
-        this.yunweiInfo = response.data.yunwei
-        /*for (let key in response.data.result) {
+      .then(response => {
+        this.kfURL = response.data.result;
+      });
+    // QQ客服在线情况
+    this.$http.get("network/getQQCustomerServiceStatus.do").then(response => {
+      this.QQInfo = response.data.kefu;
+      this.xiaoshouInfo = response.data.xiaoshou;
+      this.yunweiInfo = response.data.yunwei;
+      /*for (let key in response.data.result) {
          this.QQInfo.push({
          key,
          value: response.data.result[key]
          })
          }*/
-      })
-      // 设置友情链接
-      this.$http.get('friendshipLink.do').then(response => {
-        this.links = response.data.result
-      })
-      this.from = window.location.href.split('from=')[1] ? window.location.href.split('from=')[1] : ''
-      this.sellCode = window.location.href.split('sellCode=')[1] ? window.location.href.split('sellCode=')[1] : ''
-      // if (this.from) {
-      //   // 流量来源记录
-      //   localStorage.setItem('comefrom', this.from)
-      // }
-      // if (this.sellCode) {
-      //   // 销售来源渠道
-      //   localStorage.setItem('sellCode', this.sellCode)
-      // }
-      this.setCookie('sellCode',this.sellCode,1);
-      this.setCookie('comefrom',this.from,1);
-    },
-    methods: {
+    });
+    // 设置友情链接
+    this.$http.get("friendshipLink.do").then(response => {
+      this.links = response.data.result;
+    });
+    this.from = window.location.href.split("from=")[1]
+      ? window.location.href.split("from=")[1]
+      : "";
+    this.sellCode = window.location.href.split("sellCode=")[1]
+      ? window.location.href.split("sellCode=")[1]
+      : "";
+    // if (this.from) {
+    //   // 流量来源记录
+    //   localStorage.setItem('comefrom', this.from)
+    // }
+    // if (this.sellCode) {
+    //   // 销售来源渠道
+    //   localStorage.setItem('sellCode', this.sellCode)
+    // }
+    this.setCookie("sellCode", this.sellCode, 1);
+    this.setCookie("comefrom", this.from, 1);
+  },
+  methods: {
     // 获取销售数据与流量
-     setCookie(c_name,value,expiredays){
-        var exdate=new Date();
-        exdate.setDate(exdate.getDate()+expiredays);
-        document.cookie=c_name+ "=" +escape(value)+
-        ((expiredays==null) ? "" : ";expires="+exdate.toGMTString()) + ";domain=.xinruiyun.cn;path=/";
+    setCookie(c_name, value, expiredays) {
+      var exdate = new Date();
+      exdate.setDate(exdate.getDate() + expiredays);
+      document.cookie =
+        c_name +
+        "=" +
+        escape(value) +
+        (expiredays == null ? "" : ";expires=" + exdate.toGMTString()) +
+        ";domain=.xinruiyun.cn;path=/";
     },
-       login () {
-        this.$router.push('login')
-      },
-      /* li mouseenter事件 重新设置line样式 */
-      QME() {
-        this.$refs.qq.style.width = '200px'
-      },
-      QML() {
-        this.$refs.qq.style.width = '0px'
-      },
-      PME() {
-        this.$refs.phoneE.style.width = '95px'
-      },
-      PML() {
-        this.$refs.phoneE.style.width = '0px'
-      },
-         // 移动端头部产品手风琴动效
-        getSelectDown(index) {
-                let arry = document.querySelectorAll('.mhead-product .mhead-pone');
-                let arry2 = document.querySelectorAll('.mhead-product .active');
-                if (arry[index].className == 'mhead-pone mhead-pones') {
-                    arry[index].className = 'mhead-pone mhead-pone';
-                    arry2[index].className = 'active mhead-arrow';
-                } else {
-                    arry[index].className = 'mhead-pone mhead-pones';
-                    arry2[index].className = 'active mhead-arrow2';
-                }
-        },
-         getSelectDown2(index) {
-            let arry = document.querySelectorAll('.mhead-child .mhead-box');
-            let arry2 = document.querySelectorAll('.mhead-child .mhead-cdd .select');
-            if (arry[index].className == 'mhead-box mhead-boxs') {
-                arry[index].className = 'mhead-box';
-                arry2[index].className = 'select mhead-arrow';
-            } else {
-                arry[index].className = 'mhead-box mhead-boxs';
-                arry2[index].className = 'select mhead-arrow2';
-            }
-        },
-    styleClass:function (index, event) {
-          if (index != -1) {
-                    this.lineStyle.transition = 'all  .3s';
-                    this.lineStyle.left = event.target.offsetLeft + 'px';
-                    this.lineStyle.width = event.target.clientWidth + 'px';
-          } else {
-                    this.lineStyle.width = '0px';
-                    this.lineIndex = -1;
-          }
-      },
-      go(path) {
-        if (path == 'exit') {
-          this.exit()
-          return
-        }
-        // this.$router.push(path)
-      },
-      exit() {
-        localStorage.removeItem("realname")
-        axios.get('user/logout.do').then(response => {
-          this.delCookie('XRYSYAN')
-          window.location.reload()
-        })
-      },
-      getCookie(name) {
-        var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
-        if (arr = document.cookie.match(reg)){
-          return true;
-          // return (arr[2]);
-        }else{
-          return false
-        }
-      },
-      //删除cookie
-      delCookie (name) {
-        var exp = new Date();
-        exp.setTime(exp.getTime() - 1);
-        var cval = this.getCookie(name);
-        if (cval != null)
-        document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString() + ";domain=.xinruiyun.cn;path=/";
-      },
-      closeHeadHint() {
-        this.hintShow = false
-        this.$refs.hint.style.height = 0
-        sessionStorage.setItem('hintShow', 'false')
-      },
-      /* 倒计时方法 */
-      setTime() {
-        axios.get('network/getTime.do').then(res => {
-          if (res.data.status == 1) {
-            let startTime = res.data.result
-            let endTime = new Date('2018/12/17').getTime()
-            let limitTime = endTime - startTime
-            if (limitTime > 0) {
-              this.setLimit(limitTime)
-              this.timer = setInterval(() => {
-                this.setLimit(limitTime)
-                limitTime -= 1000
-                if (limitTime <= 0) {
-                  window.clearInterval(this.timer)
-                }
-              }, 1000);
-            } else {
-              this.day = this.checkTime(0);
-              this.hour = this.checkTime(0);
-              this.minute = this.checkTime(0);
-              this.second = this.checkTime(0);
-            }
-          }
-        })
-      },
-      setLimit(time) {
-        let days = parseInt(time / 1000 / 60 / 60 / 24, 10); //计算剩余的天数
-        let hours = parseInt(time / 1000 / 60 / 60 % 24, 10); //计算剩余的小时
-        let minutes = parseInt(time / 1000 / 60 % 60, 10);//计算剩余的分钟
-        let seconds = parseInt(time / 1000 % 60, 10);//计算剩余的秒数
-        this.day = this.checkTime(days);
-        this.hour = this.checkTime(hours);
-        this.minute = this.checkTime(minutes);
-        this.second = this.checkTime(seconds);
-      },
-      checkTime(i) { //将0-9的数字前面加上0，例1变为01
-        if (i < 10) {
-          i = '0' + i;
-        }
-        return i;
-      },
-      openInfo(href) {
-        window.open(href)
-      },
-      getOrderType(){
-        this.complaintForm.step = 1
-        this.$http.get('order/orderType.do',{params:{
-          gid: '5'
-        }}).then(res=>{
-          if(res.data.status == 1 && res.status == 200){
-            this.complaintForm.typeList = res.data.result['投诉建议']
-            this.showModal.complaintModal = true
-          } else{
-            this.$message.info({
-              content: res.data.message
-            })
-          }
-        })
-      },
-      sumbitComplaint(name) {
-        this.$refs[name].validate(valid => {
-          if (valid) {
-            let url = 'order/createSuggestions.do'
-            let params = {
-              phone: this.complaintForm.phone,
-              title: this.complaintForm.complaintTitle,
-              gid: '5',
-              cid: this.complaintForm.issueType,
-              questionDesc: this.complaintForm.issueDesc
-            }
-            this.$http.post(url,params).then(res=>{
-              if(res.status == 200){
-                this.complaintForm.step = 2
-              } else{
-                this.$message.info({
-                  content: res.data.message
-                })
-              }
-            })
-          }
-        })
-      },
-      getloginPromptMessage(){
-        this.$http.get('user/loginPromptMessage.do',{params:{}}).then(res=>{
-          if(res.data.status == 1){
-            localStorage.setItem('isLogin','已提示')
-            this.$Message.info({
-                    content: res.data.message,
-                    duration: 10,
-                    closable: true
-                })
-          }
-        })
-      },
-      linkService(){
-        if(this.userInfo){
-          window.open(`https://im.xrcloud.net/im/question/index.html?companyId=${this.userInfo.companyid}`)
-        } else{
-          window.open('https://im.xrcloud.net/im/question/index.html')
-        }
-      },
-      share(name) {
-        if(name == "qq"){
-          window.open('http://connect.qq.com/widget/shareqq/index.html?url=' +
-                'http://www.yrclouds.cn' + '&sharesource=qzone&title=' + '新睿云云服务器' + '&desc=' +
-                '便宜实惠的云服务器');
-        }else if(name == 'weibo'){
-            window.open('http://service.weibo.com/share/share.php?url=http://www.xinruiyun.cn&title=' + 
-            '新睿云 - 提供免费云服务器租用、便宜弹性云主机试用等云产品服务！' + '&pic=' + '' + '&searchPic=false')
-        }else if(name == 'weixin'){
-          this.isweixinShow = !this.isweixinShow;
-        } 
-        },
+    login() {
+      this.$router.push("login");
     },
-    computed: mapState({
-      userInfo: state => state.userInfo
-    }),
-    watch: {
-      /* 观察currentItem变化 设置content高度 */
-      currentItem() {
-        var content = this.$refs.content
-        for (var i in content) {
-          if (i == this.currentItem) {
-            content[i].style.height = `${content[i].firstChild.clientHeight + 25}px`
-          } else {
-            content[i].style.height = '0px'
-          }
-        }
+    /* li mouseenter事件 重新设置line样式 */
+    QME() {
+      this.$refs.qq.style.width = "200px";
+    },
+    QML() {
+      this.$refs.qq.style.width = "0px";
+    },
+    PME() {
+      this.$refs.phoneE.style.width = "95px";
+    },
+    PML() {
+      this.$refs.phoneE.style.width = "0px";
+    },
+    // 移动端头部产品手风琴动效
+    getSelectDown(index) {
+      let arry = document.querySelectorAll(".mhead-product .mhead-pone");
+      let arry2 = document.querySelectorAll(".mhead-product .active");
+      if (arry[index].className == "mhead-pone mhead-pones") {
+        arry[index].className = "mhead-pone mhead-pone";
+        arry2[index].className = "active mhead-arrow";
+      } else {
+        arry[index].className = "mhead-pone mhead-pones";
+        arry2[index].className = "active mhead-arrow2";
       }
     },
-    beforeRouteLeave(to, from, next) {
-      clearInterval(this.timer)
-      next()
+    getSelectDown2(index) {
+      let arry = document.querySelectorAll(".mhead-child .mhead-box");
+      let arry2 = document.querySelectorAll(".mhead-child .mhead-cdd .select");
+      if (arry[index].className == "mhead-box mhead-boxs") {
+        arry[index].className = "mhead-box";
+        arry2[index].className = "select mhead-arrow";
+      } else {
+        arry[index].className = "mhead-box mhead-boxs";
+        arry2[index].className = "select mhead-arrow2";
+      }
+    },
+    styleClass: function(index, event) {
+      if (index != -1) {
+        this.lineStyle.transition = "all  .3s";
+        this.lineStyle.left = event.target.offsetLeft + "px";
+        this.lineStyle.width = event.target.clientWidth + "px";
+      } else {
+        this.lineStyle.width = "0px";
+        this.lineIndex = -1;
+      }
+    },
+    go(path) {
+      if (path == "exit") {
+        this.exit();
+        return;
+      }
+      // this.$router.push(path)
+    },
+    exit() {
+      localStorage.removeItem("realname");
+      axios.get("user/logout.do").then(response => {
+        this.delCookie("XRYSYAN");
+        window.location.reload();
+      });
+    },
+    getCookie(name) {
+      var arr,
+        reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+      if ((arr = document.cookie.match(reg))) {
+        return true;
+        // return (arr[2]);
+      } else {
+        return false;
+      }
+    },
+    //删除cookie
+    delCookie(name) {
+      var exp = new Date();
+      exp.setTime(exp.getTime() - 1);
+      var cval = this.getCookie(name);
+      if (cval != null)
+        document.cookie =
+          name +
+          "=" +
+          cval +
+          ";expires=" +
+          exp.toGMTString() +
+          ";domain=.xinruiyun.cn;path=/";
+    },
+    closeHeadHint() {
+      this.hintShow = false;
+      this.$refs.hint.style.height = 0;
+      sessionStorage.setItem("hintShow", "false");
+    },
+    /* 倒计时方法 */
+    setTime() {
+      axios.get("network/getTime.do").then(res => {
+        if (res.data.status == 1) {
+          let startTime = res.data.result;
+          let endTime = new Date("2018/12/17").getTime();
+          let limitTime = endTime - startTime;
+          if (limitTime > 0) {
+            this.setLimit(limitTime);
+            this.timer = setInterval(() => {
+              this.setLimit(limitTime);
+              limitTime -= 1000;
+              if (limitTime <= 0) {
+                window.clearInterval(this.timer);
+              }
+            }, 1000);
+          } else {
+            this.day = this.checkTime(0);
+            this.hour = this.checkTime(0);
+            this.minute = this.checkTime(0);
+            this.second = this.checkTime(0);
+          }
+        }
+      });
+    },
+    setLimit(time) {
+      let days = parseInt(time / 1000 / 60 / 60 / 24, 10); //计算剩余的天数
+      let hours = parseInt((time / 1000 / 60 / 60) % 24, 10); //计算剩余的小时
+      let minutes = parseInt((time / 1000 / 60) % 60, 10); //计算剩余的分钟
+      let seconds = parseInt((time / 1000) % 60, 10); //计算剩余的秒数
+      this.day = this.checkTime(days);
+      this.hour = this.checkTime(hours);
+      this.minute = this.checkTime(minutes);
+      this.second = this.checkTime(seconds);
+    },
+    checkTime(i) {
+      //将0-9的数字前面加上0，例1变为01
+      if (i < 10) {
+        i = "0" + i;
+      }
+      return i;
+    },
+    openInfo(href) {
+      window.open(href);
+    },
+    getOrderType() {
+      this.complaintForm.step = 1;
+      this.$http
+        .get("order/orderType.do", {
+          params: {
+            gid: "5"
+          }
+        })
+        .then(res => {
+          if (res.data.status == 1 && res.status == 200) {
+            this.complaintForm.typeList = res.data.result["投诉建议"];
+            this.showModal.complaintModal = true;
+          } else {
+            this.$message.info({
+              content: res.data.message
+            });
+          }
+        });
+    },
+    sumbitComplaint(name) {
+      this.$refs[name].validate(valid => {
+        if (valid) {
+          let url = "order/createSuggestions.do";
+          let params = {
+            phone: this.complaintForm.phone,
+            title: this.complaintForm.complaintTitle,
+            gid: "5",
+            cid: this.complaintForm.issueType,
+            questionDesc: this.complaintForm.issueDesc
+          };
+          this.$http.post(url, params).then(res => {
+            if (res.status == 200) {
+              this.complaintForm.step = 2;
+            } else {
+              this.$message.info({
+                content: res.data.message
+              });
+            }
+          });
+        }
+      });
+    },
+    getloginPromptMessage() {
+      this.$http.get("user/loginPromptMessage.do", { params: {} }).then(res => {
+        if (res.data.status == 1) {
+          localStorage.setItem("isLogin", "已提示");
+          this.$Message.info({
+            content: res.data.message,
+            duration: 10,
+            closable: true
+          });
+        }
+      });
+    },
+    linkService() {
+      if (this.userInfo) {
+        window.open(
+          `https://im.xrcloud.net/im/question/index.html?companyId=${
+            this.userInfo.companyid
+          }`
+        );
+      } else {
+        window.open("https://im.xrcloud.net/im/question/index.html");
+      }
+    },
+    share(name) {
+      if (name == "qq") {
+        window.open(
+          "http://connect.qq.com/widget/shareqq/index.html?url=" +
+            "http://www.yrclouds.cn" +
+            "&sharesource=qzone&title=" +
+            "新睿云云服务器" +
+            "&desc=" +
+            "便宜实惠的云服务器"
+        );
+      } else if (name == "weibo") {
+        window.open(
+          "http://service.weibo.com/share/share.php?url=http://www.xinruiyun.cn&title=" +
+            "新睿云 - 提供免费云服务器租用、便宜弹性云主机试用等云产品服务！" +
+            "&pic=" +
+            "" +
+            "&searchPic=false"
+        );
+      } else if (name == "weixin") {
+        this.isweixinShow = !this.isweixinShow;
+      }
+    },
+     toTopBtn: function() {
+            document.documentElement.scrollTop = 0;
+        },
+  },
+  computed: mapState({
+    userInfo: state => state.userInfo
+  }),
+  watch: {
+    /* 观察currentItem变化 设置content高度 */
+    currentItem() {
+      var content = this.$refs.content;
+      for (var i in content) {
+        if (i == this.currentItem) {
+          content[i].style.height = `${content[i].firstChild.clientHeight +
+            25}px`;
+        } else {
+          content[i].style.height = "0px";
+        }
+      }
     }
+  },
+  beforeRouteLeave(to, from, next) {
+    clearInterval(this.timer);
+    next();
   }
+};
 </script>
 
 <style rel="stylesheet/less" lang="less" scoped>
-  #front {
-    .app-hint {
-      height: 0;
-      background: url("./assets/img/app/hint-banner.png") center no-repeat, linear-gradient(to right, #FF4439, #FF1569);
-      position: relative;
-      transition: height .5s ease;
+#front {
+  .app-hint {
+    height: 0;
+    background: url("./assets/img/app/hint-banner.png") center no-repeat,
+      linear-gradient(to right, #ff4439, #ff1569);
+    position: relative;
+    transition: height 0.5s ease;
+    cursor: pointer;
+    > img {
+      position: absolute;
+      right: 15px;
+      top: 10px;
       cursor: pointer;
-      > img {
+    }
+    .center {
+      position: relative;
+      width: 1200px;
+      height: 100%;
+      margin: 0 auto;
+      .countdown {
         position: absolute;
-        right: 15px;
-        top: 10px;
-        cursor: pointer;
-      }
-      .center {
-        position: relative;
-        width: 1200px;
-        height: 100%;
-        margin: 0 auto;
-        .countdown {
-          position: absolute;
-          left: 74.4%;
-          top: 45%;
-          > p {
-            font-family: MicrosoftYaHei;
-            font-size: 24px;
-            font-weight: 500;
-            color: rgba(255, 45, 0, 1);
-            > span {
-              font-size: 14px;
-              margin: 0 8px;
-              color: #FFF
-            }
+        left: 74.4%;
+        top: 45%;
+        > p {
+          font-family: MicrosoftYaHei;
+          font-size: 24px;
+          font-weight: 500;
+          color: rgba(255, 45, 0, 1);
+          > span {
+            font-size: 14px;
+            margin: 0 8px;
+            color: #fff;
           }
         }
       }
     }
+  }
 
-    header {
-     
-      .pc-head {
-        width: 100%;
-        background-color: #1D1716;
-        height: 40px;
-        display: flex;
-        justify-content: space-between;
-      }
-     .pc-head a{
-        display: inline-block;
-        margin: 0;
-      }
+  header {
+    .pc-head {
+      width: 100%;
+      background-color: #1d1716;
+      height: 40px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .pc-head a {
+      display: inline-block;
+      margin: 0;
+    }
     .pc-head .p-collapse .lg-in {
-      color: #FF624B;
+      color: #ff624b;
       width: 66px;
       display: inline-block;
       text-align: center;
@@ -1488,432 +1525,436 @@
       font-size: 14px;
       vertical-align: top;
     }
-    .user-list{
-       margin-right: 20px;
-      a{
+    .user-list {
+      margin-right: 20px;
+      a {
         color: #333333;
       }
-    .user-fn{
-      position:relative;line-height:40px;padding-left:20px;color:#ffffff;
-      }  
+      .user-fn {
+        position: relative;
+        line-height: 40px;
+        padding-left: 20px;
+        color: #ffffff;
+      }
     }
-.pc-head .p-collapse .lg-re {
-  width: 68px;
-  display: inline-block;
-  height: 40px;
-  vertical-align: middle;
-  line-height: 40px;
-  text-align: center;
-  color: #ffffff;
-  font-size: 14px;
-  background: #FF624B;
-}
-.logo {
-  width: 101px;
-  overflow: hidden;
-}
-
-.logo img {
-  width: 102%;
-  height: 167%;
-  margin-top: -13px;
-}
-
-.navbar-brand {
-  padding: 0;
-}
-
-.p-link {
-  padding: 10px 18px;
-  color: #fff;
-  font-size: 14px;
-}
-
-.pb {
-  border-left: 1px solid rgba(111, 115, 128, 0.52);
-  border-right: 1px solid rgba(111, 115, 128, 0.52);
-}
-
-.nav-list {
-  height: 60px;
-  background: #2D2523;
-  color: #fff;
-  font-family: MicrosoftYaHei;
-  display: flex;
-  border-bottom: 1px solid #9A9DA5;
-}
-
-.nav-list .nav-right {
-  width: 50px;
-  font-size: 14px;
-  padding: 10px 0;
-  text-align: center;
-  display: inline-block;
-  margin: 0 30px 0 20px;
-}
-
-.nav-list .nav-left {
-  display: inline-block;
-  margin: 0;
-}
-
-.nav-list .nav-left .np-box {
-  color: #514644;
-  font-size: 14px;
-  width: 220px;
-}
-
-.nav-list .nav-left .np-box,.np-bs a {
-  color: #514644;
-  text-decoration: none;
-}
-
-.nav-list .nav-left .np-box .np-title {
-  border-bottom: 1px solid #E8DFDD;
-  padding-bottom: 10px;
-}
-
-.nav-list .nav-left .np-box .np-title2 {
-  border-bottom: 1px solid #E8DFDD;
-  padding-bottom: 10px;
-  margin-top: 20px;
-}
-
-.nav-list .nav-left .np-bs {
-  color: #514644;
-  font-size: 14px;
-  width: 220px;
-}
-
-.nav-list .nav-left .np-bs .np-item a:hover {
-  color: #FF624B;
-}
-
-.nav-list .nav-left .np-bs .np-item {
-  margin: 12px 0;
-}
-
-.nav-list .nav-left .np-bs .np-item .buy-box {
-  float: right;
-}
-
-.nav-list .nav-left .np-bs .np-item .buy-box:hover>.buy-img {
-  display: none;
-  opacity: 0;
-  transition: all 0.3s ease-in-out;
-}
-
-.nav-list .nav-left .np-bs .np-item .buy-box:hover>.buy-font {
-  display: inline-block;
-  color: #4297F2;
-  font-size: 12px;
-  opacity: 1;
-  transition: all 0.3s ease-in-out;
-}
-
-.nav-list .nav-left .np-bs .np-dis {
-  color: #C5C0BF;
-  font-size: 14px;
-}
-
-.nav-list .nav-left .np-bs .np-item .buy-font {
-  display: none;
-  opacity: 0;
-  transition: all 0.3s ease-in-out;
-  cursor: pointer;
-  font-size: 12px;
-}
-
-.nav-list .nav-left .nav-item {
-  display: inline-block;
-  // height: 60px;
-  line-height: 60px;
-  font-size: 14px;
-  padding: 0 10px;
-}
-.nav-list .nav-left .nav-item a{
-   color: #fff;
-  text-decoration: none;
-}
-.nav-list .nav-left .nav-item a:hover{
-  color: #fff;
-  text-decoration: none;
-}
-
-.nav-list .line {
-  width: 20px;
-  height: 2px;
-  background-color: #FF624B;
-  position: absolute;
-  top: 99px;
-  left: 101px;
-  z-index: 9999;
-  transition: all ease-in-out 0.3s;
-}
-
-// 移动
-  .m-head {
-    display: none;
-    min-width: 320px;
-    width: 100%;
-    a{
+    .pc-head .p-collapse .lg-re {
+      width: 68px;
+      display: inline-block;
+      height: 40px;
+      vertical-align: middle;
+      line-height: 40px;
+      text-align: center;
       color: #ffffff;
+      font-size: 14px;
+      background: #ff624b;
     }
-    a:hover{
+    .logo {
+      width: 101px;
+      overflow: hidden;
+    }
+
+    .logo img {
+      width: 102%;
+      height: 167%;
+      margin-top: -13px;
+    }
+
+    .navbar-brand {
+      padding: 0;
+    }
+
+    .p-link {
+      padding: 10px 18px;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    .pb {
+      border-left: 1px solid rgba(111, 115, 128, 0.52);
+      border-right: 1px solid rgba(111, 115, 128, 0.52);
+    }
+
+    .nav-list {
+      height: 60px;
+      background: #2d2523;
+      color: #fff;
+      font-family: MicrosoftYaHei;
+      display: flex;
+      border-bottom: 1px solid #9a9da5;
+    }
+
+    .nav-list .nav-right {
+      width: 50px;
+      font-size: 14px;
+      padding: 10px 0;
+      text-align: center;
+      display: inline-block;
+      margin: 0 30px 0 20px;
+    }
+
+    .nav-list .nav-left {
+      display: inline-block;
+      margin: 0;
+    }
+
+    .nav-list .nav-left .np-box {
+      color: #514644;
+      font-size: 14px;
+      width: 220px;
+    }
+
+    .nav-list .nav-left .np-box,
+    .np-bs a {
+      color: #514644;
       text-decoration: none;
-      color:#ffffff;
     }
-  }
-  .mobile-head .m-pople {
-  float: right;
-  padding: 10px;
-  color: #fff;
-}
+
+    .nav-list .nav-left .np-box .np-title {
+      border-bottom: 1px solid #e8dfdd;
+      padding-bottom: 10px;
+    }
+
+    .nav-list .nav-left .np-box .np-title2 {
+      border-bottom: 1px solid #e8dfdd;
+      padding-bottom: 10px;
+      margin-top: 20px;
+    }
+
+    .nav-list .nav-left .np-bs {
+      color: #514644;
+      font-size: 14px;
+      width: 220px;
+    }
+
+    .nav-list .nav-left .np-bs .np-item a:hover {
+      color: #ff624b;
+    }
+
+    .nav-list .nav-left .np-bs .np-item {
+      margin: 12px 0;
+    }
+
+    .nav-list .nav-left .np-bs .np-item .buy-box {
+      float: right;
+    }
+
+    .nav-list .nav-left .np-bs .np-item .buy-box:hover > .buy-img {
+      display: none;
+      opacity: 0;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .nav-list .nav-left .np-bs .np-item .buy-box:hover > .buy-font {
+      display: inline-block;
+      color: #4297f2;
+      font-size: 12px;
+      opacity: 1;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .nav-list .nav-left .np-bs .np-dis {
+      color: #c5c0bf;
+      font-size: 14px;
+    }
+
+    .nav-list .nav-left .np-bs .np-item .buy-font {
+      display: none;
+      opacity: 0;
+      transition: all 0.3s ease-in-out;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .nav-list .nav-left .nav-item {
+      display: inline-block;
+      // height: 60px;
+      line-height: 60px;
+      font-size: 14px;
+      padding: 0 10px;
+    }
+    .nav-list .nav-left .nav-item a {
+      color: #fff;
+      text-decoration: none;
+    }
+    .nav-list .nav-left .nav-item a:hover {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .nav-list .line {
+      width: 20px;
+      height: 2px;
+      background-color: #ff624b;
+      position: absolute;
+      top: 99px;
+      left: 101px;
+      z-index: 9999;
+      transition: all ease-in-out 0.3s;
+    }
+
+    // 移动
+    .m-head {
+      display: none;
+      min-width: 320px;
+      width: 100%;
+      a {
+        color: #ffffff;
+      }
+      a:hover {
+        text-decoration: none;
+        color: #ffffff;
+      }
+    }
+    .mobile-head .m-pople {
+      float: right;
+      padding: 10px;
+      color: #fff;
+    }
     .mobile-head .mobile-logo {
-    width: 103px;
-    height: 60px;
-  }
+      width: 103px;
+      height: 60px;
+    }
 
-  .mobile-head .mobile-logo .mobile-limg {
-    height: 60px;
-    display: inline-block;
-    vertical-align: middle;
-    overflow: hidden;
-  }
-  .mobile-head .m-login {
-  display: flex;
-  background-color: #1D1716;
-  color: #fff;
-  font-size: 12px;
-  text-align: center;
-  width: 100%;
-  overflow: hidden;
-  max-height: 0px;
-  transition: max-height ease-in-out 0.3s;
-}
+    .mobile-head .mobile-logo .mobile-limg {
+      height: 60px;
+      display: inline-block;
+      vertical-align: middle;
+      overflow: hidden;
+    }
+    .mobile-head .m-login {
+      display: flex;
+      background-color: #1d1716;
+      color: #fff;
+      font-size: 12px;
+      text-align: center;
+      width: 100%;
+      overflow: hidden;
+      max-height: 0px;
+      transition: max-height ease-in-out 0.3s;
+    }
 
-.mobile-head .m-logins {
-  max-height: 39px;
-  transition: max-height ease-in-out 0.3s;
-}
-.mobile-head .m-login div:last-child {
-  background-color: #FF624B;
-  border-right: none;
-}
-  .mobile-head .m-logining {
-  float: right;
-  margin-top: 15px;
-}
- .mobile-head .m-logining img{
-    border-radius: 50%;
-    width: 30px;
-    vertical-align: middle;
- }
-  .mobile-head .mobile-logo .mobile-limg img {
-    max-width: 100%;
-    max-height: 66px;
-    position: relative;
-    top: -3px;
-}
+    .mobile-head .m-logins {
+      max-height: 39px;
+      transition: max-height ease-in-out 0.3s;
+    }
+    .mobile-head .m-login div:last-child {
+      background-color: #ff624b;
+      border-right: none;
+    }
+    .mobile-head .m-logining {
+      float: right;
+      margin-top: 15px;
+    }
+    .mobile-head .m-logining img {
+      border-radius: 50%;
+      width: 30px;
+      vertical-align: middle;
+    }
+    .mobile-head .mobile-logo .mobile-limg img {
+      max-width: 100%;
+      max-height: 66px;
+      position: relative;
+      top: -3px;
+    }
 
-.mobile-head .m-logining .ml-text {
-  vertical-align: middle;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  display: inline-block;
-  font-size: 12px;
-  width: 76px;
-  color: #9B908E;
-}
-.ml-right {
-  background-color: #34302F;
-  position: absolute;
-  z-index: 999;
-  right: 0;
-  transition: height ease-in-out 0.5s;
-}
+    .mobile-head .m-logining .ml-text {
+      vertical-align: middle;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      display: inline-block;
+      font-size: 12px;
+      width: 76px;
+      color: #9b908e;
+    }
+    .ml-right {
+      background-color: #34302f;
+      position: absolute;
+      z-index: 999;
+      right: 0;
+      transition: height ease-in-out 0.5s;
+    }
 
-.ml-rights {
-  overflow: hidden;
-  height: 0;
+    .ml-rights {
+      overflow: hidden;
+      height: 0;
+    }
 
-}
+    .ml-right .m-item {
+      padding: 0.3rem 1rem;
+      color: #fff;
+      font-size: 14px;
+      width: 8rem;
+    }
 
-.ml-right .m-item {
-  padding: 0.3rem 1rem;
-  color: #fff;
-  font-size: 14px;
-  width: 8rem;
-}
+    .ml-blocks {
+      border-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) #9b908e;
+      border-width: 7px;
+      border-style: solid;
+      height: 0px;
+      width: 0px;
+      display: inline-block;
+      transform: rotate(-180deg);
+      transition: transform ease-in-out 0.5s;
+    }
 
-.ml-blocks {
-  border-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) #9B908E;
-  border-width: 7px;
-  border-style: solid;
-  height: 0px;
-  width: 0px;
-  display: inline-block;
-  transform: rotate(-180deg);
-  transition: transform ease-in-out 0.5s;
-}
+    .mobile-head .m-logining .ml-block {
+      border-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) #9b908e;
+      border-width: 7px;
+      border-style: solid;
+      height: 0px;
+      width: 0px;
+      display: inline-block;
+      transform: rotate(0);
+      transition: transform ease-in-out 0.5s;
+    }
+    .mhead-list {
+      position: absolute;
+      z-index: 222;
+      width: 100%;
+      overflow: hidden;
+      background-color: #34302f;
+      max-height: 0px;
+      font-size: 14px;
+      transition: max-height ease-in-out 0.3s;
+    }
 
-.mobile-head .m-logining .ml-block {
-  border-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) #9B908E;
-  border-width: 7px;
-  border-style: solid;
-  height: 0px;
-  width: 0px;
-  display: inline-block;
-  transform: rotate(0);
-  transition: transform ease-in-out 0.5s;
-}
-.mhead-list {
-  position: absolute;
-  z-index: 222;
-  width: 100%;
-  overflow: hidden;
-  background-color: #34302F;
-  max-height: 0px;
-  font-size: 14px;
-  transition: max-height ease-in-out 0.3s;
-}
+    .mhead-lists {
+      max-height: 2000px;
+      font-size: 14px;
+      transition: max-height ease-in-out 0.3s;
+      background-color: #34302f;
+    }
 
-.mhead-lists {
-  max-height: 2000px;
-  font-size: 14px;
-  transition: max-height ease-in-out 0.3s;
-  background-color: #34302F;
-}
+    .mhead-list .mhead-product {
+      background-color: #141211;
+      color: #fff;
+      box-shadow: 0px 1px 0px 0px rgba(111, 106, 106, 0.5);
+      font-size: 0.14px;
+    }
 
-.mhead-list .mhead-product {
-  background-color: #141211;
-  color: #fff;
-  box-shadow: 0px 1px 0px 0px rgba(111, 106, 106, 0.5);
-  font-size: 0.14px;
-}
+    .mhead-lists .mhead-product {
+      background-color: #141211;
+      color: #fff;
+      box-shadow: 0px 1px 0px 0px rgba(111, 106, 106, 0.5);
+      overflow: hidden;
+    }
 
-.mhead-lists .mhead-product {
-  background-color: #141211;
-  color: #fff;
-  box-shadow: 0px 1px 0px 0px rgba(111, 106, 106, 0.5);
-  overflow: hidden;
-}
+    .mhead-list .mhead-products {
+      background-color: #141211;
+      color: #fff;
+      box-shadow: 0px 1px 0px 0px rgba(111, 106, 106, 0.5);
+      height: 0rem;
+      transition: height ease-in-out 0.5s;
+    }
 
-.mhead-list .mhead-products {
-  background-color: #141211;
-  color: #fff;
-  box-shadow: 0px 1px 0px 0px rgba(111, 106, 106, 0.5);
-  height: 0rem;
-  transition: height ease-in-out 0.5s;
-}
+    .mhead-lists .mhead-products {
+      background-color: #141211;
+      color: #fff;
+      box-shadow: 0px 1px 0px 0px rgba(111, 106, 106, 0.5);
+      height: 0rem;
+      transition: height ease-in-out 0.5s;
+    }
 
-.mhead-lists .mhead-products {
-  background-color: #141211;
-  color: #fff;
-  box-shadow: 0px 1px 0px 0px rgba(111, 106, 106, 0.5);
-  height: 0rem;
-  transition: height ease-in-out 0.5s;
-}
+    .mhead-list,
+    .mhead-lists .mhead-product .mhead-child {
+      background-color: #24201d;
+    }
 
-.mhead-list,
-.mhead-lists .mhead-product .mhead-child {
-  background-color: #24201D;
-}
+    .mhead-pone {
+      max-height: 68rem;
+      transition: max-height ease-in-out 0.3s;
+      -webkit-transition: max-height ease-in-out 0.3s;
+      -moz-transition: max-height ease-in-out 0.3s;
+      overflow: hidden;
+    }
 
-.mhead-pone {
-  max-height: 68rem;
-  transition: max-height ease-in-out 0.3s;
-  -webkit-transition: max-height ease-in-out 0.3s;
-  -moz-transition: max-height ease-in-out 0.3s;
-  overflow: hidden;
-}
+    .mhead-pones {
+      max-height: 0;
+      transition: max-height ease-in-out 0.3s;
+      -webkit-transition: max-height ease-in-out 0.3s;
+      -moz-transition: max-height ease-in-out 0.3s;
+      overflow: hidden;
+    }
 
-.mhead-pones {
-  max-height: 0;
-  transition: max-height ease-in-out 0.3s;
-  -webkit-transition: max-height ease-in-out 0.3s;
-  -moz-transition: max-height ease-in-out 0.3s;
-  overflow: hidden;
-}
+    .mhead-product span,
+    a {
+      font-size: 14px;
+    }
+    .mhead-cdd {
+      box-shadow: 0px 1px 0px 0px rgba(111, 106, 106, 0.5);
+      padding: 10px;
+      background-color: #24201d;
+    }
+    .mhead-cdd a {
+      font-size: 14px;
+    }
+    .mhead-chd a {
+      font-size: 14px;
+    }
+    .mhead-chd {
+      background-color: #34302f;
+      padding: 10px 20px;
+    }
 
-.mhead-product span,a{
-  font-size: 14px;
-}
-.mhead-cdd {
-  box-shadow: 0px 1px 0px 0px rgba(111, 106, 106, 0.5);
-  padding: 10px;
-  background-color: #24201D;
-}
-.mhead-cdd a{
-  font-size: 14px;
-}
-.mhead-chd a{
-  font-size: 14px;
-}
-.mhead-chd {
-  background-color: #34302F;
-  padding: 10px 20px;
-}
+    .mhead-arrow {
+      transform: rotate(-45deg);
+      transition: transform ease-in-out 0.5s;
+      float: right;
+      cursor: pointer;
+    }
 
-.mhead-arrow {
-  transform: rotate(-45deg);
-  transition: transform ease-in-out 0.5s;
-  float: right;
-  cursor: pointer;
-}
+    .mhead-arrow2 {
+      transform: rotate(133deg);
+      transition: transform ease-in-out 0.5s;
+      float: right;
+      cursor: pointer;
+    }
 
-.mhead-arrow2 {
-  transform: rotate(133deg);
-  transition: transform ease-in-out 0.5s;
-  float: right;
-  cursor: pointer;
-}
+    .mhead-arrow2::before {
+      content: "";
+      width: 10px;
+      display: inline-block;
+      height: 10px;
+      border-radius: 2px;
+      border-top: 2px solid #c5c0bf;
+      border-right: 2px solid #c5c0bf;
+    }
 
-.mhead-arrow2::before {
-  content: '';
-  width: 10px;
-  display: inline-block;
-  height: 10px;
-  border-radius: 2px;
-  border-top: 2px solid #C5C0BF;
-  border-right: 2px solid #C5C0BF;
-}
+    .mhead-arrow::before {
+      content: "";
+      width: 10px;
+      display: inline-block;
+      height: 10px;
+      border-radius: 2px;
+      border-top: 2px solid #c5c0bf;
+      border-right: 2px solid #c5c0bf;
+    }
+    .mhead-box {
+      max-height: 320px;
+      transition: max-height ease-in-out 0.3s;
+      -webkit-transition: max-height ease-in-out 0.3s;
+      -moz-transition: max-height ease-in-out 0.3s;
+      overflow: hidden;
+    }
 
-.mhead-arrow::before {
-  content: '';
-  width: 10px;
-  display: inline-block;
-  height: 10px;
-  border-radius: 2px;
-  border-top: 2px solid #C5C0BF;
-  border-right: 2px solid #C5C0BF;
-}
-.mhead-box {
-  max-height: 320px;
-  transition: max-height ease-in-out 0.3s;
-  -webkit-transition: max-height ease-in-out 0.3s;
-  -moz-transition: max-height ease-in-out 0.3s;
-  overflow: hidden;
-}
+    .mhead-boxs {
+      max-height: 0;
+    }
 
-.mhead-boxs {
-  max-height: 0;
-}
+    .mobile-head .m-login div {
+      width: 34%;
+      padding: 10px 0;
+      border-right: 1px solid #6f6a6a;
+    }
 
-.mobile-head .m-login div {
-  width: 34%;
-  padding: 10px 0;
-  border-right: 1px solid #6F6A6A;
-}
-
-.mobile-head .mr-icon {
-  display: inline-block;
-  vertical-align: middle;
-}
+    .mobile-head .mr-icon {
+      display: inline-block;
+      vertical-align: middle;
+    }
     .mobile-head .mh-top {
       padding: 0 20px;
-      background-color: #1D1716;
+      background-color: #1d1716;
       border-bottom: 1px solid rgba(220, 214, 213, 0.24);
     }
     .mobile-head .mhead-icons {
@@ -1925,385 +1966,384 @@
       transform: rotate(90deg);
       transition: transform ease-in-out 0.3s;
     }
- 
-    }
-    #app-foot {
-      #foot-free {
-        padding: 54px 0px 50px;
-        background-color: #377dff;
-        text-align: center;
-        > p {
-          // text-align: center;
-          font-size: 28px;
-          color: #ffffff;
-        }
-        > span {
-          text-align: center;
-          font-size: 14px;
-          display: block;
-          color: #ffffff;
-          margin-top: 26px;
-        }
-        > a {
-          margin: 28px auto 0px;
-          outline: none;
-          border: none;
-          display: inline-block;
-          padding: 13px 60px;
-          background-color: #ffe777;
-          font-size: 14px;
-          color: #377dff;
-          width: max-content;
-          line-height: 100%;
-        }
+  }
+  #app-foot {
+    #foot-free {
+      padding: 54px 0px 50px;
+      background-color: #377dff;
+      text-align: center;
+      > p {
+        // text-align: center;
+        font-size: 28px;
+        color: #ffffff;
       }
-      #foot-support {
-        padding: 30px 0px;
-        #wrapper {
-          width: 1100px;
-          margin: 0px auto;
-          display: flex;
-          justify-content: space-between;
-          .flex-item {
-            i {
-              vertical-align: middle;
-              font-size: 40px;
-              color: #cccccc;
-            }
-            span {
-              font-size: 14px;
-              color: #999999;
-              line-height: 18px;
-            }
+      > span {
+        text-align: center;
+        font-size: 14px;
+        display: block;
+        color: #ffffff;
+        margin-top: 26px;
+      }
+      > a {
+        margin: 28px auto 0px;
+        outline: none;
+        border: none;
+        display: inline-block;
+        padding: 13px 60px;
+        background-color: #ffe777;
+        font-size: 14px;
+        color: #377dff;
+        width: max-content;
+        line-height: 100%;
+      }
+    }
+    #foot-support {
+      padding: 30px 0px;
+      #wrapper {
+        width: 1100px;
+        margin: 0px auto;
+        display: flex;
+        justify-content: space-between;
+        .flex-item {
+          i {
+            vertical-align: middle;
+            font-size: 40px;
+            color: #cccccc;
+          }
+          span {
+            font-size: 14px;
+            color: #999999;
+            line-height: 18px;
           }
         }
       }
-      #foot-footer {
-        .footer-top {
-          // height: 340px;
-          background-color: #434343;
-          padding: 46px 0 20px 0;
-          .description {
-            width: 1200px;
-            margin: 0px auto;
-            display: flex;
-            .product {
-              width: 55%;
-              > p {
-                color: #ffffff;
-                font-size: 14px;
-                margin-bottom: 30px;
-              }
-              > div {
-                margin-right: 20px;
-                display: inline-block;
-                height: 149px;
-                vertical-align: bottom;
-                ul {
-                  span {
-                    color: #ffffff;
-                    margin-bottom: 15px;
-                    display: table;
-                    font-size: 12px;
-                  }
-                  li {
-                    font-size: 12px;
-                    margin-bottom: 15px;
-                    line-height: 100%;
-                    a {
-                      color: #999999;
-                      &:hover {
-                        color: #377dff
-                      }
+    }
+    #foot-footer {
+      .footer-top {
+        // height: 340px;
+        background-color: #434343;
+        padding: 46px 0 20px 0;
+        .description {
+          width: 1200px;
+          margin: 0px auto;
+          display: flex;
+          .product {
+            width: 55%;
+            > p {
+              color: #ffffff;
+              font-size: 14px;
+              margin-bottom: 30px;
+            }
+            > div {
+              margin-right: 20px;
+              display: inline-block;
+              height: 149px;
+              vertical-align: bottom;
+              ul {
+                span {
+                  color: #ffffff;
+                  margin-bottom: 15px;
+                  display: table;
+                  font-size: 12px;
+                }
+                li {
+                  font-size: 12px;
+                  margin-bottom: 15px;
+                  line-height: 100%;
+                  a {
+                    color: #999999;
+                    &:hover {
+                      color: #377dff;
                     }
                   }
                 }
               }
             }
-            .document {
-              width: 12%;
-              > p {
-                color: #ffffff;
-                font-size: 14px;
-                margin-bottom: 26px;
-              }
-              > a {
-                color: #ffffff;
-                display: table;
-                margin-bottom: 15px;
-                &:hover {
-                  color: #377dff
-                }
-              }
-            }
-            .contact {
-              width: 30%;
-              > span {
-                color: #ffffff;
-                display: table;
-                font-size: 14px;
-                margin-bottom: 18px;
-                &:first-of-type {
-                  margin-bottom: 30px;
-                }
-              }
-              img {
-                width: 100px;
-                height: 100px;
-              }
-            }
           }
-          .page-links {
-            width: 1200px;
-            margin: 0px auto;
-            .links-tit {
-              float: left;
-              margin-right: 30px;
-              font-size: 14px;
-              color: #FFF;
-              line-height: 16px;
-            }
-            .links-info {
-              width: auto;
-              margin-left: 86px;
-              a {
-                margin-right: 20px;
-                display: inline-block;
-                font-size: 12px;
-                color: #fff;
-                line-height: 14px;
-                &:hover {
-                  color: #377dff
-                }
-              }
-            }
-
-          }
-        }
-        .footer-bottom {
-          background-color: #1B1B1B;
-          a {
-            color: #fff;
-          }
-          ul {
-            width: 1200px;
-            margin: 0 auto;
-            padding: 31px 0px;
-            display: flex;
-            justify-content: flex-start;
+          .document {
+            width: 12%;
             > p {
-              margin-right: 20px;
-              line-height: 20px;
-              font-size: 12px;
+              color: #ffffff;
+              font-size: 14px;
+              margin-bottom: 26px;
             }
-            li {
-              line-height: 20px;
-              font-size: 12px;
-              color: #FFF;
-              margin-right: 70px;
-              cursor: pointer;
+            > a {
+              color: #ffffff;
+              display: table;
+              margin-bottom: 15px;
+              &:hover {
+                color: #377dff;
+              }
+            }
+          }
+          .contact {
+            width: 30%;
+            > span {
+              color: #ffffff;
+              display: table;
+              font-size: 14px;
+              margin-bottom: 18px;
+              &:first-of-type {
+                margin-bottom: 30px;
+              }
             }
             img {
-              vertical-align: middle;
-              margin-right: 5px
+              width: 100px;
+              height: 100px;
+            }
+          }
+        }
+        .page-links {
+          width: 1200px;
+          margin: 0px auto;
+          .links-tit {
+            float: left;
+            margin-right: 30px;
+            font-size: 14px;
+            color: #fff;
+            line-height: 16px;
+          }
+          .links-info {
+            width: auto;
+            margin-left: 86px;
+            a {
+              margin-right: 20px;
+              display: inline-block;
+              font-size: 12px;
+              color: #fff;
+              line-height: 14px;
+              &:hover {
+                color: #377dff;
+              }
+            }
+          }
+        }
+      }
+      .footer-bottom {
+        background-color: #1b1b1b;
+        a {
+          color: #fff;
+        }
+        ul {
+          width: 1200px;
+          margin: 0 auto;
+          padding: 31px 0px;
+          display: flex;
+          justify-content: flex-start;
+          > p {
+            margin-right: 20px;
+            line-height: 20px;
+            font-size: 12px;
+          }
+          li {
+            line-height: 20px;
+            font-size: 12px;
+            color: #fff;
+            margin-right: 70px;
+            cursor: pointer;
+          }
+          img {
+            vertical-align: middle;
+            margin-right: 5px;
+          }
+        }
+      }
+    }
+  }
+  .affix {
+    position: fixed;
+    right: 15px;
+    bottom: 20px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    > span {
+      width: 48px;
+      height: 48px;
+      display: block;
+      padding: 10px;
+      background: #e1e1e1 no-repeat center;
+    }
+    .registerImg {
+      // height: 100px;
+      background: url("./assets/img/app/regiterTag.png");
+      margin-bottom: 10px;
+      cursor: pointer;
+      box-shadow: 0px 2px 19px -8px rgba(239, 77, 54, 1);
+      > p {
+        font-size: 14px;
+        font-family: MicrosoftYaHei-Bold;
+        font-weight: bold;
+        color: rgba(255, 255, 255, 1);
+        line-height: 16px;
+        width: 14px;
+        padding: 9px 17px;
+      }
+    }
+    .qq {
+      position: relative;
+      background-color: #ffffff;
+      background-image: url("./assets/img/app/qq.png");
+      margin-bottom: 10px;
+      /*&:hover {
+          background: #2A99F2 url('./assets/img/app/qq-hover.png') no-repeat center;
+        }*/
+      .qq-position {
+        bottom: -48px;
+      }
+      > div {
+        position: absolute;
+        width: 0px;
+        background-color: #ffffff;
+        right: 55px;
+        top: unset;
+        transition: width 0.3s;
+        box-shadow: 0px 2px 16px -5px rgba(130, 130, 130, 0.5);
+        border-radius: 10px;
+      }
+      & > a {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+      .wrapper {
+        width: 200px;
+        right: 0px;
+        top: 0px;
+        > div {
+          padding: 20px 20px 10px;
+          > span {
+            font-size: 12px;
+            font-family: MicrosoftYaHei;
+            color: rgba(102, 102, 102, 1);
+            line-height: 16px;
+            &.title {
+              color: rgba(29, 23, 22, 1);
+              font-size: 14px;
+              span {
+                font-family: MicrosoftYaHei-Bold;
+                font-weight: bold;
+              }
+            }
+          }
+          .info-wrapper {
+            margin-top: 10px;
+            > div {
+              margin-bottom: 5px;
+              width: 50%;
+              display: inline-block;
+              img {
+                vertical-align: middle;
+              }
+              span {
+                vertical-align: middle;
+                width: 56px;
+                display: inline-block;
+              }
             }
           }
         }
       }
     }
-    .affix {
-      position: fixed;
-      right: 15px;
-      bottom: 20px;
-      z-index: 100;
-      display: flex;
-      flex-direction: column;
-      > span {
-        width: 48px;
-        height: 48px;
-        display: block;
-        padding: 10px;
-        background: #E1E1E1 no-repeat center;
-      }
-      .registerImg {
-        // height: 100px;
-        background: url('./assets/img/app/regiterTag.png');
-        margin-bottom: 10px;
-        cursor: pointer;
-        box-shadow: 0px 2px 19px -8px rgba(239,77,54,1);
-        >p{
-          font-size:14px;
-          font-family:MicrosoftYaHei-Bold;
-          font-weight:bold;
-          color:rgba(255,255,255,1);
-          line-height:16px;
-          width: 14px;
-          padding: 9px 17px;
-        }
-      }
-      .qq {
-        position: relative;
-        background-color: #ffffff;
-        background-image: url('./assets/img/app/qq.png');
-        margin-bottom: 10px;
-        /*&:hover {
-          background: #2A99F2 url('./assets/img/app/qq-hover.png') no-repeat center;
-        }*/
-        .qq-position {
-          bottom:-48px;
-        }
-        > div {
-          position: absolute;
-          width: 0px;
-          background-color: #ffffff;
-          right: 55px;
-          top: unset;
-          transition: width .3s;
-          box-shadow:0px 2px 16px -5px rgba(130,130,130,0.5);
-          border-radius:10px;
-        }
-        & > a {
-          width: 100%;
-          height: 100%;
-          display: block;
-        }
-        .wrapper {
-          width: 200px;
-          right: 0px;
-          top: 0px;
-          > div {
-            padding: 20px 20px 10px;
-            > span {
-              font-size: 12px;
-              font-family: MicrosoftYaHei;
-              color: rgba(102, 102, 102, 1);
-              line-height: 16px;
-              &.title {
-                color: rgba(29, 23, 22, 1);
-                font-size: 14px;
-                span{
-                  font-family:MicrosoftYaHei-Bold;
-                  font-weight:bold;
-                }
-              }
-            }
-            .info-wrapper {
-              margin-top: 10px;
-              > div {
-                margin-bottom: 5px;
-                width: 50%;
-                display: inline-block;
-                img {
-                  vertical-align: middle;
-                }
-                span {
-                  vertical-align: middle;
-                  width: 56px;
-                  display: inline-block;
-                }
-              }
-            }
-          }
-        }
-      }
-      .service {
-        width: 48px;
-        height: 48px;
-        display: block;
-        padding: 10px;
-        background: #E1E1E1;
+    .service {
+      width: 48px;
+      height: 48px;
+      display: block;
+      padding: 10px;
+      background: #e1e1e1;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-image: url("./assets/img/app/customer-service-gray.png");
+      &:hover {
+        background: #2a99f2;
         background-repeat: no-repeat;
         background-position: center;
-        background-image: url('./assets/img/app/customer-service-gray.png');
-        &:hover {
-          background: #2A99F2;
-          background-repeat: no-repeat;
-          background-position: center;
-          background-image: url('./assets/img/app/customer-service-white.png');
-        }
-        & > a {
-          width: 100%;
-          height: 100%;
-          display: block;
-        }
+        background-image: url("./assets/img/app/customer-service-white.png");
       }
-      .phone {
-        width: 48px;
-        height: 48px;
+      & > a {
+        width: 100%;
+        height: 100%;
         display: block;
-        padding: 10px;
-        background: #FFF;
-        position: relative;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-image: url('./assets/img/app/phone.png');
-        cursor: pointer;
-        margin-bottom: 10px;
-        /*&:hover {
+      }
+    }
+    .phone {
+      width: 48px;
+      height: 48px;
+      display: block;
+      padding: 10px;
+      background: #fff;
+      position: relative;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-image: url("./assets/img/app/phone.png");
+      cursor: pointer;
+      margin-bottom: 10px;
+      /*&:hover {
           background: #2A99F2;
           background-repeat: no-repeat;
           background-position: center;
           background-image: url('./assets/img/app/phone-hover.png');
         }*/
+      > div {
+        position: absolute;
+        width: 0px;
+        background-color: #ffffff;
+        right: 55px;
+        top: unset;
+        transition: width 0.3s;
+        box-shadow: 0px 2px 16px -5px rgba(130, 130, 130, 0.5);
+        border-radius: 15px;
+      }
+      .wrapper {
+        width: 95px;
+        right: 0px;
+        top: 0px;
         > div {
-          position: absolute;
-          width: 0px;
-          background-color: #ffffff;
-          right: 55px;
-          top: unset;
-          transition: width .3s;
-          box-shadow:0px 2px 16px -5px rgba(130,130,130,0.5);
-          border-radius:15px;
-        }
-        .wrapper {
-          width: 95px;
-          right: 0px;
-          top: 0px;
-          > div {
-            padding: 10px ;
-            > span {
-              font-size: 12px;
-              font-family: MicrosoftYaHei;
-              color: rgba(102, 102, 102, 1);
-              line-height: 16px;
-              &.title {
-                color:#333333;
-                font-size: 14px;
-              }
+          padding: 10px;
+          > span {
+            font-size: 12px;
+            font-family: MicrosoftYaHei;
+            color: rgba(102, 102, 102, 1);
+            line-height: 16px;
+            &.title {
+              color: #333333;
+              font-size: 14px;
             }
           }
         }
       }
-      .topLink {
-        display: block;
-        width: 48px;
-        height: 48px;
-        box-shadow: 0px 2px 16px -5px rgba(255,98,75,1);
-        background: #FF624B url(./assets/img/app/top.png) no-repeat center;
-      }
     }
-    .backtop {
+    .topLink {
+      display: block;
       width: 48px;
-      background: #E1E1E1 no-repeat center;
-      color: #6a6a6a;
-      text-align: center;
-      &:hover {
-        background: #2A99F2;
-        color: #fff;
-      }
+      height: 48px;
+      box-shadow: 0px 2px 16px -5px rgba(255, 98, 75, 1);
+      background: #ff624b url(./assets/img/app/top.png) no-repeat center;
     }
-}.bottom .bottom-register {
-  background-color: #FF7F4B;
+  }
+  .backtop {
+    width: 48px;
+    background: #e1e1e1 no-repeat center;
+    color: #6a6a6a;
+    text-align: center;
+    &:hover {
+      background: #2a99f2;
+      color: #fff;
+    }
+  }
+}
+.bottom .bottom-register {
+  background-color: #ff7f4b;
   text-align: center;
   padding: 36px 0 0 0;
 }
-.bottom .bottom-register .br-bg{
+.bottom .bottom-register .br-bg {
   max-width: 1920px;
-  background: url('./assets/img/home/bottom-bg.png') no-repeat top center;
+  background: url("./assets/img/home/bottom-bg.png") no-repeat top center;
   background-size: 100%;
   height: 146px;
 }
-.bottom .bottom-register .br-bg .box{
+.bottom .bottom-register .br-bg .box {
   max-width: 1200px;
   margin: 0 auto;
   text-align: center;
@@ -2317,9 +2357,9 @@
 
 .bottom .bottom-register .bottom-button {
   padding: 9px 50px 9px 50px;
-  border: 1px solid #FFFFFF;
+  border: 1px solid #ffffff;
   border-radius: 4px;
-  color: #FFFFFF;
+  color: #ffffff;
   display: inline-block;
   font-size: 18px;
   margin: 36px 0 0 0;
@@ -2327,12 +2367,12 @@
 }
 
 .bottom .bottom-support {
-  background-color: #1C1A1E;
+  background-color: #1c1a1e;
   padding: 20px 118px 20px 120px;
   box-shadow: -3px 3px 8px 2px rgba(0, 0, 0, 0.5);
-  transform: translate3d(0,0,0);
+  transform: translate3d(0, 0, 0);
 }
-.bottom .bottom-support .bottom-box{
+.bottom .bottom-support .bottom-box {
   max-width: 1200px;
   margin: 0 auto;
   display: flex;
@@ -2342,12 +2382,12 @@
 .bottom .bottom-support .support {
   display: flex;
   justify-content: space-between;
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: 14px;
 }
 
 .bottom .bottom-black {
-  background-color: #1E1B1A;
+  background-color: #1e1b1a;
   padding: 40px 0 60px 0;
 }
 
@@ -2377,7 +2417,7 @@
 }
 .bottom .bottom-black .bottom-product .cloud-product-bg .bg .bg-content {
   border-top: 1px solid #666666;
-  color: #C8C8C8;
+  color: #c8c8c8;
   padding-top: 21px;
   flex-wrap: wrap;
   display: flex;
@@ -2395,7 +2435,7 @@
   line-height: 33px;
   margin-right: 30px;
 }
-.bottom .bottom-black .bottom-product .cloud-product-bg .bg .bg-content p span{
+.bottom .bottom-black .bottom-product .cloud-product-bg .bg .bg-content p span {
   font-size: 12px;
   color: #999999;
 }
@@ -2404,18 +2444,37 @@
   font-size: 12px;
 }
 
-.bottom .bottom-black .bottom-product .cloud-product-bg .bg .bg-content .p_true {
+.bottom
+  .bottom-black
+  .bottom-product
+  .cloud-product-bg
+  .bg
+  .bg-content
+  .p_true {
   cursor: pointer;
 }
 
-.bottom .bottom-black .bottom-product .cloud-product-bg .bg .bg-content .p_true a:hover {
-  color: #FF624B;
+.bottom
+  .bottom-black
+  .bottom-product
+  .cloud-product-bg
+  .bg
+  .bg-content
+  .p_true
+  a:hover {
+  color: #ff624b;
 }
 
-.bottom .bottom-black .bottom-product .cloud-product-bg .bg .bg-content .p_false {
+.bottom
+  .bottom-black
+  .bottom-product
+  .cloud-product-bg
+  .bg
+  .bg-content
+  .p_false {
   cursor: default;
 }
-.bottom .bottom-black .bottom-product .bc-box{
+.bottom .bottom-black .bottom-product .bc-box {
   display: flex;
 }
 .bottom .bottom-black .bottom-product .friendship {
@@ -2431,159 +2490,155 @@
   line-height: 20px;
 }
 .bottom .bottom-black .bottom-product .friendship span:nth-child(1) {
-  color: #FFF;
+  color: #fff;
   font-size: 18px;
   font-weight: 500;
   margin-left: 0;
 }
-.bottom .bottom-black .bottom-product .share{
+.bottom .bottom-black .bottom-product .share {
   width: 21%;
   margin: 47px 0 0 0;
-  position:relative;
+  position: relative;
 }
-.bottom .bottom-black .bottom-product .share span{
+.bottom .bottom-black .bottom-product .share span {
   font-size: 14px;
   color: #fff;
   vertical-align: middle;
 }
-.bottom .bottom-black .bottom-product .friendship span a{
+.bottom .bottom-black .bottom-product .friendship span a {
   font-size: 14px;
   color: #999;
   vertical-align: middle;
   margin-right: 5px;
 }
-.bottom .bottom-black .bottom-product .share div{
+.bottom .bottom-black .bottom-product .share div {
   display: inline-block;
   vertical-align: middle;
 }
-.bottom .bottom-black .bottom-product .share div img{
+.bottom .bottom-black .bottom-product .share div img {
   cursor: pointer;
   margin-right: 20px;
 }
 
-
 .bottom .bottom-black .bottom-product .friendship span:nth-child(1) {
-  color: #FFF;
+  color: #fff;
   font-size: 18px;
   font-weight: 500;
   margin-left: 0;
 }
 
 .bottom .bottom-info {
-  background-color: #0B0605;
- 
+  background-color: #0b0605;
+
   padding: 20px 0;
 }
-.bottom .bottom-info .bi-box{
+.bottom .bottom-info .bi-box {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
   max-width: 1200px;
-  margin:0 auto;
+  margin: 0 auto;
 }
-.bottom .bottom-info .support a{
-  color: #FFFFFF;
+.bottom .bottom-info .support a {
+  color: #ffffff;
   font-size: 14px;
 }
 
 .m-bottom {
-    display: none;
+  display: none;
 }
 
 .m-bottom img {
-    width: 100%;
-    height: 100%;
-    font-family: MicrosoftYaHei;
+  width: 100%;
+  height: 100%;
+  font-family: MicrosoftYaHei;
 }
 
 .m-bottom .m-register {
-    background-color: #FF624B;
-    text-align: center;
-    color: #fff;
-    padding: 0.7rem 0;
+  background-color: #ff624b;
+  text-align: center;
+  color: #fff;
+  padding: 0.7rem 0;
 }
 
 .m-bottom .m-register p {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 .m-bottom .m-register .m-button {
-    margin-top: 13px;
-    border: 1px solid #fff;
-    padding: 7px 25px;
-    font-size: 14px;
-    display: inline-block;
-    border-radius: 2px;
-    color: #fff;
+  margin-top: 13px;
+  border: 1px solid #fff;
+  padding: 7px 25px;
+  font-size: 14px;
+  display: inline-block;
+  border-radius: 2px;
+  color: #fff;
 }
 
 .m-bottom .m-we {
-    background-color: #1E1B1A;
-    padding: 20px;
+  background-color: #1e1b1a;
+  padding: 20px;
 }
 
 .m-bottom .m-we .mwe-text {
-    display: flex;
-    justify-content: space-around;
-    max-width: 528px;
-    margin: 0 auto;
+  display: flex;
+  justify-content: space-around;
+  max-width: 528px;
+  margin: 0 auto;
 }
 
 .m-bottom .m-we .mwe-text .mwe-left {
-    color: #fff;
-    font-size: 14px;
-    text-align: center;
+  color: #fff;
+  font-size: 14px;
+  text-align: center;
 }
 
 .m-bottom .m-we .mwe-text .mwe-left .mwe-img {
-    width: 95px;
-    height: 90px;
-    display: inline-block;
+  width: 95px;
+  height: 90px;
+  display: inline-block;
 }
 
 .m-bottom .m-we .mwe-text .mwe-right {
-    margin-left: 20px;
+  margin-left: 20px;
 }
 
 .m-bottom .m-we .mwe-text .mwe-right p:nth-child(1) {
-    font-size: 18px;
+  font-size: 18px;
 }
 
 .m-bottom .m-we .mwe-text .mwe-right p:nth-child(2) {
-    color: #FF624B;
-    font-size: 24px;
+  color: #ff624b;
+  font-size: 24px;
 }
 
 .m-bottom .m-we .mwe-text .mwe-right p {
-    color: #fff;
-    font-size: 14px;
-    margin-top: 7px;
+  color: #fff;
+  font-size: 14px;
+  margin-top: 7px;
 }
 
 .m-bottom .mb-text {
-    background-color: #0B0605;
-    padding: 11px 0;
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 12px;
-    text-align: center;
+  background-color: #0b0605;
+  padding: 11px 0;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  text-align: center;
 }
-.m-bottom .mb-text a{
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 12px;
-  }
+.m-bottom .mb-text a {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+}
 .m-bottom .mb-text .mb-top {
-    margin-bottom: 11px;
+  margin-bottom: 11px;
 }
 
 .m-bottom .mb-text .mb-top .mb-img {
-    width: 10px;
-    height: 10px;
-    vertical-align: top;
-    display: inline-block;
+  width: 10px;
+  height: 10px;
+  vertical-align: top;
+  display: inline-block;
 }
-
-
-
 
 ul li {
   list-style: none;
@@ -2598,62 +2653,176 @@ span {
   font-family: "pingfang sc medium", Microsoft YaHei;
 }
 
-@media only screen and (max-width:1366px) {
+.ph-left .ph-gg {
+  background: url('./assets/img/home/noteic.png');
+  background-size: 100%;
+  text-align: center;
+  cursor: pointer;
+  text-align: center;
+  height: 170px;
+}
+
+.ph-left .ph-gg h3 {
+  font-size: 32px;
+  color: #FFFFFF;
+  font-weight: bold;
+  display: inline-block;
+  padding: 8px 0;
+  margin-top: 28px;
+  margin-bottom: 18px;
+}
+
+.ph-left .ph-gg .ph-button{
+  display: inline-block;
+  width: 132px;
+  height: 44px;
+  line-height: 44px;
+  color: #FF624B;
+  font-size: 22px;
+  background-color: #FCECE0;
+  box-shadow:0px 11px 18px -6px rgba(161,38,20,0.75);
+}
+
+.ph-left .ph-cs {
+  background-color: #FFFFFF;
+  height: 40px;
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: 10px;
+  padding: 7px 0;
+  box-shadow: 0px 2px 16px -5px rgba(130, 130, 130, 0.5);
+  transition: all ease-in-out 0.2s;
+  position: relative;
+  box-sizing: border-box;
+}
+.ph-left .ph-cs >img,.ph-left .ph-cs >span{
+  vertical-align: middle;
+  font-size: 18px;
+  color: #4F1B1B;
+}
+.ph-left {
+  position: fixed;
+  right: 0;
+  bottom: 14%;
+  z-index: 999;
+  margin-right: 5px;
+  width: 150px;
+}
+.ph-cs:hover > .ph-connect{
+  width: 210px;
+}
+.cc-title{
+  font-size: 14px;
+  color: #1D1716;
+  line-height: normal;
+}
+.ph-connect{
+  background: #ffffff;
+  width: 0;
+  position: absolute;
+  right: 148px;
+  top: 0;
+  transition: width 0.3s ;
+  overflow: hidden;
+  border-radius:15px 0px 15px 15px;
+  box-shadow:0px 2px 16px -2px rgba(130,130,130,0.5);
+  color: #514644;
+  font-size: 12px;
+}
+
+.ivu-tooltip-inner {
+  min-height: 22px!important;
+  padding: 2px 12px!important;
+}
+
+.info-wrapper{
+  line-height: normal;
+  clear: left;
+  width: 200px;
+}
+.q-tile{
+  font-size: 14px;
+  color: #1D1716;
+  float: left;
+  margin-bottom: 6px;
+  line-height: normal;
+}
+.info-wrapper > div {
+  margin-bottom: 5px;
+  width: 50%;
+  display: inline-block;
+  line-height: normal;
+  text-align: left;
+}
+
+.info-wrapper > div  img{
+  vertical-align: middle;
+}
+.info-wrapper > div  span{
+  vertical-align: middle;
+  width: 56px;
+  display: inline-block;
+}
+
+
+@media only screen and (max-width: 1366px) {
   .m-bottom {
     display: none;
   }
-  
 }
 
-@media only screen and (max-width:1023px) {
- #front .ivu-input{
-    border: 1px solid rgba(96,87,86,1);
-    background-color: rgba(29,23,22,1);
+@media only screen and (max-width: 1023px) {
+  #front .ivu-input {
+    border: 1px solid rgba(96, 87, 86, 1);
+    background-color: rgba(29, 23, 22, 1);
   }
-  #foot-footer{
+  #foot-footer {
     display: none;
   }
   .bottom {
     display: none;
   }
-
-.m-bottom {
-        display: block;
-    }
-
- #front header .pc-top {
+   .ph-left {
     display: none;
   }
 
- #front header .m-head {
+  .m-bottom {
     display: block;
   }
 
- #front header .mp-pro {
+  #front header .pc-top {
+    display: none;
+  }
+
+  #front header .m-head {
+    display: block;
+  }
+
+  #front header .mp-pro {
     display: block;
     padding-top: 30px;
-    background-color: #F8F7F7;
+    background-color: #f8f7f7;
   }
 
- #front header .m-product {
+  #front header .m-product {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
   }
 
- #front header  .m-product div {
+  #front header .m-product div {
     width: 44%;
     height: 44px;
     line-height: 44px;
     text-align: center;
-    background-color: #F8F7F7;
-    border: 1px solid #DCD6D5;
-    color: #1D1716;
+    background-color: #f8f7f7;
+    border: 1px solid #dcd6d5;
+    color: #1d1716;
     font-size: 14px;
     border-radius: 4px;
     margin: 0 10px 10px 0;
   }
-  #front header .m-bottom{
+  #front header .m-bottom {
     display: block;
   }
   #front header .mobile-head .mobile-logo {
@@ -2662,57 +2831,63 @@ span {
   }
 }
 
-@media only screen and (min-width:1024px)and (max-width:1365px) {
-
+@media only screen and (min-width: 1024px) and (max-width: 1365px) {
   // .ivu-input{
   //   border: 1px solid rgba(96,87,86,1);
   //   background-color: rgba(29,23,22,1);
   // }
- #front header .m-head {
+   .ph-left {
+    display: none;
+  }
+  #front header .m-head {
     display: block;
   }
 
- #front header .m-product {
+  #front header .m-product {
     display: flex;
     flex-wrap: wrap;
   }
-#front header  .m-product div{
+  #front header .m-product div {
     width: 31%;
     height: 44px;
     line-height: 44px;
   }
- #front header .pc-top {
+  #front header .pc-top {
     display: none;
   }
- #front header .m-bottom {
+  #front header .m-bottom {
     display: block;
   }
 
- #front header .bottom {
+  #front header .bottom {
     display: none;
   }
 
- #front header .mp-pro {
+  #front header .mp-pro {
     display: block;
   }
-.m-bottom {
-        display: block;
-    }
-
+  .m-bottom {
+    display: block;
+  }
 }
 .showweixinpic {
-    position: absolute;
-    top: 40px;
-    left: 109px;
-    width: 100px;
-    height: 100px;
-  }
-@media only screen and (max-width:640px) {
+  position: absolute;
+  top: 40px;
+  left: 109px;
+  width: 100px;
+  height: 100px;
+}
+@media only screen and (max-width: 640px) {
   #front .affix > .mobileq {
     display: none;
   }
   .mobileq {
     display: none;
   }
+   .ph-left {
+    display: none;
+  }
 }
+
+
 </style>
