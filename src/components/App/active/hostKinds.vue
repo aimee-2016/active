@@ -2291,7 +2291,20 @@ export default {
           this.$Message.info('可用余额不足')
         } else {
           this.showModal.orderConfirmationModal = false
-          this.getFreeHost()
+          this.$http.get('zfb/getzfbinfo.do', {
+              params: {
+                total_fee: this.cashPledge
+              }
+            }).then(res => {
+              if (res.data.status == 1 && res.status == 200) {
+                this.serialNum = res.data.serialNum
+                this.getFreeHost()
+              } else {
+                this.$message.info({
+                  content: res.data.message
+                })
+              }
+            })
         }
       } else {
         switch (this.otherPayWay) {
@@ -2310,7 +2323,6 @@ export default {
                 this.serialNum = res.data.serialNum
                 localStorage.setItem('serialNum', this.serialNum)
                 window.open(null,'alipay').location.href = `https://kfifa.xrcloud.net/zfb/alipaypage.do?serialNum=${this.serialNum}&route=rechargeResult`
-               
                 this.showModal.rechargeHintzfb = true
               } else {
                 this.$message.info({
@@ -2392,7 +2404,8 @@ export default {
         params = {
           vmConfigId: this.orderData[0].post.id,
           dbVersion: this.orderData[0].system[0],
-          defzoneid: this.orderData[0].zoneId
+          defzoneid: this.orderData[0].zoneId,
+          serialNum: this.serialNum
         }
         text = '云数据库'
         pushurl = 'clouddatabase'
@@ -2401,7 +2414,8 @@ export default {
         params = {
           vmConfigId: this.orderData[0].post.id,
           osType: this.orderData[0].system[1],
-          defzoneid: this.orderData[0].zoneId
+          defzoneid: this.orderData[0].zoneId,
+          serialNum: this.serialNum
         }
         text = 'GPU服务器'
         pushurl = 'gpulist'
@@ -2410,7 +2424,8 @@ export default {
         params = {
           vmConfigId: this.orderData[0].post.id,
           osType: this.orderData[0].system[1],
-          defzoneid: this.orderData[0].zoneId
+          defzoneid: this.orderData[0].zoneId,
+          serialNum: this.serialNum
         }
         text = '云服务器'
         pushurl = 'host'
