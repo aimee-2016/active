@@ -1,5 +1,9 @@
 <template>
   <div>
+    <Spin fix v-show="loading">
+      <Icon type="load-c" size=18 class="demo-spin-icon-load"></Icon>
+      <div>{{loadingMessage}}</div>
+    </Spin>
     <div class="free-host">
       <div class="wrap">
         <img class="pc" src="../../../assets/img/active/freeToReceive.1/free-host-text.png" />
@@ -924,6 +928,21 @@
         <Button type="primary" @click="showModal.qrCode = false">确定</Button>
       </div>
     </Modal>
+    <Modal v-model="showModal.rechargeHintzfb" :scrollable="true" :closable="false" :width="390">
+      <p slot="header" class="modal-header-border">
+        <Icon type="android-alert" class="yellow f24 mr10" style="font-size: 20px"></Icon>
+        <span class="universal-modal-title">提示</span>
+      </p>
+      <div class="modal-content-s">
+        <div>
+          <p class="lh24">请您在新打开的页面进行支付，支付完成前请不要关闭此窗口。</p>
+        </div>
+      </div>
+      <p slot="footer" class="modal-footer-s">
+        <Button @click="showModal.rechargeHintzfb = false">支付遇到问题</Button>
+        <Button type="primary" @click="isPayzfb">支付完成</Button>
+      </p>
+    </Modal>
   </div>
 </template>
 
@@ -982,6 +1001,7 @@ export default {
         ruleHost: false,
         dayHost: false,
         ruleCoupon: false,
+        rechargeHintzfb: false
       },
       hintMsg: '',
       qrConfig: {
@@ -1781,6 +1801,9 @@ export default {
       selectedSSD: 0,
       count: 1,
       // 结束
+      loading: false,
+      loadingMessage: '',
+      serialNum: ''
     }
   },
   created () {
@@ -2268,7 +2291,20 @@ export default {
           this.$Message.info('可用余额不足')
         } else {
           this.showModal.orderConfirmationModal = false
-          this.getFreeHost()
+          this.$http.get('zfb/getzfbinfo.do', {
+              params: {
+                total_fee: this.cashPledge
+              }
+            }).then(res => {
+              if (res.data.status == 1 && res.status == 200) {
+                this.serialNum = res.data.serialNum
+                this.getFreeHost()
+              } else {
+                this.$message.info({
+                  content: res.data.message
+                })
+              }
+            })
         }
       } else {
         switch (this.otherPayWay) {
@@ -2276,21 +2312,26 @@ export default {
             this.$Message.info('请选择一个支付方式')
             break
           case 'zfb':
-            window.open(`/zfb/alipayapi.do?total_fee=${this.cashPledge}`)
-            this.pageTimer = setInterval(() => {
-              axios.get('activity/compareForMoney.do', {
-                params: { freezeMoney: this.cashPledge }
-              }).then(val => {
-                if (val.data.status == 1) {
-                  this.showModal.orderConfirmationModal = false
-                  clearInterval(this.pageTimer)
-                  this.showModal.paySuccessModal = true
-                }
-              })
-            }, 2000)
+          window.open("about:blank","alipay")
+            this.$http.get('zfb/getzfbinfo.do', {
+              params: {
+                total_fee: this.cashPledge
+              }
+            }).then(res => {
+              if (res.data.status == 1 && res.status == 200) {
+                this.showModal.orderConfirmationModal = false
+                this.serialNum = res.data.serialNum
+                localStorage.setItem('serialNum', this.serialNum)
+                window.open(null,'alipay').location.href = `https://kfifa.xrcloud.net/zfb/alipaypage.do?serialNum=${this.serialNum}&route=rechargeResult`
+                this.showModal.rechargeHintzfb = true
+              } else {
+                this.$message.info({
+                  content: res.data.message
+                })
+              }
+            })
             break
           case 'wx':
-            clearInterval(this.pageTimer)
             axios.get('wx/wxpayapi.do', {
               params: {
                 total_fee: this.cashPledge
@@ -2325,6 +2366,26 @@ export default {
         }
       })
     },
+    isPayzfb() {
+        this.showModal.rechargeHintzfb = false
+        this.loading = true
+        this.loadingMessage = '正在支付，请稍后...'
+        this.$http.get('user/payStatus.do', {
+          params: {
+            serialNum: this.serialNum
+          }
+        }).then(response => {
+          if (response.status == 200 && response.data.status == 1) {
+            this.loading = false
+            this.showModal.paySuccessModal = true
+          } else {
+            this.loading = false;
+            this.$message.info({
+              content: response.data.message
+            })
+          }
+        })
+      },
     payWayChange () {
       if (this.payWay == 'otherPay' && this.otherPayWay == '') {
         this.otherPayWay = 'zfb'
@@ -2343,7 +2404,8 @@ export default {
         params = {
           vmConfigId: this.orderData[0].post.id,
           dbVersion: this.orderData[0].system[0],
-          defzoneid: this.orderData[0].zoneId
+          defzoneid: this.orderData[0].zoneId,
+          serialNum: this.serialNum
         }
         text = '云数据库'
         pushurl = 'clouddatabase'
@@ -2352,7 +2414,8 @@ export default {
         params = {
           vmConfigId: this.orderData[0].post.id,
           osType: this.orderData[0].system[1],
-          defzoneid: this.orderData[0].zoneId
+          defzoneid: this.orderData[0].zoneId,
+          serialNum: this.serialNum
         }
         text = 'GPU服务器'
         pushurl = 'gpulist'
@@ -2361,7 +2424,8 @@ export default {
         params = {
           vmConfigId: this.orderData[0].post.id,
           osType: this.orderData[0].system[1],
-          defzoneid: this.orderData[0].zoneId
+          defzoneid: this.orderData[0].zoneId,
+          serialNum: this.serialNum
         }
         text = '云服务器'
         pushurl = 'host'
