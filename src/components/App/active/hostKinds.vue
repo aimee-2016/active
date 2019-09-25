@@ -2006,8 +2006,7 @@ export default {
           if (!this.userInfo.phone) {
             this.showModal.cashverification = true
           } else {
-            this.showModal.qrCode = true
-            this.refreshUserStatus()
+            this.refreshQRFirst()
           }
           return
           // this.$message.confirm({
@@ -2197,6 +2196,28 @@ export default {
         }
       })
     },
+    refreshQRFirst() {
+      this.tempCode = this.uuid(6, 16)
+      let url = '/faceRecognition/getUserInfoByPcQRCode.do'
+      let config1 = {
+        phone: this.userInfo.phone ? this.userInfo.phone : this.formCustom.VerificationPhone,
+      }
+      let params = {
+        faceType: '1',
+        tempCode: this.tempCode
+      }
+      params.config = JSON.stringify(config1)
+      axios.post(url, params).then(res => {
+        if (res.status == 200 && res.data.status == 1) {
+          this.refreshUserStatus()
+          this.showModal.qrCode = true
+          this.qrConfig.value = res.data.result.url
+          this.codeLoseEfficacy = ''
+        } else {
+          this.codeLoseEfficacy = 'lose'
+        }
+      })
+    },
     pushOrderD (item, type) {
       if (!this.$store.state.userInfo) {
         if (type == 'p') {
@@ -2211,8 +2232,7 @@ export default {
           if (!this.userInfo.phone) {
             this.showModal.cashverification = true
           } else {
-            this.showModal.qrCode = true
-            this.refreshUserStatus()
+            this.refreshQRFirst()
           }
           return
           // this.$message.confirm({
