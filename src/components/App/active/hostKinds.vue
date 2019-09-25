@@ -2291,20 +2291,8 @@ export default {
           this.$Message.info('可用余额不足')
         } else {
           this.showModal.orderConfirmationModal = false
-          this.$http.get('zfb/getzfbinfo.do', {
-              params: {
-                total_fee: this.cashPledge
-              }
-            }).then(res => {
-              if (res.data.status == 1 && res.status == 200) {
-                this.serialNum = res.data.serialNum
-                this.getFreeHost()
-              } else {
-                this.$message.info({
-                  content: res.data.message
-                })
-              }
-            })
+          this.serialNum = ''
+          this.getFreeHost()
         }
       } else {
         switch (this.otherPayWay) {
