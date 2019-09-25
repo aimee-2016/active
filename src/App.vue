@@ -463,7 +463,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="mhead-product">
+                    <!-- <div class="mhead-product">
                         <div style="padding: 10px 10px;" @click='getSelectDown(1)'>
                             <span>域名与备案</span>
                             <span class="active mhead-arrow2"></span>
@@ -484,7 +484,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <!-- <div class="mhead-product">
                         <div style="padding: 10px 10px;">
                             <span>解决方案</span>
