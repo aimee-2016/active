@@ -2407,6 +2407,8 @@ span {
   line-height: normal;
   clear: left;
   width: 200px;
+  display: flex;
+  flex-wrap: wrap;
 }
 .q-tile{
   font-size: 14px;
