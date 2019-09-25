@@ -904,7 +904,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="ph-cs" @click="showModal.complaintModal = true">
+                <div class="ph-cs" @click="getOrderType">
                     <img class="bo-black" src="./assets/img/home/icon-bookb.png">
                     <span>反馈意见</span>
                 </div>
