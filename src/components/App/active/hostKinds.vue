@@ -405,7 +405,7 @@
                       v-for="(item,index) in hostZoneList"
                       :key="index"
                       :class="{'selected':selectZone==item.zoneid}"
-                      @click="changzone(item.zoneid,item.zonename)"
+                      @click="changzone(item,item.zonename)"
                     >{{item.zonename}}</li>
                   </ul>
                 </div>
@@ -416,7 +416,7 @@
                       v-for="(item,index) in gpuZoneList"
                       :key="index"
                       :class="{'selected':selectZone==item.zoneid}"
-                      @click="changzone(item.zoneid)"
+                      @click="changzone(item)"
                     >{{item.zonename}}</li>
                   </ul>
                 </div>
@@ -1939,10 +1939,16 @@ export default {
         systemType = 'window'
         showName = 'templatedescript'
       }
+      let params = {
+        zoneId: item.zoneId,
+      }
+      if(item.post.servicetype=='G5500'){
+        params.user = '0'
+        params.gpu ='1',
+        params.normalTemplate ="0"
+      }  
       axios.get(url, {
-        params: {
-          zoneId: item.zoneId,
-        }
+        params
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
           var x
@@ -2143,10 +2149,16 @@ export default {
         systemType = 'window'
         showName = 'templatedescript'
       }
+      let params = {
+        zoneId: item.zoneId,
+      }
+      if(item.post.servicetype=='G5500'){
+        params.user = '0'
+        params.gpu ='1',
+        params.normalTemplate ="0"
+      }  
       axios.get(url, {
-        params: {
-          zoneId: item.zoneId,
-        }
+        params
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
           var x
@@ -2569,10 +2581,8 @@ export default {
       let originLength = this.configLength
       this.configLength = config.split(',').length
       this.selectConfig = config
-      // console.log(this.hostZoneList)
       if (this.configLength != originLength) {
-        // console.log('进入2')
-        this.changzone(this.hostZoneList[0].zoneid)
+        this.changzone(this.hostZoneList[0])
       }
     },
     changConfigGPU (config) {
@@ -2580,13 +2590,12 @@ export default {
       this.configLength = config.split(',').length
       this.selectConfig = config
       if (this.configLength != originLength) {
-        // console.log('进入3')
-        this.changzone(this.gpuZoneList[0].zoneid)
+        this.changzone(this.gpuZoneList[0])
       }
     },
-    changzone (zoneid,name) {
-      this.selectZone = zoneid
-      this.setTemplateHost(zoneid)
+    changzone (item,name) {
+      this.selectZone = item.zoneid
+      this.setTemplateHost(item)
       if(name == '北方一区') {
         this.hideconfig = true
       } else {
@@ -2602,7 +2611,7 @@ export default {
           this.gpuZoneList = res.data.result.filter(item => {
             return item.gpuserver == 1
           })
-          this.changzone(this.hostZoneList[0].zoneid)
+          this.changzone(this.hostZoneList[0])
           this.queryCustomVM()
           this.queryDiskPrice()
           this.queryIPPrice()
@@ -2684,7 +2693,6 @@ export default {
       })
     },
     pushOrderGpu (type) {
-      console.log(type)
       if (!this.$store.state.userInfo) {
         if (type == 'p') {
           this.$LR({ type: 'register' })
@@ -2767,11 +2775,17 @@ export default {
         }
       })
     },
-    setTemplateHost (zoneId) {
+    setTemplateHost (item) {
+      let params = {
+        zoneId: item.zoneid,
+      }
+      if(item.gpuserver == 1){
+        params.user = '0'
+        params.gpu ='1',
+        params.normalTemplate ="0"
+      }  
       axios.get('information/listTemplates.do', {
-        params: {
-          zoneId: zoneId,
-        }
+        params
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
           var obj = this.cascaderSystemM(res.data.result, this.summarySystemList, this.selectSummarySystem)
