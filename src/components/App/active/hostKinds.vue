@@ -146,7 +146,10 @@
                   <div class="tips">
                     <p style="margin-bottom:4px">
                       1.关注新睿云微信公众号并将本次活动链接发送至朋友圈，截图发送给我们即可领取“免保证金”云服务器
-                      <span class="blue" @click="showModal.wechatShare=true">上传截图></span>
+                      <span
+                        class="blue"
+                        @click="showModal.wechatShare=true"
+                      >上传截图></span>
                     </p>
                     <p>
                       2.使用“免保证金”云服务器期间，去“百度口碑”发布使用体验等相关评论，并截图发送给我们，可延长1个月免费使用期
@@ -983,6 +986,34 @@
               <img src="../../../assets/img/app/QR-code.jpg" alt="新睿云二维码" />
             </div>
             <span class="upload-btn">点击上传截图</span>
+            <div class="demo-upload-list" v-for="(item,index) in uploadList1" :key="index">
+              <template v-if="item.status === 'finished'">
+                <img :src="item.url" />
+                <div class="demo-upload-list-cover">
+                  <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
+                  <Icon type="ios-trash-outline" @click.native="handleRemove(item,'upload1')"></Icon>
+                </div>
+              </template>
+              <template v-else>
+                <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+              </template>
+            </div>
+            <Upload
+              ref="upload1"
+              :show-upload-list="false"
+              :on-success="handleSuccess"
+              :format="['jpg','jpeg','png']"
+              :max-size="2048"
+              :on-format-error="handleFormatError"
+              :on-exceeded-size="handleMaxSize"
+              type="drag"
+              action="https://kfactivity.xrcloud.net/file/upFile.do"
+              style="display: inline-block;width:58px;"
+            >
+              <div style="width: 58px;height:58px;line-height: 58px;">
+                <Icon type="camera" size="20"></Icon>
+              </div>
+            </Upload>
           </div>
           <div class="url">
             <h4>将活动链接分享至朋友圈并截图</h4>
@@ -992,6 +1023,36 @@
               </Input>
             </div>
             <span class="upload-btn">点击上传截图</span>
+            <div class="demo-upload-list" v-for="(item,index) in uploadList" :key="index">
+              <template v-if="item.status === 'finished'">
+                <img :src="item.url" />
+                <div class="demo-upload-list-cover">
+                  <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
+                  <Icon type="ios-trash-outline" @click.native="handleRemove(item,'upload')"></Icon>
+                </div>
+              </template>
+              <template v-else>
+                <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+              </template>
+            </div>
+            <Upload
+              ref="upload"
+              :show-upload-list="false"
+              :on-success="handleSuccess"
+              :format="['jpg','jpeg','png']"
+              :max-size="2048"
+              :on-format-error="handleFormatError"
+              :on-exceeded-size="handleMaxSize"
+              :before-upload="handleBeforeUpload"
+              multiple
+              type="drag"
+              action="https://kfactivity.xrcloud.net/file/upFile.do"
+              style="display: inline-block;width:58px;"
+            >
+              <div style="width: 58px;height:58px;line-height: 58px;">
+                <Icon type="camera" size="20"></Icon>
+              </div>
+            </Upload>
           </div>
         </div>
         <span>*上传文件支持jpg/png/gif，单个文件最大不超过4MB</span>
@@ -999,6 +1060,10 @@
       <div slot="footer" class="modal-footer-border">
         <Button type="primary" @click="showModal.wechatShare = false">确定</Button>
       </div>
+    </Modal>
+    <!-- 预览图片弹窗 -->
+    <Modal title="View Image" v-model="visible" style="position:absolute;z-index:2000">
+      <img :src="imgName" v-if="visible" style="width: 100%" />
     </Modal>
     <!-- 发布百度口碑评论 -->
     <Modal
@@ -1015,15 +1080,45 @@
         <h3>完成以下任务免费延长1个月使用期：</h3>
         <div class="content">
           <h4 style="width:100%">到“百度口碑”发布使用体验等相关评论并截图</h4>
-          <div>
-            <span class="comment-btn">点击发布评论></span>
-            <span class="upload-btn">点击上传截图</span>
-          </div>
+          <a
+            href="https://koubei.baidu.com/s/510a4f5f6316c2d0f81b3e63bc75b537?fr=search"
+            target="blank"
+          >点击发布评论></a>
+          <span class="upload-btn">点击上传截图</span>
+          <div class="demo-upload-list" v-for="(item,index) in uploadList2" :key="index">
+              <template v-if="item.status === 'finished'">
+                <img :src="item.url" />
+                <div class="demo-upload-list-cover">
+                  <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
+                  <Icon type="ios-trash-outline" @click.native="handleRemove(item,'upload2')"></Icon>
+                </div>
+              </template>
+              <template v-else>
+                <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+              </template>
+            </div>
+            <Upload
+              ref="upload2"
+              :show-upload-list="false"
+              :on-success="handleSuccess"
+              :format="['jpg','jpeg','png']"
+              :max-size="2048"
+              :on-format-error="handleFormatError"
+              :on-exceeded-size="handleMaxSize"
+              type="drag"
+              action="https://kfactivity.xrcloud.net/file/upFile.do"
+              style="display: inline-block;width:58px;"
+            >
+              <div style="width: 58px;height:58px;line-height: 58px;">
+                <Icon type="camera" size="20"></Icon>
+              </div>
+            </Upload>
         </div>
         <span>*上传文件支持jpg/png/gif，单个文件最大不超过4MB</span>
       </div>
       <div slot="footer" class="modal-footer-border">
-        <Button type="primary" @click="showModal.baiducomment = false">确定</Button>
+        <Button @click="showModal.baiducomment = false">取消</Button>
+        <Button type="primary">提交</Button>
       </div>
     </Modal>
   </div>
@@ -1065,6 +1160,13 @@ export default {
       }
     }
     return {
+      imgName: '',
+      visible: false,
+      uploadList: [],
+      // imgName: '',
+      // visible: false,
+      uploadList1: [],
+      uploadList2: [],
       showModal: {
         rechargeHint: false,
         inConformityModal: false,
@@ -1895,9 +1997,44 @@ export default {
     this.getRenewPrice(this.renewHostList[1])
   },
   mounted () {
-
+    this.uploadList = this.$refs.upload.fileList;
+    this.uploadList1 = this.$refs.upload1.fileList;
+    this.uploadList2 = this.$refs.upload2.fileList;
   },
   methods: {
+    handleView (name) {
+      this.imgName = name;
+      this.visible = true;
+    },
+    handleRemove (file, name) {
+      const fileList = this.$refs[name].fileList;
+      this.$refs[name].fileList.splice(fileList.indexOf(file), 1);
+    },
+    handleSuccess (res, file) {
+      if (res.status == 1) {
+        file.url = res.result
+        file.name = res.result
+      }
+    },
+    handleFormatError () {
+      this.$Message.info({
+        content: '仅支持jpg,jpeg,png,gif格式的文件上传'
+      })
+    },
+    handleMaxSize (file) {
+      this.$Message.info({
+        content: '上传的文件过大'
+      })
+    },
+    handleBeforeUpload () {
+      const check = this.uploadList.length < 5;
+      if (!check) {
+        this.$Notice.warning({
+          title: '最多可上传5张图片'
+        });
+      }
+      return check;
+    },
     getParams () {
       if (this.$route.hash) {
         if (this.$route.hash.split('#')[1].slice(0, 4) == 'days') {
@@ -4262,7 +4399,7 @@ export default {
   .dotask {
     display: flex;
     flex-direction: column;
-    // justify-content: flex-start; 
+    // justify-content: flex-start;
     align-items: flex-start;
   }
 }
@@ -4406,6 +4543,8 @@ export default {
       }
     }
     .upload-btn {
+      display: block;
+      margin-bottom: 10px;
       font-size: 12px;
       color: rgba(74, 151, 238, 1);
       line-height: 16px;
@@ -4434,24 +4573,37 @@ export default {
     color: #4768b1;
     font-size: 14px;
     h4 {
-      margin-bottom: 10px;
+      margin-bottom: 6px;
       color: rgba(71, 104, 177, 1);
       font-weight: normal;
     }
-    div {
-      display: flex;
-      justify-content: space-between;
-      .comment-btn {
-        color: #5893ff;
-        text-decoration: underline;
-        cursor: pointer;
-      }
-      .upload-btn {
-        font-size: 12px;
-        color: #4a97ee;
-        cursor: pointer;
-      }
+    a {
+      font-size:14px;
+      color:rgba(88,147,255,1);
+      line-height:24px;
+      text-decoration: underline;
     }
+    span {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 12px;
+      color: #4A97EE;
+      line-height: 1.5;
+    }
+    // div {
+    //   display: flex;
+    //   justify-content: space-between;
+    //   .comment-btn {
+    //     color: #5893ff;
+    //     text-decoration: underline;
+    //     cursor: pointer;
+    //   }
+    //   .upload-btn {
+    //     font-size: 12px;
+    //     color: #4a97ee;
+    //     cursor: pointer;
+    //   }
+    // }
   }
   > span {
     display: inline-block;
@@ -4461,5 +4613,41 @@ export default {
     color: rgba(153, 153, 153, 1);
     line-height: 16px;
   }
+}
+.demo-upload-list {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  text-align: center;
+  line-height: 60px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #fff;
+  position: relative;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  margin-right: 4px;
+}
+.demo-upload-list img {
+  width: 100%;
+  height: 100%;
+}
+.demo-upload-list-cover {
+  display: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.6);
+}
+.demo-upload-list:hover .demo-upload-list-cover {
+  display: block;
+}
+.demo-upload-list-cover i {
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  margin: 0 2px;
 }
 </style>
