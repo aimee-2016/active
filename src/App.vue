@@ -2321,60 +2321,13 @@ span {
   font-family: "pingfang sc medium", Microsoft YaHei;
 }
 
-.ph-left .ph-gg {
-  background: url('./assets/img/home/noteic.png');
-  background-size: 100%;
-  text-align: center;
-  cursor: pointer;
-  text-align: center;
-  height: 170px;
-}
-
-.ph-left .ph-gg h3 {
-  font-size: 32px;
-  color: #FFFFFF;
-  font-weight: bold;
-  display: inline-block;
-  padding: 8px 0;
-  margin-top: 28px;
-  margin-bottom: 18px;
-}
-
-.ph-left .ph-gg .ph-button{
-  display: inline-block;
-  width: 132px;
-  height: 44px;
-  line-height: 44px;
-  color: #FF624B;
-  font-size: 22px;
-  background-color: #FCECE0;
-  box-shadow:0px 11px 18px -6px rgba(161,38,20,0.75);
-}
-
-.ph-left .ph-cs {
-  background-color: #FFFFFF;
-  height: 40px;
-  text-align: center;
-  cursor: pointer;
-  margin-bottom: 10px;
-  padding: 7px 0;
-  box-shadow: 0px 2px 16px -5px rgba(130, 130, 130, 0.5);
-  transition: all ease-in-out 0.2s;
-  position: relative;
-  box-sizing: border-box;
-}
-.ph-left .ph-cs >img,.ph-left .ph-cs >span{
-  vertical-align: middle;
-  font-size: 18px;
-  color: #4F1B1B;
-}
 .ph-left {
   position: fixed;
   right: 0;
   bottom: 14%;
   z-index: 999;
   margin-right: 5px;
-  width: 150px;
+  width: 120px;
 }
 .ph-cs:hover > .ph-connect{
   width: 210px;
@@ -2388,7 +2341,7 @@ span {
   background: #ffffff;
   width: 0;
   position: absolute;
-  right: 148px;
+  right: 116px;
   top: 0;
   transition: width 0.3s ;
   overflow: hidden;
@@ -2410,6 +2363,89 @@ span {
   display: flex;
   flex-wrap: wrap;
 }
+.q-tile{
+  font-size: 14px;
+  color: #1D1716;
+  float: left;
+  margin-bottom: 6px;
+  line-height: normal;
+}
+.info-wrapper > div {
+  margin-bottom: 5px;
+  width: 50%;
+  display: inline-block;
+  line-height: normal;
+  text-align: left;
+}
+
+.info-wrapper > div  img{
+  vertical-align: middle;
+}
+.info-wrapper > div  span{
+  vertical-align: middle;
+  width: 56px;
+  display: inline-block;
+}
+
+
+.ph-left .ph-gg {
+  background: url('./assets/img/home/noteic.png');
+  background-size: 100%;
+  text-align: center;
+  cursor: pointer;
+  text-align: center;
+  height: 136px;
+}
+
+.ph-left .ph-gg h3 {
+  font-size: 26px;
+  color: #FFFFFF;
+  font-weight: bold;
+  display: inline-block;
+  padding: 8px 0;
+  margin-bottom: 9px;
+  margin-top:26px;
+}
+
+.ph-left .ph-gg .ph-button{
+  display: inline-block;
+  width: 100px;
+  height: 33px;
+  line-height: 33px;
+  color: #FF624B;
+  font-size: 16px;
+  background-color: #FCECE0;
+  box-shadow:0px 11px 18px -6px rgba(161,38,20,0.75);
+}
+
+.ph-left .ph-cs {
+  background-color: #FFFFFF;
+  height: 36px;
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: 10px;
+  padding: 7px 0;
+  box-shadow: 0px 2px 16px -5px rgba(130, 130, 130, 0.5);
+  transition: all ease-in-out 0.2s;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.ph-left .ph-cs:last-child{
+  margin-bottom: 0px;
+}
+
+.ph-left .ph-cs >img{
+  vertical-align: middle;
+  width: 16px;
+  height: 16px;
+}
+.ph-left .ph-cs >span{
+  vertical-align: middle;
+  font-size: 14px;
+  color: #4F1B1B;
+}
+
 .q-tile{
   font-size: 14px;
   color: #1D1716;
