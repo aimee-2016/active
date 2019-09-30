@@ -1001,11 +1001,12 @@
             <Upload
               ref="upload1"
               :show-upload-list="false"
-              :on-success="handleSuccess"
+              :on-success="handleSuccess1"
               :format="['jpg','jpeg','png']"
               :max-size="2048"
               :on-format-error="handleFormatError"
               :on-exceeded-size="handleMaxSize"
+              :multiple="false"
               type="drag"
               action="https://kfactivity.xrcloud.net/file/upFile.do"
               style="display: inline-block;width:58px;"
@@ -1018,8 +1019,8 @@
           <div class="url">
             <h4>将活动链接分享至朋友圈并截图</h4>
             <div class="center">
-              <Input v-model="value" readonly placeholder="https://activity.xinruiyun.cn/free/">
-                <Button slot="append">复制链接</Button>
+              <Input v-model="copyurl" placeholder="https://activity.xinruiyun.cn/free/" ref="copy">
+                <Button slot="append" @click="copyUrl">复制链接</Button>
               </Input>
             </div>
             <span class="upload-btn">点击上传截图</span>
@@ -1044,7 +1045,7 @@
               :on-format-error="handleFormatError"
               :on-exceeded-size="handleMaxSize"
               :before-upload="handleBeforeUpload"
-              multiple
+              :multiple="false"
               type="drag"
               action="https://kfactivity.xrcloud.net/file/upFile.do"
               style="display: inline-block;width:58px;"
@@ -1058,7 +1059,8 @@
         <span>*上传文件支持jpg/png/gif，单个文件最大不超过4MB</span>
       </div>
       <div slot="footer" class="modal-footer-border">
-        <Button type="primary" @click="showModal.wechatShare = false">确定</Button>
+        <Button @click="showModal.wechatShare = false">取消</Button>
+        <Button type="primary" @click="wechat_submit">提交</Button>
       </div>
     </Modal>
     <!-- 预览图片弹窗 -->
@@ -1086,33 +1088,34 @@
           >点击发布评论></a>
           <span class="upload-btn">点击上传截图</span>
           <div class="demo-upload-list" v-for="(item,index) in uploadList2" :key="index">
-              <template v-if="item.status === 'finished'">
-                <img :src="item.url" />
-                <div class="demo-upload-list-cover">
-                  <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
-                  <Icon type="ios-trash-outline" @click.native="handleRemove(item,'upload2')"></Icon>
-                </div>
-              </template>
-              <template v-else>
-                <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
-              </template>
-            </div>
-            <Upload
-              ref="upload2"
-              :show-upload-list="false"
-              :on-success="handleSuccess"
-              :format="['jpg','jpeg','png']"
-              :max-size="2048"
-              :on-format-error="handleFormatError"
-              :on-exceeded-size="handleMaxSize"
-              type="drag"
-              action="https://kfactivity.xrcloud.net/file/upFile.do"
-              style="display: inline-block;width:58px;"
-            >
-              <div style="width: 58px;height:58px;line-height: 58px;">
-                <Icon type="camera" size="20"></Icon>
+            <template v-if="item.status === 'finished'">
+              <img :src="item.url" />
+              <div class="demo-upload-list-cover">
+                <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
+                <Icon type="ios-trash-outline" @click.native="handleRemove(item,'upload2')"></Icon>
               </div>
-            </Upload>
+            </template>
+            <template v-else>
+              <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+            </template>
+          </div>
+          <Upload
+            ref="upload2"
+            :show-upload-list="false"
+            :on-success="handleSuccess2"
+            :format="['jpg','jpeg','png']"
+            :max-size="2048"
+            :on-format-error="handleFormatError"
+            :on-exceeded-size="handleMaxSize"
+            type="drag"
+            action="https://kfactivity.xrcloud.net/file/upFile.do"
+            style="display: inline-block;width:58px;"
+            :multiple="false"
+          >
+            <div style="width: 58px;height:58px;line-height: 58px;">
+              <Icon type="camera" size="20"></Icon>
+            </div>
+          </Upload>
         </div>
         <span>*上传文件支持jpg/png/gif，单个文件最大不超过4MB</span>
       </div>
@@ -1131,6 +1134,17 @@ import VueQArt from 'vue-qart'
 import $ from 'jquery'
 import throttle from 'throttle-debounce/debounce'
 export default {
+  metaInfo: {
+    title: '免费云主机体验试用 -云服务器免费试用可申请1年或30天 - 活动中心 - 新睿云', // set a title
+    meta: [{                 // set meta
+      name: 'keywords',
+      content: '免费云主机,免费云主机试用一年,免费云主机申请,云主机免费体验,云服务器免费,云服务器免费试用,免费云服务器试用一年'
+    },
+    {                 // set meta
+      name: 'description',
+      content: '新睿云推出爆款云主机免费试用活动，2款云服务器产品最长免费试用1年，每天随时可领，押金随时可退，2018年8月3日开始，总量有限，先到先得！'
+    }]
+  },
   data () {
     const validaRegisteredPhone = (rule, value, callback) => {
       if (!value) {
@@ -1160,13 +1174,34 @@ export default {
       }
     }
     return {
+      copyurl: '',
+      imgurl: '',
+      imgurl1: '',
+      imgurl2: '',
       imgName: '',
       visible: false,
-      uploadList: [],
+      uploadList: [
+        {
+          name: '',
+          file: ''
+        }
+      ],
       // imgName: '',
       // visible: false,
-      uploadList1: [],
-      uploadList2: [],
+      uploadList1: [
+        {
+          name: '',
+          file: ''
+        }
+      ],
+      uploadList2: [
+        {
+          name: '',
+          file: ''
+        }
+      ],
+      activityNumfree: '',
+      vmConfigIdfree: '',
       showModal: {
         rechargeHint: false,
         inConformityModal: false,
@@ -2002,6 +2037,36 @@ export default {
     this.uploadList2 = this.$refs.upload2.fileList;
   },
   methods: {
+    wechat_submit () {
+      axios.post('activity/addReviewInfo.do', {
+        sharePics: this.imgurl1 + ',' + this.imgurl + '',
+        activityNum: this.activityNumfree,
+        vmConfigId: this.vmConfigIdfree
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          this.$message.info(response.data.message)
+        }
+      })
+    },
+    //复制文件外链路径
+    copyUrl () {
+      // this.$refs.copy.focus();
+      // console.log(this.$refs.copy)
+      // var obj = this.$refs.copy
+      // obj.select();
+      // document.execCommand("copy");
+      // try {
+      //   if (document.execCommand("copy")) {
+      //     this.$Message.success("复制成功");
+      //   } else {
+      //     this.$Message.info("平台出小差了");
+      //   }
+      // } catch (err) {
+      //   if (err) {
+      //     this.$Message.info("该浏览器暂不支持复制");
+      //   }
+      // }
+    },
     handleView (name) {
       this.imgName = name;
       this.visible = true;
@@ -2010,10 +2075,25 @@ export default {
       const fileList = this.$refs[name].fileList;
       this.$refs[name].fileList.splice(fileList.indexOf(file), 1);
     },
-    handleSuccess (res, file) {
+    handleSuccess (res, file, name) {
       if (res.status == 1) {
         file.url = res.result
         file.name = res.result
+        this.imgurl = res.result
+      }
+    },
+    handleSuccess1 (res, file, name) {
+      if (res.status == 1) {
+        file.url = res.result
+        file.name = res.result
+        this.imgurl1 = res.result
+      }
+    },
+    handleSuccess2 (res, file, name) {
+      if (res.status == 1) {
+        file.url = res.result
+        file.name = res.result
+        this.imgurl2 = res.result
       }
     },
     handleFormatError () {
@@ -2346,6 +2426,12 @@ export default {
               this.getSystemD(item)
             }
           })
+          // 获取免押金主机参数
+          const freeDeposite = res.data.result.freevmconfigs.filter(item => {
+            return item.freeddeposit == 1
+          })
+          this.activityNumfree = freeDeposite[0].activitynum
+          this.vmConfigIdfree = freeDeposite[0].id
         }
       })
     },
@@ -4578,16 +4664,16 @@ export default {
       font-weight: normal;
     }
     a {
-      font-size:14px;
-      color:rgba(88,147,255,1);
-      line-height:24px;
+      font-size: 14px;
+      color: rgba(88, 147, 255, 1);
+      line-height: 24px;
       text-decoration: underline;
     }
     span {
       display: block;
       margin-bottom: 10px;
       font-size: 12px;
-      color: #4A97EE;
+      color: #4a97ee;
       line-height: 1.5;
     }
     // div {
