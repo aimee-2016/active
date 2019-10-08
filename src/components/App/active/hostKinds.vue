@@ -121,8 +121,14 @@
                         原价：¥
                         <span>{{item.originPrice}}</span>
                       </div>
-                      <Button @click="pushOrderD(item,'p')" class="pc-640">免费领取</Button>
-                      <Button @click="pushOrderD(item,'m')" class="mobile-640">免费领取</Button>
+                      <div class="btns" v-if="item.post.freeddeposit==1">
+                        <Button @click="pushOrderFree(item,'p')" class="pc-640">免费领取</Button>
+                        <Button @click="pushOrderFree(item,'m')" class="mobile-640">免费领取</Button>
+                      </div>
+                      <div class="btns" v-else>
+                        <Button @click="pushOrderD(item,'p')" class="pc-640">免费领取</Button>
+                        <Button @click="pushOrderD(item,'m')" class="mobile-640">免费领取</Button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -148,16 +154,16 @@
                       1.关注新睿云微信公众号并将本次活动链接发送至朋友圈，截图发送给我们即可领取“免保证金”云服务器
                       <span
                         class="blue"
-                        @click="showModal.wechatShare=true"
+                        @click="uploadWechat()"
                       >上传截图></span>
                     </p>
                     <p>
                       2.使用“免保证金”云服务器期间，去“百度口碑”发布使用体验等相关评论，并截图发送给我们，可延长1个月免费使用期
                       <span
                         class="blue"
-                        @click="showModal.baiducomment=true"
+                        @click="uploadBaidu()"
                       >发布评论></span>
-                      <span class="blue" @click="showModal.baiducomment=true">上传截图></span>
+                      <span class="blue" @click="uploadBaidu()">上传截图></span>
                     </p>
                   </div>
                 </div>
@@ -1124,6 +1130,87 @@
         <Button type="primary">提交</Button>
       </div>
     </Modal>
+    <!-- 审核中 -->
+    <Modal
+      v-model="showModal.checking"
+      width="550"
+      :scrollable="true"
+      :mask-closable="false"
+      :closable="false"
+    >
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">做任务 得好礼</span>
+      </p>
+      <div class="check-modal">审核中，请您耐心等待…</div>
+      <div slot="footer" class="modal-footer-border">
+        <Button @click="showModal.checking = false">关闭</Button>
+      </div>
+    </Modal>
+    <!-- 审核未通过 -->
+    <Modal
+      v-model="showModal.checkfail"
+      width="550"
+      :scrollable="true"
+      :mask-closable="false"
+      :closable="false"
+    >
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">做任务 得好礼</span>
+      </p>
+      <div class="check-modal">
+        审核未通过，请重新提交。如有疑问，请
+        <a
+          style="text-decoration:underline"
+          href="https://im.xrcloud.net/im/question/index.html"
+        >联系客服</a>
+      </div>
+      <div slot="footer" class="modal-footer-border">
+        <Button
+          type="primary"
+          @click="showModal.checkfail = false;showModal.wechatShare = true;"
+        >重新提交</Button>
+      </div>
+    </Modal>
+    <!-- 审核通过 -->
+    <Modal
+      v-model="showModal.checksuccess"
+      width="550"
+      :scrollable="true"
+      :mask-closable="false"
+      :closable="false"
+    >
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">做任务 得好礼</span>
+      </p>
+      <div class="check-modal">
+        您已领取免费云服务器，您还可以参与
+        <span style="color:#4A97EE">到“百度口碑”发布使用体验</span>
+        任务，免费延长云服务器1个月使用期。
+      </div>
+      <div slot="footer" class="modal-footer-border">
+        <Button @click="showModal.checksuccess = false">取消</Button>
+        <Button
+          type="primary"
+          @click="showModal.checksuccess = false;showModal.baiducomment = true;"
+        >查看任务</Button>
+      </div>
+    </Modal>
+    <!-- 审核通过，百度评论 -->
+    <Modal
+      v-model="showModal.baidusuccess"
+      width="550"
+      :scrollable="true"
+      :mask-closable="false"
+      :closable="false"
+    >
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">做任务 得好礼</span>
+      </p>
+      <div class="check-modal">您已领取免费延长云服务器1个月使用期，敬请关注其他活动。</div>
+      <div slot="footer" class="modal-footer-border">
+        <Button @click="showModal.baidusuccess = false">关闭</Button>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -1174,6 +1261,28 @@ export default {
       }
     }
     return {
+      showModal: {
+        rechargeHint: false,
+        inConformityModal: false,
+        getSuccessModal: false,
+        payDefeatedModal: false,
+        paySuccessModal: false,
+        weChatRechargeModal: false,
+        orderConfirmationModal: false,
+        qrCode: false,
+        cashverification: false,
+        rule: false,
+        ruleHost: false,
+        dayHost: false,
+        ruleCoupon: false,
+        rechargeHintzfb: false,
+        wechatShare: false,
+        baiducomment: false,
+        checking: false,
+        checkfail: false,
+        checksuccess: false,
+        baidusuccess: false
+      },
       copyurl: '',
       imgurl: '',
       imgurl1: '',
@@ -1202,24 +1311,6 @@ export default {
       ],
       activityNumfree: '',
       vmConfigIdfree: '',
-      showModal: {
-        rechargeHint: false,
-        inConformityModal: false,
-        getSuccessModal: false,
-        payDefeatedModal: false,
-        paySuccessModal: false,
-        weChatRechargeModal: false,
-        orderConfirmationModal: false,
-        qrCode: false,
-        cashverification: false,
-        rule: false,
-        ruleHost: false,
-        dayHost: false,
-        ruleCoupon: false,
-        rechargeHintzfb: false,
-        wechatShare: false,
-        baiducomment: false
-      },
       hintMsg: '',
       qrConfig: {
         value: '',
@@ -2533,6 +2624,85 @@ export default {
         }
       })
     },
+    checkstatusFree (item, type) {
+      axios.get('activity/getReviewInfo.do', {
+        params: {
+          activityNum: item.post.activitynum,
+          vmConfigId: item.post.id
+        }
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          // if (response.data.rusult) {
+          if (!response.data.rusult || !response.data.rusult.reviewResult) {
+            this.showModal.wechatShare = true
+          } else {
+            // switch (0) {
+            switch (response.data.rusult.reviewResult.reviewStatus) {
+              case 0:
+                this.showModal.checkfail = true
+                break;
+              case 1:
+                this.showModal.checksuccess = true
+                break;
+              case 2:
+                this.showModal.checking = true
+                break;
+            }
+          }
+        }
+      })
+    },
+    uploadWechat () {
+      if (!this.$store.state.userInfo) {
+        this.$LR({ type: 'register' })
+        return
+      }
+      this.showModal.wechatShare = true
+    },
+    uploadBaidu () {
+      if (!this.$store.state.userInfo) {
+        this.$LR({ type: 'register' })
+        return
+      }
+      this.showModal.baiducomment = true
+    },
+    pushOrderFree (item, type) {
+      // console.log(item)
+      if (!this.$store.state.userInfo) {
+        if (type == 'p') {
+          this.$LR({ type: 'register' })
+        } else {
+          window.open('https://kfm.xrcloud.net/login', '_self')
+        }
+        return
+      }
+      if ((!this.authInfo) || (this.authInfo && this.authInfo.authtype == 0 && this.authInfo.checkstatus != 0) || (!this.authInfoPersion && this.authInfo && this.authInfo.authtype == 1 && this.authInfo.checkstatus != 0) || (this.authInfoPersion && this.authInfoPersion.checkstatus != 0 && this.authInfo && this.authInfo.checkstatus != 0)) {
+        if (type == 'p') {
+          if (!this.userInfo.phone) {
+            this.showModal.cashverification = true
+          } else if (item.post.certification == 3) {
+            this.$message.confirm({
+              title: '提示',
+              content: '抱歉，只有实名认证用户才可以参加活动',
+              okText: '去实名认证',
+              onOk: () => {
+                window.open('https://kfi.xrcloud.net/usercenter', '_self')
+              }
+            })
+          } else {
+            this.refreshQRFirst()
+          }
+          return
+        } else {
+          if (item.post.certification == 3) {
+            window.open('https://kfi.xrcloud.net/usercenter', '_self')
+          } else {
+            window.open('https://kfm.xrcloud.net/faceindex', '_self')
+          }
+        }
+      }
+      this.checkstatusFree(item)
+    },
     pushOrderD (item, type) {
       if (!this.$store.state.userInfo) {
         if (type == 'p') {
@@ -3782,6 +3952,9 @@ export default {
       .line-thr {
         text-decoration: line-through;
       }
+      .btns {
+        margin-bottom: 0px;
+      }
       button {
         width: 100%;
         background: #f66d59;
@@ -4735,5 +4908,10 @@ export default {
   font-size: 20px;
   cursor: pointer;
   margin: 0 2px;
+}
+.check-modal {
+  padding: 50px 0;
+  text-align: center;
+  font-size: 14px;
 }
 </style>
