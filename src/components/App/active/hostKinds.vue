@@ -1193,10 +1193,7 @@
       </div>
       <div slot="footer" class="modal-footer-border">
         <Button @click="showModal.checksuccess = false">取消</Button>
-        <Button
-          type="primary"
-          @click="seeComment()"
-        >查看任务</Button>
+        <Button type="primary" @click="seeComment()">查看任务</Button>
       </div>
     </Modal>
     <!-- 审核通过，百度评论 -->
@@ -2192,7 +2189,7 @@ export default {
         })
       }
     },
-    seeComment(){
+    seeComment () {
       this.showModal.checksuccess = false
       let item = this.hostFree
       axios.get('activity/getReviewInfo.do', {
@@ -2202,23 +2199,8 @@ export default {
         }
       }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          if (!response.data.rusult || !response.data.rusult.commentResult) {
-            axios.get('activity/judgeGetFreeVmByActivity.do', {
-              params: {
-                vmConfigId: item.post.id
-              }
-            }).then(response => {
-              if (response.status == 200 && response.data.status == 1) {
-                this.showModal.baiducomment = true
-              } else {
-                this.$message.info({
-                  content: response.data.message
-                })
-              }
-            })
-          } else {
-            // switch (0) {
-            switch (response.data.rusult.commentResult.commentStatus) {
+          if (response.data.result.reviewResult) {
+            switch (response.data.result.commentResult.commentStatus) {
               case 0:
                 this.showModal.checkfail = true
                 break;
@@ -2230,6 +2212,20 @@ export default {
                 break;
             }
           }
+        } else {
+          axios.get('activity/judgeGetFreeVmByActivity.do', {
+            params: {
+              vmConfigId: item.post.id
+            }
+          }).then(response => {
+            if (response.status == 200 && response.data.status == 1) {
+              this.showModal.baiducomment = true
+            } else {
+              this.$message.info({
+                content: response.data.message
+              })
+            }
+          })
         }
       })
     },
@@ -2727,8 +2723,19 @@ export default {
         }
       }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          // if (response.data.rusult) {
-          if (!response.data.rusult || !response.data.rusult.reviewResult) {
+          if (response.data.result.reviewResult) {
+            switch (response.data.result.reviewResult.reviewStatus) {
+              case 0:
+                this.showModal.checkfail = true
+                break;
+              case 1:
+                this.showModal.checksuccess = true
+                break;
+              case 2:
+                this.showModal.checking = true
+                break;
+            }
+          } else {
             axios.get('activity/judgeGetFreeVmByActivity.do', {
               params: {
                 vmConfigId: item.post.id
@@ -2742,19 +2749,6 @@ export default {
                 })
               }
             })
-          } else {
-            // switch (0) {
-            switch (response.data.rusult.reviewResult.reviewStatus) {
-              case 0:
-                this.showModal.checkfail = true
-                break;
-              case 1:
-                this.showModal.checksuccess = true
-                break;
-              case 2:
-                this.showModal.checking = true
-                break;
-            }
           }
         }
       })
@@ -2809,7 +2803,19 @@ export default {
         }
       }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          if (!response.data.rusult || !response.data.rusult.commentResult) {
+          if (response.data.result.commentResult) {
+            switch (response.data.result.commentResult.commentStatus) {
+              case 0:
+                this.showModal.checkfail = true
+                break;
+              case 1:
+                this.showModal.baidusuccess = true
+                break;
+              case 2:
+                this.showModal.checking = true
+                break;
+            }
+          } else {
             axios.get('activity/judgeGetFreeVmByActivity.do', {
               params: {
                 vmConfigId: item.post.id
@@ -2823,19 +2829,7 @@ export default {
                 })
               }
             })
-          } else {
-            // switch (0) {
-            switch (response.data.rusult.commentResult.commentStatus) {
-              case 0:
-                this.showModal.checkfail = true
-                break;
-              case 1:
-                this.showModal.baidusuccess = true
-                break;
-              case 2:
-                this.showModal.checking = true
-                break;
-            }
+
           }
         }
       })
