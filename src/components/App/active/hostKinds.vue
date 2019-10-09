@@ -153,16 +153,18 @@
                     <p style="margin-bottom:4px">
                       1.关注新睿云微信公众号并将本次活动链接发送至朋友圈，截图发送给我们即可领取“免保证金”云服务器
                       <span
-                        class="blue"
-                        @click="uploadWechat()"
+                        class="blue pc-640-inline"
+                        @click="pushOrderFree(0,'p')"
                       >上传截图></span>
+                      <span class="blue mobile-640-inline" @click="pushOrderFree(0,'m')">上传截图></span>
                     </p>
                     <p>
                       2.使用“免保证金”云服务器期间，去“百度口碑”发布使用体验等相关评论，并截图发送给我们，可延长1个月免费使用期
                       <span
-                        class="blue"
-                        @click="uploadBaidu()"
+                        class="blue pc-640-inline"
+                        @click="uploadBaidu('p')"
                       >发布评论></span>
+                      <span class="blue mobile-640-inline" @click="uploadBaidu('m')">发布评论></span>
                       <span class="blue" @click="uploadBaidu()">上传截图></span>
                     </p>
                   </div>
@@ -1012,7 +1014,6 @@
               :max-size="2048"
               :on-format-error="handleFormatError"
               :on-exceeded-size="handleMaxSize"
-              :multiple="false"
               type="drag"
               action="https://kfactivity.xrcloud.net/file/upFile.do"
               style="display: inline-block;width:58px;"
@@ -1025,9 +1026,15 @@
           <div class="url">
             <h4>将活动链接分享至朋友圈并截图</h4>
             <div class="center">
-              <Input v-model="copyurl" placeholder="https://activity.xinruiyun.cn/free/" ref="copy">
+              <Input placeholder="https://activity.xinruiyun.cn/free/" readonly>
                 <Button slot="append" @click="copyUrl">复制链接</Button>
               </Input>
+              <input
+                type="text"
+                value="https://activity.xinruiyun.cn/free/"
+                ref="copy"
+                style="position:absolute;z-index:-100"
+              />
             </div>
             <span class="upload-btn">点击上传截图</span>
             <div class="demo-upload-list" v-for="(item,index) in uploadList" :key="index">
@@ -1050,8 +1057,6 @@
               :max-size="2048"
               :on-format-error="handleFormatError"
               :on-exceeded-size="handleMaxSize"
-              :before-upload="handleBeforeUpload"
-              :multiple="false"
               type="drag"
               action="https://kfactivity.xrcloud.net/file/upFile.do"
               style="display: inline-block;width:58px;"
@@ -1116,7 +1121,6 @@
             type="drag"
             action="https://kfactivity.xrcloud.net/file/upFile.do"
             style="display: inline-block;width:58px;"
-            :multiple="false"
           >
             <div style="width: 58px;height:58px;line-height: 58px;">
               <Icon type="camera" size="20"></Icon>
@@ -1127,7 +1131,7 @@
       </div>
       <div slot="footer" class="modal-footer-border">
         <Button @click="showModal.baiducomment = false">取消</Button>
-        <Button type="primary">提交</Button>
+        <Button type="primary" @click="baidu_submit">提交</Button>
       </div>
     </Modal>
     <!-- 审核中 -->
@@ -1191,7 +1195,7 @@
         <Button @click="showModal.checksuccess = false">取消</Button>
         <Button
           type="primary"
-          @click="showModal.checksuccess = false;showModal.baiducomment = true;"
+          @click="seeComment()"
         >查看任务</Button>
       </div>
     </Modal>
@@ -1283,7 +1287,7 @@ export default {
         checksuccess: false,
         baidusuccess: false
       },
-      copyurl: '',
+      hostFree: {},
       imgurl: '',
       imgurl1: '',
       imgurl2: '',
@@ -2129,34 +2133,123 @@ export default {
   },
   methods: {
     wechat_submit () {
-      axios.post('activity/addReviewInfo.do', {
-        sharePics: this.imgurl1 + ',' + this.imgurl + '',
-        activityNum: this.activityNumfree,
-        vmConfigId: this.vmConfigIdfree
+      let url1 = this.uploadList1.map(item => {
+        return item.url
+      })
+      let url = this.uploadList.map(item => {
+        return item.url
+      })
+      let urls = url1.concat(url).join(',')
+      if (this.uploadList.length && this.uploadList1.length) {
+        axios.post('activity/addReviewInfo.do', {
+          sharePics: urls,
+          activityNum: this.activityNumfree,
+          vmConfigId: this.vmConfigIdfree,
+          osType: this.hostFree.system[1],
+          defzoneid: this.hostFree.zoneId,
+        }).then(response => {
+          if (response.status == 200 && response.data.status == 1) {
+            this.showModal.wechatShare = false
+            this.$message.info({
+              content: response.data.message
+            })
+          } else {
+            this.$message.info({
+              content: response.data.message
+            })
+          }
+        })
+      } else {
+        this.$message.info({
+          content: '请上传截图'
+        })
+      }
+    },
+    baidu_submit () {
+      let url2 = this.uploadList2.map(item => {
+        return item.url
+      })
+      if (this.uploadList2.length) {
+        axios.post('activity/addCommentInfo.do', {
+          commentPics: url2.join(','),
+          activityNum: this.activityNumfree,
+          vmConfigId: this.vmConfigIdfree,
+        }).then(response => {
+          if (response.status == 200 && response.data.status == 1) {
+            this.showModal.baiducomment = false
+            this.$message.info({
+              content: response.data.message
+            })
+          } else {
+            this.$message.info({
+              content: response.data.message
+            })
+          }
+        })
+      } else {
+        this.$message.info({
+          content: '请上传截图'
+        })
+      }
+    },
+    seeComment(){
+      this.showModal.checksuccess = false
+      let item = this.hostFree
+      axios.get('activity/getReviewInfo.do', {
+        params: {
+          activityNum: item.post.activitynum,
+          vmConfigId: item.post.id
+        }
       }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          this.$message.info(response.data.message)
+          if (!response.data.rusult || !response.data.rusult.commentResult) {
+            axios.get('activity/judgeGetFreeVmByActivity.do', {
+              params: {
+                vmConfigId: item.post.id
+              }
+            }).then(response => {
+              if (response.status == 200 && response.data.status == 1) {
+                this.showModal.baiducomment = true
+              } else {
+                this.$message.info({
+                  content: response.data.message
+                })
+              }
+            })
+          } else {
+            // switch (0) {
+            switch (response.data.rusult.commentResult.commentStatus) {
+              case 0:
+                this.showModal.checkfail = true
+                break;
+              case 1:
+                this.showModal.baidusuccess = true
+                break;
+              case 2:
+                this.showModal.checking = true
+                break;
+            }
+          }
         }
       })
     },
     //复制文件外链路径
     copyUrl () {
-      // this.$refs.copy.focus();
-      // console.log(this.$refs.copy)
-      // var obj = this.$refs.copy
-      // obj.select();
-      // document.execCommand("copy");
-      // try {
-      //   if (document.execCommand("copy")) {
-      //     this.$Message.success("复制成功");
-      //   } else {
-      //     this.$Message.info("平台出小差了");
-      //   }
-      // } catch (err) {
-      //   if (err) {
-      //     this.$Message.info("该浏览器暂不支持复制");
-      //   }
-      // }
+      this.$refs.copy.focus()
+      var obj = this.$refs.copy
+      obj.select()
+      document.execCommand("copy");
+      try {
+        if (document.execCommand("copy")) {
+          this.$Message.success("复制成功");
+        } else {
+          this.$Message.info("平台出小差了");
+        }
+      } catch (err) {
+        if (err) {
+          this.$Message.info("该浏览器暂不支持复制");
+        }
+      }
     },
     handleView (name) {
       this.imgName = name;
@@ -2197,15 +2290,15 @@ export default {
         content: '上传的文件过大'
       })
     },
-    handleBeforeUpload () {
-      const check = this.uploadList.length < 5;
-      if (!check) {
-        this.$Notice.warning({
-          title: '最多可上传5张图片'
-        });
-      }
-      return check;
-    },
+    // handleBeforeUpload () {
+    //   const check = this.uploadList.length < 5;
+    //   if (!check) {
+    //     this.$Notice.warning({
+    //       title: '最多可上传5张图片'
+    //     });
+    //   }
+    //   return check;
+    // },
     getParams () {
       if (this.$route.hash) {
         if (this.$route.hash.split('#')[1].slice(0, 4) == 'days') {
@@ -2518,11 +2611,13 @@ export default {
             }
           })
           // 获取免押金主机参数
-          const freeDeposite = res.data.result.freevmconfigs.filter(item => {
-            return item.freeddeposit == 1
+          let filterdata = []
+          filterdata = this.depositeList.filter(item => {
+            return item.post.freeddeposit == 1
           })
-          this.activityNumfree = freeDeposite[0].activitynum
-          this.vmConfigIdfree = freeDeposite[0].id
+          this.hostFree = filterdata[0]
+          this.activityNumfree = this.hostFree.post.activitynum
+          this.vmConfigIdfree = this.hostFree.post.id
         }
       })
     },
@@ -2634,7 +2729,19 @@ export default {
         if (response.status == 200 && response.data.status == 1) {
           // if (response.data.rusult) {
           if (!response.data.rusult || !response.data.rusult.reviewResult) {
-            this.showModal.wechatShare = true
+            axios.get('activity/judgeGetFreeVmByActivity.do', {
+              params: {
+                vmConfigId: item.post.id
+              }
+            }).then(response => {
+              if (response.status == 200 && response.data.status == 1) {
+                this.showModal.wechatShare = true
+              } else {
+                this.$message.info({
+                  content: response.data.message
+                })
+              }
+            })
           } else {
             // switch (0) {
             switch (response.data.rusult.reviewResult.reviewStatus) {
@@ -2652,19 +2759,86 @@ export default {
         }
       })
     },
-    uploadWechat () {
+    // uploadWechat () {
+    //   if (!this.$store.state.userInfo) {
+    //     this.$LR({ type: 'register' })
+    //     return
+    //   }
+    //   this.showModal.wechatShare = true
+    // },
+    uploadBaidu (type) {
+      let item = this.hostFree
       if (!this.$store.state.userInfo) {
-        this.$LR({ type: 'register' })
+        if (type == 'p') {
+          this.$LR({ type: 'register' })
+        } else {
+          window.open('https://kfm.xrcloud.net/login', '_self')
+        }
         return
       }
-      this.showModal.wechatShare = true
-    },
-    uploadBaidu () {
-      if (!this.$store.state.userInfo) {
-        this.$LR({ type: 'register' })
-        return
+      if ((!this.authInfo) || (this.authInfo && this.authInfo.authtype == 0 && this.authInfo.checkstatus != 0) || (!this.authInfoPersion && this.authInfo && this.authInfo.authtype == 1 && this.authInfo.checkstatus != 0) || (this.authInfoPersion && this.authInfoPersion.checkstatus != 0 && this.authInfo && this.authInfo.checkstatus != 0)) {
+        if (type == 'p') {
+          if (!this.userInfo.phone) {
+            this.showModal.cashverification = true
+          } else if (item.post.certification == 3) {
+            this.$message.confirm({
+              title: '提示',
+              content: '抱歉，只有实名认证用户才可以参加活动',
+              okText: '去实名认证',
+              onOk: () => {
+                window.open('https://kfi.xrcloud.net/usercenter', '_self')
+              }
+            })
+          } else {
+            this.refreshQRFirst()
+          }
+          return
+        } else {
+          if (item.post.certification == 3) {
+            window.open('https://kfi.xrcloud.net/usercenter', '_self')
+          } else {
+            window.open('https://kfm.xrcloud.net/faceindex', '_self')
+          }
+        }
       }
-      this.showModal.baiducomment = true
+      // this.showModal.baiducomment = true
+      axios.get('activity/getReviewInfo.do', {
+        params: {
+          activityNum: item.post.activitynum,
+          vmConfigId: item.post.id
+        }
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          if (!response.data.rusult || !response.data.rusult.commentResult) {
+            axios.get('activity/judgeGetFreeVmByActivity.do', {
+              params: {
+                vmConfigId: item.post.id
+              }
+            }).then(response => {
+              if (response.status == 200 && response.data.status == 1) {
+                this.showModal.baiducomment = true
+              } else {
+                this.$message.info({
+                  content: response.data.message
+                })
+              }
+            })
+          } else {
+            // switch (0) {
+            switch (response.data.rusult.commentResult.commentStatus) {
+              case 0:
+                this.showModal.checkfail = true
+                break;
+              case 1:
+                this.showModal.baidusuccess = true
+                break;
+              case 2:
+                this.showModal.checking = true
+                break;
+            }
+          }
+        }
+      })
     },
     pushOrderFree (item, type) {
       // console.log(item)
@@ -2700,6 +2874,9 @@ export default {
             window.open('https://kfm.xrcloud.net/faceindex', '_self')
           }
         }
+      }
+      if (item == 0) {
+        item = this.hostFree
       }
       this.checkstatusFree(item)
     },
