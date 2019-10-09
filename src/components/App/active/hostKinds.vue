@@ -1015,7 +1015,7 @@
               :on-format-error="handleFormatError"
               :on-exceeded-size="handleMaxSize"
               type="drag"
-              action="https://kfactivity.xrcloud.net/file/upFile.do"
+              action="https://csactivity.xrcloud.net/file/upFile.do"
               style="display: inline-block;width:58px;"
             >
               <div style="width: 58px;height:58px;line-height: 58px;">
@@ -1058,7 +1058,7 @@
               :on-format-error="handleFormatError"
               :on-exceeded-size="handleMaxSize"
               type="drag"
-              action="https://kfactivity.xrcloud.net/file/upFile.do"
+              action="https://csactivity.xrcloud.net/file/upFile.do"
               style="display: inline-block;width:58px;"
             >
               <div style="width: 58px;height:58px;line-height: 58px;">
@@ -1119,7 +1119,7 @@
             :on-format-error="handleFormatError"
             :on-exceeded-size="handleMaxSize"
             type="drag"
-            action="https://kfactivity.xrcloud.net/file/upFile.do"
+            action="https://csactivity.xrcloud.net/file/upFile.do"
             style="display: inline-block;width:58px;"
           >
             <div style="width: 58px;height:58px;line-height: 58px;">
@@ -2766,7 +2766,7 @@ export default {
         if (type == 'p') {
           this.$LR({ type: 'register' })
         } else {
-          window.open('https://kfm.xrcloud.net/login', '_self')
+          window.open('https://csm.xrcloud.net/login', '_self')
         }
         return
       }
@@ -2780,7 +2780,7 @@ export default {
               content: '抱歉，只有实名认证用户才可以参加活动',
               okText: '去实名认证',
               onOk: () => {
-                window.open('https://kfi.xrcloud.net/usercenter', '_self')
+                window.open('https://csi.xrcloud.net/usercenter', '_self')
               }
             })
           } else {
@@ -2789,9 +2789,9 @@ export default {
           return
         } else {
           if (item.post.certification == 3) {
-            window.open('https://kfi.xrcloud.net/usercenter', '_self')
+            window.open('https://csi.xrcloud.net/usercenter', '_self')
           } else {
-            window.open('https://kfm.xrcloud.net/faceindex', '_self')
+            window.open('https://csm.xrcloud.net/faceindex', '_self')
           }
         }
       }
@@ -2840,7 +2840,7 @@ export default {
         if (type == 'p') {
           this.$LR({ type: 'register' })
         } else {
-          window.open('https://kfm.xrcloud.net/login', '_self')
+          window.open('https://csm.xrcloud.net/login', '_self')
         }
         return
       }
@@ -2854,7 +2854,7 @@ export default {
               content: '抱歉，只有实名认证用户才可以参加活动',
               okText: '去实名认证',
               onOk: () => {
-                window.open('https://kfi.xrcloud.net/usercenter', '_self')
+                window.open('https://csi.xrcloud.net/usercenter', '_self')
               }
             })
           } else {
@@ -2863,9 +2863,9 @@ export default {
           return
         } else {
           if (item.post.certification == 3) {
-            window.open('https://kfi.xrcloud.net/usercenter', '_self')
+            window.open('https://csi.xrcloud.net/usercenter', '_self')
           } else {
-            window.open('https://kfm.xrcloud.net/faceindex', '_self')
+            window.open('https://csm.xrcloud.net/faceindex', '_self')
           }
         }
       }
@@ -2893,7 +2893,7 @@ export default {
               content: '抱歉，只有实名认证用户才可以参加活动',
               okText: '去实名认证',
               onOk: () => {
-                window.open('https://kfi.xrcloud.net/usercenter', '_self')
+                window.open('https://csi.xrcloud.net/usercenter', '_self')
               }
             })
           } else {
@@ -2902,9 +2902,9 @@ export default {
           return
         } else {
           if (item.post.certification == 3) {
-            window.open('https://kfi.xrcloud.net/usercenter', '_self')
+            window.open('https://csi.xrcloud.net/usercenter', '_self')
           } else {
-            window.open('https://kfm.xrcloud.net/faceindex', '_self')
+            window.open('https://csm.xrcloud.net/faceindex', '_self')
           }
         }
       }
@@ -2990,7 +2990,7 @@ export default {
                 this.showModal.orderConfirmationModal = false
                 this.serialNum = res.data.serialNum
                 localStorage.setItem('serialNum', this.serialNum)
-                window.open(null, 'alipay').location.href = `https://kfi.xrcloud.net/zfb/alipaypage.do?serialNum=${this.serialNum}&route=rechargeResult`
+                window.open(null, 'alipay').location.href = `https://csi.xrcloud.net/zfb/alipaypage.do?serialNum=${this.serialNum}&route=rechargeResult`
                 this.showModal.rechargeHintzfb = true
               } else {
                 this.$message.info({
@@ -3109,7 +3109,7 @@ export default {
             content: `恭喜您保证金已冻结完成，${text}领取成功，${text}在实名认证之前只可保留3天，请尽快使用。`,
             okText: `查看${text}`,
             onOk: () => {
-              window.open('https://kfi.xrcloud.net/' + pushurl, '_self')
+              window.open('https://csi.xrcloud.net/' + pushurl, '_self')
             }
           })
           this.toggleZone(this.orderData[0].zoneId)
