@@ -64,7 +64,7 @@ Vue.prototype.$LR = LR
 Vue.config.productionTip = false
 
 
-axios.defaults.withCredentials = true
+// axios.defaults.withCredentials = true
 
 axios.defaults.baseURL = 'https://kfactivity.xrcloud.net/'
 
