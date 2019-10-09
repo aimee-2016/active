@@ -1,7 +1,7 @@
 <template>
   <div>
     <Spin fix v-show="loading">
-      <Icon type="load-c" size=18 class="demo-spin-icon-load"></Icon>
+      <Icon type="load-c" size="18" class="demo-spin-icon-load"></Icon>
       <div>{{loadingMessage}}</div>
     </Spin>
     <div class="free-host">
@@ -18,7 +18,7 @@
               <span class="bar"></span>
               <a href="javascript:void(0)" @mouseover="tabChange('child1')">
                 <span>免费领云产品</span>
-                <i>4核8G 5M  云服务器免费用1年</i>
+                <i>4核8G 5M 云服务器免费用1年</i>
               </a>
             </div>
             <div :class="{selected:currentView=='child2'}">
@@ -36,6 +36,7 @@
                   <div v-for="(item,index) in depositeList" :key="index">
                     <div class="head">
                       <span class="cer" v-if="item.post.certification==3">企业用户专享</span>
+                      <span class="cer" v-if="item.post.freeddeposit==1" style="width:60px;">免保证金</span>
                       <h3>{{titleD(item.post)}}</h3>
                       <p v-if="item.post.servicetype=='G5500'">
                         <span>{{item.post.bandwith}}M带宽</span>
@@ -106,39 +107,67 @@
                         <span class="label-db" v-else>系统：</span>
                         <Cascader class="systemw" :data="item.systemList" v-model="item.system"></Cascader>
                       </div>
-                      <div class="price">
+                      <!-- <div class="price">
                         价格：¥
                         <span>{{0+'/'}}</span>
                         {{monthD(item.post.days)}}
-                      </div>
-                      <div class="origin-price">
+                      </div>-->
+                      <div class="price">
                         保证金：¥
-                        <span>{{item.price+'/'+monthD(item.post.days)}}</span>
+                        <span>{{item.price}}</span>
+                        /{{monthD(item.post.days)}}
                       </div>
                       <div class="origin-price line-thr">
                         原价：¥
                         <span>{{item.originPrice}}</span>
                       </div>
-                      <Button @click="pushOrderD(item,'p')" class="pc-640">免费领取</Button>
-                      <Button @click="pushOrderD(item,'m')" class="mobile-640">免费领取</Button>
+                      <div class="btns" v-if="item.post.freeddeposit==1">
+                        <Button @click="pushOrderFree(item,'p')" class="pc-640">免费领取</Button>
+                        <Button @click="pushOrderFree(item,'m')" class="mobile-640">免费领取</Button>
+                      </div>
+                      <div class="btns" v-else>
+                        <Button @click="pushOrderD(item,'p')" class="pc-640">免费领取</Button>
+                        <Button @click="pushOrderD(item,'m')" class="mobile-640">免费领取</Button>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="tips">
+                <div class="tips" style="margin-bottom:20px;">
                   新用户专享，为防止恶意刷抢免费云资源，遂需缴纳保证金，保证金随时可退
                   <span
                     class="blue"
                     @click="showModal.rule=true"
                   >活动规则></span>
-                  <!-- <span class="red">领取优惠券></span> -->
                 </div>
-                <div class="tips">
-                  温馨提示：使用期间若到“百度口碑”发布使用体验等相关评论，截图联系发送至在线客服，可领取满200减100优惠券
+                <div class="flex-col dotask">
+                  <!-- 温馨提示：使用期间若到“百度口碑”发布使用体验等相关评论，截图联系发送至在线客服，可领取满200减100优惠券
                   <a
                     href="https://koubei.baidu.com/s/510a4f5f6316c2d0f81b3e63bc75b537?fr=search"
                     target="blank"
                     style="text-decoration: underline;"
-                  >点击发布评论></a>
+                  >点击发布评论></a>-->
+                  <div>
+                    <img src="../../../assets/img/active/deposit/dotask.png" alt="做任务文字图标" />
+                  </div>
+                  <div class="tips">
+                    <p style="margin-bottom:4px">
+                      1.关注新睿云微信公众号并将本次活动链接发送至朋友圈，截图发送给我们即可领取“免保证金”云服务器
+                      <span
+                        class="blue pc-640-inline"
+                        @click="pushOrderFree(0,'p')"
+                      >上传截图></span>
+                      <span class="blue mobile-640-inline" @click="pushOrderFree(0,'m')">上传截图></span>
+                    </p>
+                    <p>
+                      2.使用“免保证金”云服务器期间，去“百度口碑”发布使用体验等相关评论，并截图发送给我们，可延长1个月免费使用期
+                      <span
+                        class="blue pc-640-inline"
+                        @click="uploadBaidu('p')"
+                      >发布评论></span>
+                      <span class="blue mobile-640-inline" @click="uploadBaidu('m')">发布评论></span>
+                      <span class="blue" @click="uploadBaidu()">上传截图></span>
+                    </p>
+                  </div>
                 </div>
                 <div class="renew">
                   <div class="head-g">
@@ -379,7 +408,8 @@
                         v-for="(item,index) in configureList"
                         :key="index"
                         :class="{'selected':selectConfig==item.cpu+','+item.mem}"
-                        @click="changConfigHost(item.cpu+','+item.mem)" v-if="!((hideconfig&&item.cpu==64&&item.mem==256)||(hideconfig&&item.cpu==32&&item.mem==64))"
+                        @click="changConfigHost(item.cpu+','+item.mem)"
+                        v-if="!((hideconfig&&item.cpu==64&&item.mem==256)||(hideconfig&&item.cpu==32&&item.mem==64))"
                       >{{ item.cpu+'核'+item.mem+'G'}}</li>
                     </ul>
                     <span class="tips">*以上配置皆包含40G SSD系统盘</span>
@@ -944,18 +974,268 @@
         <Button type="primary" @click="isPayzfb">支付完成</Button>
       </p>
     </Modal>
+    <!-- 关注微信公众号 -->
+    <Modal
+      v-model="showModal.wechatShare"
+      width="550"
+      :scrollable="true"
+      :mask-closable="false"
+      :closable="false"
+    >
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">做任务 得好礼</span>
+      </p>
+      <div class="wechat-modal">
+        <h3>完成以下任务免费领取云服务器：</h3>
+        <div class="content">
+          <div class="wechat">
+            <h4>关注微信公众号并截图</h4>
+            <div class="center">
+              <img src="../../../assets/img/app/QR-code.jpg" alt="新睿云二维码" />
+            </div>
+            <span class="upload-btn">点击上传截图</span>
+            <div class="demo-upload-list" v-for="(item,index) in uploadList1" :key="index">
+              <template v-if="item.status === 'finished'">
+                <img :src="item.url" />
+                <div class="demo-upload-list-cover">
+                  <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
+                  <Icon type="ios-trash-outline" @click.native="handleRemove(item,'upload1')"></Icon>
+                </div>
+              </template>
+              <template v-else>
+                <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+              </template>
+            </div>
+            <Upload
+              ref="upload1"
+              :show-upload-list="false"
+              :on-success="handleSuccess1"
+              :format="['jpg','jpeg','png']"
+              :max-size="2048"
+              :on-format-error="handleFormatError"
+              :on-exceeded-size="handleMaxSize"
+              type="drag"
+              action="https://kfactivity.xrcloud.net/file/upFile.do"
+              style="display: inline-block;width:58px;"
+            >
+              <div style="width: 58px;height:58px;line-height: 58px;">
+                <Icon type="camera" size="20"></Icon>
+              </div>
+            </Upload>
+          </div>
+          <div class="url">
+            <h4>将活动链接分享至朋友圈并截图</h4>
+            <div class="center">
+              <Input placeholder="https://activity.xinruiyun.cn/free/" readonly>
+                <Button slot="append" @click="copyUrl">复制链接</Button>
+              </Input>
+              <input
+                type="text"
+                value="https://activity.xinruiyun.cn/free/"
+                ref="copy"
+                style="position:absolute;z-index:-100"
+              />
+            </div>
+            <span class="upload-btn">点击上传截图</span>
+            <div class="demo-upload-list" v-for="(item,index) in uploadList" :key="index">
+              <template v-if="item.status === 'finished'">
+                <img :src="item.url" />
+                <div class="demo-upload-list-cover">
+                  <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
+                  <Icon type="ios-trash-outline" @click.native="handleRemove(item,'upload')"></Icon>
+                </div>
+              </template>
+              <template v-else>
+                <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+              </template>
+            </div>
+            <Upload
+              ref="upload"
+              :show-upload-list="false"
+              :on-success="handleSuccess"
+              :format="['jpg','jpeg','png']"
+              :max-size="2048"
+              :on-format-error="handleFormatError"
+              :on-exceeded-size="handleMaxSize"
+              type="drag"
+              action="https://kfactivity.xrcloud.net/file/upFile.do"
+              style="display: inline-block;width:58px;"
+            >
+              <div style="width: 58px;height:58px;line-height: 58px;">
+                <Icon type="camera" size="20"></Icon>
+              </div>
+            </Upload>
+          </div>
+        </div>
+        <span>*上传文件支持jpg/png/gif，单个文件最大不超过4MB</span>
+      </div>
+      <div slot="footer" class="modal-footer-border">
+        <Button @click="showModal.wechatShare = false">取消</Button>
+        <Button type="primary" @click="wechat_submit">提交</Button>
+      </div>
+    </Modal>
+    <!-- 预览图片弹窗 -->
+    <Modal title="View Image" v-model="visible" style="position:absolute;z-index:2000">
+      <img :src="imgName" v-if="visible" style="width: 100%" />
+    </Modal>
+    <!-- 发布百度口碑评论 -->
+    <Modal
+      v-model="showModal.baiducomment"
+      width="550"
+      :scrollable="true"
+      :mask-closable="false"
+      :closable="false"
+    >
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">做任务 得好礼</span>
+      </p>
+      <div class="baidu-modal">
+        <h3>完成以下任务免费延长1个月使用期：</h3>
+        <div class="content">
+          <h4 style="width:100%">到“百度口碑”发布使用体验等相关评论并截图</h4>
+          <a
+            href="https://koubei.baidu.com/s/510a4f5f6316c2d0f81b3e63bc75b537?fr=search"
+            target="blank"
+          >点击发布评论></a>
+          <span class="upload-btn">点击上传截图</span>
+          <div class="demo-upload-list" v-for="(item,index) in uploadList2" :key="index">
+            <template v-if="item.status === 'finished'">
+              <img :src="item.url" />
+              <div class="demo-upload-list-cover">
+                <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
+                <Icon type="ios-trash-outline" @click.native="handleRemove(item,'upload2')"></Icon>
+              </div>
+            </template>
+            <template v-else>
+              <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+            </template>
+          </div>
+          <Upload
+            ref="upload2"
+            :show-upload-list="false"
+            :on-success="handleSuccess2"
+            :format="['jpg','jpeg','png']"
+            :max-size="2048"
+            :on-format-error="handleFormatError"
+            :on-exceeded-size="handleMaxSize"
+            type="drag"
+            action="https://kfactivity.xrcloud.net/file/upFile.do"
+            style="display: inline-block;width:58px;"
+          >
+            <div style="width: 58px;height:58px;line-height: 58px;">
+              <Icon type="camera" size="20"></Icon>
+            </div>
+          </Upload>
+        </div>
+        <span>*上传文件支持jpg/png/gif，单个文件最大不超过4MB</span>
+      </div>
+      <div slot="footer" class="modal-footer-border">
+        <Button @click="showModal.baiducomment = false">取消</Button>
+        <Button type="primary" @click="baidu_submit">提交</Button>
+      </div>
+    </Modal>
+    <!-- 审核中 -->
+    <Modal
+      v-model="showModal.checking"
+      width="550"
+      :scrollable="true"
+      :mask-closable="false"
+      :closable="false"
+    >
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">做任务 得好礼</span>
+      </p>
+      <div class="check-modal">审核中，请您耐心等待…</div>
+      <div slot="footer" class="modal-footer-border">
+        <Button @click="showModal.checking = false">关闭</Button>
+      </div>
+    </Modal>
+    <!-- 审核未通过 -->
+    <Modal
+      v-model="showModal.checkfail"
+      width="550"
+      :scrollable="true"
+      :mask-closable="false"
+      :closable="false"
+    >
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">做任务 得好礼</span>
+      </p>
+      <div class="check-modal">
+        审核未通过，请重新提交。如有疑问，请
+        <a
+          style="text-decoration:underline"
+          href="https://im.xrcloud.net/im/question/index.html"
+        >联系客服</a>
+      </div>
+      <div slot="footer" class="modal-footer-border">
+        <Button
+          type="primary"
+          @click="showModal.checkfail = false;showModal.wechatShare = true;"
+        >重新提交</Button>
+      </div>
+    </Modal>
+    <!-- 审核通过 -->
+    <Modal
+      v-model="showModal.checksuccess"
+      width="550"
+      :scrollable="true"
+      :mask-closable="false"
+      :closable="false"
+    >
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">做任务 得好礼</span>
+      </p>
+      <div class="check-modal">
+        您已领取免费云服务器，您还可以参与
+        <span style="color:#4A97EE">到“百度口碑”发布使用体验</span>
+        任务，免费延长云服务器1个月使用期。
+      </div>
+      <div slot="footer" class="modal-footer-border">
+        <Button @click="showModal.checksuccess = false">取消</Button>
+        <Button
+          type="primary"
+          @click="seeComment()"
+        >查看任务</Button>
+      </div>
+    </Modal>
+    <!-- 审核通过，百度评论 -->
+    <Modal
+      v-model="showModal.baidusuccess"
+      width="550"
+      :scrollable="true"
+      :mask-closable="false"
+      :closable="false"
+    >
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">做任务 得好礼</span>
+      </p>
+      <div class="check-modal">您已领取免费延长云服务器1个月使用期，敬请关注其他活动。</div>
+      <div slot="footer" class="modal-footer-border">
+        <Button @click="showModal.baidusuccess = false">关闭</Button>
+      </div>
+    </Modal>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-// import child1 from './freeHost';
-// import child2 from './lowDiscount';
 import axios from 'axios'
 import reg from '../../../util/regExp'
 import VueQArt from 'vue-qart'
 import $ from 'jquery'
 import throttle from 'throttle-debounce/debounce'
 export default {
+  metaInfo: {
+    title: '免费云主机体验试用 -云服务器免费试用可申请1年或30天 - 活动中心 - 新睿云', // set a title
+    meta: [{                 // set meta
+      name: 'keywords',
+      content: '免费云主机,免费云主机试用一年,免费云主机申请,云主机免费体验,云服务器免费,云服务器免费试用,免费云服务器试用一年'
+    },
+    {                 // set meta
+      name: 'description',
+      content: '新睿云推出爆款云主机免费试用活动，2款云服务器产品最长免费试用1年，每天随时可领，押金随时可退，2018年8月3日开始，总量有限，先到先得！'
+    }]
+  },
   data () {
     const validaRegisteredPhone = (rule, value, callback) => {
       if (!value) {
@@ -995,15 +1275,46 @@ export default {
         orderConfirmationModal: false,
         qrCode: false,
         cashverification: false,
-        // 用公共组件
-        // authHint: true,
-        // 规则弹窗都需要修改
         rule: false,
         ruleHost: false,
         dayHost: false,
         ruleCoupon: false,
-        rechargeHintzfb: false
+        rechargeHintzfb: false,
+        wechatShare: false,
+        baiducomment: false,
+        checking: false,
+        checkfail: false,
+        checksuccess: false,
+        baidusuccess: false
       },
+      hostFree: {},
+      imgurl: '',
+      imgurl1: '',
+      imgurl2: '',
+      imgName: '',
+      visible: false,
+      uploadList: [
+        {
+          name: '',
+          file: ''
+        }
+      ],
+      // imgName: '',
+      // visible: false,
+      uploadList1: [
+        {
+          name: '',
+          file: ''
+        }
+      ],
+      uploadList2: [
+        {
+          name: '',
+          file: ''
+        }
+      ],
+      activityNumfree: '',
+      vmConfigIdfree: '',
       hintMsg: '',
       qrConfig: {
         value: '',
@@ -1816,12 +2127,181 @@ export default {
     this.getRenewPrice(this.renewHostList[1])
   },
   mounted () {
-
+    this.uploadList = this.$refs.upload.fileList;
+    this.uploadList1 = this.$refs.upload1.fileList;
+    this.uploadList2 = this.$refs.upload2.fileList;
   },
   methods: {
+    wechat_submit () {
+      let url1 = this.uploadList1.map(item => {
+        return item.url
+      })
+      let url = this.uploadList.map(item => {
+        return item.url
+      })
+      let urls = url1.concat(url).join(',')
+      if (this.uploadList.length && this.uploadList1.length) {
+        axios.post('activity/addReviewInfo.do', {
+          sharePics: urls,
+          activityNum: this.activityNumfree,
+          vmConfigId: this.vmConfigIdfree,
+          osType: this.hostFree.system[1],
+          defzoneid: this.hostFree.zoneId,
+        }).then(response => {
+          if (response.status == 200 && response.data.status == 1) {
+            this.showModal.wechatShare = false
+            this.$message.info({
+              content: response.data.message
+            })
+          } else {
+            this.$message.info({
+              content: response.data.message
+            })
+          }
+        })
+      } else {
+        this.$message.info({
+          content: '请上传截图'
+        })
+      }
+    },
+    baidu_submit () {
+      let url2 = this.uploadList2.map(item => {
+        return item.url
+      })
+      if (this.uploadList2.length) {
+        axios.post('activity/addCommentInfo.do', {
+          commentPics: url2.join(','),
+          activityNum: this.activityNumfree,
+          vmConfigId: this.vmConfigIdfree,
+        }).then(response => {
+          if (response.status == 200 && response.data.status == 1) {
+            this.showModal.baiducomment = false
+            this.$message.info({
+              content: response.data.message
+            })
+          } else {
+            this.$message.info({
+              content: response.data.message
+            })
+          }
+        })
+      } else {
+        this.$message.info({
+          content: '请上传截图'
+        })
+      }
+    },
+    seeComment(){
+      this.showModal.checksuccess = false
+      let item = this.hostFree
+      axios.get('activity/getReviewInfo.do', {
+        params: {
+          activityNum: item.post.activitynum,
+          vmConfigId: item.post.id
+        }
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          if (!response.data.rusult || !response.data.rusult.commentResult) {
+            axios.get('activity/judgeGetFreeVmByActivity.do', {
+              params: {
+                vmConfigId: item.post.id
+              }
+            }).then(response => {
+              if (response.status == 200 && response.data.status == 1) {
+                this.showModal.baiducomment = true
+              } else {
+                this.$message.info({
+                  content: response.data.message
+                })
+              }
+            })
+          } else {
+            // switch (0) {
+            switch (response.data.rusult.commentResult.commentStatus) {
+              case 0:
+                this.showModal.checkfail = true
+                break;
+              case 1:
+                this.showModal.baidusuccess = true
+                break;
+              case 2:
+                this.showModal.checking = true
+                break;
+            }
+          }
+        }
+      })
+    },
+    //复制文件外链路径
+    copyUrl () {
+      this.$refs.copy.focus()
+      var obj = this.$refs.copy
+      obj.select()
+      document.execCommand("copy");
+      try {
+        if (document.execCommand("copy")) {
+          this.$Message.success("复制成功");
+        } else {
+          this.$Message.info("平台出小差了");
+        }
+      } catch (err) {
+        if (err) {
+          this.$Message.info("该浏览器暂不支持复制");
+        }
+      }
+    },
+    handleView (name) {
+      this.imgName = name;
+      this.visible = true;
+    },
+    handleRemove (file, name) {
+      const fileList = this.$refs[name].fileList;
+      this.$refs[name].fileList.splice(fileList.indexOf(file), 1);
+    },
+    handleSuccess (res, file, name) {
+      if (res.status == 1) {
+        file.url = res.result
+        file.name = res.result
+        this.imgurl = res.result
+      }
+    },
+    handleSuccess1 (res, file, name) {
+      if (res.status == 1) {
+        file.url = res.result
+        file.name = res.result
+        this.imgurl1 = res.result
+      }
+    },
+    handleSuccess2 (res, file, name) {
+      if (res.status == 1) {
+        file.url = res.result
+        file.name = res.result
+        this.imgurl2 = res.result
+      }
+    },
+    handleFormatError () {
+      this.$Message.info({
+        content: '仅支持jpg,jpeg,png,gif格式的文件上传'
+      })
+    },
+    handleMaxSize (file) {
+      this.$Message.info({
+        content: '上传的文件过大'
+      })
+    },
+    // handleBeforeUpload () {
+    //   const check = this.uploadList.length < 5;
+    //   if (!check) {
+    //     this.$Notice.warning({
+    //       title: '最多可上传5张图片'
+    //     });
+    //   }
+    //   return check;
+    // },
     getParams () {
       if (this.$route.hash) {
-        if (this.$route.hash.split('#')[1].slice(0,4)=='days') {
+        if (this.$route.hash.split('#')[1].slice(0, 4) == 'days') {
           this.currentView = 'child2'
         }
       }
@@ -1943,11 +2423,11 @@ export default {
       let params = {
         zoneId: item.zoneId,
       }
-      if(item.post.servicetype=='G5500'){
+      if (item.post.servicetype == 'G5500') {
         params.user = '0'
-        params.gpu ='1',
-        params.normalTemplate ="0"
-      }  
+        params.gpu = '1',
+          params.normalTemplate = "0"
+      }
       axios.get(url, {
         params
       }).then(res => {
@@ -2130,6 +2610,14 @@ export default {
               this.getSystemD(item)
             }
           })
+          // 获取免押金主机参数
+          let filterdata = []
+          filterdata = this.depositeList.filter(item => {
+            return item.post.freeddeposit == 1
+          })
+          this.hostFree = filterdata[0]
+          this.activityNumfree = this.hostFree.post.activitynum
+          this.vmConfigIdfree = this.hostFree.post.id
         }
       })
     },
@@ -2153,11 +2641,11 @@ export default {
       let params = {
         zoneId: item.zoneId,
       }
-      if(item.post.servicetype=='G5500'){
+      if (item.post.servicetype == 'G5500') {
         params.user = '0'
-        params.gpu ='1',
-        params.normalTemplate ="0"
-      }  
+        params.gpu = '1',
+          params.normalTemplate = "0"
+      }
       axios.get(url, {
         params
       }).then(res => {
@@ -2209,7 +2697,7 @@ export default {
         }
       })
     },
-    refreshQRFirst() {
+    refreshQRFirst () {
       this.tempCode = this.uuid(6, 16)
       let url = '/faceRecognition/getUserInfoByPcQRCode.do'
       let config1 = {
@@ -2231,6 +2719,167 @@ export default {
         }
       })
     },
+    checkstatusFree (item, type) {
+      axios.get('activity/getReviewInfo.do', {
+        params: {
+          activityNum: item.post.activitynum,
+          vmConfigId: item.post.id
+        }
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          // if (response.data.rusult) {
+          if (!response.data.rusult || !response.data.rusult.reviewResult) {
+            axios.get('activity/judgeGetFreeVmByActivity.do', {
+              params: {
+                vmConfigId: item.post.id
+              }
+            }).then(response => {
+              if (response.status == 200 && response.data.status == 1) {
+                this.showModal.wechatShare = true
+              } else {
+                this.$message.info({
+                  content: response.data.message
+                })
+              }
+            })
+          } else {
+            // switch (0) {
+            switch (response.data.rusult.reviewResult.reviewStatus) {
+              case 0:
+                this.showModal.checkfail = true
+                break;
+              case 1:
+                this.showModal.checksuccess = true
+                break;
+              case 2:
+                this.showModal.checking = true
+                break;
+            }
+          }
+        }
+      })
+    },
+    // uploadWechat () {
+    //   if (!this.$store.state.userInfo) {
+    //     this.$LR({ type: 'register' })
+    //     return
+    //   }
+    //   this.showModal.wechatShare = true
+    // },
+    uploadBaidu (type) {
+      let item = this.hostFree
+      if (!this.$store.state.userInfo) {
+        if (type == 'p') {
+          this.$LR({ type: 'register' })
+        } else {
+          window.open('https://kfm.xrcloud.net/login', '_self')
+        }
+        return
+      }
+      if ((!this.authInfo) || (this.authInfo && this.authInfo.authtype == 0 && this.authInfo.checkstatus != 0) || (!this.authInfoPersion && this.authInfo && this.authInfo.authtype == 1 && this.authInfo.checkstatus != 0) || (this.authInfoPersion && this.authInfoPersion.checkstatus != 0 && this.authInfo && this.authInfo.checkstatus != 0)) {
+        if (type == 'p') {
+          if (!this.userInfo.phone) {
+            this.showModal.cashverification = true
+          } else if (item.post.certification == 3) {
+            this.$message.confirm({
+              title: '提示',
+              content: '抱歉，只有实名认证用户才可以参加活动',
+              okText: '去实名认证',
+              onOk: () => {
+                window.open('https://kfi.xrcloud.net/usercenter', '_self')
+              }
+            })
+          } else {
+            this.refreshQRFirst()
+          }
+          return
+        } else {
+          if (item.post.certification == 3) {
+            window.open('https://kfi.xrcloud.net/usercenter', '_self')
+          } else {
+            window.open('https://kfm.xrcloud.net/faceindex', '_self')
+          }
+        }
+      }
+      // this.showModal.baiducomment = true
+      axios.get('activity/getReviewInfo.do', {
+        params: {
+          activityNum: item.post.activitynum,
+          vmConfigId: item.post.id
+        }
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          if (!response.data.rusult || !response.data.rusult.commentResult) {
+            axios.get('activity/judgeGetFreeVmByActivity.do', {
+              params: {
+                vmConfigId: item.post.id
+              }
+            }).then(response => {
+              if (response.status == 200 && response.data.status == 1) {
+                this.showModal.baiducomment = true
+              } else {
+                this.$message.info({
+                  content: response.data.message
+                })
+              }
+            })
+          } else {
+            // switch (0) {
+            switch (response.data.rusult.commentResult.commentStatus) {
+              case 0:
+                this.showModal.checkfail = true
+                break;
+              case 1:
+                this.showModal.baidusuccess = true
+                break;
+              case 2:
+                this.showModal.checking = true
+                break;
+            }
+          }
+        }
+      })
+    },
+    pushOrderFree (item, type) {
+      // console.log(item)
+      if (!this.$store.state.userInfo) {
+        if (type == 'p') {
+          this.$LR({ type: 'register' })
+        } else {
+          window.open('https://kfm.xrcloud.net/login', '_self')
+        }
+        return
+      }
+      if ((!this.authInfo) || (this.authInfo && this.authInfo.authtype == 0 && this.authInfo.checkstatus != 0) || (!this.authInfoPersion && this.authInfo && this.authInfo.authtype == 1 && this.authInfo.checkstatus != 0) || (this.authInfoPersion && this.authInfoPersion.checkstatus != 0 && this.authInfo && this.authInfo.checkstatus != 0)) {
+        if (type == 'p') {
+          if (!this.userInfo.phone) {
+            this.showModal.cashverification = true
+          } else if (item.post.certification == 3) {
+            this.$message.confirm({
+              title: '提示',
+              content: '抱歉，只有实名认证用户才可以参加活动',
+              okText: '去实名认证',
+              onOk: () => {
+                window.open('https://kfi.xrcloud.net/usercenter', '_self')
+              }
+            })
+          } else {
+            this.refreshQRFirst()
+          }
+          return
+        } else {
+          if (item.post.certification == 3) {
+            window.open('https://kfi.xrcloud.net/usercenter', '_self')
+          } else {
+            window.open('https://kfm.xrcloud.net/faceindex', '_self')
+          }
+        }
+      }
+      if (item == 0) {
+        item = this.hostFree
+      }
+      this.checkstatusFree(item)
+    },
     pushOrderD (item, type) {
       if (!this.$store.state.userInfo) {
         if (type == 'p') {
@@ -2244,21 +2893,25 @@ export default {
         if (type == 'p') {
           if (!this.userInfo.phone) {
             this.showModal.cashverification = true
+          } else if (item.post.certification == 3) {
+            this.$message.confirm({
+              title: '提示',
+              content: '抱歉，只有实名认证用户才可以参加活动',
+              okText: '去实名认证',
+              onOk: () => {
+                window.open('https://kfi.xrcloud.net/usercenter', '_self')
+              }
+            })
           } else {
             this.refreshQRFirst()
           }
           return
-          // this.$message.confirm({
-          //   title: '提示',
-          //   content: '抱歉，只有实名认证用户才可以参加活动',
-          //   okText: '去实名认证',
-          //   onOk: () => {
-          //     window.open('https://kfi.xrcloud.net/usercenter', '_self')
-          //   }
-          // })
-          // return false
         } else {
-          window.open('https://kfm.xrcloud.net/faceindex', '_self')
+          if (item.post.certification == 3) {
+            window.open('https://kfi.xrcloud.net/usercenter', '_self')
+          } else {
+            window.open('https://kfm.xrcloud.net/faceindex', '_self')
+          }
         }
       }
       let url = ''
@@ -2333,7 +2986,7 @@ export default {
             this.$Message.info('请选择一个支付方式')
             break
           case 'zfb':
-          window.open("about:blank","alipay")
+            window.open("about:blank", "alipay")
             this.$http.get('zfb/getzfbinfo.do', {
               params: {
                 total_fee: this.cashPledge
@@ -2343,7 +2996,7 @@ export default {
                 this.showModal.orderConfirmationModal = false
                 this.serialNum = res.data.serialNum
                 localStorage.setItem('serialNum', this.serialNum)
-                window.open(null,'alipay').location.href = `https://kfi.xrcloud.net/zfb/alipaypage.do?serialNum=${this.serialNum}&route=rechargeResult`
+                window.open(null, 'alipay').location.href = `https://kfi.xrcloud.net/zfb/alipaypage.do?serialNum=${this.serialNum}&route=rechargeResult`
                 this.showModal.rechargeHintzfb = true
               } else {
                 this.$message.info({
@@ -2387,26 +3040,26 @@ export default {
         }
       })
     },
-    isPayzfb() {
-        this.showModal.rechargeHintzfb = false
-        this.loading = true
-        this.loadingMessage = '正在支付，请稍后...'
-        this.$http.get('user/payStatus.do', {
-          params: {
-            serialNum: this.serialNum
-          }
-        }).then(response => {
-          if (response.status == 200 && response.data.status == 1) {
-            this.loading = false
-            this.showModal.paySuccessModal = true
-          } else {
-            this.loading = false;
-            this.$message.info({
-              content: response.data.message
-            })
-          }
-        })
-      },
+    isPayzfb () {
+      this.showModal.rechargeHintzfb = false
+      this.loading = true
+      this.loadingMessage = '正在支付，请稍后...'
+      this.$http.get('user/payStatus.do', {
+        params: {
+          serialNum: this.serialNum
+        }
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          this.loading = false
+          this.showModal.paySuccessModal = true
+        } else {
+          this.loading = false;
+          this.$message.info({
+            content: response.data.message
+          })
+        }
+      })
+    },
     payWayChange () {
       if (this.payWay == 'otherPay' && this.otherPayWay == '') {
         this.otherPayWay = 'zfb'
@@ -2458,13 +3111,13 @@ export default {
         if (res.status == 200 && res.data.status == 1) {
           // this.showModal.getSuccessModal = true
           this.$message.confirm({
-                title: '提示',
-                content: `恭喜您保证金已冻结完成，${text}领取成功，${text}在实名认证之前只可保留3天，请尽快使用。`,
-                okText: `查看${text}`,
-                onOk: () => {
-                  window.open('https://kfi.xrcloud.net/'+pushurl,'_self')
-                }
-              })
+            title: '提示',
+            content: `恭喜您保证金已冻结完成，${text}领取成功，${text}在实名认证之前只可保留3天，请尽快使用。`,
+            okText: `查看${text}`,
+            onOk: () => {
+              window.open('https://kfi.xrcloud.net/' + pushurl, '_self')
+            }
+          })
           this.toggleZone(this.orderData[0].zoneId)
         } else {
           this.$message.info({
@@ -2594,10 +3247,10 @@ export default {
         this.changzone(this.gpuZoneList[0])
       }
     },
-    changzone (item,name) {
+    changzone (item, name) {
       this.selectZone = item.zoneid
       this.setTemplateHost(item)
-      if(name == '北方一区') {
+      if (name == '北方一区') {
         this.hideconfig = true
       } else {
         this.hideconfig = false
@@ -2780,11 +3433,11 @@ export default {
       let params = {
         zoneId: item.zoneid,
       }
-      if(item.gpuserver == 1){
+      if (item.gpuserver == 1) {
         params.user = '0'
-        params.gpu ='1',
-        params.normalTemplate ="0"
-      }  
+        params.gpu = '1',
+          params.normalTemplate = "0"
+      }
       axios.get('information/listTemplates.do', {
         params
       }).then(res => {
@@ -3109,7 +3762,7 @@ export default {
   components: {
     VueQArt
   },
-   beforeRouteLeave (to, from, next) {
+  beforeRouteLeave (to, from, next) {
     clearInterval(this.codeTimer)
     next()
   }
@@ -3117,6 +3770,14 @@ export default {
 </script>
 
 <style rel="stylesheet/less" lang="less" scoped>
+.flex {
+  display: flex;
+  justify-content: center;
+}
+.flex-col {
+  display: flex;
+  align-items: center;
+}
 .wrap {
   margin: 0 auto;
   width: 1260px;
@@ -3138,8 +3799,8 @@ export default {
   padding: 60px 0 40px;
   background: url("../../../assets/img/active/freeToReceive.1/free-host-bg.png")
       top no-repeat,
-    url("../../../assets/img/active/freeToReceive.1/circle-left.png") 0%
-      500px no-repeat,
+    url("../../../assets/img/active/freeToReceive.1/circle-left.png") 0% 500px
+      no-repeat,
     url("../../../assets/img/active/freeToReceive.1/circle-right.png") 100%
       800px no-repeat;
   background-color: #395fc5;
@@ -3153,7 +3814,8 @@ export default {
       flex-grow: 1;
       width: 50%;
       // width: 50%;
-      &.selected,&:hover{
+      &.selected,
+      &:hover {
         > span {
           background: linear-gradient(
             160deg,
@@ -3203,8 +3865,8 @@ export default {
   // height: 839px;
   padding-bottom: 50px;
   background: #f2f8ff
-    url("../../../assets/img/active/freeToReceive.1/summary-host-bg.png")
-    center no-repeat;
+    url("../../../assets/img/active/freeToReceive.1/summary-host-bg.png") center
+    no-repeat;
   background-size: cover;
   .product {
     text-align: left;
@@ -3342,7 +4004,6 @@ export default {
     display: flex;
     flex-wrap: wrap;
     text-align: left;
-    padding-bottom: 10px;
     width: 1220px;
     > div {
       width: 224px;
@@ -3468,6 +4129,9 @@ export default {
       .line-thr {
         text-decoration: line-through;
       }
+      .btns {
+        margin-bottom: 0px;
+      }
       button {
         width: 100%;
         background: #f66d59;
@@ -3486,11 +4150,10 @@ export default {
     }
   }
   .tips {
-    margin-top: 10px;
     text-align: left;
     font-size: 16px;
     color: #4f557b;
-    // line-height: 1;
+    font-family: MicrosoftYaHei;
     span {
       cursor: pointer;
     }
@@ -3499,6 +4162,19 @@ export default {
     }
     .red {
       color: #f0624d;
+    }
+  }
+  .dotask {
+    border: 1px dashed #99c0ee;
+    border-radius: 5px;
+    padding: 10px 0 10px 16px;
+    img {
+      margin-right: 16px;
+    }
+    .tips {
+      p {
+        line-height: 24px;
+      }
     }
   }
   .head-g {
@@ -4042,7 +4718,7 @@ export default {
 }
 @media screen and (max-width: 640px) {
   .deposite-host .head-g {
-    width:100%;
+    width: 100%;
   }
   .free-host .tabs > div a i {
     display: none;
@@ -4156,6 +4832,12 @@ export default {
       }
     }
   }
+  .dotask {
+    display: flex;
+    flex-direction: column;
+    // justify-content: flex-start;
+    align-items: flex-start;
+  }
 }
 .modal-p {
   > div {
@@ -4260,5 +4942,153 @@ export default {
       cursor: pointer;
     }
   }
+}
+.wechat-modal {
+  h3 {
+    margin-bottom: 10px;
+    color: #4768b1;
+    font-size: 14px;
+    line-height: 19px;
+    font-weight: normal;
+  }
+  .content {
+    display: flex;
+    padding: 10px 20px;
+    color: #4768b1;
+    .center {
+      height: 88px;
+    }
+    h4 {
+      font-size: 14px;
+      line-height: 19px;
+      font-weight: normal;
+      margin-bottom: 10px;
+    }
+    .wechat {
+      width: 80px;
+      margin-right: 68px;
+      img {
+        width: 60px;
+        display: block;
+      }
+    }
+    .url {
+      width: 336px;
+      h4 {
+        width: 112px;
+      }
+    }
+    .upload-btn {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 12px;
+      color: rgba(74, 151, 238, 1);
+      line-height: 16px;
+      cursor: pointer;
+    }
+  }
+  > span {
+    display: inline-block;
+    margin-top: 20px;
+    margin-left: 20px;
+    font-size: 12px;
+    color: rgba(153, 153, 153, 1);
+    line-height: 16px;
+  }
+}
+.baidu-modal {
+  h3 {
+    margin-bottom: 20px;
+    color: #4768b1;
+    font-size: 14px;
+    line-height: 19px;
+    font-weight: normal;
+  }
+  .content {
+    padding: 10px 18px;
+    color: #4768b1;
+    font-size: 14px;
+    h4 {
+      margin-bottom: 6px;
+      color: rgba(71, 104, 177, 1);
+      font-weight: normal;
+    }
+    a {
+      font-size: 14px;
+      color: rgba(88, 147, 255, 1);
+      line-height: 24px;
+      text-decoration: underline;
+    }
+    span {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 12px;
+      color: #4a97ee;
+      line-height: 1.5;
+    }
+    // div {
+    //   display: flex;
+    //   justify-content: space-between;
+    //   .comment-btn {
+    //     color: #5893ff;
+    //     text-decoration: underline;
+    //     cursor: pointer;
+    //   }
+    //   .upload-btn {
+    //     font-size: 12px;
+    //     color: #4a97ee;
+    //     cursor: pointer;
+    //   }
+    // }
+  }
+  > span {
+    display: inline-block;
+    margin-top: 20px;
+    margin-left: 18px;
+    font-size: 12px;
+    color: rgba(153, 153, 153, 1);
+    line-height: 16px;
+  }
+}
+.demo-upload-list {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  text-align: center;
+  line-height: 60px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #fff;
+  position: relative;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  margin-right: 4px;
+}
+.demo-upload-list img {
+  width: 100%;
+  height: 100%;
+}
+.demo-upload-list-cover {
+  display: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.6);
+}
+.demo-upload-list:hover .demo-upload-list-cover {
+  display: block;
+}
+.demo-upload-list-cover i {
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  margin: 0 2px;
+}
+.check-modal {
+  padding: 50px 0;
+  text-align: center;
+  font-size: 14px;
 }
 </style>
