@@ -122,8 +122,8 @@
                         <span>{{item.originPrice}}</span>
                       </div>
                       <div class="btns" v-if="item.post.freeddeposit==1">
-                        <Button @click="pushOrderFree(item,'p')" class="pc-640">免费领取</Button>
-                        <Button @click="pushOrderFree(item,'m')" class="mobile-640">免费领取</Button>
+                        <Button @click="pushOrderFree(item,'p')" class="pc-640">做任务 免费领</Button>
+                        <Button @click="pushOrderFree(item,'m')" class="mobile-640">做任务 免费领</Button>
                       </div>
                       <div class="btns" v-else>
                         <Button @click="pushOrderD(item,'p')" class="pc-640">免费领取</Button>
@@ -2199,7 +2199,7 @@ export default {
         }
       }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          if (response.data.result.reviewResult) {
+          if (response.data.result.commentResult && JSON.stringify(response.data.result.commentResult) != '{}') {
             switch (response.data.result.commentResult.commentStatus) {
               case 0:
                 this.showModal.checkfail = true
@@ -2213,19 +2213,25 @@ export default {
             }
           }
         } else {
-          axios.get('activity/judgeGetFreeVmByActivity.do', {
-            params: {
-              vmConfigId: item.post.id
-            }
-          }).then(response => {
-            if (response.status == 200 && response.data.status == 1) {
-              this.showModal.baiducomment = true
+          if (response.data.result.reviewResult.reviewStatus == 1) {
+              axios.get('activity/judgeGetFreeVmByActivity.do', {
+                params: {
+                  vmConfigId: item.post.id
+                }
+              }).then(response => {
+                if (response.status == 200 && response.data.status == 1) {
+                  this.showModal.baiducomment = true
+                } else {
+                  this.$message.info({
+                    content: response.data.message
+                  })
+                }
+              })
             } else {
               this.$message.info({
-                content: response.data.message
-              })
+                    content: '请先成功领取主机再进行该操作！'
+                  })
             }
-          })
         }
       })
     },
@@ -2803,7 +2809,7 @@ export default {
         }
       }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          if (response.data.result.commentResult) {
+          if (response.data.result.commentResult && JSON.stringify(response.data.result.commentResult) != '{}') {
             switch (response.data.result.commentResult.commentStatus) {
               case 0:
                 this.showModal.checkfail = true
@@ -2816,20 +2822,25 @@ export default {
                 break;
             }
           } else {
-            axios.get('activity/judgeGetFreeVmByActivity.do', {
-              params: {
-                vmConfigId: item.post.id
-              }
-            }).then(response => {
-              if (response.status == 200 && response.data.status == 1) {
-                this.showModal.baiducomment = true
-              } else {
-                this.$message.info({
-                  content: response.data.message
-                })
-              }
-            })
-
+            if (response.data.result.reviewResult.reviewStatus == 1) {
+              axios.get('activity/judgeGetFreeVmByActivity.do', {
+                params: {
+                  vmConfigId: item.post.id
+                }
+              }).then(response => {
+                if (response.status == 200 && response.data.status == 1) {
+                  this.showModal.baiducomment = true
+                } else {
+                  this.$message.info({
+                    content: response.data.message
+                  })
+                }
+              })
+            } else {
+              this.$message.info({
+                    content: '请先成功领取主机再进行该操作！'
+                  })
+            }
           }
         }
       })
