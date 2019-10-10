@@ -2199,39 +2199,35 @@ export default {
         }
       }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          if (response.data.result.commentResult && JSON.stringify(response.data.result.commentResult) != '{}') {
-            switch (response.data.result.commentResult.commentStatus) {
-              case 0:
-                this.showModal.checkfail = true
-                break;
-              case 1:
-                this.showModal.baidusuccess = true
-                break;
-              case 2:
-                this.showModal.checking = true
-                break;
-            }
-          }
-        } else {
-          if (response.data.result.reviewResult.reviewStatus == 1) {
-              axios.get('activity/judgeGetFreeVmByActivity.do', {
-                params: {
-                  vmConfigId: item.post.id
-                }
-              }).then(response => {
-                if (response.status == 200 && response.data.status == 1) {
-                  this.showModal.baiducomment = true
-                } else {
-                  this.$message.info({
-                    content: response.data.message
-                  })
-                }
-              })
+          // result返回为空的情况
+          if (response.data.result.commentResult) {
+            if (response.data.result.commentResult && JSON.stringify(response.data.result.commentResult) != '{}') {
+              switch (response.data.result.commentResult.commentStatus) {
+                case 0:
+                  this.showModal.checkfail = true
+                  break;
+                case 1:
+                  this.showModal.baidusuccess = true
+                  break;
+                case 2:
+                  this.showModal.checking = true
+                  break;
+              }
+              // result有值，commentResult为空的情况
             } else {
-              this.$message.info({
-                    content: '请先成功领取主机再进行该操作！'
-                  })
+              if (response.data.result.reviewResult.reviewStatus == 1) {
+                this.showModal.baiducomment = true
+              } else {
+                this.$message.info({
+                  content: '请先成功领取主机再进行该操作！'
+                })
+              }
             }
+          } else {
+            this.$message.info({
+              content: '请先成功领取主机再进行该操作！'
+            })
+          }
         }
       })
     },
@@ -2809,38 +2805,33 @@ export default {
         }
       }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          if (response.data.result.commentResult && JSON.stringify(response.data.result.commentResult) != '{}') {
-            switch (response.data.result.commentResult.commentStatus) {
-              case 0:
-                this.showModal.checkfail = true
-                break;
-              case 1:
-                this.showModal.baidusuccess = true
-                break;
-              case 2:
-                this.showModal.checking = true
-                break;
+          // result返回为空的情况
+          if (response.data.result.commentResult) {
+            if (response.data.result.commentResult && JSON.stringify(response.data.result.commentResult) != '{}') {
+              switch (response.data.result.commentResult.commentStatus) {
+                case 0:
+                  this.showModal.checkfail = true
+                  break;
+                case 1:
+                  this.showModal.baidusuccess = true
+                  break;
+                case 2:
+                  this.showModal.checking = true
+                  break;
+              }
+            } else {
+              if (response.data.result.reviewResult.reviewStatus == 1) {
+                this.showModal.baiducomment = true
+              } else {
+                this.$message.info({
+                  content: '请先成功领取主机再进行该操作！'
+                })
+              }
             }
           } else {
-            if (response.data.result.reviewResult.reviewStatus == 1) {
-              axios.get('activity/judgeGetFreeVmByActivity.do', {
-                params: {
-                  vmConfigId: item.post.id
-                }
-              }).then(response => {
-                if (response.status == 200 && response.data.status == 1) {
-                  this.showModal.baiducomment = true
-                } else {
-                  this.$message.info({
-                    content: response.data.message
-                  })
-                }
-              })
-            } else {
-              this.$message.info({
-                    content: '请先成功领取主机再进行该操作！'
-                  })
-            }
+            this.$message.info({
+              content: '请先成功领取主机再进行该操作！'
+            })
           }
         }
       })
