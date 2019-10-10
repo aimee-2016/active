@@ -165,7 +165,8 @@
                         @click="uploadBaidu('p')"
                       >发布评论></span>
                       <span class="blue mobile-640-inline" @click="uploadBaidu('m')">发布评论></span>
-                      <span class="blue" @click="uploadBaidu()">上传截图></span>
+                      <span class="blue pc-640-inline" @click="uploadBaidu('p')">上传截图></span>
+                      <span class="blue mobile-640-inline" @click="uploadBaidu('m')">上传截图></span>
                     </p>
                   </div>
                 </div>
