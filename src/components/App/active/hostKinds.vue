@@ -1170,8 +1170,14 @@
       </div>
       <div slot="footer" class="modal-footer-border">
         <Button
+          v-if="failType == 'wechat'"
           type="primary"
           @click="showModal.checkfail = false;showModal.wechatShare = true;"
+        >重新提交</Button>
+        <Button
+          v-else
+          type="primary"
+          @click="showModal.checkfail = false;showModal.baiducomment = true;"
         >重新提交</Button>
       </div>
     </Modal>
@@ -1284,6 +1290,7 @@ export default {
         checksuccess: false,
         baidusuccess: false
       },
+      failType: 'wechat',
       hostFree: {},
       imgurl: '',
       imgurl1: '',
@@ -2205,6 +2212,7 @@ export default {
               switch (response.data.result.commentResult.commentStatus) {
                 case 0:
                   this.showModal.checkfail = true
+                  this.failType = 'baidu'
                   break;
                 case 1:
                   this.showModal.baidusuccess = true
@@ -2729,6 +2737,7 @@ export default {
             switch (response.data.result.reviewResult.reviewStatus) {
               case 0:
                 this.showModal.checkfail = true
+                this.failType = 'wechat'
                 break;
               case 1:
                 this.showModal.checksuccess = true
@@ -2811,6 +2820,7 @@ export default {
               switch (response.data.result.commentResult.commentStatus) {
                 case 0:
                   this.showModal.checkfail = true
+                  this.failType = 'baidu'
                   break;
                 case 1:
                   this.showModal.baidusuccess = true
