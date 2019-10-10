@@ -2849,6 +2849,9 @@ export default {
     },
     pushOrderFree (item, type) {
       // console.log(item)
+      if (item == 0) {
+        item = this.hostFree
+      }
       if (!this.$store.state.userInfo) {
         if (type == 'p') {
           this.$LR({ type: 'register' })
@@ -2881,9 +2884,6 @@ export default {
             window.open('https://kfm.xrcloud.net/faceindex', '_self')
           }
         }
-      }
-      if (item == 0) {
-        item = this.hostFree
       }
       this.checkstatusFree(item)
     },
