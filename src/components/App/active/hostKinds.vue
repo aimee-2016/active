@@ -2729,17 +2729,23 @@ export default {
       }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
           if (response.data.result.reviewResult) {
-            switch (response.data.result.reviewResult.reviewStatus) {
-              case 0:
-                this.showModal.checkfail = true
-                this.failType = 'wechat'
-                break;
-              case 1:
-                this.showModal.checksuccess = true
-                break;
-              case 2:
-                this.showModal.checking = true
-                break;
+            if (response.data.result.reviewResult.reviewStatus == 1 && response.data.result.commentResult.commentStatus == 1) {
+              this.$message.info({
+                content: '你好！同一认证手机号只能参加一次本次活动。'
+              })
+            } else {
+              switch (response.data.result.reviewResult.reviewStatus) {
+                case 0:
+                  this.showModal.checkfail = true
+                  this.failType = 'wechat'
+                  break;
+                case 1:
+                  this.showModal.checksuccess = true
+                  break;
+                case 2:
+                  this.showModal.checking = true
+                  break;
+              }
             }
           } else {
             axios.get('activity/judgeGetFreeVmByActivity.do', {
