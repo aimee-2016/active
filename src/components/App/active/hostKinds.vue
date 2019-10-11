@@ -401,7 +401,7 @@
             </div>
             <div class="body">
               <div class="left">
-                <RadioGroup v-model="single" size="large">
+                <RadioGroup v-model="single" size="large" style="width:100%;">
                   <Radio label="选择云服务器" style="color:#4768B1;margin-bottom:20px;font-size:18px;"></Radio>
                   <div class="configure">
                     <ul>
