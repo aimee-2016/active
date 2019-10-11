@@ -160,11 +160,10 @@
                     </p>
                     <p>
                       2.使用“免保证金”云服务器期间，去“百度口碑”发布使用体验等相关评论，并截图发送给我们，可延长1个月免费使用期
-                      <span
-                        class="blue pc-640-inline"
-                        @click="uploadBaidu('p')"
-                      >发布评论></span>
-                      <span class="blue mobile-640-inline" @click="uploadBaidu('m')">发布评论></span>
+                      <a
+                        href="https://koubei.baidu.com/s/510a4f5f6316c2d0f81b3e63bc75b537?fr=search"
+                        target="blank"
+                      >发布评论></a>
                       <span class="blue pc-640-inline" @click="uploadBaidu('p')">上传截图></span>
                       <span class="blue mobile-640-inline" @click="uploadBaidu('m')">上传截图></span>
                     </p>
