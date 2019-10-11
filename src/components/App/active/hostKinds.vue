@@ -995,34 +995,41 @@
               <img src="../../../assets/img/app/QR-code.jpg" alt="新睿云二维码" />
             </div>
             <span class="upload-btn">点击上传截图</span>
-            <div class="demo-upload-list" v-for="(item,index) in uploadList1" :key="index">
-              <template v-if="item.status === 'finished'">
-                <img :src="item.url" />
-                <div class="demo-upload-list-cover">
-                  <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
-                  <Icon type="ios-trash-outline" @click.native="handleRemove(item,'upload1')"></Icon>
-                </div>
-              </template>
-              <template v-else>
-                <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
-              </template>
-            </div>
-            <Upload
-              ref="upload1"
-              :show-upload-list="false"
-              :on-success="handleSuccess1"
-              :format="['jpg','jpeg','png']"
-              :max-size="2048"
-              :on-format-error="handleFormatError"
-              :on-exceeded-size="handleMaxSize"
-              type="drag"
-              action="https://csactivity.xrcloud.net/file/upFile.do"
-              style="display: inline-block;width:58px;"
-            >
-              <div style="width: 58px;height:58px;line-height: 58px;">
-                <Icon type="camera" size="20"></Icon>
+            <div style="position:relative;height:58px;">
+              <div
+                class="demo-upload-list"
+                v-for="(item,index) in uploadList1"
+                :key="index"
+                style="position:absolute;top:0;left:0;z-index:1"
+              >
+                <template v-if="item.status === 'finished'">
+                  <img :src="item.url" />
+                  <div class="demo-upload-list-cover">
+                    <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
+                    <Icon type="ios-trash-outline" @click.native="handleRemove(item,'upload1')"></Icon>
+                  </div>
+                </template>
+                <template v-else>
+                  <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+                </template>
               </div>
-            </Upload>
+              <Upload
+                ref="upload1"
+                :show-upload-list="false"
+                :on-success="handleSuccess"
+                :format="['jpg','gif','png']"
+                :max-size="4096"
+                :on-format-error="handleFormatError"
+                :on-exceeded-size="handleMaxSize"
+                type="drag"
+                action="https://csactivity.xrcloud.net/file/upFile.do"
+                style="display: inline-block;width:58px;position:absolute;top:0;left:0"
+              >
+                <div style="width: 58px;height:58px;line-height: 58px;">
+                  <Icon type="camera" size="20"></Icon>
+                </div>
+              </Upload>
+            </div>
           </div>
           <div class="url">
             <h4>将活动链接分享至朋友圈并截图</h4>
@@ -1038,34 +1045,41 @@
               />
             </div>
             <span class="upload-btn">点击上传截图</span>
-            <div class="demo-upload-list" v-for="(item,index) in uploadList" :key="index">
-              <template v-if="item.status === 'finished'">
-                <img :src="item.url" />
-                <div class="demo-upload-list-cover">
-                  <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
-                  <Icon type="ios-trash-outline" @click.native="handleRemove(item,'upload')"></Icon>
-                </div>
-              </template>
-              <template v-else>
-                <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
-              </template>
-            </div>
-            <Upload
-              ref="upload"
-              :show-upload-list="false"
-              :on-success="handleSuccess"
-              :format="['jpg','jpeg','png']"
-              :max-size="2048"
-              :on-format-error="handleFormatError"
-              :on-exceeded-size="handleMaxSize"
-              type="drag"
-              action="https://csactivity.xrcloud.net/file/upFile.do"
-              style="display: inline-block;width:58px;"
-            >
-              <div style="width: 58px;height:58px;line-height: 58px;">
-                <Icon type="camera" size="20"></Icon>
+            <div style="position:relative;height:58px;">
+              <div
+                class="demo-upload-list"
+                v-for="(item,index) in uploadList"
+                :key="index"
+                style="position:absolute;top:0;left:0;z-index:1"
+              >
+                <template v-if="item.status === 'finished'">
+                  <img :src="item.url" />
+                  <div class="demo-upload-list-cover">
+                    <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
+                    <Icon type="ios-trash-outline" @click.native="handleRemove(item,'upload')"></Icon>
+                  </div>
+                </template>
+                <template v-else>
+                  <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+                </template>
               </div>
-            </Upload>
+              <Upload
+                ref="upload"
+                :show-upload-list="false"
+                :on-success="handleSuccess"
+                :format="['jpg','gif','png']"
+                :max-size="4096"
+                :on-format-error="handleFormatError"
+                :on-exceeded-size="handleMaxSize"
+                type="drag"
+                action="https://csactivity.xrcloud.net/file/upFile.do"
+                style="display: inline-block;width:58px;position:absolute;top:0;left:0"
+              >
+                <div style="width: 58px;height:58px;line-height: 58px;">
+                  <Icon type="camera" size="20"></Icon>
+                </div>
+              </Upload>
+            </div>
           </div>
         </div>
         <span>*上传文件支持jpg/png/gif，单个文件最大不超过4MB</span>
@@ -1099,34 +1113,41 @@
             target="blank"
           >点击发布评论></a>
           <span class="upload-btn">点击上传截图</span>
-          <div class="demo-upload-list" v-for="(item,index) in uploadList2" :key="index">
-            <template v-if="item.status === 'finished'">
-              <img :src="item.url" />
-              <div class="demo-upload-list-cover">
-                <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
-                <Icon type="ios-trash-outline" @click.native="handleRemove(item,'upload2')"></Icon>
-              </div>
-            </template>
-            <template v-else>
-              <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
-            </template>
-          </div>
-          <Upload
-            ref="upload2"
-            :show-upload-list="false"
-            :on-success="handleSuccess2"
-            :format="['jpg','jpeg','png']"
-            :max-size="2048"
-            :on-format-error="handleFormatError"
-            :on-exceeded-size="handleMaxSize"
-            type="drag"
-            action="https://csactivity.xrcloud.net/file/upFile.do"
-            style="display: inline-block;width:58px;"
-          >
-            <div style="width: 58px;height:58px;line-height: 58px;">
-              <Icon type="camera" size="20"></Icon>
+          <div style="position:relative;height:58px;">
+            <div
+              class="demo-upload-list"
+              v-for="(item,index) in uploadList2"
+              :key="index"
+              style="position:absolute;top:0;left:0;z-index:1"
+            >
+              <template v-if="item.status === 'finished'">
+                <img :src="item.url" />
+                <div class="demo-upload-list-cover">
+                  <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
+                  <Icon type="ios-trash-outline" @click.native="handleRemove(item,'upload2')"></Icon>
+                </div>
+              </template>
+              <template v-else>
+                <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+              </template>
             </div>
-          </Upload>
+            <Upload
+              ref="upload2"
+              :show-upload-list="false"
+              :on-success="handleSuccess"
+              :format="['jpg','gif','png']"
+              :max-size="4096"
+              :on-format-error="handleFormatError"
+              :on-exceeded-size="handleMaxSize"
+              type="drag"
+              action="https://csactivity.xrcloud.net/file/upFile.do"
+              style="display: inline-block;width:58px;position:absolute;top:0;left:0"
+            >
+              <div style="width: 58px;height:58px;line-height: 58px;">
+                <Icon type="camera" size="20"></Icon>
+              </div>
+            </Upload>
+          </div>
         </div>
         <span>*上传文件支持jpg/png/gif，单个文件最大不超过4MB</span>
       </div>
@@ -1293,9 +1314,6 @@ export default {
       },
       failType: 'wechat',
       hostFree: {},
-      imgurl: '',
-      imgurl1: '',
-      imgurl2: '',
       imgName: '',
       visible: false,
       uploadList: [
@@ -2270,26 +2288,11 @@ export default {
       if (res.status == 1) {
         file.url = res.result
         file.name = res.result
-        this.imgurl = res.result
-      }
-    },
-    handleSuccess1 (res, file, name) {
-      if (res.status == 1) {
-        file.url = res.result
-        file.name = res.result
-        this.imgurl1 = res.result
-      }
-    },
-    handleSuccess2 (res, file, name) {
-      if (res.status == 1) {
-        file.url = res.result
-        file.name = res.result
-        this.imgurl2 = res.result
       }
     },
     handleFormatError () {
       this.$Message.info({
-        content: '仅支持jpg,jpeg,png,gif格式的文件上传'
+        content: '仅支持jpg,png,gif格式的文件上传'
       })
     },
     handleMaxSize (file) {
@@ -2297,15 +2300,6 @@ export default {
         content: '上传的文件过大'
       })
     },
-    // handleBeforeUpload () {
-    //   const check = this.uploadList.length < 5;
-    //   if (!check) {
-    //     this.$Notice.warning({
-    //       title: '最多可上传5张图片'
-    //     });
-    //   }
-    //   return check;
-    // },
     getParams () {
       if (this.$route.hash) {
         if (this.$route.hash.split('#')[1].slice(0, 4) == 'days') {
@@ -4723,129 +4717,7 @@ export default {
     width: 300px;
   }
 }
-@media screen and (max-width: 640px) {
-  .deposite-host .head-g {
-    width: 100%;
-  }
-  .free-host .tabs > div a i {
-    display: none;
-  }
-  .pc-640 {
-    display: none;
-  }
-  .mobile-640 {
-    display: block;
-  }
-  .pc-640-inline {
-    display: none;
-  }
-  .mobile-640-inline {
-    display: inline-block;
-  }
-  .person-check {
-    .w300 {
-      width: 150px;
-    }
-  }
-  .free-host .container {
-    padding: 30px 10px 10px 10px;
-  }
-  .deposite-host .renew .content {
-    .box {
-      flex-wrap: wrap;
-    }
-    .item {
-      width: 100%;
-    }
-  }
-  .deposite-host .wrap-inner,
-  .low-discount .wrap-inner {
-    width: 100%;
-  }
-  .deposite-host .product {
-    width: 100%;
-    > div {
-      width: 100%;
-      margin-right: 0px;
-      background: #fff;
-      &:nth-of-type(1) .head {
-        background: url("../../../assets/img/active/deposit/head-bg-1m.png")
-          no-repeat;
-        background-size: cover;
-      }
-      &:nth-of-type(2) .head {
-        background: url("../../../assets/img/active/deposit/head-bg-2m.png")
-          no-repeat;
-        background-size: cover;
-      }
-      &:nth-of-type(3) .head {
-        background: url("../../../assets/img/active/deposit/head-bg-3m.png")
-          no-repeat;
-        background-size: cover;
-      }
-      &:nth-of-type(4) .head {
-        background: url("../../../assets/img/active/deposit/head-bg-4m.png")
-          no-repeat;
-        background-size: cover;
-      }
-      &:nth-of-type(5) .head {
-        background: url("../../../assets/img/active/deposit/head-bg-4m.png")
-          no-repeat;
-        background-size: cover;
-      }
-    }
-    .body {
-      .label {
-        display: inline;
-        margin-bottom: 0;
-        line-height: 32px;
-        width: 41px;
-      }
-    }
-    .bodyb {
-      > div {
-        display: flex;
-        .systemw {
-          flex-grow: 1;
-        }
-      }
-    }
-  }
-  .low-discount {
-    .product {
-      width: 100%;
-      > div {
-        width: 100%;
-        margin-right: 0;
-      }
-      .body {
-        > div .select-w {
-          // width: 100%;
-          flex-grow: 1;
-        }
-      }
-    }
-  }
-  .summary-host {
-    .wrap {
-      padding: 0 10px;
-    }
-    .product {
-      > div {
-        box-shadow: none;
-      }
-      .body {
-        padding: 0 10px;
-      }
-    }
-  }
-  .dotask {
-    display: flex;
-    flex-direction: column;
-    // justify-content: flex-start;
-    align-items: flex-start;
-  }
-}
+
 .modal-p {
   > div {
     margin-left: 60px;
@@ -5097,5 +4969,132 @@ export default {
   padding: 50px 0;
   text-align: center;
   font-size: 14px;
+}
+@media screen and (max-width: 640px) {
+  .deposite-host .head-g {
+    width: 100%;
+  }
+  .free-host .tabs > div a i {
+    display: none;
+  }
+  .pc-640 {
+    display: none;
+  }
+  .mobile-640 {
+    display: block;
+  }
+  .pc-640-inline {
+    display: none;
+  }
+  .mobile-640-inline {
+    display: inline-block;
+  }
+  .person-check {
+    .w300 {
+      width: 150px;
+    }
+  }
+  .free-host .container {
+    padding: 30px 10px 10px 10px;
+  }
+  .deposite-host .renew .content {
+    .box {
+      flex-wrap: wrap;
+    }
+    .item {
+      width: 100%;
+    }
+  }
+  .deposite-host .wrap-inner,
+  .low-discount .wrap-inner {
+    width: 100%;
+  }
+  .deposite-host .product {
+    width: 100%;
+    > div {
+      width: 100%;
+      margin-right: 0px;
+      background: #fff;
+      &:nth-of-type(1) .head {
+        background: url("../../../assets/img/active/deposit/head-bg-1m.png")
+          no-repeat;
+        background-size: cover;
+      }
+      &:nth-of-type(2) .head {
+        background: url("../../../assets/img/active/deposit/head-bg-2m.png")
+          no-repeat;
+        background-size: cover;
+      }
+      &:nth-of-type(3) .head {
+        background: url("../../../assets/img/active/deposit/head-bg-3m.png")
+          no-repeat;
+        background-size: cover;
+      }
+      &:nth-of-type(4) .head {
+        background: url("../../../assets/img/active/deposit/head-bg-4m.png")
+          no-repeat;
+        background-size: cover;
+      }
+      &:nth-of-type(5) .head {
+        background: url("../../../assets/img/active/deposit/head-bg-4m.png")
+          no-repeat;
+        background-size: cover;
+      }
+    }
+    .body {
+      .label {
+        display: inline;
+        margin-bottom: 0;
+        line-height: 32px;
+        width: 41px;
+      }
+    }
+    .bodyb {
+      > div {
+        display: flex;
+        .systemw {
+          flex-grow: 1;
+        }
+      }
+    }
+  }
+  .low-discount {
+    .product {
+      width: 100%;
+      > div {
+        width: 100%;
+        margin-right: 0;
+      }
+      .body {
+        > div .select-w {
+          // width: 100%;
+          flex-grow: 1;
+        }
+      }
+    }
+  }
+  .summary-host {
+    .wrap {
+      padding: 0 10px;
+    }
+    .product {
+      > div {
+        box-shadow: none;
+      }
+      .body {
+        padding: 0 10px;
+      }
+    }
+  }
+  .dotask {
+    display: flex;
+    flex-direction: column;
+    // justify-content: flex-start;
+    align-items: flex-start;
+  }
+  .wechat-modal .content .wechat {
+    width: 200px;
+    margin-right: 20px;
+  }
 }
 </style>
