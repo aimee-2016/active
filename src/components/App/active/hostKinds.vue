@@ -996,34 +996,39 @@
             </div>
             <span class="upload-btn">点击上传截图</span>
             <div style="position:relative;height:58px;">
-              <div class="demo-upload-list" v-for="(item,index) in uploadList1" :key="index" style="position:absolute;top:0;left:0;z-index:1">
-              <template v-if="item.status === 'finished'">
-                <img :src="item.url" />
-                <div class="demo-upload-list-cover">
-                  <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
-                  <Icon type="ios-trash-outline" @click.native="handleRemove(item,'upload1')"></Icon>
-                </div>
-              </template>
-              <template v-else>
-                <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
-              </template>
-            </div>
-            <Upload
-              ref="upload1"
-              :show-upload-list="false"
-              :on-success="handleSuccess"
-              :format="['jpg','gif','png']"
-              :max-size="4096"
-              :on-format-error="handleFormatError"
-              :on-exceeded-size="handleMaxSize"
-              type="drag"
-              action="https://kfactivity.xrcloud.net/file/upFile.do"
-              style="display: inline-block;width:58px;position:absolute;top:0;left:0"
-            >
-              <div style="width: 58px;height:58px;line-height: 58px;">
-                <Icon type="camera" size="20"></Icon>
+              <div
+                class="demo-upload-list"
+                v-for="(item,index) in uploadList1"
+                :key="index"
+                style="position:absolute;top:0;left:0;z-index:1"
+              >
+                <template v-if="item.status === 'finished'">
+                  <img :src="item.url" />
+                  <div class="demo-upload-list-cover">
+                    <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
+                    <Icon type="ios-trash-outline" @click.native="handleRemove(item,'upload1')"></Icon>
+                  </div>
+                </template>
+                <template v-else>
+                  <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+                </template>
               </div>
-            </Upload>
+              <Upload
+                ref="upload1"
+                :show-upload-list="false"
+                :on-success="handleSuccess"
+                :format="['jpg','gif','png']"
+                :max-size="4096"
+                :on-format-error="handleFormatError"
+                :on-exceeded-size="handleMaxSize"
+                type="drag"
+                action="https://kfactivity.xrcloud.net/file/upFile.do"
+                style="display: inline-block;width:58px;position:absolute;top:0;left:0"
+              >
+                <div style="width: 58px;height:58px;line-height: 58px;">
+                  <Icon type="camera" size="20"></Icon>
+                </div>
+              </Upload>
             </div>
           </div>
           <div class="url">
@@ -1041,34 +1046,39 @@
             </div>
             <span class="upload-btn">点击上传截图</span>
             <div style="position:relative;height:58px;">
-              <div class="demo-upload-list" v-for="(item,index) in uploadList" :key="index" style="position:absolute;top:0;left:0;z-index:1">
-              <template v-if="item.status === 'finished'">
-                <img :src="item.url" />
-                <div class="demo-upload-list-cover">
-                  <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
-                  <Icon type="ios-trash-outline" @click.native="handleRemove(item,'upload')"></Icon>
-                </div>
-              </template>
-              <template v-else>
-                <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
-              </template>
-            </div>
-            <Upload
-              ref="upload"
-              :show-upload-list="false"
-              :on-success="handleSuccess"
-              :format="['jpg','gif','png']"
-              :max-size="4096"
-              :on-format-error="handleFormatError"
-              :on-exceeded-size="handleMaxSize"
-              type="drag"
-              action="https://kfactivity.xrcloud.net/file/upFile.do"
-              style="display: inline-block;width:58px;position:absolute;top:0;left:0"
-            >
-              <div style="width: 58px;height:58px;line-height: 58px;">
-                <Icon type="camera" size="20"></Icon>
+              <div
+                class="demo-upload-list"
+                v-for="(item,index) in uploadList"
+                :key="index"
+                style="position:absolute;top:0;left:0;z-index:1"
+              >
+                <template v-if="item.status === 'finished'">
+                  <img :src="item.url" />
+                  <div class="demo-upload-list-cover">
+                    <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
+                    <Icon type="ios-trash-outline" @click.native="handleRemove(item,'upload')"></Icon>
+                  </div>
+                </template>
+                <template v-else>
+                  <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+                </template>
               </div>
-            </Upload>
+              <Upload
+                ref="upload"
+                :show-upload-list="false"
+                :on-success="handleSuccess"
+                :format="['jpg','gif','png']"
+                :max-size="4096"
+                :on-format-error="handleFormatError"
+                :on-exceeded-size="handleMaxSize"
+                type="drag"
+                action="https://kfactivity.xrcloud.net/file/upFile.do"
+                style="display: inline-block;width:58px;position:absolute;top:0;left:0"
+              >
+                <div style="width: 58px;height:58px;line-height: 58px;">
+                  <Icon type="camera" size="20"></Icon>
+                </div>
+              </Upload>
             </div>
           </div>
         </div>
@@ -1104,34 +1114,39 @@
           >点击发布评论></a>
           <span class="upload-btn">点击上传截图</span>
           <div style="position:relative;height:58px;">
-            <div class="demo-upload-list" v-for="(item,index) in uploadList2" :key="index" style="position:absolute;top:0;left:0;z-index:1">
-            <template v-if="item.status === 'finished'">
-              <img :src="item.url" />
-              <div class="demo-upload-list-cover">
-                <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
-                <Icon type="ios-trash-outline" @click.native="handleRemove(item,'upload2')"></Icon>
-              </div>
-            </template>
-            <template v-else>
-              <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
-            </template>
-          </div>
-          <Upload
-            ref="upload2"
-            :show-upload-list="false"
-            :on-success="handleSuccess"
-            :format="['jpg','gif','png']"
-            :max-size="4096"
-            :on-format-error="handleFormatError"
-            :on-exceeded-size="handleMaxSize"
-            type="drag"
-            action="https://kfactivity.xrcloud.net/file/upFile.do"
-            style="display: inline-block;width:58px;position:absolute;top:0;left:0"
-          >
-            <div style="width: 58px;height:58px;line-height: 58px;">
-              <Icon type="camera" size="20"></Icon>
+            <div
+              class="demo-upload-list"
+              v-for="(item,index) in uploadList2"
+              :key="index"
+              style="position:absolute;top:0;left:0;z-index:1"
+            >
+              <template v-if="item.status === 'finished'">
+                <img :src="item.url" />
+                <div class="demo-upload-list-cover">
+                  <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
+                  <Icon type="ios-trash-outline" @click.native="handleRemove(item,'upload2')"></Icon>
+                </div>
+              </template>
+              <template v-else>
+                <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+              </template>
             </div>
-          </Upload>
+            <Upload
+              ref="upload2"
+              :show-upload-list="false"
+              :on-success="handleSuccess"
+              :format="['jpg','gif','png']"
+              :max-size="4096"
+              :on-format-error="handleFormatError"
+              :on-exceeded-size="handleMaxSize"
+              type="drag"
+              action="https://kfactivity.xrcloud.net/file/upFile.do"
+              style="display: inline-block;width:58px;position:absolute;top:0;left:0"
+            >
+              <div style="width: 58px;height:58px;line-height: 58px;">
+                <Icon type="camera" size="20"></Icon>
+              </div>
+            </Upload>
           </div>
         </div>
         <span>*上传文件支持jpg/png/gif，单个文件最大不超过4MB</span>
@@ -5078,8 +5093,8 @@ export default {
     align-items: flex-start;
   }
   .wechat-modal .content .wechat {
-      width: 200px;
-      margin-right: 20px;
+    width: 200px;
+    margin-right: 20px;
   }
 }
 </style>
