@@ -3021,7 +3021,7 @@ export default {
                 this.showModal.orderConfirmationModal = false
                 this.serialNum = res.data.serialNum
                 localStorage.setItem('serialNum', this.serialNum)
-                window.open(null, 'alipay').location.href = `https://kfi.xrcloud.net/zfb/alipaypage.do?serialNum=${this.serialNum}&route=rechargeResult`
+                window.open(null, 'alipay').location.href = `https://kfi.xrcloud.net/zfb/alipaypage.do?serialNum=${this.serialNum}&route=rechargeresult`
                 this.showModal.rechargeHintzfb = true
               } else {
                 this.$message.info({
