@@ -159,7 +159,7 @@
                       <span class="blue mobile-640-inline" @click="pushOrderFree(0,'m')">上传截图></span>
                     </p>
                     <p>
-                      2.使用“免保证金”云服务器期间，去“百度口碑”发布使用体验等相关评论，并截图发送给我们，可延长1个月免费使用期
+                      2.使用“免保证金”云服务器10天以后并在使用期内，去“百度口碑”发布使用体验等相关评论，并截图发送给我们，该2核4G的云服务器可延长1个月免费使用期
                       <a
                         href="https://koubei.baidu.com/s/510a4f5f6316c2d0f81b3e63bc75b537?fr=search"
                         target="blank"
@@ -993,7 +993,6 @@
             <div class="center">
               <img src="../../../assets/img/app/QR-code.jpg" alt="新睿云二维码" />
             </div>
-            <span class="upload-btn">点击上传截图</span>
             <div style="position:relative;height:58px;">
               <div
                 class="demo-upload-list"
@@ -1024,26 +1023,17 @@
                 action="https://kfactivity.xrcloud.net/file/upFile.do"
                 style="display: inline-block;width:58px;position:absolute;top:0;left:0"
               >
-                <div style="width: 58px;height:58px;line-height: 58px;">
-                  <Icon type="camera" size="20"></Icon>
+                <div style="width: 58px;height:58px;line-height: 58px;color:4a97ee">
+                  上传截图
                 </div>
               </Upload>
             </div>
           </div>
           <div class="url">
-            <h4>将活动链接分享至朋友圈并截图</h4>
+            <h4>将活动链接分享并发送内容：“我正在申请参与新睿云的免费云服务器活动，大家一起来参与吧！”至朋友圈并截图</h4>
             <div class="center">
-              <Input placeholder="https://activity.xinruiyun.cn/free/" readonly>
-                <Button slot="append" @click="copyUrl">复制链接</Button>
-              </Input>
-              <input
-                type="text"
-                value="https://activity.xinruiyun.cn/free/"
-                ref="copy"
-                style="position:absolute;z-index:-100"
-              />
+              <img src="../../../assets/img/active/deposit/free-qr.png" alt="押金活动二维码" style="width:60px;"/>
             </div>
-            <span class="upload-btn">点击上传截图</span>
             <div style="position:relative;height:58px;">
               <div
                 class="demo-upload-list"
@@ -1075,7 +1065,7 @@
                 style="display: inline-block;width:58px;position:absolute;top:0;left:0"
               >
                 <div style="width: 58px;height:58px;line-height: 58px;">
-                  <Icon type="camera" size="20"></Icon>
+                  上传截图
                 </div>
               </Upload>
             </div>
@@ -1111,7 +1101,6 @@
             href="https://koubei.baidu.com/s/510a4f5f6316c2d0f81b3e63bc75b537?fr=search"
             target="blank"
           >点击发布评论></a>
-          <span class="upload-btn">点击上传截图</span>
           <div style="position:relative;height:58px;">
             <div
               class="demo-upload-list"
@@ -1143,7 +1132,7 @@
               style="display: inline-block;width:58px;position:absolute;top:0;left:0"
             >
               <div style="width: 58px;height:58px;line-height: 58px;">
-                <Icon type="camera" size="20"></Icon>
+                上传截图
               </div>
             </Upload>
           </div>
@@ -2277,23 +2266,23 @@ export default {
       })
     },
     //复制文件外链路径
-    copyUrl () {
-      this.$refs.copy.focus()
-      var obj = this.$refs.copy
-      obj.select()
-      document.execCommand("copy");
-      try {
-        if (document.execCommand("copy")) {
-          this.$Message.success("复制成功");
-        } else {
-          this.$Message.info("平台出小差了");
-        }
-      } catch (err) {
-        if (err) {
-          this.$Message.info("该浏览器暂不支持复制");
-        }
-      }
-    },
+    // copyUrl () {
+    //   this.$refs.copy.focus()
+    //   var obj = this.$refs.copy
+    //   obj.select()
+    //   document.execCommand("copy");
+    //   try {
+    //     if (document.execCommand("copy")) {
+    //       this.$Message.success("复制成功");
+    //     } else {
+    //       this.$Message.info("平台出小差了");
+    //     }
+    //   } catch (err) {
+    //     if (err) {
+    //       this.$Message.info("该浏览器暂不支持复制");
+    //     }
+    //   }
+    // },
     handleView (name) {
       this.imgName = name;
       this.visible = true;
@@ -4859,7 +4848,7 @@ export default {
     padding: 10px 20px;
     color: #4768b1;
     .center {
-      height: 88px;
+      height: 68px;
     }
     h4 {
       font-size: 14px;
@@ -4869,16 +4858,13 @@ export default {
     }
     .wechat {
       width: 80px;
-      margin-right: 68px;
+      margin-right: 40px;
       img {
         width: 60px;
         display: block;
       }
-    }
-    .url {
-      width: 336px;
       h4 {
-        width: 112px;
+        width:72px;
       }
     }
     .upload-btn {
@@ -5119,6 +5105,10 @@ export default {
   .wechat-modal .content .wechat {
     width: 200px;
     margin-right: 20px;
+  }
+  .wechat-modal .content {
+    display: flex;
+    flex-direction: column;
   }
 }
 </style>
