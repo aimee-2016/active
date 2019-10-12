@@ -1868,9 +1868,9 @@ export default {
           memery: 4,
           ssd: '40',
           bandwidthList: [1, 2],
-          bandwidth: 1,
-          timeList: [360],
-          time: 360,
+          bandwidth: 2,
+          timeList: [30, 90, 180, 360, 720],
+          time: 30,
           price: 1099.00,
           originPrice: 5201.28,
         },
@@ -2012,22 +2012,41 @@ export default {
             disktype: "ssd",
             id: 497
           },
-          systemList: [
-            {
-              value: 'mysql',
-              label: 'mysql',
-              children: [],
-            },
-            {
-              value: 'redis',
-              label: 'redis',
-              children: []
-            }, {
-              value: 'postgresql',
-              label: 'postgresql',
-              children: [],
-            }
-          ],
+          // systemList: [
+          //   {
+          //     value: 'mysql',
+          //     label: 'mysql',
+          //     children: [],
+          //   },
+          //   {
+          //     value: 'redis',
+          //     label: 'redis',
+          //     children: []
+          //   }, {
+          //     value: 'postgresql',
+          //     label: 'postgresql',
+          //     children: [],
+          //   }
+          // ],
+          systemList: [{
+            value: 'window',
+            label: 'Windows',
+            children: []
+          }, {
+            value: 'centos',
+            label: 'Centos',
+            children: [],
+          },
+          {
+            value: 'debian',
+            label: 'Debian',
+            children: [],
+          },
+          {
+            value: 'ubuntu',
+            label: 'Ubuntu',
+            children: [],
+          }],
           system: [],
           zoneList: [],
           zoneId: '',
@@ -2425,8 +2444,8 @@ export default {
       }
       if (item.post.servicetype == 'G5500') {
         params.user = '0'
-        params.gpu = '1',
-          params.normalTemplate = "0"
+        params.gpu = '1'
+        params.normalTemplate = "0"
       }
       axios.get(url, {
         params
@@ -2643,8 +2662,8 @@ export default {
       }
       if (item.post.servicetype == 'G5500') {
         params.user = '0'
-        params.gpu = '1',
-          params.normalTemplate = "0"
+        params.gpu = '1'
+        params.normalTemplate = "0"
       }
       axios.get(url, {
         params
@@ -3002,7 +3021,7 @@ export default {
                 this.showModal.orderConfirmationModal = false
                 this.serialNum = res.data.serialNum
                 localStorage.setItem('serialNum', this.serialNum)
-                window.open(null, 'alipay').location.href = `https://csi.xrcloud.net/zfb/alipaypage.do?serialNum=${this.serialNum}&route=rechargeResult`
+                window.open(null, 'alipay').location.href = `https://csi.xrcloud.net/zfb/alipaypage.do?serialNum=${this.serialNum}&route=rechargeresult`
                 this.showModal.rechargeHintzfb = true
               } else {
                 this.$message.info({
@@ -3441,8 +3460,8 @@ export default {
       }
       if (item.gpuserver == 1) {
         params.user = '0'
-        params.gpu = '1',
-          params.normalTemplate = "0"
+        params.gpu = '1'
+        params.normalTemplate = "0"
       }
       axios.get('information/listTemplates.do', {
         params
