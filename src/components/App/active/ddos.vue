@@ -59,12 +59,12 @@
         <div class="top">
           <div class="text">
             <p>
-              每天6场秒杀，2点、6点、10点、14点、18点、22点开抢
-              <span @click="showModal.ruleForcast=true">更多场次预告 ></span>
+              <!-- 每天6场秒杀，2点、6点、10点、14点、18点、22点开抢
+              <span @click="showModal.ruleForcast=true">更多场次预告 ></span> -->
               <span @click="showModal.ruleKill=true">活动规则></span>
             </p>
           </div>
-          <div class="timer">
+          <!-- <div class="timer">
             <i>本场秒杀倒计时</i>
             <div>
               <span>{{hh}}</span>:
@@ -73,7 +73,7 @@
               <span>{{s1}}</span>
               <span>{{s2}}</span>
             </div>
-          </div>
+          </div> -->
         </div>
         <div class="product">
           <div v-for="(item,index) in killHostList" :key="index">
@@ -1161,11 +1161,13 @@ export default {
       ],
       dataForcast: [],
       imgSrc: 'https://kfactivity.xrcloud.net/user/getKaptchaImage.do',
-      authErrorText: ''
+      authErrorText: '',
+      leftTime1: ''
     }
   },
   created () {
     this.getTime()
+    this.refreshData()
     this.getConfigureKill()
     this.getSubsection()
     this.activityForecast()
@@ -1536,6 +1538,23 @@ export default {
           result = ''
       }
       return result
+    },
+    refreshData() {
+      axios.get('network/getTime.do').then(res => {
+        if (res.status == 200 && res.data.status == 1) {
+          // let now0 = new Date()
+          // this.leftTime1 = now0.getTime()
+          this.leftTime1 = res.data.result
+          let timer = setInterval(() => {
+              this.leftTime1 += 1000
+              let endTime = new Date(this.leftTime1)
+              if (endTime.getHours() == 0 && endTime.getMinutes() == 0 && endTime.getSeconds() == 0){
+                  this.getConfigureKill()
+                  window.clearInterval(timer)
+                }
+            }, 1000)
+        }
+      })
     },
     getTime () {
       axios.get('network/getTime.do').then(res => {
