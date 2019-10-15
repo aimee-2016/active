@@ -151,7 +151,7 @@
                   </div>
                   <div class="tips">
                     <p style="margin-bottom:4px">
-                      1.关注新睿云微信公众号并将本次活动链接发送至朋友圈，截图发送给我们即可领取“免保证金”云服务器
+                      1.关注新睿云微信公众号，将活动链接分享并发送内容：“我正在申请参与新睿云的免费云服务器活动，大家一起来参与吧！”至朋友圈，截图发送给我们即可领取“免保证金”云服务器
                       <span
                         class="blue pc-640-inline"
                         @click="pushOrderFree(0,'p')"
@@ -369,6 +369,81 @@
                         <div>自领取之日{{item.post.expday/30}}个月内使用</div>
                       </div>
                       <div v-if="item.post.useType == 9" style="height:22px;"></div>
+                      <Button @click="pushOrderL(item,'p')" class="pc-640">立即抢购</Button>
+                      <Button @click="pushOrderL(item,'m')" class="mobile-640">立即抢购</Button>
+                    </div>
+                  </div>
+                </div>
+                <div class="product">
+                  <div v-for="(item,index) in hostList6" :key="index">
+                    <div class="head">
+                      <div
+                        class="icon-bg"
+                        v-if="item.cpu==4&&item.mem==8"
+                      >
+                        <div class="icon-text">爆款</div>
+                      </div>
+                      <h3 v-if="item.bandWidthList.length>1">云服务器{{item.cpu}}核{{item.mem}}G</h3>
+                      <h3 v-else>云服务器{{item.bandwith}}M带宽</h3>
+                    </div>
+                    <div class="body">
+                      <!-- <div>
+                        <span class="label">带宽：</span>
+                        {{item.bandwith}}M
+                      </div> -->
+                      <div v-if="item.bandWidthList.length>1">
+                        <span class="label">带宽：</span>
+                        <Select
+                          class="select-w"
+                          v-model="item.bandwith"
+                          @on-change="changeZoneL(item)"
+                        >
+                          <Option
+                            v-for="item1 in item.bandWidthList"
+                            :value="item1"
+                            :key="item1"
+                          >{{ item1 }}M</Option>
+                        </Select>
+                      </div>
+                      <div>
+                        <span class="label">区域：</span>
+                        <Select
+                          class="select-w"
+                          v-model="item.zoneId"
+                          @on-change="changeZoneL(item)"
+                        >
+                          <Option
+                            v-for="item1 in zoneList5"
+                            :value="item1.value"
+                            :key="item1.value"
+                          >{{ item1.name }}</Option>
+                        </Select>
+                      </div>
+                      <div>
+                        <span class="label">系统：</span>
+                        <Cascader class="select-w" :data="item.systemList" v-model="item.system"></Cascader>
+                      </div>
+                      <div class="time">
+                        <span class="label">时长：</span>
+                        <i
+                          v-if="item.timeList.length<2"
+                          style="font-style:normal;"
+                        >{{monthL(item.days)}}</i>
+                        <ul v-else>
+                          <li
+                            v-for="(item1,index1) in item.timeList"
+                            :key="index1"
+                            :class="{'selected':item.days==item1}"
+                            @click="changgeTimeL(item,item1)"
+                          >
+                            {{monthL(item1)}}
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="price">
+                        {{item.days==7?'7天体验价':'价格'}}：￥
+                        <span>{{item.price}}</span>
+                      </div>
                       <Button @click="pushOrderL(item,'p')" class="pc-640">立即抢购</Button>
                       <Button @click="pushOrderL(item,'m')" class="mobile-640">立即抢购</Button>
                     </div>
@@ -1464,199 +1539,10 @@ export default {
       inConformityModalMsg: '您好！本活动仅限新注册或者一直未使用过平台资源（第三方产品除外）及未参加过其他免费活动用户参与。',
       // 天天特惠参数
       allList: [],
+      zoneList5: [],
+      hostList6: [
+      ],
       lowHostList: [
-        {
-          post: {
-            servicetype: "host",
-            bandwith: 2,
-            cost: '--',
-            cpu: 2,
-            mem: 4,
-            days: 30,
-            disksize: 40,
-            disktype: "ssd",
-            id: 497
-          },
-          postArr: [],
-          systemList: [{
-            value: 'window',
-            label: 'Windows',
-            children: []
-          }, {
-            value: 'centos',
-            label: 'Centos',
-            children: [],
-          },
-          {
-            value: 'debian',
-            label: 'Debian',
-            children: [],
-          },
-          {
-            value: 'ubuntu',
-            label: 'Ubuntu',
-            children: [],
-          }],
-          system: [],
-          zoneList: [],
-          zoneId: '',
-          price: '--',
-          originPrice: '176.72',
-        },
-        {
-          post: {
-            servicetype: "host",
-            bandwith: 2,
-            cost: '--',
-            cpu: 2,
-            mem: 8,
-            days: 360,
-            disksize: 40,
-            disktype: "ssd",
-            id: 497
-          },
-          postArr: [],
-          systemList: [{
-            value: 'window',
-            label: 'Windows',
-            children: []
-          }, {
-            value: 'centos',
-            label: 'Centos',
-            children: [],
-          },
-          {
-            value: 'debian',
-            label: 'Debian',
-            children: [],
-          },
-          {
-            value: 'ubuntu',
-            label: 'Ubuntu',
-            children: [],
-          }],
-          system: [],
-          zoneList: [],
-          zoneId: '',
-          price: '--',
-          originPrice: '176.72',
-        },
-        {
-          post: {
-            servicetype: "host",
-            bandwith: 2,
-            certification: 3,
-            cost: '--',
-            cpu: 2,
-            mem: 8,
-            days: 360,
-            disksize: 40,
-            disktype: "ssd",
-            id: 497
-          },
-          postArr: [],
-          systemList: [{
-            value: 'window',
-            label: 'Windows',
-            children: []
-          }, {
-            value: 'centos',
-            label: 'Centos',
-            children: [],
-          },
-          {
-            value: 'debian',
-            label: 'Debian',
-            children: [],
-          },
-          {
-            value: 'ubuntu',
-            label: 'Ubuntu',
-            children: [],
-          }],
-          system: [],
-          zoneList: [],
-          zoneId: '',
-          price: '--',
-          originPrice: '176.72',
-        },
-        {
-          post: {
-            servicetype: "db",
-            bandwith: 2,
-            cost: '--',
-            cpu: 2,
-            mem: 8,
-            days: 60,
-            disksize: 40,
-            disktype: "ssd",
-            id: 497
-          },
-          postArr: [],
-          systemList: [{
-            value: 'window',
-            label: 'Windows',
-            children: []
-          }, {
-            value: 'centos',
-            label: 'Centos',
-            children: [],
-          },
-          {
-            value: 'debian',
-            label: 'Debian',
-            children: [],
-          },
-          {
-            value: 'ubuntu',
-            label: 'Ubuntu',
-            children: [],
-          }],
-          system: [],
-          zoneList: [],
-          zoneId: '',
-          price: '--',
-          originPrice: '176.72',
-        },
-        {
-          post: {
-            servicetype: "G5500",
-            bandwith: 2,
-            cost: '--',
-            cpu: 2,
-            mem: 8,
-            days: 3,
-            disksize: 40,
-            disktype: "ssd",
-            id: 497
-          },
-          postArr: [],
-          systemList: [{
-            value: 'window',
-            label: 'Windows',
-            children: []
-          }, {
-            value: 'centos',
-            label: 'Centos',
-            children: [],
-          },
-          {
-            value: 'debian',
-            label: 'Debian',
-            children: [],
-          },
-          {
-            value: 'ubuntu',
-            label: 'Ubuntu',
-            children: [],
-          }],
-          system: [],
-          zoneList: [],
-          zoneId: '',
-          price: '--',
-          originPrice: '176.72',
-          gpuConfigIndex: 0,
-        },
         {
           post: {
             servicetype: "host",
@@ -2162,6 +2048,16 @@ export default {
     this.uploadList2 = this.$refs.upload2.fileList;
   },
   methods: {
+    // test1(item) {
+    //   console.log(item)
+    //   let configId = ''
+    //   item.arr.forEach(element=>{
+    //     if(element.bandWidth == item.bandWidth&&element.time==item.time){
+    //       configId = element.id
+    //     }
+    //   })
+    //   console.log(configId)
+    // },
     wechat_submit () {
       let url1 = this.uploadList1.map(item => {
         return item.url
@@ -2381,7 +2277,157 @@ export default {
             }
           }
         }
-        // console.log(this.lowHostList)
+        // 天天特惠前面默认5个配置
+        this.zoneList5 = res.data.result.optionalArea
+        this.hostList6 = {
+        "4#8": [
+            {
+                "id": 604,
+                "cpu": 4,
+                "mem": 8,
+                "disksize": 40,
+                "servicetype": "host",
+                "days": 30,
+                "disktype": "sas",
+                "bandwith": 10,
+                "activitynum": 58,
+                "cost": 99.9,
+                "maxgetnum": 1,
+                "ismonth": 1,
+                "foldonfold": 0,
+                "isdisplay": 1,
+                "highdist": 0,
+                "explosives": 0,
+                "spikenum": 1,
+                "extracost": 0,
+                "samegroup": 1
+            },
+            {
+                "id": 605,
+                "cpu": 4,
+                "mem": 8,
+                "disksize": 40,
+                "servicetype": "host",
+                "days": 30,
+                "disktype": "sas",
+                "bandwith": 5,
+                "activitynum": 58,
+                "cost": 79.9,
+                "maxgetnum": 1,
+                "ismonth": 1,
+                "foldonfold": 0,
+                "isdisplay": 1,
+                "highdist": 0,
+                "explosives": 0,
+                "spikenum": 1,
+                "extracost": 0,
+                "samegroup": 1
+            }
+        ],
+         "2#8": [
+            {
+                "id": 608,
+                "cpu": 2,
+                "mem": 8,
+                "disksize": 40,
+                "servicetype": "host",
+                "days": 7,
+                "disktype": "sas",
+                "bandwith": 5,
+                "activitynum": 58,
+                "cost": 19.9,
+                "maxgetnum": 1,
+                "ismonth": 0,
+                "foldonfold": 0,
+                "isdisplay": 1,
+                "highdist": 0,
+                "explosives": 0,
+                "spikenum": 1,
+                "extracost": 0,
+                "samegroup": 2
+            },
+            {
+                "id": 609,
+                "cpu": 2,
+                "mem": 8,
+                "disksize": 40,
+                "servicetype": "host",
+                "days": 30,
+                "disktype": "sas",
+                "bandwith": 5,
+                "activitynum": 58,
+                "cost": 59.9,
+                "maxgetnum": 1,
+                "ismonth": 1,
+                "foldonfold": 0,
+                "isdisplay": 1,
+                "highdist": 0,
+                "explosives": 0,
+                "spikenum": 1,
+                "extracost": 0,
+                "samegroup": 2
+            }
+              ],
+          }
+          let systemList= [{
+            value: 'window',
+            label: 'Windows',
+            children: []
+          }, {
+            value: 'centos',
+            label: 'Centos',
+            children: [],
+          },
+          {
+            value: 'debian',
+            label: 'Debian',
+            children: [],
+          },
+          {
+            value: 'ubuntu',
+            label: 'Ubuntu',
+            children: [],
+          }]
+          // console.log(this.hostList6)
+          let newdata = []
+          for(let key in this.hostList6) {
+            // console.log(key)
+            newdata.push({
+              'arr': this.hostList6[key],
+              'cpu':this.hostList6[key][0].cpu,
+              'mem':this.hostList6[key][0].mem,
+              'bandwith':this.hostList6[key][0].bandwith,
+              'days':this.hostList6[key][0].days,
+              'price':'',
+              'originPrice':'',
+              'systemList':systemList,
+              'system':[],
+              // 'zoneList':[],
+              'zoneId':'',
+              })
+          }
+          newdata.forEach(element => {
+          let obj ={}
+          let timeList=[]
+          let bandWidthList=[]
+          element.arr.forEach(element1=>{
+            if(!obj[element1.days]){
+              timeList.push(element1.days)
+              obj[element1.days] = 1
+            }
+            if(!obj[element1.bandwith]){
+              bandWidthList.push(element1.bandwith)
+              obj[element1.bandwith] = 1
+            }
+          })
+          // console.log(timeList)
+          // console.log(bandWidthList)
+          element.timeList = timeList
+          element.bandWidthList = bandWidthList
+        })
+        this.hostList6 = newdata
+        console.log(newdata)
+        console.log(this.hostList6)
       }
     },
     getConfigureGPUL (res) {
