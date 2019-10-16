@@ -555,13 +555,13 @@ export default {
         children: [],
       }],
       system1: [],
-      navs: [
-        { title: '云产品', text: '限时秒杀', distance: 300, distanceM: 0},
-        { title: '高防云服务器', text: '首月8折优惠', distance: 1000, distanceM: 0},
-        { title: '超低折扣', text: '买时长送域名', distance: 1900, distanceM: 0},
-        { title: '自选配置', text: '打折再送时长', distance: 2800, distanceM: 0},
-      ],
-      selectedNav: 0,
+      // navs: [
+      //   { title: '云产品', text: '限时秒杀', distance: 300, distanceM: 0},
+      //   { title: '高防云服务器', text: '首月8折优惠', distance: 1000, distanceM: 0},
+      //   { title: '超低折扣', text: '买时长送域名', distance: 1900, distanceM: 0},
+      //   { title: '自选配置', text: '打折再送时长', distance: 2800, distanceM: 0},
+      // ],
+      // selectedNav: 0,
       killHostList: [
         {
           headline: '高防云服务器',
@@ -938,23 +938,23 @@ export default {
     this.refreshData()
     this.getConfigureKill()
     this.getSubsection()
-    this.activityForecast()
-    this.getConfigureDDOS('55', 'listGT')
-    this.getConfigureDDOS('54', 'ddosList')
-    this.getSystemDDOS()
+    // this.activityForecast()
+    // this.getConfigureDDOS('55', 'listGT')
+    // this.getConfigureDDOS('54', 'ddosList')
+    // this.getSystemDDOS()
   },
   mounted () {
-    let topArr = [0,this.$refs['first-month'].offsetTop,this.$refs['super-discount'].offsetTop,this.$refs['give-time'].offsetTop] 
-    this.navs.forEach((item,index)=>{
-      item.distance = topArr[index]
-      item.distanceM =topArr[index+1]
-      if (index==3) {
-        item.distanceM =topArr[index]+this.$refs['give-time'].offsetHeight
-      }
-    })
-    window.addEventListener('scroll', throttle(100, ()=> {
-      this.selectedNav = document.body.scrollTop || document.documentElement.scrollTop;
-    }))
+    // let topArr = [0,this.$refs['first-month'].offsetTop,this.$refs['super-discount'].offsetTop,this.$refs['give-time'].offsetTop] 
+    // this.navs.forEach((item,index)=>{
+    //   item.distance = topArr[index]
+    //   item.distanceM =topArr[index+1]
+    //   if (index==3) {
+    //     item.distanceM =topArr[index]+this.$refs['give-time'].offsetHeight
+    //   }
+    // })
+    // window.addEventListener('scroll', throttle(100, ()=> {
+    //   this.selectedNav = document.body.scrollTop || document.documentElement.scrollTop;
+    // }))
   },
   methods: {
     predict() {
@@ -971,7 +971,7 @@ export default {
     init () {
       axios.get('user/GetUserInfo.do').then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          $store.commit('setAuthInfo', {
+          this.$store.commit('setAuthInfo', {
             authInfo: response.data.authInfo,
             userInfo: response.data.result,
             authInfoPersion: response.data.authInfo_persion
