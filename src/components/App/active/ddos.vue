@@ -11,7 +11,7 @@
             > -->
             <img
               class="text"
-              src="../../../assets/img/active/ddos/ddos-banner-text.png"
+              src="../../../assets/img/active/ddos/ddos-banner-text2.png"
               alt="高仿云服务器限时秒杀"
               style="margin-top:292px;"
             >
@@ -1063,10 +1063,16 @@ export default {
     },
     // 根据区域获得不同系统
     getSystem (item, index, name) {
+      let params = {
+        zoneId: item.zone,
+      }
+      if (item.post.servicetype == 'G5500') {
+          params.user = '0'
+          params.gpu = '1'
+          params.normalTemplate = "0"
+      }
       axios.get('information/listTemplates.do', {
-        params: {
-          zoneId: item.zone,
-        }
+        params
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
           var x
@@ -1731,7 +1737,7 @@ export default {
 }
 
 .banner {
-  background: url(../../../assets/img/active/ddos/ddos-banner-bg.png) no-repeat
+  background: url(../../../assets/img/active/ddos/ddos-banner-bg2.png) no-repeat
     center;
 }
 .seckill {
