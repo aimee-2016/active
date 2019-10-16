@@ -11,7 +11,7 @@
             > -->
             <img
               class="text"
-              src="../../../assets/img/active/ddos/ddos-banner-text.png"
+              src="../../../assets/img/active/ddos/ddos-banner-text2.png"
               alt="高仿云服务器限时秒杀"
               style="margin-top:292px;"
             >
@@ -1737,7 +1737,7 @@ export default {
 }
 
 .banner {
-  background: url(../../../assets/img/active/ddos/ddos-banner-bg.png) no-repeat
+  background: url(../../../assets/img/active/ddos/ddos-banner-bg2.png) no-repeat
     center;
 }
 .seckill {
