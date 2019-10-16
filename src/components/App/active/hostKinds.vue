@@ -151,7 +151,7 @@
                   </div>
                   <div class="tips">
                     <p style="margin-bottom:4px">
-                      1.关注新睿云微信公众号并将本次活动链接发送至朋友圈，截图发送给我们即可领取“免保证金”云服务器
+                      1.关注新睿云微信公众号，将活动链接分享并发送内容：“我正在申请参与新睿云的免费云服务器活动，大家一起来参与吧！”至朋友圈，截图发送给我们即可领取“免保证金”云服务器
                       <span
                         class="blue pc-640-inline"
                         @click="pushOrderFree(0,'p')"
@@ -159,7 +159,7 @@
                       <span class="blue mobile-640-inline" @click="pushOrderFree(0,'m')">上传截图></span>
                     </p>
                     <p>
-                      2.使用“免保证金”云服务器期间，去“百度口碑”发布使用体验等相关评论，并截图发送给我们，可延长1个月免费使用期
+                      2.使用“免保证金”云服务器10天以后并在使用期内，去“百度口碑”发布使用体验等相关评论，并截图发送给我们，该2核4G的云服务器可延长1个月免费使用期
                       <a
                         href="https://koubei.baidu.com/s/510a4f5f6316c2d0f81b3e63bc75b537?fr=search"
                         target="blank"
@@ -374,6 +374,72 @@
                     </div>
                   </div>
                 </div>
+                <!-- <div class="product">
+                  <div v-for="(item,index) in hostList6" :key="index">
+                    <div class="head">
+                      <div class="icon-bg" v-if="item.cpu==4&&item.mem==8">
+                        <div class="icon-text">爆款</div>
+                      </div>
+                      <h3 v-if="item.bandWidthList.length>1">云服务器{{item.cpu}}核{{item.mem}}G</h3>
+                      <h3 v-else>云服务器{{item.bandwith}}M带宽</h3>
+                    </div>
+                    <div class="body">
+                      <div v-if="item.bandWidthList.length>1">
+                        <span class="label">带宽：</span>
+                        <Select
+                          class="select-w"
+                          v-model="item.bandwith"
+                          @on-change="changeZoneL(item)"
+                        >
+                          <Option
+                            v-for="item1 in item.bandWidthList"
+                            :value="item1"
+                            :key="item1"
+                          >{{ item1 }}M</Option>
+                        </Select>
+                      </div>
+                      <div>
+                        <span class="label">区域：</span>
+                        <Select
+                          class="select-w"
+                          v-model="item.zoneId"
+                          @on-change="changeZoneL(item)"
+                        >
+                          <Option
+                            v-for="item1 in zoneList5"
+                            :value="item1.value"
+                            :key="item1.value"
+                          >{{ item1.name }}</Option>
+                        </Select>
+                      </div>
+                      <div>
+                        <span class="label">系统：</span>
+                        <Cascader class="select-w" :data="item.systemList" v-model="item.system"></Cascader>
+                      </div>
+                      <div class="time">
+                        <span class="label">时长：</span>
+                        <i
+                          v-if="item.timeList.length<2"
+                          style="font-style:normal;"
+                        >{{monthL(item.days)}}</i>
+                        <ul v-else>
+                          <li
+                            v-for="(item1,index1) in item.timeList"
+                            :key="index1"
+                            :class="{'selected':item.days==item1}"
+                            @click="changgeTimeL(item,item1)"
+                          >{{monthL(item1)}}</li>
+                        </ul>
+                      </div>
+                      <div class="price">
+                        {{item.days==7?'7天体验价':'价格'}}：￥
+                        <span>{{item.price}}</span>
+                      </div>
+                      <Button @click="pushOrderL(item,'p')" class="pc-640">立即抢购</Button>
+                      <Button @click="pushOrderL(item,'m')" class="mobile-640">立即抢购</Button>
+                    </div>
+                  </div>
+                </div> -->
                 <div class="tips">
                   *以上配置GPU云服务器为128G系统盘，其他弹性云服务器均为40G SSD系统盘。
                   <span
@@ -993,7 +1059,6 @@
             <div class="center">
               <img src="../../../assets/img/app/QR-code.jpg" alt="新睿云二维码" />
             </div>
-            <span class="upload-btn">点击上传截图</span>
             <div style="position:relative;height:58px;">
               <div
                 class="demo-upload-list"
@@ -1024,26 +1089,19 @@
                 action="https://activity.xinruiyun.cn/file/upFile.do"
                 style="display: inline-block;width:58px;position:absolute;top:0;left:0"
               >
-                <div style="width: 58px;height:58px;line-height: 58px;">
-                  <Icon type="camera" size="20"></Icon>
-                </div>
+                <div style="width: 58px;height:58px;line-height: 58px;color:4a97ee">上传截图</div>
               </Upload>
             </div>
           </div>
           <div class="url">
-            <h4>将活动链接分享至朋友圈并截图</h4>
+            <h4>将活动链接分享并发送内容：“我正在申请参与新睿云的免费云服务器活动，大家一起来参与吧！”至朋友圈并截图</h4>
             <div class="center">
-              <Input placeholder="https://activity.xinruiyun.cn/free/" readonly>
-                <Button slot="append" @click="copyUrl">复制链接</Button>
-              </Input>
-              <input
-                type="text"
-                value="https://activity.xinruiyun.cn/free/"
-                ref="copy"
-                style="position:absolute;z-index:-100"
+              <img
+                src="../../../assets/img/active/deposit/free-qr.png"
+                alt="押金活动二维码"
+                style="width:60px;"
               />
             </div>
-            <span class="upload-btn">点击上传截图</span>
             <div style="position:relative;height:58px;">
               <div
                 class="demo-upload-list"
@@ -1074,9 +1132,7 @@
                 action="https://activity.xinruiyun.cn/file/upFile.do"
                 style="display: inline-block;width:58px;position:absolute;top:0;left:0"
               >
-                <div style="width: 58px;height:58px;line-height: 58px;">
-                  <Icon type="camera" size="20"></Icon>
-                </div>
+                <div style="width: 58px;height:58px;line-height: 58px;">上传截图</div>
               </Upload>
             </div>
           </div>
@@ -1106,12 +1162,11 @@
       <div class="baidu-modal">
         <h3>完成以下任务免费延长1个月使用期：</h3>
         <div class="content">
-          <h4 style="width:100%">到“百度口碑”发布使用体验等相关评论并截图</h4>
+          <h4 style="width:100%">到“百度口碑”发布使用体验等相关评论通过审核后提交截图”</h4>
           <a
             href="https://koubei.baidu.com/s/510a4f5f6316c2d0f81b3e63bc75b537?fr=search"
             target="blank"
           >点击发布评论></a>
-          <span class="upload-btn">点击上传截图</span>
           <div style="position:relative;height:58px;">
             <div
               class="demo-upload-list"
@@ -1142,9 +1197,7 @@
               action="https://activity.xinruiyun.cn/file/upFile.do"
               style="display: inline-block;width:58px;position:absolute;top:0;left:0"
             >
-              <div style="width: 58px;height:58px;line-height: 58px;">
-                <Icon type="camera" size="20"></Icon>
-              </div>
+              <div style="width: 58px;height:58px;line-height: 58px;">上传截图</div>
             </Upload>
           </div>
         </div>
@@ -1183,7 +1236,9 @@
         <span class="universal-modal-title">做任务 得好礼</span>
       </p>
       <div class="check-modal">
-        审核未通过，请重新提交。如有疑问，请
+        审核未通过，请重新提交。
+        未通过原因：{{failMsg}}。
+        如有疑问，请
         <a
           style="text-decoration:underline"
           href="https://im.xrcloud.net/im/question/index.html"
@@ -1311,6 +1366,7 @@ export default {
         checksuccess: false,
         baidusuccess: false
       },
+      failMsg: '',
       failType: 'wechat',
       hostFree: {},
       imgName: '',
@@ -1475,6 +1531,9 @@ export default {
       inConformityModalMsg: '您好！本活动仅限新注册或者一直未使用过平台资源（第三方产品除外）及未参加过其他免费活动用户参与。',
       // 天天特惠参数
       allList: [],
+      zoneList5: [],
+      hostList6: [
+      ],
       lowHostList: [
         {
           post: {
@@ -2173,6 +2232,16 @@ export default {
     this.uploadList2 = this.$refs.upload2.fileList;
   },
   methods: {
+    // test1(item) {
+    //   console.log(item)
+    //   let configId = ''
+    //   item.arr.forEach(element=>{
+    //     if(element.bandWidth == item.bandWidth&&element.time==item.time){
+    //       configId = element.id
+    //     }
+    //   })
+    //   console.log(configId)
+    // },
     wechat_submit () {
       let url1 = this.uploadList1.map(item => {
         return item.url
@@ -2236,64 +2305,74 @@ export default {
     seeComment () {
       this.showModal.checksuccess = false
       let item = this.hostFree
-      axios.get('activity/getReviewInfo.do', {
+      axios.get('activity/judgeCommentTime.do', {
         params: {
-          activityNum: item.post.activitynum,
+          activityNum: 57,
           vmConfigId: item.post.id
         }
       }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          // result返回为空的情况
-          if (response.data.result.commentResult) {
-            if (response.data.result.commentResult && JSON.stringify(response.data.result.commentResult) != '{}') {
-              switch (response.data.result.commentResult.commentStatus) {
-                case 0:
-                  this.showModal.checkfail = true
-                  this.failType = 'baidu'
-                  break;
-                case 1:
-                  this.showModal.baidusuccess = true
-                  break;
-                case 2:
-                  this.showModal.checking = true
-                  break;
-              }
-              // result有值，commentResult为空的情况
-            } else {
-              if (response.data.result.reviewResult.reviewStatus == 1) {
-                this.showModal.baiducomment = true
+          axios.get('activity/getReviewInfo.do', {
+            params: {
+              activityNum: item.post.activitynum,
+              vmConfigId: item.post.id
+            }
+          }).then(response => {
+            if (response.status == 200 && response.data.status == 1) {
+              // result返回为空的情况
+              if (response.data.result.commentResult) {
+                if (response.data.result.commentResult && JSON.stringify(response.data.result.commentResult) != '{}') {
+                  switch (response.data.result.commentResult.commentStatus) {
+                    case 0:
+                      this.showModal.checkfail = true
+                      this.failMsg = response.data.result.commentResult.commentInfo
+                      this.failType = 'baidu'
+                      break;
+                    case 1:
+                      this.showModal.baidusuccess = true
+                      break;
+                    case 2:
+                      this.showModal.checking = true
+                      break;
+                  }
+                  // result有值，commentResult为空的情况
+                } else {
+                  if (response.data.result.reviewResult.reviewStatus == 1) {
+                    this.showModal.baiducomment = true
+                  }
+                }
               } else {
                 this.$message.info({
                   content: '请先成功领取主机再进行该操作！'
                 })
               }
             }
-          } else {
-            this.$message.info({
-              content: '请先成功领取主机再进行该操作！'
-            })
-          }
+          })
+        } else {
+          this.$message.info({
+            content: response.data.message
+          })
         }
       })
     },
     //复制文件外链路径
-    copyUrl () {
-      this.$refs.copy.focus()
-      var obj = this.$refs.copy
-      obj.select()
-      document.execCommand("copy");
-      try {
-        if (document.execCommand("copy")) {
-          this.$Message.success("复制成功");
-        } else {
-          this.$Message.info("平台出小差了");
-        }
-      } catch (err) {
-        if (err) {
-          this.$Message.info("该浏览器暂不支持复制");
-        }
-      }
-    },
+    // copyUrl () {
+    //   this.$refs.copy.focus()
+    //   var obj = this.$refs.copy
+    //   obj.select()
+    //   document.execCommand("copy");
+    //   try {
+    //     if (document.execCommand("copy")) {
+    //       this.$Message.success("复制成功");
+    //     } else {
+    //       this.$Message.info("平台出小差了");
+    //     }
+    //   } catch (err) {
+    //     if (err) {
+    //       this.$Message.info("该浏览器暂不支持复制");
+    //     }
+    //   }
+    // },
     handleView (name) {
       this.imgName = name;
       this.visible = true;
@@ -2392,7 +2471,205 @@ export default {
             }
           }
         }
-        // console.log(this.lowHostList)
+        // 天天特惠前面默认5个配置
+        // this.zoneList5 = res.data.result.optionalArea
+        // this.hostList6 = {
+        //   "4#8": [
+        //     {
+        //       "id": 604,
+        //       "cpu": 4,
+        //       "mem": 8,
+        //       "disksize": 40,
+        //       "servicetype": "host",
+        //       "days": 30,
+        //       "disktype": "sas",
+        //       "bandwith": 10,
+        //       "activitynum": 58,
+        //       "cost": 99.9,
+        //       "maxgetnum": 1,
+        //       "ismonth": 1,
+        //       "foldonfold": 0,
+        //       "isdisplay": 1,
+        //       "highdist": 0,
+        //       "explosives": 0,
+        //       "spikenum": 1,
+        //       "extracost": 0,
+        //       "samegroup": 1
+        //     },
+        //     {
+        //       "id": 605,
+        //       "cpu": 4,
+        //       "mem": 8,
+        //       "disksize": 40,
+        //       "servicetype": "host",
+        //       "days": 30,
+        //       "disktype": "sas",
+        //       "bandwith": 5,
+        //       "activitynum": 58,
+        //       "cost": 79.9,
+        //       "maxgetnum": 1,
+        //       "ismonth": 1,
+        //       "foldonfold": 0,
+        //       "isdisplay": 1,
+        //       "highdist": 0,
+        //       "explosives": 0,
+        //       "spikenum": 1,
+        //       "extracost": 0,
+        //       "samegroup": 1
+        //     }
+        //   ],
+        //   "5M": [
+        //     {
+        //       "id": 608,
+        //       "cpu": 2,
+        //       "mem": 8,
+        //       "disksize": 40,
+        //       "servicetype": "host",
+        //       "days": 7,
+        //       "disktype": "sas",
+        //       "bandwith": 5,
+        //       "activitynum": 58,
+        //       "cost": 19.9,
+        //       "maxgetnum": 1,
+        //       "ismonth": 0,
+        //       "foldonfold": 0,
+        //       "isdisplay": 1,
+        //       "highdist": 0,
+        //       "explosives": 0,
+        //       "spikenum": 1,
+        //       "extracost": 0,
+        //       "samegroup": 2
+        //     },
+        //     {
+        //       "id": 609,
+        //       "cpu": 2,
+        //       "mem": 8,
+        //       "disksize": 40,
+        //       "servicetype": "host",
+        //       "days": 5,
+        //       "disktype": "sas",
+        //       "bandwith": 5,
+        //       "activitynum": 58,
+        //       "cost": 59.9,
+        //       "maxgetnum": 1,
+        //       "ismonth": 1,
+        //       "foldonfold": 0,
+        //       "isdisplay": 1,
+        //       "highdist": 0,
+        //       "explosives": 0,
+        //       "spikenum": 1,
+        //       "extracost": 0,
+        //       "samegroup": 2
+        //     },
+        //     {
+        //       "id": 608,
+        //       "cpu": 2,
+        //       "mem": 16,
+        //       "disksize": 40,
+        //       "servicetype": "host",
+        //       "days": 7,
+        //       "disktype": "sas",
+        //       "bandwith": 5,
+        //       "activitynum": 58,
+        //       "cost": 19.9,
+        //       "maxgetnum": 1,
+        //       "ismonth": 0,
+        //       "foldonfold": 0,
+        //       "isdisplay": 1,
+        //       "highdist": 0,
+        //       "explosives": 0,
+        //       "spikenum": 1,
+        //       "extracost": 0,
+        //       "samegroup": 2
+        //     },
+        //     {
+        //       "id": 609,
+        //       "cpu": 2,
+        //       "mem": 16,
+        //       "disksize": 40,
+        //       "servicetype": "host",
+        //       "days": 5,
+        //       "disktype": "sas",
+        //       "bandwith": 5,
+        //       "activitynum": 58,
+        //       "cost": 59.9,
+        //       "maxgetnum": 1,
+        //       "ismonth": 1,
+        //       "foldonfold": 0,
+        //       "isdisplay": 1,
+        //       "highdist": 0,
+        //       "explosives": 0,
+        //       "spikenum": 1,
+        //       "extracost": 0,
+        //       "samegroup": 2
+        //     }
+        //   ],
+        // }
+        // let systemList = [{
+        //   value: 'window',
+        //   label: 'Windows',
+        //   children: []
+        // }, {
+        //   value: 'centos',
+        //   label: 'Centos',
+        //   children: [],
+        // },
+        // {
+        //   value: 'debian',
+        //   label: 'Debian',
+        //   children: [],
+        // },
+        // {
+        //   value: 'ubuntu',
+        //   label: 'Ubuntu',
+        //   children: [],
+        // }]
+        // let newdata = []
+        // for (let key in this.hostList6) {
+        //   newdata.push({
+        //     'arr': this.hostList6[key],
+        //     'cpu': this.hostList6[key][0].cpu,
+        //     'mem': this.hostList6[key][0].mem,
+        //     'bandwith': this.hostList6[key][0].bandwith,
+        //     'days': this.hostList6[key][0].days,
+        //     'price': '',
+        //     'originPrice': '',
+        //     'systemList': systemList,
+        //     'system': [],
+        //     'zoneId': '',
+        //   })
+        // }
+        // newdata.forEach(element => {
+        //   let obj = {}
+        //   let timeList = []
+        //   let obj1 = {}
+        //   let bandWidthList = []
+        //   element.arr.forEach(element1 => {
+        //     if (!obj[element1.days]) {
+        //       timeList.push(element1.days)
+        //       obj[element1.days] = 1
+        //     }
+        //     if (!obj1[element1.bandwith]) {
+        //       bandWidthList.push(element1.bandwith)
+        //       obj1[element1.bandwith] = 1
+        //     }
+        //   })
+          
+        //   element.timeList = timeList
+        //   element.bandWidthList = bandWidthList
+          
+        // })
+        // newdata.forEach(element => {
+        //   let configList = element.arr.map(element1 => {
+        //     return `${element1.cpu}#${element1.mem}`
+        //   })
+        //   configList = Array.from(new Set(configList))
+        //   let configListF = configList.map(element2 => {
+        //     return { 'cpu': element2.split('#')[0], 'mem': element2.split('#')[1] }
+        //   })
+        //   element.configList = configListF
+        // })
+        // this.hostList6 = newdata
       }
     },
     getConfigureGPUL (res) {
@@ -2755,6 +3032,7 @@ export default {
               switch (response.data.result.reviewResult.reviewStatus) {
                 case 0:
                   this.showModal.checkfail = true
+                  this.failMsg = response.data.result.reviewResult.reviewInfo
                   this.failType = 'wechat'
                   break;
                 case 1:
@@ -2826,48 +3104,58 @@ export default {
         }
       }
       // this.showModal.baiducomment = true
-      axios.get('activity/getReviewInfo.do', {
+      axios.get('activity/judgeCommentTime.do', {
         params: {
-          activityNum: item.post.activitynum,
+          activityNum: 57,
           vmConfigId: item.post.id
         }
       }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          // result返回为空的情况
-          if (response.data.result.commentResult) {
-            if (response.data.result.commentResult && JSON.stringify(response.data.result.commentResult) != '{}') {
-              switch (response.data.result.commentResult.commentStatus) {
-                case 0:
-                  this.showModal.checkfail = true
-                  this.failType = 'baidu'
-                  break;
-                case 1:
-                  this.showModal.baidusuccess = true
-                  break;
-                case 2:
-                  this.showModal.checking = true
-                  break;
-              }
-            } else {
-              if (response.data.result.reviewResult.reviewStatus == 1) {
-                this.showModal.baiducomment = true
+          axios.get('activity/getReviewInfo.do', {
+            params: {
+              activityNum: item.post.activitynum,
+              vmConfigId: item.post.id
+            }
+          }).then(response => {
+            if (response.status == 200 && response.data.status == 1) {
+              // result返回为空的情况
+              if (response.data.result.commentResult) {
+                if (response.data.result.commentResult && JSON.stringify(response.data.result.commentResult) != '{}') {
+                  switch (response.data.result.commentResult.commentStatus) {
+                    case 0:
+                      this.showModal.checkfail = true
+                      this.failMsg = response.data.result.commentResult.commentInfo
+                      this.failType = 'baidu'
+                      break;
+                    case 1:
+                      this.showModal.baidusuccess = true
+                      break;
+                    case 2:
+                      this.showModal.checking = true
+                      break;
+                  }
+                } else {
+                  if (response.data.result.reviewResult.reviewStatus == 1) {
+                    this.showModal.baiducomment = true
+                  }
+                }
               } else {
                 this.$message.info({
                   content: '请先成功领取主机再进行该操作！'
                 })
               }
             }
-          } else {
-            this.$message.info({
-              content: '请先成功领取主机再进行该操作！'
-            })
-          }
+          })
+        } else {
+          this.$message.info({
+            content: response.data.message
+          })
         }
       })
-    },
-    pushOrderFree (item, type) {
-      // console.log(item)
-      if (item == 0) {
+      },
+        pushOrderFree(item, type) {
+          // console.log(item)
+          if (item == 0) {
         item = this.hostFree
       }
       if (!this.$store.state.userInfo) {
@@ -3021,7 +3309,7 @@ export default {
                 this.showModal.orderConfirmationModal = false
                 this.serialNum = res.data.serialNum
                 localStorage.setItem('serialNum', this.serialNum)
-                window.open(null, 'alipay').location.href = `https://i.xinruiyun.cn/zfb/alipaypage.do?serialNum=${this.serialNum}&route=rechargeResult`
+                window.open(null, 'alipay').location.href = `https://i.xinruiyun.cn/zfb/alipaypage.do?serialNum=${this.serialNum}&route=rechargeresult`
                 this.showModal.rechargeHintzfb = true
               } else {
                 this.$message.info({
@@ -4859,7 +5147,7 @@ export default {
     padding: 10px 20px;
     color: #4768b1;
     .center {
-      height: 88px;
+      height: 68px;
     }
     h4 {
       font-size: 14px;
@@ -4869,16 +5157,13 @@ export default {
     }
     .wechat {
       width: 80px;
-      margin-right: 68px;
+      margin-right: 40px;
       img {
         width: 60px;
         display: block;
       }
-    }
-    .url {
-      width: 336px;
       h4 {
-        width: 112px;
+        width: 72px;
       }
     }
     .upload-btn {
@@ -5119,6 +5404,10 @@ export default {
   .wechat-modal .content .wechat {
     width: 200px;
     margin-right: 20px;
+  }
+  .wechat-modal .content {
+    display: flex;
+    flex-direction: column;
   }
 }
 </style>
