@@ -9,8 +9,12 @@
             <div class="ddos">
               <div class="wrap">
                 <div class="text">
-                  <img src="../../assets/img/active/ddos/ddos-ac-text.png" />
-                  <p>更有首月8折等超多优惠</p>
+                  <img src="../../assets/img/active/ddos/ddos-banner-text.png" />
+                  <p>数量有限 先到先得</p>
+                  <Button>点击查看</Button>
+                </div>
+                <div class="img">
+                      <img src="../../assets/img/active/ddos/ddos-ac-banner.png" style="height:360px;margin-top:40px;"/>
                 </div>
               </div>
             </div>
@@ -244,7 +248,7 @@
           }
           .ddos {
             height: 400px;
-            background:  url("../../assets/img/active/ddos/ddos-ac-bg.png") center no-repeat;
+            background:  #2A2936;
               .wrap{
                 width: 1200px;
                 margin:0 auto;
@@ -254,11 +258,22 @@
                   margin-top: 148px;
                   p{
                     font-size:24px;
-                    color:rgba(255,98,75,1);
+                    color:#FFEDD2;
                     line-height:31px;
                   }
                   img {
                     margin: 0 0 20px 0;
+                  }
+                  button {
+                    margin-top:30px;
+                    width:124px;
+                    height:32px;
+                    background:linear-gradient(90deg,rgba(249,239,184,1) 0%,rgba(227,183,111,1) 100%);
+                    border-radius:2px;
+                    border: none;
+                    &:hover {
+                      color:#000;
+                    }
                   }
                 }
               }
