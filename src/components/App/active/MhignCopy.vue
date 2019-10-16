@@ -19,8 +19,9 @@
         <!--限时秒杀-->
         <div class="miaosha" ref="active1">
             <div class="title">
-                <img src="../../../assets/img/active/ddos-m/msha.png" alt="">
+                <!-- <img src="../../../assets/img/active/ddos-m/msha.png" alt=""> -->
                 <p>
+                  明日预告：{{predictMsg}}
                 <span @click="seckilling = 'seckilling'">活动规则</span>
                 </p>
             </div>
@@ -371,6 +372,7 @@
       },
       data () {
         return {
+          predictMsg: '',
           overH: 0,
           // 倒计时
           hours: 0,
@@ -764,8 +766,20 @@
             })
           }
         },
+        predict() {
+          axios.get('activity/getActivityTrailer2.do',{
+            params:{
+              activityNum: 53
+            }
+          }).then(response => {
+            if (response.status == 200 && response.data.status == 1) {
+              this.predictMsg = response.data.message
+            }
+          })
+        },
       },
       created () {
+        this.predict()
         this.timeRange()
         this.forCast()
         var active1 = axios.get('activity/getActInfoById.do', {params: {activityNum: 53}})
@@ -936,12 +950,12 @@
                     margin: 0 auto;
                 }
                 p {
-                    padding: 8px 22px 0 22px;
-                    text-align: center;
+                    // padding: 8px 22px 0 22px;
+                    // text-align: center;
                     font-size: 13px;
                     font-weight:400;
                     color:rgba(255,255,255,1);
-                    line-height:17px;
+                    line-height:20px;
                     span {
                         color: #FDC58F;
                         text-decoration: underline;

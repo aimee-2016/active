@@ -24,7 +24,7 @@
         <div class="top">
           <div class="text">
             <p>
-              明日预告：2核4G、2核8G、4核8G云服务器、GPU云服务器8核64G、DMS-30G
+              明日预告: {{predictMsg}}
               <!-- <span @click="showModal.ruleForcast=true">更多场次预告 ></span> -->
               <span @click="showModal.ruleKill=true" style="font-size:16px">活动规则></span>
             </p>
@@ -928,11 +928,13 @@ export default {
       dataForcast: [],
       imgSrc: 'https://kfactivity.xrcloud.net/user/getKaptchaImage.do',
       authErrorText: '',
-      leftTime1: ''
+      leftTime1: '',
+      predictMsg: ''
     }
   },
   created () {
-    this.getTime()
+    this.predict()
+    // this.getTime()
     this.refreshData()
     this.getConfigureKill()
     this.getSubsection()
@@ -955,6 +957,17 @@ export default {
     }))
   },
   methods: {
+    predict() {
+      axios.get('activity/getActivityTrailer2.do',{
+        params:{
+          activityNum: 53
+        }
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          this.predictMsg = response.data.message
+        }
+      })
+    },
     init () {
       axios.get('user/GetUserInfo.do').then(response => {
         if (response.status == 200 && response.data.status == 1) {
@@ -1316,6 +1329,7 @@ export default {
               let endTime = new Date(this.leftTime1)
               if (endTime.getHours() == 0 && endTime.getMinutes() == 0 && endTime.getSeconds() == 0){
                   this.getConfigureKill()
+                  this.predict()
                   window.clearInterval(timer)
                 }
             }, 1000)
