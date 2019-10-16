@@ -6,7 +6,7 @@
             <img src="../../../assets/img/active/ddos-m/hign-banner.png" alt="">
         </div>
         <!--活动tab-->
-        <div class="tabs">
+        <!-- <div class="tabs">
            <ul>
                <li v-for="(item,index) in tabList" :key="item.title" @click="point(index)">
                    <p>{{item.title}}</p>
@@ -14,20 +14,22 @@
                    <span v-show="item.value">{{item.value}}</span>
                </li>
            </ul>
-        </div>
+        </div> -->
 
         <!--限时秒杀-->
         <div class="miaosha" ref="active1">
             <div class="title">
                 <img src="../../../assets/img/active/ddos-m/msha.png" alt="">
-                <p>每天6场秒杀，2点、6点、10点、14点、18点、22点开抢 <br> <span @click="seckilling = 'seckilling'">活动规则</span></p>
+                <p>
+                <span @click="seckilling = 'seckilling'">活动规则</span>
+                </p>
             </div>
             <!--倒计时-->
-            <div class="down">
+            <!-- <div class="down">
                 <p>本场秒杀倒计时</p>
                 <p><span>{{hours}}</span> ：<span>{{minO}}</span><span>{{minT}}</span> ：<span>{{secO}}</span><span>{{secT}}</span></p>
                 <p class="more" @click="showmore = 'showmore'">更多场次预告 ></p>
-            </div>
+            </div> -->
             <div class="onlytime">
                 <ul>
                     <li v-for="(item,index) in freevmconfigs" :key="item.id">
@@ -137,7 +139,7 @@
         </div>
 
         <!--高仿云主机首月8折优惠-->
-        <div class="eight" ref="active2">
+        <!-- <div class="eight" ref="active2">
             <div class="title">
                 <img src="../../../assets/img/active/ddos-m/fold.png" alt="">
                 <p>以下配置皆包含40G SSD系统盘<span @click="favourable = 'favourable'">活动规则></span></p>
@@ -174,10 +176,10 @@
                     </li>
                 </ul>
             </div>
-        </div>
+        </div> -->
 
         <!--超低折扣送域名-->
-        <div class="giving" ref="active3">
+        <!-- <div class="giving" ref="active3">
             <div class="title">
                 <img src="../../../assets/img/active/ddos-m/give.png" alt="">
                 <p>高防云服务器买3/6/12个月赠送188元域名无门槛抵用券<br> <span @click="present = 'present'">活动规则></span></p>
@@ -212,7 +214,7 @@
                     </li>
                 </ul>
             </div>
-        </div>
+        </div> -->
 
         <!--页尾-->
         <div class="footer">
@@ -246,7 +248,7 @@
                     <img src="../../../assets/img/active/home-m/close.png" alt="" @click="seckilling = ''">
                 </div>
                 <ul class="rules">
-                    <li><b>1、</b>活动时间：2019.7.25-2019.9.25，每天6场秒杀， 2点、6点、10点、14点、18点、22点开抢。</li>
+                    <li><b>1、</b>活动时间：2019.8.16-2019.11.15。</li>
                     <li><b>2、</b>活动对象：新老用户皆可参与，其中云服务器、GPU服务器仅限于新用户。</li>
                     <li><b>3、</b>数量限制：活动期间同一用户（同一手机、邮箱、实名认证用户视为同一用户）按照不同的配置进行秒杀，其中云服务器和GPU服务器仅限新用户抢购，每次秒杀每款配置限抢购1台</li>
                     <li><b>4、</b>参与本次活动购买的产品不能进行退款。</li>
@@ -922,11 +924,12 @@
         }
 
         .miaosha {
+            margin-top: -50px;
             width: 100%;
             background:rgba(42,41,54,1);
             padding: 0 10px;
             .title {
-                padding-top: 30px;
+                // padding-top: 30px;
                 img {
                     width: 113px;
                     display: block;

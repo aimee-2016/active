@@ -374,23 +374,16 @@
                     </div>
                   </div>
                 </div>
-                <div class="product">
+                <!-- <div class="product">
                   <div v-for="(item,index) in hostList6" :key="index">
                     <div class="head">
-                      <div
-                        class="icon-bg"
-                        v-if="item.cpu==4&&item.mem==8"
-                      >
+                      <div class="icon-bg" v-if="item.cpu==4&&item.mem==8">
                         <div class="icon-text">爆款</div>
                       </div>
                       <h3 v-if="item.bandWidthList.length>1">云服务器{{item.cpu}}核{{item.mem}}G</h3>
                       <h3 v-else>云服务器{{item.bandwith}}M带宽</h3>
                     </div>
                     <div class="body">
-                      <!-- <div>
-                        <span class="label">带宽：</span>
-                        {{item.bandwith}}M
-                      </div> -->
                       <div v-if="item.bandWidthList.length>1">
                         <span class="label">带宽：</span>
                         <Select
@@ -435,9 +428,7 @@
                             :key="index1"
                             :class="{'selected':item.days==item1}"
                             @click="changgeTimeL(item,item1)"
-                          >
-                            {{monthL(item1)}}
-                          </li>
+                          >{{monthL(item1)}}</li>
                         </ul>
                       </div>
                       <div class="price">
@@ -448,7 +439,7 @@
                       <Button @click="pushOrderL(item,'m')" class="mobile-640">立即抢购</Button>
                     </div>
                   </div>
-                </div>
+                </div> -->
                 <div class="tips">
                   *以上配置GPU云服务器为128G系统盘，其他弹性云服务器均为40G SSD系统盘。
                   <span
@@ -1098,16 +1089,18 @@
                 action="https://kfactivity.xrcloud.net/file/upFile.do"
                 style="display: inline-block;width:58px;position:absolute;top:0;left:0"
               >
-                <div style="width: 58px;height:58px;line-height: 58px;color:4a97ee">
-                  上传截图
-                </div>
+                <div style="width: 58px;height:58px;line-height: 58px;color:4a97ee">上传截图</div>
               </Upload>
             </div>
           </div>
           <div class="url">
             <h4>将活动链接分享并发送内容：“我正在申请参与新睿云的免费云服务器活动，大家一起来参与吧！”至朋友圈并截图</h4>
             <div class="center">
-              <img src="../../../assets/img/active/deposit/free-qr.png" alt="押金活动二维码" style="width:60px;"/>
+              <img
+                src="../../../assets/img/active/deposit/free-qr.png"
+                alt="押金活动二维码"
+                style="width:60px;"
+              />
             </div>
             <div style="position:relative;height:58px;">
               <div
@@ -1139,9 +1132,7 @@
                 action="https://kfactivity.xrcloud.net/file/upFile.do"
                 style="display: inline-block;width:58px;position:absolute;top:0;left:0"
               >
-                <div style="width: 58px;height:58px;line-height: 58px;">
-                  上传截图
-                </div>
+                <div style="width: 58px;height:58px;line-height: 58px;">上传截图</div>
               </Upload>
             </div>
           </div>
@@ -1171,7 +1162,7 @@
       <div class="baidu-modal">
         <h3>完成以下任务免费延长1个月使用期：</h3>
         <div class="content">
-          <h4 style="width:100%">到“百度口碑”发布使用体验等相关评论并截图</h4>
+          <h4 style="width:100%">到“百度口碑”发布使用体验等相关评论通过审核后提交截图”</h4>
           <a
             href="https://koubei.baidu.com/s/510a4f5f6316c2d0f81b3e63bc75b537?fr=search"
             target="blank"
@@ -1206,9 +1197,7 @@
               action="https://kfactivity.xrcloud.net/file/upFile.do"
               style="display: inline-block;width:58px;position:absolute;top:0;left:0"
             >
-              <div style="width: 58px;height:58px;line-height: 58px;">
-                上传截图
-              </div>
+              <div style="width: 58px;height:58px;line-height: 58px;">上传截图</div>
             </Upload>
           </div>
         </div>
@@ -1247,7 +1236,9 @@
         <span class="universal-modal-title">做任务 得好礼</span>
       </p>
       <div class="check-modal">
-        审核未通过，请重新提交。如有疑问，请
+        审核未通过，请重新提交。
+        未通过原因：{{failMsg}}。
+        如有疑问，请
         <a
           style="text-decoration:underline"
           href="https://im.xrcloud.net/im/question/index.html"
@@ -1375,6 +1366,7 @@ export default {
         checksuccess: false,
         baidusuccess: false
       },
+      failMsg: '',
       failType: 'wechat',
       hostFree: {},
       imgName: '',
@@ -1543,6 +1535,198 @@ export default {
       hostList6: [
       ],
       lowHostList: [
+        {
+          post: {
+            servicetype: "host",
+            bandwith: 2,
+            cost: '--',
+            cpu: 2,
+            mem: 4,
+            days: 30,
+            disksize: 40,
+            disktype: "ssd",
+            id: 497
+          },
+          postArr: [],
+          systemList: [{
+            value: 'window',
+            label: 'Windows',
+            children: []
+          }, {
+            value: 'centos',
+            label: 'Centos',
+            children: [],
+          },
+          {
+            value: 'debian',
+            label: 'Debian',
+            children: [],
+          },
+          {
+            value: 'ubuntu',
+            label: 'Ubuntu',
+            children: [],
+          }],
+          system: [],
+          zoneList: [],
+          zoneId: '',
+          price: '--',
+          originPrice: '176.72',
+        },
+        {
+          post: {
+            servicetype: "host",
+            bandwith: 2,
+            cost: '--',
+            cpu: 2,
+            mem: 8,
+            days: 360,
+            disksize: 40,
+            disktype: "ssd",
+            id: 497
+          },
+          postArr: [],
+          systemList: [{
+            value: 'window',
+            label: 'Windows',
+            children: []
+          }, {
+            value: 'centos',
+            label: 'Centos',
+            children: [],
+          },
+          {
+            value: 'debian',
+            label: 'Debian',
+            children: [],
+          },
+          {
+            value: 'ubuntu',
+            label: 'Ubuntu',
+            children: [],
+          }],
+          system: [],
+          zoneList: [],
+          zoneId: '',
+          price: '--',
+          originPrice: '176.72',
+        },
+        {
+          post: {
+            servicetype: "host",
+            bandwith: 2,
+            certification: 3,
+            cost: '--',
+            cpu: 2,
+            mem: 8,
+            days: 360,
+            disksize: 40,
+            disktype: "ssd",
+            id: 497
+          },
+          postArr: [],
+          systemList: [{
+            value: 'window',
+            label: 'Windows',
+            children: []
+          }, {
+            value: 'centos',
+            label: 'Centos',
+            children: [],
+          },
+          {
+            value: 'debian',
+            label: 'Debian',
+            children: [],
+          },
+          {
+            value: 'ubuntu',
+            label: 'Ubuntu',
+            children: [],
+          }],
+          system: [],
+          zoneList: [],
+          zoneId: '',
+          price: '--',
+          originPrice: '176.72',
+        },
+        {
+          post: {
+            servicetype: "db",
+            bandwith: 2,
+            cost: '--',
+            cpu: 2,
+            mem: 8,
+            days: 60,
+            disksize: 40,
+            disktype: "ssd",
+            id: 497
+          },
+          postArr: [],
+          systemList: [{
+            value: 'window',
+            label: 'Windows',
+            children: []
+          }, {
+            value: 'centos',
+            label: 'Centos',
+            children: [],
+          },
+          {
+            value: 'debian',
+            label: 'Debian',
+            children: [],
+          },
+          {
+            value: 'ubuntu',
+            label: 'Ubuntu',
+            children: [],
+          }],
+          system: [],
+          zoneList: [],
+          zoneId: '',
+          price: '--',
+          originPrice: '176.72',
+        },
+        {
+          post: {
+            servicetype: "G5500",
+            bandwith: 2,
+            cost: '--',
+            cpu: 2,
+            mem: 8,
+            days: 3,
+            disksize: 40,
+            disktype: "ssd",
+            id: 497
+          },
+          postArr: [],
+          systemList: [{
+            value: 'window',
+            label: 'Windows',
+            children: []
+          }, {
+            value: 'centos',
+            label: 'Centos',
+            children: [],
+          },
+          {
+            value: 'debian',
+            label: 'Debian',
+            children: [],
+          },
+          {
+            value: 'ubuntu',
+            label: 'Ubuntu',
+            children: [],
+          }],
+          system: [],
+          zoneList: [],
+          zoneId: '',
+          price: '--',
+          originPrice: '176.72',
+          gpuConfigIndex: 0,
+        },
         {
           post: {
             servicetype: "host",
@@ -2121,43 +2305,53 @@ export default {
     seeComment () {
       this.showModal.checksuccess = false
       let item = this.hostFree
-      axios.get('activity/getReviewInfo.do', {
+      axios.get('activity/judgeCommentTime.do', {
         params: {
-          activityNum: item.post.activitynum,
+          activityNum: 57,
           vmConfigId: item.post.id
         }
       }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          // result返回为空的情况
-          if (response.data.result.commentResult) {
-            if (response.data.result.commentResult && JSON.stringify(response.data.result.commentResult) != '{}') {
-              switch (response.data.result.commentResult.commentStatus) {
-                case 0:
-                  this.showModal.checkfail = true
-                  this.failType = 'baidu'
-                  break;
-                case 1:
-                  this.showModal.baidusuccess = true
-                  break;
-                case 2:
-                  this.showModal.checking = true
-                  break;
-              }
-              // result有值，commentResult为空的情况
-            } else {
-              if (response.data.result.reviewResult.reviewStatus == 1) {
-                this.showModal.baiducomment = true
+          axios.get('activity/getReviewInfo.do', {
+            params: {
+              activityNum: item.post.activitynum,
+              vmConfigId: item.post.id
+            }
+          }).then(response => {
+            if (response.status == 200 && response.data.status == 1) {
+              // result返回为空的情况
+              if (response.data.result.commentResult) {
+                if (response.data.result.commentResult && JSON.stringify(response.data.result.commentResult) != '{}') {
+                  switch (response.data.result.commentResult.commentStatus) {
+                    case 0:
+                      this.showModal.checkfail = true
+                      this.failMsg = response.data.result.commentResult.commentInfo
+                      this.failType = 'baidu'
+                      break;
+                    case 1:
+                      this.showModal.baidusuccess = true
+                      break;
+                    case 2:
+                      this.showModal.checking = true
+                      break;
+                  }
+                  // result有值，commentResult为空的情况
+                } else {
+                  if (response.data.result.reviewResult.reviewStatus == 1) {
+                    this.showModal.baiducomment = true
+                  }
+                }
               } else {
                 this.$message.info({
                   content: '请先成功领取主机再进行该操作！'
                 })
               }
             }
-          } else {
-            this.$message.info({
-              content: '请先成功领取主机再进行该操作！'
-            })
-          }
+          })
+        } else {
+          this.$message.info({
+            content: response.data.message
+          })
         }
       })
     },
@@ -2278,156 +2472,204 @@ export default {
           }
         }
         // 天天特惠前面默认5个配置
-        this.zoneList5 = res.data.result.optionalArea
-        this.hostList6 = {
-        "4#8": [
-            {
-                "id": 604,
-                "cpu": 4,
-                "mem": 8,
-                "disksize": 40,
-                "servicetype": "host",
-                "days": 30,
-                "disktype": "sas",
-                "bandwith": 10,
-                "activitynum": 58,
-                "cost": 99.9,
-                "maxgetnum": 1,
-                "ismonth": 1,
-                "foldonfold": 0,
-                "isdisplay": 1,
-                "highdist": 0,
-                "explosives": 0,
-                "spikenum": 1,
-                "extracost": 0,
-                "samegroup": 1
-            },
-            {
-                "id": 605,
-                "cpu": 4,
-                "mem": 8,
-                "disksize": 40,
-                "servicetype": "host",
-                "days": 30,
-                "disktype": "sas",
-                "bandwith": 5,
-                "activitynum": 58,
-                "cost": 79.9,
-                "maxgetnum": 1,
-                "ismonth": 1,
-                "foldonfold": 0,
-                "isdisplay": 1,
-                "highdist": 0,
-                "explosives": 0,
-                "spikenum": 1,
-                "extracost": 0,
-                "samegroup": 1
-            }
-        ],
-         "2#8": [
-            {
-                "id": 608,
-                "cpu": 2,
-                "mem": 8,
-                "disksize": 40,
-                "servicetype": "host",
-                "days": 7,
-                "disktype": "sas",
-                "bandwith": 5,
-                "activitynum": 58,
-                "cost": 19.9,
-                "maxgetnum": 1,
-                "ismonth": 0,
-                "foldonfold": 0,
-                "isdisplay": 1,
-                "highdist": 0,
-                "explosives": 0,
-                "spikenum": 1,
-                "extracost": 0,
-                "samegroup": 2
-            },
-            {
-                "id": 609,
-                "cpu": 2,
-                "mem": 8,
-                "disksize": 40,
-                "servicetype": "host",
-                "days": 30,
-                "disktype": "sas",
-                "bandwith": 5,
-                "activitynum": 58,
-                "cost": 59.9,
-                "maxgetnum": 1,
-                "ismonth": 1,
-                "foldonfold": 0,
-                "isdisplay": 1,
-                "highdist": 0,
-                "explosives": 0,
-                "spikenum": 1,
-                "extracost": 0,
-                "samegroup": 2
-            }
-              ],
-          }
-          let systemList= [{
-            value: 'window',
-            label: 'Windows',
-            children: []
-          }, {
-            value: 'centos',
-            label: 'Centos',
-            children: [],
-          },
-          {
-            value: 'debian',
-            label: 'Debian',
-            children: [],
-          },
-          {
-            value: 'ubuntu',
-            label: 'Ubuntu',
-            children: [],
-          }]
-          // console.log(this.hostList6)
-          let newdata = []
-          for(let key in this.hostList6) {
-            // console.log(key)
-            newdata.push({
-              'arr': this.hostList6[key],
-              'cpu':this.hostList6[key][0].cpu,
-              'mem':this.hostList6[key][0].mem,
-              'bandwith':this.hostList6[key][0].bandwith,
-              'days':this.hostList6[key][0].days,
-              'price':'',
-              'originPrice':'',
-              'systemList':systemList,
-              'system':[],
-              // 'zoneList':[],
-              'zoneId':'',
-              })
-          }
-          newdata.forEach(element => {
-          let obj ={}
-          let timeList=[]
-          let bandWidthList=[]
-          element.arr.forEach(element1=>{
-            if(!obj[element1.days]){
-              timeList.push(element1.days)
-              obj[element1.days] = 1
-            }
-            if(!obj[element1.bandwith]){
-              bandWidthList.push(element1.bandwith)
-              obj[element1.bandwith] = 1
-            }
-          })
-          // console.log(timeList)
-          // console.log(bandWidthList)
-          element.timeList = timeList
-          element.bandWidthList = bandWidthList
-        })
-        this.hostList6 = newdata
-        console.log(newdata)
-        console.log(this.hostList6)
+        // this.zoneList5 = res.data.result.optionalArea
+        // this.hostList6 = {
+        //   "4#8": [
+        //     {
+        //       "id": 604,
+        //       "cpu": 4,
+        //       "mem": 8,
+        //       "disksize": 40,
+        //       "servicetype": "host",
+        //       "days": 30,
+        //       "disktype": "sas",
+        //       "bandwith": 10,
+        //       "activitynum": 58,
+        //       "cost": 99.9,
+        //       "maxgetnum": 1,
+        //       "ismonth": 1,
+        //       "foldonfold": 0,
+        //       "isdisplay": 1,
+        //       "highdist": 0,
+        //       "explosives": 0,
+        //       "spikenum": 1,
+        //       "extracost": 0,
+        //       "samegroup": 1
+        //     },
+        //     {
+        //       "id": 605,
+        //       "cpu": 4,
+        //       "mem": 8,
+        //       "disksize": 40,
+        //       "servicetype": "host",
+        //       "days": 30,
+        //       "disktype": "sas",
+        //       "bandwith": 5,
+        //       "activitynum": 58,
+        //       "cost": 79.9,
+        //       "maxgetnum": 1,
+        //       "ismonth": 1,
+        //       "foldonfold": 0,
+        //       "isdisplay": 1,
+        //       "highdist": 0,
+        //       "explosives": 0,
+        //       "spikenum": 1,
+        //       "extracost": 0,
+        //       "samegroup": 1
+        //     }
+        //   ],
+        //   "5M": [
+        //     {
+        //       "id": 608,
+        //       "cpu": 2,
+        //       "mem": 8,
+        //       "disksize": 40,
+        //       "servicetype": "host",
+        //       "days": 7,
+        //       "disktype": "sas",
+        //       "bandwith": 5,
+        //       "activitynum": 58,
+        //       "cost": 19.9,
+        //       "maxgetnum": 1,
+        //       "ismonth": 0,
+        //       "foldonfold": 0,
+        //       "isdisplay": 1,
+        //       "highdist": 0,
+        //       "explosives": 0,
+        //       "spikenum": 1,
+        //       "extracost": 0,
+        //       "samegroup": 2
+        //     },
+        //     {
+        //       "id": 609,
+        //       "cpu": 2,
+        //       "mem": 8,
+        //       "disksize": 40,
+        //       "servicetype": "host",
+        //       "days": 5,
+        //       "disktype": "sas",
+        //       "bandwith": 5,
+        //       "activitynum": 58,
+        //       "cost": 59.9,
+        //       "maxgetnum": 1,
+        //       "ismonth": 1,
+        //       "foldonfold": 0,
+        //       "isdisplay": 1,
+        //       "highdist": 0,
+        //       "explosives": 0,
+        //       "spikenum": 1,
+        //       "extracost": 0,
+        //       "samegroup": 2
+        //     },
+        //     {
+        //       "id": 608,
+        //       "cpu": 2,
+        //       "mem": 16,
+        //       "disksize": 40,
+        //       "servicetype": "host",
+        //       "days": 7,
+        //       "disktype": "sas",
+        //       "bandwith": 5,
+        //       "activitynum": 58,
+        //       "cost": 19.9,
+        //       "maxgetnum": 1,
+        //       "ismonth": 0,
+        //       "foldonfold": 0,
+        //       "isdisplay": 1,
+        //       "highdist": 0,
+        //       "explosives": 0,
+        //       "spikenum": 1,
+        //       "extracost": 0,
+        //       "samegroup": 2
+        //     },
+        //     {
+        //       "id": 609,
+        //       "cpu": 2,
+        //       "mem": 16,
+        //       "disksize": 40,
+        //       "servicetype": "host",
+        //       "days": 5,
+        //       "disktype": "sas",
+        //       "bandwith": 5,
+        //       "activitynum": 58,
+        //       "cost": 59.9,
+        //       "maxgetnum": 1,
+        //       "ismonth": 1,
+        //       "foldonfold": 0,
+        //       "isdisplay": 1,
+        //       "highdist": 0,
+        //       "explosives": 0,
+        //       "spikenum": 1,
+        //       "extracost": 0,
+        //       "samegroup": 2
+        //     }
+        //   ],
+        // }
+        // let systemList = [{
+        //   value: 'window',
+        //   label: 'Windows',
+        //   children: []
+        // }, {
+        //   value: 'centos',
+        //   label: 'Centos',
+        //   children: [],
+        // },
+        // {
+        //   value: 'debian',
+        //   label: 'Debian',
+        //   children: [],
+        // },
+        // {
+        //   value: 'ubuntu',
+        //   label: 'Ubuntu',
+        //   children: [],
+        // }]
+        // let newdata = []
+        // for (let key in this.hostList6) {
+        //   newdata.push({
+        //     'arr': this.hostList6[key],
+        //     'cpu': this.hostList6[key][0].cpu,
+        //     'mem': this.hostList6[key][0].mem,
+        //     'bandwith': this.hostList6[key][0].bandwith,
+        //     'days': this.hostList6[key][0].days,
+        //     'price': '',
+        //     'originPrice': '',
+        //     'systemList': systemList,
+        //     'system': [],
+        //     'zoneId': '',
+        //   })
+        // }
+        // newdata.forEach(element => {
+        //   let obj = {}
+        //   let timeList = []
+        //   let obj1 = {}
+        //   let bandWidthList = []
+        //   element.arr.forEach(element1 => {
+        //     if (!obj[element1.days]) {
+        //       timeList.push(element1.days)
+        //       obj[element1.days] = 1
+        //     }
+        //     if (!obj1[element1.bandwith]) {
+        //       bandWidthList.push(element1.bandwith)
+        //       obj1[element1.bandwith] = 1
+        //     }
+        //   })
+          
+        //   element.timeList = timeList
+        //   element.bandWidthList = bandWidthList
+          
+        // })
+        // newdata.forEach(element => {
+        //   let configList = element.arr.map(element1 => {
+        //     return `${element1.cpu}#${element1.mem}`
+        //   })
+        //   configList = Array.from(new Set(configList))
+        //   let configListF = configList.map(element2 => {
+        //     return { 'cpu': element2.split('#')[0], 'mem': element2.split('#')[1] }
+        //   })
+        //   element.configList = configListF
+        // })
+        // this.hostList6 = newdata
       }
     },
     getConfigureGPUL (res) {
@@ -2790,6 +3032,7 @@ export default {
               switch (response.data.result.reviewResult.reviewStatus) {
                 case 0:
                   this.showModal.checkfail = true
+                  this.failMsg = response.data.result.reviewResult.reviewInfo
                   this.failType = 'wechat'
                   break;
                 case 1:
@@ -2861,48 +3104,58 @@ export default {
         }
       }
       // this.showModal.baiducomment = true
-      axios.get('activity/getReviewInfo.do', {
+      axios.get('activity/judgeCommentTime.do', {
         params: {
-          activityNum: item.post.activitynum,
+          activityNum: 57,
           vmConfigId: item.post.id
         }
       }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          // result返回为空的情况
-          if (response.data.result.commentResult) {
-            if (response.data.result.commentResult && JSON.stringify(response.data.result.commentResult) != '{}') {
-              switch (response.data.result.commentResult.commentStatus) {
-                case 0:
-                  this.showModal.checkfail = true
-                  this.failType = 'baidu'
-                  break;
-                case 1:
-                  this.showModal.baidusuccess = true
-                  break;
-                case 2:
-                  this.showModal.checking = true
-                  break;
-              }
-            } else {
-              if (response.data.result.reviewResult.reviewStatus == 1) {
-                this.showModal.baiducomment = true
+          axios.get('activity/getReviewInfo.do', {
+            params: {
+              activityNum: item.post.activitynum,
+              vmConfigId: item.post.id
+            }
+          }).then(response => {
+            if (response.status == 200 && response.data.status == 1) {
+              // result返回为空的情况
+              if (response.data.result.commentResult) {
+                if (response.data.result.commentResult && JSON.stringify(response.data.result.commentResult) != '{}') {
+                  switch (response.data.result.commentResult.commentStatus) {
+                    case 0:
+                      this.showModal.checkfail = true
+                      this.failMsg = response.data.result.commentResult.commentInfo
+                      this.failType = 'baidu'
+                      break;
+                    case 1:
+                      this.showModal.baidusuccess = true
+                      break;
+                    case 2:
+                      this.showModal.checking = true
+                      break;
+                  }
+                } else {
+                  if (response.data.result.reviewResult.reviewStatus == 1) {
+                    this.showModal.baiducomment = true
+                  }
+                }
               } else {
                 this.$message.info({
                   content: '请先成功领取主机再进行该操作！'
                 })
               }
             }
-          } else {
-            this.$message.info({
-              content: '请先成功领取主机再进行该操作！'
-            })
-          }
+          })
+        } else {
+          this.$message.info({
+            content: response.data.message
+          })
         }
       })
-    },
-    pushOrderFree (item, type) {
-      // console.log(item)
-      if (item == 0) {
+      },
+        pushOrderFree(item, type) {
+          // console.log(item)
+          if (item == 0) {
         item = this.hostFree
       }
       if (!this.$store.state.userInfo) {
@@ -4910,7 +5163,7 @@ export default {
         display: block;
       }
       h4 {
-        width:72px;
+        width: 72px;
       }
     }
     .upload-btn {

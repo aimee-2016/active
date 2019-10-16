@@ -1,54 +1,19 @@
 <template>
   <div class="ddos-active" ref="ddos-active">
-    <div class="pc-nav nav-a">
-      <ul>
-        <li
-          v-for="(item,index) in navs"
-          :key="index"
-          :class="{'selected':selectedNav>=item.distance&&selectedNav<item.distanceM}"
-          @click="roll(item.distance)"
-        >
-          <span>{{ item.title}}</span>
-          <p>{{ item.text}}</p>
-        </li>
-      </ul>
-      <div class="back" @click="roll(0,0)">
-        <img src="../../../assets/img/active/ddos/ddos-back-top.png" alt="回到顶部图标">
-        <p>返回顶部</p>
-      </div>
-    </div>
-    <div class="mobile-nav">
-      活动导航
-      <div class="nav nav-a">
-        <ul>
-          <li
-            v-for="(item,index) in navs"
-            :key="index"
-            @click="roll(item.distance,index)"
-          >
-            <span>{{ item.title}}</span>
-            <p>{{ item.text}}</p>
-          </li>
-        </ul>
-        <div class="back" @click="roll(0,0)">
-          <img src="../../../assets/img/active/ddos/ddos-back-top.png" alt="回到顶部图标">
-          <p>返回顶部</p>
-        </div>
-      </div>
-    </div>
-    <div class="banner" style="height:355px">
+    <div class="banner" style="height:380px">
       <div class="wrap">
         <div class="product">
           <div class="content">
-            <img
+            <!-- <img
               class="banner"
               src="../../../assets/img/active/ddos/ddos-banner.png"
               alt="高仿云服务器限时秒杀"
-            >
+            > -->
             <img
               class="text"
               src="../../../assets/img/active/ddos/ddos-banner-text.png"
               alt="高仿云服务器限时秒杀"
+              style="margin-top:292px;"
             >
           </div>
         </div>
@@ -59,10 +24,14 @@
         <div class="top">
           <div class="text">
             <p>
-              <!-- 每天6场秒杀，2点、6点、10点、14点、18点、22点开抢
-              <span @click="showModal.ruleForcast=true">更多场次预告 ></span> -->
-              <span @click="showModal.ruleKill=true">活动规则></span>
+              明日预告：2核4G、2核8G、4核8G云服务器、GPU云服务器8核64G、DMS-30G
+              <!-- <span @click="showModal.ruleForcast=true">更多场次预告 ></span> -->
+              <span @click="showModal.ruleKill=true" style="font-size:16px">活动规则></span>
             </p>
+            <!-- <p>
+              明日预告：2核4G、1核8G云服务器、GPU云服务器8核64G、DMS-50G
+              <span @click="showModal.ruleKill=true" style="font-size:16px">活动规则></span>
+            </p> -->
           </div>
           <!-- <div class="timer">
             <i>本场秒杀倒计时</i>
@@ -221,209 +190,6 @@
         <div class="tips">温馨提示，秒杀产品不支持7天无理由退款；购买区域不同，价格会有差异，请确认之后再进行购买。</div>
       </div>
     </div>
-    <div class="first-month" ref="first-month">
-      <div class="headline">
-        <div>
-          <img src="../../../assets/img/active/ddos/text-left.png" alt="icon">
-          <img src="../../../assets/img/active/ddos/text-3.png" alt="icon">
-          <img src="../../../assets/img/active/ddos/text-right.png" alt="icon">
-        </div>
-        <p>
-          <span style="color:#EED292;" @click="showModal.ruleFT=true">活动规则></span>
-        </p>
-      </div>
-      <div class="product">
-        <div class="wrap">
-          <ul>
-            <li v-for="(item,index) in ddosList" :key="index">
-              <div class="title">
-                <p>高防云服务器 {{item.postOne.cpu+'核'+item.postOne.mem+'G'}}</p>
-              </div>
-              <div class="content">
-                <div class="left">
-                  <dl>
-                    <dt>带宽</dt>
-                    <!-- <dd>{{configVal(item.post,'bandwith')}}M</dd> -->
-                    <dd>{{item.postOne.bandwith}}M</dd>
-                  </dl>
-                  <dl>
-                    <dt>区域</dt>
-                    <dd>{{item.zoneName}}</dd>
-                  </dl>
-                  <dl>
-                    <dt>系统</dt>
-                    <dd class="ddos-system-b">
-                      <Cascader
-                        :data="systemDDOSHList"
-                        v-model="item.system"
-                        style="width:142px;display:inline-block"
-                      ></Cascader>
-                    </dd>
-                  </dl>
-                  <dl>
-                    <dt>防御</dt>
-                    <dd>
-                      <span
-                        :class="{select:item.disk==item1.pronum}"
-                        v-for="(item1,index) in item.post"
-                        :key="index"
-                        @click="changeDefense(item,item1)"
-                      >{{item1.pronum}}G</span>
-                    </dd>
-                  </dl>
-                </div>
-                <div class="right">
-                  <div>
-                    <span class="text">首月优惠价</span>
-                    <p>
-                      ¥
-                      <span>{{item.price}}</span>/首月
-                    </p>
-                    <i>原价：¥{{item.originPrice}}/月</i>
-                  </div>
-                  <Button class="btn" @click="pushOrderDDOS(item)">立即购买</Button>
-                </div>
-              </div>
-            </li>
-          </ul>
-          <div class="tips">
-            以上配置皆包含40G SSD系统盘
-            <a href="https://kfi.xrcloud.net/buy/ddos/" style="color:#ffd08c">查看更多配置>></a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="super-discount" ref="super-discount">
-      <div class="wrap">
-        <div class="headline">
-          <div>
-            <img src="../../../assets/img/active/ddos/text-left-black.png" alt="icon">
-            <img src="../../../assets/img/active/ddos/text-4.png" alt="icon">
-            <img src="../../../assets/img/active/ddos/text-right-black.png" alt="icon">
-          </div>
-          <p style="color:#666666">
-            高防云服务器买3/6/12个月赠送188元域名无门槛抵用券
-            <span
-              @click="showModal.ruleGT=true"
-              style="color:#FF624B"
-            >活动规则</span>
-          </p>
-        </div>
-        <div class="product">
-          <div v-for="(item,index) in listGT" :key="index">
-            <div class="head">
-              <h3>高防云服务器{{item.postOne.cpu+'核'+item.postOne.mem+'G'}}</h3>
-            </div>
-            <div class="body">
-              <div class="configure">
-                <ul>
-                  <li>
-                    <i>系统盘:</i>
-                    <span>
-                      {{item.postOne.disksize}}G
-                      <span>SSD</span>
-                    </span>
-                  </li>
-                  <li>
-                    <i>宽带:</i>
-                    <span>{{item.postOne.bandwith}}M</span>
-                  </li>
-                  <li>
-                    <i>区域:</i>
-                    <span>{{item.zoneName}}</span>
-                  </li>
-                  <li style="font-style:italic;color:#FF624B;font-family:Arial-BoldItalicMT;">
-                    <i style="font-style:italic;">防护等级:</i>
-                    <span>{{item.postOne.pronum}}G</span>
-                  </li>
-                </ul>
-              </div>
-              <div class="ddos-system-b">
-                <span class="label">系统选择：</span>
-                <Cascader :data="systemDDOSHList" v-model="item.system" style="width:237px;"></Cascader>
-              </div>
-              <div class="time">
-                <span class="label" style="margin-bottom:15px;">购买时长：</span>
-                <ul>
-                  <li
-                    v-for="(item1,index1) in item.post"
-                    :key="index1"
-                    :class="{'selected':item.time==item1.days}"
-                    @click="changeTime(item,item1)"
-                  >
-                    {{month(item1.days)}}
-                    <span>{{item1.discount*10}}折</span>
-                  </li>
-                </ul>
-              </div>
-              <div class="price">
-                ￥
-                <span>{{item.price}}</span>
-              </div>
-              <div class="origin-price">
-                原价：￥
-                <span>{{item.originPrice}}</span>
-              </div>
-              <Button class="btn" @click="pushOrderDDOS(item)">立即购买</Button>
-              <p class="text">购买即赠送188元域名无门槛抵用券</p>
-            </div>
-          </div>
-        </div>
-        <div class="tips">
-          <a href="https://kfi.xrcloud.net/buy/ddos/" style="color:#606682">查看更多配置>></a>
-        </div>
-      </div>
-    </div>
-    <div class="give-time" ref="give-time">
-      <div class="wrap">
-        <div class="headline">
-          <div>
-            <img src="../../../assets/img/active/ddos/text-left.png" alt="icon">
-            <img src="../../../assets/img/active/ddos/text-5.png" alt="icon">
-            <img src="../../../assets/img/active/ddos/text-right.png" alt="icon">
-          </div>
-          <p style="color:#fff;">此活动长期有效 新老用户皆可参与</p>
-        </div>
-        <div class="product">
-          <ul>
-            <li>
-              <div class="top">
-                <div class="left">
-                  <p>
-                    购
-                    <span>6个月</span>
-                    高防云服务器
-                  </p>
-                  <p>免费再送一个月</p>
-                </div>
-                <div class="right">
-                  <span>9</span>.5
-                  <i>折</i>
-                </div>
-              </div>
-              <a href="https://kfi.xrcloud.net/buy/ddos/" class="btn">立即选购</a>
-            </li>
-            <li>
-              <div class="top">
-                <div class="left">
-                  <p>
-                    购
-                    <span>1年</span>
-                    高防云服务器
-                  </p>
-                  <p>免费再送三个月</p>
-                </div>
-                <div class="right">
-                  <span>8</span>.5
-                  <i>折</i>
-                </div>
-              </div>
-              <a href="https://kfi.xrcloud.net/buy/ddos/" class="btn">立即选购</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
     <!-- 活动规则 -->
     <transition name="fade">
       <div class="overlay" @click.stop="showModal.ruleKill=true" v-if="showModal.ruleKill">
@@ -433,7 +199,7 @@
             <img src=../../../assets/img/active/ddos/ddos-close-icon.png alt="关闭图标" @click.stop="showModal.ruleKill=false">
           </div>
           <div class="body">
-            <p>1、活动时间：2019.8.16-2019.11.16，每天6场秒杀， 2点、6点、10点、14点、18点、22点开抢。</p>
+            <p>1、活动时间：2019.8.16-2019.11.15。</p>
             <p>2、活动对象：新老用户皆可参与。</p>
             <p>3、数量限制：活动期间同一用户（同一手机、邮箱、实名认证用户视为同一用户）按照不同的配置进行秒杀,每次秒杀每款配置限抢购1台。</p>
             <p>4、参与本次活动购买的产品不能进行退款。</p>
@@ -1955,7 +1721,7 @@ export default {
     center;
 }
 .seckill {
-  padding: 40px 0 60px;
+  padding: 40px 0 120px;
   background: url(../../../assets/img/active/ddos/background-2-right.png) 100%
     60% no-repeat;
   .top {
