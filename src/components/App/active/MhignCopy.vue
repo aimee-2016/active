@@ -56,7 +56,7 @@
                             <div class="buybtn">
                                 <div class="price">
                                     <p>￥<span>{{item.cost}}</span>/{{item.days == '1' ? '月' : item.days/12 + '年'}} <span class="old">原价:￥{{item.oldPrice}}/{{item.days == '1' ? '月' : item.days/12 + '年'}}</span></p>
-                                    <p class='press'>已抢购{{item.percent}}%</p>
+                                    <!-- <p class='press'>已抢购{{item.percent}}%</p> -->
                                 </div>
                                 <button :class="{over:item.percent == 100}" @click="m_Hign(item)" :disabled="item.percent == 100">立即抢购</button>
                             </div>
@@ -81,7 +81,7 @@
                             <div class="buybtn">
                                 <div class="price">
                                     <p>￥<span>{{item.cost}}</span>/{{item.days == '1' ? '月' : item.days/12 + '年'}} <span class="old">原价:￥{{item.oldPrice}}/{{item.days == '1' ? '月' : item.days/12 + '年'}}</span></p>
-                                    <p class='press'>已抢购{{item.percent}}%</p>
+                                    <!-- <p class='press'>已抢购{{item.percent}}%</p> -->
                                 </div>
                                 <button :class="{over:item.percent == 100}" @click="m_Host(item)" :disabled="item.percent == 100">立即抢购</button>
                             </div>
@@ -107,7 +107,7 @@
                             <div class="buybtn">
                                 <div class="price">
                                     <p>￥<span>{{item.cost}}</span>/{{item.days == '1' ? '月' : item.days/12 + '年'}} <span class="old">原价:￥{{item.oldPrice}}/{{item.days == '1' ? '月' : item.days/12 + '年'}}</span></p>
-                                    <p class='press'>已抢购{{item.percent}}%</p>
+                                    <!-- <p class='press'>已抢购{{item.percent}}%</p> -->
                                 </div>
                                 <button :class="{over:item.percent == 100}" :disabled="item.percent == 100" @click="m_Gpu(item)">立即抢购</button>
                             </div>
@@ -128,7 +128,7 @@
                             <div class="buybtn">
                                 <div class="price">
                                     <p>￥<span>{{item.cost}}</span>/{{item.days == '1' ? '月' : item.days/12 + '年'}} <span class="old">原价:￥{{item.oldPrice}}/{{item.days == '1' ? '月' : item.days/12 + '年'}}</span></p>
-                                    <p class='press'>已抢购{{item.percent}}%</p>
+                                    <!-- <p class='press'>已抢购{{item.percent}}%</p> -->
                                 </div>
                                 <button :class="{over:item.percent == 100}" :disabled="item.percent == 100" @click="m_Ip(item)">立即抢购</button>
                             </div>
@@ -783,10 +783,10 @@
         this.timeRange()
         this.forCast()
         var active1 = axios.get('activity/getActInfoById.do', {params: {activityNum: 53}})
-        var active2 = axios.get('activity/getTemActInfoById.do', {params: {activityNum: 54}})
-        var active3 = axios.get('activity/getTemActInfoById.do', {params: {activityNum: 55}})
-        var subse = axios.get('activity/getSubsection.do', {params: {activityNum: 53}})
-        Promise.all([active1,active2,active3,subse]).then(values => {
+        // var active2 = axios.get('activity/getTemActInfoById.do', {params: {activityNum: 54}})
+        // var active3 = axios.get('activity/getTemActInfoById.do', {params: {activityNum: 55}})
+        // var subse = axios.get('activity/getSubsection.do', {params: {activityNum: 53}})
+        Promise.all([active1]).then(values => {
           // 限时秒杀 区域 配置
           if (values[0].status == 200 && values[0].data.status == 1) {
             // 高仿主机区域
@@ -816,63 +816,63 @@
             })
           }
           // 首月优惠 区域 配置
-          if (values[1].status == 200 && values[1].data.status == 1) {
-            this.fMzoiendList = values[1].data.result.optionalAreaHighPrevention
-            var datas = values[1].data.result.freevmconfigResultMap
-            this.FirstMonth = []
-            for(var e in datas) {
-              this.FirstMonth.push(datas[e])
-            }
-            this.FirstMonth.forEach(e => {
-              e.vmId = e.id.split(',')
-              e.open = false
-              e.defense = '60'
-              e.pronums = e.pronum.split(',')
-              e.zoneId = [this.fMzoiendList[0].value]
-              e.systems = []
-              e.systemList = []
-            })
-            this.FirstMonth.forEach(e => {
-              this.MhignHostPrices(e,e.defense)
-              this.getSys(e,0)
-            })
-            this.FirstMonth[0].open = true
-          }
+          // if (values[1].status == 200 && values[1].data.status == 1) {
+          //   this.fMzoiendList = values[1].data.result.optionalAreaHighPrevention
+          //   var datas = values[1].data.result.freevmconfigResultMap
+          //   this.FirstMonth = []
+          //   for(var e in datas) {
+          //     this.FirstMonth.push(datas[e])
+          //   }
+          //   this.FirstMonth.forEach(e => {
+          //     e.vmId = e.id.split(',')
+          //     e.open = false
+          //     e.defense = '60'
+          //     e.pronums = e.pronum.split(',')
+          //     e.zoneId = [this.fMzoiendList[0].value]
+          //     e.systems = []
+          //     e.systemList = []
+          //   })
+          //   this.FirstMonth.forEach(e => {
+          //     this.MhignHostPrices(e,e.defense)
+          //     this.getSys(e,0)
+          //   })
+          //   this.FirstMonth[0].open = true
+          // }
            // 送域名 区域 配置
-          if (values[2].status == 200 && values[2].data.status == 1) {
-            this.hHzoinedList = values[2].data.result.optionalAreaHighPrevention
-            var datas = values[2].data.result.freevmconfigResultMap
-            this.hignHosts = []
-            for(var e in datas) {
-              this.hignHosts.push(datas[e])
-            }
-            this.hignHosts.forEach(e => {
-              e.vmId = e.id.split(',')
-              e.open = false
-              e.defense = '60'
-              e.zoneId = [this.hHzoinedList[0].value]
-              e.systems = []
-              e.systemList = []
-              e.times = ['3']
-            })
-            this.hignHosts.forEach(e => {
-             this.ShignHostPrices(e)
-             this.getSys(e,0)
-            })
-            this.hignHosts[0].open = true
-          }
+          // if (values[2].status == 200 && values[2].data.status == 1) {
+          //   this.hHzoinedList = values[2].data.result.optionalAreaHighPrevention
+          //   var datas = values[2].data.result.freevmconfigResultMap
+          //   this.hignHosts = []
+          //   for(var e in datas) {
+          //     this.hignHosts.push(datas[e])
+          //   }
+          //   this.hignHosts.forEach(e => {
+          //     e.vmId = e.id.split(',')
+          //     e.open = false
+          //     e.defense = '60'
+          //     e.zoneId = [this.hHzoinedList[0].value]
+          //     e.systems = []
+          //     e.systemList = []
+          //     e.times = ['3']
+          //   })
+          //   this.hignHosts.forEach(e => {
+          //    this.ShignHostPrices(e)
+          //    this.getSys(e,0)
+          //   })
+          //   this.hignHosts[0].open = true
+          // }
           // 秒杀 百分比
-          if (values[3].status == 200 && values[3].data.status == 1) {
-            // 秒杀活动购买数量百分比
-            var section = values[3].data.result
-            section.forEach(i => {
-              this.freevmconfigs.forEach(j => {
-                if (j.id == i.freevmconfigId) {
-                  j.percent = parseInt(i.receive)/parseInt(i.total)*100
-                }
-              })
-            })
-          }
+          // if (values[3].status == 200 && values[3].data.status == 1) {
+          //   // 秒杀活动购买数量百分比
+          //   var section = values[3].data.result
+          //   section.forEach(i => {
+          //     this.freevmconfigs.forEach(j => {
+          //       if (j.id == i.freevmconfigId) {
+          //         j.percent = parseInt(i.receive)/parseInt(i.total)*100
+          //       }
+          //     })
+          //   })
+          // }
         })
       },
     }
