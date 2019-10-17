@@ -9,7 +9,7 @@
             <div class="ddos">
               <div class="wrap">
                 <div class="text">
-                  <img src="../../assets/img/active/ddos/ddos-banner-text.png" />
+                  <img src="../../assets/img/active/ddos/ddos-banner-text2.png" />
                   <p>数量有限 先到先得</p>
                   <Button>点击查看</Button>
                 </div>

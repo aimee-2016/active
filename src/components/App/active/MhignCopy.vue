@@ -781,7 +781,7 @@
       created () {
         this.predict()
         this.timeRange()
-        this.forCast()
+        // this.forCast()
         var active1 = axios.get('activity/getActInfoById.do', {params: {activityNum: 53}})
         // var active2 = axios.get('activity/getTemActInfoById.do', {params: {activityNum: 54}})
         // var active3 = axios.get('activity/getTemActInfoById.do', {params: {activityNum: 55}})
