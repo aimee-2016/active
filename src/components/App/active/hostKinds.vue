@@ -2635,7 +2635,7 @@ export default {
         if (type == 'p') {
           this.$LR({ type: 'register' })
         } else {
-          window.open('https://kfm.xrcloud.net/login', '_self')
+          window.open('https://csm.xrcloud.net/login', '_self')
         }
         return
       }
@@ -2648,7 +2648,7 @@ export default {
           }
           return
         } else {
-          window.open('https://kfm.xrcloud.net/faceindex', '_self')
+          window.open('https://csm.xrcloud.net/faceindex', '_self')
         }
       }
       let url = 'information/getDiskcountMv.do'
@@ -2664,9 +2664,9 @@ export default {
         if (res.status == 200 && res.data.status == 1) {
           this.$Message.success('创建订单成功')
           if (type == 'p') {
-            window.open('https://kfi.xrcloud.net/order', '_self')
+            window.open('https://csi.xrcloud.net/order', '_self')
           } else {
-            window.open('https://kfm.xrcloud.net/orderconfirm', '_self')
+            window.open('https://csm.xrcloud.net/orderconfirm', '_self')
           }
         } else {
           this.$message.info({
