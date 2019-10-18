@@ -281,7 +281,7 @@
             <div class="low-discount" v-show="currentView=='child2'">
               <div class="wrap-inner">
                 <div class="product">
-                  <div v-for="(item,index) in hostlist5" :key="index+10">
+                  <div v-for="(item,index) in hostlist5" :key="index">
                     <div class="head">
                       <div class="icon-bg" v-if="item.cpu==4&&item.mem==8">
                         <div class="icon-text">爆款</div>
@@ -356,7 +356,7 @@
                       <Button @click="pushOrder5(item,'m')" class="mobile-640">立即抢购</Button>
                     </div>
                   </div>
-                  <div v-for="(item,index) in allList" :key="index">
+                  <div v-for="(item,index) in allList" :key="index+5">
                     <div class="head">
                       <div
                         class="icon-bg"
@@ -427,6 +427,88 @@
                       <Button @click="pushOrderL(item,'m')" class="mobile-640">立即抢购</Button>
                     </div>
                     <div class="body coupen" v-else>
+                      <div style="margin-bottom:5px;" v-if="item.post.useType == 7">
+                        <span class="label" style="width:70px">抵扣金额：</span>
+                        <i style="font-style:normal;color:#FF392A">{{item.post.money}}元</i>
+                      </div>
+                      <div style="margin-bottom:5px;">
+                        <span class="label" style="width:70px">使用条件：</span>
+                        <i style="font-style:normal;color:#FF392A">{{item.post.userCondition}}</i>
+                      </div>
+                      <div>
+                        <span class="label" style="width:70px">使用方法：</span>
+                        <div>{{item.post.useMethod}}</div>
+                      </div>
+                      <div style="margin-bottom:25px;">
+                        <span class="label" style="width:70px">使用时间：</span>
+                        <div>自领取之日{{item.post.expday/30}}个月内使用</div>
+                      </div>
+                      <div v-if="item.post.useType == 9" style="height:22px;"></div>
+                      <Button @click="pushOrderL(item,'p')" class="pc-640">立即抢购</Button>
+                      <Button @click="pushOrderL(item,'m')" class="mobile-640">立即抢购</Button>
+                    </div>
+                  </div>
+                  <div v-for="(item,index) in gpuList" :key="index+8">
+                    <div class="head">
+                      <h3>GPU云服务器{{item.cpu}}核{{item.mem}}G</h3>
+                    </div>
+                    <div class="body gpu-body">
+                      <div style="margin-bottom:5px;">
+                        <span class="label">带宽：</span>
+                        <Select
+                          class="select-w"
+                          v-model="item.bandwith"
+                          @on-change="getPriceGpu(item)"
+                        >
+                          <Option
+                            v-for="item1 in item.arr"
+                            :value="item1.bandwith"
+                            :key="item1.bandwith"
+                          >{{ item1.bandwith }}M</Option>
+                        </Select>
+                      </div>
+                      <div
+                      >
+                        <span class="label">配置：</span>
+                        {{item.gpusize}}* NVIDIA P100
+                      </div>
+                      <div>
+                        <span class="label">区域：</span>
+                        <Select
+                          class="select-w"
+                          v-model="item.zoneId"
+                          @on-change="changeZonegpu(item)"
+                        >
+                          <Option
+                            v-for="item1 in zoneListgpu"
+                            :value="item1.value"
+                            :key="item1.value"
+                          >{{ item1.name }}</Option>
+                        </Select>
+                      </div>
+                      <div>
+                        <span class="label">系统：</span>
+                        <Cascader class="select-w" :data="item.systemList" v-model="item.system"></Cascader>
+                      </div>
+                      <div class="time">
+                        <span class="label">时长：</span>
+                        <i
+                          style="font-style:normal;"
+                        >{{item.days}}天</i>
+                      </div>
+                      <div class="price">
+                        {{item.days==7?'7天体验价':'价格'}}：￥
+                        <span>{{item.price}}</span>
+                      </div>
+                      <Button @click="pushOrder5(item,'p')" class="pc-640">立即抢购</Button>
+                      <Button @click="pushOrder5(item,'m')" class="mobile-640">立即抢购</Button>
+                    </div>
+                  </div>
+                  <div v-for="(item,index) in coupenList" :key="index+9">
+                    <div class="head">
+                      <h3>{{item.post.ticketDescript}}</h3>
+                    </div>
+                    <div class="body coupen">
                       <div style="margin-bottom:5px;" v-if="item.post.useType == 7">
                         <span class="label" style="width:70px">抵扣金额：</span>
                         <i style="font-style:normal;color:#FF392A">{{item.post.money}}元</i>
@@ -1852,45 +1934,8 @@ export default {
         //   originPrice: '176.72',
         // },
       ],
+      zoneListgpu: [],
       gpuList: [
-        {
-          post: {
-            servicetype: "host",
-            bandwith: 2,
-            cost: '--',
-            cpu: 2,
-            mem: 4,
-            days: 30,
-            disksize: 40,
-            disktype: "ssd",
-            id: 497
-          },
-          postArr: [],
-          systemList: [{
-            value: 'window',
-            label: 'Windows',
-            children: []
-          }, {
-            value: 'centos',
-            label: 'Centos',
-            children: [],
-          },
-          {
-            value: 'debian',
-            label: 'Debian',
-            children: [],
-          },
-          {
-            value: 'ubuntu',
-            label: 'Ubuntu',
-            children: [],
-          }],
-          system: [],
-          zoneList: [],
-          zoneId: '',
-          price: '--',
-          originPrice: '176.72',
-        },
       ],
       coupenList: [
         { post: {} }
@@ -2430,7 +2475,7 @@ export default {
           activityNum: '58'
         }
       })
-      let resgpu = axios.get('activity/getActInfo.do', {
+      let resgpu = axios.get('activity/getTemActInfoById.do', {
         params: {
           activityNum: '61'
         }
@@ -2478,6 +2523,7 @@ export default {
             }
           }
         }
+        this.allList = this.lowHostList
         // 天天特惠前面默认5个配置
         this.zoneList5 = res.data.result.optionalArea
         this.hostlist5 = res.data.s
@@ -2513,7 +2559,8 @@ export default {
             'systemList': systemList,
             'system': [],
             'zoneId': this.zoneList5[0].value,
-            'cpumem': this.hostlist5[key][0].cpu + '#' + this.hostlist5[key][0].mem
+            'cpumem': this.hostlist5[key][0].cpu + '#' + this.hostlist5[key][0].mem,
+            'servicetype': this.hostlist5[key][0].servicetype
           })
         }
         newdata.forEach(element => {
@@ -2559,10 +2606,28 @@ export default {
       this.getPrice5(item)
     },
     getSystem5 (item) {
-      axios.get('information/listTemplates.do', {
-        params: {
-          zoneId: item.zoneId
-        }
+      let url = ''
+      let systemType = ''
+      let showName = ''
+      if (item.servicetype == 'db') {
+        url = 'database/listDbTemplates.do'
+        systemType = 'mysql'
+        showName = 'dbname'
+      } else {
+        url = 'information/listTemplates.do'
+        systemType = 'window'
+        showName = 'templatedescript'
+      }
+      let params = {
+        zoneId: item.zoneId,
+      }
+      if (item.servicetype == 'G5500') {
+        params.user = '0'
+        params.gpu = '1'
+        params.normalTemplate = "0"
+      }
+      axios.get(url, {
+        params
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
           var x
@@ -2576,7 +2641,7 @@ export default {
           item.systemList.forEach(item => {
             item.children.forEach(item => {
               item.value = item.systemtemplateid
-              item.label = item['templatedescript']
+              item.label = item[showName]
             })
           })
           item.systemList.forEach((item, index) => {
@@ -2585,7 +2650,7 @@ export default {
             }
           })
           // 设置默认系统
-          item.system = ['window', res.data.result['window'][0].systemtemplateid]
+          item.system = [systemType, res.data.result[systemType][0].systemtemplateid]
         }
       })
     },
@@ -2651,12 +2716,25 @@ export default {
           window.open('https://csm.xrcloud.net/faceindex', '_self')
         }
       }
-      let url = 'information/getDiskcountMv.do'
-      let id = this.getId(item)
-      let params = {
-        defzoneid: item.zoneId,
-        vmConfigId: id,
-        osType: item.system[1]
+      let url = ''
+      let params = {}
+      let id = ''
+      if (item.servicetype == 'G5500') {
+        id = this.getId(item)
+        url = 'activity/getDiskcountGPU.do'
+        params = {
+          defzoneid: item.zoneId,
+          vmConfigId: id,
+          osType: item.system[1]
+        }
+      } else if (item.servicetype == 'host') {
+        id = this.getIdgpu(item)
+        url = 'information/getDiskcountMv.do'
+        params = {
+          defzoneid: item.zoneId,
+          vmConfigId: id,
+          osType: item.system[1]
+        }
       }
       axios.get(url, {
         params: params
@@ -2677,28 +2755,91 @@ export default {
     },
     getConfigureGPUL (res) {
       if (res.data.status == 1 && res.status == 200) {
-        this.gpuList.forEach((item, index) => {
-          item.post = res.data.result.freevmconfigs[index]
-          item.zoneList = res.data.result.optionalAreaGpu
-          // 设置默认区域
-          item.zoneId = item.zoneList[0].value
-          // 设置默认系统
-          this.changeZoneL(item)
-        })
-        // console.log(this.allList)
+        let newdata = []
+        this.zoneListgpu = res.data.result.optionalAreaGpu
+        let systemList = [{
+          value: 'window',
+          label: 'Windows',
+          children: []
+        }, {
+          value: 'centos',
+          label: 'Centos',
+          children: [],
+        },
+        {
+          value: 'debian',
+          label: 'Debian',
+          children: [],
+        },
+        {
+          value: 'ubuntu',
+          label: 'Ubuntu',
+          children: [],
+        }]
+        let gpuD = res.data.result.freevmconfigs
+        newdata.push({
+            'arr': gpuD,
+            'cpu': gpuD[0].cpu,
+            'mem': gpuD[0].mem,
+            'bandwith': gpuD[0].bandwith,
+            'days': gpuD[0].days,
+            'price': '',
+            'originPrice': '',
+            'systemList': systemList,
+            'system': [],
+            'zoneId': this.zoneListgpu[0].value,
+            'gpusize': gpuD[0].gpusize,
+            'servicetype': gpuD[0].servicetype
+          })
+        this.changeZonegpu(newdata[0])
+        this.gpuList = newdata
       }
+    },
+    changeZonegpu (item) {
+      this.getSystem5(item)
+      this.getPriceGpu(item)
+    },
+    getIdgpu (item) {
+      let configId = ''
+      item.arr.forEach(element => {
+          if (element.bandwith == item.bandwith) {
+            configId = element.id
+          }
+        })
+      return configId
+    },
+    getPriceGpu(item) {
+      let params = {}
+      let id = this.getIdgpu(item)
+      if (item.days <= 7) {
+        params = {
+          zoneId: item.zoneId,
+          vmConfigId: id,
+        }
+      } else {
+        params = {
+          zoneId: item.zoneId,
+          vmConfigId: id,
+          month: item.days / 30
+        }
+      }
+      axios.get('activity/getOriginalPrice.do', {
+        params: params
+      }).then(res => {
+        if (res.status == 200 && res.data.status == 1) {
+          item.price = res.data.result.cost;
+          item.originPrice = res.data.result.originalPrice;
+        }
+      })
     },
     getCoupen (res) {
       if (res.data.status == 1 && res.status == 200) {
         this.coupenList.forEach((item, index) => {
           item.post = res.data.result.freevmconfigs[index]
         })
-        // console.log(this.coupenList)
-        this.allList = (this.lowHostList.concat(this.gpuList)).concat(this.coupenList)
       }
     },
     changgeTimeL (item, select) {
-      // console.log(item)
       item.post = select
       this.getPriceL(item)
     },
@@ -4876,6 +5017,11 @@ export default {
         color: #fff;
         height: 40px;
         font-size: 18px;
+      }
+    }
+    .gpu-body {
+      >div {
+        margin-bottom: 10px;
       }
     }
     .coupen {
