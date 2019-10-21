@@ -25,7 +25,7 @@
               <span class="bar"></span>
               <a href="javascript:void(0)" @mouseover="tabChange('child2')">
                 <span>天天特惠活动</span>
-                <i>4核8G 10M云服务器 7天只需39.9元 数量有限，按需抢购</i>
+                <i>4核8G 10M云服务器 首次体验只需99.9/月 数量有限，按需抢购</i>
               </a>
             </div>
           </div>
