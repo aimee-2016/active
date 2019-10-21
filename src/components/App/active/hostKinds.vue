@@ -1171,7 +1171,7 @@
               <Upload
                 ref="upload1"
                 :show-upload-list="false"
-                :on-success="handleSuccess"
+                :on-success="handleSuccess1"
                 :format="['jpg','gif','png']"
                 :max-size="4096"
                 :on-format-error="handleFormatError"
@@ -1279,7 +1279,7 @@
             <Upload
               ref="upload2"
               :show-upload-list="false"
-              :on-success="handleSuccess"
+              :on-success="handleSuccess2"
               :format="['jpg','gif','png']"
               :max-size="4096"
               :on-format-error="handleFormatError"
@@ -1457,6 +1457,9 @@ export default {
         checksuccess: false,
         baidusuccess: false
       },
+      uploadImg: '',
+      uploadImg1: '',
+      uploadImg2: '',
       failMsg: '',
       failType: 'wechat',
       hostFree: {},
@@ -2297,14 +2300,8 @@ export default {
     //   console.log(configId)
     // },
     wechat_submit () {
-      let url1 = this.uploadList1.map(item => {
-        return item.url
-      })
-      let url = this.uploadList.map(item => {
-        return item.url
-      })
-      let urls = url1.concat(url).join(',')
-      if (this.uploadList.length && this.uploadList1.length) {
+      let urls = this.uploadImg1 + ',' + this.uploadImg
+      if (this.uploadImg1 && this.uploadImg) {
         axios.post('activity/addReviewInfo.do', {
           sharePics: urls,
           activityNum: this.activityNumfree,
@@ -2330,12 +2327,9 @@ export default {
       }
     },
     baidu_submit () {
-      let url2 = this.uploadList2.map(item => {
-        return item.url
-      })
-      if (this.uploadList2.length) {
+      if (this.uploadImg2) {
         axios.post('activity/addCommentInfo.do', {
-          commentPics: url2.join(','),
+          commentPics: this.uploadImg2,
           activityNum: this.activityNumfree,
           vmConfigId: this.vmConfigIdfree,
         }).then(response => {
@@ -2439,6 +2433,21 @@ export default {
       if (res.status == 1) {
         file.url = res.result
         file.name = res.result
+        this.uploadImg = res.result
+      }
+    },
+    handleSuccess1 (res, file, name) {
+      if (res.status == 1) {
+        file.url = res.result
+        file.name = res.result
+        this.uploadImg1 = res.result
+      }
+    },
+    handleSuccess2 (res, file, name) {
+      if (res.status == 1) {
+        file.url = res.result
+        file.name = res.result
+        this.uploadImg2 = res.result
       }
     },
     handleFormatError () {
