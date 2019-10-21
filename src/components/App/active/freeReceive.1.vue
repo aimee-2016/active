@@ -485,7 +485,7 @@
       </div>
       <p slot="footer" class="modal-footer-s">
         <Button @click="showModal.getSuccessModal = false">取消</Button>
-        <a href="https://kfi.xrcloud.net/host"><Button type="primary">查看云服务器</Button></a>
+        <a href="https://csi.xrcloud.net/host"><Button type="primary">查看云服务器</Button></a>
       </p>
     </Modal>
     <!-- 支付充值失败 -->
@@ -673,7 +673,7 @@
               <img
                 :src="imgSrc"
                 style="height:33px;"
-                @click="imgSrc=`https://kfactivity.xrcloud.net/user/getKaptchaImage.do?t=${new Date().getTime()}`"
+                @click="imgSrc=`https://csactivity.xrcloud.net/user/getKaptchaImage.do?t=${new Date().getTime()}`"
               >
             </div>
           </FormItem>
@@ -1254,7 +1254,7 @@ export default {
           { required: true, message: '请输入验证码' }
         ]
       },
-      imgSrc: 'https://kfactivity.xrcloud.net/user/getKaptchaImage.do',
+      imgSrc: 'https://csactivity.xrcloud.net/user/getKaptchaImage.do',
       index1: '',
       stepsList: [
         {
@@ -1616,7 +1616,7 @@ export default {
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
           this.$Message.success('创建订单成功')
-          window.open('https://kfi.xrcloud.net/order','_self')
+          window.open('https://csi.xrcloud.net/order','_self')
         } else {
           this.$message.info({
             content: res.data.message
@@ -1851,7 +1851,7 @@ export default {
       // console.log(params)
       axios.get('gpuserver/createGpuServer.do', { params }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          window.open('https://kfi.xrcloud.net/order','_self')
+          window.open('https://csi.xrcloud.net/order','_self')
         } else {
           this.$message.info({
             content: response.data.message
@@ -1884,7 +1884,7 @@ export default {
       // console.log(params)
       axios.get('information/deployVirtualMachine.do', { params }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          window.open('https://kfi.xrcloud.net/order','_self')
+          window.open('https://csi.xrcloud.net/order','_self')
         } else {
           this.$message.info({
             content: response.data.message

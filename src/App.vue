@@ -12,7 +12,7 @@
     <header>
           <div class='pc-top'>
                 <div class="pc-head">
-                    <a class="navbar-brand logo" href="https://kfwww.xrcloud.net/" alt='新睿云'>
+                    <a class="navbar-brand logo" href="https://cswww.xrcloud.net/" alt='新睿云'>
                         <img src='./assets/img/home/logo.gif'>
                     </a>
                     <div class="p-collapse">
@@ -20,15 +20,15 @@
                             <a class="p-link" href="https://help.xinruiyun.cn/" target="_blank">
                                 帮助文档
                             </a>
-                            <a class="p-link" href="https://kfwww.xrcloud.net/news" target="_blank"> 
+                            <a class="p-link" href="https://cswww.xrcloud.net/news" target="_blank"> 
                                 新闻动态
                             </a>
-                            <a class="p-link pb" href='https://kfi.xrcloud.net/overview' title="控制台">
+                            <a class="p-link pb" href='https://csi.xrcloud.net/overview' title="控制台">
                                 控制台
                             </a>
                             <div v-if='!userInfo'>
-                                <a class="lg-in" href="https://kfi.xrcloud.net/login"  title="登录">登录</a>
-                                <a class="lg-re" href="https://kfi.xrcloud.net/register" title="注册">注册</a>
+                                <a class="lg-in" href="https://csi.xrcloud.net/login"  title="登录">登录</a>
+                                <a class="lg-re" href="https://csi.xrcloud.net/register" title="注册">注册</a>
                             </div>
 
                             <ul v-else class="user-list">
@@ -40,16 +40,16 @@
                                     </a>
                                     <DropdownMenu slot="list">
                                       <DropdownItem name="usercenter">
-                                        <a href="https://kfi.xrcloud.net/usercenter">用户中心</a>
+                                        <a href="https://csi.xrcloud.net/usercenter">用户中心</a>
                                       </DropdownItem>
                                       <DropdownItem name="expenses">
-                                        <a href="https://kfi.xrcloud.net/expenses">费用中心</a>
+                                        <a href="https://csi.xrcloud.net/expenses">费用中心</a>
                                       </DropdownItem>
                                       <DropdownItem name="msgcenter" style="position:relative">
-                                        <a href="https://kfi.xrcloud.net/msgcenter">消息中心</a>
+                                        <a href="https://csi.xrcloud.net/msgcenter">消息中心</a>
                                       </DropdownItem>
                                       <DropdownItem name="operationlog">
-                                        <a href="https://kfi.xrcloud.net/operationlog">操作日志</a>
+                                        <a href="https://csi.xrcloud.net/operationlog">操作日志</a>
                                       </DropdownItem>
                                       <DropdownItem divided name="exit">
                                         <span style="color:#666;">退出</span>
@@ -67,7 +67,7 @@
                             <router-link to="/" title="活动中心">活动中心</router-link>
                         </li>
                         <li class="nav-item" @mouseenter='styleClass(1,$event)'>
-                            <a href="https://kfwww.xrcloud.net/">首页</a>
+                            <a href="https://cswww.xrcloud.net/">首页</a>
                         </li>
                         <Poptip placement="bottom-start" trigger="hover">
                             <li class="nav-item active" @mouseenter='styleClass(-1,$event)'>
@@ -75,30 +75,30 @@
                             </li>
                             <ul slot="content" class="np-bs" v-cloak>
                                 <li class="np-item">
-                                    <a href="https://kfwww.xrcloud.net/ecs/">弹性云服务器ECS <img src="./assets/img/home/iconHot.png" /></a>
+                                    <a href="https://cswww.xrcloud.net/ecs/">弹性云服务器ECS <img src="./assets/img/home/iconHot.png" /></a>
                                     <div class="buy-box">
                                         <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                        <a class="buy-font" href="https://kfi.xrcloud.net/buy/host">立即购买</a>
+                                        <a class="buy-font" href="https://csi.xrcloud.net/buy/host">立即购买</a>
                                     </div>
                                 </li>
                                 <li class="np-item">
-                                    <a href='https://kfwww.xrcloud.net/ims/'>镜像服务</a>
+                                    <a href='https://cswww.xrcloud.net/ims/'>镜像服务</a>
                                 </li>
                                 <li class="np-item">
-                                    <a href="https://kfwww.xrcloud.net/ecss/">云服务器快照</a>
+                                    <a href="https://cswww.xrcloud.net/ecss/">云服务器快照</a>
                                 </li>
                                 <li class="np-item">
-                                    <a href="https://kfwww.xrcloud.net/gpu/">GPU加速云服务器</a>
+                                    <a href="https://cswww.xrcloud.net/gpu/">GPU加速云服务器</a>
                                     <div class="buy-box">
                                         <img class="buy-img" src='./assets/img/home/buy-icon.png' />
-                                        <a class="buy-font" href="https://kfi.xrcloud.net/buy/gpu">立即购买</a>
+                                        <a class="buy-font" href="https://csi.xrcloud.net/buy/gpu">立即购买</a>
                                     </div>
                                 </li>
                                 <li class="np-dis">
-                                    <!-- <a href="https://kfwww.xrcloud.net/ddos/">DDoS高防云服务器</a>
+                                    <!-- <a href="https://cswww.xrcloud.net/ddos/">DDoS高防云服务器</a>
                                     <div class="buy-box">
                                         <img class="buy-img" src='./assets/img/home/buy-icon.png' />
-                                        <a class="buy-font" href="https://kfi.xrcloud.net/buy/ddos">立即购买</a>
+                                        <a class="buy-font" href="https://csi.xrcloud.net/buy/ddos">立即购买</a>
                                     </div> -->
                                     DDoS高防云服务器(敬请期待)
                                 </li>
@@ -106,14 +106,14 @@
                                     裸金属服务器(敬请期待)
                                 </li>
                                 <li class="np-item">
-                                    <a href='https://kfwww.xrcloud.net/evs/'>云硬盘</a>
+                                    <a href='https://cswww.xrcloud.net/evs/'>云硬盘</a>
                                     <div class="buy-box">
                                         <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                        <a class="buy-font" href="https://kfi.xrcloud.net/buy/disk">立即购买</a>
+                                        <a class="buy-font" href="https://csi.xrcloud.net/buy/disk">立即购买</a>
                                     </div>
                                 </li>
                                 <li class="np-item">
-                                    <a href='https://kfwww.xrcloud.net/vbs'>云硬盘备份</a>
+                                    <a href='https://cswww.xrcloud.net/vbs'>云硬盘备份</a>
                                 </li>
                             </ul>
                         </Poptip>
@@ -128,23 +128,23 @@
                                 </div>
                                 <ul class="np-bs">
                                     <li class="np-item">
-                                        <a href='https://kfwww.xrcloud.net/vpc/'>虚拟私有云VPC</a>
+                                        <a href='https://cswww.xrcloud.net/vpc/'>虚拟私有云VPC</a>
                                     </li>
                                     <li class="np-item">
-                                        <a href='https://kfwww.xrcloud.net/nat/'>NAT网关</a>
+                                        <a href='https://cswww.xrcloud.net/nat/'>NAT网关</a>
                                     </li>
                                     <li class="np-item">
-                                        <a href="https://kfwww.xrcloud.net/eip/">弹性公网IP</a>
+                                        <a href="https://cswww.xrcloud.net/eip/">弹性公网IP</a>
                                         <div class="buy-box">
                                             <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                            <a class="buy-font" href='https://kfi.xrcloud.net/buy/elasticip'>立即购买</a>
+                                            <a class="buy-font" href='https://csi.xrcloud.net/buy/elasticip'>立即购买</a>
                                         </div>
                                     </li>
                                     <li class="np-item">
-                                        <a href='https://kfwww.xrcloud.net/slb/'>负载均衡</a>
+                                        <a href='https://cswww.xrcloud.net/slb/'>负载均衡</a>
                                     </li>
                                     <li class="np-item">
-                                        <a href='https://kfwww.xrcloud.net/vpn/'>虚拟专网VPN</a>
+                                        <a href='https://cswww.xrcloud.net/vpn/'>虚拟专网VPN</a>
                                     </li>
                                     <li class="np-dis">
                                         CDN(敬请期待)
@@ -155,7 +155,7 @@
                                 </div>
                                 <ul class="np-bs">
                                     <li class="np-item">
-                                        <a href='https://kfwww.xrcloud.net/fw/'>防火墙</a>
+                                        <a href='https://cswww.xrcloud.net/fw/'>防火墙</a>
                                     </li>
                                     <li class="np-item">
                                         <a>SSL证书</a>
@@ -165,10 +165,10 @@
                                         </div>
                                     </li>
                                     <li class="np-item">
-                                        <a href="https://kfwww.xrcloud.net/ddosip/">DDoS高防IP</a>
+                                        <a href="https://cswww.xrcloud.net/ddosip/">DDoS高防IP</a>
                                         <div class="buy-box">
                                             <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                             <a class="buy-font" href='https://kfi.xrcloud.net/buy/ddosip'>立即购买</a>
+                                             <a class="buy-font" href='https://csi.xrcloud.net/buy/ddosip'>立即购买</a>
                                         </div>
                                     </li>
                                 </ul>
@@ -177,7 +177,7 @@
 
                     
                         <li class="nav-item active" @mouseenter='styleClass(3,$event)'>
-                          <a href='https://kfwww.xrcloud.net/oss/'>对象存储</a>
+                          <a href='https://cswww.xrcloud.net/oss/'>对象存储</a>
                         </li>
 
                         <Poptip placement="bottom-start" trigger="hover">
@@ -186,10 +186,10 @@
                             </li>
                             <ul slot="content" class="np-bs" v-cloak>
                                 <li class="np-item">
-                                    <a href="https://kfi.xrcloud.net/domain/">域名注册</a>
+                                    <a href="https://csi.xrcloud.net/domain/">域名注册</a>
                                 </li>
                                 <li class="np-item">
-                                    <a href="https://kfi.xrcloud.net/icp/">域名备案</a>
+                                    <a href="https://csi.xrcloud.net/icp/">域名备案</a>
                                 </li>
                             </ul>
                         </Poptip>
@@ -204,38 +204,38 @@
                                 </div>
                                 <ul class="np-bs">
                                     <li class="np-item">
-                                        <a href='https://kfwww.xrcloud.net/mysql/'>云数据库MySQL</a>
+                                        <a href='https://cswww.xrcloud.net/mysql/'>云数据库MySQL</a>
                                         <div class="buy-box">
                                             <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                            <a class="buy-font" href="https://kfi.xrcloud.net/buy/database">立即购买</a>
+                                            <a class="buy-font" href="https://csi.xrcloud.net/buy/database">立即购买</a>
                                         </div>
                                     </li>
                                     <li class="np-item">
-                                        <a href='https://kfwww.xrcloud.net/postgresql/'>云数据库PostgreSQL</a>
+                                        <a href='https://cswww.xrcloud.net/postgresql/'>云数据库PostgreSQL</a>
                                         <div class="buy-box">
                                             <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                            <a class="buy-font" href="https://kfi.xrcloud.net/buy/database">立即购买</a>
+                                            <a class="buy-font" href="https://csi.xrcloud.net/buy/database">立即购买</a>
                                         </div>
                                     </li>
                                     <li class="np-item">
-                                        <a href='https://kfwww.xrcloud.net/sqlserver/'>云数据库SQLServer</a>
+                                        <a href='https://cswww.xrcloud.net/sqlserver/'>云数据库SQLServer</a>
                                         <div class="buy-box">
                                             <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                            <a class="buy-font" href="https://kfi.xrcloud.net/buy/database">立即购买</a>
+                                            <a class="buy-font" href="https://csi.xrcloud.net/buy/database">立即购买</a>
                                         </div>
                                     </li>
                                     <li class="np-item">
-                                        <a href='https://kfwww.xrcloud.net/mongodb/'>云数据库MongoDB</a>
+                                        <a href='https://cswww.xrcloud.net/mongodb/'>云数据库MongoDB</a>
                                         <div class="buy-box">
                                             <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                            <a class="buy-font" href="https://kfi.xrcloud.net/buy/database">立即购买</a>
+                                            <a class="buy-font" href="https://csi.xrcloud.net/buy/database">立即购买</a>
                                         </div>
                                     </li>
                                     <li class="np-item">
-                                        <a href='https://kfwww.xrcloud.net/redis/'>云数据库Redis</a>
+                                        <a href='https://cswww.xrcloud.net/redis/'>云数据库Redis</a>
                                         <div class="buy-box">
                                             <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                            <a class="buy-font" href="https://kfi.xrcloud.net/buy/database">立即购买</a>
+                                            <a class="buy-font" href="https://csi.xrcloud.net/buy/database">立即购买</a>
                                         </div>
                                     </li>
                                 </ul>
@@ -244,7 +244,7 @@
                                 </div>
                                 <ul class="np-bs">
                                     <li class="np-item">
-                                        <a href='https://kfwww.xrcloud.net/cms/'>云监控</a>
+                                        <a href='https://cswww.xrcloud.net/cms/'>云监控</a>
                                     </li>
                                     <li class="np-dis">
                                         访问控制(敬请期待)
@@ -257,13 +257,13 @@
                             <a href="#">解决方案</a>
                         </li> -->
                          <li class="nav-item active" @mouseenter='styleClass(4,$event)'>
-                            <a href="https://kfwww.xrcloud.net/price/ecs/">定价</a>
+                            <a href="https://cswww.xrcloud.net/price/ecs/">定价</a>
                         </li>
                         <li class="nav-item active" @mouseenter='styleClass(4,$event)'>
-                            <a href="https://kfwww.xrcloud.net/about/">关于我们</a>
+                            <a href="https://cswww.xrcloud.net/about/">关于我们</a>
                         </li>
                         <!-- <li class="nav-item active" @mouseenter='styleClass(5,$event)'>
-                            <a href="https://kfi.xrcloud.net/market">云市场</a>
+                            <a href="https://csi.xrcloud.net/market">云市场</a>
                         </li>  -->
                     </ul>
                     <div class="line" :style='lineStyle'></div>
@@ -276,7 +276,7 @@
                         <div class="mr-icon" @click="mIcon = !mIcon">
                             <Icon type="navicon-round" size="40" color='#9B908E' :class="mIcon?'mhead-icons':'mhead-icon'" />
                         </div>
-                        <a class="mobile-logo" href="https://kfwww.xrcloud.net/" alt='新睿云'>
+                        <a class="mobile-logo" href="https://cswww.xrcloud.net/" alt='新睿云'>
                             <div class="mobile-limg">
                                 <img src='./assets/img/home/logo.gif'>
                             </div>
@@ -295,29 +295,29 @@
 
                     <div class="m-login" :class='mLogin?"":"m-logins"' v-if="!userInfo">
                         <div>
-                            <a ref="external nofollow" target="_blank" href="https://kfm.xrcloud.net/console?from=xinruiyun-kongzhitai" title="控制台">控制台</a>
+                            <a ref="external nofollow" target="_blank" href="https://csm.xrcloud.net/console?from=xinruiyun-kongzhitai" title="控制台">控制台</a>
                         </div>
                         <div>
-                            <a ref="external nofollow" target="_blank" href="https://kfm.xrcloud.net/login?from=xinruiyun-denglu" title="登录">登录</a>
+                            <a ref="external nofollow" target="_blank" href="https://csm.xrcloud.net/login?from=xinruiyun-denglu" title="登录">登录</a>
                         </div>
                         <div>
-                            <a ref="external nofollow" target="_blank" href="https://kfm.xrcloud.net/register?from=xinruiyun-zhuce" title="注册">注册</a>
+                            <a ref="external nofollow" target="_blank" href="https://csm.xrcloud.net/register?from=xinruiyun-zhuce" title="注册">注册</a>
                         </div>
                     </div>
                 </div>
                 <div class="ml-right" :class="mLogin?'ml-rights':''" v-if="userInfo">
                     <ul class="m-list">
                         <li class="m-item">
-                             <a href="https://kfi.xrcloud.net/usercenter">用户中心</a>
+                             <a href="https://csi.xrcloud.net/usercenter">用户中心</a>
                         </li>
                         <li class="m-item">
-                             <a href="https://kfi.xrcloud.net/expenses">费用中心</a>
+                             <a href="https://csi.xrcloud.net/expenses">费用中心</a>
                         </li>
                         <li class="m-item">
-                            <a href="https://kfi.xrcloud.net/msgcenter">消息中心</a>
+                            <a href="https://csi.xrcloud.net/msgcenter">消息中心</a>
                         </li>
                         <li class="m-item">
-                            <a href="https://kfi.xrcloud.net/operationlog">操作日志</a>
+                            <a href="https://csi.xrcloud.net/operationlog">操作日志</a>
                         </li>
                         <li class="m-item">
                             <span @click="go('exit')" style="font-size:14px">退出登录</span>
@@ -349,19 +349,19 @@
                                 </div>
                                 <div class="mhead-box mhead-boxs">
                                     <div class="mhead-chd">
-                                        <a href="https://kfwww.xrcloud.net/ecs/" target="blank">弹性云服务器ECS</a>
+                                        <a href="https://cswww.xrcloud.net/ecs/" target="blank">弹性云服务器ECS</a>
                                     </div>
                                     <div class="mhead-chd">
-                                        <a href="https://kfwww.xrcloud.net/ims/" target="blank">镜像服务器</a>
+                                        <a href="https://cswww.xrcloud.net/ims/" target="blank">镜像服务器</a>
                                     </div>
                                     <div class="mhead-chd">
-                                        <a href="https://kfwww.xrcloud.net/ecss/" target="blank"> 云服务器快照</a>
+                                        <a href="https://cswww.xrcloud.net/ecss/" target="blank"> 云服务器快照</a>
                                     </div>
                                     <div class="mhead-chd">
-                                        <a href="https://kfwww.xrcloud.net/gpu/" target="blank"> GPU加速服务器</a>
+                                        <a href="https://cswww.xrcloud.net/gpu/" target="blank"> GPU加速服务器</a>
                                     </div>
                                     <div class="mhead-chd">
-                                        <!-- <a href="https://kfwww.xrcloud.net/ddos/" target="blank"> DDoS高防云服务器</a> -->
+                                        <!-- <a href="https://cswww.xrcloud.net/ddos/" target="blank"> DDoS高防云服务器</a> -->
                                         DDoS高防云服务器(敬请期待)
                                     </div>
                                 </div>
@@ -373,13 +373,13 @@
                                 </div>
                                 <div class="mhead-box mhead-boxs">
                                     <div class="mhead-chd">
-                                        <a href="https://kfwww.xrcloud.net/oss/" target="blank"> 对象存储</a>
+                                        <a href="https://cswww.xrcloud.net/oss/" target="blank"> 对象存储</a>
                                     </div>
                                     <div class="mhead-chd">
-                                        <a href="https://kfwww.xrcloud.net/evs/" target="blank"> 云硬盘</a>
+                                        <a href="https://cswww.xrcloud.net/evs/" target="blank"> 云硬盘</a>
                                     </div>
                                     <div class="mhead-chd">
-                                        <a href="https://kfwww.xrcloud.net/vbs/" target="blank">云硬盘备份</a>
+                                        <a href="https://cswww.xrcloud.net/vbs/" target="blank">云硬盘备份</a>
                                     </div>
                                 </div>
                             </div>
@@ -390,13 +390,13 @@
                                 </div>
                                 <div class="mhead-box mhead-boxs">
                                     <div class="mhead-chd">
-                                        <a href="https://kfwww.xrcloud.net/fw/" target="blank"> 防火墙</a>
+                                        <a href="https://cswww.xrcloud.net/fw/" target="blank"> 防火墙</a>
                                     </div>
                                     <div class="mhead-chd">
                                         <a href="#" target="blank">SSL证书</a>
                                     </div>
                                     <div class="mhead-chd">
-                                        <a href="https://kfwww.xrcloud.net/ddosip/" target="blank">DDoS高防IP</a>
+                                        <a href="https://cswww.xrcloud.net/ddosip/" target="blank">DDoS高防IP</a>
                                     </div>
                                 </div>
                             </div>
@@ -407,19 +407,19 @@
                                 </div>
                                 <div class="mhead-box mhead-boxs">
                                     <div class="mhead-chd">
-                                        <a href="https://kfwww.xrcloud.net/vpc/" target="blank"> 虚拟私有云VPC</a>
+                                        <a href="https://cswww.xrcloud.net/vpc/" target="blank"> 虚拟私有云VPC</a>
                                     </div>
                                     <div class="mhead-chd">
-                                        <a href="https://kfwww.xrcloud.net/nat/" target="blank"> NAT网关</a>
+                                        <a href="https://cswww.xrcloud.net/nat/" target="blank"> NAT网关</a>
                                     </div>
                                     <div class="mhead-chd">
-                                        <a href="https://kfwww.xrcloud.net/eip/" target="blank">弹性公网IP</a>
+                                        <a href="https://cswww.xrcloud.net/eip/" target="blank">弹性公网IP</a>
                                     </div>
                                     <div class="mhead-chd">
-                                        <a href="https://kfwww.xrcloud.net/slb/" target="blank"> 负载均衡</a>
+                                        <a href="https://cswww.xrcloud.net/slb/" target="blank"> 负载均衡</a>
                                     </div>
                                     <div class="mhead-chd">
-                                        <a href="https://kfwww.xrcloud.net/vpn/" target="blank">虚拟专网VPN</a>
+                                        <a href="https://cswww.xrcloud.net/vpn/" target="blank">虚拟专网VPN</a>
                                     </div>
                                     <div class="mhead-chd">
                                         <a href="#" target="blank"> CDN（敬请期待）</a>
@@ -433,7 +433,7 @@
                                 </div>
                                 <div class="mhead-box mhead-boxs">
                                     <div class="mhead-chd">
-                                        <a href="https://kfwww.xrcloud.net/cms/" target="blank"> 云监控</a>
+                                        <a href="https://cswww.xrcloud.net/cms/" target="blank"> 云监控</a>
                                     </div>
                                     <div class="mhead-chd">
                                         <a href="#" target="blank"> 访问控制（敬请期待）</a>
@@ -447,19 +447,19 @@
                                 </div>
                                 <div class="mhead-box mhead-boxs">
                                     <div class="mhead-chd">
-                                        <a href="https://kfwww.xrcloud.net/mysql/" target="blank">云数据库MySQL</a>
+                                        <a href="https://cswww.xrcloud.net/mysql/" target="blank">云数据库MySQL</a>
                                     </div>
                                     <div class="mhead-chd">
-                                        <a href="https://kfwww.xrcloud.net/postgresql/" target="blank"> 云数据库PostgreSQL</a>
+                                        <a href="https://cswww.xrcloud.net/postgresql/" target="blank"> 云数据库PostgreSQL</a>
                                     </div>
                                     <div class="mhead-chd">
-                                        <a href="https://kfwww.xrcloud.net/sqlserver/" target="blank"> 云数据库Redis</a>
+                                        <a href="https://cswww.xrcloud.net/sqlserver/" target="blank"> 云数据库Redis</a>
                                     </div>
                                     <div class="mhead-chd">
-                                        <a href='https://kfwww.xrcloud.net/mongodb/' target="blank">云数据库MongoDB</a>
+                                        <a href='https://cswww.xrcloud.net/mongodb/' target="blank">云数据库MongoDB</a>
                                     </div>
                                     <div class="mhead-chd">
-                                        <a href='https://kfwww.xrcloud.net/redis/' target="blank">云数据库Redis</a>
+                                        <a href='https://cswww.xrcloud.net/redis/' target="blank">云数据库Redis</a>
                                     </div>
                                 </div>
                             </div>
@@ -475,12 +475,12 @@
                                 <div class="mhead-child">
                                     <div class="mhead-cdd">
                                         <span>
-                                            <a href="https://kfi.xrcloud.net/domain/" target="blank">域名注册</a>
+                                            <a href="https://csi.xrcloud.net/domain/" target="blank">域名注册</a>
                                         </span>
                                     </div>
                                     <div class="mhead-cdd">
                                         <span>
-                                            <a href="https://kfi.xrcloud.net/icp/" target="blank">域名备案</a>
+                                            <a href="https://csi.xrcloud.net/icp/" target="blank">域名备案</a>
                                         </span>
                                     </div>
                                 </div>
@@ -494,12 +494,12 @@
                     </div> -->
                     <div class="mhead-product">
                         <div style="padding: 10px 10px;">
-                            <a href="https://kfwww.xrcloud.net/price/ecs/">定价</a>
+                            <a href="https://cswww.xrcloud.net/price/ecs/">定价</a>
                         </div>
                     </div>
                     <!-- <div class="mhead-product">
                         <div style="padding: 10px 10px;">
-                            <a href="https://kfi.xrcloud.net/market">云市场</a>
+                            <a href="https://csi.xrcloud.net/market">云市场</a>
                             <span :class='item.itemShow?"mhead-arrow":"mhead-arrow2"'></span>
                         </div>
                     </div> -->
@@ -511,13 +511,13 @@
                     </div>
                     <div class="mhead-product">
                         <div style="padding: 10px 10px;">
-                            <a href="https://kfwww.xrcloud.net/news/">新闻动态</a>
+                            <a href="https://cswww.xrcloud.net/news/">新闻动态</a>
                             <!-- <span :class='item.itemShow?"mhead-arrow":"mhead-arrow2"'></span> -->
                         </div>
                     </div>
                     <div class="mhead-product">
                         <div style="padding: 10px 10px;">
-                            <a href="https://kfwww.xrcloud.net/about/">关于我们</a>
+                            <a href="https://cswww.xrcloud.net/about/">关于我们</a>
                             <!-- <span :class='item.itemShow?"mhead-arrow":"mhead-arrow2"'></span> -->
                         </div>
                     </div>
@@ -552,7 +552,7 @@
                 <div class="br-bg">
                     <div class="box">
                         <p class="title">为您提供出众的上云实践机会和全面的尊贵服务</p>
-                        <a href="https://kfi.xrcloud.net/register/"><div class="bottom-button">立即注册</div></a>
+                        <a href="https://csi.xrcloud.net/register/"><div class="bottom-button">立即注册</div></a>
                     </div>
                 </div>
         </div>
@@ -605,70 +605,70 @@
                         </div>
                         <div class="bg-content">
                             <div>
-                                <p class="p_true"><a href="https://kfwww.xrcloud.net/ecs/">弹性云服务器ECS</a></p>
+                                <p class="p_true"><a href="https://cswww.xrcloud.net/ecs/">弹性云服务器ECS</a></p>
                             </div>
                             <div>
-                                <p class="p_true"><a href="https://kfwww.xrcloud.net/ims/">镜像服务</a></p>
+                                <p class="p_true"><a href="https://cswww.xrcloud.net/ims/">镜像服务</a></p>
                             </div>
                             <div>
-                                <p class="p_true"><a href="https://kfwww.xrcloud.net/ecss/">云服务器快照</a></p>
+                                <p class="p_true"><a href="https://cswww.xrcloud.net/ecss/">云服务器快照</a></p>
                             </div>
                             <div>
-                                <p class="p_true"><a href="https://kfwww.xrcloud.net/gpu/">GPU加速云服务器</a></p>
+                                <p class="p_true"><a href="https://cswww.xrcloud.net/gpu/">GPU加速云服务器</a></p>
                             </div>
                             <div>
-                                <p class="p_true"><a href="https://kfwww.xrcloud.net/ddos/">DDoS高防IP</a></p>
+                                <p class="p_true"><a href="https://cswww.xrcloud.net/ddos/">DDoS高防IP</a></p>
                             </div>
                             <div>
-                                <p class="p_true"><a href="https://kfwww.xrcloud.net/oss/">对象存储</a></p>
+                                <p class="p_true"><a href="https://cswww.xrcloud.net/oss/">对象存储</a></p>
                             </div>
                             <div>
-                                <p class="p_true"><a href="https://kfwww.xrcloud.net/evs/">云硬盘</a></p>
+                                <p class="p_true"><a href="https://cswww.xrcloud.net/evs/">云硬盘</a></p>
                             </div>
                             <div>
-                                <p class="p_true"><a href="https://kfwww.xrcloud.net/vbs/">云硬盘备份</a></p>
+                                <p class="p_true"><a href="https://cswww.xrcloud.net/vbs/">云硬盘备份</a></p>
                             </div>
                             <div>
-                                <p class="p_true"><a href="https://kfwww.xrcloud.net/fw/">防火墙</a></p>
+                                <p class="p_true"><a href="https://cswww.xrcloud.net/fw/">防火墙</a></p>
                             </div>
                             <!-- <div>
-                                <p class="p_true"><a href="https://kfwww.xrcloud.net/ddos/">DDoS高防云服务器</a></p>
+                                <p class="p_true"><a href="https://cswww.xrcloud.net/ddos/">DDoS高防云服务器</a></p>
                             </div> -->
                             <div>
-                                <p class="p_true"><a href="https://kfwww.xrcloud.net/ess/">弹性伸缩</a></p>
+                                <p class="p_true"><a href="https://cswww.xrcloud.net/ess/">弹性伸缩</a></p>
                             </div>
                             <div>
-                                <p class="p_true"><a href="https://kfwww.xrcloud.net/cms/">云监控</a></p>
+                                <p class="p_true"><a href="https://cswww.xrcloud.net/cms/">云监控</a></p>
                             </div>
                             <div>
-                                <p class="p_true"><a href="https://kfwww.xrcloud.net/vpc/">虚拟私有云VPC</a></p>
+                                <p class="p_true"><a href="https://cswww.xrcloud.net/vpc/">虚拟私有云VPC</a></p>
                             </div>
                             <div>
-                                <p class="p_true"><a href="https://kfwww.xrcloud.net/nat/">NAT网关</a></p>
+                                <p class="p_true"><a href="https://cswww.xrcloud.net/nat/">NAT网关</a></p>
                             </div>
                             <div>
-                                <p class="p_true"><a href="https://kfwww.xrcloud.net/eip/">弹性公网IP</a></p>
+                                <p class="p_true"><a href="https://cswww.xrcloud.net/eip/">弹性公网IP</a></p>
                             </div>
                             <div>
-                                <p class="p_true"><a href="https://kfwww.xrcloud.net/slb/">负载均衡</a></p>
+                                <p class="p_true"><a href="https://cswww.xrcloud.net/slb/">负载均衡</a></p>
                             </div>
                             <div>
-                                <p class="p_true"><a href="https://kfwww.xrcloud.net/vpn/">虚拟专网VPN</a></p>
+                                <p class="p_true"><a href="https://cswww.xrcloud.net/vpn/">虚拟专网VPN</a></p>
                             </div>
                             <div>
-                                <p class="p_true"><a href="https://kfwww.xrcloud.net/mysql/">云数据库MySQL</a></p>
+                                <p class="p_true"><a href="https://cswww.xrcloud.net/mysql/">云数据库MySQL</a></p>
                             </div>
                             <div>
-                                <p class="p_true"><a href="https://kfwww.xrcloud.net/postgresql/">云数据库PostgreSQL</a></p>
+                                <p class="p_true"><a href="https://cswww.xrcloud.net/postgresql/">云数据库PostgreSQL</a></p>
                             </div>
                             <div>
-                                <p class="p_true"><a href="https://kfwww.xrcloud.net/mongodb/">云数据库MongoDB</a></p>
+                                <p class="p_true"><a href="https://cswww.xrcloud.net/mongodb/">云数据库MongoDB</a></p>
                             </div>
                             <div>
-                                <p class="p_true"><a href="https://kfwww.xrcloud.net/redis/">云数据库Redis</a></p>
+                                <p class="p_true"><a href="https://cswww.xrcloud.net/redis/">云数据库Redis</a></p>
                             </div>
                             <div>
-                                    <p class="p_true"><a href="https://kfwww.xrcloud.net/sqlserver/">云数据库SQLServer</a></p>
+                                    <p class="p_true"><a href="https://cswww.xrcloud.net/sqlserver/">云数据库SQLServer</a></p>
                             </div>
                         </div>
                     </div>
@@ -678,10 +678,10 @@
                         </div>
                         <div class="bg-content">
                             <div>
-                                <p class="p_true"><a ref="external nofollow" target="_blank" href="https://kfi.xrcloud.net/brecords/">备案管理</a></p>
+                                <p class="p_true"><a ref="external nofollow" target="_blank" href="https://csi.xrcloud.net/brecords/">备案管理</a></p>
                             </div>
                             <div>
-                                <p class="p_true"><a target="_blank" href="https://kfwww.xrcloud.net/price/ecs/">定价说明</a></p>
+                                <p class="p_true"><a target="_blank" href="https://cswww.xrcloud.net/price/ecs/">定价说明</a></p>
                             </div>
                             <div>
                                 <p class="p_true"><a target="_blank" href="https://help.xinruiyun.cn/quick/">快速入门</a></p>
@@ -693,7 +693,7 @@
                                 <p class="p_true"><a target="_blank" href="https://help.xinruiyun.cn/ask/">常见问题</a></p>
                             </div>
                             <div>
-                                <p class="p_true"><a href="https://kfwww.xrcloud.net/about/">公司介绍</a></p>
+                                <p class="p_true"><a href="https://cswww.xrcloud.net/about/">公司介绍</a></p>
                             </div>
                             <div>
                                 <p class="p_true"><a href="#">资质认证</a></p>
@@ -706,16 +706,16 @@
                         </div>
                         <div class="bg-content">
                             <div>
-                                <p class="p_true"><a href="https://kfi.xrcloud.net/overview">控制台</a></p>
+                                <p class="p_true"><a href="https://csi.xrcloud.net/overview">控制台</a></p>
                             </div>
                             <div>
-                                <p class="p_true"><a href="https://kfi.xrcloud.net/usercenter">用户中心</a></p>
+                                <p class="p_true"><a href="https://csi.xrcloud.net/usercenter">用户中心</a></p>
                             </div>
                             <div>
-                                <p class="p_true"><a href="https://kfi.xrcloud.net/expenses">费用中心</a></p>
+                                <p class="p_true"><a href="https://csi.xrcloud.net/expenses">费用中心</a></p>
                             </div>
                             <div>
-                                <p class="p_true"><a href="https://kfi.xrcloud.net/work">工单管理</a></p>
+                                <p class="p_true"><a href="https://csi.xrcloud.net/work">工单管理</a></p>
                             </div>
                         </div>
                     </div>
@@ -725,10 +725,10 @@
                         </div>
                         <div class="bg-content">
                             <div>
-                                <p class="p_true"><a href="https://kfwww.xrcloud.net/hdgg/">产品公告</a></p>
+                                <p class="p_true"><a href="https://cswww.xrcloud.net/hdgg/">产品公告</a></p>
                             </div>
                             <div>
-                                <p class="p_true"><a href="https://kfactivity.xrcloud.net/">最新活动</a></p>
+                                <p class="p_true"><a href="https://csactivity.xrcloud.net/">最新活动</a></p>
                             </div>
                             <div>
                                 <p class="p_true"><a href="https://im.xrcloud.net/im/question/index.html" target="_blank">技术支持</a></p>
@@ -808,7 +808,7 @@
                 </div>
                 <div class="support">
                     <div>
-                        <p><a href="https://kfwww.xrcloud.net/about/" target="_blank">关于我们</a></p>
+                        <p><a href="https://cswww.xrcloud.net/about/" target="_blank">关于我们</a></p>
                     </div>
                 </div>
             </div>
@@ -818,7 +818,7 @@
       <div class="m-bottom">
           <div class="m-register">
               <p>为您提供出众的上云实践机会和全面的尊贵服务</p>
-              <a href='https://kfi.xrcloud.net/register/' style="color:#fff"><div class="m-button">立即注册</div></a>
+              <a href='https://csi.xrcloud.net/register/' style="color:#fff"><div class="m-button">立即注册</div></a>
           </div>
           <div class="m-we">
               <div class="mwe-text">
