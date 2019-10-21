@@ -553,7 +553,7 @@
         <div class="product">
           <div>
             <div class="head">
-              <h3>云服务器/GPG服务器</h3>
+              <h3>云服务器/GPU服务器</h3>
             </div>
             <div class="body">
               <div class="left">
