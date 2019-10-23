@@ -95,10 +95,10 @@
                                     </div>
                                 </li>
                                 <li class="np-dis">
-                                    <!-- <a href="https://kfwww.xrcloud.net/ddos/">DDoS高防云服务器</a>
+                                    <!-- <a href="https://www.xinruiyun.cn/ddos/">DDoS高防云服务器</a>
                                     <div class="buy-box">
                                         <img class="buy-img" src='./assets/img/home/buy-icon.png' />
-                                        <a class="buy-font" href="https://kfi.xrcloud.net/buy/ddos">立即购买</a>
+                                        <a class="buy-font" href="https://i.xinruiyun.cn/buy/ddos">立即购买</a>
                                     </div> -->
                                     DDoS高防云服务器(敬请期待)
                                 </li>
@@ -361,7 +361,7 @@
                                         <a href="https://www.xinruiyun.cn/gpu/" target="blank"> GPU加速服务器</a>
                                     </div>
                                     <div class="mhead-chd">
-                                        <!-- <a href="https://kfwww.xrcloud.net/ddos/" target="blank"> DDoS高防云服务器</a> -->
+                                        <!-- <a href="https://www.xinruiyun.cn/ddos/" target="blank"> DDoS高防云服务器</a> -->
                                         DDoS高防云服务器(敬请期待)
                                     </div>
                                 </div>
@@ -632,7 +632,7 @@
                                 <p class="p_true"><a href="https://www.xinruiyun.cn/fw/">防火墙</a></p>
                             </div>
                             <!-- <div>
-                                <p class="p_true"><a href="https://kfwww.xrcloud.net/ddos/">DDoS高防云服务器</a></p>
+                                <p class="p_true"><a href="https://www.xinruiyun.cn/ddos/">DDoS高防云服务器</a></p>
                             </div> -->
                             <div>
                                 <p class="p_true"><a href="https://www.xinruiyun.cn/ess/">弹性伸缩</a></p>

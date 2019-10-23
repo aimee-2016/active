@@ -12,20 +12,12 @@
     </div>
 
   </div>
-</template>
+</template> 
 
 <script>
   import axios from 'axios'
   import $store from '@/vuex'
-  import {Swiper, Flexbox, FlexboxItem} from 'vux'
-  import {XButton} from 'vux'
   export default {
-    components: {
-      Swiper,
-      XButton,
-      Flexbox,
-      FlexboxItem
-    },
     data () {
       window.scrollTo(0, 0);
       return {

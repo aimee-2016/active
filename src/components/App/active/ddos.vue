@@ -1,19 +1,19 @@
 <template>
   <div class="ddos-active" ref="ddos-active">
-    <div class="banner" style="height:380px">
+    <div class="banner">
       <div class="wrap">
         <div class="product">
           <div class="content">
-            <!-- <img
-              class="banner"
-              src="../../../assets/img/active/ddos/ddos-banner.png"
-              alt="高仿云服务器限时秒杀"
-            > -->
             <img
-              class="text"
+              class="text pc-640-inline"
               src="../../../assets/img/active/ddos/ddos-banner-text2.png"
               alt="高仿云服务器限时秒杀"
               style="margin-top:292px;"
+            >
+            <img
+              class="banner-m mobile-640-inline"
+              src="../../../assets/img/active/ddos-m/hign-banner.png"
+              alt="高仿云服务器限时秒杀"
             >
           </div>
         </div>
@@ -25,24 +25,9 @@
           <div class="text">
             <p>
               明日预告: {{predictMsg}}
-              <!-- <span @click="showModal.ruleForcast=true">更多场次预告 ></span> -->
               <span @click="showModal.ruleKill=true" style="font-size:16px">活动规则></span>
             </p>
-            <!-- <p>
-              明日预告：2核4G、1核8G云服务器、GPU云服务器8核64G、DMS-50G
-              <span @click="showModal.ruleKill=true" style="font-size:16px">活动规则></span>
-            </p> -->
           </div>
-          <!-- <div class="timer">
-            <i>本场秒杀倒计时</i>
-            <div>
-              <span>{{hh}}</span>:
-              <span>{{m1}}</span>
-              <span>{{m2}}</span>:
-              <span>{{s1}}</span>
-              <span>{{s2}}</span>
-            </div>
-          </div> -->
         </div>
         <div class="product">
           <div v-for="(item,index) in killHostList" :key="index">
@@ -94,7 +79,8 @@
                     <Cascader
                       :data="systemDDOSHList"
                       v-model="item.system"
-                      style="width:142px;display:inline-block;background:blue"
+                      class="w142"
+                      style="display:inline-block;background:blue"
                     ></Cascader>
                   </div>
                 </div>
@@ -107,7 +93,8 @@
                     <span class="label">区域：</span>
                     <Select
                       v-model="item.zone"
-                      style="width:142px;display:inline-block"
+                      class="w142"
+                      style="display:inline-block"
                       @on-change="changeZoneKill(item,index,'killHostList')"
                     >
                       <Option
@@ -122,7 +109,8 @@
                     <Cascader
                       :data="item.systemList"
                       v-model="item.system"
-                      style="width:142px;display:inline-block"
+                      class="w142"
+                      style="display:inline-block"
                     ></Cascader>
                   </div>
                 </div>
@@ -152,33 +140,32 @@
                   <span class="label">cc防护：</span>
                   {{item.post.ccpros}}QPS
                 </div>
-                <!-- <div>
-                  <span class="label">区域：</span>
-                  中国大陆
-                </div>-->
               </div>
               <div class="cost">
-                <div class="price">
-                  ￥
-                  <span>{{item.price}}</span>
-                  /{{item.post.days%12==0?item.post.days/12==1?'年':item.post.days/12+'年':item.post.days==1?'月':item.post.days+'月'}}
-                  <i
-                    v-if="item.post.explosives==1"
-                  >爆款</i>
-                  <i v-if="item.post.highdist==1">高配</i>
-                </div>
-                <div class="origin-price">
-                  原价：￥
-                  <span>{{item.originPrice}}</span>
-                  /{{item.post.days%12==0?item.post.days/12==1?'年':item.post.days/12+'年':item.post.days==1?'月':item.post.days+'月'}}
-                </div>
                 <div>
+                  <div class="price">
+                    ￥
+                    <span>{{item.price}}</span>
+                    /{{item.post.days%12==0?item.post.days/12==1?'年':item.post.days/12+'年':item.post.days==1?'月':item.post.days+'月'}}
+                    <i
+                      v-if="item.post.explosives==1"
+                    >爆款</i>
+                    <i v-if="item.post.highdist==1">高配</i>
+                  </div>
+                  <div class="origin-price">
+                    原价：￥
+                    <span>{{item.originPrice}}</span>
+                    /{{item.post.days%12==0?item.post.days/12==1?'年':item.post.days/12+'年':item.post.days==1?'月':item.post.days+'月'}}
+                  </div>
+                </div>
+                <div class="buy-btn">
                   <!-- <Button
                     class="btn"
                     v-if="item.num==100"
                     style="background:linear-gradient(90deg,rgba(206,206,206,1) 0%,rgba(168,168,168,1) 100%)"
                   >已抢完</Button> -->
-                  <Button class="btn" @click="pushOrderKill(item)">立即购买</Button>
+                  <Button class="btn pc-640" @click="pushOrderKill(item,'p')">立即购买</Button>
+                  <Button class="btn mobile-640" @click="pushOrderKill(item,'m')">立即购买</Button>
                 </div>
               </div>
               <!-- <div class="percentage">
@@ -934,27 +921,11 @@ export default {
   },
   created () {
     this.predict()
-    // this.getTime()
     this.refreshData()
     this.getConfigureKill()
     this.getSubsection()
-    // this.activityForecast()
-    // this.getConfigureDDOS('55', 'listGT')
-    // this.getConfigureDDOS('54', 'ddosList')
-    // this.getSystemDDOS()
   },
   mounted () {
-    // let topArr = [0,this.$refs['first-month'].offsetTop,this.$refs['super-discount'].offsetTop,this.$refs['give-time'].offsetTop] 
-    // this.navs.forEach((item,index)=>{
-    //   item.distance = topArr[index]
-    //   item.distanceM =topArr[index+1]
-    //   if (index==3) {
-    //     item.distanceM =topArr[index]+this.$refs['give-time'].offsetHeight
-    //   }
-    // })
-    // window.addEventListener('scroll', throttle(100, ()=> {
-    //   this.selectedNav = document.body.scrollTop || document.documentElement.scrollTop;
-    // }))
   },
   methods: {
     predict() {
@@ -976,21 +947,6 @@ export default {
             userInfo: response.data.result,
             authInfoPersion: response.data.authInfo_persion
           })
-        }
-      })
-    },
-    // 53    高防云服务器，限时秒杀
-    // 54    高防服务器首月8折优惠
-    // 55    超低折扣 买时长送域名
-    // 56    自选配置，打折再送时长
-    activityForecast () {
-      axios.get('activity/getActivityTrailer.do', {
-        params: {
-          activityNum: '53'
-        }
-      }).then(response => {
-        if (response.status == 200 && response.data.status == 1) {
-          this.dataForcast = response.data.result
         }
       })
     },
@@ -1115,19 +1071,61 @@ export default {
         }
       })
     },
-    pushOrderKill (item) {
+    refreshQRFirst () {
+      this.tempCode = this.uuid(6, 16)
+      let url = '/faceRecognition/getUserInfoByPcQRCode.do'
+      let config1 = {
+        phone: this.userInfo.phone ? this.userInfo.phone : this.formCustom.VerificationPhone,
+      }
+      let params = {
+        faceType: '1',
+        tempCode: this.tempCode
+      }
+      params.config = JSON.stringify(config1)
+      axios.post(url, params).then(res => {
+        if (res.status == 200 && res.data.status == 1) {
+          this.refreshUserStatus()
+          this.showModal.qrCode = true
+          this.qrConfig.value = res.data.result.url
+          this.codeLoseEfficacy = ''
+        } else {
+          this.codeLoseEfficacy = 'lose'
+        }
+      })
+    },
+    pushOrderKill (item, type) {
       if (!this.$store.state.userInfo) {
-        this.$LR({ type: 'register' })
+        if (type == 'p') {
+          this.$LR({ type: 'register' })
+        } else {
+          window.open('https://m.xinruiyun.cn/login', '_self')
+        }
         return
       }
       if ((!this.authInfo) || (this.authInfo && this.authInfo.authtype == 0 && this.authInfo.checkstatus != 0) || (!this.authInfoPersion && this.authInfo && this.authInfo.authtype == 1 && this.authInfo.checkstatus != 0) || (this.authInfoPersion && this.authInfoPersion.checkstatus != 0 && this.authInfo && this.authInfo.checkstatus != 0)) {
-        if (!this.userInfo.phone) {
-          this.showModal.cashverification = true
+        if (type == 'p') {
+          if (!this.userInfo.phone) {
+            this.showModal.cashverification = true
+          } else if (item.post.certification == 3) {
+            this.$message.confirm({
+              title: '提示',
+              content: '抱歉，只有实名认证用户才可以参加活动',
+              okText: '去实名认证',
+              onOk: () => {
+                window.open('https://i.xinruiyun.cn/usercenter', '_self')
+              }
+            })
+          } else {
+            this.refreshQRFirst()
+          }
+          return
         } else {
-          this.showModal.qrCode = true
-          this.refreshUserStatus()
+          if (item.post.certification == 3) {
+            window.open('https://i.xinruiyun.cn/usercenter', '_self')
+          } else {
+            window.open('https://m.xinruiyun.cn/faceindex', '_self')
+          }
         }
-        return
       }
       let url = 'information/getDiskcountMv.do'
       if (item.post.servicetype == 'high_host') {
@@ -1146,96 +1144,14 @@ export default {
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
           this.$Message.success('创建订单成功')
-          window.open('https://i.xinruiyun.cn/order','_self')
+          if (type == 'p') {
+            window.open('https://i.xinruiyun.cn/order', '_self')
+          } else {
+            window.open('https://m.xinruiyun.cn/orderconfirm', '_self')
+          }
         } else {
-          this.hintMsg = res.data.message
-          this.showModal.hint = true
-        }
-      })
-    },
-    // 获取高仿云服务器的系统
-    getSystemDDOS () {
-      let url = 'activity/getTemActInfoById.do'
-      axios.get(url, {
-        params: {
-          activityNum: '54'
-        }
-      }).then(res => {
-        axios.get('information/listTemplates.do', {
-          params: {
-            zoneId: res.data.result.optionalAreaHighPrevention[0].value,
-          }
-        }).then(res => {
-          if (res.status == 200 && res.data.status == 1) {
-            var x
-            for (x in res.data.result) {
-              this.systemDDOSHList.forEach(item => {
-                if (item.value == x) {
-                  item.children = res.data.result[x]
-                }
-              })
-            }
-            this.systemDDOSHList.forEach(item => {
-              item.children.forEach(item => {
-                item.value = item.systemtemplateid
-                item.label = item.templatedescript
-              })
-            })
-            this.systemDDOSHList.forEach((item, index) => {
-              if (item.children.length == 0) {
-                item.disabled = true
-              }
-            })
-            // 设置默认系统和价格
-            this.ddosList.forEach((item, index) => {
-              item.system = ['window', res.data.result.window[0].systemtemplateid]
-              this.changeDefense(item, item.post[0])
-            })
-            this.listGT.forEach((item, index) => {
-              item.system = ['window', res.data.result.window[0].systemtemplateid]
-              this.changeTime(item, item.post[0])
-            })
-            this.killHostList.forEach((item, index) => {
-              if (item.post.servicetype == 'high_host') {
-                item.system = ['window', res.data.result.window[0].systemtemplateid]
-              }
-            })
-          }
-        })
-      })
-    },
-    getConfigureDDOS (activityNum, arrayName) {
-      let url = 'activity/getTemActInfoById.do'
-      axios.get(url, {
-        params: {
-          activityNum: activityNum
-        }
-      }).then(res => {
-        if (res.data.status == 1 && res.status == 200) {
-          this[arrayName].forEach((item, index) => {
-            item.zone = res.data.result.optionalAreaHighPrevention[0].value
-            item.zoneName = res.data.result.optionalAreaHighPrevention[0].name
-            if (index == 0) {
-              item.post = res.data.result.freevmconfigs.filter(item => {
-                return item.cpu == 2 && item.mem == 4
-              })
-              item.postOne = item.post[0]
-            } else if (index == 1) {
-              item.post = res.data.result.freevmconfigs.filter(item => {
-                return item.cpu == 2 && item.mem == 8
-              })
-              item.postOne = item.post[0]
-            } else if (index == 2) {
-              item.post = res.data.result.freevmconfigs.filter(item => {
-                return item.cpu == 4 && item.mem == 8
-              })
-              item.postOne = item.post[0]
-            } else if (index == 3) {
-              item.post = res.data.result.freevmconfigs.filter(item => {
-                return item.cpu == 4 && item.mem == 16
-              })
-              item.postOne = item.post[0]
-            }
+          this.$message.info({
+            content: res.data.message
           })
         }
       })
@@ -1327,8 +1243,6 @@ export default {
     refreshData() {
       axios.get('network/getTime.do').then(res => {
         if (res.status == 200 && res.data.status == 1) {
-          // let now0 = new Date()
-          // this.leftTime1 = now0.getTime()
           this.leftTime1 = res.data.result
           let timer = setInterval(() => {
               this.leftTime1 += 1000
@@ -1341,53 +1255,6 @@ export default {
             }, 1000)
         }
       })
-    },
-    getTime () {
-      axios.get('network/getTime.do').then(res => {
-        if (res.status == 200 && res.data.status == 1) {
-          // 每天6场秒杀，2点、6点、10点、14点、18点、22点开抢
-          let hourArray = [2, 6, 10, 14, 18, 22]
-          let now = new Date(res.data.result)
-          let h = now.getHours()
-          let hourPoint = ''
-          for (let i = 0; i < hourArray.length - 1; i++) {
-            if (h >= hourArray[i] && h < hourArray[i + 1]) {
-              hourPoint = hourArray[i + 1]
-            } else if (h == 22 || h == 23) {
-              hourPoint = 24
-            } else if (h == 0 || h == 1) {
-              hourPoint = 2
-            }
-          }
-          let nowb = new Date(res.data.result)
-          let endTime = ''
-          if (hourPoint == 24) {
-            endTime = nowb.setHours(hourPoint, 0, 0, 0) + 2 * 60 * 60 * 1000
-          } else {
-            endTime = nowb.setHours(hourPoint, 0, 0, 0)
-          }
-          let leftTime = endTime - now.getTime()
-          if (leftTime > 0) {
-            this.formatTime(leftTime)
-            this.timer = setInterval(() => {
-              this.formatTime(leftTime)
-              leftTime -= 1000
-              if (leftTime <= 0) {
-                this.getTime()
-                this.getConfigureKill()
-                window.clearInterval(this.timer)
-              }
-            }, 1000)
-          }
-        }
-      })
-    },
-    formatTime (leftTime) {
-      this.hh = Math.floor(leftTime / 1000 / 60 / 60 % 24)
-      this.m1 = Math.floor(leftTime / 1000 / 60 % 60 / 10)
-      this.m2 = Math.floor(leftTime / 1000 / 60 % 60 % 10)
-      this.s1 = Math.floor(leftTime / 1000 % 60 / 10)
-      this.s2 = Math.floor(leftTime / 1000 % 60 % 10)
     },
     // 刷新用户认证状态
     refreshUserStatus () {
@@ -1739,6 +1606,7 @@ export default {
 .banner {
   background: url(../../../assets/img/active/ddos/ddos-banner-bg2.png) no-repeat
     center;
+  height: 380px;
 }
 .seckill {
   padding: 40px 0 120px;
@@ -1806,7 +1674,7 @@ export default {
     > div {
       background: #4d4b61;
       width: 224px;
-      // height: 390px;
+      margin-bottom: 20px;
     }
     .head {
       position: relative;
@@ -1853,6 +1721,9 @@ export default {
         height: 170px;
         > div {
           margin-bottom: 10px;
+          .w142 {
+            width: 142px;
+          }
         }
       }
       .cost {
@@ -1920,7 +1791,6 @@ export default {
     }
   }
   .tips {
-    margin-top: 20px;
     text-align: left;
     font-size: 16px;
     color: #ffd08c;
@@ -2343,20 +2213,101 @@ export default {
     }
   }
 }
-@media (max-width: 1366px) {
-  .mobile-nav {
-    display: block;
-  }
-  .pc-nav {
-    display: none;
-  }
+
+@media screen and (min-width: 1221px) {
+  // .pc {
+  //   display: block;
+  // }
+  // .mobile {
+  //   display: none;
+  // }
 }
-@media (min-width: 1367px) {
-  .mobile-nav {
+@media screen and (max-width: 1220px) {
+  .wrap {
+    width:100%;
+  }
+  .seckill .product .body {
+    .label {
+      line-height: 32px;
+    }
+    .params {
+      height: auto;
+      > div {
+        padding-right: 20px;
+        .ddos-zone,.ddos-system {
+          display: flex;
+          .w142 {
+            width: 100%;
+          }
+        }
+      }
+    }
+    .cost {
+      padding-right: 20px;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+  .seckill{
+    padding: 0 0 20px 0;
+    .wrap {
+      width:100%;
+      padding:0 30px;
+    }
+    .product{
+      display: flex;
+      flex-wrap: wrap;
+      .head {
+        text-align: left;
+        padding-left: 20px;
+      }
+      > div {
+        width: 100%;
+      }
+    } 
+  } 
+}
+.pc-640 {
+  display: block;
+}
+.mobile-640 {
+  display: none;
+}
+.pc-640-inline {
+  display: inline-block;
+}
+.mobile-640-inline {
+  display: none;
+}
+@media screen and (max-width: 640px) {
+  .pc-640 {
     display: none;
   }
-  .pc-nav {
+  .mobile-640 {
     display: block;
   }
+  .pc-640-inline {
+    display: none;
+  }
+  .mobile-640-inline {
+    display: inline-block;
+  }
+  .banner {
+    height: auto;
+    background: none;
+    .content {
+      .banner-m {
+        width: 100%;
+      }
+    }
+  }
+  .seckill{
+    .wrap {
+      padding:0 10px;
+    }
+    .top .text p {
+      line-height: 24px;
+    }
+  } 
 }
 </style>
