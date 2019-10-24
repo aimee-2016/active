@@ -2729,7 +2729,7 @@ export default {
       let params = {}
       let id = ''
       if (item.servicetype == 'G5500') {
-        id = this.getId(item)
+        id = this.getIdgpu(item)
         url = 'activity/getDiskcountGPU.do'
         params = {
           defzoneid: item.zoneId,
@@ -2737,7 +2737,7 @@ export default {
           osType: item.system[1]
         }
       } else if (item.servicetype == 'host') {
-        id = this.getIdgpu(item)
+        id = this.getId(item)
         url = 'information/getDiskcountMv.do'
         params = {
           defzoneid: item.zoneId,
