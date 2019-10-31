@@ -241,11 +241,11 @@
             height: 100%;
             background: url("../../assets/img/active/active_xf_bg.png") no-repeat center;
           }
-          .anniversary-active {
-            height: 400px;
-            cursor: pointer;
-            background: #FEEDE0 url("../../assets/img/active/anniversary/aa-banner22.png") center no-repeat;
-          }
+          // .anniversary-active {
+          //   height: 400px;
+          //   cursor: pointer;
+          //   background: #FEEDE0 url("../../assets/img/active/anniversary/aa-banner22.png") center no-repeat;
+          // }
           .ddos {
             height: 400px;
             background:  #2A2936;
