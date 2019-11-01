@@ -717,3 +717,13 @@ box-shadow:0px 2px 3px 0px rgba(115,115,115,0.4);
   background: #54516a;
   color: white;
 }
+
+/* 2周年庆活动 */
+.aa-system .ivu-input,.aa-system .ivu-select-selection{
+  border: 1px solid #FFD08C;
+  background-color: #312b1f;
+  color: #fff;
+}
+.aa-system .ivu-input {
+  border: 1px solid #FFD08C;
+}

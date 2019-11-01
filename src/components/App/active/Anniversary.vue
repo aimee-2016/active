@@ -58,55 +58,66 @@
             </p>
           </header>
           <div class="container">
-            <div class="item">
-              <header>弹性云服务器</header>
+            <div class="item" v-for="(item,index) in seckillList" :key="index">
+              <header>{{titleType(item.servicetype)}}</header>
               <div class="content">
-                <ul class="configure">
-                  <li>
-                    <i>CPU</i>
-                    <span>2核</span>
-                  </li>
-                  <li>
-                    <i>内存</i>
-                    <span>4G</span>
-                  </li>
-                  <li>
-                    <i>带宽</i>
-                    <span>5M</span>
-                  </li>
-                  <li>
-                    <i>系统盘</i>
-                    <span>40G SSD</span>
-                  </li>
-                </ul>
-                <div class="center">
-                  <div>
-                    <span class="label">区域：</span>
-                    <Select v-model="model1" style="width:142px">
-                      <Option
-                        v-for="item in cityList"
-                        :value="item.value"
-                        :key="item.value"
-                      >{{ item.label }}</Option>
-                    </Select>
-                  </div>
-                  <div>
-                    <span class="label">系统：</span>
-                    <Cascader
-                      :data="data2"
-                      v-model="value2"
-                      style="width:142px;display:inline-block"
-                    ></Cascader>
+                <div class="middle">
+                  <ul class="configure" v-if="item.servicetype!='oss'">
+                    <li>
+                      <i>CPU</i>
+                      <span>{{item.cpu}}核</span>
+                    </li>
+                    <li>
+                      <i>内存</i>
+                      <span>{{item.mem}}G</span>
+                    </li>
+                    <li>
+                      <i>带宽</i>
+                      <span>{{item.bandwith}}M</span>
+                    </li>
+                    <li>
+                      <i>系统盘</i>
+                      <span>{{item.disksize}}G SSD</span>
+                    </li>
+                  </ul>
+                  <div class="center aa-system" :class="{pt16:item.servicetype=='G5500'}">
+                    <div
+                      class="row-yellow lh1"
+                      :class="{mb10:item.servicetype=='G5500'}"
+                      v-if="item.servicetype=='G5500'"
+                    >GPU：Tesla P{{item.gpu}}</div>
+                    <div class="row-yellow" v-if="item.servicetype=='oss'">存储规格：1TB</div>
+                    <div class="row-yellow" v-if="item.servicetype=='oss'">下载流量：1TB</div>
+                    <div :class="{mb10:item.servicetype=='G5500'}">
+                      <span class="label">区域：</span>
+                      <Select v-model="item.zone" style="width:142px" @on-change="getSystem(item)">
+                        <Option
+                          v-for="(item,index) in item.zoneList"
+                          :value="item.value"
+                          :key="index"
+                        >{{ item.name }}</Option>
+                      </Select>
+                    </div>
+                    <div v-if="item.servicetype!='oss'" :class="{mb10:item.servicetype=='G5500'}">
+                      <span class="label">系统：</span>
+                      <Cascader
+                        :data="item.systemList"
+                        v-model="item.system"
+                        style="width:142px;display:inline-block"
+                      ></Cascader>
+                    </div>
                   </div>
                 </div>
+
                 <div class="price">
                   <p>
-                    <i>￥</i>2117
-                    <i>/2年</i>
+                    <i>￥</i>
+                    {{item.cost}}
+                    <i>/{{formatDay(item.days)}}</i>
                   </p>
-                  <span>原价：￥12449.28/2年</span>
+                  <span>原价：￥{{item.originalPrice}}/{{formatDay(item.days)}}</span>
                 </div>
-                <span class="btn">立即抢购</span>
+                <span class="btn" @click="orderSeckill(item)">立即抢购</span>
               </div>
             </div>
           </div>
@@ -259,6 +270,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+import axios from 'axios'
 export default {
   data () {
     return {
@@ -351,17 +363,164 @@ export default {
           }
         ],
       }],
-      valueDomain: ''
+      valueDomain: '',
+      seckillList: []
     }
   },
   created () {
-
+    this.getSeckill()
   },
   mounted () {
 
   },
   methods: {
+    //活动编码 秒杀64 企业65 云数据库 域名
+    getSeckill () {
+      axios.get('activity/getTemActInfoById.do', {
+        params: {
+          activityNum: 64
+        }
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          this.seckillList = response.data.result.freevmconfigs
+          this.seckillList.forEach((item, index) => {
+            switch (item.servicetype) {
+              case 'host':
+                item.zoneList = response.data.result.optionalArea
+                // item.zone = item.zoneList[0].value
+                item.systemList = this.formatSystem(response.data.result.mvTem)
+                item.system = [item.systemList[0].label, item.systemList[0].children[0].value]
+                break;
+              case 'G5500':
+                item.zoneList = response.data.result.optionalAreaGpu
+                // item.zone = item.zoneList[0].value
+                item.systemList = this.formatSystem(response.data.result.gpuTem)
+                item.system = [item.systemList[0].label, item.systemList[0].children[0].value]
+                break;
+              case 'oss':
+                item.zoneList = response.data.result.zoneListMapOss
+                item.zone = item.zoneList[0].value
+                break;
+              default:
+                break;
+            }
+          })
+          // console.log(this.seckillList)
+        }
+      })
+    },
+    getSystem(item) {
+      // console.log(item)
+      let params = {}
+      let url = ''
+      switch (item.servicetype) {
+        case 'host':
+          params = {
+          user: '0',
+          normalTemplate: '1',
+          zoneId: item.zone,
+        }
+          url = 'information/listTemplates.do'
+          break
+        case 'G5500':
+          params = {
+          user: '0',
+          gpu: '1',
+          normalTemplate: '0',
+          zoneId: item.zone,
+        }
+          url = 'information/listTemplates.do'
+          break
+      }
+      axios.get(url, {
+        params: params
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          item.systemList = this.formatSystem(response.data.result)
+          // console.log(item.systemList)
+        }
+      })
+    },
+    orderSeckill (item) {
+      let params = {}
+      let url = ''
+      switch (item.servicetype) {
+        case 'host':
+          params = {
+            vmConfigId: item.id,
+            osType: item.system[1],
+            defzoneid: item.zone,
+          }
+          url = 'information/getDiskcountMv.do'
+          break
+        case 'G5500':
+          params = {
+            vmConfigId: item.id,
+            osType: item.system[1],
+            defzoneid: item.zone,
+          }
+          url = 'activity/getDiskcountGPU.do'
+          break
+        case 'oss':
+          params = {
+            OOSConfigId: item.id,
+            zoneId: item.zone,
+          }
+          url = 'ruiradosPrice/getDickCountOSS.do'
+          break
+      }
+      // console.log(params)
+      // console.log(url)
+      // axios.get(url, {
+      //   params: params
+      // }).then(response => {
+      //   if (response.status == 200 && response.data.status == 1) {
 
+      //   }
+      // })
+    },
+    formatSystem (system) {
+      let newSystem = []
+      for (let i in system) {
+        if (system[i].length) {
+          let newItem = {}
+          newItem.label = newItem.value = i
+          newItem.children = system[i].map(inner => {
+            return { 'label': inner.templatedescript, 'value': inner.systemtemplateid }
+          })
+          newSystem.push(newItem)
+        }
+      }
+      newSystem.sort((a, b) => {
+            return b.value.charCodeAt(0) - a.value.charCodeAt(0)
+      })
+      // console.log(newSystem)
+      return newSystem
+    },
+    titleType (type) {
+      let text = '弹性云服务器'
+      switch (type) {
+        case 'host':
+          text = '弹性云服务器'
+          break
+        case 'G5500':
+          text = 'GPU云服务器'
+          break
+        case 'oss':
+          text = '对象存储OSS'
+          break
+      }
+      return text
+    },
+    formatDay (days) {
+      let text = '7天'
+      if (days >= 30 && days < 360) {
+        text = `${days / 30}月`
+      } else if (days >= 360) {
+        text = `${days / 360}年`
+      }
+      return text
+    }
   },
   computed: {
 
@@ -443,7 +602,11 @@ export default {
         text-align: center;
         cursor: pointer;
         &:hover {
-          background: gray;
+          background: linear-gradient(
+            135deg,
+            rgba(221, 203, 161, 1) 0%,
+            rgba(188, 160, 110, 1) 100%
+          );
         }
       }
     }
@@ -472,45 +635,44 @@ export default {
       position: relative;
       margin-top: 188px;
       &::after {
-        content: '';
+        content: "";
         position: absolute;
         top: 0;
         left: 0;
         width: 1200px;
         height: 92px;
-        background: rgba(230,227,218,.2);
+        background: rgba(230, 227, 218, 0.2);
       }
       ul {
         color: #fff;
         padding: 16px 0;
         height: 92px;
-      li {
-        position: relative;
-        display: inline-block;
-        width: 240px;
-        height: 60px;
-        font-size: 18px;
-        font-weight: bold;
-        color: #fff;
-        border-right: 1px solid rgba(151, 151, 151, 1);
-        div {
-          position: absolute;
-          top: 50%;
-          transform: translateY(-50%);
-          width: 100%;
-          text-align: center;
-          p,
-          span {
-            line-height: 27px;
+        li {
+          position: relative;
+          display: inline-block;
+          width: 240px;
+          height: 60px;
+          font-size: 18px;
+          font-weight: bold;
+          color: #fff;
+          border-right: 1px solid rgba(151, 151, 151, 1);
+          div {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            text-align: center;
+            p,
+            span {
+              line-height: 27px;
+            }
           }
         }
-      }
-      li:last-of-type {
-        border-right: none;
+        li:last-of-type {
+          border-right: none;
+        }
       }
     }
-    }
-    
   }
   section:nth-of-type(2) {
     background: rgba(245, 243, 240, 1);
@@ -535,7 +697,7 @@ export default {
       line-height: 24px;
     }
     .btn {
-      background: #141411;
+      background: #222222;
       width: 184px;
       color: #fff;
     }
@@ -544,8 +706,14 @@ export default {
     margin-bottom: 92px;
     .item {
       width: 224px;
-      background: #2a2936;
+      background: #312b1f;
       color: rgba(255, 255, 255, 1);
+      display: inline-block;
+      margin-right: 20px;
+      vertical-align: middle;
+      &:last-of-type {
+        margin-right: 0;
+      }
       header {
         position: relative;
         padding: 25px 0 15px 0;
@@ -566,20 +734,40 @@ export default {
       }
       .content {
         padding: 20px 0 30px 20px;
-        .configure {
-          li {
-            display: inline-block;
-            margin-right: 20px;
-            i {
-              display: block;
+        .middle {
+          height: 162px;
+          .configure {
+            li {
+              display: inline-block;
+              margin-right: 20px;
+              &:last-of-type {
+                margin-right: 0;
+              }
+              i {
+                display: block;
+              }
             }
           }
-        }
-        .center {
-          height: 130px;
-          padding-top: 26px;
-          > div {
-            margin-bottom: 15px;
+          .center {
+            padding-top: 26px;
+            > div {
+              margin-bottom: 15px;
+            }
+            .mb10 {
+              margin-bottom: 10px;
+            }
+            .row-yellow {
+              font-size: 16px;
+              font-weight: 600;
+              color: rgba(255, 208, 140, 1);
+              font-style: italic;
+            }
+            .lh1 {
+              line-height: 1;
+            }
+          }
+          .pt16 {
+            padding-top: 16px;
           }
         }
         .price {
