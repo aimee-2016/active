@@ -19,14 +19,16 @@
               alt="企业上云突破5万，回馈老用户"
             />
           </div>
-          <ul class="clearfix">
-            <li v-for="(item,index) in bannerNavList" :key="index">
-              <div>
-                <p>{{item.title}}</p>
-                <span v-if="item.text">{{item.text}}</span>
-              </div>
-            </li>
-          </ul>
+          <div class="menu">
+            <ul>
+              <li v-for="(item,index) in bannerNavList" :key="index">
+                <div>
+                  <p>{{item.title}}</p>
+                  <span v-if="item.text">{{item.text}}</span>
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
@@ -59,7 +61,7 @@
             <div class="item">
               <header>弹性云服务器</header>
               <div class="content">
-                <ul class="configure clearfix">
+                <ul class="configure">
                   <li>
                     <i>CPU</i>
                     <span>2核</span>
@@ -122,13 +124,13 @@
             </p>
           </header>
           <div class="container">
-            <div class="item clearfix">
+            <div class="item">
               <div class="left">
                 <p>2核4G 3M带宽</p>
                 <span>40G SSD盘</span>
               </div>
               <div class="content">
-                <ul class="center clearfix">
+                <ul class="center">
                   <li>
                     <span class="label">区域</span>
                     <Select v-model="model1" style="width:150px">
@@ -149,7 +151,7 @@
                   </li>
                   <li>
                     <span class="label">可选时长</span>
-                    <div class="time clearfix">
+                    <div class="time">
                       <span>
                         3年
                         <i>0.7折</i>
@@ -201,8 +203,16 @@
           <div class="container">
             <div class="item">
               <header>
-                <span>.club 域名</span>
-                <input type="text" name id />
+                <h3>.club 域名</h3>
+                <div class="input-group">
+                  <input
+                    v-model="valueDomain"
+                    type="text"
+                    placeholder="Enter something..."
+                    style="width: 230px;height:30px"
+                  />
+                  <img src="../../../assets/img/active/anniversary/search-icon.png" alt="搜索图标" />
+                </div>
               </header>
               <div class="content">
                 <div class="price">
@@ -222,6 +232,26 @@
               <span>活动规则></span>
             </p>
           </header>
+          <div class="container">
+            <div class="item">
+              <div></div>
+              <div class="discount">
+                <p>
+                  <span>1.17</span>
+                  <i>折</i>
+                </p>
+                <span>年续费券</span>
+              </div>
+              <span class="btn">我要续费</span>
+              <div class="text">
+                <span>新睿云11.17周年庆回馈老用户</span>
+                <p>
+                  云服务器年续费一律
+                  <span>1.17折</span>
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -320,7 +350,8 @@ export default {
             ]
           }
         ],
-      }]
+      }],
+      valueDomain: ''
     }
   },
   created () {
@@ -348,6 +379,9 @@ export default {
 .anniversary {
   color: #222;
   font-family: MicrosoftYaHei;
+  i {
+    font-style: normal;
+  }
   .wrap {
     width: 1200px;
     margin-left: auto;
@@ -374,6 +408,22 @@ export default {
         cursor: pointer;
       }
     }
+  }
+  .btn {
+    display: inline-block;
+    width: 184px;
+    height: 40px;
+    background: linear-gradient(
+      128deg,
+      rgba(249, 239, 184, 1) 0%,
+      rgba(227, 183, 111, 1) 100%
+    );
+    border-radius: 2px;
+    font-size: 18px;
+    color: rgba(51, 51, 51, 1);
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
   }
 
   aside {
@@ -416,15 +466,29 @@ export default {
         display: block;
       }
     }
-    ul {
-      margin-top: 200px;
-      padding: 10px 0;
-      background: gray;
+    .menu {
+      width: 1200px;
+      height: 92px;
+      position: relative;
+      margin-top: 188px;
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1200px;
+        height: 92px;
+        background: rgba(230,227,218,.2);
+      }
+      ul {
+        color: #fff;
+        padding: 16px 0;
+        height: 92px;
       li {
         position: relative;
+        display: inline-block;
         width: 240px;
         height: 60px;
-        float: left;
         font-size: 18px;
         font-weight: bold;
         color: #fff;
@@ -445,6 +509,8 @@ export default {
         border-right: none;
       }
     }
+    }
+    
   }
   section:nth-of-type(2) {
     background: rgba(245, 243, 240, 1);
@@ -469,15 +535,9 @@ export default {
       line-height: 24px;
     }
     .btn {
-      display: inline-block;
       background: #141411;
       width: 184px;
-      height: 40px;
-      line-height: 40px;
-      font-size: 18px;
-      text-align: center;
       color: #fff;
-      cursor: pointer;
     }
   }
   .seckill {
@@ -508,10 +568,9 @@ export default {
         padding: 20px 0 30px 20px;
         .configure {
           li {
-            float: left;
+            display: inline-block;
             margin-right: 20px;
             i {
-              font-style: normal;
               display: block;
             }
           }
@@ -530,7 +589,6 @@ export default {
             font-size: 24px;
             font-weight: bold;
             i {
-              font-style: normal;
               font-size: 12px;
               font-weight: normal;
             }
@@ -542,19 +600,7 @@ export default {
           }
         }
         .btn {
-          display: inline-block;
           width: 184px;
-          height: 40px;
-          background: linear-gradient(
-            128deg,
-            rgba(249, 239, 184, 1) 0%,
-            rgba(227, 183, 111, 1) 100%
-          );
-          border-radius: 2px;
-          font-size: 18px;
-          color: rgba(51, 51, 51, 1);
-          line-height: 40px;
-          text-align: center;
         }
       }
     }
@@ -579,14 +625,16 @@ export default {
   .enterprise {
     .item {
       color: #fff;
+      font-size: 0;
       .left {
         width: 200px;
         height: 130px;
-        float: left;
+        display: inline-block;
         background: url(../../../assets/img/active/anniversary/anniversary-item-left-bg-1.png)
           center no-repeat;
         font-weight: bold;
         padding: 40px 0 0 20px;
+        vertical-align: bottom;
         p {
           margin-bottom: 10px;
           font-size: 20px;
@@ -597,27 +645,28 @@ export default {
         }
       }
       .content {
-        float: left;
+        display: inline-block;
         padding: 36px 0 0 20px;
         background: #fff;
         width: 1000px;
         height: 130px;
         color: #000;
         .center {
-          float: left;
+          display: inline-block;
           border-right: solid 1px #a8a8a8;
           li {
-            float: left;
+            display: inline-block;
             margin-right: 20px;
             .label {
               display: block;
               margin-bottom: 14px;
             }
             .time {
+              font-size: 0;
               span {
                 position: relative;
                 display: block;
-                float: left;
+                display: inline-block;
                 width: 46px;
                 height: 35px;
                 border: 1px solid rgba(235, 193, 98, 1);
@@ -638,7 +687,6 @@ export default {
                   line-height: 16px;
                   background: rgba(191, 191, 191, 1);
                   color: #fff;
-                  font-style: normal;
                   font-size: 12px;
                 }
                 &:hover {
@@ -659,18 +707,16 @@ export default {
           }
         }
         .right {
-          float: left;
+          display: inline-block;
           .price {
-            float: left;
+            display: inline-block;
             margin-left: 20px;
             margin-right: 50px;
             .cost {
-              // margin-bottom: 10px;
               color: rgba(255, 98, 75, 1);
               font-size: 28px;
               font-weight: bold;
               i {
-                font-style: normal;
                 font-size: 12px;
                 font-weight: normal;
               }
@@ -680,19 +726,7 @@ export default {
             }
           }
           .btn {
-            display: inline-block;
             width: 150px;
-            height: 40px;
-            background: linear-gradient(
-              128deg,
-              rgba(249, 239, 184, 1) 0%,
-              rgba(227, 183, 111, 1) 100%
-            );
-            border-radius: 2px;
-            font-size: 18px;
-            color: rgba(51, 51, 51, 1);
-            line-height: 40px;
-            text-align: center;
           }
         }
       }
@@ -707,11 +741,110 @@ export default {
   }
   .domain {
     .item {
+      width: 350px;
+      height: 340px;
+      border: 1px goldenrod solid;
+      border-radius: 2px;
       header {
-        width: 350px;
         height: 170px;
+        padding: 30px 0 0 30px;
         background: url(../../../assets/img/active/anniversary/anniversary-domain-1.png)
           top no-repeat;
+        h3 {
+          margin-bottom: 30px;
+          color: #e9ba45;
+          font-size: 24px;
+          font-weight: normal;
+        }
+        .input-group {
+          font-size: 0;
+          input {
+            vertical-align: bottom;
+            font-size: 12px;
+            border-radius: 2px 0px 0px 2px;
+            border: none;
+            padding-left: 10px;
+          }
+          img {
+            cursor: pointer;
+          }
+        }
+      }
+      .content {
+        padding: 30px 30px 0 30px;
+        .price {
+          color: #ff624b;
+          font-size: 28px;
+          span {
+            font-size: 14px;
+            vertical-align: middle;
+          }
+        }
+        .btn {
+          margin-top: 20px;
+          width: 100%;
+        }
+      }
+    }
+  }
+  .renew {
+    margin-bottom: 100px;
+    .container {
+      width: 1200px;
+      height: 474px;
+      padding-top: 47px;
+      border-radius: 10px;
+      border: 2px solid rgba(235, 193, 98, 1);
+      background: #f6f1e8;
+      .item {
+        margin: 0 auto;
+        padding-top: 55px;
+        width: 615px;
+        height: 371px;
+        background: url(../../../assets/img/active/anniversary/anniversary-domain-bg.png)
+          top no-repeat;
+        text-align: center;
+        .discount {
+          p {
+            margin-bottom: 10px;
+            color: #ff624b;
+            span {
+              font-size: 72px;
+            }
+            i {
+              font-size: 36px;
+              vertical-align: super;
+            }
+          }
+          span {
+            font-size: 20px;
+          }
+        }
+        .btn {
+          margin-top: 20px;
+          width: 162px;
+          background: rgba(13, 12, 11, 1);
+          border-radius: 20px;
+          font-size: 20px;
+          color: rgba(252, 192, 50, 1);
+        }
+        .text {
+          margin-top: 50px;
+          span {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 1);
+            line-height: 24px;
+          }
+          p {
+            font-size: 24px;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 1);
+            line-height: 31px;
+            span {
+              color: #ff624b;
+            }
+          }
+        }
       }
     }
   }
