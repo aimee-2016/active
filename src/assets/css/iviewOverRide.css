@@ -727,3 +727,17 @@ box-shadow:0px 2px 3px 0px rgba(115,115,115,0.4);
 .aa-system .ivu-input {
   border: 1px solid #FFD08C;
 }
+.aa-modal .ivu-modal-header p, .ivu-modal-header-inner {
+  font-size:24px;
+  font-weight:500;
+  color:rgba(255,208,140,1);
+  background:linear-gradient(90deg,rgba(12,12,27,1) 0%,rgba(34,36,61,1) 55%,rgba(12,12,27,1) 100%);
+  border-radius:10px 10px 0px 0px;
+  height: auto;
+  padding: 18px 0;
+  text-align: center;
+  line-height: 1;
+}
+.aa-modal .ivu-modal-close .ivu-icon-ios-close-empty {
+  color:rgba(255,208,140,1);
+}
