@@ -2,9 +2,9 @@
   <div class="anniversary">
     <aside>
       <ul>
-        <li v-for="(item,index) in asideList" :key="index">{{item.text}}</li>
+        <li v-for="(item,index) in asideList" :key="index" @click="roll(item.height)">{{item.text}}</li>
       </ul>
-      <div class="to-top">回到顶部</div>
+      <div class="to-top" @click="roll(0)">回到顶部</div>
     </aside>
     <section class="banner">
       <div class="wrap">
@@ -47,14 +47,15 @@
             />
           </span>
           <span class="desc">老用户邀请新用户成功购买以下任1款商品（域名专区除外），即可获得“爆款秒杀专区”或“企业用户限购专区”的额外购买权1次。</span>
-          <span class="btn">邀请新用户</span>
+          <span class="btn pc-640-inline" @click="shareNew('p')">邀请新用户</span>
+          <span class="btn mobile-640-inline" @click="shareNew('m')">邀请新用户</span>
         </div>
         <div class="seckill">
           <header class="sub-head">
             <h2>爆款秒杀专区</h2>
             <p>
               爆款云产品，邀新送好礼
-              <span>活动规则></span>
+              <span @click="showModal.ruleKill=true">活动规则></span>
             </p>
           </header>
           <div class="container">
@@ -121,7 +122,8 @@
                   </p>
                   <span>原价：￥{{item.originalPrice}}/{{formatDay(item.days)}}</span>
                 </div>
-                <span class="btn" @click="orderSeckill(item)">立即抢购</span>
+                <span class="btn pc-640" @click="orderSeckill(item,'p')">立即抢购</span>
+                <span class="btn mobile-640" @click="orderSeckill(item,'m')">立即抢购</span>
               </div>
             </div>
           </div>
@@ -135,7 +137,7 @@
             <h2>企业用户限购专区</h2>
             <p>
               企业限购专区，老用户享同等价购买
-              <span>活动规则></span>
+              <span @click="showModal.ruleE=true">活动规则></span>
             </p>
           </header>
           <div class="container">
@@ -184,22 +186,95 @@
                     </p>
                     <span class="origin-cost">原价：￥{{item.originalPrice}}</span>
                   </div>
-                  <span class="btn" @click="orderSeckill(item)">立即抢购</span>
+                  <span class="btn pc-640-inline" @click="orderSeckill(item,'p')">立即抢购</span>
+                  <span class="btn mobile-640-inline" @click="orderSeckill(item,'m')">立即抢购</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="database">
+        <div class="enterprise">
           <header class="sub-head">
             <h2>云数据库限购专区</h2>
             <p>
               数据库现时抢购
-              <span>活动规则></span>
+              <span @click="showModal.ruleDB=true">活动规则></span>
             </p>
           </header>
-          <div class="content">
-            <div class="item"></div>
+          <div class="container">
+            <div class="item" v-for="(item,index) in enterpriseList" :key="index">
+              <div class="left">
+                <p>{{item.cpu+'核'+item.mem+'G '+item.bandwith+'M带宽'}}</p>
+                <span>{{item.disksize+'G '+item.disktype.toUpperCase()+'盘'}}</span>
+              </div>
+              <div class="content">
+                <ul class="center">
+                  <li>
+                    <span class="label">可选规格</span>
+                    <Select v-model="item.zone" style="width:120px">
+                      <Option
+                        v-for="(item,index) in item.zoneList"
+                        :value="item.value"
+                        :key="index"
+                      >{{ item.name }}</Option>
+                    </Select>
+                  </li>
+                  <li>
+                    <span class="label">可选带宽</span>
+                    <Select v-model="item.zone" style="width:100px">
+                      <Option
+                        v-for="(item,index) in item.zoneList"
+                        :value="item.value"
+                        :key="index"
+                      >{{ item.name }}</Option>
+                    </Select>
+                  </li>
+                  <li>
+                    <span class="label">可选区域</span>
+                    <Select v-model="item.zone" style="width:140px">
+                      <Option
+                        v-for="(item,index) in item.zoneList"
+                        :value="item.value"
+                        :key="index"
+                      >{{ item.name }}</Option>
+                    </Select>
+                  </li>
+                  <!-- <li>
+                    <span class="label">系统</span>
+                    <Cascader
+                      :data="item.systemList"
+                      v-model="item.system"
+                      style="width:230px;display:inline-block"
+                    ></Cascader>
+                  </li>-->
+                  <li>
+                    <span class="label">可选时长</span>
+                    <div class="time">
+                      <span
+                        v-for="(inner,index) in item.timeList"
+                        :key="index"
+                        @click="changeTimeE(item,inner,index)"
+                        :class="{'selected':inner == item.days}"
+                      >
+                        {{inner/360}}年
+                        <i>1.2折</i>
+                      </span>
+                    </div>
+                  </li>
+                </ul>
+                <div class="right">
+                  <div class="price">
+                    <p class="cost">
+                      <i>￥</i>
+                      <span>{{item.cost}}</span>
+                    </p>
+                    <span class="origin-cost">原价：￥{{item.originalPrice}}</span>
+                  </div>
+                  <span class="btn pc-640-inline" @click="orderSeckill(item,'p')">立即抢购</span>
+                  <span class="btn mobile-640-inline" @click="orderSeckill(item,'m')">立即抢购</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -211,25 +286,31 @@
             <h2>域名专区</h2>
           </header>
           <div class="container">
-            <div class="item">
-              <header>
-                <h3>.club 域名</h3>
+            <div class="item" v-for="(item,index) in domainList" :key="index">
+              <header :style="{background:'url('+item.bg+')',backgroundRepeat:'no-repeat'}">
+                <h3>{{item.name}} 域名</h3>
                 <div class="input-group">
                   <input
-                    v-model="valueDomain"
+                    v-model="item.value"
                     type="text"
                     placeholder="Enter something..."
                     style="width: 230px;height:30px"
                   />
-                  <img src="../../../assets/img/active/anniversary/search-icon.png" alt="搜索图标" />
+                  <img
+                    src="../../../assets/img/active/anniversary/search-icon.png"
+                    alt="搜索图标"
+                    @click="checkDomain(item)"
+                  />
                 </div>
+                <span class="tip">{{item.tip}}</span>
               </header>
               <div class="content">
                 <div class="price">
-                  ¥11.00
-                  <span>/1年</span>
+                  ¥{{item.price}}
+                  <span>/{{item.unit}}</span>
                 </div>
-                <span class="btn">立即抢购</span>
+                <span class="btn pc-640" @click="buyDomain('p')">立即购买</span>
+                <span class="btn mobile-640" @click="buyDomain('m')">立即购买</span>
               </div>
             </div>
           </div>
@@ -239,25 +320,25 @@
             <h2>续费专区</h2>
             <p>
               老用户续费折扣享不停
-              <span>活动规则></span>
+              <span @click="showModal.ruleRenew=true">活动规则></span>
             </p>
           </header>
           <div class="container">
-            <div class="item">
-              <div></div>
+            <div class="item" v-for="(item,index) in renewList" :key="index">
               <div class="discount">
                 <p>
-                  <span>1.17</span>
+                  <span>{{item.moneyDesc}}</span>
                   <i>折</i>
                 </p>
                 <span>年续费券</span>
               </div>
-              <span class="btn">我要续费</span>
+              <span class="btn pc-640-inline" @click="toRenew(item.id,'p')">我要续费</span>
+              <span class="btn mobile-640-inline" @click="toRenew(item.id,'m')">我要续费</span>
               <div class="text">
                 <span>新睿云11.17周年庆回馈老用户</span>
                 <p>
                   云服务器年续费一律
-                  <span>1.17折</span>
+                  <span>{{item.moneyDesc}}折</span>
                 </p>
               </div>
             </div>
@@ -276,14 +357,20 @@
         <p>邀请新用户，获取“秒杀专区”和“企业限购专区”购买权</p>
         <div class="wrapper">
           <div class="qr-code">
-            <img src="../../../assets/img/active/anniversary/qrCode.png" alt="新睿云二维码" />
+            <vue-q-art :config="qrConfig"></vue-q-art>
             <span>扫码分享</span>
           </div>
           <div class="url">
-            <p class="btn">
-              <img src="../../../assets/img/active/anniversary/aa-url-icon.png" alt="f分享图标" />
+            <p class="btn" @click="copyUrl('p')">
+              <img src="../../../assets/img/active/anniversary/aa-url-icon.png" alt="分享图标" />
               复制链接
             </p>
+            <input
+              ref="copy_content"
+              type="text"
+              value
+              style="position: absolute;top: 0;left: 0;opacity: 0;z-index: -10;"
+            />
             <span>链接分享</span>
           </div>
         </div>
@@ -293,17 +380,191 @@
     <Modal
       v-model="showModal.ruleKill"
       width="550"
-      class="aa-modal ruleKill"
-      title="邀请新用户"
+      class="aa-modal rule"
+      title="活动规则"
       :mask-closable="false"
     >
       <div class="content">
         <ul>
-          <li></li>
+          <li v-for="(item,index) in ruleListKill" :key="index">{{item}}</li>
         </ul>
       </div>
-      <div slot="footer">
-        <span class="btn">我知道了</span>
+      <div slot="footer" class="footer">
+        <span class="btn" @click="showModal.ruleKill=false">我知道了</span>
+      </div>
+    </Modal>
+    <Modal
+      v-model="showModal.ruleE"
+      width="550"
+      class="aa-modal rule"
+      title="活动规则"
+      :mask-closable="false"
+    >
+      <div class="content">
+        <ul>
+          <li v-for="(item,index) in ruleListE" :key="index">{{item}}</li>
+        </ul>
+      </div>
+      <div slot="footer" class="footer">
+        <span class="btn" @click="showModal.ruleE=false">我知道了</span>
+      </div>
+    </Modal>
+    <Modal
+      v-model="showModal.ruleDB"
+      width="550"
+      class="aa-modal rule"
+      title="活动规则"
+      :mask-closable="false"
+    >
+      <div class="content">
+        <ul>
+          <li v-for="(item,index) in ruleListDB" :key="index">{{item}}</li>
+        </ul>
+      </div>
+      <div slot="footer" class="footer">
+        <span class="btn" @click="showModal.ruleDB=false">我知道了</span>
+      </div>
+    </Modal>
+    <Modal
+      v-model="showModal.ruleRenew"
+      width="550"
+      class="aa-modal rule"
+      title="活动规则"
+      :mask-closable="false"
+    >
+      <div class="content">
+        <ul>
+          <li v-for="(item,index) in ruleListRenew" :key="index">{{item}}</li>
+        </ul>
+      </div>
+      <div slot="footer" class="footer">
+        <span class="btn" @click="showModal.ruleRenew=false">我知道了</span>
+      </div>
+    </Modal>
+    <!-- 身份验证弹窗 -->
+    <Modal
+      v-model="showModal.cashverification"
+      :scrollable="true"
+      :closable="true"
+      :width="520"
+      :mask-closable="false"
+      class="person-check"
+    >
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">身份验证</span>
+      </p>
+      <div class="modal-content-s">
+        <div>
+          <p
+            class="lh24"
+            style="font-size:14px;font-family:MicrosoftYaHei;color:rgba(51,51,51,1);line-height:24px;"
+          >为保障您的账户安全，请进行手机验证：</p>
+        </div>
+      </div>
+      <div class="modal-content-s">
+        <Form
+          ref="cashverification"
+          label-position="left"
+          :model="formCustom"
+          :rules="ruleCustom"
+          style="width: 500px;"
+        >
+          <FormItem prop="VerificationPhone">
+            <Input v-model="formCustom.VerificationPhone" placeholder="请输入手机号码" class="w300"></Input>
+          </FormItem>
+          <FormItem prop="Verificationcode">
+            <Input v-model="formCustom.Verificationcode" placeholder="请输入随机验证码" class="w300"></Input>
+            <img
+              :src="imgSrc"
+              @click="imgSrc=`user/getKaptchaImage.do?t=${new Date().getTime()}`"
+              style="height:32px;vertical-align: middle;margin-left: 10px;"
+            />
+          </FormItem>
+          <FormItem prop="messagecode">
+            <Input v-model="formCustom.messagecode" placeholder="请输入收到的验证码" class="w300"></Input>
+            <Button
+              type="primary"
+              @click="getPhoneCode('code')"
+              :disabled="formCustom.newCodeText !='获取验证码'"
+              style="margin-left: 10px;"
+            >{{formCustom.newCodeText}}</Button>
+          </FormItem>
+        </Form>
+      </div>
+      <div class="modal-content-s divall">
+        <div
+          style="width: 91%;margin-left: 4%;margin-top: 10px;font-size: 14px;margin-bottom: 20px;"
+        >
+          <p style="float: left;line-height:24px;">没有收到验证码？</p>
+          <br />
+          <p style="line-height:24px;">
+            1、网络异常可能会造成短信丢失，请
+            <span
+              class="spanaa"
+              :class="{notallow:formCustom.newCodeText !='获取验证码'}"
+              @click="getPhoneCode('againCode')"
+            >重新获取</span>或
+            <span
+              class="spanaa"
+              :class="{notallow:formCustom.newCodeText !='获取验证码'}"
+              @click.prevent="getPhoneCode('voice')"
+            >接收语音验证码</span>。
+          </p>
+          <p v-if="authInfo&&authInfo.checkstatus==0" style="line-height:24px;">
+            2、如果手机已丢失或停机，请
+            <span
+              class="spanaa"
+              @click="showModal.modifyPhoneID = true;showModal.cashverification=false"
+            >通过身份证号码验证</span>或
+            <a href="https://kfi.xrcloud.net/work">提交工单</a>更改手机号。
+          </p>
+          <p v-if="!authInfo||authInfo&&authInfo.checkstatus!=0" style="line-height:24px;">
+            2、如果手机已丢失或停机，请
+            <a href="https://kfi.xrcloud.net/work">提交工单</a>或
+            <a
+              target="_blank"
+              :href="`tencent://message/?uin=${$store.state.qq.qqnumber}&amp;Site=www.cloudsoar.com&amp;Menu=yes`"
+              class="spanaa"
+              style="font-size: 13px;"
+            >联系客服</a>更改手机号。
+          </p>
+        </div>
+      </div>
+      <p slot="footer" class="modal-footer-s">
+        <Button @click="showModal.cashverification = false">取消</Button>
+        <Button type="primary" :disabled="disabled" @click="Callpresentation">确定</Button>
+      </p>
+    </Modal>
+    <!-- 人脸识别二维码弹出框 -->
+    <Modal
+      v-model="showModal.qrCode"
+      width="550"
+      :scrollable="true"
+      :mask-closable="false"
+      :closable="false"
+    >
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">扫码认证</span>
+      </p>
+      <div class="universal-modal-content-flex qrcode-modal">
+        <p class="p-top">认证完成之前，请勿关闭或者切换此页面，否则可能导致认证失败</p>
+        <p>请使用手机扫描二维码，并根据提示完成实名认证</p>
+        <p v-show="authStatus" class="p-top">您的实名认证提交失败，请刷新二维码重新认证</p>
+        <div class="qr-code">
+          <vue-q-art :config="qrConfig"></vue-q-art>
+          <div
+            class="shade"
+            :class="{scanSuccess: codeLoseEfficacy=== 'scanSuccess'}"
+            v-show="codeLoseEfficacy"
+          ></div>
+        </div>
+        <p class="p-bottom">
+          若二维码失效或异常，请
+          <span @click="refreshQRCode">刷新</span>
+        </p>
+      </div>
+      <div slot="footer" class="modal-footer-border">
+        <Button type="primary" @click="showModal.qrCode = false">确定</Button>
       </div>
     </Modal>
   </div>
@@ -311,22 +572,37 @@
 
 <script type="text/ecmascript-6">
 import axios from 'axios'
+import VueQArt from 'vue-qart'
+import throttle from 'throttle-debounce/debounce'
+import $ from 'jquery'
 export default {
   data () {
+    const validaRegisteredPhone = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('电话号码不能为空'));
+      }
+      if (!(/^1(3|4|5|7|8|9)\d{9}$/.test(value)) && !(/^0\d{2,3}-?\d{7,8}$/.test(value))) {
+        callback(new Error('请输入正确的电话号码'));
+      } else {
+        callback()
+      }
+    }
     return {
       showModal: {
         share: false,
-        ruleListKill: false,
-        ruleListE: false,
-        ruleListDB: false,
-        ruleListRenew: false
+        ruleKill: false,
+        ruleE: false,
+        ruleDB: false,
+        ruleRenew: false,
+        cashverification: false,
+        qrCode: false
       },
       asideList: [
-        { text: '爆款秒杀', height: '' },
-        { text: '企业限购', height: '' },
-        { text: '云数据库', height: '' },
-        { text: '域名专区', height: '' },
-        { text: '续费专区', height: '' }
+        { text: '爆款秒杀', height: '800' },
+        { text: '企业限购', height: '1400' },
+        { text: '云数据库', height: '2000' },
+        { text: '域名专区', height: '2600' },
+        { text: '续费专区', height: '3000' }
       ],
       bannerNavList: [
         { title: '爆款云产品', text: '邀新送好礼' },
@@ -335,81 +611,6 @@ export default {
         { title: '域名最低8元可领', text: '' },
         { title: '老用户续费', text: '折扣享不停' }
       ],
-      cityList: [
-        {
-          value: 'New York',
-          label: 'New York'
-        },
-        {
-          value: 'London',
-          label: 'London'
-        },
-        {
-          value: 'Sydney',
-          label: 'Sydney'
-        },
-        {
-          value: 'Ottawa',
-          label: 'Ottawa'
-        },
-        {
-          value: 'Paris',
-          label: 'Paris'
-        },
-        {
-          value: 'Canberra',
-          label: 'Canberra'
-        }
-      ],
-      model1: '',
-      value2: [],
-      data2: [{
-        value: 'beijing',
-        label: '北京',
-        children: [
-          {
-            value: 'gugong',
-            label: '故宫'
-          },
-          {
-            value: 'tiantan',
-            label: '天坛'
-          },
-          {
-            value: 'wangfujing',
-            label: '王府井'
-          }
-        ]
-      }, {
-        value: 'jiangsu',
-        label: '江苏',
-        children: [
-          {
-            value: 'nanjing',
-            label: '南京',
-            children: [
-              {
-                value: 'fuzimiao',
-                label: '夫子庙',
-              }
-            ]
-          },
-          {
-            value: 'suzhou',
-            label: '苏州',
-            children: [
-              {
-                value: 'zhuozhengyuan',
-                label: '拙政园',
-              },
-              {
-                value: 'shizilin',
-                label: '狮子林',
-              }
-            ]
-          }
-        ],
-      }],
       valueDomain: '',
       seckillList: [],
       enterpriseList: [],
@@ -446,12 +647,58 @@ export default {
         '2、 仅限有已经购买云产品的用户领取',
         '3、 此次活动券仅用于支付新睿云平台订单支付时，抵减应支付的订单金额，不能进行兑现或其他用途'
       ],
+      qrConfig: {
+        value: '',
+        imagePath: require('../../../assets/img/active/anniversary/qrCode.png'),
+        filter: 'black',
+        size: 500
+      },
+      shareUrl: '',
+      domainList: [
+        { name: '.club', price: '11.00', unit: '1年', bg: require('../../../assets/img/active/anniversary/anniversary-domain-1.png'), value: '', tip: '' },
+        { name: '.top', price: '9.00', unit: '1年', bg: require('../../../assets/img/active/anniversary/anniversary-domain-2.png'), value: '', tip: '' },
+        { name: '.site', price: '8.00', unit: '1年', bg: require('../../../assets/img/active/anniversary/anniversary-domain-3.png'), value: '', tip: '' }
+      ],
+      renewList: [],
+      // 实名认证参数
+      codeLoseEfficacy: '',
+      tempCode: '',
+      codeTimer: null,
+      authStatus: false,
+      imgSrc: 'https://kfactivity.xrcloud.net/user/getKaptchaImage.do',
+      formCustom: {
+        VerificationPhone: '',
+        Verificationcode: '',
+        messagecode: '',
+        newCodeText: '获取验证码',
+        codeText: '获取验证码',
+      },
+      ruleCustom: {
+        VerificationPhone: [{
+          required: true,
+          validator: validaRegisteredPhone,
+          trigger: 'blur'
+        }],
+        Verificationcode: [{
+          required: true,
+          message: '请输入图形验证码',
+          trigger: 'blur'
+        }],
+        messagecode: [{
+          required: true,
+          message: '请输入收到的验证码',
+          trigger: 'blur'
+        }]
+      },
+      // 实名认证参数结束
     }
   },
   created () {
     this.getSeckill()
     this.getEnterprise()
     this.getDatabase()
+    // this.getDomain()
+    this.getRenew()
   },
   mounted () {
 
@@ -547,7 +794,40 @@ export default {
         }
       })
     },
-    orderSeckill (item) {
+    orderSeckill (item, type) {
+      if (!this.$store.state.userInfo) {
+        if (type == 'p') {
+          this.$LR({ type: 'register' })
+        } else {
+          window.open('https://kfm.xrcloud.net/login', '_self')
+        }
+        return
+      }
+      if ((!this.authInfo) || (this.authInfo && this.authInfo.authtype == 0 && this.authInfo.checkstatus != 0) || (!this.authInfoPersion && this.authInfo && this.authInfo.authtype == 1 && this.authInfo.checkstatus != 0) || (this.authInfoPersion && this.authInfoPersion.checkstatus != 0 && this.authInfo && this.authInfo.checkstatus != 0)) {
+        if (type == 'p') {
+          if (!this.userInfo.phone) {
+            this.showModal.cashverification = true
+          } else if (item.post.certification == 3) {
+            this.$message.confirm({
+              title: '提示',
+              content: '抱歉，只有实名认证用户才可以参加活动',
+              okText: '去实名认证',
+              onOk: () => {
+                window.open('https://kfi.xrcloud.net/usercenter', '_self')
+              }
+            })
+          } else {
+            this.refreshQRFirst()
+          }
+        } else {
+          if (item.post.certification == 3) {
+            window.open('https://kfi.xrcloud.net/usercenter', '_self')
+          } else {
+            window.open('https://kfm.xrcloud.net/faceindex', '_self')
+          }
+        }
+        return
+      }
       let params = {}
       let url = ''
       switch (item.servicetype) {
@@ -575,15 +855,29 @@ export default {
           url = 'ruiradosPrice/getDickCountOSS.do'
           break
       }
-      axios.get(url, {
-        params: params
-      }).then(response => {
-        if (response.status == 200 && response.data.status == 1) {
-          window.open('https://kfi.xrcloud.net/order', '_self')
-        } else {
-          this.$Message.info(response.data.message)
-        }
-      })
+      if (item.servicetype == 'oss') {
+        axios.post(url, params).then(response => {
+          if (response.status == 200 && response.data.status == 1) {
+            window.open('https://kfi.xrcloud.net/order', '_self')
+          } else {
+            this.$message.info({
+              content: response.data.message
+            })
+          }
+        })
+      } else {
+        axios.get(url, {
+          params: params
+        }).then(response => {
+          if (response.status == 200 && response.data.status == 1) {
+            window.open('https://kfi.xrcloud.net/order', '_self')
+          } else {
+            this.$message.info({
+              content: response.data.message
+            })
+          }
+        })
+      }
     },
     getEnterprise () {
       axios.get('activity/getTemActInfoById.do', {
@@ -608,7 +902,7 @@ export default {
             this.enterpriseList[i].id = this.enterpriseList[i].idList[0]
           }
         }
-        console.log(this.enterpriseList)
+        // console.log(this.enterpriseList)
       })
     },
     changeTimeE (item, inner, index) {
@@ -624,6 +918,12 @@ export default {
         }
       }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
+          console.log(response.data.result.listMap)
+          let resultList = response.data.result.listMap
+          let newMap = {}
+          // resultList.forEach(item => {
+          //   if(item.configtype)
+          // })
           // this.enterpriseList = response.data.result.freevmconfigResultMap
           // for (let i in this.enterpriseList) {
           //   this.enterpriseList[i].zoneList = response.data.result.optionalArea
@@ -684,14 +984,37 @@ export default {
       }
       return text
     },
+    shareNew (type) {
+      if (!this.$store.state.userInfo) {
+        if (type == 'p') {
+          this.$LR({ type: 'register' })
+        } else {
+          window.open('https://kfm.xrcloud.net/login', '_self')
+        }
+        return false
+      }
+      axios.get('activity/createTimeLink.do', {
+        params: {
+          ts: '4Y1V0J'
+        }
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          this.shareUrl = response.data.result.url
+          this.qrConfig.value = this.shareUrl
+          this.showModal.share = true
+        } else {
+          this.$Message.info("平台出小差了");
+        }
+      })
+    },
     copyUrl () {
-      this.$refs.copy.focus()
-      var obj = this.$refs.copy
-      obj.select()
-      document.execCommand("copy");
+      let dom = this.$refs.copy_content
+      dom.value = this.shareUrl
+      dom.select()
+      document.execCommand("copy")
       try {
         if (document.execCommand("copy")) {
-          this.$Message.success("复制成功");
+          this.$Message.success("链接复制成功");
         } else {
           this.$Message.info("平台出小差了");
         }
@@ -700,16 +1023,377 @@ export default {
           this.$Message.info("该浏览器暂不支持复制");
         }
       }
+      this.showModal.share = false
     },
+    // getDomain () {
+    //   axios.get('activity/getTemActInfoById.do', {
+    //     params: {
+    //       activityNum: 67
+    //     }
+    //   }).then(response => {
+
+    //   })
+    // },
+    checkDomain (item) {
+      if (item.value == '') {
+        item.tip = '请输入域名'
+        return false
+      }
+      axios.post('domain/domainFound.do', {
+        domainName: item.value,
+        tids: item.name
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          if (!response.data.results) {
+            item.tip = '暂无数据！'
+          } else if (response.data.results[0].status == 1) {
+            item.tip = '* 对不起，域名已被注册，换个域名试试吧！'
+          } else if (response.data.results[0].isRes == 'unavailable') {
+            item.tip = '* 对不起，域名不可注册！'
+          } else if (response.data.results[0].isRes == 'available') {
+            item.tip = '域名可注册'
+          }
+        } else {
+          this.$Message.info(response.data.msg);
+        }
+      })
+    },
+    buyDomain (type) {
+      if (!this.$store.state.userInfo) {
+        if (type == 'p') {
+          this.$LR({ type: 'register' })
+        } else {
+          window.open('https://kfm.xrcloud.net/login', '_self')
+        }
+        return false
+      }
+      window.open('https://kfdomain.xrcloud.net/xrdomain/domaininfotemplate', '_self')
+    },
+    getRenew () {
+      axios.get('activity/getActTicket.do', {
+        params: {
+          activityNum: '68'
+        }
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          this.renewList = response.data.result.freevmconfigs
+        }
+      })
+    },
+    toRenew (id, type) {
+      if (!this.$store.state.userInfo) {
+        if (type == 'p') {
+          this.$LR({ type: 'register' })
+        } else {
+          window.open('https://kfm.xrcloud.net/login', '_self')
+        }
+        return false
+      }
+      axios.get('ticket/getTicketForConfigId.do', {
+        params: {
+          vmConfigId: id
+        }
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          // this.renewList = response.data.result.freevmconfigs
+          this.$message.info({
+            content: response.data.message
+          })
+        } else {
+          this.$message.info({
+            content: response.data.message
+          })
+        }
+      })
+    },
+    roll (val) {
+      $('html, body').animate({ scrollTop: val }, 300)
+    },
+    // 实名认证方法
+    refreshQRFirst () {
+      this.tempCode = this.uuid(6, 16)
+      let url = '/faceRecognition/getUserInfoByPcQRCode.do'
+      let config1 = {
+        phone: this.userInfo.phone ? this.userInfo.phone : this.formCustom.VerificationPhone,
+      }
+      let params = {
+        faceType: '1',
+        tempCode: this.tempCode
+      }
+      params.config = JSON.stringify(config1)
+      axios.post(url, params).then(res => {
+        if (res.status == 200 && res.data.status == 1) {
+          this.refreshUserStatus()
+          this.showModal.qrCode = true
+          this.qrConfig.value = res.data.result.url
+          this.codeLoseEfficacy = ''
+        } else {
+          this.codeLoseEfficacy = 'lose'
+        }
+      })
+    },
+    refreshUserStatus () {
+      clearInterval(this.codeTimer)
+      this.codeTimer = setInterval(() => {
+        this.$http.get('/faceRecognition/getAllStatus.do', { params: { tempCode: this.tempCode } }).then(res => {
+          if (res.status == 200 && res.data.status == 1) {
+            if (res.data.result.qrCode == 0) {
+              this.codeLoseEfficacy = 'lose'
+            }
+            if (res.data.result.qrCode == 2) {
+              this.codeLoseEfficacy = 'scanSuccess'
+            }
+            if (res.data.result.authStatus == 1) {
+              this.init()
+              this.showModal.qrCode = false
+              clearInterval(this.codeTimer)
+            }
+            if (res.data.result.authStatus == 0) {
+              this.authStatus = true
+            } else if (res.data.result.authStatus == 3) {
+              // this.showModal.authHint = true
+              this.$message.confirm({
+                title: '提示',
+                content: '抱歉，人脸识别实名认证失败！您也可以前往用户中心上传身份证照片进行实名认证。',
+                okText: '去实名认证',
+                onOk: () => {
+                  window.open('https://kfi.xrcloud.net/usercenter', '_self')
+                }
+              })
+            }
+          }
+        })
+      }, 3000)
+    },
+    Callpresentation () {
+      this.$refs.cashverification.validateField('messagecode', (text) => {
+        if (text == '') {
+          let url = 'user/judgeCode.do'
+          let params = {}
+          if (this.formCustom.VerificationPhone) {
+            params = {
+              aim: this.formCustom.VerificationPhone,
+              isemail: 0,
+              code: this.formCustom.messagecode
+            }
+          }
+          axios.get(url, {
+            params
+          }).then(res => {
+            if (res.data.status == 1 && res.status == 200) {
+              if (this.phoneVerifyType === 'identification') {
+                this.showModal.cashverification = false
+                this.tempCode = this.uuid(6, 16)
+                let url = '/faceRecognition/getUserInfoByPcQRCode.do'
+                let config = {
+                  phone: this.userInfo.phone ? this.userInfo.phone : this.formCustom.VerificationPhone,
+                }
+                axios.post(url, {
+                  faceType: '1',
+                  config: JSON.stringify(config),
+                  tempCode: this.tempCode
+                }).then(res => {
+                  if (res.status == 200 && res.data.status == 1) {
+                    this.qrConfig.value = res.data.result.url
+                    this.showModal.qrCode = true
+                    this.codeLoseEfficacy = ''
+                    this.refreshUserStatus()
+                  } else {
+                    this.codeLoseEfficacy = 'lose'
+                    this.showModal.qrCode = true
+                    this.refreshUserStatus()
+                  }
+                })
+              }
+            } else {
+              this.$message.info({
+                content: res.data.message
+              })
+            }
+          })
+        }
+      })
+    },
+    uuid (len, radix) {
+      var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+      var uuid = [], i;
+      radix = radix || chars.length;
+
+      if (len) {
+        // Compact form
+        for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random() * radix];
+      } else {
+        // rfc4122, version 4 form
+        var r;
+
+        // rfc4122 requires these characters
+        uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
+        uuid[14] = '4';
+
+        // Fill in random data.  At i==19 set the high bits of clock sequence as
+        // per rfc4122, sec. 4.1.5
+        for (i = 0; i < 36; i++) {
+          if (!uuid[i]) {
+            r = 0 | Math.random() * 16;
+            uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
+          }
+        }
+      }
+      return uuid.join('');
+    },
+    refreshQRCode: throttle(1000, function () {
+      this.authStatus = false
+      this.tempCode = this.uuid(6, 16)
+      let url = '/faceRecognition/getUserInfoByPcQRCode.do'
+      let config1 = {
+        phone: this.userInfo.phone ? this.userInfo.phone : this.formCustom.VerificationPhone,
+      }
+      let params = {
+        faceType: '1',
+        tempCode: this.tempCode
+      }
+      params.config = JSON.stringify(config1)
+      axios.post(url, params).then(res => {
+        if (res.status == 200 && res.data.status == 1) {
+          this.$Message.success('刷新成功')
+          this.qrConfig.value = res.data.result.url
+          this.codeLoseEfficacy = ''
+        } else {
+          this.codeLoseEfficacy = 'lose'
+        }
+      })
+    }),
+    getPhoneCode (codeType) {
+      if (!this.userInfo.phone && !this.regExpObj.phone.test(this.formCustom.VerificationPhone)) {
+        this.$Message.info('请输入正确的手机号')
+        return
+      }
+      if (this.formCustom.VerificationPhone) {
+        axios.get('user/isRegister.do', {
+          params: {
+            username: this.formCustom.VerificationPhone
+          }
+        }).then(res => {
+          if (res.status === 200 && res.data.status === 1) {
+            this.$refs.cashverification.validateField('Verificationcode', (text) => {
+              if (text == '') {
+                var url = ''
+                if (codeType == 'code' || codeType == 'againCode' && this.formCustom.newCodeText == '获取验证码') {
+                  url = 'user/code.do'
+                } else if (codeType == 'voice' && this.formCustom.newCodeText == '获取验证码') {
+                  url = 'user/voiceCode.do'
+                } else {
+                  return false
+                }
+                axios.get(url, {
+                  params: {
+                    aim: this.formCustom.VerificationPhone,
+                    isemail: 0,
+                    vailCode: this.formCustom.Verificationcode
+                  }
+                }).then(response => {
+                  // 发送成功，进入倒计时
+                  if (response.status == 200 && response.data.status == 1) {
+                    var countdown = 60
+                    this.formCustom.newCodeText = `${countdown}S`
+                    var Interval = setInterval(() => {
+                      countdown--
+                      this.formCustom.newCodeText = `${countdown}S`
+                      if (countdown == 0) {
+                        clearInterval(Interval)
+                        this.formCustom.newCodeText = '获取验证码'
+                      }
+                    }, 1000)
+                  } else {
+                    this.$message.info({
+                      content: response.data.message
+                    })
+                    this.imgSrc = `user/getKaptchaImage.do?t=${new Date().getTime()}`
+                    this.formCustom.Verificationcode = ''
+                  }
+                })
+              }
+            })
+          } else {
+            this.$Message.info('该手机号已被使用')
+          }
+        })
+      }
+    },
+    Callpresentation () {
+      this.$refs.cashverification.validateField('messagecode', (text) => {
+        if (text == '') {
+          let url = 'user/judgeCode.do'
+          let params = {}
+          if (this.formCustom.VerificationPhone) {
+            params = {
+              aim: this.formCustom.VerificationPhone,
+              isemail: 0,
+              code: this.formCustom.messagecode
+            }
+          }
+          axios.get(url, {
+            params
+          }).then(res => {
+            if (res.data.status == 1 && res.status == 200) {
+              if (this.phoneVerifyType === 'identification') {
+                this.showModal.cashverification = false
+                this.tempCode = this.uuid(6, 16)
+                let url = '/faceRecognition/getUserInfoByPcQRCode.do'
+                let config = {
+                  phone: this.userInfo.phone ? this.userInfo.phone : this.formCustom.VerificationPhone,
+                }
+                axios.post(url, {
+                  faceType: '1',
+                  config: JSON.stringify(config),
+                  tempCode: this.tempCode
+                }).then(res => {
+                  if (res.status == 200 && res.data.status == 1) {
+                    this.qrConfig.value = res.data.result.url
+                    this.showModal.qrCode = true
+                    this.codeLoseEfficacy = ''
+                    this.refreshUserStatus()
+                  } else {
+                    this.codeLoseEfficacy = 'lose'
+                    this.showModal.qrCode = true
+                    this.refreshUserStatus()
+                  }
+                })
+              }
+            } else {
+              this.$message.info({
+                content: res.data.message
+              })
+            }
+          })
+        }
+      })
+    },
+    // 实名认证方法结束
   },
   computed: {
-
+    authInfo () {
+      return this.$store.state.authInfo ? this.$store.state.authInfo : null
+    },
+    authInfoPersion () {
+      return this.$store.state.authInfoPersion
+    },
+    userInfo () {
+      return this.$store.state.userInfo
+    },
+    disabled () {
+      if (this.formCustom.Verificationcode == '' || this.formCustom.messagecode == '') {
+        return true
+      } else {
+        return false
+      }
+    }
   },
   watch: {
 
   },
   components: {
-
+    VueQArt
   }
 }
 </script>
@@ -1120,15 +1804,18 @@ section:nth-of-type(4) {
 }
 .domain {
   .item {
+    display: inline-block;
+    margin-right: 75px;
     width: 350px;
     height: 340px;
-    border: 1px goldenrod solid;
+    border: 1px solid rgba(235, 193, 98, 1);
     border-radius: 2px;
+    &:last-of-type {
+      margin-right: 0;
+    }
     header {
       height: 170px;
       padding: 30px 0 0 30px;
-      background: url(../../../assets/img/active/anniversary/anniversary-domain-1.png)
-        top no-repeat;
       h3 {
         margin-bottom: 30px;
         color: #e9ba45;
@@ -1147,6 +1834,12 @@ section:nth-of-type(4) {
         img {
           cursor: pointer;
         }
+      }
+      .tip {
+        display: inline-block;
+        margin-top: 12px;
+        font-size: 12px;
+        color: #ff624b;
       }
     }
     .content {
@@ -1238,27 +1931,112 @@ section:nth-of-type(4) {
     div {
       display: inline-block;
       span {
-        display: inline-block;
+        display: block;
         margin-top: 20px;
         font-size: 14px;
       }
     }
   }
   .qr-code {
-    width: 100px;
-    margin-right: 115px;
-    img {
-      width: 100px;
-    }
+    margin-right: 50px;
   }
   .url {
     width: 120px;
     .btn {
-      margin-bottom: 25px;
+      margin-bottom: 85px;
       width: 120px;
       font-size: 16px;
       border-radius: 20px;
     }
   }
 }
+.rule {
+  ul {
+    padding: 10px;
+    li {
+      margin-bottom: 20px;
+      font-size: 16px;
+      line-height: 24px;
+    }
+  }
+  .footer {
+    text-align: center;
+  }
+}
+.pc-640 {
+  display: block;
+}
+.mobile-640 {
+  display: none;
+}
+.pc-640-inline {
+  display: inline-block;
+}
+.mobile-640-inline {
+  display: none;
+}
+@media screen and (max-width: 640px) {
+  .pc-640 {
+    display: none;
+  }
+  .mobile-640 {
+    display: block;
+  }
+  .pc-640-inline {
+    display: none;
+  }
+  .mobile-640-inline {
+    display: inline-block;
+  }
+}
+// 实名认证样式
+.qrcode-modal {
+  text-align: center;
+  .qr-code {
+    height: 198px;
+    width: 197px;
+    background: url("../../../assets/img/app/auth_background.png") no-repeat
+      center;
+    margin: 30px auto;
+    position: relative;
+    .shade {
+      position: absolute;
+      top: 0;
+      height: 198px;
+      width: 197px;
+      background: url("../../../assets/img/app/lose_efficacy.png") center;
+      &.scanSuccess {
+        background: url("../../../assets/img/app/scan_success.png") center;
+      }
+    }
+  }
+  > p {
+    font-size: 14px;
+    font-family: MicrosoftYaHei;
+    color: rgba(51, 51, 51, 1);
+    margin: 10px;
+    > span {
+      color: #ff624b;
+    }
+  }
+  .p-top {
+    font-family: MicrosoftYaHei-Bold;
+    font-weight: bold;
+    color: rgba(237, 64, 20, 1);
+  }
+  .p-bottom {
+    margin-top: 14px;
+    margin-bottom: 0;
+    > span {
+      color: #4297f2;
+      cursor: pointer;
+    }
+  }
+}
+.person-check {
+  .w300 {
+    width: 300px;
+  }
+}
+// 实名认证结束
 </style>
