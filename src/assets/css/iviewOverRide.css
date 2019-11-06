@@ -727,6 +727,12 @@ box-shadow:0px 2px 3px 0px rgba(115,115,115,0.4);
 .aa-system .ivu-input {
   border: 1px solid #FFD08C;
 }
+.aa-system-1 .ivu-input,.aa-system .ivu-select-selection{
+  border: 1px solid #FFD08C;
+}
+.aa-system-1 .ivu-input {
+  border: 1px solid #FFD08C;
+}
 .aa-modal .ivu-modal-header p, .ivu-modal-header-inner {
   font-size:24px;
   font-weight:500;

@@ -7,7 +7,12 @@
       <div class="to-top" @click="roll(0)">回到顶部</div>
     </aside>
     <section class="banner">
-      <div class="wrap">
+      <img
+        src="../../../assets/img/active/anniversary/aa-banner-m.png"
+        alt="banner"
+        class="mobile-640 banner-m"
+      />
+      <div class="wrap pc-640">
         <div class="container">
           <div class="text">
             <img
@@ -91,11 +96,7 @@
                     <div class="row-yellow" v-if="item.servicetype=='oss'">下载流量：1TB</div>
                     <div :class="{mb10:item.servicetype=='G5500'}">
                       <span class="label">区域：</span>
-                      <Select
-                        v-model="item.zone"
-                        style="width:142px"
-                        @on-change="changeZoneSeckill(item)"
-                      >
+                      <Select v-model="item.zone" class="w" @on-change="changeZoneSeckill(item)">
                         <Option
                           v-for="(item,index) in item.zoneList"
                           :value="item.value"
@@ -105,11 +106,7 @@
                     </div>
                     <div v-if="item.servicetype!='oss'" :class="{mb10:item.servicetype=='G5500'}">
                       <span class="label">系统：</span>
-                      <Cascader
-                        :data="item.systemList"
-                        v-model="item.system"
-                        style="width:142px;display:inline-block"
-                      ></Cascader>
+                      <Cascader :data="item.systemList" v-model="item.system" class="w"></Cascader>
                     </div>
                   </div>
                 </div>
@@ -122,8 +119,8 @@
                   </p>
                   <span>原价：￥{{item.originalPrice}}/{{formatDay(item.days)}}</span>
                 </div>
-                <span class="btn pc-640" @click="orderSeckill(item,'p')">立即抢购</span>
-                <span class="btn mobile-640" @click="orderSeckill(item,'m')">立即抢购</span>
+                <span class="btn pc-640-inline" @click="orderSeckill(item,'p')">立即抢购</span>
+                <span class="btn mobile-640-inline" @click="orderSeckill(item,'m')">立即抢购</span>
               </div>
             </div>
           </div>
@@ -140,7 +137,7 @@
               <span @click="showModal.ruleE=true">活动规则></span>
             </p>
           </header>
-          <div class="container">
+          <div class="container aa-system-1">
             <div class="item" v-for="(item,index) in enterpriseList" :key="index">
               <div class="left">
                 <p>{{item.cpu+'核'+item.mem+'G '+item.bandwith+'M带宽'}}</p>
@@ -150,7 +147,7 @@
                 <ul class="center">
                   <li>
                     <span class="label">区域</span>
-                    <Select v-model="item.zone" style="width:150px">
+                    <Select v-model="item.zone" class="w150">
                       <Option
                         v-for="(item,index) in item.zoneList"
                         :value="item.value"
@@ -160,11 +157,7 @@
                   </li>
                   <li>
                     <span class="label">系统</span>
-                    <Cascader
-                      :data="item.systemList"
-                      v-model="item.system"
-                      style="width:230px;display:inline-block"
-                    ></Cascader>
+                    <Cascader :data="item.systemList" v-model="item.system" style="w230"></Cascader>
                   </li>
                   <li>
                     <span class="label">可选时长</span>
@@ -201,77 +194,69 @@
               <span @click="showModal.ruleDB=true">活动规则></span>
             </p>
           </header>
-          <div class="container">
-            <div class="item" v-for="(item,index) in enterpriseList" :key="index">
+          <div class="container aa-system-1">
+            <div class="item" v-for="(item,index) in databaseList" :key="index">
               <div class="left">
-                <p>{{item.cpu+'核'+item.mem+'G '+item.bandwith+'M带宽'}}</p>
-                <span>{{item.disksize+'G '+item.disktype.toUpperCase()+'盘'}}</span>
+                <p>{{item.key}}</p>
+                <span>{{item.rootDiskSize+'G系统盘 '+item.dataDiskSize+'G数据盘'}}</span>
               </div>
-              <div class="content">
+              <div class="content aa-system-1">
                 <ul class="center">
                   <li>
                     <span class="label">可选规格</span>
-                    <Select v-model="item.zone" style="width:120px">
+                    <Select v-model="item.specs" class="w120" @on-change="changeConfig(item)">
                       <Option
-                        v-for="(item,index) in item.zoneList"
-                        :value="item.value"
+                        v-for="(inner,index) in item.specsList"
+                        :value="inner.cpu+'#'+inner.mem"
                         :key="index"
-                      >{{ item.name }}</Option>
+                      >{{ inner.cpu+'核'+inner.mem+'G' }}</Option>
                     </Select>
                   </li>
                   <li>
                     <span class="label">可选带宽</span>
-                    <Select v-model="item.zone" style="width:100px">
+                    <Select v-model="item.bandwith" class="w100" @on-change="changeBandwith(item)">
                       <Option
-                        v-for="(item,index) in item.zoneList"
-                        :value="item.value"
+                        v-for="(inner,index) in item.bandwithList"
+                        :value="inner.bandwith"
                         :key="index"
-                      >{{ item.name }}</Option>
+                      >{{ inner.bandwith }}M</Option>
                     </Select>
                   </li>
                   <li>
                     <span class="label">可选区域</span>
-                    <Select v-model="item.zone" style="width:140px">
+                    <Select v-model="item.zone" class="w140">
                       <Option
-                        v-for="(item,index) in item.zoneList"
-                        :value="item.value"
+                        v-for="(inner,index) in item.zoneList"
+                        :value="inner.value"
                         :key="index"
-                      >{{ item.name }}</Option>
+                      >{{ inner.name }}</Option>
                     </Select>
                   </li>
-                  <!-- <li>
-                    <span class="label">系统</span>
-                    <Cascader
-                      :data="item.systemList"
-                      v-model="item.system"
-                      style="width:230px;display:inline-block"
-                    ></Cascader>
-                  </li>-->
-                  <li>
+                  <li style="margin-right:30px;">
                     <span class="label">可选时长</span>
                     <div class="time">
                       <span
                         v-for="(inner,index) in item.timeList"
                         :key="index"
-                        @click="changeTimeE(item,inner,index)"
-                        :class="{'selected':inner == item.days}"
+                        @click="changeTimeD(item,inner)"
+                        :class="{'selected':inner.days == item.days&&inner.discount == item.discount}"
                       >
-                        {{inner/360}}年
-                        <i>1.2折</i>
+                        {{inner.days<360?inner.days/30+'月':inner.days/360+'年'}}
+                        <i>{{inner.discount}}折</i>
                       </span>
                     </div>
                   </li>
                 </ul>
                 <div class="right">
-                  <div class="price">
+                  <div class="price" style="width:156px">
                     <p class="cost">
                       <i>￥</i>
                       <span>{{item.cost}}</span>
                     </p>
                     <span class="origin-cost">原价：￥{{item.originalPrice}}</span>
                   </div>
-                  <span class="btn pc-640-inline" @click="orderSeckill(item,'p')">立即抢购</span>
-                  <span class="btn mobile-640-inline" @click="orderSeckill(item,'m')">立即抢购</span>
+                  <span class="btn pc-640-inline" @click="orderDB(item,'p')">立即抢购</span>
+                  <span class="btn mobile-640-inline" @click="orderDB(item,'m')">立即抢购</span>
                 </div>
               </div>
             </div>
@@ -287,7 +272,7 @@
           </header>
           <div class="container">
             <div class="item" v-for="(item,index) in domainList" :key="index">
-              <header :style="{background:'url('+item.bg+')',backgroundRepeat:'no-repeat'}">
+              <header>
                 <h3>{{item.name}} 域名</h3>
                 <div class="input-group">
                   <input
@@ -325,21 +310,27 @@
           </header>
           <div class="container">
             <div class="item" v-for="(item,index) in renewList" :key="index">
-              <div class="discount">
-                <p>
-                  <span>{{item.moneyDesc}}</span>
-                  <i>折</i>
-                </p>
-                <span>年续费券</span>
-              </div>
-              <span class="btn pc-640-inline" @click="toRenew(item.id,'p')">我要续费</span>
-              <span class="btn mobile-640-inline" @click="toRenew(item.id,'m')">我要续费</span>
-              <div class="text">
-                <span>新睿云11.17周年庆回馈老用户</span>
-                <p>
-                  云服务器年续费一律
-                  <span>{{item.moneyDesc}}折</span>
-                </p>
+              <img
+                src="../../../assets/img/active/anniversary/anniversary-renew-bg.png"
+                alt="续费背景图"
+              />
+              <div class="box">
+                <div class="discount">
+                  <p>
+                    <span>{{item.moneyDesc}}</span>
+                    <i>折</i>
+                  </p>
+                  <span>年续费券</span>
+                </div>
+                <span class="btn pc-640-inline" @click="toRenew(item.id,'p')">我要续费</span>
+                <span class="btn mobile-640-inline" @click="toRenew(item.id,'m')">我要续费</span>
+                <div class="text">
+                  <span>新睿云11.17周年庆回馈老用户</span>
+                  <p>
+                    云服务器年续费一律
+                    <span>{{item.moneyDesc}}折</span>
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -614,6 +605,7 @@ export default {
       valueDomain: '',
       seckillList: [],
       enterpriseList: [],
+      databaseList: [],
       ruleListKill: [
         '1、活动时间：2019.11.7-2019.12.31',
         '2、活动对象：新老用户皆可参与；新用户是未使用过平台资源（第三方产品除外）及未参加过其他免费活动并已通过实名认证的用户',
@@ -918,27 +910,111 @@ export default {
         }
       }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          console.log(response.data.result.listMap)
-          let resultList = response.data.result.listMap
-          let newMap = {}
-          // resultList.forEach(item => {
-          //   if(item.configtype)
-          // })
-          // this.enterpriseList = response.data.result.freevmconfigResultMap
-          // for (let i in this.enterpriseList) {
-          //   this.enterpriseList[i].zoneList = response.data.result.optionalArea
-          //   this.enterpriseList[i].zone = this.enterpriseList[i].zoneList[0].value
-          //   this.$set(this.enterpriseList[i], 'systemList', this.formatSystem(response.data.result.mvTem))
-          //   this.enterpriseList[i].system = [this.enterpriseList[i].systemList[0].label, this.enterpriseList[i].systemList[0].children[0].value]
-          //   this.enterpriseList[i].timeList = this.enterpriseList[i].days.split(',')
-          //   this.enterpriseList[i].days = this.enterpriseList[i].timeList[0]
-          //   this.enterpriseList[i].costList = this.enterpriseList[i].cost.split(',')
-          //   this.enterpriseList[i].cost = this.enterpriseList[i].costList[0]
-          //   this.enterpriseList[i].originalPriceList = this.enterpriseList[i].originalPrice.split(',')
-          //   this.enterpriseList[i].originalPrice = this.enterpriseList[i].originalPriceList[0]
-          //   this.enterpriseList[i].idList = this.enterpriseList[i].id.split(',')
-          //   this.enterpriseList[i].id = this.enterpriseList[i].idList[0]
-          // }
+          // console.log(response.data.result.listMap)
+          this.databaseList = response.data.result.listMap
+          this.databaseList.forEach(item => {
+            item.specsList = item.value.map(inner => {
+              return { 'cpu': inner.cpu, 'mem': inner.mem }
+            })
+            item.specs = item.value[0].cpu + '#' + item.value[0].mem
+            item.rootDiskSize = item.value[0].rootDiskSize
+            item.dataDiskSize = item.value[0].dataDiskSize
+            // item.disk = item.value[0].disksize
+            this.$set(item, 'bandwithList', [])
+            this.changeConfig(item)
+            item.zoneList = response.data.result.optionalArea
+            item.zone = item.zoneList[0].value
+            // item.timeList = []
+            this.$set(item, 'timeList', [])
+            this.changeBandwith(item)
+            this.$set(item, 'days', '')
+            this.$set(item, 'discount', '')
+            this.$set(item, 'cost', '687')
+            this.$set(item, 'originalPrice', '8701.92')
+            // item.days = ''
+          })
+        }
+      })
+    },
+    changeConfig (item) {
+      item.value.forEach(inner => {
+        if (inner.cpu == item.specs.split('#')[0] && inner.mem == item.specs.split('#')[1]) {
+          item.sList = JSON.parse(inner.config)
+          item.bandwithList = item.sList.map(sec => {
+            return { 'bandwith': sec.bandwidth }
+          })
+          item.bandwith = item.bandwithList[0].bandwith
+        }
+      })
+      // console.log(item.bandwithList)
+    },
+    changeBandwith (item) {
+      // console.log(item)
+      let dayslist = item.sList.filter(inner => {
+        return inner.bandwidth == item.bandwith
+      })
+      item.timeList = dayslist[0].value.map(sec => {
+        return { 'days': sec.days, 'discount': (sec.discount * 10).toFixed(2) }
+      })
+      // console.log(item.timeList)
+      item.days = item.timeList[0].days
+    },
+    changeTimeD (item, inner) {
+      // console.log(item)
+      // console.log(inner)
+      item.days = inner.days
+      item.discount = inner.discount
+      // console.log(item.days)
+    },
+    orderDB (item, type) {
+      if (!this.$store.state.userInfo) {
+        if (type == 'p') {
+          this.$LR({ type: 'register' })
+        } else {
+          window.open('https://kfm.xrcloud.net/login', '_self')
+        }
+        return
+      }
+      if ((!this.authInfo) || (this.authInfo && this.authInfo.authtype == 0 && this.authInfo.checkstatus != 0) || (!this.authInfoPersion && this.authInfo && this.authInfo.authtype == 1 && this.authInfo.checkstatus != 0) || (this.authInfoPersion && this.authInfoPersion.checkstatus != 0 && this.authInfo && this.authInfo.checkstatus != 0)) {
+        if (type == 'p') {
+          if (!this.userInfo.phone) {
+            this.showModal.cashverification = true
+          } else if (item.post.certification == 3) {
+            this.$message.confirm({
+              title: '提示',
+              content: '抱歉，只有实名认证用户才可以参加活动',
+              okText: '去实名认证',
+              onOk: () => {
+                window.open('https://kfi.xrcloud.net/usercenter', '_self')
+              }
+            })
+          } else {
+            this.refreshQRFirst()
+          }
+        } else {
+          if (item.post.certification == 3) {
+            window.open('https://kfi.xrcloud.net/usercenter', '_self')
+          } else {
+            window.open('https://kfm.xrcloud.net/faceindex', '_self')
+          }
+        }
+        return
+      }
+      axios.get('database/getDeductionsDatabase.do', {
+        params: {
+          vmConfigId: item.id,
+          defzoneid: item.zone,
+          days: '',
+          bandwidth: '',
+          dbVersion: ''
+        }
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          window.open('https://kfi.xrcloud.net/order', '_self')
+        } else {
+          this.$message.info({
+            content: response.data.message
+          })
         }
       })
     },
@@ -1593,21 +1669,24 @@ section:nth-of-type(2) {
         width: 100%;
         background: url(../../../assets/img/active/anniversary/anniversary-border-img.png)
           center no-repeat;
+        background-size: 100% auto;
         position: absolute;
         bottom: 0;
       }
     }
     .content {
-      padding: 20px 0 30px 20px;
+      padding: 20px 20px 30px 20px;
       .middle {
         height: 162px;
         .configure {
+          text-align: justify;
+          &:after {
+            display: inline-block;
+            width: 100%;
+            content: "";
+          }
           li {
             display: inline-block;
-            margin-right: 20px;
-            &:last-of-type {
-              margin-right: 0;
-            }
             i {
               display: block;
             }
@@ -1629,6 +1708,10 @@ section:nth-of-type(2) {
           }
           .lh1 {
             line-height: 1;
+          }
+          .w {
+            width: 142px;
+            display: inline-block;
           }
         }
         .pt16 {
@@ -1664,6 +1747,7 @@ section:nth-of-type(3) {
     url(../../../assets/img/active/anniversary/anniversary-bg-icon-2.png) 95%
       90% no-repeat;
   background-color: rgba(20, 20, 17, 1);
+  padding-bottom: 80px;
   .sub-head {
     color: #fff;
     p {
@@ -1680,8 +1764,8 @@ section:nth-of-type(3) {
     color: #fff;
     font-size: 0;
     // border-top: solid 1px #a99b8a;
-    // border-bottom: solid 1px #a99b8a;
-    margin-bottom: 1px;
+    border-bottom: solid 1px #666666;
+    // margin-bottom: 1px;
     .left {
       width: 200px;
       height: 130px;
@@ -1713,6 +1797,22 @@ section:nth-of-type(3) {
         li {
           display: inline-block;
           margin-right: 20px;
+          .w150 {
+            width: 150px;
+          }
+          .w230 {
+            width: 230px;
+            display: inline-block;
+          }
+          .w140 {
+            width: 140px;
+          }
+          .w120 {
+            width: 120px;
+          }
+          .w100 {
+            width: 100px;
+          }
           .label {
             display: block;
             margin-bottom: 14px;
@@ -1723,7 +1823,7 @@ section:nth-of-type(3) {
               position: relative;
               display: block;
               display: inline-block;
-              width: 46px;
+              width: 50px;
               height: 35px;
               border: 1px solid rgba(235, 193, 98, 1);
               border-right: none;
@@ -1813,6 +1913,18 @@ section:nth-of-type(4) {
     &:last-of-type {
       margin-right: 0;
     }
+    &:nth-of-type(1) header {
+      background: url(../../../assets/img/active/anniversary/anniversary-domain-1.png)
+        center no-repeat;
+    }
+    &:nth-of-type(2) header {
+      background: url(../../../assets/img/active/anniversary/anniversary-domain-1.png)
+        center no-repeat;
+    }
+    &:nth-of-type(3) header {
+      background: url(../../../assets/img/active/anniversary/anniversary-domain-1.png)
+        center no-repeat;
+    }
     header {
       height: 170px;
       padding: 30px 0 0 30px;
@@ -1868,14 +1980,16 @@ section:nth-of-type(4) {
     border-radius: 10px;
     border: 2px solid rgba(235, 193, 98, 1);
     background: #f6f1e8;
+    text-align: center;
     .item {
-      margin: 0 auto;
-      padding-top: 55px;
-      width: 615px;
-      height: 371px;
-      background: url(../../../assets/img/active/anniversary/anniversary-domain-bg.png)
-        top no-repeat;
-      text-align: center;
+      display: inline-block;
+      position: relative;
+      .box {
+        position: absolute;
+        top: 0;
+        padding-top: 55px;
+        width: 100%;
+      }
       .discount {
         p {
           margin-bottom: 10px;
@@ -2039,4 +2153,218 @@ section:nth-of-type(4) {
   }
 }
 // 实名认证结束
+@media screen and (max-width: 640px) {
+  .pc-640 {
+    display: none;
+  }
+  .mobile-640 {
+    display: block;
+  }
+  .pc-640-inline {
+    display: none;
+  }
+  .mobile-640-inline {
+    display: inline-block;
+  }
+  .wrap {
+    width: 100%;
+  }
+  aside {
+    display: none;
+  }
+  .banner {
+    height: auto;
+    .banner-m {
+      width: 100%;
+    }
+  }
+  .new-user {
+    padding: 10px 15px 15px 15px;
+    background: linear-gradient(
+      180deg,
+      rgba(221, 203, 161, 1) 0%,
+      rgba(184, 155, 104, 1) 100%
+    );
+    .left {
+      display: none;
+    }
+    .desc {
+      width: 100%;
+      margin: 0;
+    }
+    .btn {
+      width: 100%;
+      margin-top: 8px;
+    }
+  }
+  .seckill {
+    padding: 15px;
+    margin-bottom: 0;
+    .item {
+      width: 100%;
+      margin-right: 0;
+      margin-bottom: 15px;
+      .content {
+        .middle .center .w {
+          width: calc(100% - 18px);
+        }
+        .price {
+          display: inline-block;
+        }
+        .btn {
+          float: right;
+          width: auto;
+          padding-left: 30px;
+          padding-right: 30px;
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+  section:nth-of-type(3) {
+    background: #141411;
+    padding-bottom: 0;
+  }
+  .enterprise {
+    padding: 15px;
+    .item {
+      margin-bottom: 15px;
+      .left {
+        width: 100%;
+        height: auto;
+        padding: 10px 15px;
+        background: url("../../../assets/img/active/anniversary/aa-item-bg-m.png")
+          center no-repeat;
+        background-size: cover;
+      }
+      .content {
+        width: 100%;
+        height: auto;
+        background: #fff;
+        padding: 15px;
+        .center {
+          border-right: none;
+          li {
+            width: 100%;
+            margin-bottom: 15px;
+            .w150 {
+              width: 100%;
+            }
+            .w230 {
+              width: 100%;
+              display: inline-block;
+            }
+            .w140 {
+              width: 100%;
+            }
+            .w120 {
+              width: 100%;
+            }
+            .w100 {
+              width: 100%;
+            }
+            .label {
+              margin-bottom: 10px;
+            }
+          }
+        }
+        .right {
+          width: 100%;
+          .price {
+            padding-left: 0;
+            width: auto;
+          }
+          .btn {
+            float: right;
+          }
+        }
+      }
+    }
+  }
+  section:nth-of-type(4) {
+    padding: 15px;
+    background: #f5f3f0;
+  }
+  .anniversary {
+    .domain {
+      .item {
+        margin-right: 0;
+        margin-bottom: 15px;
+        width: 100%;
+        height: auto;
+        header {
+          padding: 15px;
+          height: auto;
+          background: #0d0c0b;
+          h3 {
+            margin-bottom: 10px;
+          }
+        }
+        .content {
+          padding: 10px 15px 15px 15px;
+          .btn {
+            margin-top: 15px;
+          }
+        }
+      }
+    }
+    .renew {
+      margin-bottom: 10px;
+      .container {
+        width: 100%;
+        height: auto;
+        padding: 15px 0;
+        .item {
+          width: 100%;
+          img {
+            width: 100%;
+          }
+          .box {
+            padding-top: 15px;
+            font-size: 14px;
+          }
+          .discount {
+            p {
+              margin-bottom: 0;
+              span {
+                font-size: 36px;
+              }
+              i {
+                font-size: 24px;
+                font-weight: bold;
+              }
+            }
+            span {
+              font-size: 14px;
+            }
+          }
+          .btn {
+            margin-top: 5px;
+            font-size: 14px;
+          }
+          .text {
+            margin-top: 20px;
+            span {
+              font-size: 14px;
+            }
+            p {
+              font-size: 18px;
+            }
+          }
+        }
+      }
+    }
+  }
+  .sub-head {
+    padding-top: 25px;
+    padding-bottom: 10px;
+    h2 {
+      font-size: 28px;
+      line-height: 1;
+    }
+    p {
+      font-size: 16px;
+    }
+  }
+}
 </style>
