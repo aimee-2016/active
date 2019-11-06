@@ -507,11 +507,11 @@
               class="spanaa"
               @click="showModal.modifyPhoneID = true;showModal.cashverification=false"
             >通过身份证号码验证</span>或
-            <a href="https://kfi.xrcloud.net/work">提交工单</a>更改手机号。
+            <a href="https://csi.xrcloud.net/work">提交工单</a>更改手机号。
           </p>
           <p v-if="!authInfo||authInfo&&authInfo.checkstatus!=0" style="line-height:24px;">
             2、如果手机已丢失或停机，请
-            <a href="https://kfi.xrcloud.net/work">提交工单</a>或
+            <a href="https://csi.xrcloud.net/work">提交工单</a>或
             <a
               target="_blank"
               :href="`tencent://message/?uin=${$store.state.qq.qqnumber}&amp;Site=www.cloudsoar.com&amp;Menu=yes`"
@@ -657,7 +657,7 @@ export default {
       tempCode: '',
       codeTimer: null,
       authStatus: false,
-      imgSrc: 'https://kfactivity.xrcloud.net/user/getKaptchaImage.do',
+      imgSrc: 'https://csactivity.xrcloud.net/user/getKaptchaImage.do',
       formCustom: {
         VerificationPhone: '',
         Verificationcode: '',
@@ -791,7 +791,7 @@ export default {
         if (type == 'p') {
           this.$LR({ type: 'register' })
         } else {
-          window.open('https://kfm.xrcloud.net/login', '_self')
+          window.open('https://csm.xrcloud.net/login', '_self')
         }
         return
       }
@@ -805,7 +805,7 @@ export default {
               content: '抱歉，只有实名认证用户才可以参加活动',
               okText: '去实名认证',
               onOk: () => {
-                window.open('https://kfi.xrcloud.net/usercenter', '_self')
+                window.open('https://csi.xrcloud.net/usercenter', '_self')
               }
             })
           } else {
@@ -813,9 +813,9 @@ export default {
           }
         } else {
           if (item.post.certification == 3) {
-            window.open('https://kfi.xrcloud.net/usercenter', '_self')
+            window.open('https://csi.xrcloud.net/usercenter', '_self')
           } else {
-            window.open('https://kfm.xrcloud.net/faceindex', '_self')
+            window.open('https://csm.xrcloud.net/faceindex', '_self')
           }
         }
         return
@@ -850,7 +850,7 @@ export default {
       if (item.servicetype == 'oss') {
         axios.post(url, params).then(response => {
           if (response.status == 200 && response.data.status == 1) {
-            window.open('https://kfi.xrcloud.net/order', '_self')
+            window.open('https://csi.xrcloud.net/order', '_self')
           } else {
             this.$message.info({
               content: response.data.message
@@ -862,7 +862,7 @@ export default {
           params: params
         }).then(response => {
           if (response.status == 200 && response.data.status == 1) {
-            window.open('https://kfi.xrcloud.net/order', '_self')
+            window.open('https://csi.xrcloud.net/order', '_self')
           } else {
             this.$message.info({
               content: response.data.message
@@ -971,7 +971,7 @@ export default {
         if (type == 'p') {
           this.$LR({ type: 'register' })
         } else {
-          window.open('https://kfm.xrcloud.net/login', '_self')
+          window.open('https://csm.xrcloud.net/login', '_self')
         }
         return
       }
@@ -985,7 +985,7 @@ export default {
               content: '抱歉，只有实名认证用户才可以参加活动',
               okText: '去实名认证',
               onOk: () => {
-                window.open('https://kfi.xrcloud.net/usercenter', '_self')
+                window.open('https://csi.xrcloud.net/usercenter', '_self')
               }
             })
           } else {
@@ -993,9 +993,9 @@ export default {
           }
         } else {
           if (item.post.certification == 3) {
-            window.open('https://kfi.xrcloud.net/usercenter', '_self')
+            window.open('https://csi.xrcloud.net/usercenter', '_self')
           } else {
-            window.open('https://kfm.xrcloud.net/faceindex', '_self')
+            window.open('https://csm.xrcloud.net/faceindex', '_self')
           }
         }
         return
@@ -1010,7 +1010,7 @@ export default {
         }
       }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          window.open('https://kfi.xrcloud.net/order', '_self')
+          window.open('https://csi.xrcloud.net/order', '_self')
         } else {
           this.$message.info({
             content: response.data.message
@@ -1065,7 +1065,7 @@ export default {
         if (type == 'p') {
           this.$LR({ type: 'register' })
         } else {
-          window.open('https://kfm.xrcloud.net/login', '_self')
+          window.open('https://csm.xrcloud.net/login', '_self')
         }
         return false
       }
@@ -1139,7 +1139,7 @@ export default {
         if (type == 'p') {
           this.$LR({ type: 'register' })
         } else {
-          window.open('https://kfm.xrcloud.net/login', '_self')
+          window.open('https://csm.xrcloud.net/login', '_self')
         }
         return false
       }
@@ -1161,7 +1161,7 @@ export default {
         if (type == 'p') {
           this.$LR({ type: 'register' })
         } else {
-          window.open('https://kfm.xrcloud.net/login', '_self')
+          window.open('https://csm.xrcloud.net/login', '_self')
         }
         return false
       }
@@ -1233,7 +1233,7 @@ export default {
                 content: '抱歉，人脸识别实名认证失败！您也可以前往用户中心上传身份证照片进行实名认证。',
                 okText: '去实名认证',
                 onOk: () => {
-                  window.open('https://kfi.xrcloud.net/usercenter', '_self')
+                  window.open('https://csi.xrcloud.net/usercenter', '_self')
                 }
               })
             }
