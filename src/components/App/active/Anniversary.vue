@@ -1,0 +1,2370 @@
+<template>
+  <div class="anniversary">
+    <aside>
+      <ul>
+        <li v-for="(item,index) in asideList" :key="index" @click="roll(item.height)">{{item.text}}</li>
+      </ul>
+      <div class="to-top" @click="roll(0)">回到顶部</div>
+    </aside>
+    <section class="banner">
+      <img
+        src="../../../assets/img/active/anniversary/aa-banner-m.png"
+        alt="banner"
+        class="mobile-640 banner-m"
+      />
+      <div class="wrap pc-640">
+        <div class="container">
+          <div class="text">
+            <img
+              src="../../../assets/img/active/anniversary/anniversary-banner-title.png"
+              alt="2周年庆典"
+            />
+            <img
+              src="../../../assets/img/active/anniversary/anniversary-banner-text.png"
+              alt="企业上云突破5万，回馈老用户"
+            />
+          </div>
+          <div class="menu">
+            <ul>
+              <li v-for="(item,index) in bannerNavList" :key="index">
+                <div>
+                  <p>{{item.title}}</p>
+                  <span v-if="item.text">{{item.text}}</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="wrap">
+        <div class="new-user">
+          <span class="left">
+            <img
+              src="../../../assets/img/active/anniversary/anniversary-newuser-text.png"
+              alt="邀新福利"
+            />
+            <img
+              src="../../../assets/img/active/anniversary/anniversary-newuser-img.png"
+              alt="邀新福利图片"
+              class="ml10"
+            />
+          </span>
+          <span class="desc">老用户邀请新用户成功购买以下任1款商品（域名专区除外），即可获得“爆款秒杀专区”或“企业用户限购专区”的额外购买权1次。</span>
+          <span class="btn pc-640-inline" @click="shareNew('p')">邀请新用户</span>
+          <span class="btn mobile-640-inline" @click="shareNew('m')">邀请新用户</span>
+        </div>
+        <div class="seckill">
+          <header class="sub-head">
+            <h2>爆款秒杀专区</h2>
+            <p>
+              爆款云产品，邀新送好礼
+              <span @click="showModal.ruleKill=true">活动规则></span>
+            </p>
+          </header>
+          <div class="container">
+            <div class="item" v-for="(item,index) in seckillList" :key="index">
+              <header>{{titleType(item.servicetype)}}</header>
+              <div class="content">
+                <div class="middle">
+                  <ul class="configure" v-if="item.servicetype!='oss'">
+                    <li>
+                      <i>CPU</i>
+                      <span>{{item.cpu}}核</span>
+                    </li>
+                    <li>
+                      <i>内存</i>
+                      <span>{{item.mem}}G</span>
+                    </li>
+                    <li>
+                      <i>带宽</i>
+                      <span>{{item.bandwith}}M</span>
+                    </li>
+                    <li>
+                      <i>系统盘</i>
+                      <span>{{item.disksize}}G SSD</span>
+                    </li>
+                  </ul>
+                  <div class="center aa-system" :class="{pt16:item.servicetype=='G5500'}">
+                    <div
+                      class="row-yellow lh1"
+                      :class="{mb10:item.servicetype=='G5500'}"
+                      v-if="item.servicetype=='G5500'"
+                    >GPU：Tesla P{{item.gpu}}</div>
+                    <div class="row-yellow" v-if="item.servicetype=='oss'">存储规格：1TB</div>
+                    <div class="row-yellow" v-if="item.servicetype=='oss'">下载流量：1TB</div>
+                    <div :class="{mb10:item.servicetype=='G5500'}">
+                      <span class="label">区域：</span>
+                      <Select v-model="item.zone" class="w" @on-change="changeZoneSeckill(item)">
+                        <Option
+                          v-for="(item,index) in item.zoneList"
+                          :value="item.value"
+                          :key="index"
+                        >{{ item.name }}</Option>
+                      </Select>
+                    </div>
+                    <div v-if="item.servicetype!='oss'" :class="{mb10:item.servicetype=='G5500'}">
+                      <span class="label">系统：</span>
+                      <Cascader :data="item.systemList" v-model="item.system" class="w"></Cascader>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="price">
+                  <p>
+                    <i>￥</i>
+                    {{item.cost}}
+                    <i>/{{formatDay(item.days)}}</i>
+                  </p>
+                  <span>原价：￥{{item.originalPrice}}/{{formatDay(item.days)}}</span>
+                </div>
+                <span class="btn pc-640-inline" @click="orderSeckill(item,'p')">立即抢购</span>
+                <span class="btn mobile-640-inline" @click="orderSeckill(item,'m')">立即抢购</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="wrap">
+        <div class="enterprise">
+          <header class="sub-head">
+            <h2>企业用户限购专区</h2>
+            <p>
+              企业限购专区，老用户享同等价购买
+              <span @click="showModal.ruleE=true">活动规则></span>
+            </p>
+          </header>
+          <div class="container aa-system-1">
+            <div class="item" v-for="(item,index) in enterpriseList" :key="index">
+              <div class="left">
+                <p>{{item.cpu+'核'+item.mem+'G '+item.bandwith+'M带宽'}}</p>
+                <span>{{item.disksize+'G '+item.disktype.toUpperCase()+'盘'}}</span>
+              </div>
+              <div class="content">
+                <ul class="center">
+                  <li>
+                    <span class="label">区域</span>
+                    <Select v-model="item.zone" class="w150">
+                      <Option
+                        v-for="(item,index) in item.zoneList"
+                        :value="item.value"
+                        :key="index"
+                      >{{ item.name }}</Option>
+                    </Select>
+                  </li>
+                  <li>
+                    <span class="label">系统</span>
+                    <Cascader :data="item.systemList" v-model="item.system" style="w230"></Cascader>
+                  </li>
+                  <li>
+                    <span class="label">可选时长</span>
+                    <div class="time">
+                      <span
+                        v-for="(inner,index) in item.timeList"
+                        :key="index"
+                        @click="changeTimeE(item,inner,index)"
+                        :class="{'selected':inner == item.days}"
+                      >{{inner/360}}年</span>
+                    </div>
+                  </li>
+                </ul>
+                <div class="right">
+                  <div class="price">
+                    <p class="cost">
+                      <i>￥</i>
+                      <span>{{item.cost}}</span>
+                    </p>
+                    <span class="origin-cost">原价：￥{{item.originalPrice}}</span>
+                  </div>
+                  <span class="btn pc-640-inline" @click="orderSeckill(item,'p')">立即抢购</span>
+                  <span class="btn mobile-640-inline" @click="orderSeckill(item,'m')">立即抢购</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="enterprise">
+          <header class="sub-head">
+            <h2>云数据库限购专区</h2>
+            <p>
+              数据库现时抢购
+              <span @click="showModal.ruleDB=true">活动规则></span>
+            </p>
+          </header>
+          <div class="container aa-system-1">
+            <div class="item" v-for="(item,index) in databaseList" :key="index">
+              <div class="left">
+                <p>{{item.key}}</p>
+                <span>{{item.rootDiskSize+'G系统盘 '+item.dataDiskSize+'G数据盘'}}</span>
+              </div>
+              <div class="content aa-system-1">
+                <ul class="center">
+                  <li>
+                    <span class="label">可选规格</span>
+                    <Select v-model="item.specs" class="w120" @on-change="changeConfig(item)">
+                      <Option
+                        v-for="(inner,index) in item.specsList"
+                        :value="inner.cpu+'#'+inner.mem"
+                        :key="index"
+                      >{{ inner.cpu+'核'+inner.mem+'G' }}</Option>
+                    </Select>
+                  </li>
+                  <li>
+                    <span class="label">可选带宽</span>
+                    <Select v-model="item.bandwith" class="w100" @on-change="changeBandwith(item)">
+                      <Option
+                        v-for="(inner,index) in item.bandwithList"
+                        :value="inner.bandwith"
+                        :key="index"
+                      >{{ inner.bandwith }}M</Option>
+                    </Select>
+                  </li>
+                  <li>
+                    <span class="label">可选区域</span>
+                    <Select v-model="item.zone" class="w140">
+                      <Option
+                        v-for="(inner,index) in item.zoneList"
+                        :value="inner.value"
+                        :key="index"
+                      >{{ inner.name }}</Option>
+                    </Select>
+                  </li>
+                  <li style="margin-right:30px;">
+                    <span class="label">可选时长</span>
+                    <div class="time">
+                      <span
+                        v-for="(inner,index) in item.timeList"
+                        :key="index"
+                        @click="changeTimeD(item,inner)"
+                        :class="{'selected':inner.days == item.days&&inner.discount == item.discount}"
+                      >
+                        {{inner.days<360?inner.days/30+'月':inner.days/360+'年'}}
+                        <i>{{inner.discount}}折</i>
+                      </span>
+                    </div>
+                  </li>
+                </ul>
+                <div class="right">
+                  <div class="price" style="width:156px">
+                    <p class="cost">
+                      <i>￥</i>
+                      <span>{{item.cost}}</span>
+                    </p>
+                    <span class="origin-cost">原价：￥{{item.originalPrice}}</span>
+                  </div>
+                  <span class="btn pc-640-inline" @click="orderDB(item,'p')">立即抢购</span>
+                  <span class="btn mobile-640-inline" @click="orderDB(item,'m')">立即抢购</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="wrap">
+        <div class="domain">
+          <header class="sub-head">
+            <h2>域名专区</h2>
+          </header>
+          <div class="container">
+            <div class="item" v-for="(item,index) in domainList" :key="index">
+              <header>
+                <h3>{{item.name}} 域名</h3>
+                <div class="input-group">
+                  <input
+                    v-model="item.value"
+                    type="text"
+                    placeholder="Enter something..."
+                    style="width: 230px;height:30px"
+                  />
+                  <img
+                    src="../../../assets/img/active/anniversary/search-icon.png"
+                    alt="搜索图标"
+                    @click="checkDomain(item)"
+                  />
+                </div>
+                <span class="tip">{{item.tip}}</span>
+              </header>
+              <div class="content">
+                <div class="price">
+                  ¥{{item.price}}
+                  <span>/{{item.unit}}</span>
+                </div>
+                <span class="btn pc-640" @click="buyDomain('p')">立即购买</span>
+                <span class="btn mobile-640" @click="buyDomain('m')">立即购买</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="renew">
+          <header class="sub-head">
+            <h2>续费专区</h2>
+            <p>
+              老用户续费折扣享不停
+              <span @click="showModal.ruleRenew=true">活动规则></span>
+            </p>
+          </header>
+          <div class="container">
+            <div class="item" v-for="(item,index) in renewList" :key="index">
+              <img
+                src="../../../assets/img/active/anniversary/anniversary-renew-bg.png"
+                alt="续费背景图"
+              />
+              <div class="box">
+                <div class="discount">
+                  <p>
+                    <span>{{item.moneyDesc}}</span>
+                    <i>折</i>
+                  </p>
+                  <span>年续费券</span>
+                </div>
+                <span class="btn pc-640-inline" @click="toRenew(item.id,'p')">我要续费</span>
+                <span class="btn mobile-640-inline" @click="toRenew(item.id,'m')">我要续费</span>
+                <div class="text">
+                  <span>新睿云11.17周年庆回馈老用户</span>
+                  <p>
+                    云服务器年续费一律
+                    <span>{{item.moneyDesc}}折</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <Modal
+      v-model="showModal.share"
+      width="550"
+      class="aa-modal"
+      title="邀请新用户"
+      :mask-closable="false"
+    >
+      <div class="share-modal">
+        <p>邀请新用户，获取“秒杀专区”和“企业限购专区”购买权</p>
+        <div class="wrapper">
+          <div class="qr-code">
+            <vue-q-art :config="qrConfig"></vue-q-art>
+            <span>扫码分享</span>
+          </div>
+          <div class="url">
+            <p class="btn" @click="copyUrl('p')">
+              <img src="../../../assets/img/active/anniversary/aa-url-icon.png" alt="分享图标" />
+              复制链接
+            </p>
+            <input
+              ref="copy_content"
+              type="text"
+              value
+              style="position: absolute;top: 0;left: 0;opacity: 0;z-index: -10;"
+            />
+            <span>链接分享</span>
+          </div>
+        </div>
+      </div>
+      <div slot="footer"></div>
+    </Modal>
+    <Modal
+      v-model="showModal.ruleKill"
+      width="550"
+      class="aa-modal rule"
+      title="活动规则"
+      :mask-closable="false"
+    >
+      <div class="content">
+        <ul>
+          <li v-for="(item,index) in ruleListKill" :key="index">{{item}}</li>
+        </ul>
+      </div>
+      <div slot="footer" class="footer">
+        <span class="btn" @click="showModal.ruleKill=false">我知道了</span>
+      </div>
+    </Modal>
+    <Modal
+      v-model="showModal.ruleE"
+      width="550"
+      class="aa-modal rule"
+      title="活动规则"
+      :mask-closable="false"
+    >
+      <div class="content">
+        <ul>
+          <li v-for="(item,index) in ruleListE" :key="index">{{item}}</li>
+        </ul>
+      </div>
+      <div slot="footer" class="footer">
+        <span class="btn" @click="showModal.ruleE=false">我知道了</span>
+      </div>
+    </Modal>
+    <Modal
+      v-model="showModal.ruleDB"
+      width="550"
+      class="aa-modal rule"
+      title="活动规则"
+      :mask-closable="false"
+    >
+      <div class="content">
+        <ul>
+          <li v-for="(item,index) in ruleListDB" :key="index">{{item}}</li>
+        </ul>
+      </div>
+      <div slot="footer" class="footer">
+        <span class="btn" @click="showModal.ruleDB=false">我知道了</span>
+      </div>
+    </Modal>
+    <Modal
+      v-model="showModal.ruleRenew"
+      width="550"
+      class="aa-modal rule"
+      title="活动规则"
+      :mask-closable="false"
+    >
+      <div class="content">
+        <ul>
+          <li v-for="(item,index) in ruleListRenew" :key="index">{{item}}</li>
+        </ul>
+      </div>
+      <div slot="footer" class="footer">
+        <span class="btn" @click="showModal.ruleRenew=false">我知道了</span>
+      </div>
+    </Modal>
+    <!-- 身份验证弹窗 -->
+    <Modal
+      v-model="showModal.cashverification"
+      :scrollable="true"
+      :closable="true"
+      :width="520"
+      :mask-closable="false"
+      class="person-check"
+    >
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">身份验证</span>
+      </p>
+      <div class="modal-content-s">
+        <div>
+          <p
+            class="lh24"
+            style="font-size:14px;font-family:MicrosoftYaHei;color:rgba(51,51,51,1);line-height:24px;"
+          >为保障您的账户安全，请进行手机验证：</p>
+        </div>
+      </div>
+      <div class="modal-content-s">
+        <Form
+          ref="cashverification"
+          label-position="left"
+          :model="formCustom"
+          :rules="ruleCustom"
+          style="width: 500px;"
+        >
+          <FormItem prop="VerificationPhone">
+            <Input v-model="formCustom.VerificationPhone" placeholder="请输入手机号码" class="w300"></Input>
+          </FormItem>
+          <FormItem prop="Verificationcode">
+            <Input v-model="formCustom.Verificationcode" placeholder="请输入随机验证码" class="w300"></Input>
+            <img
+              :src="imgSrc"
+              @click="imgSrc=`user/getKaptchaImage.do?t=${new Date().getTime()}`"
+              style="height:32px;vertical-align: middle;margin-left: 10px;"
+            />
+          </FormItem>
+          <FormItem prop="messagecode">
+            <Input v-model="formCustom.messagecode" placeholder="请输入收到的验证码" class="w300"></Input>
+            <Button
+              type="primary"
+              @click="getPhoneCode('code')"
+              :disabled="formCustom.newCodeText !='获取验证码'"
+              style="margin-left: 10px;"
+            >{{formCustom.newCodeText}}</Button>
+          </FormItem>
+        </Form>
+      </div>
+      <div class="modal-content-s divall">
+        <div
+          style="width: 91%;margin-left: 4%;margin-top: 10px;font-size: 14px;margin-bottom: 20px;"
+        >
+          <p style="float: left;line-height:24px;">没有收到验证码？</p>
+          <br />
+          <p style="line-height:24px;">
+            1、网络异常可能会造成短信丢失，请
+            <span
+              class="spanaa"
+              :class="{notallow:formCustom.newCodeText !='获取验证码'}"
+              @click="getPhoneCode('againCode')"
+            >重新获取</span>或
+            <span
+              class="spanaa"
+              :class="{notallow:formCustom.newCodeText !='获取验证码'}"
+              @click.prevent="getPhoneCode('voice')"
+            >接收语音验证码</span>。
+          </p>
+          <p v-if="authInfo&&authInfo.checkstatus==0" style="line-height:24px;">
+            2、如果手机已丢失或停机，请
+            <span
+              class="spanaa"
+              @click="showModal.modifyPhoneID = true;showModal.cashverification=false"
+            >通过身份证号码验证</span>或
+            <a href="https://kfi.xrcloud.net/work">提交工单</a>更改手机号。
+          </p>
+          <p v-if="!authInfo||authInfo&&authInfo.checkstatus!=0" style="line-height:24px;">
+            2、如果手机已丢失或停机，请
+            <a href="https://kfi.xrcloud.net/work">提交工单</a>或
+            <a
+              target="_blank"
+              :href="`tencent://message/?uin=${$store.state.qq.qqnumber}&amp;Site=www.cloudsoar.com&amp;Menu=yes`"
+              class="spanaa"
+              style="font-size: 13px;"
+            >联系客服</a>更改手机号。
+          </p>
+        </div>
+      </div>
+      <p slot="footer" class="modal-footer-s">
+        <Button @click="showModal.cashverification = false">取消</Button>
+        <Button type="primary" :disabled="disabled" @click="Callpresentation">确定</Button>
+      </p>
+    </Modal>
+    <!-- 人脸识别二维码弹出框 -->
+    <Modal
+      v-model="showModal.qrCode"
+      width="550"
+      :scrollable="true"
+      :mask-closable="false"
+      :closable="false"
+    >
+      <p slot="header" class="modal-header-border">
+        <span class="universal-modal-title">扫码认证</span>
+      </p>
+      <div class="universal-modal-content-flex qrcode-modal">
+        <p class="p-top">认证完成之前，请勿关闭或者切换此页面，否则可能导致认证失败</p>
+        <p>请使用手机扫描二维码，并根据提示完成实名认证</p>
+        <p v-show="authStatus" class="p-top">您的实名认证提交失败，请刷新二维码重新认证</p>
+        <div class="qr-code">
+          <vue-q-art :config="qrConfig"></vue-q-art>
+          <div
+            class="shade"
+            :class="{scanSuccess: codeLoseEfficacy=== 'scanSuccess'}"
+            v-show="codeLoseEfficacy"
+          ></div>
+        </div>
+        <p class="p-bottom">
+          若二维码失效或异常，请
+          <span @click="refreshQRCode">刷新</span>
+        </p>
+      </div>
+      <div slot="footer" class="modal-footer-border">
+        <Button type="primary" @click="showModal.qrCode = false">确定</Button>
+      </div>
+    </Modal>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+import axios from 'axios'
+import VueQArt from 'vue-qart'
+import throttle from 'throttle-debounce/debounce'
+import $ from 'jquery'
+export default {
+  data () {
+    const validaRegisteredPhone = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('电话号码不能为空'));
+      }
+      if (!(/^1(3|4|5|7|8|9)\d{9}$/.test(value)) && !(/^0\d{2,3}-?\d{7,8}$/.test(value))) {
+        callback(new Error('请输入正确的电话号码'));
+      } else {
+        callback()
+      }
+    }
+    return {
+      showModal: {
+        share: false,
+        ruleKill: false,
+        ruleE: false,
+        ruleDB: false,
+        ruleRenew: false,
+        cashverification: false,
+        qrCode: false
+      },
+      asideList: [
+        { text: '爆款秒杀', height: '800' },
+        { text: '企业限购', height: '1400' },
+        { text: '云数据库', height: '2000' },
+        { text: '域名专区', height: '2600' },
+        { text: '续费专区', height: '3000' }
+      ],
+      bannerNavList: [
+        { title: '爆款云产品', text: '邀新送好礼' },
+        { title: '企业限购专区', text: '老用户享同等价购买' },
+        { title: '云数据库限时抢购', text: '' },
+        { title: '域名最低8元可领', text: '' },
+        { title: '老用户续费', text: '折扣享不停' }
+      ],
+      valueDomain: '',
+      seckillList: [],
+      enterpriseList: [],
+      databaseList: [],
+      ruleListKill: [
+        '1、活动时间：2019.11.7-2019.12.31',
+        '2、活动对象：新老用户皆可参与；新用户是未使用过平台资源（第三方产品除外）及未参加过其他免费活动并已通过实名认证的用户',
+        '3、活动期间同一用户（同一手机、邮箱、实名认证用户视为同一用户）可同时购买GPU服务器1次、对象存储1次',
+        '4、新用户可直接购买任意一台爆款云服务器，购买成功后再邀请1名新用户成功购买周年庆活动产品（域名除外）即可获得“爆款秒杀专区”或“企业用户限购专区”的额外购买权1次；老用户成功邀请1名新用户购买周年庆活动产品，即可获得“爆款秒杀专区”或“企业用户限购专区”的额外购买权1次，购买权可叠加；',
+        '5、参与本次活动购买的产品不能进行退款。',
+        '6、此次活动产品不能用于转售，如若利用资源从事违法违规行为的用户，新睿云有权收回使用资格，并且不予退款。',
+        '7、购买时不可使用任何优惠券和现金券，秒杀活动不支持会员折扣。',
+        '8、活动最终解释权为新睿云所有。'
+      ],
+      ruleListE: [
+        '1、活动时间：2019.11.7-2019.12.31',
+        '2、活动对象：活动期间企业用户限购1台，新老用户皆可参与。新用户是未使用过平台资源（第三方产品除外）及未参加过其他免费活动并已通过实名认证的用户',
+        '3、企业新用户可直接购买任意一台爆款云服务器，购买成功后再邀请1名新用户成功购买周年庆活动产品（域名除外）即可获得“爆款秒杀专区”或“企业用户限购专区”的额外购买权1次；老用户成功邀请1名新用户购买周年庆活动产品，即可获得“爆款秒杀专区”或“企业用户限购专区”的额外购买权1次，购买权可叠加；',
+        '4、参与本次活动购买的产品不能进行退款。',
+        '5、此次活动产品不能用于转售，如若利用资源从事违法违规行为的用户，新睿云有权收回使用资格，并且不予退款。',
+        '6、购买时不可使用任何优惠券和现金券，限购活动不支持会员折扣。',
+        '7、活动最终解释权为新睿云所有。'
+      ],
+      ruleListDB: [
+        '1、活动时间：2019.11.7-2019.12.31，每天7点至23.17点开抢。',
+        '2、活动对象：新老用户皆可参与。新用户是未使用过平台资源（第三方产品除外）及未参加过其他免费活动并已通过实名认证的用户',
+        '3、数量限制：活动期间同一用户（同一手机、邮箱、实名认证用户视为同一用户）按照不同的配置进行抢购，同配置产品可以同时购买不同时长，但每款配置同一时长只能购买一次。数量有限，先到先得。',
+        '4、参与本次活动购买的产品不能进行退款。',
+        '5、此次活动产品不能用于转售，如若利用资源从事违法违规行为的用户，新睿云有权收回使用资格，并且不予退款。',
+        '6、购买时不可使用任何优惠券和现金券，限购活动不支持会员折扣。',
+        '7、活动最终解释权为新睿云所有。'
+      ],
+      ruleListRenew: [
+        '1、 年续费券限领1张，有效期为1年',
+        '2、 仅限有已经购买云产品的用户领取',
+        '3、 此次活动券仅用于支付新睿云平台订单支付时，抵减应支付的订单金额，不能进行兑现或其他用途'
+      ],
+      qrConfig: {
+        value: '',
+        imagePath: require('../../../assets/img/active/anniversary/qrCode.png'),
+        filter: 'black',
+        size: 500
+      },
+      shareUrl: '',
+      domainList: [
+        { name: '.club', price: '11.00', unit: '1年', bg: require('../../../assets/img/active/anniversary/anniversary-domain-1.png'), value: '', tip: '' },
+        { name: '.top', price: '9.00', unit: '1年', bg: require('../../../assets/img/active/anniversary/anniversary-domain-2.png'), value: '', tip: '' },
+        { name: '.site', price: '8.00', unit: '1年', bg: require('../../../assets/img/active/anniversary/anniversary-domain-3.png'), value: '', tip: '' }
+      ],
+      renewList: [],
+      // 实名认证参数
+      codeLoseEfficacy: '',
+      tempCode: '',
+      codeTimer: null,
+      authStatus: false,
+      imgSrc: 'https://kfactivity.xrcloud.net/user/getKaptchaImage.do',
+      formCustom: {
+        VerificationPhone: '',
+        Verificationcode: '',
+        messagecode: '',
+        newCodeText: '获取验证码',
+        codeText: '获取验证码',
+      },
+      ruleCustom: {
+        VerificationPhone: [{
+          required: true,
+          validator: validaRegisteredPhone,
+          trigger: 'blur'
+        }],
+        Verificationcode: [{
+          required: true,
+          message: '请输入图形验证码',
+          trigger: 'blur'
+        }],
+        messagecode: [{
+          required: true,
+          message: '请输入收到的验证码',
+          trigger: 'blur'
+        }]
+      },
+      // 实名认证参数结束
+    }
+  },
+  created () {
+    this.getSeckill()
+    this.getEnterprise()
+    this.getDatabase()
+    // this.getDomain()
+    this.getRenew()
+  },
+  mounted () {
+
+  },
+  methods: {
+    //活动编码 秒杀64 企业65 云数据库 域名
+    getSeckill () {
+      axios.get('activity/getTemActInfoById.do', {
+        params: {
+          activityNum: 64
+        }
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          this.seckillList = response.data.result.freevmconfigs
+          this.seckillList.forEach((item, index) => {
+            switch (item.servicetype) {
+              case 'host':
+                item.zoneList = response.data.result.optionalArea
+                item.zone = item.zoneList[0].value
+                this.$set(item, 'systemList', this.formatSystem(response.data.result.mvTem))
+                item.system = [item.systemList[0].label, item.systemList[0].children[0].value]
+                break;
+              case 'G5500':
+                item.zoneList = response.data.result.optionalAreaGpu
+                item.zone = item.zoneList[0].value
+                this.$set(item, 'systemList', this.formatSystem(response.data.result.gpuTem))
+                item.system = [item.systemList[0].label, item.systemList[0].children[0].value]
+                break;
+              case 'oss':
+                item.zoneList = response.data.result.zoneListMapOss
+                item.zone = item.zoneList[0].value
+                break;
+              default:
+                break;
+            }
+          })
+          // console.log(this.seckillList)
+        }
+      })
+    },
+    changeZoneSeckill (item) {
+      console.log(item)
+      let params = {}
+      let url = ''
+      switch (item.servicetype) {
+        case 'host':
+          params = {
+            user: '0',
+            normalTemplate: '1',
+            zoneId: item.zone,
+          }
+          url = 'information/listTemplates.do'
+          break
+        case 'G5500':
+          params = {
+            user: '0',
+            gpu: '1',
+            normalTemplate: '0',
+            zoneId: item.zone,
+          }
+          url = 'information/listTemplates.do'
+          break
+      }
+      axios.get(url, {
+        params: params
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          item.systemList = this.formatSystem(response.data.result)
+          console.log(item.systemList)
+        }
+      })
+    },
+    getPrice (item) {
+      let url = 'activity/getHostOriginalPrice.do'
+      let params = {
+        cpuNum: item.cpu,
+        diskSize: item.disksize,
+        diskType: item.disktype,
+        memory: item.mem,
+        timeType: item.days < 360 ? 'month' : 'year',
+        timeValue: item.days < 360 ? item.days / 30 : item.days / 360,
+        zoneId: item.zone,
+      }
+      if (item.servicetype == 'G5500') {
+        params.gpu = item.gpu
+        params.gpuSize = item.gpusize
+      }
+      axios.get(url, {
+        params: params
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+
+        }
+      })
+    },
+    orderSeckill (item, type) {
+      if (!this.$store.state.userInfo) {
+        if (type == 'p') {
+          this.$LR({ type: 'register' })
+        } else {
+          window.open('https://kfm.xrcloud.net/login', '_self')
+        }
+        return
+      }
+      if ((!this.authInfo) || (this.authInfo && this.authInfo.authtype == 0 && this.authInfo.checkstatus != 0) || (!this.authInfoPersion && this.authInfo && this.authInfo.authtype == 1 && this.authInfo.checkstatus != 0) || (this.authInfoPersion && this.authInfoPersion.checkstatus != 0 && this.authInfo && this.authInfo.checkstatus != 0)) {
+        if (type == 'p') {
+          if (!this.userInfo.phone) {
+            this.showModal.cashverification = true
+          } else if (item.post.certification == 3) {
+            this.$message.confirm({
+              title: '提示',
+              content: '抱歉，只有实名认证用户才可以参加活动',
+              okText: '去实名认证',
+              onOk: () => {
+                window.open('https://kfi.xrcloud.net/usercenter', '_self')
+              }
+            })
+          } else {
+            this.refreshQRFirst()
+          }
+        } else {
+          if (item.post.certification == 3) {
+            window.open('https://kfi.xrcloud.net/usercenter', '_self')
+          } else {
+            window.open('https://kfm.xrcloud.net/faceindex', '_self')
+          }
+        }
+        return
+      }
+      let params = {}
+      let url = ''
+      switch (item.servicetype) {
+        case 'host':
+          params = {
+            vmConfigId: item.id,
+            osType: item.system[1],
+            defzoneid: item.zone,
+          }
+          url = 'information/getDiskcountMv.do'
+          break
+        case 'G5500':
+          params = {
+            vmConfigId: item.id,
+            osType: item.system[1],
+            defzoneid: item.zone,
+          }
+          url = 'activity/getDiskcountGPU.do'
+          break
+        case 'oss':
+          params = {
+            OOSConfigId: item.id,
+            zoneId: item.zone,
+          }
+          url = 'ruiradosPrice/getDickCountOSS.do'
+          break
+      }
+      if (item.servicetype == 'oss') {
+        axios.post(url, params).then(response => {
+          if (response.status == 200 && response.data.status == 1) {
+            window.open('https://kfi.xrcloud.net/order', '_self')
+          } else {
+            this.$message.info({
+              content: response.data.message
+            })
+          }
+        })
+      } else {
+        axios.get(url, {
+          params: params
+        }).then(response => {
+          if (response.status == 200 && response.data.status == 1) {
+            window.open('https://kfi.xrcloud.net/order', '_self')
+          } else {
+            this.$message.info({
+              content: response.data.message
+            })
+          }
+        })
+      }
+    },
+    getEnterprise () {
+      axios.get('activity/getTemActInfoById.do', {
+        params: {
+          activityNum: 65
+        }
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          this.enterpriseList = response.data.result.freevmconfigResultMap
+          for (let i in this.enterpriseList) {
+            this.enterpriseList[i].zoneList = response.data.result.optionalArea
+            this.enterpriseList[i].zone = this.enterpriseList[i].zoneList[0].value
+            this.$set(this.enterpriseList[i], 'systemList', this.formatSystem(response.data.result.mvTem))
+            this.enterpriseList[i].system = [this.enterpriseList[i].systemList[0].label, this.enterpriseList[i].systemList[0].children[0].value]
+            this.enterpriseList[i].timeList = this.enterpriseList[i].days.split(',')
+            this.enterpriseList[i].days = this.enterpriseList[i].timeList[0]
+            this.enterpriseList[i].costList = this.enterpriseList[i].cost.split(',')
+            this.enterpriseList[i].cost = this.enterpriseList[i].costList[0]
+            this.enterpriseList[i].originalPriceList = this.enterpriseList[i].originalPrice.split(',')
+            this.enterpriseList[i].originalPrice = this.enterpriseList[i].originalPriceList[0]
+            this.enterpriseList[i].idList = this.enterpriseList[i].id.split(',')
+            this.enterpriseList[i].id = this.enterpriseList[i].idList[0]
+          }
+        }
+        // console.log(this.enterpriseList)
+      })
+    },
+    changeTimeE (item, inner, index) {
+      item.days = inner
+      item.cost = item.costList[index]
+      item.originalPrice = item.originalPriceList[index]
+      item.id = item.idList[index]
+    },
+    getDatabase () {
+      axios.get('activity/getActivityInfo.do', {
+        params: {
+          activityNum: 66
+        }
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          // console.log(response.data.result.listMap)
+          this.databaseList = response.data.result.listMap
+          this.databaseList.forEach(item => {
+            item.specsList = item.value.map(inner => {
+              return { 'cpu': inner.cpu, 'mem': inner.mem }
+            })
+            item.specs = item.value[0].cpu + '#' + item.value[0].mem
+            item.rootDiskSize = item.value[0].rootDiskSize
+            item.dataDiskSize = item.value[0].dataDiskSize
+            // item.disk = item.value[0].disksize
+            this.$set(item, 'bandwithList', [])
+            this.changeConfig(item)
+            item.zoneList = response.data.result.optionalArea
+            item.zone = item.zoneList[0].value
+            // item.timeList = []
+            this.$set(item, 'timeList', [])
+            this.changeBandwith(item)
+            this.$set(item, 'days', '')
+            this.$set(item, 'discount', '')
+            this.$set(item, 'cost', '687')
+            this.$set(item, 'originalPrice', '8701.92')
+            // item.days = ''
+          })
+        }
+      })
+    },
+    changeConfig (item) {
+      item.value.forEach(inner => {
+        if (inner.cpu == item.specs.split('#')[0] && inner.mem == item.specs.split('#')[1]) {
+          item.sList = JSON.parse(inner.config)
+          item.bandwithList = item.sList.map(sec => {
+            return { 'bandwith': sec.bandwidth }
+          })
+          item.bandwith = item.bandwithList[0].bandwith
+        }
+      })
+      // console.log(item.bandwithList)
+    },
+    changeBandwith (item) {
+      // console.log(item)
+      let dayslist = item.sList.filter(inner => {
+        return inner.bandwidth == item.bandwith
+      })
+      item.timeList = dayslist[0].value.map(sec => {
+        return { 'days': sec.days, 'discount': (sec.discount * 10).toFixed(2) }
+      })
+      // console.log(item.timeList)
+      item.days = item.timeList[0].days
+    },
+    changeTimeD (item, inner) {
+      // console.log(item)
+      // console.log(inner)
+      item.days = inner.days
+      item.discount = inner.discount
+      // console.log(item.days)
+    },
+    orderDB (item, type) {
+      if (!this.$store.state.userInfo) {
+        if (type == 'p') {
+          this.$LR({ type: 'register' })
+        } else {
+          window.open('https://kfm.xrcloud.net/login', '_self')
+        }
+        return
+      }
+      if ((!this.authInfo) || (this.authInfo && this.authInfo.authtype == 0 && this.authInfo.checkstatus != 0) || (!this.authInfoPersion && this.authInfo && this.authInfo.authtype == 1 && this.authInfo.checkstatus != 0) || (this.authInfoPersion && this.authInfoPersion.checkstatus != 0 && this.authInfo && this.authInfo.checkstatus != 0)) {
+        if (type == 'p') {
+          if (!this.userInfo.phone) {
+            this.showModal.cashverification = true
+          } else if (item.post.certification == 3) {
+            this.$message.confirm({
+              title: '提示',
+              content: '抱歉，只有实名认证用户才可以参加活动',
+              okText: '去实名认证',
+              onOk: () => {
+                window.open('https://kfi.xrcloud.net/usercenter', '_self')
+              }
+            })
+          } else {
+            this.refreshQRFirst()
+          }
+        } else {
+          if (item.post.certification == 3) {
+            window.open('https://kfi.xrcloud.net/usercenter', '_self')
+          } else {
+            window.open('https://kfm.xrcloud.net/faceindex', '_self')
+          }
+        }
+        return
+      }
+      axios.get('database/getDeductionsDatabase.do', {
+        params: {
+          vmConfigId: item.id,
+          defzoneid: item.zone,
+          days: '',
+          bandwidth: '',
+          dbVersion: ''
+        }
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          window.open('https://kfi.xrcloud.net/order', '_self')
+        } else {
+          this.$message.info({
+            content: response.data.message
+          })
+        }
+      })
+    },
+    formatSystem (system) {
+      let newSystem = []
+      for (let i in system) {
+        if (system[i].length) {
+          let newItem = {}
+          newItem.label = newItem.value = i
+          newItem.children = system[i].map(inner => {
+            return { 'label': inner.templatedescript, 'value': inner.systemtemplateid }
+          })
+          newSystem.push(newItem)
+        }
+      }
+      newSystem.sort((a, b) => {
+        return b.value.charCodeAt(0) - a.value.charCodeAt(0)
+      })
+      // console.log(newSystem)
+      return newSystem
+    },
+    titleType (type) {
+      let text = '弹性云服务器'
+      switch (type) {
+        case 'host':
+          text = '弹性云服务器'
+          break
+        case 'G5500':
+          text = 'GPU云服务器'
+          break
+        case 'oss':
+          text = '对象存储OSS'
+          break
+      }
+      return text
+    },
+    formatDay (days) {
+      let text = '7天'
+      if (days >= 30 && days < 360) {
+        text = `${days / 30}月`
+      } else if (days >= 360) {
+        text = `${days / 360}年`
+      }
+      return text
+    },
+    shareNew (type) {
+      if (!this.$store.state.userInfo) {
+        if (type == 'p') {
+          this.$LR({ type: 'register' })
+        } else {
+          window.open('https://kfm.xrcloud.net/login', '_self')
+        }
+        return false
+      }
+      axios.get('activity/createTimeLink.do', {
+        params: {
+          ts: '4Y1V0J'
+        }
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          this.shareUrl = response.data.result.url
+          this.qrConfig.value = this.shareUrl
+          this.showModal.share = true
+        } else {
+          this.$Message.info("平台出小差了");
+        }
+      })
+    },
+    copyUrl () {
+      let dom = this.$refs.copy_content
+      dom.value = this.shareUrl
+      dom.select()
+      document.execCommand("copy")
+      try {
+        if (document.execCommand("copy")) {
+          this.$Message.success("链接复制成功");
+        } else {
+          this.$Message.info("平台出小差了");
+        }
+      } catch (err) {
+        if (err) {
+          this.$Message.info("该浏览器暂不支持复制");
+        }
+      }
+      this.showModal.share = false
+    },
+    // getDomain () {
+    //   axios.get('activity/getTemActInfoById.do', {
+    //     params: {
+    //       activityNum: 67
+    //     }
+    //   }).then(response => {
+
+    //   })
+    // },
+    checkDomain (item) {
+      if (item.value == '') {
+        item.tip = '请输入域名'
+        return false
+      }
+      axios.post('domain/domainFound.do', {
+        domainName: item.value,
+        tids: item.name
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          if (!response.data.results) {
+            item.tip = '暂无数据！'
+          } else if (response.data.results[0].status == 1) {
+            item.tip = '* 对不起，域名已被注册，换个域名试试吧！'
+          } else if (response.data.results[0].isRes == 'unavailable') {
+            item.tip = '* 对不起，域名不可注册！'
+          } else if (response.data.results[0].isRes == 'available') {
+            item.tip = '域名可注册'
+          }
+        } else {
+          this.$Message.info(response.data.msg);
+        }
+      })
+    },
+    buyDomain (type) {
+      if (!this.$store.state.userInfo) {
+        if (type == 'p') {
+          this.$LR({ type: 'register' })
+        } else {
+          window.open('https://kfm.xrcloud.net/login', '_self')
+        }
+        return false
+      }
+      window.open('https://kfdomain.xrcloud.net/xrdomain/domaininfotemplate', '_self')
+    },
+    getRenew () {
+      axios.get('activity/getActTicket.do', {
+        params: {
+          activityNum: '68'
+        }
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          this.renewList = response.data.result.freevmconfigs
+        }
+      })
+    },
+    toRenew (id, type) {
+      if (!this.$store.state.userInfo) {
+        if (type == 'p') {
+          this.$LR({ type: 'register' })
+        } else {
+          window.open('https://kfm.xrcloud.net/login', '_self')
+        }
+        return false
+      }
+      axios.get('ticket/getTicketForConfigId.do', {
+        params: {
+          vmConfigId: id
+        }
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          // this.renewList = response.data.result.freevmconfigs
+          this.$message.info({
+            content: response.data.message
+          })
+        } else {
+          this.$message.info({
+            content: response.data.message
+          })
+        }
+      })
+    },
+    roll (val) {
+      $('html, body').animate({ scrollTop: val }, 300)
+    },
+    // 实名认证方法
+    refreshQRFirst () {
+      this.tempCode = this.uuid(6, 16)
+      let url = '/faceRecognition/getUserInfoByPcQRCode.do'
+      let config1 = {
+        phone: this.userInfo.phone ? this.userInfo.phone : this.formCustom.VerificationPhone,
+      }
+      let params = {
+        faceType: '1',
+        tempCode: this.tempCode
+      }
+      params.config = JSON.stringify(config1)
+      axios.post(url, params).then(res => {
+        if (res.status == 200 && res.data.status == 1) {
+          this.refreshUserStatus()
+          this.showModal.qrCode = true
+          this.qrConfig.value = res.data.result.url
+          this.codeLoseEfficacy = ''
+        } else {
+          this.codeLoseEfficacy = 'lose'
+        }
+      })
+    },
+    refreshUserStatus () {
+      clearInterval(this.codeTimer)
+      this.codeTimer = setInterval(() => {
+        this.$http.get('/faceRecognition/getAllStatus.do', { params: { tempCode: this.tempCode } }).then(res => {
+          if (res.status == 200 && res.data.status == 1) {
+            if (res.data.result.qrCode == 0) {
+              this.codeLoseEfficacy = 'lose'
+            }
+            if (res.data.result.qrCode == 2) {
+              this.codeLoseEfficacy = 'scanSuccess'
+            }
+            if (res.data.result.authStatus == 1) {
+              this.init()
+              this.showModal.qrCode = false
+              clearInterval(this.codeTimer)
+            }
+            if (res.data.result.authStatus == 0) {
+              this.authStatus = true
+            } else if (res.data.result.authStatus == 3) {
+              // this.showModal.authHint = true
+              this.$message.confirm({
+                title: '提示',
+                content: '抱歉，人脸识别实名认证失败！您也可以前往用户中心上传身份证照片进行实名认证。',
+                okText: '去实名认证',
+                onOk: () => {
+                  window.open('https://kfi.xrcloud.net/usercenter', '_self')
+                }
+              })
+            }
+          }
+        })
+      }, 3000)
+    },
+    Callpresentation () {
+      this.$refs.cashverification.validateField('messagecode', (text) => {
+        if (text == '') {
+          let url = 'user/judgeCode.do'
+          let params = {}
+          if (this.formCustom.VerificationPhone) {
+            params = {
+              aim: this.formCustom.VerificationPhone,
+              isemail: 0,
+              code: this.formCustom.messagecode
+            }
+          }
+          axios.get(url, {
+            params
+          }).then(res => {
+            if (res.data.status == 1 && res.status == 200) {
+              if (this.phoneVerifyType === 'identification') {
+                this.showModal.cashverification = false
+                this.tempCode = this.uuid(6, 16)
+                let url = '/faceRecognition/getUserInfoByPcQRCode.do'
+                let config = {
+                  phone: this.userInfo.phone ? this.userInfo.phone : this.formCustom.VerificationPhone,
+                }
+                axios.post(url, {
+                  faceType: '1',
+                  config: JSON.stringify(config),
+                  tempCode: this.tempCode
+                }).then(res => {
+                  if (res.status == 200 && res.data.status == 1) {
+                    this.qrConfig.value = res.data.result.url
+                    this.showModal.qrCode = true
+                    this.codeLoseEfficacy = ''
+                    this.refreshUserStatus()
+                  } else {
+                    this.codeLoseEfficacy = 'lose'
+                    this.showModal.qrCode = true
+                    this.refreshUserStatus()
+                  }
+                })
+              }
+            } else {
+              this.$message.info({
+                content: res.data.message
+              })
+            }
+          })
+        }
+      })
+    },
+    uuid (len, radix) {
+      var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+      var uuid = [], i;
+      radix = radix || chars.length;
+
+      if (len) {
+        // Compact form
+        for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random() * radix];
+      } else {
+        // rfc4122, version 4 form
+        var r;
+
+        // rfc4122 requires these characters
+        uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
+        uuid[14] = '4';
+
+        // Fill in random data.  At i==19 set the high bits of clock sequence as
+        // per rfc4122, sec. 4.1.5
+        for (i = 0; i < 36; i++) {
+          if (!uuid[i]) {
+            r = 0 | Math.random() * 16;
+            uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
+          }
+        }
+      }
+      return uuid.join('');
+    },
+    refreshQRCode: throttle(1000, function () {
+      this.authStatus = false
+      this.tempCode = this.uuid(6, 16)
+      let url = '/faceRecognition/getUserInfoByPcQRCode.do'
+      let config1 = {
+        phone: this.userInfo.phone ? this.userInfo.phone : this.formCustom.VerificationPhone,
+      }
+      let params = {
+        faceType: '1',
+        tempCode: this.tempCode
+      }
+      params.config = JSON.stringify(config1)
+      axios.post(url, params).then(res => {
+        if (res.status == 200 && res.data.status == 1) {
+          this.$Message.success('刷新成功')
+          this.qrConfig.value = res.data.result.url
+          this.codeLoseEfficacy = ''
+        } else {
+          this.codeLoseEfficacy = 'lose'
+        }
+      })
+    }),
+    getPhoneCode (codeType) {
+      if (!this.userInfo.phone && !this.regExpObj.phone.test(this.formCustom.VerificationPhone)) {
+        this.$Message.info('请输入正确的手机号')
+        return
+      }
+      if (this.formCustom.VerificationPhone) {
+        axios.get('user/isRegister.do', {
+          params: {
+            username: this.formCustom.VerificationPhone
+          }
+        }).then(res => {
+          if (res.status === 200 && res.data.status === 1) {
+            this.$refs.cashverification.validateField('Verificationcode', (text) => {
+              if (text == '') {
+                var url = ''
+                if (codeType == 'code' || codeType == 'againCode' && this.formCustom.newCodeText == '获取验证码') {
+                  url = 'user/code.do'
+                } else if (codeType == 'voice' && this.formCustom.newCodeText == '获取验证码') {
+                  url = 'user/voiceCode.do'
+                } else {
+                  return false
+                }
+                axios.get(url, {
+                  params: {
+                    aim: this.formCustom.VerificationPhone,
+                    isemail: 0,
+                    vailCode: this.formCustom.Verificationcode
+                  }
+                }).then(response => {
+                  // 发送成功，进入倒计时
+                  if (response.status == 200 && response.data.status == 1) {
+                    var countdown = 60
+                    this.formCustom.newCodeText = `${countdown}S`
+                    var Interval = setInterval(() => {
+                      countdown--
+                      this.formCustom.newCodeText = `${countdown}S`
+                      if (countdown == 0) {
+                        clearInterval(Interval)
+                        this.formCustom.newCodeText = '获取验证码'
+                      }
+                    }, 1000)
+                  } else {
+                    this.$message.info({
+                      content: response.data.message
+                    })
+                    this.imgSrc = `user/getKaptchaImage.do?t=${new Date().getTime()}`
+                    this.formCustom.Verificationcode = ''
+                  }
+                })
+              }
+            })
+          } else {
+            this.$Message.info('该手机号已被使用')
+          }
+        })
+      }
+    },
+    Callpresentation () {
+      this.$refs.cashverification.validateField('messagecode', (text) => {
+        if (text == '') {
+          let url = 'user/judgeCode.do'
+          let params = {}
+          if (this.formCustom.VerificationPhone) {
+            params = {
+              aim: this.formCustom.VerificationPhone,
+              isemail: 0,
+              code: this.formCustom.messagecode
+            }
+          }
+          axios.get(url, {
+            params
+          }).then(res => {
+            if (res.data.status == 1 && res.status == 200) {
+              if (this.phoneVerifyType === 'identification') {
+                this.showModal.cashverification = false
+                this.tempCode = this.uuid(6, 16)
+                let url = '/faceRecognition/getUserInfoByPcQRCode.do'
+                let config = {
+                  phone: this.userInfo.phone ? this.userInfo.phone : this.formCustom.VerificationPhone,
+                }
+                axios.post(url, {
+                  faceType: '1',
+                  config: JSON.stringify(config),
+                  tempCode: this.tempCode
+                }).then(res => {
+                  if (res.status == 200 && res.data.status == 1) {
+                    this.qrConfig.value = res.data.result.url
+                    this.showModal.qrCode = true
+                    this.codeLoseEfficacy = ''
+                    this.refreshUserStatus()
+                  } else {
+                    this.codeLoseEfficacy = 'lose'
+                    this.showModal.qrCode = true
+                    this.refreshUserStatus()
+                  }
+                })
+              }
+            } else {
+              this.$message.info({
+                content: res.data.message
+              })
+            }
+          })
+        }
+      })
+    },
+    // 实名认证方法结束
+  },
+  computed: {
+    authInfo () {
+      return this.$store.state.authInfo ? this.$store.state.authInfo : null
+    },
+    authInfoPersion () {
+      return this.$store.state.authInfoPersion
+    },
+    userInfo () {
+      return this.$store.state.userInfo
+    },
+    disabled () {
+      if (this.formCustom.Verificationcode == '' || this.formCustom.messagecode == '') {
+        return true
+      } else {
+        return false
+      }
+    }
+  },
+  watch: {
+
+  },
+  components: {
+    VueQArt
+  }
+}
+</script>
+
+<style rel="stylesheet/less" lang="less" scoped>
+.anniversary {
+  color: #222;
+  font-family: MicrosoftYaHei;
+}
+i {
+  font-style: normal;
+}
+.wrap {
+  width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.ml10 {
+  margin-left: 10px;
+}
+.sub-head {
+  padding-top: 80px;
+  padding-bottom: 20px;
+  color: #000;
+  h2 {
+    font-size: 36px;
+    line-height: 47px;
+    font-weight: normal;
+    margin-bottom: 10px;
+  }
+  p {
+    font-size: 18px;
+    line-height: 24px;
+    span {
+      color: #ff624b;
+      cursor: pointer;
+    }
+  }
+}
+.btn {
+  display: inline-block;
+  width: 184px;
+  height: 40px;
+  background: linear-gradient(
+    128deg,
+    rgba(249, 239, 184, 1) 0%,
+    rgba(227, 183, 111, 1) 100%
+  );
+  border-radius: 2px;
+  font-size: 18px;
+  color: rgba(51, 51, 51, 1);
+  line-height: 40px;
+  text-align: center;
+  cursor: pointer;
+}
+
+aside {
+  position: fixed;
+  z-index: 100;
+  top: 510px;
+  left: 0px;
+  width: 90px;
+  height: 306px;
+  padding-top: 100px;
+  background: url(../../../assets/img/active/anniversary/anniversary-aside-bg.png)
+    center no-repeat;
+  ul {
+    li {
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      cursor: pointer;
+      &:hover {
+        background: linear-gradient(
+          135deg,
+          rgba(221, 203, 161, 1) 0%,
+          rgba(188, 160, 110, 1) 100%
+        );
+      }
+    }
+  }
+  .to-top {
+    position: absolute;
+    bottom: 8px;
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
+  }
+}
+.banner {
+  height: 577px;
+  background: url(../../../assets/img/active/anniversary/anniversary-banner.png)
+    center no-repeat;
+  .text {
+    padding-top: 140px;
+    img:first-of-type {
+      margin-bottom: 40px;
+      display: block;
+    }
+  }
+  .menu {
+    width: 1200px;
+    height: 92px;
+    position: relative;
+    margin-top: 188px;
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1200px;
+      height: 92px;
+      background: rgba(230, 227, 218, 0.2);
+    }
+    ul {
+      color: #fff;
+      padding: 16px 0;
+      height: 92px;
+      li {
+        position: relative;
+        display: inline-block;
+        width: 240px;
+        height: 60px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #fff;
+        border-right: 1px solid rgba(151, 151, 151, 1);
+        div {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 100%;
+          text-align: center;
+          p,
+          span {
+            line-height: 27px;
+          }
+        }
+      }
+      li:last-of-type {
+        border-right: none;
+      }
+    }
+  }
+}
+section:nth-of-type(2) {
+  background: rgba(245, 243, 240, 1);
+}
+.new-user {
+  background: url(../../../assets/img/active/anniversary/anniversary-newuser-bg.png)
+    center no-repeat;
+  padding: 14px 0px 0 40px;
+  span {
+    vertical-align: middle;
+  }
+  .left {
+    img {
+      vertical-align: middle;
+    }
+  }
+  .desc {
+    display: inline-block;
+    width: 474px;
+    margin: 0 98px 0 136px;
+    font-size: 16px;
+    line-height: 24px;
+  }
+  .btn {
+    background: #222222;
+    width: 184px;
+    color: #fff;
+  }
+}
+.seckill {
+  margin-bottom: 92px;
+  .item {
+    width: 224px;
+    background: #312b1f;
+    color: rgba(255, 255, 255, 1);
+    display: inline-block;
+    margin-right: 20px;
+    vertical-align: middle;
+    &:last-of-type {
+      margin-right: 0;
+    }
+    header {
+      position: relative;
+      padding: 25px 0 15px 0;
+      font-size: 20px;
+      font-weight: bold;
+      line-height: 26px;
+      text-align: center;
+      &::after {
+        content: "";
+        display: block;
+        height: 1px;
+        width: 100%;
+        background: url(../../../assets/img/active/anniversary/anniversary-border-img.png)
+          center no-repeat;
+        background-size: 100% auto;
+        position: absolute;
+        bottom: 0;
+      }
+    }
+    .content {
+      padding: 20px 20px 30px 20px;
+      .middle {
+        height: 162px;
+        .configure {
+          text-align: justify;
+          &:after {
+            display: inline-block;
+            width: 100%;
+            content: "";
+          }
+          li {
+            display: inline-block;
+            i {
+              display: block;
+            }
+          }
+        }
+        .center {
+          padding-top: 26px;
+          > div {
+            margin-bottom: 15px;
+          }
+          .mb10 {
+            margin-bottom: 10px;
+          }
+          .row-yellow {
+            font-size: 16px;
+            font-weight: 600;
+            color: rgba(255, 208, 140, 1);
+            font-style: italic;
+          }
+          .lh1 {
+            line-height: 1;
+          }
+          .w {
+            width: 142px;
+            display: inline-block;
+          }
+        }
+        .pt16 {
+          padding-top: 16px;
+        }
+      }
+      .price {
+        p {
+          margin-bottom: 10px;
+          color: rgba(255, 98, 75, 1);
+          font-size: 24px;
+          font-weight: bold;
+          i {
+            font-size: 12px;
+            font-weight: normal;
+          }
+        }
+        span {
+          display: inline-block;
+          text-decoration: line-through;
+          margin-bottom: 10px;
+        }
+      }
+      .btn {
+        width: 184px;
+      }
+    }
+  }
+}
+section:nth-of-type(3) {
+  background: url(../../../assets/img/active/anniversary/anniversary-bg-icon-1.png)
+      90px 190px no-repeat,
+    url(../../../assets/img/active/anniversary/anniversary-bg-icon-2.png) 95%
+      90% no-repeat;
+  background-color: rgba(20, 20, 17, 1);
+  padding-bottom: 80px;
+  .sub-head {
+    color: #fff;
+    p {
+      font-size: 18px;
+      line-height: 24px;
+      span {
+        color: #eed292;
+      }
+    }
+  }
+}
+.enterprise {
+  .item {
+    color: #fff;
+    font-size: 0;
+    // border-top: solid 1px #a99b8a;
+    border-bottom: solid 1px #666666;
+    // margin-bottom: 1px;
+    .left {
+      width: 200px;
+      height: 130px;
+      display: inline-block;
+      background: url(../../../assets/img/active/anniversary/anniversary-item-left-bg-1.png)
+        center no-repeat;
+      font-weight: bold;
+      padding: 40px 0 0 20px;
+      vertical-align: bottom;
+      p {
+        margin-bottom: 10px;
+        font-size: 20px;
+        line-height: 26px;
+      }
+      span {
+        font-size: 14px;
+      }
+    }
+    .content {
+      display: inline-block;
+      padding: 36px 0 0 20px;
+      background: #fff;
+      width: 1000px;
+      height: 130px;
+      color: #000;
+      .center {
+        display: inline-block;
+        border-right: solid 1px #a8a8a8;
+        li {
+          display: inline-block;
+          margin-right: 20px;
+          .w150 {
+            width: 150px;
+          }
+          .w230 {
+            width: 230px;
+            display: inline-block;
+          }
+          .w140 {
+            width: 140px;
+          }
+          .w120 {
+            width: 120px;
+          }
+          .w100 {
+            width: 100px;
+          }
+          .label {
+            display: block;
+            margin-bottom: 14px;
+          }
+          .time {
+            font-size: 0;
+            span {
+              position: relative;
+              display: block;
+              display: inline-block;
+              width: 50px;
+              height: 35px;
+              border: 1px solid rgba(235, 193, 98, 1);
+              border-right: none;
+              text-align: center;
+              line-height: 32px;
+              font-size: 14px;
+              cursor: pointer;
+              &:last-of-type {
+                border-right: 1px solid rgba(235, 193, 98, 1);
+              }
+              i {
+                position: absolute;
+                top: -8px;
+                left: 6px;
+                display: inline-block;
+                padding: 1px 2px;
+                line-height: 16px;
+                background: rgba(191, 191, 191, 1);
+                color: #fff;
+                font-size: 12px;
+              }
+              &.selected {
+                background: linear-gradient(
+                  130deg,
+                  rgba(249, 239, 184, 1) 0%,
+                  rgba(227, 183, 111, 1) 100%
+                );
+                i {
+                  background: #ff624b;
+                }
+              }
+            }
+          }
+          &:last-of-type {
+            margin-right: 60px;
+          }
+        }
+      }
+      .right {
+        display: inline-block;
+        .price {
+          display: inline-block;
+          width: 176px;
+          padding-left: 20px;
+          .cost {
+            color: rgba(255, 98, 75, 1);
+            font-size: 0;
+            i {
+              font-size: 12px;
+            }
+            span {
+              font-size: 28px;
+              font-weight: bold;
+            }
+          }
+          .origin-cost {
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 12px;
+            color: #222;
+            text-decoration: line-through;
+          }
+        }
+        .btn {
+          width: 150px;
+          vertical-align: bottom;
+        }
+      }
+    }
+  }
+}
+section:nth-of-type(4) {
+  background: url(../../../assets/img/active/anniversary/anniversary-bg-icon-3.png)
+      90px 190px no-repeat,
+    url(../../../assets/img/active/anniversary/anniversary-bg-icon-4.png) 95%
+      90% no-repeat;
+  background-color: rgba(245, 243, 240, 1);
+}
+.domain {
+  .item {
+    display: inline-block;
+    margin-right: 75px;
+    width: 350px;
+    height: 340px;
+    border: 1px solid rgba(235, 193, 98, 1);
+    border-radius: 2px;
+    &:last-of-type {
+      margin-right: 0;
+    }
+    &:nth-of-type(1) header {
+      background: url(../../../assets/img/active/anniversary/anniversary-domain-1.png)
+        center no-repeat;
+    }
+    &:nth-of-type(2) header {
+      background: url(../../../assets/img/active/anniversary/anniversary-domain-1.png)
+        center no-repeat;
+    }
+    &:nth-of-type(3) header {
+      background: url(../../../assets/img/active/anniversary/anniversary-domain-1.png)
+        center no-repeat;
+    }
+    header {
+      height: 170px;
+      padding: 30px 0 0 30px;
+      h3 {
+        margin-bottom: 30px;
+        color: #e9ba45;
+        font-size: 24px;
+        font-weight: normal;
+      }
+      .input-group {
+        font-size: 0;
+        input {
+          vertical-align: bottom;
+          font-size: 12px;
+          border-radius: 2px 0px 0px 2px;
+          border: none;
+          padding-left: 10px;
+        }
+        img {
+          cursor: pointer;
+        }
+      }
+      .tip {
+        display: inline-block;
+        margin-top: 12px;
+        font-size: 12px;
+        color: #ff624b;
+      }
+    }
+    .content {
+      padding: 30px 30px 0 30px;
+      .price {
+        color: #ff624b;
+        font-size: 28px;
+        span {
+          font-size: 14px;
+          vertical-align: middle;
+        }
+      }
+      .btn {
+        margin-top: 20px;
+        width: 100%;
+      }
+    }
+  }
+}
+.renew {
+  margin-bottom: 100px;
+  .container {
+    width: 1200px;
+    height: 474px;
+    padding-top: 47px;
+    border-radius: 10px;
+    border: 2px solid rgba(235, 193, 98, 1);
+    background: #f6f1e8;
+    text-align: center;
+    .item {
+      display: inline-block;
+      position: relative;
+      .box {
+        position: absolute;
+        top: 0;
+        padding-top: 55px;
+        width: 100%;
+      }
+      .discount {
+        p {
+          margin-bottom: 10px;
+          color: #ff624b;
+          span {
+            font-size: 72px;
+          }
+          i {
+            font-size: 36px;
+            vertical-align: super;
+          }
+        }
+        span {
+          font-size: 20px;
+        }
+      }
+      .btn {
+        margin-top: 20px;
+        width: 162px;
+        background: rgba(13, 12, 11, 1);
+        border-radius: 20px;
+        font-size: 20px;
+        color: rgba(252, 192, 50, 1);
+      }
+      .text {
+        margin-top: 50px;
+        span {
+          font-size: 18px;
+          color: rgba(255, 255, 255, 1);
+          line-height: 24px;
+        }
+        p {
+          font-size: 24px;
+          font-weight: bold;
+          color: rgba(255, 255, 255, 1);
+          line-height: 31px;
+          span {
+            color: #ff624b;
+          }
+        }
+      }
+    }
+  }
+}
+.share-modal {
+  p {
+    font-size: 16px;
+    text-align: center;
+  }
+  .wrapper {
+    margin-top: 30px;
+    text-align: center;
+    div {
+      display: inline-block;
+      span {
+        display: block;
+        margin-top: 20px;
+        font-size: 14px;
+      }
+    }
+  }
+  .qr-code {
+    margin-right: 50px;
+  }
+  .url {
+    width: 120px;
+    .btn {
+      margin-bottom: 85px;
+      width: 120px;
+      font-size: 16px;
+      border-radius: 20px;
+    }
+  }
+}
+.rule {
+  ul {
+    padding: 10px;
+    li {
+      margin-bottom: 20px;
+      font-size: 16px;
+      line-height: 24px;
+    }
+  }
+  .footer {
+    text-align: center;
+  }
+}
+.pc-640 {
+  display: block;
+}
+.mobile-640 {
+  display: none;
+}
+.pc-640-inline {
+  display: inline-block;
+}
+.mobile-640-inline {
+  display: none;
+}
+@media screen and (max-width: 640px) {
+  .pc-640 {
+    display: none;
+  }
+  .mobile-640 {
+    display: block;
+  }
+  .pc-640-inline {
+    display: none;
+  }
+  .mobile-640-inline {
+    display: inline-block;
+  }
+}
+// 实名认证样式
+.qrcode-modal {
+  text-align: center;
+  .qr-code {
+    height: 198px;
+    width: 197px;
+    background: url("../../../assets/img/app/auth_background.png") no-repeat
+      center;
+    margin: 30px auto;
+    position: relative;
+    .shade {
+      position: absolute;
+      top: 0;
+      height: 198px;
+      width: 197px;
+      background: url("../../../assets/img/app/lose_efficacy.png") center;
+      &.scanSuccess {
+        background: url("../../../assets/img/app/scan_success.png") center;
+      }
+    }
+  }
+  > p {
+    font-size: 14px;
+    font-family: MicrosoftYaHei;
+    color: rgba(51, 51, 51, 1);
+    margin: 10px;
+    > span {
+      color: #ff624b;
+    }
+  }
+  .p-top {
+    font-family: MicrosoftYaHei-Bold;
+    font-weight: bold;
+    color: rgba(237, 64, 20, 1);
+  }
+  .p-bottom {
+    margin-top: 14px;
+    margin-bottom: 0;
+    > span {
+      color: #4297f2;
+      cursor: pointer;
+    }
+  }
+}
+.person-check {
+  .w300 {
+    width: 300px;
+  }
+}
+// 实名认证结束
+@media screen and (max-width: 640px) {
+  .pc-640 {
+    display: none;
+  }
+  .mobile-640 {
+    display: block;
+  }
+  .pc-640-inline {
+    display: none;
+  }
+  .mobile-640-inline {
+    display: inline-block;
+  }
+  .wrap {
+    width: 100%;
+  }
+  aside {
+    display: none;
+  }
+  .banner {
+    height: auto;
+    .banner-m {
+      width: 100%;
+    }
+  }
+  .new-user {
+    padding: 10px 15px 15px 15px;
+    background: linear-gradient(
+      180deg,
+      rgba(221, 203, 161, 1) 0%,
+      rgba(184, 155, 104, 1) 100%
+    );
+    .left {
+      display: none;
+    }
+    .desc {
+      width: 100%;
+      margin: 0;
+    }
+    .btn {
+      width: 100%;
+      margin-top: 8px;
+    }
+  }
+  .seckill {
+    padding: 15px;
+    margin-bottom: 0;
+    .item {
+      width: 100%;
+      margin-right: 0;
+      margin-bottom: 15px;
+      .content {
+        .middle .center .w {
+          width: calc(100% - 18px);
+        }
+        .price {
+          display: inline-block;
+        }
+        .btn {
+          float: right;
+          width: auto;
+          padding-left: 30px;
+          padding-right: 30px;
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+  section:nth-of-type(3) {
+    background: #141411;
+    padding-bottom: 0;
+  }
+  .enterprise {
+    padding: 15px;
+    .item {
+      margin-bottom: 15px;
+      .left {
+        width: 100%;
+        height: auto;
+        padding: 10px 15px;
+        background: url("../../../assets/img/active/anniversary/aa-item-bg-m.png")
+          center no-repeat;
+        background-size: cover;
+      }
+      .content {
+        width: 100%;
+        height: auto;
+        background: #fff;
+        padding: 15px;
+        .center {
+          border-right: none;
+          li {
+            width: 100%;
+            margin-bottom: 15px;
+            .w150 {
+              width: 100%;
+            }
+            .w230 {
+              width: 100%;
+              display: inline-block;
+            }
+            .w140 {
+              width: 100%;
+            }
+            .w120 {
+              width: 100%;
+            }
+            .w100 {
+              width: 100%;
+            }
+            .label {
+              margin-bottom: 10px;
+            }
+          }
+        }
+        .right {
+          width: 100%;
+          .price {
+            padding-left: 0;
+            width: auto;
+          }
+          .btn {
+            float: right;
+          }
+        }
+      }
+    }
+  }
+  section:nth-of-type(4) {
+    padding: 15px;
+    background: #f5f3f0;
+  }
+  .anniversary {
+    .domain {
+      .item {
+        margin-right: 0;
+        margin-bottom: 15px;
+        width: 100%;
+        height: auto;
+        header {
+          padding: 15px;
+          height: auto;
+          background: #0d0c0b;
+          h3 {
+            margin-bottom: 10px;
+          }
+        }
+        .content {
+          padding: 10px 15px 15px 15px;
+          .btn {
+            margin-top: 15px;
+          }
+        }
+      }
+    }
+    .renew {
+      margin-bottom: 10px;
+      .container {
+        width: 100%;
+        height: auto;
+        padding: 15px 0;
+        .item {
+          width: 100%;
+          img {
+            width: 100%;
+          }
+          .box {
+            padding-top: 15px;
+            font-size: 14px;
+          }
+          .discount {
+            p {
+              margin-bottom: 0;
+              span {
+                font-size: 36px;
+              }
+              i {
+                font-size: 24px;
+                font-weight: bold;
+              }
+            }
+            span {
+              font-size: 14px;
+            }
+          }
+          .btn {
+            margin-top: 5px;
+            font-size: 14px;
+          }
+          .text {
+            margin-top: 20px;
+            span {
+              font-size: 14px;
+            }
+            p {
+              font-size: 18px;
+            }
+          }
+        }
+      }
+    }
+  }
+  .sub-head {
+    padding-top: 25px;
+    padding-bottom: 10px;
+    h2 {
+      font-size: 28px;
+      line-height: 1;
+    }
+    p {
+      font-size: 16px;
+    }
+  }
+}
+</style>

@@ -27,4 +27,13 @@ ul li {
   font-size: 12px;
   list-style: none;
 }
+.clearfix::after {
+  content: '';
+  display: block;
+  clear: both;
+}
 
+.clearfix {
+  zoom: 1;
+  /* IE 兼容 */
+}

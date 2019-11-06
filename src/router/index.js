@@ -13,6 +13,7 @@ const FrActive1 = () => import('@/components/App/active/hostKinds')
 const objStorageActiveP = () => import('@/components/App/active/objStorageActive')
 const DBActiveP = () => import('@/components/App/active/DatabaseActive')
 const ddosActive = () => import('@/components/App/active/ddos')
+const anniversary = () => import('@/components/App/active/Anniversary')
 // 404
 const notFindPage = () => import('@/components/404')
 
@@ -60,6 +61,12 @@ var router = new Router({
           component: ddosActive,
           caseSensitive: true
         },
+        {
+          path: 'anniversary',
+          name: 'anniversary',
+          component: anniversary,
+          caseSensitive: true
+        }
       ]
     },
     {
