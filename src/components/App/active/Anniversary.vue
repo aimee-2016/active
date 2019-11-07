@@ -92,8 +92,14 @@
                       :class="{mb10:item.servicetype=='G5500'}"
                       v-if="item.servicetype=='G5500'"
                     >GPU：Tesla P{{item.gpu}}</div>
-                    <div class="row-yellow" v-if="item.servicetype=='oss'">存储规格：1TB</div>
-                    <div class="row-yellow" v-if="item.servicetype=='oss'">下载流量：1TB</div>
+                    <div
+                      class="row-yellow"
+                      v-if="item.servicetype=='oss'"
+                    >存储规格：{{item.capacityDesc}}</div>
+                    <div
+                      class="row-yellow"
+                      v-if="item.servicetype=='oss'"
+                    >下载流量：{{item.flowpackageDesc}}</div>
                     <div :class="{mb10:item.servicetype=='G5500'}">
                       <span class="label">区域：</span>
                       <Select v-model="item.zone" class="w" @on-change="changeZoneSeckill(item)">
@@ -147,7 +153,7 @@
                 <ul class="center">
                   <li class="aa-system-1">
                     <span class="label">区域</span>
-                    <Select v-model="item.zone" class="w150">
+                    <Select v-model="item.zone" class="w150" @on-change="changeZoneSeckill(item)">
                       <Option
                         v-for="(item,index) in item.zoneList"
                         :value="item.value"
@@ -224,7 +230,7 @@
                   </li>
                   <li>
                     <span class="label">可选区域</span>
-                    <Select v-model="item.zone" class="w140">
+                    <Select v-model="item.zone" class="w140" @on-change="changeZoneDB(item)">
                       <Option
                         v-for="(inner,index2) in item.zoneList"
                         :value="inner.value"
@@ -732,7 +738,14 @@ export default {
       })
     },
     changeZoneSeckill (item) {
-      console.log(item)
+      if (item.servicetype == 'oss') {
+        this.getPriceOSS(item)
+      } else {
+        this.getHostSystem(item)
+        this.getPriceHost(item)
+      }
+    },
+    getHostSystem (item) {
       let params = {}
       let url = ''
       switch (item.servicetype) {
@@ -759,30 +772,35 @@ export default {
       }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
           item.systemList = this.formatSystem(response.data.result)
-          console.log(item.systemList)
         }
       })
     },
-    getPrice (item) {
-      let url = 'activity/getHostOriginalPrice.do'
+    getPriceOSS (item) {
+      let url = 'activity/getOssOriginalPrice.do'
       let params = {
-        cpuNum: item.cpu,
-        diskSize: item.disksize,
-        diskType: item.disktype,
-        memory: item.mem,
+        flowPackage: item.flowpackage,
+        capacity: item.capacity,
         timeType: item.days < 360 ? 'month' : 'year',
         timeValue: item.days < 360 ? item.days / 30 : item.days / 360,
-        zoneId: item.zone,
       }
-      if (item.servicetype == 'G5500') {
-        params.gpu = item.gpu
-        params.gpuSize = item.gpusize
+      axios.post(url, params).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          item.originalPrice = response.data.result.originalPrice
+        }
+      })
+    },
+    getPriceHost (item) {
+      let url = 'activity/getOriginalPrice.do'
+      let params = {
+        vmConfigId: item.id,
+        zoneId: item.zone
       }
       axios.get(url, {
         params: params
       }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-
+          item.cost = response.data.result.cost
+          item.originalPrice = response.data.result.originalPrice
         }
       })
     },
@@ -902,6 +920,7 @@ export default {
       item.cost = item.costList[index]
       item.originalPrice = item.originalPriceList[index]
       item.id = item.idList[index]
+      this.getPriceHost(item)
     },
     getDatabase () {
       axios.get('activity/getActivityInfo.do', {
@@ -918,13 +937,40 @@ export default {
               return { 'cpu': inner.cpu, 'mem': inner.mem }
             })
             this.$set(item, 'specs', item.value[0].cpu + '#' + item.value[0].mem)
+            item.name = item.value[0].configdesc
             item.rootDiskSize = item.value[0].rootDiskSize
             item.dataDiskSize = item.value[0].dataDiskSize
+            item.disktype = item.value[0].disktype
             this.$set(item, 'timeList', [])
             this.$set(item, 'bandwithList', [])
-            this.changeConfig(item)
             item.zoneList = response.data.result.optionalArea
             item.zone = item.zoneList[0].value
+            // this.changeConfig(item)
+            // 初始化数据赋值(为了一开始不调取很多接口)
+            item.value.forEach(inner => {
+              if (inner.cpu == item.specs.split('#')[0] && inner.mem == item.specs.split('#')[1]) {
+                item.sList = inner.config
+                item.id = inner.id
+                item.bandwithList = inner.config.map(sec => {
+                  return { 'bandwith': sec.bandwidth }
+                })
+              }
+            })
+            this.$set(item, 'bandwith', item.bandwithList[0].bandwith)
+            item.daysPricelist = item.sList.filter(inner => {
+              return inner.bandwidth == item.bandwith
+            })
+            item.daysPricelist[0].value = item.daysPricelist[0].value.sort((a, b) => {
+              return a.days - b.days
+            })
+            item.timeList = item.daysPricelist[0].value.map(sec => {
+              return { 'days': sec.days, 'discount': sec.discount }
+            })
+            this.$set(item, 'days', item.timeList[0].days)
+            this.$set(item, 'discount', item.timeList[0].discount)
+            //给价格赋初始值
+            this.$set(item, 'cost', item.daysPricelist[0].value[0].cost)
+            this.$set(item, 'originalPrice', item.daysPricelist[0].value[0].originalPrice)
           })
         }
       })
@@ -952,11 +998,9 @@ export default {
       item.timeList = item.daysPricelist[0].value.map(sec => {
         return { 'days': sec.days, 'discount': sec.discount }
       })
-      this.$set(item, 'days', item.timeList[0].days)
-      this.$set(item, 'discount', item.timeList[0].discount)
-      //给价格赋初始值
-      this.$set(item, 'cost', item.daysPricelist[0].value[0].cost)
-      this.$set(item, 'originalPrice', item.daysPricelist[0].value[0].originalPrice)
+      item.days = item.timeList[0].days
+      item.discount = item.timeList[0].discount
+      this.getPriceDB(item)
     },
     changeTimeD (item, inner) {
       item.days = inner.days
@@ -966,6 +1010,31 @@ export default {
       })
       item.cost = selectPriceList[0].cost
       item.originalPrice = selectPriceList[0].originalPrice
+      this.getPriceDB(item)
+    },
+    changeZoneDB (item) {
+      this.getPriceDB(item)
+    },
+    getPriceDB (item) {
+      let url = 'activity/getHostOriginalPrice.do'
+      let params = {
+        cpuNum: item.specs.split('#')[0],
+        memory: item.specs.split('#')[1],
+        diskSize: item.rootDiskSize,
+        // diskType: item.disktype,
+        zoneId: item.zone,
+        timeType: item.days < 360 ? 'month' : 'year',
+        timeValue: item.days < 360 ? item.days / 30 : item.days / 360,
+        diskType: item.disktype,
+        resourceType: "db",
+        bandwidth: item.bandwith,
+        // discount: item.discount
+      }
+      axios.post(url, params).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+
+        }
+      })
     },
     orderDB (item, type) {
       if (!this.$store.state.userInfo) {
@@ -1007,7 +1076,7 @@ export default {
           defzoneid: item.zone,
           days: item.days,
           bandwidth: item.bandwith,
-          dbVersion: item.key
+          dbVersion: item.name
         }
       }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
