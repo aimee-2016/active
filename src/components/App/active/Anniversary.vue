@@ -917,8 +917,6 @@ export default {
     },
     changeTimeE (item, inner, index) {
       item.days = inner
-      item.cost = item.costList[index]
-      item.originalPrice = item.originalPriceList[index]
       item.id = item.idList[index]
       this.getPriceHost(item)
     },
@@ -1005,11 +1003,6 @@ export default {
     changeTimeD (item, inner) {
       item.days = inner.days
       item.discount = inner.discount
-      let selectPriceList = item.daysPricelist[0].value.filter(inner => {
-        return inner.days == item.days
-      })
-      item.cost = selectPriceList[0].cost
-      item.originalPrice = selectPriceList[0].originalPrice
       this.getPriceDB(item)
     },
     changeZoneDB (item) {
@@ -1020,19 +1013,19 @@ export default {
       let params = {
         cpuNum: item.specs.split('#')[0],
         memory: item.specs.split('#')[1],
-        diskSize: item.rootDiskSize,
-        // diskType: item.disktype,
+        diskSize: item.rootDiskSize + item.dataDiskSize,
         zoneId: item.zone,
         timeType: item.days < 360 ? 'month' : 'year',
         timeValue: item.days < 360 ? item.days / 30 : item.days / 360,
         diskType: item.disktype,
         resourceType: "db",
         bandwidth: item.bandwith,
-        // discount: item.discount
+        discount: item.discount
       }
       axios.post(url, params).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-
+          item.cost = response.data.result.discountCost
+          item.originalPrice = response.data.result.originalPrice
         }
       })
     },
