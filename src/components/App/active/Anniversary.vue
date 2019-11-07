@@ -216,19 +216,19 @@
                     <span class="label">可选带宽</span>
                     <Select v-model="item.bandwith" class="w100" @on-change="changeBandwith(item)">
                       <Option
-                        v-for="(inner,index) in item.bandwithList"
+                        v-for="inner in item.bandwithList"
                         :value="inner.bandwith"
-                        :key="index"
-                      >{{ inner.bandwith }}M</Option>
+                        :key="inner.bandwith"
+                      >{{ inner.bandwith}}M</Option>
                     </Select>
                   </li>
                   <li>
                     <span class="label">可选区域</span>
                     <Select v-model="item.zone" class="w140">
                       <Option
-                        v-for="(inner,index) in item.zoneList"
+                        v-for="(inner,index2) in item.zoneList"
                         :value="inner.value"
-                        :key="index"
+                        :key="index2"
                       >{{ inner.name }}</Option>
                     </Select>
                   </li>
@@ -239,10 +239,10 @@
                         v-for="(inner,index) in item.timeList"
                         :key="index"
                         @click="changeTimeD(item,inner)"
-                        :class="{'selected':inner.days == item.days&&inner.discount == item.discount}"
+                        :class="{'selected':inner.days === item.days&&inner.discount === item.discount}"
                       >
                         {{inner.days<360?inner.days/30+'月':inner.days/360+'年'}}
-                        <i>{{inner.discount}}折</i>
+                        <i>{{(inner.discount*10).toFixed(2)}}折</i>
                       </span>
                     </div>
                   </li>
@@ -910,28 +910,21 @@ export default {
         }
       }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          // console.log(response.data.result.listMap)
           this.databaseList = response.data.result.listMap
           this.databaseList.forEach(item => {
+            this.$set(item, 'specsList', [])
             item.specsList = item.value.map(inner => {
+              inner.config = JSON.parse(inner.config)
               return { 'cpu': inner.cpu, 'mem': inner.mem }
             })
-            item.specs = item.value[0].cpu + '#' + item.value[0].mem
+            this.$set(item, 'specs', item.value[0].cpu + '#' + item.value[0].mem)
             item.rootDiskSize = item.value[0].rootDiskSize
             item.dataDiskSize = item.value[0].dataDiskSize
-            // item.disk = item.value[0].disksize
+            this.$set(item, 'timeList', [])
             this.$set(item, 'bandwithList', [])
             this.changeConfig(item)
             item.zoneList = response.data.result.optionalArea
             item.zone = item.zoneList[0].value
-            // item.timeList = []
-            this.$set(item, 'timeList', [])
-            this.changeBandwith(item)
-            this.$set(item, 'days', '')
-            this.$set(item, 'discount', '')
-            this.$set(item, 'cost', '687')
-            this.$set(item, 'originalPrice', '8701.92')
-            // item.days = ''
           })
         }
       })
@@ -939,32 +932,40 @@ export default {
     changeConfig (item) {
       item.value.forEach(inner => {
         if (inner.cpu == item.specs.split('#')[0] && inner.mem == item.specs.split('#')[1]) {
-          item.sList = JSON.parse(inner.config)
-          item.bandwithList = item.sList.map(sec => {
+          item.sList = inner.config
+          item.id = inner.id
+          item.bandwithList = inner.config.map(sec => {
             return { 'bandwith': sec.bandwidth }
           })
-          item.bandwith = item.bandwithList[0].bandwith
         }
       })
-      // console.log(item.bandwithList)
+      this.$set(item, 'bandwith', item.bandwithList[0].bandwith)
+      this.changeBandwith(item)
     },
     changeBandwith (item) {
-      // console.log(item)
-      let dayslist = item.sList.filter(inner => {
+      item.daysPricelist = item.sList.filter(inner => {
         return inner.bandwidth == item.bandwith
       })
-      item.timeList = dayslist[0].value.map(sec => {
-        return { 'days': sec.days, 'discount': (sec.discount * 10).toFixed(2) }
+      item.daysPricelist[0].value = item.daysPricelist[0].value.sort((a, b) => {
+        return a.days - b.days
       })
-      // console.log(item.timeList)
-      item.days = item.timeList[0].days
+      item.timeList = item.daysPricelist[0].value.map(sec => {
+        return { 'days': sec.days, 'discount': sec.discount }
+      })
+      this.$set(item, 'days', item.timeList[0].days)
+      this.$set(item, 'discount', item.timeList[0].discount)
+      //给价格赋初始值
+      this.$set(item, 'cost', item.daysPricelist[0].value[0].cost)
+      this.$set(item, 'originalPrice', item.daysPricelist[0].value[0].originalPrice)
     },
     changeTimeD (item, inner) {
-      // console.log(item)
-      // console.log(inner)
       item.days = inner.days
       item.discount = inner.discount
-      // console.log(item.days)
+      let selectPriceList = item.daysPricelist[0].value.filter(inner => {
+        return inner.days == item.days
+      })
+      item.cost = selectPriceList[0].cost
+      item.originalPrice = selectPriceList[0].originalPrice
     },
     orderDB (item, type) {
       if (!this.$store.state.userInfo) {
@@ -1004,9 +1005,9 @@ export default {
         params: {
           vmConfigId: item.id,
           defzoneid: item.zone,
-          days: '',
-          bandwidth: '',
-          dbVersion: ''
+          days: item.days,
+          bandwidth: item.bandwith,
+          dbVersion: item.key
         }
       }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
