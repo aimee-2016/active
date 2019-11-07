@@ -137,7 +137,7 @@
               <span @click="showModal.ruleE=true">活动规则></span>
             </p>
           </header>
-          <div class="container aa-system-1">
+          <div class="container">
             <div class="item" v-for="(item,index) in enterpriseList" :key="index">
               <div class="left">
                 <p>{{item.cpu+'核'+item.mem+'G '+item.bandwith+'M带宽'}}</p>
@@ -145,7 +145,7 @@
               </div>
               <div class="content">
                 <ul class="center">
-                  <li>
+                  <li class="aa-system-1">
                     <span class="label">区域</span>
                     <Select v-model="item.zone" class="w150">
                       <Option
@@ -155,7 +155,7 @@
                       >{{ item.name }}</Option>
                     </Select>
                   </li>
-                  <li>
+                  <li class="aa-system-1">
                     <span class="label">系统</span>
                     <Cascader :data="item.systemList" v-model="item.system" style="w230"></Cascader>
                   </li>
@@ -1121,13 +1121,13 @@ export default {
         tids: item.name
       }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          if (!response.data.results) {
+          if (response.data.data.results.length == 0) {
             item.tip = '暂无数据！'
-          } else if (response.data.results[0].status == 1) {
+          } else if (response.data.data.results[0].status == 1) {
             item.tip = '* 对不起，域名已被注册，换个域名试试吧！'
-          } else if (response.data.results[0].isRes == 'unavailable') {
+          } else if (response.data.data.results[0].isRes == 'unavailable') {
             item.tip = '* 对不起，域名不可注册！'
-          } else if (response.data.results[0].isRes == 'available') {
+          } else if (response.data.data.results[0].isRes == 'available') {
             item.tip = '域名可注册'
           }
         } else {
