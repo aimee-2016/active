@@ -165,7 +165,7 @@
                     <span class="label">系统</span>
                     <Cascader :data="item.systemList" v-model="item.system" style="w230"></Cascader>
                   </li>
-                  <li>
+                  <li class='aa-system-1'>
                     <span class="label">可选时长</span>
                     <div class="time">
                       <span
@@ -200,15 +200,15 @@
               <span @click="showModal.ruleDB=true">活动规则></span>
             </p>
           </header>
-          <div class="container aa-system-1">
+          <div class="container">
             <div class="item" v-for="(item,index) in databaseList" :key="index">
               <div class="left">
                 <p>{{item.key}}</p>
                 <span>{{item.rootDiskSize+'G系统盘 '+item.dataDiskSize+'G数据盘'}}</span>
               </div>
-              <div class="content aa-system-1">
+              <div class="content">
                 <ul class="center">
-                  <li>
+                  <li class='aa-system-1'>
                     <span class="label">可选规格</span>
                     <Select v-model="item.specs" class="w120" @on-change="changeConfig(item)">
                       <Option
@@ -218,7 +218,7 @@
                       >{{ inner.cpu+'核'+inner.mem+'G' }}</Option>
                     </Select>
                   </li>
-                  <li>
+                  <li class='aa-system-1'>
                     <span class="label">可选带宽</span>
                     <Select v-model="item.bandwith" class="w100" @on-change="changeBandwith(item)">
                       <Option
@@ -228,7 +228,7 @@
                       >{{ inner.bandwith}}M</Option>
                     </Select>
                   </li>
-                  <li>
+                  <li class='aa-system-1'>
                     <span class="label">可选区域</span>
                     <Select v-model="item.zone" class="w140" @on-change="changeZoneDB(item)">
                       <Option
@@ -238,7 +238,7 @@
                       >{{ inner.name }}</Option>
                     </Select>
                   </li>
-                  <li style="margin-right:30px;">
+                  <li class='aa-system-1' style="margin-right:30px;">
                     <span class="label">可选时长</span>
                     <div class="time">
                       <span
@@ -697,6 +697,12 @@ export default {
     this.getDatabase()
     // this.getDomain()
     this.getRenew()
+    if (document.URL.indexOf('?') > -1) {
+      let ddd = document.URL.substring(document.URL.indexOf('?')+1,document.URL.length);
+      var date = new Date();
+      date.setTime(date.getTime() + 86400000);
+      document.cookie ='anniver='+ddd.split('=')[1]+';expires='+date.toUTCString();
+    }
   },
   mounted () {
 
@@ -1857,7 +1863,7 @@ section:nth-of-type(3) {
       .center {
         display: inline-block;
         border-right: solid 1px #a8a8a8;
-        li {
+        .aa-system-1 {
           display: inline-block;
           margin-right: 20px;
           .w150 {
@@ -2307,7 +2313,7 @@ section:nth-of-type(4) {
         padding: 15px;
         .center {
           border-right: none;
-          li {
+          .aa-system-1 {
             width: 100%;
             margin-bottom: 15px;
             .w150 {
