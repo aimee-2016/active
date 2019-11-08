@@ -380,6 +380,7 @@
       class="aa-modal rule"
       title="活动规则"
       :mask-closable="false"
+      :scrollable="true"
     >
       <div class="content">
         <ul>
@@ -396,6 +397,7 @@
       class="aa-modal rule"
       title="活动规则"
       :mask-closable="false"
+      :scrollable="true"
     >
       <div class="content">
         <ul>
@@ -412,6 +414,7 @@
       class="aa-modal rule"
       title="活动规则"
       :mask-closable="false"
+      :scrollable="true"
     >
       <div class="content">
         <ul>
@@ -428,6 +431,7 @@
       class="aa-modal rule"
       title="活动规则"
       :mask-closable="false"
+      :scrollable="true"
     >
       <div class="content">
         <ul>
@@ -561,7 +565,7 @@
         </p>
       </div>
       <div slot="footer" class="modal-footer-border">
-        <Button type="primary" @click="showModal.qrCode = false">确定</Button>
+        <Button type="primary" @click="qrcodeClose">确定</Button>
       </div>
     </Modal>
   </div>
@@ -1148,7 +1152,9 @@ export default {
           this.qrConfig.value = this.shareUrl
           this.showModal.share = true
         } else {
-          this.$Message.info("平台出小差了");
+          this.$message.info({
+            content: response.data.message
+          })
         }
       })
     },
@@ -1309,6 +1315,10 @@ export default {
           }
         })
       }, 3000)
+    },
+    qrcodeClose() {
+      this.showModal.qrCode = false
+      clearInterval(this.codeTimer)
     },
     Callpresentation () {
       this.$refs.cashverification.validateField('messagecode', (text) => {
@@ -2104,8 +2114,9 @@ section:nth-of-type(4) {
   }
 }
 .share-modal {
-  p {
+  >p {
     font-size: 16px;
+    line-height: 1.5;
     text-align: center;
   }
   .wrapper {
@@ -2435,5 +2446,26 @@ section:nth-of-type(4) {
       font-size: 16px;
     }
   }
+  .share-modal {
+  .wrapper {
+    margin-top: 30px;
+    text-align: center;
+    div {
+      display: inline-block;
+      span {
+        margin-top: 0px;
+      }
+    }
+  }
+  .qr-code {
+    margin-right: 0px;
+  }
+  .url {
+    .btn {
+      margin-bottom: 15px;
+      margin-top: 20px;
+    }
+  }
+}
 }
 </style>
