@@ -1185,9 +1185,6 @@
         }
       },
       registerAndLogin() {
-        if (document.cookie.split(";")[0]) {
-          var yqCode=document.cookie.split(";")[0].split("=")[1]
-        }
         if (this.registerForm.passwordDegree < 2) {
           this.registerForm.errorMsg = 'passwordTooEasy'
           return
@@ -1219,6 +1216,9 @@
         }
         if (localStorage.getItem('sellCode')) {
           params.sellCode = localStorage.getItem('sellCode')
+        }
+        if (this.getCookie('anniver')) {
+          params.yqCode = this.getCookie('anniver')
         }
         axios.post('user/register.do',
           params
@@ -1255,7 +1255,21 @@
             }
           })
         }, 3000)
+      },
+      getCookie(c_name){
+      if (document.cookie.length>0){
+        var c_start=document.cookie.indexOf(c_name + "=");
+          if (c_start!=-1){
+            c_start=c_start + c_name.length+1;
+            var c_end=document.cookie.indexOf(";",c_start);
+              if (c_end==-1){ 
+                c_end=document.cookie.length;
+              }
+          return unescape(document.cookie.substring(c_start,c_end));
+        }
       }
+      return "";
+    }, 
     },
     computed: {},
     watch: {
