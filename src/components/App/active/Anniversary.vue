@@ -1206,7 +1206,7 @@ export default {
         }
         return false
       }
-      window.open('https://kfdomain.xrcloud.net/xrdomain/domaininfotemplate', '_self')
+      window.open('https://csdomain.xrcloud.net/xrdomain/domaininfotemplate', '_self')
     },
     getRenew () {
       axios.get('activity/getActTicket.do', {
