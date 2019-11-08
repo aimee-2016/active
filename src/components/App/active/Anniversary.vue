@@ -1,11 +1,16 @@
 <template>
   <div class="anniversary">
-    <aside>
-      <ul>
-        <li v-for="(item,index) in asideList" :key="index" @click="roll(item.height)">{{item.text}}</li>
-      </ul>
-      <div class="to-top" @click="roll(0)">回到顶部</div>
-    </aside>
+    <div class='an-lf'>
+      <div class='an-sm'>
+        <span>活动导航</span>
+      </div>
+      <aside class='an-aside'>
+        <ul>
+          <li v-for="(item,index) in asideList" :key="index" @click="roll(item.height)">{{item.text}}</li>
+        </ul>
+        <div class="to-top" @click="roll(0)">回到顶部</div>
+      </aside>
+    </div>
     <section class="banner">
       <img
         src="../../../assets/img/active/anniversary/aa-banner-m.png"
@@ -149,7 +154,7 @@
                 <p>{{item.cpu+'核'+item.mem+'G '+item.bandwith+'M带宽'}}</p>
                 <span>{{item.disksize+'G '+item.disktype.toUpperCase()+'盘'}}</span>
               </div>
-              <div class="content">
+              <div class="content aa-system-2">
                 <ul class="center">
                   <li class="aa-system-1">
                     <span class="label">区域</span>
@@ -206,7 +211,7 @@
                 <p>{{item.key}}</p>
                 <span>{{item.rootDiskSize+'G系统盘 '+item.dataDiskSize+'G数据盘'}}</span>
               </div>
-              <div class="content">
+              <div class="content aa-system-2">
                 <ul class="center">
                   <li class='aa-system-1'>
                     <span class="label">可选规格</span>
@@ -1575,7 +1580,7 @@ i {
 aside {
   position: fixed;
   z-index: 100;
-  top: 510px;
+  top: 50%;
   left: 0px;
   width: 90px;
   height: 306px;
@@ -2185,6 +2190,28 @@ section:nth-of-type(4) {
     width: 300px;
   }
 }
+.an-lf{
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width:36px;height:116px;
+    .an-sm{
+      position: absolute;
+      width: 36px;
+      height: inherit;
+      left: 0;
+      text-align: center;
+      transition: all ease-out 0.3s;
+      font-size:16px;
+      color: #333333;
+      background:linear-gradient(180deg,rgba(255,250,224,1) 0%,rgba(217,195,145,1) 100%);
+      span{
+        display: inline-block;
+        margin-top: 21px;
+        width: 17px;
+      }
+    }
+}
 // 实名认证结束
 @media screen and (max-width: 768px) {
   .pc-640 {
@@ -2420,5 +2447,21 @@ section:nth-of-type(4) {
     }
   }
 }
+}
+@media screen and (max-width: 1366px) {
+  .an-aside {
+    left: -100px;
+    transition: all ease-out 0.3s;
+  }
+  
+  .an-lf:hover > .an-aside{
+    left: 0;
+    transition: all ease-out 0.3s;
+  }
+  .an-lf:hover > .an-sm{
+    // width: 0px;
+    transition: all ease-out 0.3s;
+    left: -50px;
+  }
 }
 </style>
