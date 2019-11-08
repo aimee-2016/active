@@ -817,7 +817,7 @@ export default {
         if (type == 'p') {
           if (!this.userInfo.phone) {
             this.showModal.cashverification = true
-          } else if (item.post.certification == 3) {
+          } else if (item.certification == 3) {
             this.$message.confirm({
               title: '提示',
               content: '抱歉，只有实名认证用户才可以参加活动',
@@ -830,7 +830,7 @@ export default {
             this.refreshQRFirst()
           }
         } else {
-          if (item.post.certification == 3) {
+          if (item.certification == 3) {
             window.open('https://kfi.xrcloud.net/usercenter', '_self')
           } else {
             window.open('https://kfm.xrcloud.net/faceindex', '_self')
@@ -1042,7 +1042,7 @@ export default {
         if (type == 'p') {
           if (!this.userInfo.phone) {
             this.showModal.cashverification = true
-          } else if (item.post.certification == 3) {
+          } else if (item.certification == 3) {
             this.$message.confirm({
               title: '提示',
               content: '抱歉，只有实名认证用户才可以参加活动',
@@ -1055,7 +1055,7 @@ export default {
             this.refreshQRFirst()
           }
         } else {
-          if (item.post.certification == 3) {
+          if (item.certification == 3) {
             window.open('https://kfi.xrcloud.net/usercenter', '_self')
           } else {
             window.open('https://kfm.xrcloud.net/faceindex', '_self')
