@@ -1185,6 +1185,9 @@
         }
       },
       registerAndLogin() {
+        if (document.cookie.split(";")[0]) {
+          var yqCode=document.cookie.split(";")[0].split("=")[1]
+        }
         if (this.registerForm.passwordDegree < 2) {
           this.registerForm.errorMsg = 'passwordTooEasy'
           return
@@ -1201,12 +1204,14 @@
         if (this.registerForm.registerType === 'phone') {
           params = {
             username: this.registerForm.loginPhone,
-            password: this.registerForm.password
+            password: this.registerForm.password,
+            yqCode: yqCode
           }
         } else {
           params = {
             username: this.registerForm.loginEmail,
-            password: this.registerForm.password
+            password: this.registerForm.password,
+            yqCode: yqCode
           }
         }
         if (localStorage.getItem('comefrom')) {
