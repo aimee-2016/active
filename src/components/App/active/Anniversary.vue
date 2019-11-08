@@ -663,6 +663,11 @@ export default {
       ],
       renewList: [],
       // 实名认证参数
+      regExpObj: {
+        phone: /^1[3|4|5|8|9|6|7]\d{9}$/,
+        email: /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/,
+        password: /(?!(^[^a-z]+$))(?!(^[^A-Z]+$))(?!(^[^\d]+$))^[\w`~!#$%_()^&*,-<>?@.+=]{8,32}$/
+      },
       codeLoseEfficacy: '',
       tempCode: '',
       codeTimer: null,
@@ -1261,6 +1266,13 @@ export default {
       $('html, body').animate({ scrollTop: val }, 300)
     },
     // 实名认证方法
+    init () {
+      axios.get('user/GetUserInfo.do').then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          this.$store.commit('setAuthInfo', { authInfo: response.data.authInfo, userInfo: response.data.result, authInfoPersion: response.data.authInfo_persion })
+        }
+      })
+    },
     refreshQRFirst () {
       this.tempCode = this.uuid(6, 16)
       let url = '/faceRecognition/getUserInfoByPcQRCode.do'
@@ -1474,56 +1486,7 @@ export default {
           }
         })
       }
-    },
-    Callpresentation () {
-      this.$refs.cashverification.validateField('messagecode', (text) => {
-        if (text == '') {
-          let url = 'user/judgeCode.do'
-          let params = {}
-          if (this.formCustom.VerificationPhone) {
-            params = {
-              aim: this.formCustom.VerificationPhone,
-              isemail: 0,
-              code: this.formCustom.messagecode
-            }
-          }
-          axios.get(url, {
-            params
-          }).then(res => {
-            if (res.data.status == 1 && res.status == 200) {
-              if (this.phoneVerifyType === 'identification') {
-                this.showModal.cashverification = false
-                this.tempCode = this.uuid(6, 16)
-                let url = '/faceRecognition/getUserInfoByPcQRCode.do'
-                let config = {
-                  phone: this.userInfo.phone ? this.userInfo.phone : this.formCustom.VerificationPhone,
-                }
-                axios.post(url, {
-                  faceType: '1',
-                  config: JSON.stringify(config),
-                  tempCode: this.tempCode
-                }).then(res => {
-                  if (res.status == 200 && res.data.status == 1) {
-                    this.qrConfig.value = res.data.result.url
-                    this.showModal.qrCode = true
-                    this.codeLoseEfficacy = ''
-                    this.refreshUserStatus()
-                  } else {
-                    this.codeLoseEfficacy = 'lose'
-                    this.showModal.qrCode = true
-                    this.refreshUserStatus()
-                  }
-                })
-              }
-            } else {
-              this.$message.info({
-                content: res.data.message
-              })
-            }
-          })
-        }
-      })
-    },
+    }
     // 实名认证方法结束
   },
   computed: {
@@ -1549,6 +1512,10 @@ export default {
   },
   components: {
     VueQArt
+  },
+  beforeRouteLeave (to, from, next) {
+    clearInterval(this.codeTimer)
+    next()
   }
 }
 </script>
@@ -2169,20 +2136,6 @@ section:nth-of-type(4) {
 .mobile-640-inline {
   display: none;
 }
-@media screen and (max-width: 640px) {
-  .pc-640 {
-    display: none;
-  }
-  .mobile-640 {
-    display: block;
-  }
-  .pc-640-inline {
-    display: none;
-  }
-  .mobile-640-inline {
-    display: inline-block;
-  }
-}
 // 实名认证样式
 .qrcode-modal {
   text-align: center;
@@ -2233,7 +2186,7 @@ section:nth-of-type(4) {
   }
 }
 // 实名认证结束
-@media screen and (max-width: 640px) {
+@media screen and (max-width: 768px) {
   .pc-640 {
     display: none;
   }

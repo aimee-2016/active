@@ -63,7 +63,8 @@
                 </div>
                 <div class="nav-list">
                     <ul class="nav-left" @mouseleave='styleClass(-1,$event)'>
-                        <li class="nav-item" @mouseenter='styleClass(0,$event)'>
+                        <li class="ad" @click="$router.push('/anniversary/')"><img src="./assets/img/active/anniversary/aa-ad.png" alt="周年庆活动广告"></li>
+                        <li class="nav-item ml100" @mouseenter='styleClass(0,$event)'>
                             <router-link to="/" title="活动中心">活动中心</router-link>
                         </li>
                         <li class="nav-item" @mouseenter='styleClass(1,$event)'>
@@ -1595,6 +1596,7 @@ export default {
     }
 
     .nav-list .nav-left {
+      position: relative;
       display: inline-block;
       margin: 0;
     }
@@ -1673,6 +1675,14 @@ export default {
       line-height: 60px;
       font-size: 14px;
       padding: 0 10px;
+    }
+    .ml100 {
+      margin-left: 100px;
+    }
+    .nav-list .nav-left .ad {
+      position: absolute;
+      top: 0;
+      left: 20px;
     }
     .nav-list .nav-left .nav-item a {
       color: #fff;
