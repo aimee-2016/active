@@ -705,7 +705,7 @@ export default {
       let ddd = document.URL.substring(document.URL.indexOf('?')+1,document.URL.length);
       var date = new Date();
       date.setTime(date.getTime() + 86400000);
-      document.cookie ='anniver='+ddd.split('=')[1]+';expires='+date.toUTCString();
+      document.cookie ='anniver='+ddd.split('=')[1]+';expires='+date.toUTCString()+';domain=.xrcloud.net;path=/'
     }
   },
   mounted () {
