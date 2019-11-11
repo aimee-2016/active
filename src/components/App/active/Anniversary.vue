@@ -60,7 +60,7 @@
               class="ml10"
             />
           </span>
-          <span class="desc">老用户邀请新用户成功购买以下任1款商品（域名专区除外），即可获得“爆款秒杀专区”或“企业用户限购专区”的额外购买权1次。</span>
+          <span class="desc">老用户邀请新用户成功购买以下任1款商品（域名除外），即可获得“爆款秒杀专区”或“企业用户限购专区”的额外购买权1次。</span>
           <span class="btn pc-640-inline" @click="shareNew('p')">邀请新老用户</span>
           <span class="btn mobile-640-inline" @click="shareNew('m')">邀请新老用户</span>
         </div>
@@ -342,8 +342,8 @@
                       </p>
                       <span>年续费券</span>
                     </div>
-                    <span class="btn pc-640-inline" @click="toRenew(item.id,'p')">我要续费</span>
-                    <span class="btn mobile-640-inline" @click="toRenew(item.id,'m')">我要续费</span>
+                    <span class="btn pc-640-inline" @click="toRenew(item.id,'p')">立即领取</span>
+                    <span class="btn mobile-640-inline" @click="toRenew(item.id,'m')">立即领取</span>
                   </div>
                 </div>
                 <div class="text">
@@ -471,6 +471,20 @@
       <div slot="footer" class="footer">
         <a class="btn" v-if="renewStatus==1" href="https://csi.xrcloud.net/renew">立即续费</a>
         <span class="btn" v-else @click="showModal.renewHint=false">我知道了</span>
+      </div>
+    </Modal>
+    <!-- 公共提示弹窗 -->
+    <Modal
+      v-model="showModal.hint"
+      width="400"
+      class="aa-modal hint"
+      title="温馨提示"
+      :mask-closable="false"
+      :scrollable="true"
+    >
+      <div class="content" v-html="hintText"></div>
+      <div slot="footer" class="footer">
+        <span class="btn" @click="showModal.hint=false">确认</span>
       </div>
     </Modal>
     <!-- 身份验证弹窗 -->
@@ -628,7 +642,8 @@ export default {
         ruleRenew: false,
         cashverification: false,
         qrCode: false,
-        renewHint: false
+        renewHint: false,
+        hint: false
       },
       asideList: [
         { text: '爆款秒杀', height: '800' },
@@ -923,9 +938,8 @@ export default {
           if (response.status == 200 && response.data.status == 1) {
             window.open('https://csi.xrcloud.net/order', '_self')
           } else {
-            this.$message.info({
-              content: response.data.message
-            })
+            this.hintText = response.data.message
+            this.showModal.hint = true
           }
         })
       } else {
@@ -935,9 +949,8 @@ export default {
           if (response.status == 200 && response.data.status == 1) {
             window.open('https://csi.xrcloud.net/order', '_self')
           } else {
-            this.$message.info({
-              content: response.data.message
-            })
+            this.hintText = response.data.message
+            this.showModal.hint = true
           }
         })
       }
@@ -1135,9 +1148,8 @@ export default {
         if (response.status == 200 && response.data.status == 1) {
           window.open('https://csi.xrcloud.net/order', '_self')
         } else {
-          this.$message.info({
-            content: response.data.message
-          })
+          this.hintText = response.data.message
+          this.showModal.hint = true
         }
       })
     },
@@ -1202,9 +1214,8 @@ export default {
           this.qrConfig.value = this.shareUrl
           this.showModal.share = true
         } else {
-          this.$message.info({
-            content: response.data.message
-          })
+          this.hintText = response.data.message
+          this.showModal.hint = true
         }
       })
     },
@@ -1447,9 +1458,8 @@ export default {
                 })
               }
             } else {
-              this.$message.info({
-                content: res.data.message
-              })
+              this.hintText = res.data.message
+              this.showModal.hint = true
             }
           })
         }
@@ -1546,9 +1556,8 @@ export default {
                       }
                     }, 1000)
                   } else {
-                    this.$message.info({
-                      content: response.data.message
-                    })
+                    this.hintText = response.data.message
+                    this.showModal.hint = true
                     this.imgSrc = `user/getKaptchaImage.do?t=${new Date().getTime()}`
                     this.formCustom.Verificationcode = ''
                   }
@@ -2209,15 +2218,17 @@ section:nth-of-type(4) {
   }
   .footer {
     text-align: center;
+    padding-bottom: 10px;
   }
 }
 .hint {
   .content {
     font-size: 16px;
-    // padding: 20px;
+    padding: 10px;
   }
   .footer {
     text-align: center;
+    padding-bottom: 10px; 
   }
 }
 .pc-640 {
