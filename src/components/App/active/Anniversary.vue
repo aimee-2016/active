@@ -35,7 +35,7 @@
           </div>
           <div class="menu">
             <div class="content">
-              <a v-for="(item,index) in bannerNavList" :key="index" :href="item.href">
+              <a v-for="(item,index) in bannerNavList" :key="index" @click="goAnchor('#'+item.href)">
                 <div>
                   <p>{{item.title}}</p>
                   <span v-if="item.text">{{item.text}}</span>
@@ -195,9 +195,7 @@
                       <i>￥</i>
                       <span>{{item.cost}}</span>
                     </p>
-                    <span class="origin-cost">
-                      原价：￥{{item.originalPrice}}
-                    </span>
+                    <span class="origin-cost">原价：￥{{item.originalPrice}}</span>
                   </div>
                   <span class="btn pc-640-inline" @click="orderSeckill(item,'p')">立即抢购</span>
                   <span class="btn mobile-640-inline" @click="orderSeckill(item,'m')">立即抢购</span>
@@ -262,7 +260,7 @@
                         :class="{'selected':inner.days === item.days&&inner.discount === item.discount}"
                       >
                         {{inner.days<360?inner.days/30+'月':inner.days/360+'年'}}
-                        <i>{{(inner.discount*10).toFixed(2)}}折</i>
+                        <i>{{inner.discount}}折</i>
                       </span>
                     </div>
                   </li>
@@ -640,11 +638,11 @@ export default {
         { text: '续费专区', height: '3000' }
       ],
       bannerNavList: [
-        { title: '爆款云产品', text: '邀新送好礼', href: '#seckill' },
-        { title: '企业限购专区', text: '老用户享同等价购买', href: '#enterprise' },
-        { title: '云数据库限时抢购', text: '', href: '#database' },
-        { title: '域名最低8元可领', text: '', href: '#domain' },
-        { title: '老用户续费', text: '折扣享不停', href: '#renew' }
+        { title: '爆款云产品', text: '邀新送好礼', href: 'seckill' },
+        { title: '企业限购专区', text: '老用户享同等价购买', href: 'enterprise' },
+        { title: '云数据库限时抢购', text: '', href: 'database' },
+        { title: '域名最低8元可领', text: '', href: 'domain' },
+        { title: '老用户续费', text: '折扣享不停', href: 'renew' }
       ],
       valueDomain: '',
       seckillList: [],
@@ -1270,6 +1268,10 @@ export default {
         }
         return false
       }
+      if (item.value == '') {
+        item.tip = '请输入域名'
+        return false
+      }
       axios.post('domain/domainFound.do', {
         domainName: item.value,
         tids: item.name
@@ -1328,6 +1330,14 @@ export default {
     },
     roll (val) {
       $('html, body').animate({ scrollTop: val }, 300)
+    },
+    goAnchor(type) {
+      console.log(type)
+      var anchor = this.$el.querySelector(type)
+      // chrome
+      document.body.scrollTop = anchor.offsetTop;
+      // firefox
+      document.documentElement.scrollTop = anchor.offsetTop;
     },
     // 实名认证方法
     init () {
@@ -2278,7 +2288,7 @@ section:nth-of-type(4) {
   left: 0;
   width: 36px;
   height: 116px;
-  z-index:10000;
+  z-index: 10000;
 }
 // 实名认证结束
 @media screen and (max-width: 768px) {
@@ -2536,7 +2546,7 @@ section:nth-of-type(4) {
 //         width: 17px;
 //       }
 //     }
-  
+
 //   .an-lf:hover > .an-aside{
 //     left: 0;
 //     transition: all ease-out 0.3s;

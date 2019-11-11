@@ -3,7 +3,7 @@
     <h1 id="hide-h1">活动中心</h1>
     <div class="banner">
       <my-carousel :interval="5000" class="carousel" @on-change="change">
-        <!-- <my-carousel-item class="carousel-item">
+        <my-carousel-item class="carousel-item">
           <div @click="push('/anniversary/')" style="cursor: pointer;">
             <div class="aa">
               <div class="wrap">
@@ -11,18 +11,25 @@
                   <img
                     src="../../assets/img/active/anniversary/anniversary-banner-title.png"
                     alt="2周年庆典"
+                    style="width:276px"
                   />
                   <img
                     src="../../assets/img/active/anniversary/anniversary-banner-text.png"
                     alt="企业上云突破5万，回馈老用户"
-                    style="display:block"
+                    style="width:467px"
                   />
                   <Button>点击查看</Button>
+                </div>
+                <div class="img">
+                  <img
+                    src="../../assets/img/active/anniversary/aa-ac-banner.png"
+                    style="height:360px;margin-top:40px;margin-left:100px;"
+                  />
                 </div>
               </div>
             </div>
           </div>
-        </my-carousel-item> -->
+        </my-carousel-item>
         <my-carousel-item class="carousel-item">
           <div @click="push('/ddosactive/')" style="cursor: pointer;">
             <div class="ddos">
@@ -278,14 +285,14 @@ export default {
         // }
         .aa {
           height: 400px;
-          background: url("../../assets/img/active/anniversary/anniversary-banner.png") center no-repeat;
+          background: url("../../assets/img/active/anniversary/aa-ac-banner-bg.png") center no-repeat;
           .wrap {
             width: 1200px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
             .text {
-              margin-top: 148px;
+              margin-top: 120px;
               p {
                 font-size: 24px;
                 color: #ffedd2;
@@ -295,7 +302,7 @@ export default {
                 margin: 0 0 20px 0;
               }
               button {
-                margin-top: 30px;
+                margin-top: 20px;
                 width: 124px;
                 height: 32px;
                 background: linear-gradient(
