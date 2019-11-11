@@ -2271,32 +2271,14 @@ section:nth-of-type(4) {
     width: 300px;
   }
 }
+
 .an-lf {
   position: absolute;
   top: 50%;
   left: 0;
   width: 36px;
   height: 116px;
-  .an-sm {
-    position: absolute;
-    width: 36px;
-    height: inherit;
-    left: 0;
-    text-align: center;
-    transition: all ease-out 0.3s;
-    font-size: 16px;
-    color: #333333;
-    background: linear-gradient(
-      180deg,
-      rgba(255, 250, 224, 1) 0%,
-      rgba(217, 195, 145, 1) 100%
-    );
-    span {
-      display: inline-block;
-      margin-top: 21px;
-      width: 17px;
-    }
-  }
+  z-index:10000;
 }
 // 实名认证结束
 @media screen and (max-width: 768px) {
@@ -2316,6 +2298,9 @@ section:nth-of-type(4) {
     width: 100%;
   }
   aside {
+    display: none;
+  }
+  .an-lf {
     display: none;
   }
   .banner {
@@ -2530,20 +2515,36 @@ section:nth-of-type(4) {
     }
   }
 }
-@media screen and (max-width: 1366px) {
-  .an-aside {
-    left: -100px;
-    transition: all ease-out 0.3s;
-  }
-
-  .an-lf:hover > .an-aside {
-    left: 0;
-    transition: all ease-out 0.3s;
-  }
-  .an-lf:hover > .an-sm {
-    // width: 0px;
-    transition: all ease-out 0.3s;
-    left: -50px;
-  }
-}
+// @media screen and (max-width: 1366px) {
+//   .an-aside {
+//     left: -100px;
+//     transition: all ease-out 0.3s;
+//   }
+//   .an-sm{
+//       position: absolute;
+//       width: 36px;
+//       height: inherit;
+//       left: 0;
+//       text-align: center;
+//       transition: all ease-out 0.3s;
+//       font-size:16px;
+//       color: #333333;
+//       background:linear-gradient(180deg,rgba(255,250,224,1) 0%,rgba(217,195,145,1) 100%);
+//       span{
+//         display: inline-block;
+//         margin-top: 21px;
+//         width: 17px;
+//       }
+//     }
+  
+//   .an-lf:hover > .an-aside{
+//     left: 0;
+//     transition: all ease-out 0.3s;
+//   }
+//   .an-lf:hover > .an-sm {
+//     // width: 0px;
+//     transition: all ease-out 0.3s;
+//     left: -50px;
+//   }
+// }
 </style>
