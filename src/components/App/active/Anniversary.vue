@@ -2191,26 +2191,11 @@ section:nth-of-type(4) {
   }
 }
 .an-lf{
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 0;
   width:36px;height:116px;
-    .an-sm{
-      position: absolute;
-      width: 36px;
-      height: inherit;
-      left: 0;
-      text-align: center;
-      transition: all ease-out 0.3s;
-      font-size:16px;
-      color: #333333;
-      background:linear-gradient(180deg,rgba(255,250,224,1) 0%,rgba(217,195,145,1) 100%);
-      span{
-        display: inline-block;
-        margin-top: 21px;
-        width: 17px;
-      }
-    }
+    
 }
 // 实名认证结束
 @media screen and (max-width: 768px) {
@@ -2453,6 +2438,22 @@ section:nth-of-type(4) {
     left: -100px;
     transition: all ease-out 0.3s;
   }
+  .an-sm{
+      position: absolute;
+      width: 36px;
+      height: inherit;
+      left: 0;
+      text-align: center;
+      transition: all ease-out 0.3s;
+      font-size:16px;
+      color: #333333;
+      background:linear-gradient(180deg,rgba(255,250,224,1) 0%,rgba(217,195,145,1) 100%);
+      span{
+        display: inline-block;
+        margin-top: 21px;
+        width: 17px;
+      }
+    }
   
   .an-lf:hover > .an-aside{
     left: 0;
