@@ -310,7 +310,7 @@
               <div class="content">
                 <div class="price">
                   ¥{{item.price}}
-                  <span>/{{item.unit}}</span>
+                  <span>/{{item.unit}}年</span>
                 </div>
                 <span class="btn pc-640" @click="buyDomain('p',item)">立即购买</span>
                 <span class="btn mobile-640" @click="buyDomain('m',item)">立即购买</span>
@@ -645,6 +645,7 @@ export default {
         renewHint: false,
         hint: false
       },
+      hintText: '',
       asideList: [
         { text: '爆款秒杀', height: '800' },
         { text: '企业限购', height: '1400' },
@@ -707,9 +708,9 @@ export default {
       },
       shareUrl: '',
       domainList: [
-        { name: '.club', price: '11.00', unit: '1年', bg: require('../../../assets/img/active/anniversary/anniversary-domain-1.png'), value: '', tip: '' },
-        { name: '.top', price: '9.00', unit: '1年', bg: require('../../../assets/img/active/anniversary/anniversary-domain-2.png'), value: '', tip: '' },
-        { name: '.site', price: '8.00', unit: '1年', bg: require('../../../assets/img/active/anniversary/anniversary-domain-3.png'), value: '', tip: '' }
+        { name: '.club', price: '11.00', unit: '1', bg: require('../../../assets/img/active/anniversary/anniversary-domain-1.png'), value: '', tip: '' },
+        { name: '.top', price: '9.00', unit: '1', bg: require('../../../assets/img/active/anniversary/anniversary-domain-2.png'), value: '', tip: '' },
+        { name: '.site', price: '8.00', unit: '1', bg: require('../../../assets/img/active/anniversary/anniversary-domain-3.png'), value: '', tip: '' }
       ],
       domainText: '',
       domainVail: false,
@@ -1297,11 +1298,20 @@ export default {
           } else if (response.data.data.results[0].isRes == 'available') {
             item.tip = '域名可注册'
             window.open('https://csi.xrcloud.net/domaininfotemplate', '_self')
+            var domNames = item.value + item.name
+            var domYear = item.unit
+            var domPrice = item.price
+            this.setCookie('domNames', domNames + ',')
+            this.setCookie('domYear', domYear + ',')
+            this.setCookie('domPrice', domPrice + ',')
           }
         } else {
           this.$Message.info(response.data.msg);
         }
       })
+    },
+    setCookie(name, val) {
+      document.cookie = name + '=' + val + ';domain=.xrcloud.net;path=/'
     },
     getRenew () {
       axios.get('activity/getActTicket.do', {
@@ -1343,7 +1353,6 @@ export default {
       $('html, body').animate({ scrollTop: val }, 300)
     },
     goAnchor(type) {
-      console.log(type)
       var anchor = this.$el.querySelector(type)
       // chrome
       document.body.scrollTop = anchor.offsetTop;
