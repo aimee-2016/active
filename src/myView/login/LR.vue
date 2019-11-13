@@ -1109,6 +1109,9 @@ export default {
           if (this.getCookie('sellCode')) {
             params.sellCode = this.getCookie('sellCode');
           }
+          if (this.getCookie('anniver')) {
+            params.yqCode = this.getCookie('anniver')
+          }
           axios.post("user/register.do", params).then(response => {
             if (response.status === 200 && response.data.status === 1) {
               this.T = "success";

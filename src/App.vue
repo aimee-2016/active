@@ -63,7 +63,8 @@
                 </div>
                 <div class="nav-list">
                     <ul class="nav-left" @mouseleave='styleClass(-1,$event)'>
-                        <li class="nav-item" @mouseenter='styleClass(0,$event)'>
+                        <li class="ad" @click="$router.push('/anniversary/')"><img src="./assets/img/active/anniversary/aa-ad.png" alt="周年庆活动广告"></li>
+                        <li class="nav-item ml100" @mouseenter='styleClass(0,$event)'>
                             <router-link to="/" title="活动中心">活动中心</router-link>
                         </li>
                         <li class="nav-item" @mouseenter='styleClass(1,$event)'>
@@ -853,11 +854,11 @@
     </div>
     <!-- 客服浮动块 -->
     <div class="ph-left">
-            <div class="ph-gg">
-                <h3>免费用</h3>
-                <a class="ph-button" @click="$router.push('/free/')">立即领取</a>
+            <div class="ph-gg" @click="$router.push('/anniversary/')">
+                <!-- <h3>免费用</h3>
+                <a class="ph-button" @click="$router.push('/free/')">立即领取</a> -->
             </div>
-            <div style="background-color: #FCECE0;padding: 10px 9px;margin-top: -1px;">
+            <div class="pl-box">
                 <div class="ph-cs">
                     <img class="ke-black" src="./assets/img/home/kefu.png">
                     <span>联系客服</span>
@@ -1595,6 +1596,7 @@ export default {
     }
 
     .nav-list .nav-left {
+      position: relative;
       display: inline-block;
       margin: 0;
     }
@@ -1673,6 +1675,14 @@ export default {
       line-height: 60px;
       font-size: 14px;
       padding: 0 10px;
+    }
+    .ml100 {
+      margin-left: 100px;
+    }
+    .nav-list .nav-left .ad {
+      position: absolute;
+      top: 0;
+      left: 20px;
     }
     .nav-list .nav-left .nav-item a {
       color: #fff;
@@ -2325,11 +2335,11 @@ span {
 
 .ph-left {
   position: fixed;
-  right: 0;
-  bottom: 14%;
-  z-index: 999;
-  margin-right: 5px;
-  width: 89px;
+    right: 5px;
+    bottom: 14%;
+    z-index: 999;
+    margin-right: 5px;
+    width: 97px;
 }
 .ph-cs:hover > .ph-connect{
   width: 210px;
@@ -2343,7 +2353,7 @@ span {
   background: #ffffff;
   width: 0;
   position: absolute;
-  right: 87px;
+  right: 92px;
   top: 0;
   transition: width 0.3s ;
   overflow: hidden;
@@ -2393,9 +2403,13 @@ span {
 .ph-left .ph-gg {
   background: url('./assets/img/home/noteic.png');
   background-size: 100%;
-  cursor: pointer;
-  text-align: center;
-  height: 100px;
+    cursor: pointer;
+    text-align: center;
+    height: 118px;
+    position: absolute;
+    top: -95px;
+    left: -18px;
+    width: 130px;
 }
 
 .ph-left .ph-gg h3 {
@@ -2419,14 +2433,24 @@ span {
   box-shadow:0px 11px 18px -6px rgba(161,38,20,0.75);
 }
 
+.pl-box{
+    padding: 46px 5px 10px 5px;
+    margin-top: -25px;
+    background: #ffffff;
+    border-radius: 4px;
+    border: 1px solid #ffc645;
+    height: 169px;
+    width: 97px;
+}
+
 .ph-left .ph-cs {
-  background-color: #FFFFFF;
+  background:linear-gradient(90deg,rgba(255,192,68,1) 0%,rgba(249,95,36,1) 100%);
+  border-radius:4px;
   height: 32px;
   text-align: center;
   cursor: pointer;
   margin-bottom: 10px;
   padding: 5px 0;
-  box-shadow: 0px 2px 16px -5px rgba(130, 130, 130, 0.5);
   transition: all ease-in-out 0.2s;
   position: relative;
   box-sizing: border-box;
@@ -2444,7 +2468,7 @@ span {
 .ph-left .ph-cs >span{
   vertical-align: middle;
   font-size: 12px;
-  color: #4F1B1B;
+  color: #FFFFFF;
 }
 
 

@@ -1019,13 +1019,20 @@ export default {
     },
     // 根据区域获得不同系统
     getSystem (item, index, name) {
-      let params = {
-        zoneId: item.zone,
-      }
+      let params = {}
       if (item.post.servicetype == 'G5500') {
-          params.user = '0'
-          params.gpu = '1'
-          params.normalTemplate = "0"
+        params = {
+          user: '0',
+          gpu: '1',
+          normalTemplate: '0',
+          zoneId: item.zone,
+        }
+      } else {
+        params = {
+          user: '0',
+          normalTemplate: '1',
+          zoneId: item.zone,
+        }
       }
       axios.get('information/listTemplates.do', {
         params

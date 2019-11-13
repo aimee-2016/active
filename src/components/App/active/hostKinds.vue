@@ -2627,13 +2627,20 @@ export default {
         systemType = 'window'
         showName = 'templatedescript'
       }
-      let params = {
-        zoneId: item.zoneId,
-      }
+      let params = {}
       if (item.servicetype == 'G5500') {
-        params.user = '0'
-        params.gpu = '1'
-        params.normalTemplate = "0"
+        params = {
+          user: '0',
+          gpu: '1',
+          normalTemplate: '0',
+          zoneId: item.zoneId,
+        }
+      } else {
+        params = {
+          user: '0',
+          normalTemplate: '1',
+          zoneId: item.zoneId,
+        }
       }
       axios.get(url, {
         params
@@ -2729,7 +2736,7 @@ export default {
       let params = {}
       let id = ''
       if (item.servicetype == 'G5500') {
-        id = this.getId(item)
+        id = this.getIdgpu(item)
         url = 'activity/getDiskcountGPU.do'
         params = {
           defzoneid: item.zoneId,
@@ -2737,7 +2744,7 @@ export default {
           osType: item.system[1]
         }
       } else if (item.servicetype == 'host') {
-        id = this.getIdgpu(item)
+        id = this.getId(item)
         url = 'information/getDiskcountMv.do'
         params = {
           defzoneid: item.zoneId,
@@ -2869,13 +2876,20 @@ export default {
         systemType = 'window'
         showName = 'templatedescript'
       }
-      let params = {
-        zoneId: item.zoneId,
-      }
+      let params = {}
       if (item.post.servicetype == 'G5500') {
-        params.user = '0'
-        params.gpu = '1'
-        params.normalTemplate = "0"
+        params = {
+          user: '0',
+          gpu: '1',
+          normalTemplate: '0',
+          zoneId: item.zoneId,
+        }
+      } else {
+        params = {
+          user: '0',
+          normalTemplate: '1',
+          zoneId: item.zoneId,
+        }
       }
       axios.get(url, {
         params
@@ -3087,13 +3101,20 @@ export default {
         systemType = 'window'
         showName = 'templatedescript'
       }
-      let params = {
-        zoneId: item.zoneId,
-      }
+      let params = {}
       if (item.post.servicetype == 'G5500') {
-        params.user = '0'
-        params.gpu = '1'
-        params.normalTemplate = "0"
+        params = {
+          user: '0',
+          gpu: '1',
+          normalTemplate: '0',
+          zoneId: item.zoneId,
+        }
+      } else {
+        params = {
+          user: '0',
+          normalTemplate: '1',
+          zoneId: item.zoneId,
+        }
       }
       axios.get(url, {
         params
@@ -3895,13 +3916,20 @@ export default {
       })
     },
     setTemplateHost (item) {
-      let params = {
-        zoneId: item.zoneid,
-      }
+      let params = {}
       if (item.gpuserver == 1) {
-        params.user = '0'
-        params.gpu = '1'
-        params.normalTemplate = "0"
+        params = {
+          user: '0',
+          gpu: '1',
+          normalTemplate: '0',
+          zoneId: item.zoneid,
+        }
+      } else {
+        params = {
+          user: '0',
+          normalTemplate: '1',
+          zoneId: item.zoneid,
+        }
       }
       axios.get('information/listTemplates.do', {
         params
