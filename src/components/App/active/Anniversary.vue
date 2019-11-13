@@ -1,12 +1,16 @@
 <template>
   <div class="anniversary">
-    <div class='an-lf'>
-      <div class='an-sm'>
+    <div class="an-lf">
+      <div class="an-sm">
         <span>活动导航</span>
       </div>
-      <aside class='an-aside'>
+      <aside class="an-aside">
         <ul>
-          <li v-for="(item,index) in asideList" :key="index" @click="roll(item.height)">{{item.text}}</li>
+          <li
+            v-for="(item,index) in asideList"
+            :key="index"
+            @click="roll(item.height)"
+          >{{item.text}}</li>
         </ul>
         <div class="to-top" @click="roll(0)">回到顶部</div>
       </aside>
@@ -30,14 +34,14 @@
             />
           </div>
           <div class="menu">
-            <ul>
-              <li v-for="(item,index) in bannerNavList" :key="index">
+            <div class="content">
+              <a v-for="(item,index) in bannerNavList" :key="index" @click="goAnchor('#'+item.href)">
                 <div>
                   <p>{{item.title}}</p>
                   <span v-if="item.text">{{item.text}}</span>
                 </div>
-              </li>
-            </ul>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -56,11 +60,11 @@
               class="ml10"
             />
           </span>
-          <span class="desc">老用户邀请新用户成功购买以下任1款商品（域名专区除外），即可获得“爆款秒杀专区”或“企业用户限购专区”的额外购买权1次。</span>
-          <span class="btn pc-640-inline" @click="shareNew('p')">邀请新用户</span>
-          <span class="btn mobile-640-inline" @click="shareNew('m')">邀请新用户</span>
+          <span class="desc">老用户邀请新用户成功购买以下任1款商品（域名除外），即可获得“爆款秒杀专区”或“企业用户限购专区”的额外购买权1次。</span>
+          <span class="btn pc-640-inline" @click="shareNew('p')">邀请新老用户</span>
+          <span class="btn mobile-640-inline" @click="shareNew('m')">邀请新老用户</span>
         </div>
-        <div class="seckill">
+        <div class="seckill" id="seckill">
           <header class="sub-head">
             <h2>爆款秒杀专区</h2>
             <p>
@@ -140,7 +144,7 @@
     </section>
     <section>
       <div class="wrap">
-        <div class="enterprise">
+        <div class="enterprise" id="enterprise">
           <header class="sub-head">
             <h2>企业用户限购专区</h2>
             <p>
@@ -170,15 +174,18 @@
                     <span class="label">系统</span>
                     <Cascader :data="item.systemList" v-model="item.system" style="w230"></Cascader>
                   </li>
-                  <li class='aa-system-1'>
+                  <li class="aa-system-1">
                     <span class="label">可选时长</span>
                     <div class="time">
                       <span
                         v-for="(inner,index) in item.timeList"
                         :key="index"
                         @click="changeTimeE(item,inner,index)"
-                        :class="{'selected':inner == item.days}"
-                      >{{inner/360}}年</span>
+                        :class="{'selected':inner.days == item.days}"
+                      >
+                        {{inner.days/360}}年
+                        <i>{{(inner.discount*10).toFixed(1)}}折</i>
+                      </span>
                     </div>
                   </li>
                 </ul>
@@ -197,7 +204,7 @@
             </div>
           </div>
         </div>
-        <div class="enterprise">
+        <div class="enterprise" id="database">
           <header class="sub-head">
             <h2>云数据库限购专区</h2>
             <p>
@@ -213,7 +220,7 @@
               </div>
               <div class="content aa-system-2">
                 <ul class="center">
-                  <li class='aa-system-1'>
+                  <li class="aa-system-1">
                     <span class="label">可选规格</span>
                     <Select v-model="item.specs" class="w120" @on-change="changeConfig(item)">
                       <Option
@@ -223,7 +230,7 @@
                       >{{ inner.cpu+'核'+inner.mem+'G' }}</Option>
                     </Select>
                   </li>
-                  <li class='aa-system-1'>
+                  <li class="aa-system-1">
                     <span class="label">可选带宽</span>
                     <Select v-model="item.bandwith" class="w100" @on-change="changeBandwith(item)">
                       <Option
@@ -233,7 +240,7 @@
                       >{{ inner.bandwith}}M</Option>
                     </Select>
                   </li>
-                  <li class='aa-system-1'>
+                  <li class="aa-system-1">
                     <span class="label">可选区域</span>
                     <Select v-model="item.zone" class="w140" @on-change="changeZoneDB(item)">
                       <Option
@@ -243,7 +250,7 @@
                       >{{ inner.name }}</Option>
                     </Select>
                   </li>
-                  <li class='aa-system-1' style="margin-right:30px;">
+                  <li class="aa-system-1" style="margin-right:30px;">
                     <span class="label">可选时长</span>
                     <div class="time">
                       <span
@@ -253,7 +260,7 @@
                         :class="{'selected':inner.days === item.days&&inner.discount === item.discount}"
                       >
                         {{inner.days<360?inner.days/30+'月':inner.days/360+'年'}}
-                        <i>{{(inner.discount*10).toFixed(2)}}折</i>
+                        <i>{{inner.discount}}折</i>
                       </span>
                     </div>
                   </li>
@@ -277,7 +284,7 @@
     </section>
     <section>
       <div class="wrap">
-        <div class="domain">
+        <div class="domain" id="domain">
           <header class="sub-head">
             <h2>域名专区</h2>
           </header>
@@ -303,15 +310,15 @@
               <div class="content">
                 <div class="price">
                   ¥{{item.price}}
-                  <span>/{{item.unit}}</span>
+                  <span>/{{item.unit}}年</span>
                 </div>
-                <span class="btn pc-640" @click="buyDomain('p')">立即购买</span>
-                <span class="btn mobile-640" @click="buyDomain('m')">立即购买</span>
+                <span class="btn pc-640" @click="buyDomain('p',item)">立即购买</span>
+                <span class="btn mobile-640" @click="buyDomain('m',item)">立即购买</span>
               </div>
             </div>
           </div>
         </div>
-        <div class="renew">
+        <div class="renew" id="renew">
           <header class="sub-head">
             <h2>续费专区</h2>
             <p>
@@ -326,15 +333,19 @@
                 alt="续费背景图"
               />
               <div class="box">
-                <div class="discount">
-                  <p>
-                    <span>{{item.moneyDesc}}</span>
-                    <i>折</i>
-                  </p>
-                  <span>年续费券</span>
+                <div class="top">
+                  <div class="p">
+                    <div class="discount">
+                      <p>
+                        <span>{{item.moneyDesc}}</span>
+                        <i>折</i>
+                      </p>
+                      <span>年续费券</span>
+                    </div>
+                    <span class="btn pc-640-inline" @click="toRenew(item.id,'p')">立即领取</span>
+                    <span class="btn mobile-640-inline" @click="toRenew(item.id,'m')">立即领取</span>
+                  </div>
                 </div>
-                <span class="btn pc-640-inline" @click="toRenew(item.id,'p')">我要续费</span>
-                <span class="btn mobile-640-inline" @click="toRenew(item.id,'m')">我要续费</span>
                 <div class="text">
                   <span>新睿云11.17周年庆回馈老用户</span>
                   <p>
@@ -445,6 +456,35 @@
       </div>
       <div slot="footer" class="footer">
         <span class="btn" @click="showModal.ruleRenew=false">我知道了</span>
+      </div>
+    </Modal>
+    <!-- 续费提示弹窗 -->
+    <Modal
+      v-model="showModal.renewHint"
+      width="400"
+      class="aa-modal hint"
+      title="温馨提示"
+      :mask-closable="false"
+      :scrollable="true"
+    >
+      <div class="content" v-html="domainText"></div>
+      <div slot="footer" class="footer">
+        <a class="btn" v-if="renewStatus==1" href="https://csi.xrcloud.net/renew">立即续费</a>
+        <span class="btn" v-else @click="showModal.renewHint=false">我知道了</span>
+      </div>
+    </Modal>
+    <!-- 公共提示弹窗 -->
+    <Modal
+      v-model="showModal.hint"
+      width="400"
+      class="aa-modal hint"
+      title="温馨提示"
+      :mask-closable="false"
+      :scrollable="true"
+    >
+      <div class="content" v-html="hintText"></div>
+      <div slot="footer" class="footer">
+        <span class="btn" @click="showModal.hint=false">确认</span>
       </div>
     </Modal>
     <!-- 身份验证弹窗 -->
@@ -601,8 +641,11 @@ export default {
         ruleDB: false,
         ruleRenew: false,
         cashverification: false,
-        qrCode: false
+        qrCode: false,
+        renewHint: false,
+        hint: false
       },
+      hintText: '',
       asideList: [
         { text: '爆款秒杀', height: '800' },
         { text: '企业限购', height: '1400' },
@@ -611,11 +654,11 @@ export default {
         { text: '续费专区', height: '3000' }
       ],
       bannerNavList: [
-        { title: '爆款云产品', text: '邀新送好礼' },
-        { title: '企业限购专区', text: '老用户享同等价购买' },
-        { title: '云数据库限时抢购', text: '' },
-        { title: '域名最低8元可领', text: '' },
-        { title: '老用户续费', text: '折扣享不停' }
+        { title: '爆款云产品', text: '邀新送好礼', href: 'seckill' },
+        { title: '企业限购专区', text: '老用户享同等价购买', href: 'enterprise' },
+        { title: '云数据库限时抢购', text: '', href: 'database' },
+        { title: '域名最低8元可领', text: '', href: 'domain' },
+        { title: '老用户续费', text: '折扣享不停', href: 'renew' }
       ],
       valueDomain: '',
       seckillList: [],
@@ -634,7 +677,7 @@ export default {
       ruleListE: [
         '1、活动时间：2019.11.7-2019.12.31',
         '2、活动对象：活动期间企业用户限购1台，新老用户皆可参与。新用户是未使用过平台资源（第三方产品除外）及未参加过其他免费活动并已通过实名认证的用户',
-        '3、企业新用户可直接购买任意一台爆款云服务器，购买成功后再邀请1名新用户成功购买周年庆活动产品（域名除外）即可获得“爆款秒杀专区”或“企业用户限购专区”的额外购买权1次；老用户成功邀请1名新用户购买周年庆活动产品，即可获得“爆款秒杀专区”或“企业用户限购专区”的额外购买权1次，购买权可叠加；',
+        '3、企业用户可直接购买任意一台爆款云服务器，购买成功后再邀请1名新用户成功购买周年庆活动产品（域名除外）即可获得“爆款秒杀专区”或“企业用户限购专区”的额外购买权1次，购买权可叠加；',
         '4、参与本次活动购买的产品不能进行退款。',
         '5、此次活动产品不能用于转售，如若利用资源从事违法违规行为的用户，新睿云有权收回使用资格，并且不予退款。',
         '6、购买时不可使用任何优惠券和现金券，限购活动不支持会员折扣。',
@@ -650,9 +693,12 @@ export default {
         '7、活动最终解释权为新睿云所有。'
       ],
       ruleListRenew: [
-        '1、 年续费券限领1张，有效期为1年',
-        '2、 仅限有已经购买云产品的用户领取',
-        '3、 此次活动券仅用于支付新睿云平台订单支付时，抵减应支付的订单金额，不能进行兑现或其他用途'
+        '1、年续费券同一用户（同一手机、邮箱、实名认证用户视为同一用户）限领1张，有效期为1年',
+        '2、仅限有购买过云产品记录的用户领取',
+        '3、1.17折续费券不能与其他优惠券和现金券叠加使用，每次只能使用1张',
+        '4、1.17折续费券只能在原价的基础上进行打折，不能与其他折扣重叠',
+        '5、1.17折续费券不能用于域名、SSL证书和高防IP的续费',
+        '6、此次活动券仅用于支付新睿云平台订单支付时，抵减应支付的订单金额，不能进行兑现或其他用途。'
       ],
       qrConfig: {
         value: '',
@@ -662,11 +708,14 @@ export default {
       },
       shareUrl: '',
       domainList: [
-        { name: '.club', price: '11.00', unit: '1年', bg: require('../../../assets/img/active/anniversary/anniversary-domain-1.png'), value: '', tip: '' },
-        { name: '.top', price: '9.00', unit: '1年', bg: require('../../../assets/img/active/anniversary/anniversary-domain-2.png'), value: '', tip: '' },
-        { name: '.site', price: '8.00', unit: '1年', bg: require('../../../assets/img/active/anniversary/anniversary-domain-3.png'), value: '', tip: '' }
+        { name: '.club', price: '11.00', unit: '1', bg: require('../../../assets/img/active/anniversary/anniversary-domain-1.png'), value: '', tip: '' },
+        { name: '.top', price: '9.00', unit: '1', bg: require('../../../assets/img/active/anniversary/anniversary-domain-2.png'), value: '', tip: '' },
+        { name: '.site', price: '8.00', unit: '1', bg: require('../../../assets/img/active/anniversary/anniversary-domain-3.png'), value: '', tip: '' }
       ],
+      domainText: '',
+      domainVail: false,
       renewList: [],
+      renewStatus: '',
       // 实名认证参数
       regExpObj: {
         phone: /^1[3|4|5|8|9|6|7]\d{9}$/,
@@ -712,10 +761,10 @@ export default {
     // this.getDomain()
     this.getRenew()
     if (document.URL.indexOf('?') > -1) {
-      let ddd = document.URL.substring(document.URL.indexOf('?')+1,document.URL.length);
+      let ddd = document.URL.substring(document.URL.indexOf('?') + 1, document.URL.length);
       var date = new Date();
       date.setTime(date.getTime() + 86400000);
-      document.cookie ='anniver='+ddd.split('=')[1]+';expires='+date.toUTCString()+';domain=.xrcloud.net;path=/'
+      document.cookie = 'anniver=' + ddd.split('=')[1] + ';expires=' + date.toUTCString() + ';domain=.xrcloud.net;path=/'
     }
   },
   mounted () {
@@ -890,9 +939,8 @@ export default {
           if (response.status == 200 && response.data.status == 1) {
             window.open('https://csi.xrcloud.net/order', '_self')
           } else {
-            this.$message.info({
-              content: response.data.message
-            })
+            this.hintText = response.data.message
+            this.showModal.hint = true
           }
         })
       } else {
@@ -902,9 +950,8 @@ export default {
           if (response.status == 200 && response.data.status == 1) {
             window.open('https://csi.xrcloud.net/order', '_self')
           } else {
-            this.$message.info({
-              content: response.data.message
-            })
+            this.hintText = response.data.message
+            this.showModal.hint = true
           }
         })
       }
@@ -922,8 +969,14 @@ export default {
             this.enterpriseList[i].zone = this.enterpriseList[i].zoneList[0].value
             this.$set(this.enterpriseList[i], 'systemList', this.formatSystem(response.data.result.mvTem))
             this.enterpriseList[i].system = [this.enterpriseList[i].systemList[0].label, this.enterpriseList[i].systemList[0].children[0].value]
-            this.enterpriseList[i].timeList = this.enterpriseList[i].days.split(',')
-            this.enterpriseList[i].days = this.enterpriseList[i].timeList[0]
+            let dayList = this.enterpriseList[i].days.split(',')
+            let discountList = this.enterpriseList[i].discount.split(',')
+            this.enterpriseList[i].timeList = []
+            dayList.forEach((inner, index) => {
+              this.enterpriseList[i].timeList.push({ 'days': inner, 'discount': discountList[index] })
+            })
+            this.enterpriseList[i].days = this.enterpriseList[i].timeList[0].days
+            this.enterpriseList[i].discount = this.enterpriseList[i].timeList[0].disount
             this.enterpriseList[i].costList = this.enterpriseList[i].cost.split(',')
             this.enterpriseList[i].cost = this.enterpriseList[i].costList[0]
             this.enterpriseList[i].originalPriceList = this.enterpriseList[i].originalPrice.split(',')
@@ -936,7 +989,8 @@ export default {
       })
     },
     changeTimeE (item, inner, index) {
-      item.days = inner
+      item.days = inner.days
+      item.discount = inner.discount
       item.id = item.idList[index]
       this.getPriceHost(item)
     },
@@ -1095,9 +1149,8 @@ export default {
         if (response.status == 200 && response.data.status == 1) {
           window.open('https://csi.xrcloud.net/order', '_self')
         } else {
-          this.$message.info({
-            content: response.data.message
-          })
+          this.hintText = response.data.message
+          this.showModal.hint = true
         }
       })
     },
@@ -1162,9 +1215,8 @@ export default {
           this.qrConfig.value = this.shareUrl
           this.showModal.share = true
         } else {
-          this.$message.info({
-            content: response.data.message
-          })
+          this.hintText = response.data.message
+          this.showModal.hint = true
         }
       })
     },
@@ -1219,7 +1271,7 @@ export default {
         }
       })
     },
-    buyDomain (type) {
+    buyDomain (type, item) {
       if (!this.$store.state.userInfo) {
         if (type == 'p') {
           this.$LR({ type: 'register' })
@@ -1228,7 +1280,38 @@ export default {
         }
         return false
       }
-      window.open('https://csdomain.xrcloud.net/xrdomain/domaininfotemplate', '_self')
+      if (item.value == '') {
+        item.tip = '请输入域名'
+        return false
+      }
+      axios.post('domain/domainFound.do', {
+        domainName: item.value,
+        tids: item.name
+      }).then(response => {
+        if (response.status == 200 && response.data.status == 1) {
+          if (response.data.data.results.length == 0) {
+            item.tip = '暂无数据！'
+          } else if (response.data.data.results[0].status == 1) {
+            item.tip = '* 对不起，域名已被注册，换个域名试试吧！'
+          } else if (response.data.data.results[0].isRes == 'unavailable') {
+            item.tip = '* 对不起，域名不可注册！'
+          } else if (response.data.data.results[0].isRes == 'available') {
+            item.tip = '域名可注册'
+            window.open('https://csi.xrcloud.net/domaininfotemplate', '_self')
+            var domNames = item.value + item.name
+            var domYear = item.unit
+            var domPrice = item.price
+            this.setCookie('domNames', domNames + ',')
+            this.setCookie('domYear', domYear + ',')
+            this.setCookie('domPrice', domPrice + ',')
+          }
+        } else {
+          this.$Message.info(response.data.msg);
+        }
+      })
+    },
+    setCookie(name, val) {
+      document.cookie = name + '=' + val + ';domain=.xrcloud.net;path=/'
     },
     getRenew () {
       axios.get('activity/getActTicket.do', {
@@ -1256,19 +1339,25 @@ export default {
         }
       }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          // this.renewList = response.data.result.freevmconfigs
-          this.$message.info({
-            content: response.data.message
-          })
+          this.domainText = response.data.message
+          this.renewStatus = 1
+          this.showModal.renewHint = true
         } else {
-          this.$message.info({
-            content: response.data.message
-          })
+          this.domainText = response.data.message
+          this.renewStatus = 2
+          this.showModal.renewHint = true
         }
       })
     },
     roll (val) {
       $('html, body').animate({ scrollTop: val }, 300)
+    },
+    goAnchor(type) {
+      var anchor = this.$el.querySelector(type)
+      // chrome
+      document.body.scrollTop = anchor.offsetTop;
+      // firefox
+      document.documentElement.scrollTop = anchor.offsetTop;
     },
     // 实名认证方法
     init () {
@@ -1333,7 +1422,7 @@ export default {
         })
       }, 3000)
     },
-    qrcodeClose() {
+    qrcodeClose () {
       this.showModal.qrCode = false
       clearInterval(this.codeTimer)
     },
@@ -1378,9 +1467,8 @@ export default {
                 })
               }
             } else {
-              this.$message.info({
-                content: res.data.message
-              })
+              this.hintText = res.data.message
+              this.showModal.hint = true
             }
           })
         }
@@ -1477,9 +1565,8 @@ export default {
                       }
                     }, 1000)
                   } else {
-                    this.$message.info({
-                      content: response.data.message
-                    })
+                    this.hintText = response.data.message
+                    this.showModal.hint = true
                     this.imgSrc = `user/getKaptchaImage.do?t=${new Date().getTime()}`
                     this.formCustom.Verificationcode = ''
                   }
@@ -1635,11 +1722,11 @@ aside {
       height: 92px;
       background: rgba(230, 227, 218, 0.2);
     }
-    ul {
+    .content {
       color: #fff;
       padding: 16px 0;
       height: 92px;
-      li {
+      a {
         position: relative;
         display: inline-block;
         width: 240px;
@@ -1648,6 +1735,8 @@ aside {
         font-weight: bold;
         color: #fff;
         border-right: 1px solid rgba(151, 151, 151, 1);
+        z-index: 100;
+        cursor: pointer;
         div {
           position: absolute;
           top: 50%;
@@ -1660,7 +1749,7 @@ aside {
           }
         }
       }
-      li:last-of-type {
+      a:last-of-type {
         border-right: none;
       }
     }
@@ -1969,11 +2058,11 @@ section:nth-of-type(4) {
         center no-repeat;
     }
     &:nth-of-type(2) header {
-      background: url(../../../assets/img/active/anniversary/anniversary-domain-1.png)
+      background: url(../../../assets/img/active/anniversary/anniversary-domain-2.png)
         center no-repeat;
     }
     &:nth-of-type(3) header {
-      background: url(../../../assets/img/active/anniversary/anniversary-domain-1.png)
+      background: url(../../../assets/img/active/anniversary/anniversary-domain-3.png)
         center no-repeat;
     }
     header {
@@ -2038,8 +2127,17 @@ section:nth-of-type(4) {
       .box {
         position: absolute;
         top: 0;
-        padding-top: 55px;
         width: 100%;
+        height: 100%;
+        .top {
+          height: 60%;
+          position: relative;
+          .p {
+            width: 100%;
+            position: absolute;
+            bottom: 10%;
+          }
+        }
       }
       .discount {
         p {
@@ -2066,7 +2164,9 @@ section:nth-of-type(4) {
         color: rgba(252, 192, 50, 1);
       }
       .text {
-        margin-top: 50px;
+        position: absolute;
+        bottom: 10%;
+        width: 100%;
         span {
           font-size: 18px;
           color: rgba(255, 255, 255, 1);
@@ -2086,7 +2186,7 @@ section:nth-of-type(4) {
   }
 }
 .share-modal {
-  >p {
+  > p {
     font-size: 16px;
     line-height: 1.5;
     text-align: center;
@@ -2127,6 +2227,17 @@ section:nth-of-type(4) {
   }
   .footer {
     text-align: center;
+    padding-bottom: 10px;
+  }
+}
+.hint {
+  .content {
+    font-size: 16px;
+    padding: 10px;
+  }
+  .footer {
+    text-align: center;
+    padding-bottom: 10px; 
   }
 }
 .pc-640 {
@@ -2190,12 +2301,14 @@ section:nth-of-type(4) {
     width: 300px;
   }
 }
-.an-lf{
-  position: fixed;
+
+.an-lf {
+  position: absolute;
   top: 50%;
   left: 0;
-  width:36px;height:116px;
-    
+  width: 36px;
+  height: 116px;
+  z-index: 10000;
 }
 // 实名认证结束
 @media screen and (max-width: 768px) {
@@ -2215,6 +2328,9 @@ section:nth-of-type(4) {
     width: 100%;
   }
   aside {
+    display: none;
+  }
+  .an-lf {
     display: none;
   }
   .banner {
@@ -2251,7 +2367,8 @@ section:nth-of-type(4) {
       margin-bottom: 15px;
       .content {
         .middle .center .w {
-          width: calc(100% - 18px);
+          width: e("calc(100% - 44px)");
+          width: calc(~"100% - 44px");
         }
         .price {
           display: inline-block;
@@ -2364,10 +2481,6 @@ section:nth-of-type(4) {
           img {
             width: 100%;
           }
-          .box {
-            padding-top: 15px;
-            font-size: 14px;
-          }
           .discount {
             p {
               margin-bottom: 0;
@@ -2388,7 +2501,6 @@ section:nth-of-type(4) {
             font-size: 14px;
           }
           .text {
-            margin-top: 20px;
             span {
               font-size: 14px;
             }
@@ -2412,57 +2524,57 @@ section:nth-of-type(4) {
     }
   }
   .share-modal {
-  .wrapper {
-    margin-top: 30px;
-    text-align: center;
-    div {
-      display: inline-block;
-      span {
-        margin-top: 0px;
-      }
-    }
-  }
-  .qr-code {
-    margin-right: 0px;
-  }
-  .url {
-    .btn {
-      margin-bottom: 15px;
-      margin-top: 20px;
-    }
-  }
-}
-}
-@media screen and (max-width: 1366px) {
-  .an-aside {
-    left: -100px;
-    transition: all ease-out 0.3s;
-  }
-  .an-sm{
-      position: absolute;
-      width: 36px;
-      height: inherit;
-      left: 0;
+    .wrapper {
+      margin-top: 30px;
       text-align: center;
-      transition: all ease-out 0.3s;
-      font-size:16px;
-      color: #333333;
-      background:linear-gradient(180deg,rgba(255,250,224,1) 0%,rgba(217,195,145,1) 100%);
-      span{
+      div {
         display: inline-block;
-        margin-top: 21px;
-        width: 17px;
+        span {
+          margin-top: 0px;
+        }
       }
     }
-  
-  .an-lf:hover > .an-aside{
-    left: 0;
-    transition: all ease-out 0.3s;
-  }
-  .an-lf:hover > .an-sm{
-    // width: 0px;
-    transition: all ease-out 0.3s;
-    left: -50px;
+    .qr-code {
+      margin-right: 0px;
+    }
+    .url {
+      .btn {
+        margin-bottom: 15px;
+        margin-top: 20px;
+      }
+    }
   }
 }
+// @media screen and (max-width: 1366px) {
+//   .an-aside {
+//     left: -100px;
+//     transition: all ease-out 0.3s;
+//   }
+//   .an-sm{
+//       position: absolute;
+//       width: 36px;
+//       height: inherit;
+//       left: 0;
+//       text-align: center;
+//       transition: all ease-out 0.3s;
+//       font-size:16px;
+//       color: #333333;
+//       background:linear-gradient(180deg,rgba(255,250,224,1) 0%,rgba(217,195,145,1) 100%);
+//       span{
+//         display: inline-block;
+//         margin-top: 21px;
+//         width: 17px;
+//       }
+//     }
+
+//   .an-lf:hover > .an-aside{
+//     left: 0;
+//     transition: all ease-out 0.3s;
+//   }
+//   .an-lf:hover > .an-sm {
+//     // width: 0px;
+//     transition: all ease-out 0.3s;
+//     left: -50px;
+//   }
+// }
 </style>
