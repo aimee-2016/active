@@ -858,7 +858,7 @@
                 <!-- <h3>免费用</h3>
                 <a class="ph-button" @click="$router.push('/free/')">立即领取</a> -->
             </div>
-            <div class="pl-box" style="">
+            <div class="pl-box">
                 <div class="ph-cs">
                     <img class="ke-black" src="./assets/img/home/kefu.png">
                     <span>联系客服</span>
@@ -2451,7 +2451,6 @@ span {
   cursor: pointer;
   margin-bottom: 10px;
   padding: 5px 0;
-  // box-shadow: 0px 2px 16px -5px rgba(130, 130, 130, 0.5);
   transition: all ease-in-out 0.2s;
   position: relative;
   box-sizing: border-box;
