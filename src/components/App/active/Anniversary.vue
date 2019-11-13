@@ -648,11 +648,11 @@ export default {
       },
       hintText: '',
       asideList: [
-        { text: '爆款秒杀', height: 800 },
-        { text: '企业限购', height: 1400 },
-        { text: '云数据库', height: 2000 },
-        { text: '域名专区', height: 2600 },
-        { text: '续费专区', height: 3000 }
+        { text: '爆款秒杀', height: 850 },
+        { text: '企业限购', height: 1500 },
+        { text: '云数据库', height: 2100 },
+        { text: '域名专区', height: 3000 },
+        { text: '续费专区', height: 3500 }
       ],
       bannerNavList: [
         { title: '爆款云产品', text: '邀新送好礼', href: 'seckill' },
@@ -772,10 +772,10 @@ export default {
   mounted () {
     let asideList = this.asideList;
     window.addEventListener('scroll',()=>{
-        if (document.documentElement.scrollTop > asideList[this.rollIndex].height+50  && this.rollIndex != asideList.length-1) {
+        if (document.documentElement.scrollTop > asideList[this.rollIndex].height  && this.rollIndex != asideList.length-1) {
           this.rollIndex ++;
         }
-        if(document.documentElement.scrollTop < asideList[this.rollIndex].height-150 && this.rollIndex != 0){
+        if(document.documentElement.scrollTop < asideList[this.rollIndex].height && this.rollIndex != 0){
           this.rollIndex --;
         }
         if(document.documentElement.scrollTop > asideList[asideList.length-1].height){
