@@ -9,7 +9,8 @@
           <li
             v-for="(item,index) in asideList"
             :key="index"
-            @click="roll(item.height)"
+            :class="{'checked':rollIndex == index}"
+            @click="roll(item.height),rollIndex = index"
           >{{item.text}}</li>
         </ul>
         <div class="to-top" @click="roll(0)">回到顶部</div>
@@ -751,6 +752,7 @@ export default {
           trigger: 'blur'
         }]
       },
+      rollIndex: 0
       // 实名认证参数结束
     }
   },
@@ -1688,6 +1690,13 @@ aside {
         );
       }
     }
+    .checked{
+      background: linear-gradient(
+          135deg,
+          rgba(221, 203, 161, 1) 0%,
+          rgba(188, 160, 110, 1) 100%
+        );
+    }
   }
   .to-top {
     position: absolute;
@@ -2303,7 +2312,7 @@ section:nth-of-type(4) {
 }
 
 .an-lf {
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 0;
   width: 36px;
@@ -2545,36 +2554,36 @@ section:nth-of-type(4) {
     }
   }
 }
-// @media screen and (max-width: 1366px) {
-//   .an-aside {
-//     left: -100px;
-//     transition: all ease-out 0.3s;
-//   }
-//   .an-sm{
-//       position: absolute;
-//       width: 36px;
-//       height: inherit;
-//       left: 0;
-//       text-align: center;
-//       transition: all ease-out 0.3s;
-//       font-size:16px;
-//       color: #333333;
-//       background:linear-gradient(180deg,rgba(255,250,224,1) 0%,rgba(217,195,145,1) 100%);
-//       span{
-//         display: inline-block;
-//         margin-top: 21px;
-//         width: 17px;
-//       }
-//     }
+@media screen and (max-width: 1366px) {
+  .an-aside {
+    left: -100px;
+    transition: all ease-out 0.3s;
+  }
+  .an-sm{
+      position: fixed;
+      width: 36px;
+      height: inherit;
+      left: 0;
+      text-align: center;
+      transition: all ease-out 0.3s;
+      font-size:16px;
+      color: #333333;
+      background:linear-gradient(180deg,rgba(255,250,224,1) 0%,rgba(217,195,145,1) 100%);
+      span{
+        display: inline-block;
+        margin-top: 21px;
+        width: 17px;
+      }
+    }
 
-//   .an-lf:hover > .an-aside{
-//     left: 0;
-//     transition: all ease-out 0.3s;
-//   }
-//   .an-lf:hover > .an-sm {
-//     // width: 0px;
-//     transition: all ease-out 0.3s;
-//     left: -50px;
-//   }
-// }
+  .an-lf:hover > .an-aside{
+    left: 0;
+    transition: all ease-out 0.3s;
+  }
+  .an-lf:hover > .an-sm {
+    // width: 0px;
+    transition: all ease-out 0.3s;
+    left: -50px;
+  }
+}
 </style>
