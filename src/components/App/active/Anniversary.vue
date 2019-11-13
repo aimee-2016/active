@@ -62,8 +62,8 @@
             />
           </span>
           <span class="desc">老用户邀请新用户成功购买以下任1款商品（域名除外），即可获得“爆款秒杀专区”或“企业用户限购专区”的额外购买权1次。</span>
-          <span class="btn pc-640-inline" @click="shareNew('p')">邀请新老用户</span>
-          <span class="btn mobile-640-inline" @click="shareNew('m')">邀请新老用户</span>
+          <span class="btn pc-640-inline" @click="shareNew('p')">邀请新用户</span>
+          <span class="btn mobile-640-inline" @click="shareNew('m')">邀请新用户</span>
         </div>
         <div class="seckill" id="seckill">
           <header class="sub-head">
