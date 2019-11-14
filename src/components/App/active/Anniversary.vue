@@ -666,7 +666,7 @@ export default {
       enterpriseList: [],
       databaseList: [],
       ruleListKill: [
-        '1、活动时间：2019.11.7-2019.12.31',
+        '1、活动时间：2019.11.13-2019.12.31',
         '2、活动对象：新老用户皆可参与；新用户是未使用过平台资源（第三方产品除外）及未参加过其他免费活动并已通过实名认证的用户',
         '3、活动期间同一用户（同一手机、邮箱、实名认证用户视为同一用户）可同时购买GPU服务器1次、对象存储1次',
         '4、新用户可直接购买任意一台爆款云服务器，购买成功后再邀请1名新用户成功购买周年庆活动产品（域名除外）即可获得“爆款秒杀专区”或“企业用户限购专区”的额外购买权1次；老用户成功邀请1名新用户购买周年庆活动产品，即可获得“爆款秒杀专区”或“企业用户限购专区”的额外购买权1次，购买权可叠加；',
@@ -676,7 +676,7 @@ export default {
         '8、活动最终解释权为新睿云所有。'
       ],
       ruleListE: [
-        '1、活动时间：2019.11.7-2019.12.31',
+        '1、活动时间：2019.11.13-2019.12.31',
         '2、活动对象：活动期间企业用户限购1台，新老用户皆可参与。新用户是未使用过平台资源（第三方产品除外）及未参加过其他免费活动并已通过实名认证的用户',
         '3、企业用户可直接购买任意一台爆款云服务器，购买成功后再邀请1名新用户成功购买周年庆活动产品（域名除外）即可获得“爆款秒杀专区”或“企业用户限购专区”的额外购买权1次，购买权可叠加；',
         '4、参与本次活动购买的产品不能进行退款。',
@@ -685,7 +685,7 @@ export default {
         '7、活动最终解释权为新睿云所有。'
       ],
       ruleListDB: [
-        '1、活动时间：2019.11.7-2019.12.31，每天7点至23.17点开抢。',
+        '1、活动时间：2019.11.13-2019.12.31，每天7点至23.17点开抢。',
         '2、活动对象：新老用户皆可参与。新用户是未使用过平台资源（第三方产品除外）及未参加过其他免费活动并已通过实名认证的用户',
         '3、数量限制：活动期间同一用户（同一手机、邮箱、实名认证用户视为同一用户）按照不同的配置进行抢购，同配置产品可以同时购买不同时长，但每款配置同一时长只能购买一次。数量有限，先到先得。',
         '4、参与本次活动购买的产品不能进行退款。',
@@ -766,7 +766,7 @@ export default {
       let ddd = document.URL.substring(document.URL.indexOf('?') + 1, document.URL.length);
       var date = new Date();
       date.setTime(date.getTime() + 86400000);
-      document.cookie = 'anniver=' + ddd.split('=')[1] + ';expires=' + date.toUTCString() + ';domain=.xrcloud.net;path=/'
+      document.cookie = 'anniver=' + ddd.split('=')[1] + ';expires=' + date.toUTCString() + ';domain=.xinruiyun.cn;path=/'
     }
   },
   mounted () {
@@ -799,13 +799,13 @@ export default {
                 item.zoneList = response.data.result.optionalArea
                 item.zone = item.zoneList[0].value
                 this.$set(item, 'systemList', this.formatSystem(response.data.result.mvTem))
-                item.system = [item.systemList[0].label, item.systemList[0].children[0].value]
+                this.$set(item, 'system', [item.systemList[0].label, item.systemList[0].children[0].value])
                 break;
               case 'G5500':
                 item.zoneList = response.data.result.optionalAreaGpu
                 item.zone = item.zoneList[0].value
                 this.$set(item, 'systemList', this.formatSystem(response.data.result.gpuTem))
-                item.system = [item.systemList[0].label, item.systemList[0].children[0].value]
+                this.$set(item, 'system', [item.systemList[0].label, item.systemList[0].children[0].value])
                 break;
               case 'oss':
                 item.zoneList = response.data.result.zoneListMapOss
@@ -854,6 +854,7 @@ export default {
       }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
           item.systemList = this.formatSystem(response.data.result)
+          item.system = [item.systemList[0].label, item.systemList[0].children[0].value]
         }
       })
     },
@@ -950,7 +951,12 @@ export default {
       if (item.servicetype == 'oss') {
         axios.post(url, params).then(response => {
           if (response.status == 200 && response.data.status == 1) {
-            window.open('https://i.xinruiyun.cn/order', '_self')
+            this.$Message.success('创建订单成功')
+            if (type == 'p') {
+              window.open('https://i.xinruiyun.cn/order', '_self')
+            } else {
+              window.open('https://m.xinruiyun.cn/orderconfirm', '_self')
+            }
           } else {
             this.hintText = response.data.message
             this.showModal.hint = true
@@ -961,7 +967,12 @@ export default {
           params: params
         }).then(response => {
           if (response.status == 200 && response.data.status == 1) {
-            window.open('https://i.xinruiyun.cn/order', '_self')
+            this.$Message.success('创建订单成功')
+            if (type == 'p') {
+              window.open('https://i.xinruiyun.cn/order', '_self')
+            } else {
+              window.open('https://m.xinruiyun.cn/orderconfirm', '_self')
+            }
           } else {
             this.hintText = response.data.message
             this.showModal.hint = true
@@ -1160,7 +1171,12 @@ export default {
         }
       }).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          window.open('https://i.xinruiyun.cn/order', '_self')
+          this.$Message.success('创建订单成功')
+            if (type == 'p') {
+              window.open('https://i.xinruiyun.cn/order', '_self')
+            } else {
+              window.open('https://m.xinruiyun.cn/orderconfirm', '_self')
+            }
         } else {
           this.hintText = response.data.message
           this.showModal.hint = true
@@ -1324,7 +1340,7 @@ export default {
       })
     },
     setCookie(name, val) {
-      document.cookie = name + '=' + val + ';domain=.xrcloud.net;path=/'
+      document.cookie = name + '=' + val + ';domain=.xinruiyun.cn;path=/'
     },
     getRenew () {
       axios.get('activity/getActTicket.do', {
