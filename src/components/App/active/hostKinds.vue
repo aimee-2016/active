@@ -1148,7 +1148,7 @@
           <div class="wechat">
             <h4>关注微信公众号并截图</h4>
             <div class="center">
-              <img src="../../../assets/img/app/QR-code.jpg" alt="新睿云二维码" />
+              <img src="../../../assets/img/active/deposit/wechat-qr.jpg" alt="新睿云二维码" />
             </div>
             <div style="position:relative;height:58px;">
               <div
