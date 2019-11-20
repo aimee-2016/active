@@ -3743,7 +3743,7 @@ export default {
       }
     },
     getZoneList () {
-      axios.get('information/zone.do', { params: { t: new Date().getTime() } }).then(res => {
+      axios.get('information/zone.do', { params: { buy: '1', t: new Date().getTime() } }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
           this.hostZoneList = res.data.result.filter(item => {
             return item.gpuserver == 0
