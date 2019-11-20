@@ -30,7 +30,7 @@
             </div>
           </div>
         </my-carousel-item>
-        <my-carousel-item class="carousel-item">
+        <!-- <my-carousel-item class="carousel-item">
           <div @click="push('/ddosactive/')" style="cursor: pointer;">
             <div class="ddos">
               <div class="wrap">
@@ -48,7 +48,7 @@
               </div>
             </div>
           </div>
-        </my-carousel-item>
+        </my-carousel-item> -->
         <my-carousel-item class="carousel-item">
           <div @click="push('/free/')" style="cursor: pointer;background: #F56B23;">
             <div class="free-receive">
