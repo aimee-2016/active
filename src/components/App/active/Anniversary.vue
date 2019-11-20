@@ -350,7 +350,7 @@
                 <div class="text">
                   <span>新睿云11.17周年庆回馈老用户</span>
                   <p>
-                    云服务器年续费一律
+                    云产品年续费一律
                     <span>{{item.moneyDesc}}折</span>
                   </p>
                 </div>
