@@ -1148,7 +1148,7 @@
           <div class="wechat">
             <h4>关注微信公众号并截图</h4>
             <div class="center">
-              <img src="../../../assets/img/active/deposit/wechat-qr.jpg" alt="新睿云二维码" />
+              <img src="../../../assets/img/active/deposit/wechat-qr.png" alt="新睿云二维码" />
             </div>
             <div style="position:relative;height:58px;">
               <div
@@ -3743,7 +3743,7 @@ export default {
       }
     },
     getZoneList () {
-      axios.get('information/zone.do', { params: { t: new Date().getTime() } }).then(res => {
+      axios.get('information/zone.do', { params: { buy: '1', t: new Date().getTime() } }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
           this.hostZoneList = res.data.result.filter(item => {
             return item.gpuserver == 0
