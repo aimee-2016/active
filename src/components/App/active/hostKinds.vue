@@ -151,7 +151,7 @@
                   </div>
                   <div class="tips">
                     <p style="margin-bottom:4px">
-                      1.关注新睿云微信公众号，将活动链接分享并发送内容：“我正在申请参与新睿云的免费云服务器活动，大家一起来参与吧！”至朋友圈，截图发送给我们即可领取“免保证金”云服务器
+                      1.关注新睿云微信公众号，将活动图片保存分享并发送内容：“我正在申请参与新睿云的免费云服务器活动，大家一起来参与吧！”至朋友圈，截图发送给我们即可领取“免保证金”云服务器
                       <span
                         class="blue pc-640-inline"
                         @click="pushOrderFree(0,'p')"
@@ -159,7 +159,7 @@
                       <span class="blue mobile-640-inline" @click="pushOrderFree(0,'m')">上传截图></span>
                     </p>
                     <p>
-                      2.使用“免保证金”云服务器10天以后并在使用期内，去“百度口碑”发布使用体验等相关评论，并截图发送给我们，该2核4G的云服务器可延长1个月免费使用期
+                      2.使用“免保证金”云服务器10天后并在使用期内去“百度口碑”发布使用体验等相关评论，并截图发送给我们，该2核4G的云服务器可延长1个月免费使用期
                       <a
                         href="https://koubei.baidu.com/s/510a4f5f6316c2d0f81b3e63bc75b537?fr=search"
                         target="blank"
@@ -1185,7 +1185,7 @@
             </div>
           </div>
           <div class="url">
-            <h4>将活动链接分享并发送内容：“我正在申请参与新睿云的免费云服务器活动，大家一起来参与吧！”至朋友圈并截图</h4>
+            <h4>将活动图片保存分享并发送内容：“我正在申请参与新睿云的免费云服务器活动，大家一起来参与吧！”至朋友圈并截图</h4>
             <div class="center">
               <img
                 src="../../../assets/img/active/deposit/free-qr.png"
@@ -4661,6 +4661,8 @@ export default {
     border: 1px dashed #99c0ee;
     border-radius: 5px;
     padding: 10px 0 10px 16px;
+    margin-right: 20px;
+    padding-right: 10px;
     img {
       margin-right: 16px;
     }
@@ -5342,7 +5344,7 @@ export default {
     }
     .wechat {
       width: 80px;
-      margin-right: 40px;
+      margin-right: 28px;
       img {
         width: 60px;
         display: block;
@@ -5580,11 +5582,15 @@ export default {
       }
     }
   }
-  .dotask {
-    display: flex;
-    flex-direction: column;
-    // justify-content: flex-start;
-    align-items: flex-start;
+  .deposite-host{ 
+    .dotask {
+      display: flex;
+      flex-direction: column;
+      // justify-content: flex-start;
+      align-items: flex-start;
+      margin-right: 0px;
+      padding-right: 0px;
+    }
   }
   .wechat-modal .content .wechat {
     width: 200px;
