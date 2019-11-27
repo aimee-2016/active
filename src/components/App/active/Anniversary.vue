@@ -34,6 +34,9 @@
               alt="企业上云突破5万，回馈老用户"
             />
           </div>
+          <div class="center-banner">
+            <img src="../../../assets/img/active/anniversary/aa-ac-banner.png" alt="banner">
+          </div>
           <div class="menu">
             <div class="content">
               <a v-for="(item,index) in bannerNavList" :key="index" @click="goAnchor('#'+item.href)">
@@ -1733,9 +1736,17 @@ aside {
   }
 }
 .banner {
-  height: 577px;
+  height: 576px;
   background: url(../../../assets/img/active/anniversary/anniversary-banner.png)
     center no-repeat;
+  .container {
+    position: relative;
+  }
+  .center-banner {
+    position: absolute;
+    top: 30px;
+    right: -230px;
+  }
   .text {
     padding-top: 140px;
     img:first-of-type {
