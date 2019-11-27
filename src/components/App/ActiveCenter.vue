@@ -23,7 +23,7 @@
                 <div class="img">
                   <img
                     src="../../assets/img/active/anniversary/aa-ac-banner.png"
-                    style="height:360px;margin-top:40px;margin-left:100px;"
+                    style="height:360px;margin-top:30px;margin-left:100px;"
                   />
                 </div>
               </div>
