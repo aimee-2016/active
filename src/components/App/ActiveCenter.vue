@@ -51,7 +51,7 @@
             </div>
           </div>
         </my-carousel-item>
-        <my-carousel-item class="carousel-item">
+        <!-- <my-carousel-item class="carousel-item">
           <div @click="push('/objectstorage/')" style="cursor: pointer;">
             <div class="obj-storage">
               <div class="wrap">
@@ -67,7 +67,7 @@
               </div>
             </div>
           </div>
-        </my-carousel-item>
+        </my-carousel-item> -->
       </my-carousel>
     </div>
     <div class="center-active box-g">
