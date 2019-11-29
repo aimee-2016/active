@@ -7,7 +7,7 @@ import App from '@/App'
 // import LR from '@/LR'
 
 // 前台活动页面路由
-const ActiveCenter = () => import('@/components/App/activeA')
+const ActiveCenter = () => import('@/components/App/ActiveCenter')
 const activeBefore = () => import('@/components/App/active/activeBefore')
 const FrActive1 = () => import('@/components/App/active/hostKinds')
 const objStorageActiveP = () => import('@/components/App/active/objStorageActive')
