@@ -2,7 +2,13 @@
   <div class="active-center">
     <h1 id="hide-h1">活动中心</h1>
     <div class="banner">
-      <my-carousel :interval="5000" class="carousel" @on-change="change">
+      <my-carousel
+        :interval="5000"
+        class="carousel"
+        :radius-dot="true"
+        arrow="never"
+        @on-change="change"
+      >
         <my-carousel-item class="carousel-item">
           <div @click="push('/anniversary/')" style="cursor: pointer;">
             <div class="aa">
@@ -30,25 +36,6 @@
             </div>
           </div>
         </my-carousel-item>
-        <!-- <my-carousel-item class="carousel-item">
-          <div @click="push('/ddosactive/')" style="cursor: pointer;">
-            <div class="ddos">
-              <div class="wrap">
-                <div class="text">
-                  <img src="../../assets/img/active/ddos/ddos-banner-text2.png" />
-                  <p>数量有限 先到先得</p>
-                  <Button>点击查看</Button>
-                </div>
-                <div class="img">
-                  <img
-                    src="../../assets/img/active/ddos/ddos-ac-banner.png"
-                    style="height:360px;margin-top:40px;"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </my-carousel-item> -->
         <my-carousel-item class="carousel-item">
           <div @click="push('/free/')" style="cursor: pointer;background: #F56B23;">
             <div class="free-receive">
@@ -87,58 +74,49 @@
       <div class="wrap">
         <div class="content">
           <div class="sec-headline-g">
+            <p>热门活动</p>
+            <span>POPULAR ACTIVITICE</span>
+          </div>
+          <div class="box-wrap">
+            <a
+              v-for="(item,index) in allActive"
+              class="box"
+              :key="index"
+              :href="item.path+'/'"
+              :class="{hide:item.namecolor}"
+            >
+              <img :src="item.imgCenter" alt="背景图片" />
+              <div class="box-content">
+                <div class="box-head" :style="{color: item.namecolor}">
+                  <p>{{item.name}}</p>
+                  <p>{{item.actdesc}}</p>
+                </div>
+                <div class="box-bottom">
+                  <p>{{item.des}}</p>
+                  <button>立即参与</button>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="sec-headline-g">
             <p>新手上云</p>
             <span>NOVICE TO CLOUD</span>
           </div>
           <div class="box-wrap">
-            <router-link
-              v-for="(item,index) in allActive"
-              :key="index"
-              :class="{'box':true}"
-              :to="'/'+item.newurl+'/'"
-              :style="{background:'url('+item.imgCenter+')',backgroundRepeat:'no-repeat'}"
-            >
-              <div class="box-head" :style="{color:item.namecolor}">
-                <div v-if="item.name">
+            <a v-for="(item,index) in onsaleData" class="box" :key="index" :href="item.path+'/'" :class="{hide:item.namecolor}">
+              <img :src="item.imgCenter" alt="背景图片" />
+              <div class="box-content">
+                <div class="box-head" :style="{color: item.namecolor}">
                   <p>{{item.name}}</p>
-                  <p :style="{color:item.colortwo}">{{item.actdesc}}</p>
+                  <p>{{item.actdesc}}</p>
                 </div>
-              </div>
-              <div class="box-bottom">
-                <div>
+                <div class="box-bottom">
                   <p>{{item.des}}</p>
-                  <p style="line-height:1.2">活动对象：{{item.activeObj}}</p>
+                  <button>立即参与</button>
                 </div>
-                <button v-if="item.isStart">立即参与 →</button>
-                <button v-else>敬请期待</button>
               </div>
-            </router-link>
-          </div>
-          <div class="sec-headline-g">
-            <p>特惠促销</p>
-            <span>PREFERENTIAL PROMOTION</span>
-          </div>
-          <div class="box-wrap">
-            <router-link
-              v-for="(item,index) in onsaleData"
-              :key="index"
-              class="box"
-              :to="item.url"
-              :style="{background:'url('+item.imgPath+')',backgroundRepeat:'no-repeat'}"
-            >
-              <div class="box-head">
-                <p>{{item.name}}</p>
-                <p v-html="item.desc"></p>
-              </div>
-              <div class="box-bottom">
-                <div>
-                  <p>活动时间：{{item.time}}</p>
-                  <p>活动对象：{{item.activeObj}}</p>
-                </div>
-                <button>立即参与 →</button>
-              </div>
-            </router-link>
-            <div class="comingstart">更多优惠活动即将开启</div>
+            </a>
+            <!-- <div class="comingstart">更多优惠活动即将开启</div> -->
           </div>
         </div>
       </div>
@@ -149,13 +127,6 @@
 <script type="text/ecmascript-6">
 import axios from '@/util/axiosInterceptor'
 export default {
-  // beforeRouteEnter (to, from, next) {
-  //   axios.get('activity/getActivitys.do').then(response => {
-  //     next(vm => {
-  //       vm.setData(response)
-  //     })
-  //   })
-  // },
   metaInfo: {
     title: '云服务器低价优惠活动 - 特价云服务器体验 - 活动中心 - 新睿云',
     meta: [{
@@ -172,79 +143,19 @@ export default {
       active: [],
       allActive: [],
       activedata: [
-        {
-          imgPath: require('../../assets/img/active/ddos/ddos-ac.png'),
-          name: '高防云服务器限时秒杀',
-          desc: '更有首月8折等超多优惠',
-          time: '2019.7.25-2019.9.25',
-          activeObj: '新老用户皆可参与',
-          url: '/ddosactive/',
-          isStart: true,
-          weight: '1',
-          color: 'rgba(252,202,138,1)',
-          colortwo: '#FFEDD2'
-        },
-        {
-          imgPath: require('../../assets/img/activecenter/bg-card-2.png'),
-          name: '免费云服务器 不限量领取',
-          desc: '保证金闪退',
-          time: '2019.06.26开始',
-          activeObj: '云服务器 新注册用户',
-          url: '/free/',
-          isStart: true,
-          weight: '1'
-        },
-        {
-          imgPath: require('../../assets/img/activecenter/bg-card-3.png'),
-          name: '对象存储 重磅上线',
-          desc: '安全稳定高效的云端存储服务 免费试用50G',
-          time: ' 2018年8月1日',
-          activeObj: '对象存储 新老用户',
-          url: '/objectstorage/',
-          isStart: true,
-          weight: '1',
-          color: 'black'
-        },
-        {
-          imgPath: require('../../assets/img/activecenter/bg-card-4.png'),
-          name: '热门云数据库产品免费试用60天',
-          desc: '秒级创建 一键恢复 安全可靠',
-          time: '2018.10.19开始',
-          // time: '即将上线',
-          activeObj: '云数据库 新老用户',
-          url: '/hotdatabase/',
-          isStart: true,
-          weight: '1',
-          color: 'black'
-        },
-      ]
+      ],
+      onsaleData: []
     }
   },
   methods: {
     push (url) {
       this.$router.push(url)
     },
-    setData (response) {
-      this.activedata = response.data.result
-    },
     change (activeIndex) {
       this.activeBanner = activeIndex + 1
     }
   },
   computed: {
-    activeData () {
-      var arry = this.activedata.filter(item => {
-        return item.weight == '1'
-      })
-      return arry
-    },
-    // 特惠促销列表
-    onsaleData () {
-      var arry = this.activedata.filter(item => {
-        return item.weight == '2'
-      })
-      return arry
-    }
   },
   created () {
     axios.get('/activity/getActivitys.do', {
@@ -253,7 +164,8 @@ export default {
       }
     }).then(res => {
       if (res.status === 200 && res.data.status === 1) {
-        this.allActive = res.data.result
+        this.allActive = res.data.result.classfy_one
+        this.onsaleData = res.data.result.classfy_two
       }
     })
   },
@@ -278,14 +190,10 @@ export default {
           background: url("../../assets/img/active/active_xf_bg.png") no-repeat
             center;
         }
-        // .anniversary-active {
-        //   height: 400px;
-        //   cursor: pointer;
-        //   background: #FEEDE0 url("../../assets/img/active/anniversary/aa-banner22.png") center no-repeat;
-        // }
         .aa {
           height: 400px;
-          background: url("../../assets/img/active/anniversary/aa-ac-banner-bg.png") center no-repeat;
+          background: url("../../assets/img/active/anniversary/aa-ac-banner-bg.png")
+            center no-repeat;
           .wrap {
             width: 1200px;
             margin: 0 auto;
@@ -303,42 +211,6 @@ export default {
               }
               button {
                 margin-top: 20px;
-                width: 124px;
-                height: 32px;
-                background: linear-gradient(
-                  90deg,
-                  rgba(249, 239, 184, 1) 0%,
-                  rgba(227, 183, 111, 1) 100%
-                );
-                border-radius: 2px;
-                border: none;
-                &:hover {
-                  color: #000;
-                }
-              }
-            }
-          }
-        }
-        .ddos {
-          height: 400px;
-          background: #2a2936;
-          .wrap {
-            width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            .text {
-              margin-top: 148px;
-              p {
-                font-size: 24px;
-                color: #ffedd2;
-                line-height: 31px;
-              }
-              img {
-                margin: 0 0 20px 0;
-              }
-              button {
-                margin-top: 30px;
                 width: 124px;
                 height: 32px;
                 background: linear-gradient(
@@ -544,48 +416,49 @@ export default {
       justify-content: space-between;
       margin-bottom: 20px;
       .box {
-        height: 280px;
-        width: 590px;
         margin-bottom: 20px;
         cursor: pointer;
         background-repeat: no-repeat;
         transition: all 0.5s ease-out;
+        position: relative;
+        .box-content {
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          top: 0;
+        }
         .box-head {
-          height: 162px;
-          padding: 40px;
+          height: 106px;
+          padding: 20px;
           color: #fff;
-          font-size: 18px;
-          p {
+          p:nth-of-type(1) {
+            margin-bottom: 12px;
+            font-size: 20px;
             line-height: 26px;
           }
-          p:nth-of-type(1) {
-            font-size: 24px;
-            margin-bottom: 20px;
-            line-height: 1;
+          p:nth-of-type(2) {
+            font-size: 16px;
+            line-height: 20px;
           }
         }
         .box-bottom {
-          margin: 20px 40px;
+          padding: 20px;
           display: flex;
           justify-content: space-between;
-          align-items: flex-end;
-          div {
-            color: #000;
-            font-size: 18px;
-            p:nth-of-type(1) {
-              margin-bottom: 20px;
-            }
+          align-items: center;
+          p {
+            color: #333;
+            font-size: 14px;
           }
           button {
-            width: 150px;
-            height: 38px;
-            background: rgba(255, 98, 75, 1);
-            border-radius: 4px;
+            width: 90px;
+            height: 30px;
+            background: #ff624b;
+            border-radius: 2px;
             border: none;
             color: #fff;
             outline: none;
-            font-size: 14px;
-            font-family: PingFangSC-Medium;
+            font-size: 12px;
           }
         }
       }
@@ -594,7 +467,6 @@ export default {
 }
 
 .center-active {
-  // background: url("../../assets/img/activecenter/bg-center.png") no-repeat center;
   background: linear-gradient(0deg, #fee5d8 0%, #fffefe 100%);
   background-size: cover;
   .box {
@@ -617,81 +489,37 @@ export default {
   justify-content: center;
   align-items: center;
 }
-.ss-active {
-  background: url(../../assets/img/active/schoolSeason/schoolseason_banner_bg.png)
-    center no-repeat;
-  color: rgba(51, 51, 51, 1);
-  .container {
-    height: 400px;
-    .left {
-      h2 {
-        font-size: 48px;
-        line-height: 64px;
-        font-weight: normal;
-      }
-      p {
-        margin-top: 20px;
-        font-size: 24px;
-        font-weight: 500;
-        i {
-          color: #ff624b;
-          font-style: normal;
-        }
-      }
-      span {
-        margin-top: 40px;
-        display: inline-block;
-        width: 164px;
-        height: 44px;
-        border-radius: 4px;
-        border: 1px solid rgba(51, 51, 51, 1);
-        font-size: 16px;
-        line-height: 42px;
-        text-align: center;
-        cursor: pointer;
-        transition: all 0.5s;
-        &:hover {
-          border-color: #ff624b;
-          color: #ff624b;
-        }
-      }
+@media screen and (min-width: 1221px) {
+}
+@media screen and (max-width: 768px) {
+  .banner {
+    display: none;
+  }
+
+  .wrap {
+    width: 100%;
+    padding: 4px;
+  }
+  .sec-headline-g {
+    margin-bottom: 10px;
+  }
+  .box-g .content {
+    padding: 15px 0;
+  }
+  .box-g .content .box-wrap {
+    .box {
+      width: 100%;
+      margin-bottom: 4px;
+    }
+    .hide {
+      display: none;
     }
   }
-}
-.xian-active {
-  background: url(../../assets/img/active/xianNode/xian-banner-bg.png) center
-      no-repeat,
-    linear-gradient(to bottom, #ffdcbc, #ffe7d2);
-  .container {
-    height: 400px;
-    .left {
-      p {
-        margin-top: 20px;
-        font-size: 20px;
-        color: #222222;
-        font-weight: 500;
-        i {
-          font-size: 24px;
-          color: #ff3000;
-          font-style: normal;
-        }
-      }
-      span {
-        margin-top: 52px;
-        display: inline-block;
-        width: 170px;
-        height: 50px;
-        font-size: 22px;
-        color: rgba(255, 48, 0, 1);
-        line-height: 44px;
-        text-align: center;
-        cursor: pointer;
-        border: 2px solid rgba(255, 48, 0, 1);
-        &:hover {
-          background: #ffd1b2;
-        }
-      }
-    }
+  .box-g .content .box-wrap .box .box-head {
+    height: 58%;
+  }
+  .box-g .content .box-wrap .box > img {
+    width: 100%;
   }
 }
 </style>

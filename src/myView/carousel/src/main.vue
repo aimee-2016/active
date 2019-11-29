@@ -5,6 +5,7 @@
     <transition name="carousel-arrow-left">
       <button class="carousel-arrow-button carousel-left-button"
               v-show="hover"
+              :class="{hide:arrow=='never'}"
               @click.stop="setActiveItem(activeIndex - 1)">
         <i class="arrow-left-icon chevron-left"></i>
       </button>
@@ -12,6 +13,7 @@
     <transition name="carousel-arrow-right">
       <button class="carousel-arrow-button carousel-right-button"
               v-show="hover"
+              :class="{hide:arrow=='never'}"
               @click.stop="setActiveItem(activeIndex + 1)">
         <i class="arrow-right-icon chevron-left"></i>
       </button>
@@ -19,7 +21,7 @@
     <slot></slot>
     <ul v-if="dots">
       <li @click="setActiveItem(index)" v-for="(item,index) in items" :key="index"
-          :class="{isActive:activeIndex==index}"></li>
+          :class="{isActive:activeIndex==index,circle: radiusDot}"></li>
     </ul>
   </div>
 </template>
@@ -48,6 +50,14 @@
       hoverStop: {
         type: Boolean,
         default: true
+      },
+      arrow: {
+        type: String,
+        default: 'hover'
+      },
+      radiusDot: {
+          type: Boolean,
+          default: false
       }
     },
     data(){
@@ -141,6 +151,9 @@
         background-color: #384c6e;
       }
     }
+    .hide {
+      display: none;
+    }
     .carousel-item {
       background-color: white;
     }
@@ -191,6 +204,12 @@
         opacity: .5;
         display: inline-block;
         margin: 0px 2px;
+      }
+      .circle {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin: 0px 10px;
       }
       .isActive {
         background-color: #F26667;
