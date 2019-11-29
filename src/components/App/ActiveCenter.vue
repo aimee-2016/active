@@ -159,9 +159,7 @@ export default {
   },
   created () {
     axios.get('/activity/getActivitys.do', {
-      params: {
-        isStart: 2
-      }
+      params: {}
     }).then(res => {
       if (res.status === 200 && res.data.status === 1) {
         this.allActive = res.data.result.classfy_one
@@ -421,6 +419,7 @@ export default {
         background-repeat: no-repeat;
         transition: all 0.5s ease-out;
         position: relative;
+        font-size: 0;
         .box-content {
           width: 100%;
           height: 100%;
@@ -428,8 +427,11 @@ export default {
           top: 0;
         }
         .box-head {
-          height: 106px;
-          padding: 20px;
+          height: 58%;
+          padding: 0 20px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
           color: #fff;
           p:nth-of-type(1) {
             margin-bottom: 12px;
@@ -442,7 +444,8 @@ export default {
           }
         }
         .box-bottom {
-          padding: 20px;
+          height: 42%;
+          padding: 0 20px;
           display: flex;
           justify-content: space-between;
           align-items: center;
@@ -515,11 +518,16 @@ export default {
       display: none;
     }
   }
-  .box-g .content .box-wrap .box .box-head {
-    height: 58%;
-  }
   .box-g .content .box-wrap .box > img {
     width: 100%;
   }
+  .center-active {
+  .box {
+    &:hover {
+      box-shadow: none;
+      transform: none;
+    }
+  }
+}
 }
 </style>
