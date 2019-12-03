@@ -83,7 +83,7 @@
               class="box"
               :key="index"
               :href="item.path+'/'"
-              :class="{hide:item.namecolor}"
+              :class="{hide:item.hidden=='1'}"
             >
               <img :src="item.imgCenter" alt="背景图片" />
               <div class="box-content">
@@ -103,7 +103,7 @@
             <span>NOVICE TO CLOUD</span>
           </div>
           <div class="box-wrap">
-            <a v-for="(item,index) in onsaleData" class="box" :key="index" :href="item.path+'/'" :class="{hide:item.namecolor}">
+            <a v-for="(item,index) in onsaleData" class="box" :key="index" :href="item.path+'/'" :class="{hide:item.hidden=='1'}">
               <img :src="item.imgCenter" alt="背景图片" />
               <div class="box-content">
                 <div class="box-head" :style="{color: item.namecolor}">
