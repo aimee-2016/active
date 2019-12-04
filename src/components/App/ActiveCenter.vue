@@ -51,23 +51,19 @@
             </div>
           </div>
         </my-carousel-item>
-        <!-- <my-carousel-item class="carousel-item">
-          <div @click="push('/objectstorage/')" style="cursor: pointer;">
-            <div class="obj-storage">
+        <my-carousel-item class="carousel-item">
+          <div @click="push('/free/#days/')" style="cursor: pointer;">
+            <div class="tt-active">
               <div class="wrap">
                 <div>
-                  <p>对象存储OSS重磅上线</p>
-                  <p>安全稳定、海量、便捷、低延迟、低成本的云端存储服务</p>
-                  <p>
-                    免费领取
-                    <span>50G</span>存储包
-                  </p>
+                  <p>天天特惠 天天有惊喜</p>
+                  <p>4核8G10M云服务器 首月仅需￥99.9</p>
                   <Button>立即领取</Button>
                 </div>
               </div>
             </div>
           </div>
-        </my-carousel-item> -->
+        </my-carousel-item>
       </my-carousel>
     </div>
     <div class="center-active box-g">
@@ -103,7 +99,13 @@
             <span>NOVICE TO CLOUD</span>
           </div>
           <div class="box-wrap">
-            <a v-for="(item,index) in onsaleData" class="box" :key="index" :href="item.path+'/'" :class="{hide:item.hidden=='1'}">
+            <a
+              v-for="(item,index) in onsaleData"
+              class="box"
+              :key="index"
+              :href="item.path+'/'"
+              :class="{hide:item.hidden=='1'}"
+            >
               <img :src="item.imgCenter" alt="背景图片" />
               <div class="box-content">
                 <div class="box-head" :style="{color: item.namecolor}">
@@ -258,11 +260,11 @@ export default {
             }
           }
         }
-        .obj-storage {
+        .tt-active {
           background: linear-gradient(
             90deg,
-            rgba(255, 227, 208, 1),
-            rgba(255, 255, 255, 1)
+            rgba(255, 227, 208, 1) 0%,
+            rgba(255, 250, 247, 1) 100%
           );
           height: 400px;
           position: relative;
@@ -271,33 +273,35 @@ export default {
             width: 1920px;
             margin: 0 auto;
             &:after {
-              content: url("./../../assets/img/home/banner-objStorage.png");
+              content: url("./../../assets/img/activecenter/ac-banner-tt.png");
               position: absolute;
-              top: 0;
-              right: 0;
+              top: -10px;
+              right: 108px;
             }
             > div {
               width: 1200px;
               margin: 0 auto;
-              padding-top: 70px;
+              padding-top: 84px;
               button {
                 background: none;
                 outline: none;
                 cursor: pointer;
-                padding: 11px 50px;
+                width: 164px;
+                height: 44px;
                 margin-top: 30px;
                 border-radius: 4px;
                 border: 1px solid rgba(51, 51, 51, 1);
                 font-size: 16px;
                 font-family: "Microsoft YaHei", "微软雅黑";
                 color: rgba(51, 51, 51, 1);
-                &:hover {
-                  color: rgba(255, 70, 43, 1);
-                  border: 1px solid rgba(255, 70, 43, 1);
-                }
+
+                // &:hover {
+                //   color: rgba(255, 70, 43, 1);
+                //   border: 1px solid rgba(255, 70, 43, 1);
+                // }
               }
               p {
-                font-size: 18px;
+                font-size: 28px;
                 font-family: "Microsoft YaHei", "微软雅黑";
                 color: #333;
                 margin-bottom: 20px;
@@ -308,10 +312,6 @@ export default {
               p:nth-child(1) {
                 margin-bottom: 40px;
                 font-size: 48px;
-                font-weight: 600;
-              }
-              p:nth-child(3) {
-                font-weight: 700;
               }
             }
           }
@@ -420,6 +420,8 @@ export default {
         transition: all 0.5s ease-out;
         position: relative;
         font-size: 0;
+        // width: 386px;
+        // height: 183px;
         .box-content {
           width: 100%;
           height: 100%;
@@ -518,16 +520,21 @@ export default {
       display: none;
     }
   }
-  .box-g .content .box-wrap .box > img {
-    width: 100%;
-  }
-  .center-active {
-  .box {
-    &:hover {
-      box-shadow: none;
-      transform: none;
+
+  .box-g .content .box-wrap .box {
+    // width: auto;
+    // height: auto;
+    > img {
+      width: 100%;
     }
   }
-}
+  .center-active {
+    .box {
+      &:hover {
+        box-shadow: none;
+        transform: none;
+      }
+    }
+  }
 }
 </style>
