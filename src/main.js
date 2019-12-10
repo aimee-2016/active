@@ -24,6 +24,7 @@ import 'echarts'
 // import 'echarts/lib/chart/line'
 // import 'echarts/lib/chart/pie'
 // import 'echarts/lib/component/tooltip'
+import '@/assets/css/verify.css'
 // 引入轮播组件
 import carousel from './myView/carousel'
 import carouselItem from './myView/carouselItem'
@@ -41,8 +42,9 @@ Vue.prototype.$LR = LR
 Vue.config.productionTip = false
 
 
-// axios.defaults.withCredentials = true
+axios.defaults.withCredentials = true
 
+// axios.defaults.baseURL = 'https://activity.xinruiyun.cn/'
 axios.defaults.baseURL = 'https://csactivity.xrcloud.net/'
 
 // window.eventBus = new Vue();

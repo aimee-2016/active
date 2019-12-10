@@ -849,7 +849,7 @@ export default {
             normalTemplate: '0',
             zoneId: item.zone,
           }
-          url = 'information/listTemplates.do'
+          url = 'information/listTemplateFunctionActivity.do'
           break
       }
       axios.get(url, {

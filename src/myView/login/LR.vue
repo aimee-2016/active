@@ -49,11 +49,18 @@
           <div class="err-msg">
             <div v-if="loginForm.errorMsg === 'passwordMistake'">
               <i></i>
-              <p>请输入密码</p>
+              <p>您的密码输入有误，请重新输入</p>
             </div>
             <div v-if="loginForm.errorMsg === 'loginMistake'">
               <i></i>
               <p>{{warning}}</p>
+            </div>
+          </div>
+          <div id="mpanel1"></div>
+          <div class="errorMsg" v-if="checkValStatus">
+            <div v-if="loginForm.errorMsg === 'notSlidingValidation'">
+              <i></i>
+              <p>您还没有通过验证</p>
             </div>
           </div>
         </div>
@@ -105,10 +112,36 @@
           <div class="input-box">
             <img src="./img/LR-vailcode.png" />
             <input
+              v-model="registerForm.imgCode"
+              @input="registerForm.errorMsg=''"
+              type="text"
+              placeholder="请输入图形验证码"
+            />
+            <div class="swap">
+              <img
+                :src="registerForm.imgSrc"
+                style="margin: 5px 0 0;cursor: pointer"
+                @click="changeImgSrc"
+              />
+            </div>
+          </div>
+          <div class="err-msg">
+            <div v-if="registerForm.errorMsg === 'imgCodeMistake'">
+              <i></i>
+              <p>您的验证码输入有误，请重新输入</p>
+            </div>
+            <div v-if="registerForm.errorMsg === 'imgCallback'">
+              <i></i>
+              <p>{{registerForm.imgMistakeMsg}}</p>
+            </div>
+          </div>
+          <div class="input-box">
+            <img src="./img/LR-vailcode.png" />
+            <input
               v-model="registerForm.verificationCode"
               @input="registerForm.errorMsg=''"
-              type="vailCode"
-              placeholder="请输入验证码"
+              type="text"
+              placeholder="请输入收到的验证码"
             />
             <div class="swap">
               <p @click="sendRegisterCode" :class="{notallow: getCode !=='获取验证码'}">{{getCode}}</p>
@@ -129,6 +162,8 @@
           </div>
           <div class="input-box">
             <img src="./img/LR-password.png" />
+            <input style="height:0;width:0;border:none" type="text" />
+            <input style="height:0;width:0;border:none" type="password" />
             <input
               v-model="registerForm.password"
               type="password"
@@ -232,7 +267,6 @@
           @click="close"
         >确认登录</button>
       </div>
-  
     </form>
     <div v-if="T=='protocol'" class="protocol-wrapper">
       <div class="rulesContent">
@@ -668,6 +702,8 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
+import jq from "../../util/jquery.min";
+import verify from "../../util/verify.min";
 import regExp from "../../util/regExp";
 import axios from "../../util/axiosInterceptor";
 import $store from "@/vuex";
@@ -707,11 +743,14 @@ export default {
         verificationCodeTimer: null,
         verificationCode: "",
         errorMsg: "",
-        passwordHint: false
+        passwordHint: false,
+        imgCode: "",
+        imgSrc: `/user/getKaptchaImage.do?t=${new Date().getTime()}`,
+        imgMistakeMsg: ""
       },
       warning: "",
       registerWarning: "",
-      imgSrc: `/ruicloud/user/getKaptchaImage.do?t=${new Date().getTime()}`,
+      imgSrc: `/user/getKaptchaImage.do?t=${new Date().getTime()}`,
       // 是否同意注册条款
       single: false,
       getCode: "获取验证码",
@@ -721,7 +760,8 @@ export default {
         secondDegree: false,
         thirdDegree: false
       },
-      pdDgree: 0
+      pdDgree: 0,
+      checkValStatus: false
     };
   },
   methods: {
@@ -883,11 +923,79 @@ export default {
               });
             }
           });
+        } else if (res.data.status === 2) {
+          this.onLogin = false;
+          if (this.loginForm.passwordErrorNum < 5) {
+            this.loginForm.passwordErrorNum += 1;
+            this.loginForm.errorMsg = "passwordMistake";
+          } else {
+            this.loginForm.errorMsg = "passwordMistake";
+          }
+          this.verifyMistakeNum();
         } else {
           this.loginForm.errorMsg = "loginMistake";
           this.warning = res.data.message;
         }
       });
+    },
+    slideVerifyInit() {
+      $("#mpanel1").empty();
+      let _self = this;
+      _self.checkValStatus = true;
+      $("#mpanel1").slideVerify({
+        type: 1,
+        vOffset: 5,
+        explain: "请按住滑块，拖动到最右边",
+        barSize: {
+          width: "100%",
+          height: "40px"
+        },
+        ready: function() {},
+        success: function() {
+          axios
+            .get("user/judgeLoginNum.do", {
+              params: {
+                checkVal: _self.checkVal
+              }
+            })
+            .then(res => {
+              if (res.status === 200 && res.data.status === 1) {
+                _self.checkVal = "";
+                _self.loginForm.errorMsg = "";
+              } else {
+                _self.$Message.info("验证失败，请重新验证");
+                _self.checkVal = res.data.checkVal;
+                _self.slideVerifyInit();
+              }
+            });
+        },
+        error: function() {
+          _self.loginForm.errorMsg = "";
+        }
+      });
+    },
+    verifyMistakeNum() {
+      if (
+        this.regExpObj.phone.test(this.loginForm.loginName) ||
+        this.regExpObj.email.test(this.loginForm.loginName)
+      ) {
+        axios
+          .get("user/getLoginNum.do", {
+            params: {
+              username: this.loginForm.loginName
+            }
+          })
+          .then(res => {
+            if (res.status === 200 && res.data.status === 1) {
+              this.checkValStatus = false;
+              $("#mpanel1").empty();
+              this.checkVal = "";
+            } else {
+              this.checkVal = res.data.checkVal;
+              this.slideVerifyInit();
+            }
+          });
+      }
     },
     /* 校验手机号是否注册 */
     verifyIsRegister() {
@@ -931,6 +1039,7 @@ export default {
           this.registerForm.errorMsg = "formatPhoneError";
         }
       }
+      this.verifyMistakeNum();
     },
     // 登录
     toLogin: debounce(200, function() {
@@ -942,8 +1051,9 @@ export default {
         this.loginForm.errorMsg = "passwordMistake";
         return;
       }
-      this.onLogin = true;
-      this.gtInitPassword();
+      //this.onLogin = true;
+      //this.gtInitPassword();
+      this.loginByPassword();
     }),
     // 发送注册用验证码
     sendRegisterCode: debounce(200, function() {
@@ -957,6 +1067,10 @@ export default {
         this.registerForm.errorMsg = "formatPhoneError";
         return;
       }
+      if (!this.registerForm.imgCode) {
+        this.registerForm.errorMsg = "imgCodeMistake";
+        return;
+      }
       let params = {
         username: this.registerForm.loginPhone
       };
@@ -966,8 +1080,9 @@ export default {
         })
         .then(response => {
           if (response.status === 200 && response.data.status === 1) {
-            this.onLogin = true;
-            this.gtInitCode();
+            //this.onLogin = true;
+            //this.gtInitCode();
+            this.sendRegisterVailCode();
           } else {
             this.registerForm.errorMsg = "isRegister";
           }
@@ -978,7 +1093,8 @@ export default {
       let url = "user/code.do";
       let params = {
         aim: this.registerForm.loginPhone,
-        isemail: 0
+        isemail: 0,
+        vailCode: this.registerForm.imgCode
       };
       axios.get(url, { params: params }).then(res => {
         if (res.data.status === 1 && res.status === 200) {
@@ -1002,7 +1118,9 @@ export default {
           }, 1000);
         } else {
           this.getCode = "获取验证码";
-          this.$Message.info(res.data.message);
+          this.registerForm.errorMsg = "imgCallback";
+          this.registerForm.imgMistakeMsg = res.data.message;
+          this.changeImgSrc();
         }
       });
     },
@@ -1011,15 +1129,21 @@ export default {
         this.registerForm.errorMsg = "formatPhoneError";
         return;
       }
-      this.onLogin = true;
-      this.gtInitVoice();
+      if (!this.registerForm.imgCode) {
+        this.registerForm.errorMsg = "imgCodeMistake";
+        return;
+      }
+      //   this.onLogin = true;
+      //   this.gtInitVoice();
+      this.getRegisterVoiceCode();
     }),
     getRegisterVoiceCode() {
       let url = "user/voiceCode.do";
       axios
         .get(url, {
           params: {
-            aim: this.registerForm.loginPhone
+            aim: this.registerForm.loginPhone,
+            vailCode: this.registerForm.imgCode
           }
         })
         .then(res => {
@@ -1043,7 +1167,9 @@ export default {
               }
             }, 1000);
           } else {
-            this.$Message.info(res.data.message);
+            this.registerForm.errorMsg = "imgCallback";
+            this.registerForm.imgMistakeMsg = res.data.message;
+            this.changeImgSrc();
           }
         });
     },
@@ -1137,17 +1263,18 @@ export default {
         }
       });
     },
-    getCookie(c_name){
-      if (document.cookie.length>0){
-        var c_start=document.cookie.indexOf(c_name + "=");
-          if (c_start!=-1){
-              c_start=c_start + c_name.length+1;
-              var c_end=document.cookie.indexOf(";",c_start);
-              if (c_end==-1){ 
-                  c_end=document.cookie.length;
-              }
-              return unescape(document.cookie.substring(c_start,c_end));
+
+    getCookie(c_name) {
+      if (document.cookie.length > 0) {
+        var c_start = document.cookie.indexOf(c_name + "=");
+        if (c_start != -1) {
+          c_start = c_start + c_name.length + 1;
+          var c_end = document.cookie.indexOf(";", c_start);
+          if (c_end == -1) {
+            c_end = document.cookie.length;
           }
+          return unescape(document.cookie.substring(c_start, c_end));
+        }
       }
       return "";
     },
@@ -1167,6 +1294,9 @@ export default {
       this.$refs[name].type === "password"
         ? (this.$refs[name].type = "text")
         : (this.$refs[name].type = "password");
+    },
+    changeImgSrc() {
+      this.registerForm.imgSrc = `/user/getKaptchaImage.do?t=${new Date().getTime()}`;
     }
   },
   computed: {
