@@ -344,11 +344,11 @@
               class="spanaa"
               @click="showModal.modifyPhoneID = true;showModal.cashverification=false"
             >通过身份证号码验证</span>或
-            <a href="https://csi.xrcloud.net/work">提交工单</a>更改手机号。
+            <a href="https://i.xinruiyun.cn/work">提交工单</a>更改手机号。
           </p>
           <p v-if="!authInfo||authInfo&&authInfo.checkstatus!=0" style="line-height:24px;">
             2、如果手机已丢失或停机，请
-            <a href="https://csi.xrcloud.net/work">提交工单</a>或
+            <a href="https://i.xinruiyun.cn/work">提交工单</a>或
             <a
               target="_blank"
               :href="`tencent://message/?uin=${$store.state.qq.qqnumber}&amp;Site=www.cloudsoar.com&amp;Menu=yes`"
@@ -913,7 +913,7 @@ export default {
         }
       ],
       dataForcast: [],
-      imgSrc: 'https://csactivity.xrcloud.net/user/getKaptchaImage.do',
+      imgSrc: 'https://activity.xinruiyun.cn/user/getKaptchaImage.do',
       authErrorText: '',
       leftTime1: '',
       predictMsg: ''
@@ -1105,7 +1105,7 @@ export default {
         if (type == 'p') {
           this.$LR({ type: 'register' })
         } else {
-          window.open('https://csm.xrcloud.net/login', '_self')
+          window.open('https://m.xinruiyun.cn/login', '_self')
         }
         return
       }
@@ -1119,7 +1119,7 @@ export default {
               content: '抱歉，只有实名认证用户才可以参加活动',
               okText: '去实名认证',
               onOk: () => {
-                window.open('https://csi.xrcloud.net/usercenter', '_self')
+                window.open('https://i.xinruiyun.cn/usercenter', '_self')
               }
             })
           } else {
@@ -1128,9 +1128,9 @@ export default {
           return
         } else {
           if (item.post.certification == 3) {
-            window.open('https://csi.xrcloud.net/usercenter', '_self')
+            window.open('https://i.xinruiyun.cn/usercenter', '_self')
           } else {
-            window.open('https://csm.xrcloud.net/faceindex', '_self')
+            window.open('https://m.xinruiyun.cn/faceindex', '_self')
           }
         }
       }
@@ -1152,9 +1152,9 @@ export default {
         if (res.status == 200 && res.data.status == 1) {
           this.$Message.success('创建订单成功')
           if (type == 'p') {
-            window.open('https://csi.xrcloud.net/order', '_self')
+            window.open('https://i.xinruiyun.cn/order', '_self')
           } else {
-            window.open('https://csm.xrcloud.net/orderconfirm', '_self')
+            window.open('https://m.xinruiyun.cn/orderconfirm', '_self')
           }
         } else {
           this.$message.info({
@@ -1205,7 +1205,7 @@ export default {
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
           this.$Message.success('创建订单成功')
-          window.open('https://csi.xrcloud.net/order','_self')
+          window.open('https://i.xinruiyun.cn/order','_self')
         } else {
           this.hintMsg = res.data.message
           this.showModal.hint = true
@@ -1455,7 +1455,7 @@ export default {
         usercenter: 'certification',
         expenses: 'accountSummary'
       }
-      window.open('https://csi.xrcloud.net/usercenter','_self')
+      window.open('https://i.xinruiyun.cn/usercenter','_self')
       this.$store.commit('setPane', paneStatue)
     }
   },
