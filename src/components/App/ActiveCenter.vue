@@ -414,6 +414,8 @@ export default {
       justify-content: flex-start;
       margin-bottom: 20px;
       .box {
+        width: 386px;
+        height: 183px;
         margin-bottom: 20px;
         margin-right: 20px;
         &:nth-of-type(3n+3) {
@@ -518,6 +520,7 @@ export default {
   .box-g .content .box-wrap {
     .box {
       width: 100%;
+      height: auto;
       margin-bottom: 4px;
       margin-right: 0
     }
