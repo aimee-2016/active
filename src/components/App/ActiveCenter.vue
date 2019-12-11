@@ -411,10 +411,14 @@ export default {
     .box-wrap {
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-between;
+      justify-content: flex-start;
       margin-bottom: 20px;
       .box {
         margin-bottom: 20px;
+        margin-right: 20px;
+        &:nth-of-type(3n+3) {
+          margin-right: 0
+        }
         cursor: pointer;
         background-repeat: no-repeat;
         transition: all 0.5s ease-out;
@@ -515,6 +519,7 @@ export default {
     .box {
       width: 100%;
       margin-bottom: 4px;
+      margin-right: 0
     }
     .hide {
       display: none;
