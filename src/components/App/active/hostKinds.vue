@@ -2182,26 +2182,6 @@ export default {
             id: 497
           },
           postArr: [],
-          systemList: [{
-            value: 'window',
-            label: 'Windows',
-            children: []
-          }, {
-            value: 'centos',
-            label: 'Centos',
-            children: [],
-          },
-          {
-            value: 'debian',
-            label: 'Debian',
-            children: [],
-          },
-          {
-            value: 'ubuntu',
-            label: 'Ubuntu',
-            children: [],
-          }],
-          system: [],
           zoneList: [],
           zoneId: '',
           price: '--',
@@ -2629,10 +2609,11 @@ export default {
       }
       let params = {}
       if (item.servicetype == 'G5500') {
+        url = 'information/listTemplateFunctionActivity.do'
         params = {
-          user: '0',
-          gpu: '1',
-          normalTemplate: '0',
+          // user: '0',
+          // gpu: '1',
+          // normalTemplate: '0',
           zoneId: item.zoneId,
         }
       } else {
@@ -2646,27 +2627,33 @@ export default {
         params
       }).then(res => {
         if (res.status == 200 && res.data.status == 1) {
-          var x
-          for (x in res.data.result) {
+          if (item.servicetype == 'G5500') {
+            this.$set(item, 'systemList', this.formatSystem(res.data.result))
+            // console.log(this.formatSystem(res.data.result.gpuTem))
+            this.$set(item, 'system', [item.systemList[0].label, item.systemList[0].children[0].value])
+          } else {
+            var x
+            for (x in res.data.result) {
+              item.systemList.forEach(item => {
+                if (item.value == x) {
+                  item.children = res.data.result[x]
+                }
+              })
+            }
             item.systemList.forEach(item => {
-              if (item.value == x) {
-                item.children = res.data.result[x]
+              item.children.forEach(item => {
+                item.value = item.systemtemplateid
+                item.label = item[showName]
+              })
+            })
+            item.systemList.forEach((item, index) => {
+              if (item.children.length == 0) {
+                item.disabled = true
               }
             })
+            // 设置默认系统
+            item.system = [systemType, res.data.result[systemType][0].systemtemplateid]
           }
-          item.systemList.forEach(item => {
-            item.children.forEach(item => {
-              item.value = item.systemtemplateid
-              item.label = item[showName]
-            })
-          })
-          item.systemList.forEach((item, index) => {
-            if (item.children.length == 0) {
-              item.disabled = true
-            }
-          })
-          // 设置默认系统
-          item.system = [systemType, res.data.result[systemType][0].systemtemplateid]
         }
       })
     },
@@ -2773,25 +2760,6 @@ export default {
       if (res.data.status == 1 && res.status == 200) {
         let newdata = []
         this.zoneListgpu = res.data.result.optionalAreaGpu
-        let systemList = [{
-          value: 'window',
-          label: 'Windows',
-          children: []
-        }, {
-          value: 'centos',
-          label: 'Centos',
-          children: [],
-        },
-        {
-          value: 'debian',
-          label: 'Debian',
-          children: [],
-        },
-        {
-          value: 'ubuntu',
-          label: 'Ubuntu',
-          children: [],
-        }]
         let gpuD = res.data.result.freevmconfigs
         newdata.push({
             'arr': gpuD,
@@ -2801,8 +2769,6 @@ export default {
             'days': gpuD[0].days,
             'price': '',
             'originPrice': '',
-            'systemList': systemList,
-            'system': [],
             'zoneId': this.zoneListgpu[0].value,
             'gpusize': gpuD[0].gpusize,
             'servicetype': gpuD[0].servicetype
@@ -3063,13 +3029,12 @@ export default {
             if (item.post.servicetype == 'G5500') {
               item.zoneList = res.data.result.optionalAreaGpu
               item.postArr = gpuConfigList
+              this.$set(item, 'systemList', this.formatSystem(res.data.result.gpuTem))
+              this.$set(item, 'system', [item.systemList[0].label, item.systemList[0].children[0].value])
+              item.zoneId = item.zoneList[0].value
             } else {
               item.zoneList = res.data.result.optionalArea
-            }
-            if (item.zoneList.length > 0) {
-              // 设置默认区域
               item.zoneId = item.zoneList[0].value
-              // 设置默认系统
               this.getSystemD(item)
             }
           })
@@ -3083,6 +3048,24 @@ export default {
           this.vmConfigIdfree = this.hostFree.post.id
         }
       })
+    },
+    formatSystem (system) {
+      let newSystem = []
+      for (let i in system) {
+        if (system[i].length) {
+          let newItem = {}
+          newItem.label = newItem.value = i
+          newItem.children = system[i].map(inner => {
+            return { 'label': inner.templatedescript, 'value': inner.systemtemplateid }
+          })
+          newSystem.push(newItem)
+        }
+      }
+      newSystem.sort((a, b) => {
+        return b.value.charCodeAt(0) - a.value.charCodeAt(0)
+      })
+      // console.log(newSystem)
+      return newSystem
     },
     changeZoneD (item) {
       this.getSystemD(item)
@@ -3103,10 +3086,11 @@ export default {
       }
       let params = {}
       if (item.post.servicetype == 'G5500') {
+        url = 'listTemplateFunctionActivity.do'
         params = {
-          user: '0',
-          gpu: '1',
-          normalTemplate: '0',
+          // user: '0',
+          // gpu: '1',
+          // normalTemplate: '0',
           zoneId: item.zoneId,
         }
       } else {
