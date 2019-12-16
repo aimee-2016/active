@@ -10,26 +10,26 @@
         @on-change="change"
       >
         <my-carousel-item class="carousel-item">
-          <div @click="push('/anniversary/')" style="cursor: pointer;">
+          <div @click="push('/newyearpurchase/')" style="cursor: pointer;">
             <div class="aa">
               <div class="wrap">
                 <div class="text">
                   <img
-                    src="../../assets/img/active/anniversary/anniversary-banner-title.png"
-                    alt="2周年庆典"
+                    src="../../assets/img/active/anniversary/newanniversary-time.png"
+                    alt="2020"
                     style="width:276px"
                   />
-                  <img
+                  <!-- <img
                     src="../../assets/img/active/anniversary/anniversary-banner-text.png"
                     alt="企业上云突破5万，回馈老用户"
                     style="width:467px"
-                  />
-                  <Button>点击查看</Button>
+                  /> -->
+                  <!-- <Button>点击查看</Button> -->
                 </div>
                 <div class="img">
                   <img
-                    src="../../assets/img/active/anniversary/aa-ac-banner.png"
-                    style="height:360px;margin-top:30px;margin-left:100px;"
+                    src="../../assets/img/active/anniversary/newanniversary-banner-nav-icon.png"
+                    style="height:400px;width: 450px;"
                   />
                 </div>
               </div>
@@ -192,13 +192,14 @@ export default {
         }
         .aa {
           height: 400px;
-          background: url("../../assets/img/active/anniversary/aa-ac-banner-bg.png")
+          background: url("../../assets/img/active/anniversary/newanniversary-banner-nav-bg.png")
             center no-repeat;
           .wrap {
             width: 1200px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
+            padding: 0 130px 0 116px;
             .text {
               margin-top: 120px;
               p {
@@ -207,7 +208,8 @@ export default {
                 line-height: 31px;
               }
               img {
-                margin: 0 0 20px 0;
+                width: 406px;
+                height: 182px;
               }
               button {
                 margin-top: 20px;

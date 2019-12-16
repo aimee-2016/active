@@ -860,7 +860,7 @@
             </div>
             <div class="pl-box">
                 <div class="ph-cs">
-                    <img class="ke-black" src="./assets/img/home/kefu.png">
+                    <!-- <img class="ke-black" src="./assets/img/home/kefu.png"> -->
                     <span>联系客服</span>
                     <div class="ph-connect">
                         <div v-if="QQInfo.length > 0">
@@ -883,8 +883,10 @@
                             </div>
                         </div>
                         <div style="padding:0 20px;cursor:pointer;width:200px;" @click="linkService">
-                            <span class="q-tile">在线客服&nbsp&nbsp&nbsp<img style="vertical-align: bottom;"
-                                    src="./assets/img/home//tubiao-.png" /></span>
+                            <span class="q-tile">
+                              在线客服&nbsp&nbsp&nbsp
+                              <img style="vertical-align: bottom;"src="./assets/img/home//tubiao-.png" />
+                            </span>
                         </div>
                         <div v-if="xiaoshouInfo.length>0">
                             <div style="padding: 20px;width: 200px;clear: both;">
@@ -908,11 +910,11 @@
                     </div>
                 </div>
                 <div class="ph-cs" @click="getOrderType">
-                    <img class="bo-black" src="./assets/img/home/icon-bookb.png">
+                    <!-- <img class="bo-black" src="./assets/img/home/icon-bookb.png"> -->
                     <span>反馈意见</span>
                 </div>
                 <div class="ph-cs" @click='toTopBtn'>
-                    <img class="ke-black" src="./assets/img/home/backtop.png"> 
+                    <!-- <img class="ke-black" src="./assets/img/home/backtop.png">  -->
                     <span>返回顶部</span>
                 </div>
             </div>
@@ -2401,15 +2403,15 @@ span {
 
 
 .ph-left .ph-gg {
-  background: url('./assets/img/home/noteic.png');
-  background-size: 100%;
-    cursor: pointer;
-    text-align: center;
-    height: 118px;
-    position: absolute;
-    top: -95px;
-    left: -18px;
-    width: 130px;
+  background: url(./assets/img/active/anniversary/newanniversary-nav-right.png) center no-repeat;
+  cursor: pointer;
+  text-align: center;
+  height: 183px;
+  width: 112px;
+  position: absolute;
+  top: -95px;
+  left: -18px;
+  width: 130px;
 }
 
 .ph-left .ph-gg h3 {
@@ -2434,22 +2436,16 @@ span {
 }
 
 .pl-box{
-    padding: 46px 5px 10px 5px;
+    padding: 20px 5px 10px 5px;
     margin-top: -25px;
-    background: #ffffff;
     border-radius: 4px;
-    border: 1px solid #ffc645;
-    height: 169px;
-    width: 97px;
 }
 
 .ph-left .ph-cs {
-  background:linear-gradient(90deg,rgba(255,192,68,1) 0%,rgba(249,95,36,1) 100%);
   border-radius:4px;
   height: 32px;
   text-align: center;
   cursor: pointer;
-  margin-bottom: 10px;
   padding: 5px 0;
   transition: all ease-in-out 0.2s;
   position: relative;
