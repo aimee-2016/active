@@ -955,6 +955,7 @@ export default {
             gpu: '1',
             normalTemplate: '0',
             zoneId: item.zone,
+            activityNum: 73
           }
           url = 'information/listTemplateFunctionActivity.do'
           break
@@ -987,7 +988,9 @@ export default {
       let params = {
         vmConfigId: item.id,
         zoneId: item.zone,
-        counts: item.num
+      }
+      if(item.num) {
+        params.counts = item.num
       }
       axios.get(url, {
         params: params
@@ -1204,9 +1207,9 @@ export default {
       item.daysPricelist = item.sList.filter(inner => {
         return inner.bandwidth == item.bandwith
       })
-      item.daysPricelist[0].value = item.daysPricelist[0].value.sort((a, b) => {
-        return a.days - b.days
-      })
+      // item.daysPricelist[0].value = item.daysPricelist[0].value.sort((a, b) => {
+      //   return a.days - b.days
+      // })
       item.timeList = item.daysPricelist[0].value.map(sec => {
         return { 'days': sec.days, 'discount': sec.discount }
       })
