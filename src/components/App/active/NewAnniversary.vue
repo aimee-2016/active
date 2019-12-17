@@ -2568,21 +2568,23 @@ section:nth-of-type(4) {
       }
       .btn {
         margin-top: 20px;
-        width: 162px;
+        width: 267px;
+        height: 73px;
         background: rgba(13, 12, 11, 1);
-        border-radius: 20px;
+        border-radius: 50px;
         font-size: 20px;
         color: rgba(252, 192, 50, 1);
       }
       .text {
         position: absolute;
-        bottom: 10%;
+        bottom: 12%;
         width: 100%;
         span {
           font-size: 18px;
           background: #F8E71C;
           color: #FF392A;
-          font-size: 20px;
+          font-size: 40px;
+          line-height: 70px;
           font-weight: bold;
         }
         // p {
@@ -2823,7 +2825,7 @@ section:nth-of-type(4) {
         .center {
           border-right: none;
           .aa-system-1 {
-            width: 100%;
+            // width: 100%;
             margin-bottom: 15px;
             .w150 {
               width: 100%;
@@ -3028,6 +3030,9 @@ section:nth-of-type(4) {
           .text {
             span {
               font-size: 22px;
+              width: 134px;
+              height: 36px;
+              line-height: 36px;
               background: #F8E71C;
               color: #FF392A;
               font-weight: bold;
