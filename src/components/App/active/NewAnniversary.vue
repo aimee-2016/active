@@ -221,7 +221,7 @@
                 <ul class="center">
                   <li class="aa-system-1">
                     <span class="label">区域</span>
-                    <Select v-model="item.zone" class="w150" @on-change="changeZoneSeckill(item)">
+                    <Select v-model="item.zone" style="width:100px;" @on-change="changeZoneSeckill(item)">
                       <Option
                         v-for="(item,index) in item.zoneList"
                         :value="item.value"
@@ -231,7 +231,17 @@
                   </li>
                   <li class="aa-system-1">
                     <span class="label">系统</span>
-                    <Cascader :data="item.systemList" v-model="item.system" style="w230"></Cascader>
+                    <Cascader :data="item.systemList" v-model="item.system"></Cascader>
+                  </li>
+                  <li class="aa-system-1">
+                    <span class="label">数量</span>
+                    <Select v-model="item.num" style="width:93px;" @on-change="changeNum(item)">
+                      <Option
+                        v-for="(item,index) in numList"
+                        :value="item"
+                        :key="index"
+                      >{{ item }}</Option>
+                    </Select>
                   </li>
                   <li class="aa-system-1">
                     <span class="label">可选时长</span>
@@ -759,6 +769,7 @@ export default {
       valueDomain: '',
       seckillList: [],
       enterpriseList: [],
+      numList: [1,2,3],
       databaseList: [],
       ruleListKill: [
         '1、活动时间：2019.12.19-2020.1.31',
@@ -922,6 +933,10 @@ export default {
         this.getPriceHost(item)
       }
     },
+    changeNum (item) {
+      // console.log(num)
+      this.getPriceHost(item)
+    },
     getHostSystem (item) {
       let params = {}
       let url = ''
@@ -971,7 +986,8 @@ export default {
       let url = 'activity/getOriginalPrice.do'
       let params = {
         vmConfigId: item.id,
-        zoneId: item.zone
+        zoneId: item.zone,
+        counts: item.num
       }
       axios.get(url, {
         params: params
@@ -1020,10 +1036,14 @@ export default {
       let url = ''
       switch (item.servicetype) {
         case 'host':
+          if(!item.num){
+            item.num = 1
+          }
           params = {
             vmConfigId: item.id,
             osType: item.system[1],
             defzoneid: item.zone,
+            counts: item.num
           }
           url = 'information/getDiskcountMv.do'
           break
@@ -1087,6 +1107,7 @@ export default {
             this.enterpriseList[i].zoneList = response.data.result.optionalArea
             this.enterpriseList[i].zone = this.enterpriseList[i].zoneList[0].value
             this.$set(this.enterpriseList[i], 'systemList', this.formatSystem(response.data.result.mvTem))
+            this.$set(this.enterpriseList[i], 'num', 1)
             this.enterpriseList[i].system = [this.enterpriseList[i].systemList[0].label, this.enterpriseList[i].systemList[0].children[0].value]
             let dayList = this.enterpriseList[i].days.split(',')
             let discountList = this.enterpriseList[i].discount.split(',')
@@ -1151,9 +1172,9 @@ export default {
             item.daysPricelist = item.sList.filter(inner => {
               return inner.bandwidth == item.bandwith
             })
-            item.daysPricelist[0].value = item.daysPricelist[0].value.sort((a, b) => {
-              return a.days - b.days
-            })
+            // item.daysPricelist[0].value = item.daysPricelist[0].value.sort((a, b) => {
+            //   return a.days - b.days
+            // })
             item.timeList = item.daysPricelist[0].value.map(sec => {
               return { 'days': sec.days, 'discount': sec.discount }
             })
