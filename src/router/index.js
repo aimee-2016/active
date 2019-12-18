@@ -14,6 +14,7 @@ const objStorageActiveP = () => import('@/components/App/active/objStorageActive
 const DBActiveP = () => import('@/components/App/active/DatabaseActive')
 const ddosActive = () => import('@/components/App/active/ddos')
 const anniversary = () => import('@/components/App/active/Anniversary')
+const newyearpurchase = () => import('@/components/App/active/NewAnniversary')
 // 404
 const notFindPage = () => import('@/components/404')
 
@@ -55,16 +56,22 @@ var router = new Router({
           component: DBActiveP,
           caseSensitive: true
         },
-        {
-          path: 'ddosactive',
-          name: 'ddosactive',
-          component: ddosActive,
-          caseSensitive: true
-        },
+        // {
+        //   path: 'ddosactive',
+        //   name: 'ddosactive',
+        //   component: ddosActive,
+        //   caseSensitive: true
+        // },
         {
           path: 'anniversary',
           name: 'anniversary',
           component: anniversary,
+          caseSensitive: true
+        },
+        {
+          path: 'newyearpurchase',
+          name: 'newyearpurchase',
+          component: newyearpurchase,
           caseSensitive: true
         }
       ]
