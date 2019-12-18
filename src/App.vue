@@ -854,7 +854,7 @@
     </div>
     <!-- 客服浮动块 -->
     <div class="ph-left">
-            <div class="ph-gg" @click="$router.push('/anniversary/')">
+            <div class="ph-gg" @click="$router.push('/newyearpurchase/')">
                 <!-- <h3>免费用</h3>
                 <a class="ph-button" @click="$router.push('/free/')">立即领取</a> -->
             </div>

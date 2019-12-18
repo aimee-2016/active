@@ -221,7 +221,7 @@
                 <ul class="center">
                   <li class="aa-system-1">
                     <span class="label">区域</span>
-                    <Select v-model="item.zone" style="width:100px;" @on-change="changeZoneSeckill(item)">
+                    <Select v-model="item.zone" @on-change="changeZoneSeckill(item)">
                       <Option
                         v-for="(item,index) in item.zoneList"
                         :value="item.value"
@@ -235,7 +235,7 @@
                   </li>
                   <li class="aa-system-1">
                     <span class="label">数量</span>
-                    <Select v-model="item.num" style="width:93px;" @on-change="changeNum(item)">
+                    <Select v-model="item.num" @on-change="changeNum(item)">
                       <Option
                         v-for="(item,index) in numList"
                         :value="item"
@@ -2855,7 +2855,7 @@ section:nth-of-type(4) {
         .center {
           border-right: none;
           .aa-system-1 {
-            // width: 100%;
+            width: 100%;
             margin-bottom: 15px;
             .w150 {
               width: 100%;
@@ -2875,6 +2875,9 @@ section:nth-of-type(4) {
             }
             .label {
               margin-bottom: 10px;
+            }
+            &:last-of-type {
+              margin-right: 0;
             }
           }
         }
