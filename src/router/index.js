@@ -56,12 +56,12 @@ var router = new Router({
           component: DBActiveP,
           caseSensitive: true
         },
-        {
-          path: 'ddosactive',
-          name: 'ddosactive',
-          component: ddosActive,
-          caseSensitive: true
-        },
+        // {
+        //   path: 'ddosactive',
+        //   name: 'ddosactive',
+        //   component: ddosActive,
+        //   caseSensitive: true
+        // },
         {
           path: 'anniversary',
           name: 'anniversary',
