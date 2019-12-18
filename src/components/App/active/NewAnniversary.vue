@@ -163,11 +163,20 @@
         </div>
         <div class="app-qr">
           <div class="app-qr-box">
-            <img
-              src="../../../assets/img/active/anniversary/newanniversary-yudiannao-reg.png"
-              alt="扫码下载"
-            />
-            <p>仅限安卓用户下载</p>
+            <div>
+              <img
+                src="../../../assets/img/active/anniversary/newanniversary-yundiannao-android.png"
+                alt="扫码下载"
+              />
+              <p>安卓用户下载</p>
+            </div>
+            <div>
+              <img
+                src="../../../assets/img/active/anniversary/newanniversary-yundiannao-ios.png"
+                alt="扫码下载"
+              />
+              <p>iOS用户下载</p>
+            </div>
           </div>
         </div>
       </div>
@@ -180,19 +189,10 @@
             alt="云电脑"
           />
           弘电脑
-          <span>APP</span>
+          <span @click="down">点击下载</span>
         </div>
         <div>随时随地 工作娱乐两不误</div>
         <div>下载即送<span>4</span>小时 多款端游 待你公测</div>
-      </div>
-      <div class="app-mobile-right">
-        <div class="app-code">
-          <img
-            src="../../../assets/img/active/anniversary/newanniversary-yudiannao-reg.png"
-            alt="扫码下载"
-          />
-        </div>
-        <p>仅限安卓用户下载</p>
       </div>
     </div>
     <section>
@@ -427,7 +427,7 @@
                   <div class="p">
                     <div class="discount">
                       <p>
-                        <span>{{item.moneyDesc}}</span>
+                        <span>{{item.moneyDesc}} </span>
                         <!-- <i>折</i> -->
                         <span>折续费&抵扣券</span>
                       </p>
@@ -470,7 +470,7 @@
       :mask-closable="false"
     >
       <div class="share-modal">
-        <p>邀请新用户，获取“秒杀专区”和“企业限购专区”购买权</p>
+        <p>邀请新用户，获取“爆款秒杀专区”额外购买权</p>
         <div class="wrapper">
           <div class="qr-code">
             <vue-q-art :config="qrConfig"></vue-q-art>
@@ -495,7 +495,7 @@
     </Modal>
     <Modal
       v-model="showModal.ruleKill"
-      height="550"
+      height="500"
       width="500"
       class="aa-modal rule new-modal"
       title="活动规则"
@@ -513,7 +513,7 @@
     </Modal>
     <Modal
       v-model="showModal.ruleE"
-      width="550"
+      width="500"
       class="aa-modal rule new-modal"
       title="活动规则"
       :mask-closable="false"
@@ -530,7 +530,7 @@
     </Modal>
     <Modal
       v-model="showModal.ruleDB"
-      width="550"
+      width="500"
       class="aa-modal rule new-modal"
       title="活动规则"
       :mask-closable="false"
@@ -547,7 +547,7 @@
     </Modal>
     <Modal
       v-model="showModal.ruleRenew"
-      width="550"
+      width="500"
       class="aa-modal rule new-modal"
       title="活动规则"
       :mask-closable="false"
@@ -559,7 +559,7 @@
         </ul>
       </div>
       <div slot="footer" class="footer">
-        <span class="new-modal" @click="showModal.ruleRenew=false">我知道了</span>
+        <span class="new-modal btn" @click="showModal.ruleRenew=false">我知道了</span>
       </div>
     </Modal>
     <!-- 续费提示弹窗 -->
@@ -890,6 +890,10 @@ export default {
     },true)
   },
   methods: {
+    // 点击下载
+    down() {
+      window.location.href = "https://api.honpc.com/yrcpt/newshare";
+    },
     //活动编码 秒杀64 企业65 云数据库 域名
     getSeckill () {
       axios.get('activity/getTemActInfoById.do', {
@@ -2178,12 +2182,14 @@ section:nth-of-type(2) {
     }
     .app-qr {
       .app-qr-box {
-        width: 280px;
+        width: 300px;
         height: 164px;
         background: rgba(255,255,255,0.3);
         border-radius: 8px;
         text-align: center;
-        padding-top: 15px;
+        padding: 20px 30px 0 30px;
+        display: flex;
+        justify-content: space-between;
         img {
             width: 100px;
             height: 100px;
@@ -2901,9 +2907,7 @@ section:nth-of-type(4) {
       height: 131px;
       background: url(../../../assets/img/active/anniversary/newanniversary-yundiannao-mbg.png) center no-repeat;
       background-size: cover;
-      padding: 21px 10px 22px 24px;
-      display: flex;
-      justify-content: space-between;
+      padding: 21px 40px 22px 40px;
       .app-mobile-left {
         >div {
           margin-bottom: 2px;
@@ -2919,15 +2923,15 @@ section:nth-of-type(4) {
             color: #FFFFFF;
             span {
               display: block;
-              width: 65px;
               height: 22px;
               text-align: center;
               line-height: 22px;
               background: linear-gradient(90deg,rgba(255,94,58,1) 0%,rgba(255,123,51,1) 100%);
               border-radius: 11px;
-              font-size: 16px;
-              margin-left: 14px;
+              font-size: 14px;
+              margin-left: 18px;
               margin-top: 6px;
+              padding: 0 16px;
             }
           }
           &:nth-of-type(2) {
@@ -2952,29 +2956,6 @@ section:nth-of-type(4) {
               margin: 0 -2px 0 -2px;
             }
           } 
-        }
-      }
-      .app-mobile-right {
-        padding-top: 13px;
-        text-align: center;
-        .app-code {
-          width: 52px;
-          height: 52px;
-          background: rgba(255,255,255,0.3);
-          border-radius: 4px;
-          padding: 5px;
-          margin-right: 7px;
-          display: inline-block;
-          img {
-            width: 42px;
-            height: 42px;
-          }
-        }
-        p {
-          font-size: 7px;
-          color: #ffffff;
-          transform: scale(0.8);
-          margin-top: 5px;
         }
       }
     }
