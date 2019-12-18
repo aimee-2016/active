@@ -497,7 +497,7 @@
       v-model="showModal.ruleKill"
       height="500"
       width="500"
-      class="aa-modal rule new-modal"
+      class="aa-modal rule new-modal warn-modal"
       title="活动规则"
       :mask-closable="false"
       :scrollable="true"
@@ -514,7 +514,7 @@
     <Modal
       v-model="showModal.ruleE"
       width="500"
-      class="aa-modal rule new-modal"
+      class="aa-modal rule new-modal warn-modal"
       title="活动规则"
       :mask-closable="false"
       :scrollable="true"
@@ -531,7 +531,7 @@
     <Modal
       v-model="showModal.ruleDB"
       width="500"
-      class="aa-modal rule new-modal"
+      class="aa-modal rule new-modal warn-modal"
       title="活动规则"
       :mask-closable="false"
       :scrollable="true"
@@ -775,8 +775,8 @@ export default {
         '1、活动时间：2019.12.19-2020.1.31',
         '2、活动对象：新老用户皆可参与，新用户是指该产品无订单记录。',
         '3、活动期间同一实名用户仅限购买1次。',
-        '4、新用户可直接购买任意一台爆款云服务器，购买成功后再邀请1名新用户成功购买新年采购的活动产品（域名除外）即可获得“爆款秒杀专区”的额外购买权1次；老用户成功邀请1名新用户购买新年采购的活动产品，即可获得“爆款秒杀专区”的额外购买权1次，购买权可叠加；',
-        '5、参与本次活动购买的产品不能进行退款。',
+        '4、参与本次活动购买的产品不能进行退款。',
+        '5、新用户可直接购买任意一台爆款云服务器，购买成功后再邀请1名新用户成功购买新年采购的活动产品（域名除外）即可获得“爆款秒杀专区”的额外购买权1次；老用户成功邀请1名新用户购买新年采购的活动产品，即可获得“爆款秒杀专区”的额外购买权1次，购买权可叠加；',
         '6、此次活动产品不能用于转售，如若利用资源从事违法违规行为的用户，新睿云有权收回使用资格，并且不予退款。',
         '7、秒杀活动优惠不能与其他优惠叠加，不能使用任何优惠券和现金券。',
         '8、活动最终解释权为新睿云所有。'
@@ -2758,6 +2758,17 @@ section:nth-of-type(4) {
   height: 116px;
   z-index: 10000;
 }
+
+.warn-modal {
+  .content {
+    li {
+      &:nth-of-type(4) {
+        color: #FF392A;
+      }
+    }
+  }
+}
+
 // 实名认证结束
 @media screen and (max-width: 768px) {
   .pc-640 {
