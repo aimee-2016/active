@@ -221,7 +221,7 @@
                 <ul class="center">
                   <li class="aa-system-1">
                     <span class="label">区域</span>
-                    <Select v-model="item.zone" @on-change="changeZoneSeckill(item)">
+                    <Select v-model="item.zone" class="w100" @on-change="changeZoneSeckill(item)">
                       <Option
                         v-for="(item,index) in item.zoneList"
                         :value="item.value"
@@ -235,7 +235,7 @@
                   </li>
                   <li class="aa-system-1">
                     <span class="label">数量</span>
-                    <Select v-model="item.num" @on-change="changeNum(item)">
+                    <Select v-model="item.num" class="w93" @on-change="changeNum(item)">
                       <Option
                         v-for="(item,index) in numList"
                         :value="item"
@@ -252,7 +252,7 @@
                         @click="changeTimeE(item,inner,index)"
                         :class="{'selected':inner.days == item.days}"
                       >
-                        {{inner.days/360}}年
+                        {{inner.days<360?inner.days/30+'月':inner.days/360+'年'}}
                         <i>{{(inner.discount*10).toFixed(1)}}折</i>
                       </span>
                     </div>
@@ -753,11 +753,11 @@ export default {
       },
       hintText: '',
       asideList: [
-        { text: '爆款秒杀', height: 820 },
-        { text: '限时特惠', height: 1900 },
-        { text: '云数据库', height: 2650 },
-        { text: '域名专区', height: 3630 },
-        { text: '续费&升级专区', height: 4200 }
+        { text: '爆款秒杀', height: 720 },
+        { text: '限时特惠', height: 1800 },
+        { text: '云数据库', height: 2580 },
+        { text: '域名专区', height: 3580 },
+        { text: '续费&升级专区', height: 4100 }
       ],
       bannerNavList: [
         { title: '爆款云产品', text: '邀新送好礼', href: 'invitation' },
@@ -1185,11 +1185,11 @@ export default {
             item.timeList = item.daysPricelist[0].value.map(sec => {
               return { 'days': sec.days, 'discount': sec.discount }
             })
-            this.$set(item, 'days', item.timeList[0].days)
-            this.$set(item, 'discount', item.timeList[0].discount)
+            this.$set(item, 'days', item.timeList[3].days)
+            this.$set(item, 'discount', item.timeList[3].discount)
             //给价格赋初始值
-            this.$set(item, 'cost', item.daysPricelist[0].value[0].cost)
-            this.$set(item, 'originalPrice', item.daysPricelist[0].value[0].originalPrice)
+            this.$set(item, 'cost', item.daysPricelist[0].value[3].cost)
+            this.$set(item, 'originalPrice', item.daysPricelist[0].value[3].originalPrice)
           })
         }
       })
@@ -2359,6 +2359,9 @@ section:nth-of-type(3) {
           .w100 {
             width: 100px;
           }
+          .w93 {
+            width: 93px;
+          }
           .label {
             display: block;
             margin-bottom: 14px;
@@ -2871,6 +2874,9 @@ section:nth-of-type(4) {
               width: 100%;
             }
             .w100 {
+              width: 100%;
+            }
+            .w93 {
               width: 100%;
             }
             .label {
