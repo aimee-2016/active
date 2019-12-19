@@ -526,7 +526,7 @@
             <Input v-model="formCustom.Verificationcode" placeholder="请输入随机验证码" class="w300"></Input>
             <img
               :src="imgSrc"
-              @click="imgSrc=`user/getKaptchaImage.do?t=${new Date().getTime()}`"
+              @click="imgSrc=`https://activity.xinruiyun.cn/user/getKaptchaImage.do?t=${new Date().getTime()}`"
               style="height:32px;vertical-align: middle;margin-left: 10px;"
             />
           </FormItem>
@@ -1474,7 +1474,6 @@ export default {
             params
           }).then(res => {
             if (res.data.status == 1 && res.status == 200) {
-              if (this.phoneVerifyType === 'identification') {
                 this.showModal.cashverification = false
                 this.tempCode = this.uuid(6, 16)
                 let url = '/faceRecognition/getUserInfoByPcQRCode.do'
@@ -1497,7 +1496,6 @@ export default {
                     this.refreshUserStatus()
                   }
                 })
-              }
             } else {
               this.hintText = res.data.message
               this.showModal.hint = true
@@ -1599,7 +1597,7 @@ export default {
                   } else {
                     this.hintText = response.data.message
                     this.showModal.hint = true
-                    this.imgSrc = `user/getKaptchaImage.do?t=${new Date().getTime()}`
+                    this.imgSrc = `https://activity.xinruiyun.cn/user/getKaptchaImage.do?t=${new Date().getTime()}`
                     this.formCustom.Verificationcode = ''
                   }
                 })

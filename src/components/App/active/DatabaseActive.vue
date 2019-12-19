@@ -760,12 +760,11 @@ export default {
       });
     },
     getRegion() {
-      let url = "activity/getTemActInfo.do";
-      axios
-        .post(url, {
-          activityName: "云数据库正式发布 1元试用60天"
-        })
-        .then(res => {
+        axios.get("activity/getTemActInfoById.do", {
+          params: {
+            activityNum: 24
+          }
+        }).then(res => {
           if (res.data.status == 1) {
             this.areaGroup = res.data.result.optionalArea;
             this.products.forEach(product => {
