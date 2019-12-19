@@ -745,12 +745,12 @@ export default {
         errorMsg: "",
         passwordHint: false,
         imgCode: "",
-        imgSrc: `/user/getKaptchaImage.do?t=${new Date().getTime()}`,
+        imgSrc: `https://csactivity.xrcloud.net/user/getKaptchaImage.do?t=${new Date().getTime()}`,
         imgMistakeMsg: ""
       },
       warning: "",
       registerWarning: "",
-      imgSrc: `/user/getKaptchaImage.do?t=${new Date().getTime()}`,
+      imgSrc: `https://csactivity.xrcloud.net/user/getKaptchaImage.do?t=${new Date().getTime()}`,
       // 是否同意注册条款
       single: false,
       getCode: "获取验证码",
@@ -1296,7 +1296,7 @@ export default {
         : (this.$refs[name].type = "password");
     },
     changeImgSrc() {
-      this.registerForm.imgSrc = `/user/getKaptchaImage.do?t=${new Date().getTime()}`;
+      this.registerForm.imgSrc = `https://csactivity.xrcloud.net/user/getKaptchaImage.do?t=${new Date().getTime()}`;
     }
   },
   computed: {

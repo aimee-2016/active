@@ -1025,7 +1025,7 @@
             <Input v-model="formCustom.Verificationcode" placeholder="请输入随机验证码" class="w300"></Input>
             <img
               :src="imgSrc"
-              @click="imgSrc=`user/getKaptchaImage.do?t=${new Date().getTime()}`"
+              @click="imgSrc=`https://csactivity.xrcloud.net/user/getKaptchaImage.do?t=${new Date().getTime()}`"
               style="height:32px;vertical-align: middle;margin-left: 10px;"
             />
           </FormItem>
@@ -4052,7 +4052,7 @@ export default {
                     this.$message.info({
                       content: response.data.message
                     })
-                    this.imgSrc = `user/getKaptchaImage.do?t=${new Date().getTime()}`
+                    this.imgSrc = `https://csactivity.xrcloud.net/user/getKaptchaImage.do?t=${new Date().getTime()}`
                     this.formCustom.Verificationcode = ''
                   }
                 })
@@ -4080,30 +4080,28 @@ export default {
             params
           }).then(res => {
             if (res.data.status == 1 && res.status == 200) {
-              if (this.phoneVerifyType === 'identification') {
-                this.showModal.cashverification = false
-                this.tempCode = this.uuid(6, 16)
-                let url = '/faceRecognition/getUserInfoByPcQRCode.do'
-                let config = {
-                  phone: this.userInfo.phone ? this.userInfo.phone : this.formCustom.VerificationPhone,
-                }
-                axios.post(url, {
-                  faceType: '1',
-                  config: JSON.stringify(config),
-                  tempCode: this.tempCode
-                }).then(res => {
-                  if (res.status == 200 && res.data.status == 1) {
-                    this.qrConfig.value = res.data.result.url
-                    this.showModal.qrCode = true
-                    this.codeLoseEfficacy = ''
-                    this.refreshUserStatus()
-                  } else {
-                    this.codeLoseEfficacy = 'lose'
-                    this.showModal.qrCode = true
-                    this.refreshUserStatus()
-                  }
-                })
+              this.showModal.cashverification = false
+              this.tempCode = this.uuid(6, 16)
+              let url = '/faceRecognition/getUserInfoByPcQRCode.do'
+              let config = {
+                phone: this.userInfo.phone ? this.userInfo.phone : this.formCustom.VerificationPhone,
               }
+              axios.post(url, {
+                faceType: '1',
+                config: JSON.stringify(config),
+                tempCode: this.tempCode
+              }).then(res => {
+                if (res.status == 200 && res.data.status == 1) {
+                  this.qrConfig.value = res.data.result.url
+                  this.showModal.qrCode = true
+                  this.codeLoseEfficacy = ''
+                  this.refreshUserStatus()
+                } else {
+                  this.codeLoseEfficacy = 'lose'
+                  this.showModal.qrCode = true
+                  this.refreshUserStatus()
+                }
+              })
             } else {
               this.$message.info({
                 content: res.data.message
