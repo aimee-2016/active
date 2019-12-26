@@ -161,7 +161,7 @@
             <span>APP</span>
           </div>
           <div class="item">随时随地 工作娱乐两不误</div>
-          <div class="item">下载即送4小时 多款端游 待你公测</div>
+          <div class="item">下载每天送20分钟  多款端游 待你公测</div>
         </div>
         <div class="app-qr">
           <div class="app-qr-box">
