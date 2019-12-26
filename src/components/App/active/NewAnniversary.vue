@@ -590,7 +590,7 @@
     >
       <div class="content" v-html="domainText"></div>
       <div slot="footer" class="footer">
-        <a class="btn" v-if="renewStatus==1" href="https://i.xinruiyun.cn/renew">立即续费</a>
+        <a class="btn" v-if="renewStatus==1" :href="$project.back+'renew'">立即续费</a>
         <span class="btn" v-else @click="showModal.renewHint=false">我知道了</span>
       </div>
     </Modal>
@@ -643,7 +643,7 @@
             <Input v-model="formCustom.Verificationcode" placeholder="请输入随机验证码" class="w300"></Input>
             <img
               :src="imgSrc"
-              @click="imgSrc=`https://activity.xinruiyun.cn/user/getKaptchaImage.do?t=${new Date().getTime()}`"
+              @click="imgSrc=`${this.$project.ac}user/getKaptchaImage.do?t=${new Date().getTime()}`"
               style="height:32px;vertical-align: middle;margin-left: 10px;"
             />
           </FormItem>
@@ -683,11 +683,11 @@
               class="spanaa"
               @click="showModal.modifyPhoneID = true;showModal.cashverification=false"
             >通过身份证号码验证</span>或
-            <a href="https://i.xinruiyun.cn/work">提交工单</a>更改手机号。
+            <a :href="$project.back+'work'">提交工单</a>更改手机号。
           </p>
           <p v-if="!authInfo||authInfo&&authInfo.checkstatus!=0" style="line-height:24px;">
             2、如果手机已丢失或停机，请
-            <a href="https://i.xinruiyun.cn/work">提交工单</a>或
+            <a :href="$project.back+'work'">提交工单</a>或
             <a
               target="_blank"
               :href="`tencent://message/?uin=${$store.state.qq.qqnumber}&amp;Site=www.cloudsoar.com&amp;Menu=yes`"
@@ -874,7 +874,7 @@ export default {
       tempCode: "",
       codeTimer: null,
       authStatus: false,
-      imgSrc: "https://activity.xinruiyun.cn/user/getKaptchaImage.do",
+      imgSrc: this.$project.ac+"user/getKaptchaImage.do",
       formCustom: {
         VerificationPhone: "",
         Verificationcode: "",
@@ -927,7 +927,7 @@ export default {
         ddd.split("=")[1] +
         ";expires=" +
         date.toUTCString() +
-        ";domain=.xinruiyun.cn;path=/";
+        ";"+this.$project.domain+";path=/";
     }
   },
   mounted() {
@@ -1103,7 +1103,7 @@ export default {
         if (type == "p") {
           this.$LR({ type: "register" });
         } else {
-          window.open("https://m.xinruiyun.cn/login", "_self");
+          window.open(this.$project.m+"login", "_self");
         }
         return;
       }
@@ -1130,7 +1130,7 @@ export default {
               content: "抱歉，只有实名认证用户才可以参加活动",
               okText: "去实名认证",
               onOk: () => {
-                window.open("https://i.xinruiyun.cn/usercenter", "_self");
+                window.open(this.$project.back+"usercenter", "_self");
               }
             });
           } else {
@@ -1138,9 +1138,9 @@ export default {
           }
         } else {
           if (item.certification == 3) {
-            window.open("https://i.xinruiyun.cn/usercenter", "_self");
+            window.open(this.$project.back+"usercenter", "_self");
           } else {
-            window.open("https://m.xinruiyun.cn/faceindex", "_self");
+            window.open(this.$project.m+"faceindex", "_self");
           }
         }
         return;
@@ -1181,9 +1181,9 @@ export default {
           if (response.status == 200 && response.data.status == 1) {
             this.$Message.success("创建订单成功");
             if (type == "p") {
-              window.open("https://i.xinruiyun.cn/order", "_self");
+              window.open(this.$project.back+"order", "_self");
             } else {
-              window.open("https://m.xinruiyun.cn/orderconfirm", "_self");
+              window.open(this.$project.m+"orderconfirm", "_self");
             }
           } else {
             this.hintText = response.data.message;
@@ -1199,9 +1199,9 @@ export default {
             if (response.status == 200 && response.data.status == 1) {
               this.$Message.success("创建订单成功");
               if (type == "p") {
-                window.open("https://i.xinruiyun.cn/order", "_self");
+                window.open(this.$project.back+"order", "_self");
               } else {
-                window.open("https://m.xinruiyun.cn/orderconfirm", "_self");
+                window.open(this.$project.m+"orderconfirm", "_self");
               }
             } else {
               this.hintText = response.data.message;
@@ -1406,7 +1406,7 @@ export default {
         if (type == "p") {
           this.$LR({ type: "register" });
         } else {
-          window.open("https://m.xinruiyun.cn/login", "_self");
+          window.open(this.$project.m+"login", "_self");
         }
         return;
       }
@@ -1433,7 +1433,7 @@ export default {
               content: "抱歉，只有实名认证用户才可以参加活动",
               okText: "去实名认证",
               onOk: () => {
-                window.open("https://i.xinruiyun.cn/usercenter", "_self");
+                window.open(this.$project.back+"usercenter", "_self");
               }
             });
           } else {
@@ -1441,9 +1441,9 @@ export default {
           }
         } else {
           if (item.certification == 3) {
-            window.open("https://i.xinruiyun.cn/usercenter", "_self");
+            window.open(this.$project.back+"usercenter", "_self");
           } else {
-            window.open("https://m.xinruiyun.cn/faceindex", "_self");
+            window.open(this.$project.m+"faceindex", "_self");
           }
         }
         return;
@@ -1462,9 +1462,9 @@ export default {
           if (response.status == 200 && response.data.status == 1) {
             this.$Message.success("创建订单成功");
             if (type == "p") {
-              window.open("https://i.xinruiyun.cn/order", "_self");
+              window.open(this.$project.back+"order", "_self");
             } else {
-              window.open("https://m.xinruiyun.cn/orderconfirm", "_self");
+              window.open(this.$project.m+"orderconfirm", "_self");
             }
           } else {
             this.hintText = response.data.message;
@@ -1522,7 +1522,7 @@ export default {
         if (type == "p") {
           this.$LR({ type: "register" });
         } else {
-          window.open("https://m.xinruiyun.cn/login", "_self");
+          window.open(this.$project.m+"login", "_self");
         }
         return false;
       }
@@ -1602,7 +1602,7 @@ export default {
         if (type == "p") {
           this.$LR({ type: "register" });
         } else {
-          window.open("https://m.xinruiyun.cn/login", "_self");
+          window.open(this.$project.m+"login", "_self");
         }
         return false;
       }
@@ -1626,7 +1626,7 @@ export default {
               item.tip = "* 对不起，域名不可注册！";
             } else if (response.data.data.results[0].isRes == "available") {
               item.tip = "域名可注册";
-              window.open("https://i.xinruiyun.cn/domaininfotemplate", "_self");
+              window.open(this.$project.back+"domaininfotemplate", "_self");
               var domNames = item.value + item.name;
               var domYear = item.unit;
               var domPrice = item.price;
@@ -1640,7 +1640,7 @@ export default {
         });
     },
     setCookie(name, val) {
-      document.cookie = name + "=" + val + ";domain=.xinruiyun.cn;path=/";
+      document.cookie = name + "=" + val + ";"+this.$project.domain+";path=/";
     },
     getRenew() {
       axios
@@ -1660,7 +1660,7 @@ export default {
         if (type == "p") {
           this.$LR({ type: "register" });
         } else {
-          window.open("https://m.xinruiyun.cn/login", "_self");
+          window.open(this.$project.m+"login", "_self");
         }
         return false;
       }
@@ -1758,7 +1758,7 @@ export default {
                     "抱歉，人脸识别实名认证失败！您也可以前往用户中心上传身份证照片进行实名认证。",
                   okText: "去实名认证",
                   onOk: () => {
-                    window.open("https://i.xinruiyun.cn/usercenter", "_self");
+                    window.open(this.$project.back+"usercenter", "_self");
                   }
                 });
               }
@@ -1939,7 +1939,7 @@ export default {
                         } else {
                           this.hintText = response.data.message;
                           this.showModal.hint = true;
-                          this.imgSrc = `https://activity.xinruiyun.cn/user/getKaptchaImage.do?t=${new Date().getTime()}`;
+                          this.imgSrc = `${this.$project.ac}user/getKaptchaImage.do?t=${new Date().getTime()}`;
                           this.formCustom.Verificationcode = "";
                         }
                       });

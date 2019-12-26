@@ -164,7 +164,7 @@
             />
             <img
               :src="imgSrc"
-              @click="imgSrc=`https://activity.xinruiyun.cn/user/getKaptchaImage.do?t=${new Date().getTime()}`"
+              @click="imgSrc=`${this.$project.ac}user/getKaptchaImage.do?t=${new Date().getTime()}`"
             />
           </div>
         </form>
@@ -174,12 +174,12 @@
         <div>
           <!--span class="checkBox" :class="{agree:agree}" @click="toggle"></span>&nbsp;<span>我已阅读并同意</span><span
           style="color:#0EB4FA;cursor:pointer;" @click="showRules">《睿云用户使用协议》</span-->
-          <a href="https://i.xinruiyun.cn/register" target="_blank" class="btn-register">
+          <a :href="$project.back+'register'" target="_blank" class="btn-register">
             立即注册
             <span>注册完成之后记得回到活动页面领取50G存储包哦！</span>
           </a>
           <a
-            href="https://i.xinruiyun.cn/resetnew"
+            :href="$project.back+'resetnew'"
             target="_blank"
             style="color:#0EB4FA;cursor:pointer;margin-top: 10px;float:right;font-size:14px"
           >忘记密码</a>
@@ -309,7 +309,7 @@ export default {
           warning: false
         }
       },
-      imgSrc: "https://activity.xinruiyun.cn/user/getKaptchaImage.do",
+      imgSrc: this.$project.ac+"user/getKaptchaImage.do",
       advantageData: [
         {
           img: require("./../../../assets/img/active/objstorage-active/objactive-section3-icon1.png"),
@@ -377,7 +377,7 @@ export default {
             '您好，你还未进行实名认证，请先实名认证即可参加此活动。<a href="userCenter">立即认证</a>',
           onOk: () => {
             // this.$router.push('/userCenter')
-            window.open("https://i.xinruiyun.cn/usercenter", "self");
+            window.open(this.$project.back+"usercenter", "self");
           }
         });
         return;
@@ -409,7 +409,7 @@ export default {
         usercenter: "key"
       });
       // this.$router.push('/userCenter')
-      window.open("https://i.xinruiyun.cn/usercenter", "self");
+      window.open(this.$project.back+"usercenter", "self");
     },
     vail(field) {
       var text = this.form[field];
@@ -500,7 +500,7 @@ export default {
             if (response.data.status == 1) {
               this.$router.go(0);
             } else {
-              this.imgSrc = `https://activity.xinruiyun.cn/user/getKaptchaImage.do?t=${new Date().getTime()}`;
+              this.imgSrc = `${this.$project.ac}user/getKaptchaImage.do?t=${new Date().getTime()}`;
               this.vailForm.loginname.message = response.data.message;
               this.vailForm.loginname.warning = true;
             }

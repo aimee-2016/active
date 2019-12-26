@@ -259,7 +259,7 @@
           style="width:340px;line-height: 28px;text-align: center;margin-bottom:80px;font-size: 14px;"
         >
           恭喜您注册成功，现在完成
-          <a href="https://i.xinruiyun.cn/usercenter">实名认证</a>即可获得156元专属优惠券，还可参加
+          <a :href="$project.back+'usercenter'">实名认证</a>即可获得156元专属优惠券，还可参加
           <a href="/free/">多款云服务器免费领</a>活动
         </p>
         <button
@@ -745,12 +745,12 @@ export default {
         errorMsg: "",
         passwordHint: false,
         imgCode: "",
-        imgSrc: `https://activity.xinruiyun.cn/user/getKaptchaImage.do?t=${new Date().getTime()}`,
+        imgSrc: `${this.$project.ac}user/getKaptchaImage.do?t=${new Date().getTime()}`,
         imgMistakeMsg: ""
       },
       warning: "",
       registerWarning: "",
-      imgSrc: `https://activity.xinruiyun.cn/user/getKaptchaImage.do?t=${new Date().getTime()}`,
+      imgSrc: `${this.$project.ac}user/getKaptchaImage.do?t=${new Date().getTime()}`,
       // 是否同意注册条款
       single: false,
       getCode: "获取验证码",
@@ -1296,7 +1296,7 @@ export default {
         : (this.$refs[name].type = "password");
     },
     changeImgSrc() {
-      this.registerForm.imgSrc = `https://activity.xinruiyun.cn/user/getKaptchaImage.do?t=${new Date().getTime()}`;
+      this.registerForm.imgSrc = `${this.$project.ac}user/getKaptchaImage.do?t=${new Date().getTime()}`;
     }
   },
   computed: {

@@ -182,7 +182,7 @@
       </div>
       <p slot="footer" class="modal-footer-s">
         <Button @click="showModal.getSuccessModal = false">取消</Button>
-        <a href="https://i.xinruiyun.cn/clouddatabase/">
+        <a :href="$project.back+'clouddatabase/'">
           <Button type="primary">查看数据库</Button>
         </a>
       </p>
@@ -361,7 +361,7 @@
               <img
                 :src="imgSrc"
                 style="height:33px;"
-                @click="imgSrc=`https://activity.xinruiyun.cn/user/getKaptchaImage.do?t=${new Date().getTime()}`"
+                @click="imgSrc=`${this.$project.ac}user/getKaptchaImage.do?t=${new Date().getTime()}`"
               />
             </div>
           </FormItem>
@@ -489,7 +489,7 @@ export default {
     };
     return {
       authErrorText: "",
-      imgSrc: "https://activity.xinruiyun.cn/user/getKaptchaImage.do",
+      imgSrc: this.$project.ac+"user/getKaptchaImage.do",
       flows: [
         {
           src: require("../../../assets/img/active/dbActive/dba-icon1.png"),
@@ -743,7 +743,7 @@ export default {
         ],
         validateCode: [{ required: true, message: "请输入验证码" }]
       },
-      imgSrc: "https://activity.xinruiyun.cn/user/getKaptchaImage.do",
+      imgSrc: this.$project.ac+"user/getKaptchaImage.do",
       index1: ""
     };
   },

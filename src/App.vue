@@ -12,17 +12,17 @@
     <header>
       <div class="pc-top">
         <div class="pc-head">
-          <a class="navbar-brand logo" href="https://www.xinruiyun.cn/" alt="新睿云">
+          <a class="navbar-brand logo" :href="$project.before+''" alt="新睿云">
             <img src="./assets/img/home/logo.gif" />
           </a>
           <div class="p-collapse">
             <div style="display: flex;">
               <a class="p-link" href="https://help.xinruiyun.cn/" target="_blank">帮助文档</a>
-              <a class="p-link" href="https://www.xinruiyun.cn/news" target="_blank">新闻动态</a>
-              <a class="p-link pb" href="https://i.xinruiyun.cn/overview" title="控制台">控制台</a>
+              <a class="p-link" :href="$project.before+'news'" target="_blank">新闻动态</a>
+              <a class="p-link pb" :href="$project.back+'overview'" title="控制台">控制台</a>
               <div v-if="!userInfo">
-                <a class="lg-in" href="https://i.xinruiyun.cn/login" title="登录">登录</a>
-                <a class="lg-re" href="https://i.xinruiyun.cn/register" title="注册">注册</a>
+                <a class="lg-in" :href="$project.back+'login'" title="登录">登录</a>
+                <a class="lg-re" :href="$project.back+'register'" title="注册">注册</a>
               </div>
 
               <ul v-else class="user-list">
@@ -34,16 +34,16 @@
                     </a>
                     <DropdownMenu slot="list">
                       <DropdownItem name="usercenter">
-                        <a href="https://i.xinruiyun.cn/usercenter">用户中心</a>
+                        <a :href="$project.back+'usercenter'">用户中心</a>
                       </DropdownItem>
                       <DropdownItem name="expenses">
-                        <a href="https://i.xinruiyun.cn/expenses">费用中心</a>
+                        <a :href="$project.back+'expenses'">费用中心</a>
                       </DropdownItem>
                       <DropdownItem name="msgcenter" style="position:relative">
-                        <a href="https://i.xinruiyun.cn/msgcenter">消息中心</a>
+                        <a :href="$project.back+'msgcenter'">消息中心</a>
                       </DropdownItem>
                       <DropdownItem name="operationlog">
-                        <a href="https://i.xinruiyun.cn/operationlog">操作日志</a>
+                        <a :href="$project.back+'operationlog'">操作日志</a>
                       </DropdownItem>
                       <DropdownItem divided name="exit">
                         <span style="color:#666;">退出</span>
@@ -62,7 +62,7 @@
               <router-link to="/" title="活动中心">活动中心</router-link>
             </li>
             <li class="nav-item" @mouseenter="styleClass(1,$event)">
-              <a href="https://www.xinruiyun.cn/">首页</a>
+              <a :href="$project.before">首页</a>
             </li>
             <Poptip placement="bottom-start" trigger="hover">
               <li class="nav-item active" @mouseenter="styleClass(-1,$event)">
@@ -70,46 +70,46 @@
               </li>
               <ul slot="content" class="np-bs" v-cloak>
                 <li class="np-item">
-                  <a href="https://www.xinruiyun.cn/ecs/">
+                  <a :href="$project.before+'ecs/'">
                     弹性云服务器ECS
                     <img src="./assets/img/home/iconHot.png" />
                   </a>
                   <div class="buy-box">
                     <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                    <a class="buy-font" href="https://i.xinruiyun.cn/buy/host">立即购买</a>
+                    <a class="buy-font" :href="$project.back+'buy/host'">立即购买</a>
                   </div>
                 </li>
                 <li class="np-item">
-                  <a href="https://www.xinruiyun.cn/ims/">镜像服务</a>
+                  <a :href="$project.before+'ims/'">镜像服务</a>
                 </li>
                 <li class="np-item">
-                  <a href="https://www.xinruiyun.cn/ecss/">云服务器快照</a>
+                  <a :href="$project.before+'ecss/'">云服务器快照</a>
                 </li>
                 <li class="np-item">
-                  <a href="https://www.xinruiyun.cn/gpu/">GPU加速云服务器</a>
+                  <a :href="$project.before+'gpu/'">GPU加速云服务器</a>
                   <div class="buy-box">
                     <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                    <a class="buy-font" href="https://i.xinruiyun.cn/buy/gpu">立即购买</a>
+                    <a class="buy-font" :href="$project.back+'buy/gpu'">立即购买</a>
                   </div>
                 </li>
                 <li class="np-dis">
-                  <!-- <a href="https://www.xinruiyun.cn/ddos/">DDoS高防云服务器</a>
+                  <!-- <a :href="$project.before+'ddos/'">DDoS高防云服务器</a>
                                     <div class="buy-box">
                                         <img class="buy-img" src='./assets/img/home/buy-icon.png' />
-                                        <a class="buy-font" href="https://i.xinruiyun.cn/buy/ddos">立即购买</a>
+                                        <a class="buy-font" :href="$project.back+'buy/ddos'">立即购买</a>
                   </div>-->
                   DDoS高防云服务器(敬请期待)
                 </li>
                 <li class="np-dis">裸金属服务器(敬请期待)</li>
                 <li class="np-item">
-                  <a href="https://www.xinruiyun.cn/evs/">云硬盘</a>
+                  <a :href="$project.before+'evs/'">云硬盘</a>
                   <div class="buy-box">
                     <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                    <a class="buy-font" href="https://i.xinruiyun.cn/buy/disk">立即购买</a>
+                    <a class="buy-font" :href="$project.back+'buy/disk'">立即购买</a>
                   </div>
                 </li>
                 <li class="np-item">
-                  <a href="https://www.xinruiyun.cn/vbs">云硬盘备份</a>
+                  <a :href="$project.before+'vbs'">云硬盘备份</a>
                 </li>
               </ul>
             </Poptip>
@@ -124,23 +124,23 @@
                 </div>
                 <ul class="np-bs">
                   <li class="np-item">
-                    <a href="https://www.xinruiyun.cn/vpc/">虚拟私有云VPC</a>
+                    <a :href="$project.before+'vpc/'">虚拟私有云VPC</a>
                   </li>
                   <li class="np-item">
-                    <a href="https://www.xinruiyun.cn/nat/">NAT网关</a>
+                    <a :href="$project.before+'nat/'">NAT网关</a>
                   </li>
                   <li class="np-item">
-                    <a href="https://www.xinruiyun.cn/eip/">弹性公网IP</a>
+                    <a :href="$project.before+'eip/'">弹性公网IP</a>
                     <div class="buy-box">
                       <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                      <a class="buy-font" href="https://i.xinruiyun.cn/buy/elasticip">立即购买</a>
+                      <a class="buy-font" :href="$project.back+'buy/elasticip'">立即购买</a>
                     </div>
                   </li>
                   <li class="np-item">
-                    <a href="https://www.xinruiyun.cn/slb/">负载均衡</a>
+                    <a :href="$project.before+'slb/'">负载均衡</a>
                   </li>
                   <li class="np-item">
-                    <a href="https://www.xinruiyun.cn/vpn/">虚拟专网VPN</a>
+                    <a :href="$project.before+'vpn/'">虚拟专网VPN</a>
                   </li>
                   <li class="np-dis">CDN(敬请期待)</li>
                 </ul>
@@ -149,7 +149,7 @@
                 </div>
                 <ul class="np-bs">
                   <li class="np-item">
-                    <a href="https://www.xinruiyun.cn/fw/">防火墙</a>
+                    <a :href="$project.before+'fw/'">防火墙</a>
                   </li>
                   <li class="np-item">
                     <a>SSL证书</a>
@@ -159,10 +159,10 @@
                     </div>
                   </li>
                   <li class="np-item">
-                    <a href="https://www.xinruiyun.cn/ddosip/">DDoS高防IP</a>
+                    <a :href="$project.before+'ddosip/'">DDoS高防IP</a>
                     <div class="buy-box">
                       <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                      <a class="buy-font" href="https://i.xinruiyun.cn/buy/ddosip">立即购买</a>
+                      <a class="buy-font" :href="$project.back+'buy/ddosip'">立即购买</a>
                     </div>
                   </li>
                 </ul>
@@ -170,7 +170,7 @@
             </Poptip>
 
             <li class="nav-item active" @mouseenter="styleClass(3,$event)">
-              <a href="https://www.xinruiyun.cn/oss/">对象存储</a>
+              <a :href="$project.before+'oss/'">对象存储</a>
             </li>
 
             <Poptip placement="bottom-start" trigger="hover">
@@ -179,10 +179,10 @@
               </li>
               <ul slot="content" class="np-bs" v-cloak>
                 <li class="np-item">
-                  <a href="https://i.xinruiyun.cn/domain/">域名注册</a>
+                  <a :href="$project.back+'domain/'">域名注册</a>
                 </li>
                 <li class="np-item">
-                  <a href="https://i.xinruiyun.cn/icp/">域名备案</a>
+                  <a :href="$project.back+'icp/'">域名备案</a>
                 </li>
               </ul>
             </Poptip>
@@ -197,38 +197,38 @@
                 </div>
                 <ul class="np-bs">
                   <li class="np-item">
-                    <a href="https://www.xinruiyun.cn/mysql/">云数据库MySQL</a>
+                    <a :href="$project.before+'mysql/'">云数据库MySQL</a>
                     <div class="buy-box">
                       <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                      <a class="buy-font" href="https://i.xinruiyun.cn/buy/database">立即购买</a>
+                      <a class="buy-font" :href="$project.back+'buy/database'">立即购买</a>
                     </div>
                   </li>
                   <li class="np-item">
-                    <a href="https://www.xinruiyun.cn/postgresql/">云数据库PostgreSQL</a>
+                    <a :href="$project.before+'postgresql/'">云数据库PostgreSQL</a>
                     <div class="buy-box">
                       <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                      <a class="buy-font" href="https://i.xinruiyun.cn/buy/database">立即购买</a>
+                      <a class="buy-font" :href="$project.back+'buy/database'">立即购买</a>
                     </div>
                   </li>
                   <li class="np-item">
-                    <a href="https://www.xinruiyun.cn/sqlserver/">云数据库SQLServer</a>
+                    <a :href="$project.before+'sqlserver/'">云数据库SQLServer</a>
                     <div class="buy-box">
                       <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                      <a class="buy-font" href="https://i.xinruiyun.cn/buy/database">立即购买</a>
+                      <a class="buy-font" :href="$project.back+'buy/database'">立即购买</a>
                     </div>
                   </li>
                   <li class="np-item">
-                    <a href="https://www.xinruiyun.cn/mongodb/">云数据库MongoDB</a>
+                    <a :href="$project.before+'mongodb/'">云数据库MongoDB</a>
                     <div class="buy-box">
                       <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                      <a class="buy-font" href="https://i.xinruiyun.cn/buy/database">立即购买</a>
+                      <a class="buy-font" :href="$project.back+'buy/database'">立即购买</a>
                     </div>
                   </li>
                   <li class="np-item">
-                    <a href="https://www.xinruiyun.cn/redis/">云数据库Redis</a>
+                    <a :href="$project.before+'redis/'">云数据库Redis</a>
                     <div class="buy-box">
                       <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                      <a class="buy-font" href="https://i.xinruiyun.cn/buy/database">立即购买</a>
+                      <a class="buy-font" :href="$project.back+'buy/database'">立即购买</a>
                     </div>
                   </li>
                 </ul>
@@ -237,7 +237,7 @@
                 </div>
                 <ul class="np-bs">
                   <li class="np-item">
-                    <a href="https://www.xinruiyun.cn/cms/">云监控</a>
+                    <a :href="$project.before+'cms/'">云监控</a>
                   </li>
                   <li class="np-dis">访问控制(敬请期待)</li>
                 </ul>
@@ -248,13 +248,13 @@
                             <a href="#">解决方案</a>
             </li>-->
             <li class="nav-item active" @mouseenter="styleClass(4,$event)">
-              <a href="https://www.xinruiyun.cn/price/ecs/">定价</a>
+              <a :href="$project.before+'price/ecs/'">定价</a>
             </li>
             <li class="nav-item active" @mouseenter="styleClass(4,$event)">
-              <a href="https://www.xinruiyun.cn/about/">关于我们</a>
+              <a :href="$project.before+'about/'">关于我们</a>
             </li>
             <!-- <li class="nav-item active" @mouseenter='styleClass(5,$event)'>
-                            <a href="https://i.xinruiyun.cn/market">云市场</a>
+                            <a :href="$project.back+'market'">云市场</a>
             </li>-->
           </ul>
           <div class="line" :style="lineStyle"></div>
@@ -272,7 +272,7 @@
                 :class="mIcon?'mhead-icons':'mhead-icon'"
               />
             </div>
-            <a class="mobile-logo" href="https://www.xinruiyun.cn/" alt="新睿云">
+            <a class="mobile-logo" :href="$project.before+''" alt="新睿云">
               <div class="mobile-limg">
                 <img src="./assets/img/home/logo.gif" />
               </div>
@@ -293,7 +293,7 @@
               <a
                 ref="external nofollow"
                 target="_blank"
-                href="https://m.xinruiyun.cn/console?from=xinruiyun-kongzhitai"
+                :href="$project.m+'console?from=xinruiyun-kongzhitai'"
                 title="控制台"
               >控制台</a>
             </div>
@@ -301,7 +301,7 @@
               <a
                 ref="external nofollow"
                 target="_blank"
-                href="https://m.xinruiyun.cn/login?from=xinruiyun-denglu"
+                :href="$project.m+'login?from=xinruiyun-denglu'"
                 title="登录"
               >登录</a>
             </div>
@@ -309,7 +309,7 @@
               <a
                 ref="external nofollow"
                 target="_blank"
-                href="https://m.xinruiyun.cn/register?from=xinruiyun-zhuce"
+                :href="$project.m+'register?from=xinruiyun-zhuce'"
                 title="注册"
               >注册</a>
             </div>
@@ -318,16 +318,16 @@
         <div class="ml-right" :class="mLogin?'ml-rights':''" v-if="userInfo">
           <ul class="m-list">
             <li class="m-item">
-              <a href="https://i.xinruiyun.cn/usercenter">用户中心</a>
+              <a :href="$project.back+'usercenter'">用户中心</a>
             </li>
             <li class="m-item">
-              <a href="https://i.xinruiyun.cn/expenses">费用中心</a>
+              <a :href="$project.back+'expenses'">费用中心</a>
             </li>
             <li class="m-item">
-              <a href="https://i.xinruiyun.cn/msgcenter">消息中心</a>
+              <a :href="$project.back+'msgcenter'">消息中心</a>
             </li>
             <li class="m-item">
-              <a href="https://i.xinruiyun.cn/operationlog">操作日志</a>
+              <a :href="$project.back+'operationlog'">操作日志</a>
             </li>
             <li class="m-item">
               <span @click="go('exit')" style="font-size:14px">退出登录</span>
@@ -359,19 +359,19 @@
                 </div>
                 <div class="mhead-box mhead-boxs">
                   <div class="mhead-chd">
-                    <a href="https://www.xinruiyun.cn/ecs/" target="blank">弹性云服务器ECS</a>
+                    <a :href="$project.before+'ecs/'" target="blank">弹性云服务器ECS</a>
                   </div>
                   <div class="mhead-chd">
-                    <a href="https://www.xinruiyun.cn/ims/" target="blank">镜像服务器</a>
+                    <a :href="$project.before+'ims/'" target="blank">镜像服务器</a>
                   </div>
                   <div class="mhead-chd">
-                    <a href="https://www.xinruiyun.cn/ecss/" target="blank">云服务器快照</a>
+                    <a :href="$project.before+'ecss/'" target="blank">云服务器快照</a>
                   </div>
                   <div class="mhead-chd">
-                    <a href="https://www.xinruiyun.cn/gpu/" target="blank">GPU加速服务器</a>
+                    <a :href="$project.before+'gpu/'" target="blank">GPU加速服务器</a>
                   </div>
                   <div class="mhead-chd">
-                    <!-- <a href="https://www.xinruiyun.cn/ddos/" target="blank"> DDoS高防云服务器</a> -->
+                    <!-- <a :href="$project.before+'ddos/'" target="blank"> DDoS高防云服务器</a> -->
                     DDoS高防云服务器(敬请期待)
                   </div>
                 </div>
@@ -383,13 +383,13 @@
                 </div>
                 <div class="mhead-box mhead-boxs">
                   <div class="mhead-chd">
-                    <a href="https://www.xinruiyun.cn/oss/" target="blank">对象存储</a>
+                    <a :href="$project.before+'oss/'" target="blank">对象存储</a>
                   </div>
                   <div class="mhead-chd">
-                    <a href="https://www.xinruiyun.cn/evs/" target="blank">云硬盘</a>
+                    <a :href="$project.before+'evs/'" target="blank">云硬盘</a>
                   </div>
                   <div class="mhead-chd">
-                    <a href="https://www.xinruiyun.cn/vbs/" target="blank">云硬盘备份</a>
+                    <a :href="$project.before+'vbs/'" target="blank">云硬盘备份</a>
                   </div>
                 </div>
               </div>
@@ -400,13 +400,13 @@
                 </div>
                 <div class="mhead-box mhead-boxs">
                   <div class="mhead-chd">
-                    <a href="https://www.xinruiyun.cn/fw/" target="blank">防火墙</a>
+                    <a :href="$project.before+'fw/'" target="blank">防火墙</a>
                   </div>
                   <div class="mhead-chd">
                     <a href="#" target="blank">SSL证书</a>
                   </div>
                   <div class="mhead-chd">
-                    <a href="https://www.xinruiyun.cn/ddosip/" target="blank">DDoS高防IP</a>
+                    <a :href="$project.before+'ddosip/'" target="blank">DDoS高防IP</a>
                   </div>
                 </div>
               </div>
@@ -417,19 +417,19 @@
                 </div>
                 <div class="mhead-box mhead-boxs">
                   <div class="mhead-chd">
-                    <a href="https://www.xinruiyun.cn/vpc/" target="blank">虚拟私有云VPC</a>
+                    <a :href="$project.before+'vpc/'" target="blank">虚拟私有云VPC</a>
                   </div>
                   <div class="mhead-chd">
-                    <a href="https://www.xinruiyun.cn/nat/" target="blank">NAT网关</a>
+                    <a :href="$project.before+'nat/'" target="blank">NAT网关</a>
                   </div>
                   <div class="mhead-chd">
-                    <a href="https://www.xinruiyun.cn/eip/" target="blank">弹性公网IP</a>
+                    <a :href="$project.before+'eip/'" target="blank">弹性公网IP</a>
                   </div>
                   <div class="mhead-chd">
-                    <a href="https://www.xinruiyun.cn/slb/" target="blank">负载均衡</a>
+                    <a :href="$project.before+'slb/'" target="blank">负载均衡</a>
                   </div>
                   <div class="mhead-chd">
-                    <a href="https://www.xinruiyun.cn/vpn/" target="blank">虚拟专网VPN</a>
+                    <a :href="$project.before+'vpn/'" target="blank">虚拟专网VPN</a>
                   </div>
                   <div class="mhead-chd">
                     <a href="#" target="blank">CDN（敬请期待）</a>
@@ -443,7 +443,7 @@
                 </div>
                 <div class="mhead-box mhead-boxs">
                   <div class="mhead-chd">
-                    <a href="https://www.xinruiyun.cn/cms/" target="blank">云监控</a>
+                    <a :href="$project.before+'cms/'" target="blank">云监控</a>
                   </div>
                   <div class="mhead-chd">
                     <a href="#" target="blank">访问控制（敬请期待）</a>
@@ -457,19 +457,19 @@
                 </div>
                 <div class="mhead-box mhead-boxs">
                   <div class="mhead-chd">
-                    <a href="https://www.xinruiyun.cn/mysql/" target="blank">云数据库MySQL</a>
+                    <a :href="$project.before+'mysql/'" target="blank">云数据库MySQL</a>
                   </div>
                   <div class="mhead-chd">
-                    <a href="https://www.xinruiyun.cn/postgresql/" target="blank">云数据库PostgreSQL</a>
+                    <a :href="$project.before+'postgresql/'" target="blank">云数据库PostgreSQL</a>
                   </div>
                   <div class="mhead-chd">
-                    <a href="https://www.xinruiyun.cn/sqlserver/" target="blank">云数据库Redis</a>
+                    <a :href="$project.before+'sqlserver/'" target="blank">云数据库Redis</a>
                   </div>
                   <div class="mhead-chd">
-                    <a href="https://www.xinruiyun.cn/mongodb/" target="blank">云数据库MongoDB</a>
+                    <a :href="$project.before+'mongodb/'" target="blank">云数据库MongoDB</a>
                   </div>
                   <div class="mhead-chd">
-                    <a href="https://www.xinruiyun.cn/redis/" target="blank">云数据库Redis</a>
+                    <a :href="$project.before+'redis/'" target="blank">云数据库Redis</a>
                   </div>
                 </div>
               </div>
@@ -485,12 +485,12 @@
                                 <div class="mhead-child">
                                     <div class="mhead-cdd">
                                         <span>
-                                            <a href="https://i.xinruiyun.cn/domain/" target="blank">域名注册</a>
+                                            <a :href="$project.back+'domain/'" target="blank">域名注册</a>
                                         </span>
                                     </div>
                                     <div class="mhead-cdd">
                                         <span>
-                                            <a href="https://i.xinruiyun.cn/icp/" target="blank">域名备案</a>
+                                            <a :href="$project.back+'icp/'" target="blank">域名备案</a>
                                         </span>
                                     </div>
                                 </div>
@@ -504,30 +504,30 @@
           </div>-->
           <div class="mhead-product">
             <div style="padding: 10px 10px;">
-              <a href="https://www.xinruiyun.cn/price/ecs/">定价</a>
+              <a :href="$project.before+'price/ecs/'">定价</a>
             </div>
           </div>
           <!-- <div class="mhead-product">
                         <div style="padding: 10px 10px;">
-                            <a href="https://i.xinruiyun.cn/market">云市场</a>
+                            <a :href="$project.back+'market'">云市场</a>
                             <span :class='item.itemShow?"mhead-arrow":"mhead-arrow2"'></span>
                         </div>
           </div>-->
           <div class="mhead-product">
             <div style="padding: 10px 10px;">
-              <a href="https://help.xinruiyun.cn/">帮助文档</a>
+              <a href="https://help.xinruiyun.cn/'">帮助文档</a>
               <!-- <span :class='item.itemShow?"mhead-arrow":"mhead-arrow2"'></span> -->
             </div>
           </div>
           <div class="mhead-product">
             <div style="padding: 10px 10px;">
-              <a href="https://www.xinruiyun.cn/news/">新闻动态</a>
+              <a :href="$project.before+'news/'">新闻动态</a>
               <!-- <span :class='item.itemShow?"mhead-arrow":"mhead-arrow2"'></span> -->
             </div>
           </div>
           <div class="mhead-product">
             <div style="padding: 10px 10px;">
-              <a href="https://www.xinruiyun.cn/about/">关于我们</a>
+              <a :href="$project.before+'about/'">关于我们</a>
               <!-- <span :class='item.itemShow?"mhead-arrow":"mhead-arrow2"'></span> -->
             </div>
           </div>
@@ -562,7 +562,7 @@
           <div class="br-bg">
             <div class="box">
               <p class="title">为您提供出众的上云实践机会和全面的尊贵服务</p>
-              <a href="https://i.xinruiyun.cn/register/">
+              <a :href="$project.back+'register/'">
                 <div class="bottom-button">立即注册</div>
               </a>
             </div>
@@ -616,110 +616,110 @@
                 <div class="bg-content">
                   <div>
                     <p class="p_true">
-                      <a href="https://www.xinruiyun.cn/ecs/">弹性云服务器ECS</a>
+                      <a :href="$project.before+'ecs/'">弹性云服务器ECS</a>
                     </p>
                   </div>
                   <div>
                     <p class="p_true">
-                      <a href="https://www.xinruiyun.cn/ims/">镜像服务</a>
+                      <a :href="$project.before+'ims/'">镜像服务</a>
                     </p>
                   </div>
                   <div>
                     <p class="p_true">
-                      <a href="https://www.xinruiyun.cn/ecss/">云服务器快照</a>
+                      <a :href="$project.before+'ecss/'">云服务器快照</a>
                     </p>
                   </div>
                   <div>
                     <p class="p_true">
-                      <a href="https://www.xinruiyun.cn/gpu/">GPU加速云服务器</a>
+                      <a :href="$project.before+'gpu/'">GPU加速云服务器</a>
                     </p>
                   </div>
                   <div>
                     <p class="p_true">
-                      <a href="https://www.xinruiyun.cn/ddos/">DDoS高防IP</a>
+                      <a :href="$project.before+'ddos/'">DDoS高防IP</a>
                     </p>
                   </div>
                   <div>
                     <p class="p_true">
-                      <a href="https://www.xinruiyun.cn/oss/">对象存储</a>
+                      <a :href="$project.before+'oss/'">对象存储</a>
                     </p>
                   </div>
                   <div>
                     <p class="p_true">
-                      <a href="https://www.xinruiyun.cn/evs/">云硬盘</a>
+                      <a :href="$project.before+'evs/'">云硬盘</a>
                     </p>
                   </div>
                   <div>
                     <p class="p_true">
-                      <a href="https://www.xinruiyun.cn/vbs/">云硬盘备份</a>
+                      <a :href="$project.before+'vbs/'">云硬盘备份</a>
                     </p>
                   </div>
                   <div>
                     <p class="p_true">
-                      <a href="https://www.xinruiyun.cn/fw/">防火墙</a>
+                      <a :href="$project.before+'fw/'">防火墙</a>
                     </p>
                   </div>
                   <!-- <div>
-                                <p class="p_true"><a href="https://www.xinruiyun.cn/ddos/">DDoS高防云服务器</a></p>
+                                <p class="p_true"><a :href="$project.before+'ddos/'">DDoS高防云服务器</a></p>
                   </div>-->
                   <div>
                     <p class="p_true">
-                      <a href="https://www.xinruiyun.cn/ess/">弹性伸缩</a>
+                      <a :href="$project.before+'ess/'">弹性伸缩</a>
                     </p>
                   </div>
                   <div>
                     <p class="p_true">
-                      <a href="https://www.xinruiyun.cn/cms/">云监控</a>
+                      <a :href="$project.before+'cms/'">云监控</a>
                     </p>
                   </div>
                   <div>
                     <p class="p_true">
-                      <a href="https://www.xinruiyun.cn/vpc/">虚拟私有云VPC</a>
+                      <a :href="$project.before+'vpc/'">虚拟私有云VPC</a>
                     </p>
                   </div>
                   <div>
                     <p class="p_true">
-                      <a href="https://www.xinruiyun.cn/nat/">NAT网关</a>
+                      <a :href="$project.before+'nat/'">NAT网关</a>
                     </p>
                   </div>
                   <div>
                     <p class="p_true">
-                      <a href="https://www.xinruiyun.cn/eip/">弹性公网IP</a>
+                      <a :href="$project.before+'eip/'">弹性公网IP</a>
                     </p>
                   </div>
                   <div>
                     <p class="p_true">
-                      <a href="https://www.xinruiyun.cn/slb/">负载均衡</a>
+                      <a :href="$project.before+'slb/'">负载均衡</a>
                     </p>
                   </div>
                   <div>
                     <p class="p_true">
-                      <a href="https://www.xinruiyun.cn/vpn/">虚拟专网VPN</a>
+                      <a :href="$project.before+'vpn/'">虚拟专网VPN</a>
                     </p>
                   </div>
                   <div>
                     <p class="p_true">
-                      <a href="https://www.xinruiyun.cn/mysql/">云数据库MySQL</a>
+                      <a :href="$project.before+'mysql/'">云数据库MySQL</a>
                     </p>
                   </div>
                   <div>
                     <p class="p_true">
-                      <a href="https://www.xinruiyun.cn/postgresql/">云数据库PostgreSQL</a>
+                      <a :href="$project.before+'postgresql/'">云数据库PostgreSQL</a>
                     </p>
                   </div>
                   <div>
                     <p class="p_true">
-                      <a href="https://www.xinruiyun.cn/mongodb/">云数据库MongoDB</a>
+                      <a :href="$project.before+'mongodb/'">云数据库MongoDB</a>
                     </p>
                   </div>
                   <div>
                     <p class="p_true">
-                      <a href="https://www.xinruiyun.cn/redis/">云数据库Redis</a>
+                      <a :href="$project.before+'redis/'">云数据库Redis</a>
                     </p>
                   </div>
                   <div>
                     <p class="p_true">
-                      <a href="https://www.xinruiyun.cn/sqlserver/">云数据库SQLServer</a>
+                      <a :href="$project.before+'sqlserver/'">云数据库SQLServer</a>
                     </p>
                   </div>
                 </div>
@@ -732,13 +732,13 @@
                       <a
                         ref="external nofollow"
                         target="_blank"
-                        href="https://i.xinruiyun.cn/brecords/"
+                        :href="$project.back+'brecords/'"
                       >备案管理</a>
                     </p>
                   </div>
                   <div>
                     <p class="p_true">
-                      <a target="_blank" href="https://www.xinruiyun.cn/price/ecs/">定价说明</a>
+                      <a target="_blank" :href="$project.before+'price/ecs/'">定价说明</a>
                     </p>
                   </div>
                   <div>
@@ -758,7 +758,7 @@
                   </div>
                   <div>
                     <p class="p_true">
-                      <a href="https://www.xinruiyun.cn/about/">公司介绍</a>
+                      <a :href="$project.before+'about/'">公司介绍</a>
                     </p>
                   </div>
                   <div>
@@ -773,22 +773,22 @@
                 <div class="bg-content">
                   <div>
                     <p class="p_true">
-                      <a href="https://i.xinruiyun.cn/overview">控制台</a>
+                      <a :href="$project.back+'overview'">控制台</a>
                     </p>
                   </div>
                   <div>
                     <p class="p_true">
-                      <a href="https://i.xinruiyun.cn/usercenter">用户中心</a>
+                      <a :href="$project.back+'usercenter'">用户中心</a>
                     </p>
                   </div>
                   <div>
                     <p class="p_true">
-                      <a href="https://i.xinruiyun.cn/expenses">费用中心</a>
+                      <a :href="$project.back+'expenses'">费用中心</a>
                     </p>
                   </div>
                   <div>
                     <p class="p_true">
-                      <a href="https://i.xinruiyun.cn/work">工单管理</a>
+                      <a :href="$project.back+'work'">工单管理</a>
                     </p>
                   </div>
                 </div>
@@ -798,12 +798,12 @@
                 <div class="bg-content">
                   <div>
                     <p class="p_true">
-                      <a href="https://www.xinruiyun.cn/hdgg/">产品公告</a>
+                      <a :href="$project.before+'hdgg/'">产品公告</a>
                     </p>
                   </div>
                   <div>
                     <p class="p_true">
-                      <a href="https://activity.xinruiyun.cn/">最新活动</a>
+                      <a :href="$project.ac">最新活动</a>
                     </p>
                   </div>
                   <div>
@@ -902,7 +902,7 @@
             <div class="support">
               <div>
                 <p>
-                  <a href="https://www.xinruiyun.cn/about/" target="_blank">关于我们</a>
+                  <a :href="$project.before+'about/'" target="_blank">关于我们</a>
                 </p>
               </div>
             </div>
@@ -913,7 +913,7 @@
       <div class="m-bottom">
         <div class="m-register">
           <p>为您提供出众的上云实践机会和全面的尊贵服务</p>
-          <a href="https://i.xinruiyun.cn/register/" style="color:#fff">
+          <a :href="$project.back+'register/'" style="color:#fff">
             <div class="m-button">立即注册</div>
           </a>
         </div>
@@ -1358,7 +1358,7 @@ export default {
         "=" +
         escape(value) +
         (expiredays == null ? "" : ";expires=" + exdate.toGMTString()) +
-        ";domain=.xinruiyun.cn;path=/";
+        ";"+this.$project.domain+";path=/";
     },
     login() {
       this.$router.push("login");
@@ -1445,7 +1445,7 @@ export default {
           cval +
           ";expires=" +
           exp.toGMTString() +
-          ";domain=.xinruiyun.cn;path=/";
+          ";"+this.$project.domain+";path=/";
     },
     closeHeadHint() {
       this.hintShow = false;
