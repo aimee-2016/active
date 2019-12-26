@@ -1,7 +1,7 @@
 <template>
   <div class="active-before">
     <div class="wrapper">
-      <img src="../../../assets/img/active/actice-before-banner.png">
+      <img src="../../../assets/img/active/actice-before-banner.png" />
       <p>活动已经结束咯，去活动中心看看其它活动吧！</p>
       <Button type="primary" @click="$router.push('/')">去活动中心</Button>
     </div>
@@ -9,30 +9,16 @@
 </template>
 <script type="text/ecmascript-6">
 export default {
-  data () {
-    return {
-
-    }
+  data() {
+    return {};
   },
-  created () {
-
-  },
-  mounted () {
-
-  },
-  methods: {
-
-  },
-  computed: {
-
-  },
-  watch: {
-
-  },
-  components: {
-
-  }
-}
+  created() {},
+  mounted() {},
+  methods: {},
+  computed: {},
+  watch: {},
+  components: {}
+};
 </script>
 
 <style rel="stylesheet/less" lang="less" scoped>
@@ -53,7 +39,7 @@ export default {
     img {
       width: 300px;
     }
-  p {
+    p {
       font-size: 22px;
     }
   }

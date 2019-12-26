@@ -23,72 +23,72 @@ Vue.use(Router)
 var router = new Router({
   mode: 'history',
   routes: [{
-      path: '',
-      name: App.name,
-      component: App,
-      children: [{
-          path: '/',
-          name: 'activity',
-          component: ActiveCenter,
-          caseSensitive: true
-        },
-        {
-          path: 'activebefore',
-          name: 'activebefore',
-          component: activeBefore,
-          caseSensitive: true
-        },
-        {
-          path: 'free',
-          name: 'free',
-          component: FrActive1,
-          caseSensitive: true
-        },
-        {
-          path: 'objectstorage',
-          name: 'objectstorage',
-          component: objStorageActiveP,
-          caseSensitive: true
-        },
-        {
-          path: 'hotdatabase',
-          name: 'hotdatabase',
-          component: DBActiveP,
-          caseSensitive: true
-        },
-        // {
-        //   path: 'ddosactive',
-        //   name: 'ddosactive',
-        //   component: ddosActive,
-        //   caseSensitive: true
-        // },
-        {
-          path: 'anniversary',
-          name: 'anniversary',
-          component: anniversary,
-          caseSensitive: true
-        },
-        {
-          path: 'newyearpurchase',
-          name: 'newyearpurchase',
-          component: newyearpurchase,
-          caseSensitive: true
-        }
-      ]
+    path: '',
+    name: App.name,
+    component: App,
+    children: [{
+      path: '/',
+      name: 'activity',
+      component: ActiveCenter,
+      caseSensitive: true
     },
     {
-      path: '/*',
-      name: '404',
-      component: notFindPage
+      path: 'activebefore',
+      name: 'activebefore',
+      component: activeBefore,
+      caseSensitive: true
     },
+    {
+      path: 'free',
+      name: 'free',
+      component: FrActive1,
+      caseSensitive: true
+    },
+    {
+      path: 'objectstorage',
+      name: 'objectstorage',
+      component: objStorageActiveP,
+      caseSensitive: true
+    },
+    {
+      path: 'hotdatabase',
+      name: 'hotdatabase',
+      component: DBActiveP,
+      caseSensitive: true
+    },
+    // {
+    //   path: 'ddosactive',
+    //   name: 'ddosactive',
+    //   component: ddosActive,
+    //   caseSensitive: true
+    // },
+    {
+      path: 'anniversary',
+      name: 'anniversary',
+      component: anniversary,
+      caseSensitive: true
+    },
+    {
+      path: 'newyearpurchase',
+      name: 'newyearpurchase',
+      component: newyearpurchase,
+      caseSensitive: true
+    }
+    ]
+  },
+  {
+    path: '/*',
+    name: '404',
+    component: notFindPage
+  },
   ]
 })
 
 router.beforeEach((to, from, next) => {
   window.scrollTo(0, 0)
   if (to.matched.some(route => {
-      return route.meta.requiresAuth
-    })) {
+    return route.meta.requiresAuth
+  })) {
     if (!localStorage.getItem('authToken')) {
       next({
         path: '/login'

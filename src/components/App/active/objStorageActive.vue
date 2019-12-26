@@ -2,100 +2,119 @@
   <div class="objstorage-active">
     <h1 id="hide-h1">对象存储活动</h1>
     <div class="banner">
-        <div class="carousel-item">
-          <div
-               style="cursor: pointer;">
-            <div class="obj-storage">
-              <div class="wrap">
-                <div>
-                  <p>对象存储OSS重磅上线</p>
-                  <p>安全稳定、海量、便捷、低延迟、低成本的云端存储服务</p>
-                  <p>免费领取<span>50G</span>存储包</p>
-                  <!-- <Button>立即领取</Button> -->
-                </div>
+      <div class="carousel-item">
+        <div style="cursor: pointer;">
+          <div class="obj-storage">
+            <div class="wrap">
+              <div>
+                <p>对象存储OSS重磅上线</p>
+                <p>安全稳定、海量、便捷、低延迟、低成本的云端存储服务</p>
+                <p>
+                  免费领取
+                  <span>50G</span>存储包
+                </p>
+                <!-- <Button>立即领取</Button> -->
               </div>
             </div>
           </div>
         </div>
+      </div>
     </div>
     <div class="container">
       <section class="product">
-          <div class="wrap">
-            <div class="sec-container">
-              <div class="header">
-                <div class="sec-headline"><span>活动产品</span></div>
-                <p>只需在控制台通过简单的几步操作，即可轻松快速地创建自己的对象存储私人空间，随时随地获取所需文件和数据。</p>
+        <div class="wrap">
+          <div class="sec-container">
+            <div class="header">
+              <div class="sec-headline">
+                <span>活动产品</span>
               </div>
-              <div class="box">
-                <div class="top">开始使用新睿云对象存储</div>
-                <div class="content" v-if="!getFulx">
-                  <p style="font-family:PingFangSC-Regular;">{{defaultZonename}}</p>
-                  <h3><i style="color:#FF0000;font-style: normal;">{{fulxSize}}</i>G存储包规格</h3>
-                  <button @click="freeReceive()" v-if="isReceive">免费领取</button>
-                  <button style="background:rgba(255,156,149,1);" v-else>领取成功</button>
-                  <span style="font-size:14px">新老用户均可领取，每人只可领取一次</span>
-                </div>
-                <div class="content" v-else>
-                  <p style="font-size:24px">{{fulxMessage}}</p>
-                  <i style="    padding-top: 40px;font-style: normal;display: block;font-size: 14px;color: rgba(255,57,42,1);line-height: 1.5;">
-                      注意：使用对象存储需要您先创建AccessKey，领取完成之后请前往个人中心-AccessKey管理-创建AccessKey完成密钥创建。</i>
-                  <button @click="createdKey" v-if="!isAccessKey">立即创建</button>
-                  <button v-else>领取成功</button>
-                </div>
+              <p>只需在控制台通过简单的几步操作，即可轻松快速地创建自己的对象存储私人空间，随时随地获取所需文件和数据。</p>
+            </div>
+            <div class="box">
+              <div class="top">开始使用新睿云对象存储</div>
+              <div class="content" v-if="!getFulx">
+                <p style="font-family:PingFangSC-Regular;">{{defaultZonename}}</p>
+                <h3>
+                  <i style="color:#FF0000;font-style: normal;">{{fulxSize}}</i>G存储包规格
+                </h3>
+                <button @click="freeReceive()" v-if="isReceive">免费领取</button>
+                <button style="background:rgba(255,156,149,1);" v-else>领取成功</button>
+                <span style="font-size:14px">新老用户均可领取，每人只可领取一次</span>
+              </div>
+              <div class="content" v-else>
+                <p style="font-size:24px">{{fulxMessage}}</p>
+                <i
+                  style="    padding-top: 40px;font-style: normal;display: block;font-size: 14px;color: rgba(255,57,42,1);line-height: 1.5;"
+                >注意：使用对象存储需要您先创建AccessKey，领取完成之后请前往个人中心-AccessKey管理-创建AccessKey完成密钥创建。</i>
+                <button @click="createdKey" v-if="!isAccessKey">立即创建</button>
+                <button v-else>领取成功</button>
               </div>
             </div>
           </div>
-        </section>
-        <section class="concept">
-          <div class="wrap">
-            <div class="sec-container">
+        </div>
+      </section>
+      <section class="concept">
+        <div class="wrap">
+          <div class="sec-container">
+            <article>
+              <h3>什么是对象存储？</h3>
+              <p>新睿云对象存储OSS聚焦海量、安全、低成本、高可靠的云存储服务，提供99.999999999%的数据可靠性。使用RESTful API 可以在互联网任何位置随时随地存储和访问，与国际标准协议完全兼容最大程度降低用户接入门槛。容量和处理能力弹性扩展，按需付费，无需设施投入和运维，有效降低用户成本，帮助您专注于核心业务。</p>
+            </article>
+            <img
+              src="./../../../assets/img/active/objstorage-active/objactive-section1-banner.png"
+              alt="banner"
+            />
+          </div>
+        </div>
+      </section>
+      <section class="advantage">
+        <div class="wrap">
+          <div class="sec-container">
+            <div class="header">
+              <div class="sec-headline">
+                <span>产品优势</span>
+              </div>
+            </div>
+            <div class="content">
+              <div v-for="(item,index) in advantageData" :key="index">
+                <div class="top">
+                  <img :src="item.img" alt="描述" />
+                  <p>{{item.title}}</p>
+                </div>
+                <p>{{item.desc}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="application">
+        <div class="wrap">
+          <div class="sec-container">
+            <div class="header">
+              <div class="sec-headline">
+                <span>应用场景</span>
+              </div>
+            </div>
+            <div class="content">
+              <ul class="nav">
+                <li
+                  v-for="(item,index) in applicationData"
+                  :key="index"
+                  :class="{'check':checkIndex==index}"
+                  @click="checkIndex = index"
+                >{{item.label}}</li>
+              </ul>
               <article>
-                <h3>什么是对象存储？</h3>
-                <p>新睿云对象存储OSS聚焦海量、安全、低成本、高可靠的云存储服务，提供99.999999999%的数据可靠性。使用RESTful API 可以在互联网任何位置随时随地存储和访问，与国际标准协议完全兼容最大程度降低用户接入门槛。容量和处理能力弹性扩展，按需付费，无需设施投入和运维，有效降低用户成本，帮助您专注于核心业务。</p>
+                <div
+                  v-for="(item,index) in applicationData"
+                  :key="index"
+                  v-if="index==checkIndex"
+                >{{item.content}}</div>
               </article>
-              <img src="./../../../assets/img/active/objstorage-active/objactive-section1-banner.png" alt="banner">
             </div>
           </div>
-        </section>
-        <section class="advantage">
-          <div class="wrap">
-            <div class="sec-container">
-              <div class="header">
-                <div class="sec-headline"><span>产品优势</span></div>
-              </div>
-              <div class="content">
-                <div v-for="(item,index) in advantageData" :key="index">
-                  <div class="top">
-                    <img :src="item.img" alt="描述">
-                    <p>{{item.title}}</p>
-                  </div>
-                  <p>
-                    {{item.desc}}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section  class="application">
-          <div class="wrap">
-            <div class="sec-container">
-              <div class="header">
-                <div class="sec-headline"><span>应用场景</span></div>
-              </div>
-              <div class="content">
-                <ul class="nav">
-                  <li v-for="(item,index) in applicationData" :key="index" :class="{'check':checkIndex==index}" @click="checkIndex = index" >{{item.label}}</li>
-                </ul>
-                <article>
-                  <div v-for="(item,index) in applicationData" :key="index" v-if="index==checkIndex">
-                    {{item.content}}
-                  </div>
-                </article>
-              </div>
-            </div>
-          </div>
-        </section>
+        </div>
+      </section>
     </div>
     <!-- 登陆弹窗 -->
     <Modal v-model="loginModal" width="420" class="login-modal" :scrollable="true">
@@ -106,21 +125,47 @@
         <form>
           <div>
             <span :class="{warning:vailForm.loginname.warning}">{{vailForm.loginname.message}}</span>
-            <input type="text" autocomplete="off" v-model="form.loginname" :placeholder="form.loginnamePlaceholder"
-                   @blur="vail('loginname')" @focus="focus('loginname')" @input="isCorrect('loginname')">
+            <input
+              type="text"
+              autocomplete="off"
+              v-model="form.loginname"
+              :placeholder="form.loginnamePlaceholder"
+              @blur="vail('loginname')"
+              @focus="focus('loginname')"
+              @input="isCorrect('loginname')"
+            />
           </div>
           <div>
             <span :class="{warning:vailForm.password.warning}">{{vailForm.password.message}}</span>
-            <input type="text" autocomplete="off" v-model="form.password" :placeholder="form.passwordPlaceholder"
-                   @blur="vail('password')" @focus="focus('password')" @input="isCorrect('password')"
-                   v-on:keyup.enter="submit" onfocus="this.type='password'">
+            <input
+              type="text"
+              autocomplete="off"
+              v-model="form.password"
+              :placeholder="form.passwordPlaceholder"
+              @blur="vail('password')"
+              @focus="focus('password')"
+              @input="isCorrect('password')"
+              v-on:keyup.enter="submit"
+              onfocus="this.type='password'"
+            />
           </div>
           <div style="position:relative">
             <span>{{vailForm.vailCode.message}}</span>
-            <input type="text" autocomplete="off" v-model="form.vailCode" name="vailCode"
-                   :placeholder="form.vailCodePlaceholder" @blur="vail('vailCode')" @focus="focus('vailCode')"
-                   @input="isCorrect('vailCode')" v-on:keyup.enter="submit">
-            <img :src="imgSrc" @click="imgSrc=`https://activity.xinruiyun.cn/user/getKaptchaImage.do?t=${new Date().getTime()}`">
+            <input
+              type="text"
+              autocomplete="off"
+              v-model="form.vailCode"
+              name="vailCode"
+              :placeholder="form.vailCodePlaceholder"
+              @blur="vail('vailCode')"
+              @focus="focus('vailCode')"
+              @input="isCorrect('vailCode')"
+              v-on:keyup.enter="submit"
+            />
+            <img
+              :src="imgSrc"
+              @click="imgSrc=`https://activity.xinruiyun.cn/user/getKaptchaImage.do?t=${new Date().getTime()}`"
+            />
           </div>
         </form>
       </div>
@@ -133,9 +178,11 @@
             立即注册
             <span>注册完成之后记得回到活动页面领取50G存储包哦！</span>
           </a>
-          <a href="https://i.xinruiyun.cn/resetnew"  target="_blank" style="color:#0EB4FA;cursor:pointer;margin-top: 10px;float:right;font-size:14px">
-            忘记密码
-          </a>
+          <a
+            href="https://i.xinruiyun.cn/resetnew"
+            target="_blank"
+            style="color:#0EB4FA;cursor:pointer;margin-top: 10px;float:right;font-size:14px"
+          >忘记密码</a>
         </div>
       </div>
     </Modal>
@@ -143,281 +190,350 @@
 </template>
 
 <script type="text/ecmascript-6">
-import axios from '@/util/axiosInterceptor'
-import regExp from '../../../util/regExp'
-import $store from '@/vuex'
+import axios from "@/util/axiosInterceptor";
+import regExp from "../../../util/regExp";
+import $store from "@/vuex";
 var messageMap = {
   loginname: {
-    placeholder: '登录邮箱/手机号',
-    errorMessage: '请输入正确的邮箱/手机号'
+    placeholder: "登录邮箱/手机号",
+    errorMessage: "请输入正确的邮箱/手机号"
   },
   password: {
-    placeholder: '密码',
+    placeholder: "密码"
   },
   vailCode: {
-    placeholder: '请输入验证码',
-  },
-}
+    placeholder: "请输入验证码"
+  }
+};
 export default {
   metaInfo: {
-    title: '免费对象存储OSS，免费领取50G存储包 - 活动中心 - 新睿云', // set a title
-    meta: [{                 // set meta
-      name: 'keywords',
-      content: '免费对象存储'
-    },
-      {                 // set meta
-        name: 'description',
-        content: '新睿云推出对象存储OSS活动，免费领取50G存储包，新老用户均可领取，每人只可领取一次，新睿云对象存储OSS聚焦海量、安全、低成本、高可靠的云存储服务，提供99.999999999%的数据可靠性。'
-      }]
+    title: "免费对象存储OSS，免费领取50G存储包 - 活动中心 - 新睿云", // set a title
+    meta: [
+      {
+        // set meta
+        name: "keywords",
+        content: "免费对象存储"
+      },
+      {
+        // set meta
+        name: "description",
+        content:
+          "新睿云推出对象存储OSS活动，免费领取50G存储包，新老用户均可领取，每人只可领取一次，新睿云对象存储OSS聚焦海量、安全、低成本、高可靠的云存储服务，提供99.999999999%的数据可靠性。"
+      }
+    ]
   },
-  created () {
-    axios.get('/ruiradosPrice/zoneList.do').then(response => {
-        if (response.status == 200 && response.data.status == 1) {
-          var defaultZoneObj = []
-          defaultZoneObj = response.data.data.zoneList.filter(item => {
-            return item.zonename == '北京一区'
-          })
-          this.defaultZoneid = defaultZoneObj[0].zoneid
-          this.defaultZonename = defaultZoneObj[0].zonename
-          // 获取token
-          if (this.$store.state.authInfo) {
-            axios.post('user/getRuiRadosApiacess.do', {
+  created() {
+    axios.get("/ruiradosPrice/zoneList.do").then(response => {
+      if (response.status == 200 && response.data.status == 1) {
+        var defaultZoneObj = [];
+        defaultZoneObj = response.data.data.zoneList.filter(item => {
+          return item.zonename == "北京一区";
+        });
+        this.defaultZoneid = defaultZoneObj[0].zoneid;
+        this.defaultZonename = defaultZoneObj[0].zonename;
+        // 获取token
+        if (this.$store.state.authInfo) {
+          axios
+            .post("user/getRuiRadosApiacess.do", {
               zoneId: this.defaultZoneid,
               companyId: $store.state.authInfo.companyid
-            }).then(response => {
-              if (response.status == 200 && response.data.status == 1) {
-                var radosApIaccessKey = response.data.data.data
-                axios.get('user/getRadosToken.do', {
-                  params: {
-                    companyId: $store.state.authInfo.companyid,
-                    secret: radosApIaccessKey
-                  }
-                }).then(response => {
-                  if (response.status == 200) {
-                    this.token = response.data.token
-                    axios.post('user/getFluxs.do', { token: this.token }).then(response => {
-                      if (response.status == 200 && response.data.status == 1) {
-                        this.fulxSize = response.data.data.fulxList[0].size
-                        // 2领取成功 1未领取成功
-                        this.isReceive = response.data.data.fulxList[0].status == '2' ? false : true
-                        this.fulxId = response.data.data.fulxList[0].id
-                      }
-                    })
-                  }
-                })
-              }
             })
-          }
+            .then(response => {
+              if (response.status == 200 && response.data.status == 1) {
+                var radosApIaccessKey = response.data.data.data;
+                axios
+                  .get("user/getRadosToken.do", {
+                    params: {
+                      companyId: $store.state.authInfo.companyid,
+                      secret: radosApIaccessKey
+                    }
+                  })
+                  .then(response => {
+                    if (response.status == 200) {
+                      this.token = response.data.token;
+                      axios
+                        .post("user/getFluxs.do", { token: this.token })
+                        .then(response => {
+                          if (
+                            response.status == 200 &&
+                            response.data.status == 1
+                          ) {
+                            this.fulxSize = response.data.data.fulxList[0].size;
+                            // 2领取成功 1未领取成功
+                            this.isReceive =
+                              response.data.data.fulxList[0].status == "2"
+                                ? false
+                                : true;
+                            this.fulxId = response.data.data.fulxList[0].id;
+                          }
+                        });
+                    }
+                  });
+              }
+            });
         }
-      })
+      }
+    });
   },
-  data () {
+  data() {
     return {
-      defaultZonename: '',
-      defaultZoneid: '',
+      defaultZonename: "",
+      defaultZoneid: "",
       isAccessKey: false,
       getFulx: false,
-      fulxMessage: '存储包已领取成功，请前往控制台进行查看！',
-      fulxSize: '50',
+      fulxMessage: "存储包已领取成功，请前往控制台进行查看！",
+      fulxSize: "50",
       isReceive: true,
-      fulxId: '',
-      token: '',
+      fulxId: "",
+      token: "",
       loginModal: false,
       form: {
-        loginname: '',
-        password: '',
-        vailCode: '',
-        loginnamePlaceholder: '登录邮箱/手机号',
-        passwordPlaceholder: '密码',
-        vailCodePlaceholder: '请输入验证码',
+        loginname: "",
+        password: "",
+        vailCode: "",
+        loginnamePlaceholder: "登录邮箱/手机号",
+        passwordPlaceholder: "密码",
+        vailCodePlaceholder: "请输入验证码"
       },
       vailForm: {
         loginname: {
-          message: '',
+          message: "",
           warning: false
         },
         password: {
-          message: '',
+          message: "",
           warning: false
         },
         vailCode: {
-          message: '',
+          message: "",
           warning: false
-        },
+        }
       },
-      imgSrc: 'https://activity.xinruiyun.cn/user/getKaptchaImage.do',
+      imgSrc: "https://activity.xinruiyun.cn/user/getKaptchaImage.do",
       advantageData: [
         {
-          img: require('./../../../assets/img/active/objstorage-active/objactive-section3-icon1.png'),
-          title: '安全可靠',
-          desc: '数据自动冗余备份，智能调度。可实现自动故障恢复，服务可用性不低于99.9%通过密钥鉴权，实现读写权限分离，服务器端加密，VPC网络隔离，支持跨区域复制，异地容灾机制。 '
+          img: require("./../../../assets/img/active/objstorage-active/objactive-section3-icon1.png"),
+          title: "安全可靠",
+          desc:
+            "数据自动冗余备份，智能调度。可实现自动故障恢复，服务可用性不低于99.9%通过密钥鉴权，实现读写权限分离，服务器端加密，VPC网络隔离，支持跨区域复制，异地容灾机制。 "
         },
         {
-          img: require('./../../../assets/img/active/objstorage-active/objactive-section3-icon2.png'),
-          title: '简单易用',
-          desc: '可通过Restful API多版本SDK进行各类操作，如创建、删除存储空间，上传、分享、下载、删除数据文件，以及设置文件，存储空间权限等；随时随地可存储、获取所需数据文件。 '
+          img: require("./../../../assets/img/active/objstorage-active/objactive-section3-icon2.png"),
+          title: "简单易用",
+          desc:
+            "可通过Restful API多版本SDK进行各类操作，如创建、删除存储空间，上传、分享、下载、删除数据文件，以及设置文件，存储空间权限等；随时随地可存储、获取所需数据文件。 "
         },
         {
-          img: require('./../../../assets/img/active/objstorage-active/objactive-section3-icon3.png'),
-          title: '弹性存储',
-          desc: '超高硬件设施，全SSD存储，超高IOPS，提供PB级海量存储空间，用户理论上可以使用无限大小的空间，随时弹性伸缩，无需担心存储空间成为业务爆发性增长的瓶颈。 '
+          img: require("./../../../assets/img/active/objstorage-active/objactive-section3-icon3.png"),
+          title: "弹性存储",
+          desc:
+            "超高硬件设施，全SSD存储，超高IOPS，提供PB级海量存储空间，用户理论上可以使用无限大小的空间，随时弹性伸缩，无需担心存储空间成为业务爆发性增长的瓶颈。 "
         }
       ],
       applicationData: [
         {
-          label: '海量数据归档备份',
-          content: '面对海量数据上云备份（冷/热备）的场景，新睿云对象存储根据数据的访问频度提供了两种存储方式，针对那些访问频率比较低且对访问速度要求不高的冷数据，可以建议您将数据保存在低频访问型存储中，如此可以在不降低数据耐久性的前提之下，降低存储费用约50%，为您的数据备份提供了一个海量低价的空间。'
+          label: "海量数据归档备份",
+          content:
+            "面对海量数据上云备份（冷/热备）的场景，新睿云对象存储根据数据的访问频度提供了两种存储方式，针对那些访问频率比较低且对访问速度要求不高的冷数据，可以建议您将数据保存在低频访问型存储中，如此可以在不降低数据耐久性的前提之下，降低存储费用约50%，为您的数据备份提供了一个海量低价的空间。"
         },
         {
-          label: '跨区域复制容灾',
-          content: '用户存储数据可以通过的跨区域复制功能实时同步到指定区域，实现数据异地容灾，从容应对极端灾难保证业务流畅，为重要数据加上多重保险。'
+          label: "跨区域复制容灾",
+          content:
+            "用户存储数据可以通过的跨区域复制功能实时同步到指定区域，实现数据异地容灾，从容应对极端灾难保证业务流畅，为重要数据加上多重保险。"
         },
         {
-          label: '数据加速分发',
-          content: '面对视频点播源，图片资源等热点文件下发的场景，您可以将新睿云的对象存储和CDN服务搭配使用，实现全网覆盖、快速高效的内容分发，使您灵活应对大流量和高并发的业务场景。您可以使用对象存储作为源站，将热点资源放在对象存储，然后通过CDN将资源下发给终端用户。这样以来，既降低了您下发的流量费用，又降低了终端访问的时延。'
+          label: "数据加速分发",
+          content:
+            "面对视频点播源，图片资源等热点文件下发的场景，您可以将新睿云的对象存储和CDN服务搭配使用，实现全网覆盖、快速高效的内容分发，使您灵活应对大流量和高并发的业务场景。您可以使用对象存储作为源站，将热点资源放在对象存储，然后通过CDN将资源下发给终端用户。这样以来，既降低了您下发的流量费用，又降低了终端访问的时延。"
         }
-
       ],
-      checkIndex: 0,
-    }
+      checkIndex: 0
+    };
   },
   methods: {
-    freeReceive () {
+    freeReceive() {
       if (!this.$store.state.userInfo) {
-        this.$LR({type:'login'})
-        return
+        this.$LR({ type: "login" });
+        return;
       }
-      if ((!this.authInfo)|| (this.authInfo&&this.authInfo.authtype==0&&this.authInfo.checkstatus!=0)||(!this.authInfoPersion &&this.authInfo&&this.authInfo.authtype==1&&this.authInfo.checkstatus!=0)||(this.authInfoPersion&&this.authInfoPersion.checkstatus!=0 && this.authInfo&&this.authInfo.checkstatus!=0)) {
+      if (
+        !this.authInfo ||
+        (this.authInfo &&
+          this.authInfo.authtype == 0 &&
+          this.authInfo.checkstatus != 0) ||
+        (!this.authInfoPersion &&
+          this.authInfo &&
+          this.authInfo.authtype == 1 &&
+          this.authInfo.checkstatus != 0) ||
+        (this.authInfoPersion &&
+          this.authInfoPersion.checkstatus != 0 &&
+          this.authInfo &&
+          this.authInfo.checkstatus != 0)
+      ) {
         this.$Modal.confirm({
           scrollable: true,
-          title: '提示',
-          content: '您好，你还未进行实名认证，请先实名认证即可参加此活动。<a href="userCenter">立即认证</a>',
+          title: "提示",
+          content:
+            '您好，你还未进行实名认证，请先实名认证即可参加此活动。<a href="userCenter">立即认证</a>',
           onOk: () => {
             // this.$router.push('/userCenter')
-            window.open('https://i.xinruiyun.cn/usercenter', 'self')
+            window.open("https://i.xinruiyun.cn/usercenter", "self");
           }
-        })
-        return
+        });
+        return;
       }
-      axios.post('user/increaseFlux.do', {
-        flux_id: this.fulxId, zoneId: this.defaultZoneid, token: this.token
-      }).then(response => {
-        if (response.status == 200 && response.data.status == 27 || response.status == 200 && response.data.status == 28) {
-          this.getFulx = true
-          this.fulxMessage = response.data.msg
-          this.isAccessKey = $store.state.accessKey
-        } else {
-          this.getFulx = false
-          this.$Message.error('领取失败')
-        }
-      })
+      axios
+        .post("user/increaseFlux.do", {
+          flux_id: this.fulxId,
+          zoneId: this.defaultZoneid,
+          token: this.token
+        })
+        .then(response => {
+          if (
+            (response.status == 200 && response.data.status == 27) ||
+            (response.status == 200 && response.data.status == 28)
+          ) {
+            this.getFulx = true;
+            this.fulxMessage = response.data.msg;
+            this.isAccessKey = $store.state.accessKey;
+          } else {
+            this.getFulx = false;
+            this.$Message.error("领取失败");
+          }
+        });
     },
-    createdKey () {
-      this.$store.commit('setPane', {vpc: 'VPC', vpn: 'remote', usercenter: 'key'})
+    createdKey() {
+      this.$store.commit("setPane", {
+        vpc: "VPC",
+        vpn: "remote",
+        usercenter: "key"
+      });
       // this.$router.push('/userCenter')
-      window.open('https://i.xinruiyun.cn/usercenter', 'self')
+      window.open("https://i.xinruiyun.cn/usercenter", "self");
     },
-    vail (field) {
+    vail(field) {
       var text = this.form[field];
-      if (text == '') {
-        this.vailForm[field].message = ''
-        this.form[`${field}Placeholder`] = messageMap[field].placeholder
+      if (text == "") {
+        this.vailForm[field].message = "";
+        this.form[`${field}Placeholder`] = messageMap[field].placeholder;
         this.vailForm[field].warning = false;
-        return
+        return;
       }
 
-      var isLegal = field == 'loginname' ? regExp.emailVail(text) : field == 'password' ? regExp.passwordVail(text) : true;
-      if (!isLegal && field == 'loginname') {
+      var isLegal =
+        field == "loginname"
+          ? regExp.emailVail(text)
+          : field == "password"
+          ? regExp.passwordVail(text)
+          : true;
+      if (!isLegal && field == "loginname") {
         this.vailForm[field].message = messageMap[field].errorMessage;
-        this.vailForm[field].warning = true
+        this.vailForm[field].warning = true;
       } else {
         this.vailForm[field].message = messageMap[field].placeholder;
-        this.vailForm[field].warning = false
+        this.vailForm[field].warning = false;
       }
     },
-    isCorrect (field) {
-      if (field == 'vailCode') {
+    isCorrect(field) {
+      if (field == "vailCode") {
         //this.vailForm.vailCode.message = messageMap.vailCode.placeholder
-        this.vailForm.vailCode.warning = false
-      } else if (field == 'loginname') {
+        this.vailForm.vailCode.warning = false;
+      } else if (field == "loginname") {
         if (regExp.emailVail(this.form[field])) {
-          this.vailForm.loginname.message = messageMap.loginname.placeholder
-          this.vailForm.loginname.warning = false
+          this.vailForm.loginname.message = messageMap.loginname.placeholder;
+          this.vailForm.loginname.warning = false;
         }
       } else {
         if (regExp.passwordVail(this.form[field])) {
-          this.vailForm.loginname.message = messageMap.loginname.placeholder
-          this.vailForm.loginname.warning = false
+          this.vailForm.loginname.message = messageMap.loginname.placeholder;
+          this.vailForm.loginname.warning = false;
         }
       }
-
     },
-    focus (field) {
-      if (field == 'vailCode' && this.vailForm.loginname.message == '验证码错误') {
-        this.vailForm.loginname.message = messageMap.loginname.placeholder
-        this.vailForm.loginname.warning = false
+    focus(field) {
+      if (
+        field == "vailCode" &&
+        this.vailForm.loginname.message == "验证码错误"
+      ) {
+        this.vailForm.loginname.message = messageMap.loginname.placeholder;
+        this.vailForm.loginname.warning = false;
       }
-      if ((field == 'loginname' || field == 'password') && this.vailForm.loginname.message == '用户名或密码错误') {
-        this.vailForm.loginname.message = messageMap.loginname.placeholder
-        this.vailForm.loginname.warning = false
+      if (
+        (field == "loginname" || field == "password") &&
+        this.vailForm.loginname.message == "用户名或密码错误"
+      ) {
+        this.vailForm.loginname.message = messageMap.loginname.placeholder;
+        this.vailForm.loginname.warning = false;
       }
       var text = this.form[field];
-      this.form[`${field}Placeholder`] = ''
-      if (text == '') {
-        this.vailForm[field].message = messageMap[field].placeholder
-        return
+      this.form[`${field}Placeholder`] = "";
+      if (text == "") {
+        this.vailForm[field].message = messageMap[field].placeholder;
+        return;
       }
-      var isLegal = field == 'loginname' ? regExp.emailVail(text) : field == 'password' ? regExp.passwordVail(text) : true;
+      var isLegal =
+        field == "loginname"
+          ? regExp.emailVail(text)
+          : field == "password"
+          ? regExp.passwordVail(text)
+          : true;
 
-      if (!isLegal && field == 'loginname') {
+      if (!isLegal && field == "loginname") {
         this.vailForm[field].message = messageMap[field].errorMessage;
-        this.vailForm[field].warning = true
+        this.vailForm[field].warning = true;
       } else {
         this.vailForm[field].message = messageMap[field].placeholder;
-        this.vailForm[field].warning = false
+        this.vailForm[field].warning = false;
       }
     },
-    submit () {
-      this.$http.get('user/login.do', {
-        params: {
-          username: this.form.loginname,
-          password: this.form.password,
-          vailCode: this.form.vailCode
-        }
-      }).then((response) => {
-        if (response.status == 200 && response.statusText == 'OK') {
-          if (response.data.status == 1) {
-            this.$router.go(0)
-          } else {
-            this.imgSrc = `https://activity.xinruiyun.cn/user/getKaptchaImage.do?t=${new Date().getTime()}`
-            this.vailForm.loginname.message = response.data.message
-            this.vailForm.loginname.warning = true
+    submit() {
+      this.$http
+        .get("user/login.do", {
+          params: {
+            username: this.form.loginname,
+            password: this.form.password,
+            vailCode: this.form.vailCode
           }
-        }
-      }
-      )
-        ;
+        })
+        .then(response => {
+          if (response.status == 200 && response.statusText == "OK") {
+            if (response.data.status == 1) {
+              this.$router.go(0);
+            } else {
+              this.imgSrc = `https://activity.xinruiyun.cn/user/getKaptchaImage.do?t=${new Date().getTime()}`;
+              this.vailForm.loginname.message = response.data.message;
+              this.vailForm.loginname.warning = true;
+            }
+          }
+        });
     }
   },
   computed: {
-    disabled () {
-      return !(this.form.loginname && this.form.password && this.form.vailCode && this.vailForm.loginname.warning == false)
+    disabled() {
+      return !(
+        this.form.loginname &&
+        this.form.password &&
+        this.form.vailCode &&
+        this.vailForm.loginname.warning == false
+      );
     },
     authInfo() {
-        return this.$store.state.authInfo ? this.$store.state.authInfo : null
-      },
-    authInfoPersion(){
-        return this.$store.state.authInfoPersion
-      },
+      return this.$store.state.authInfo ? this.$store.state.authInfo : null;
+    },
+    authInfoPersion() {
+      return this.$store.state.authInfoPersion;
+    }
   },
   watch: {},
   components: {}
-}
+};
 </script>
 
 <style rel="stylesheet/less" lang="less" scoped>
 .objstorage-active {
-  li {list-style: none}
+  li {
+    list-style: none;
+  }
   font-family: PingFangSC-Regular;
   color: #333;
   overflow: hidden;

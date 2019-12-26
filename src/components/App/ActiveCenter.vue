@@ -23,7 +23,7 @@
                     src="../../assets/img/active/anniversary/anniversary-banner-text.png"
                     alt="企业上云突破5万，回馈老用户"
                     style="width:467px"
-                  /> -->
+                  />-->
                   <!-- <Button>点击查看</Button> -->
                 </div>
                 <div class="img">
@@ -127,51 +127,55 @@
 </template>
 
 <script type="text/ecmascript-6">
-import axios from '@/util/axiosInterceptor'
+import axios from "@/util/axiosInterceptor";
 export default {
   metaInfo: {
-    title: '云服务器低价优惠活动 - 特价云服务器体验 - 活动中心 - 新睿云',
-    meta: [{
-      name: 'keywords',
-      content: '云服务器活动,云服务器活动,低价云服务器,云服务器体验,云服务器优惠,特价云服务器'
-    },
-    {
-      name: 'description',
-      content: '新睿云活动中心汇聚了云服务器,云数据库,对象存储等产品,推出新春采购季、免费云服务器、打折促销,分享赚时长等多种优惠活动！'
-    }]
+    title: "云服务器低价优惠活动 - 特价云服务器体验 - 活动中心 - 新睿云",
+    meta: [
+      {
+        name: "keywords",
+        content:
+          "云服务器活动,云服务器活动,低价云服务器,云服务器体验,云服务器优惠,特价云服务器"
+      },
+      {
+        name: "description",
+        content:
+          "新睿云活动中心汇聚了云服务器,云数据库,对象存储等产品,推出新春采购季、免费云服务器、打折促销,分享赚时长等多种优惠活动！"
+      }
+    ]
   },
-  data () {
+  data() {
     return {
       active: [],
       allActive: [],
-      activedata: [
-      ],
+      activedata: [],
       onsaleData: []
-    }
+    };
   },
   methods: {
-    push (url) {
-      this.$router.push(url)
+    push(url) {
+      this.$router.push(url);
     },
-    change (activeIndex) {
-      this.activeBanner = activeIndex + 1
+    change(activeIndex) {
+      this.activeBanner = activeIndex + 1;
     }
   },
-  computed: {
-  },
-  created () {
-    axios.get('/activity/getActivitys.do', {
-      params: {}
-    }).then(res => {
-      if (res.status === 200 && res.data.status === 1) {
-        this.allActive = res.data.result.classfy_one
-        this.onsaleData = res.data.result.classfy_two
-      }
-    })
+  computed: {},
+  created() {
+    axios
+      .get("/activity/getActivitys.do", {
+        params: {}
+      })
+      .then(res => {
+        if (res.status === 200 && res.data.status === 1) {
+          this.allActive = res.data.result.classfy_one;
+          this.onsaleData = res.data.result.classfy_two;
+        }
+      });
   },
   watch: {},
   components: {}
-}
+};
 </script>
 
 <style rel="stylesheet/less" lang="less">
@@ -420,8 +424,8 @@ export default {
         height: 183px;
         margin-bottom: 20px;
         margin-right: 20px;
-        &:nth-of-type(3n+3) {
-          margin-right: 0
+        &:nth-of-type(3n + 3) {
+          margin-right: 0;
         }
         cursor: pointer;
         background-repeat: no-repeat;
@@ -524,7 +528,7 @@ export default {
       width: 100%;
       height: auto;
       margin-bottom: 4px;
-      margin-right: 0
+      margin-right: 0;
     }
     .hide {
       display: none;

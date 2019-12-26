@@ -7,466 +7,475 @@
         </div>
       </div>
       <img v-if="hintShow" @click="closeHeadHint" src="./assets/img/app/hint-icon1.png"/>
-    </div> -->
+    </div>-->
     <!-- 首页公用header -->
     <header>
-          <div class='pc-top'>
-                <div class="pc-head">
-                    <a class="navbar-brand logo" href="https://www.xinruiyun.cn/" alt='新睿云'>
-                        <img src='./assets/img/home/logo.gif'>
-                    </a>
-                    <div class="p-collapse">
-                        <div style="display: flex;">
-                            <a class="p-link" href="https://help.xinruiyun.cn/" target="_blank">
-                                帮助文档
-                            </a>
-                            <a class="p-link" href="https://www.xinruiyun.cn/news" target="_blank"> 
-                                新闻动态
-                            </a>
-                            <a class="p-link pb" href='https://i.xinruiyun.cn/overview' title="控制台">
-                                控制台
-                            </a>
-                            <div v-if='!userInfo'>
-                                <a class="lg-in" href="https://i.xinruiyun.cn/login"  title="登录">登录</a>
-                                <a class="lg-re" href="https://i.xinruiyun.cn/register" title="注册">注册</a>
-                            </div>
+      <div class="pc-top">
+        <div class="pc-head">
+          <a class="navbar-brand logo" href="https://www.xinruiyun.cn/" alt="新睿云">
+            <img src="./assets/img/home/logo.gif" />
+          </a>
+          <div class="p-collapse">
+            <div style="display: flex;">
+              <a class="p-link" href="https://help.xinruiyun.cn/" target="_blank">帮助文档</a>
+              <a class="p-link" href="https://www.xinruiyun.cn/news" target="_blank">新闻动态</a>
+              <a class="p-link pb" href="https://i.xinruiyun.cn/overview" title="控制台">控制台</a>
+              <div v-if="!userInfo">
+                <a class="lg-in" href="https://i.xinruiyun.cn/login" title="登录">登录</a>
+                <a class="lg-re" href="https://i.xinruiyun.cn/register" title="注册">注册</a>
+              </div>
 
-                            <ul v-else class="user-list">
-                                <li >
-                                  <Dropdown @on-click="go">
-                                    <a href="javascript:void(0)" class="user-fn">
-                                      {{ userInfo?userInfo.realname:''}}
-                                      <Icon type="arrow-down-b"></Icon>
-                                    </a>
-                                    <DropdownMenu slot="list">
-                                      <DropdownItem name="usercenter">
-                                        <a href="https://i.xinruiyun.cn/usercenter">用户中心</a>
-                                      </DropdownItem>
-                                      <DropdownItem name="expenses">
-                                        <a href="https://i.xinruiyun.cn/expenses">费用中心</a>
-                                      </DropdownItem>
-                                      <DropdownItem name="msgcenter" style="position:relative">
-                                        <a href="https://i.xinruiyun.cn/msgcenter">消息中心</a>
-                                      </DropdownItem>
-                                      <DropdownItem name="operationlog">
-                                        <a href="https://i.xinruiyun.cn/operationlog">操作日志</a>
-                                      </DropdownItem>
-                                      <DropdownItem divided name="exit">
-                                        <span style="color:#666;">退出</span>
-                                      </DropdownItem>
-                                    </DropdownMenu>
-                                  </Dropdown>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="nav-list">
-                    <ul class="nav-left" @mouseleave='styleClass(-1,$event)'>
-                        <!-- <li class="ad" @click="$router.push('/anniversary/')"><img src="./assets/img/active/anniversary/aa-ad.png" alt="周年庆活动广告"></li> -->
-                        <li class="nav-item ml100" @mouseenter='styleClass(0,$event)'>
-                            <router-link to="/" title="活动中心">活动中心</router-link>
-                        </li>
-                        <li class="nav-item" @mouseenter='styleClass(1,$event)'>
-                            <a href="https://www.xinruiyun.cn/">首页</a>
-                        </li>
-                        <Poptip placement="bottom-start" trigger="hover">
-                            <li class="nav-item active" @mouseenter='styleClass(-1,$event)'>
-                                <a>云计算</a>
-                            </li>
-                            <ul slot="content" class="np-bs" v-cloak>
-                                <li class="np-item">
-                                    <a href="https://www.xinruiyun.cn/ecs/">弹性云服务器ECS <img src="./assets/img/home/iconHot.png" /></a>
-                                    <div class="buy-box">
-                                        <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                        <a class="buy-font" href="https://i.xinruiyun.cn/buy/host">立即购买</a>
-                                    </div>
-                                </li>
-                                <li class="np-item">
-                                    <a href='https://www.xinruiyun.cn/ims/'>镜像服务</a>
-                                </li>
-                                <li class="np-item">
-                                    <a href="https://www.xinruiyun.cn/ecss/">云服务器快照</a>
-                                </li>
-                                <li class="np-item">
-                                    <a href="https://www.xinruiyun.cn/gpu/">GPU加速云服务器</a>
-                                    <div class="buy-box">
-                                        <img class="buy-img" src='./assets/img/home/buy-icon.png' />
-                                        <a class="buy-font" href="https://i.xinruiyun.cn/buy/gpu">立即购买</a>
-                                    </div>
-                                </li>
-                                <li class="np-dis">
-                                    <!-- <a href="https://www.xinruiyun.cn/ddos/">DDoS高防云服务器</a>
+              <ul v-else class="user-list">
+                <li>
+                  <Dropdown @on-click="go">
+                    <a href="javascript:void(0)" class="user-fn">
+                      {{ userInfo?userInfo.realname:''}}
+                      <Icon type="arrow-down-b"></Icon>
+                    </a>
+                    <DropdownMenu slot="list">
+                      <DropdownItem name="usercenter">
+                        <a href="https://i.xinruiyun.cn/usercenter">用户中心</a>
+                      </DropdownItem>
+                      <DropdownItem name="expenses">
+                        <a href="https://i.xinruiyun.cn/expenses">费用中心</a>
+                      </DropdownItem>
+                      <DropdownItem name="msgcenter" style="position:relative">
+                        <a href="https://i.xinruiyun.cn/msgcenter">消息中心</a>
+                      </DropdownItem>
+                      <DropdownItem name="operationlog">
+                        <a href="https://i.xinruiyun.cn/operationlog">操作日志</a>
+                      </DropdownItem>
+                      <DropdownItem divided name="exit">
+                        <span style="color:#666;">退出</span>
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="nav-list">
+          <ul class="nav-left" @mouseleave="styleClass(-1,$event)">
+            <!-- <li class="ad" @click="$router.push('/anniversary/')"><img src="./assets/img/active/anniversary/aa-ad.png" alt="周年庆活动广告"></li> -->
+            <li class="nav-item ml100" @mouseenter="styleClass(0,$event)">
+              <router-link to="/" title="活动中心">活动中心</router-link>
+            </li>
+            <li class="nav-item" @mouseenter="styleClass(1,$event)">
+              <a href="https://www.xinruiyun.cn/">首页</a>
+            </li>
+            <Poptip placement="bottom-start" trigger="hover">
+              <li class="nav-item active" @mouseenter="styleClass(-1,$event)">
+                <a>云计算</a>
+              </li>
+              <ul slot="content" class="np-bs" v-cloak>
+                <li class="np-item">
+                  <a href="https://www.xinruiyun.cn/ecs/">
+                    弹性云服务器ECS
+                    <img src="./assets/img/home/iconHot.png" />
+                  </a>
+                  <div class="buy-box">
+                    <img class="buy-img" src="./assets/img/home/buy-icon.png" />
+                    <a class="buy-font" href="https://i.xinruiyun.cn/buy/host">立即购买</a>
+                  </div>
+                </li>
+                <li class="np-item">
+                  <a href="https://www.xinruiyun.cn/ims/">镜像服务</a>
+                </li>
+                <li class="np-item">
+                  <a href="https://www.xinruiyun.cn/ecss/">云服务器快照</a>
+                </li>
+                <li class="np-item">
+                  <a href="https://www.xinruiyun.cn/gpu/">GPU加速云服务器</a>
+                  <div class="buy-box">
+                    <img class="buy-img" src="./assets/img/home/buy-icon.png" />
+                    <a class="buy-font" href="https://i.xinruiyun.cn/buy/gpu">立即购买</a>
+                  </div>
+                </li>
+                <li class="np-dis">
+                  <!-- <a href="https://www.xinruiyun.cn/ddos/">DDoS高防云服务器</a>
                                     <div class="buy-box">
                                         <img class="buy-img" src='./assets/img/home/buy-icon.png' />
                                         <a class="buy-font" href="https://i.xinruiyun.cn/buy/ddos">立即购买</a>
-                                    </div> -->
-                                    DDoS高防云服务器(敬请期待)
-                                </li>
-                                <li class="np-dis">
-                                    裸金属服务器(敬请期待)
-                                </li>
-                                <li class="np-item">
-                                    <a href='https://www.xinruiyun.cn/evs/'>云硬盘</a>
-                                    <div class="buy-box">
-                                        <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                        <a class="buy-font" href="https://i.xinruiyun.cn/buy/disk">立即购买</a>
-                                    </div>
-                                </li>
-                                <li class="np-item">
-                                    <a href='https://www.xinruiyun.cn/vbs'>云硬盘备份</a>
-                                </li>
-                            </ul>
-                        </Poptip>
+                  </div>-->
+                  DDoS高防云服务器(敬请期待)
+                </li>
+                <li class="np-dis">裸金属服务器(敬请期待)</li>
+                <li class="np-item">
+                  <a href="https://www.xinruiyun.cn/evs/">云硬盘</a>
+                  <div class="buy-box">
+                    <img class="buy-img" src="./assets/img/home/buy-icon.png" />
+                    <a class="buy-font" href="https://i.xinruiyun.cn/buy/disk">立即购买</a>
+                  </div>
+                </li>
+                <li class="np-item">
+                  <a href="https://www.xinruiyun.cn/vbs">云硬盘备份</a>
+                </li>
+              </ul>
+            </Poptip>
 
-                        <Poptip placement="bottom-start" trigger="hover">
-                            <li class="nav-item active" @mouseenter='styleClass(-1,$event)'>
-                                <a href="#">网络与安全</a>
-                            </li>
-                            <div slot='content' class="np-box" v-cloak>
-                                <div class="np-title">
-                                    <p>云网络</p>
-                                </div>
-                                <ul class="np-bs">
-                                    <li class="np-item">
-                                        <a href='https://www.xinruiyun.cn/vpc/'>虚拟私有云VPC</a>
-                                    </li>
-                                    <li class="np-item">
-                                        <a href='https://www.xinruiyun.cn/nat/'>NAT网关</a>
-                                    </li>
-                                    <li class="np-item">
-                                        <a href="https://www.xinruiyun.cn/eip/">弹性公网IP</a>
-                                        <div class="buy-box">
-                                            <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                            <a class="buy-font" href='https://i.xinruiyun.cn/buy/elasticip'>立即购买</a>
-                                        </div>
-                                    </li>
-                                    <li class="np-item">
-                                        <a href='https://www.xinruiyun.cn/slb/'>负载均衡</a>
-                                    </li>
-                                    <li class="np-item">
-                                        <a href='https://www.xinruiyun.cn/vpn/'>虚拟专网VPN</a>
-                                    </li>
-                                    <li class="np-dis">
-                                        CDN(敬请期待)
-                                    </li>
-                                </ul>
-                                <div class="np-title2">
-                                    <p>云安全</p>
-                                </div>
-                                <ul class="np-bs">
-                                    <li class="np-item">
-                                        <a href='https://www.xinruiyun.cn/fw/'>防火墙</a>
-                                    </li>
-                                    <li class="np-item">
-                                        <a>SSL证书</a>
-                                        <div class="buy-box">
-                                            <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                            <span class="buy-font">立即购买</span>
-                                        </div>
-                                    </li>
-                                    <li class="np-item">
-                                        <a href="https://www.xinruiyun.cn/ddosip/">DDoS高防IP</a>
-                                        <div class="buy-box">
-                                            <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                             <a class="buy-font" href='https://i.xinruiyun.cn/buy/ddosip'>立即购买</a>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </Poptip>
-
-                    
-                        <li class="nav-item active" @mouseenter='styleClass(3,$event)'>
-                          <a href='https://www.xinruiyun.cn/oss/'>对象存储</a>
-                        </li>
-
-                        <Poptip placement="bottom-start" trigger="hover">
-                            <li class="nav-item active" @mouseenter='styleClass(-1,$event)'>
-                                <a>域名与备案</a>
-                            </li>
-                            <ul slot="content" class="np-bs" v-cloak>
-                                <li class="np-item">
-                                    <a href="https://i.xinruiyun.cn/domain/">域名注册</a>
-                                </li>
-                                <li class="np-item">
-                                    <a href="https://i.xinruiyun.cn/icp/">域名备案</a>
-                                </li>
-                            </ul>
-                        </Poptip>
-
-                        <Poptip placement="bottom-start" trigger="hover">
-                            <li class="nav-item active" @mouseenter='styleClass(-1,$event)'>
-                                <a href="#">其他产品</a>
-                            </li>
-                            <div slot='content' class="np-box" v-cloak>
-                                <div class="np-title">
-                                    <p>云数据库</p>
-                                </div>
-                                <ul class="np-bs">
-                                    <li class="np-item">
-                                        <a href='https://www.xinruiyun.cn/mysql/'>云数据库MySQL</a>
-                                        <div class="buy-box">
-                                            <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                            <a class="buy-font" href="https://i.xinruiyun.cn/buy/database">立即购买</a>
-                                        </div>
-                                    </li>
-                                    <li class="np-item">
-                                        <a href='https://www.xinruiyun.cn/postgresql/'>云数据库PostgreSQL</a>
-                                        <div class="buy-box">
-                                            <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                            <a class="buy-font" href="https://i.xinruiyun.cn/buy/database">立即购买</a>
-                                        </div>
-                                    </li>
-                                    <li class="np-item">
-                                        <a href='https://www.xinruiyun.cn/sqlserver/'>云数据库SQLServer</a>
-                                        <div class="buy-box">
-                                            <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                            <a class="buy-font" href="https://i.xinruiyun.cn/buy/database">立即购买</a>
-                                        </div>
-                                    </li>
-                                    <li class="np-item">
-                                        <a href='https://www.xinruiyun.cn/mongodb/'>云数据库MongoDB</a>
-                                        <div class="buy-box">
-                                            <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                            <a class="buy-font" href="https://i.xinruiyun.cn/buy/database">立即购买</a>
-                                        </div>
-                                    </li>
-                                    <li class="np-item">
-                                        <a href='https://www.xinruiyun.cn/redis/'>云数据库Redis</a>
-                                        <div class="buy-box">
-                                            <img class="buy-img" src="./assets/img/home/buy-icon.png" />
-                                            <a class="buy-font" href="https://i.xinruiyun.cn/buy/database">立即购买</a>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <div class="np-title2">
-                                    <p>云运维</p>
-                                </div>
-                                <ul class="np-bs">
-                                    <li class="np-item">
-                                        <a href='https://www.xinruiyun.cn/cms/'>云监控</a>
-                                    </li>
-                                    <li class="np-dis">
-                                        访问控制(敬请期待)
-                                    </li>
-                                </ul>
-                            </div>
-                        </Poptip>
-
-                        <!-- <li class="nav-item active" @mouseenter='styleClass(3,$event)'>
-                            <a href="#">解决方案</a>
-                        </li> -->
-                         <li class="nav-item active" @mouseenter='styleClass(4,$event)'>
-                            <a href="https://www.xinruiyun.cn/price/ecs/">定价</a>
-                        </li>
-                        <li class="nav-item active" @mouseenter='styleClass(4,$event)'>
-                            <a href="https://www.xinruiyun.cn/about/">关于我们</a>
-                        </li>
-                        <!-- <li class="nav-item active" @mouseenter='styleClass(5,$event)'>
-                            <a href="https://i.xinruiyun.cn/market">云市场</a>
-                        </li>  -->
-                    </ul>
-                    <div class="line" :style='lineStyle'></div>
+            <Poptip placement="bottom-start" trigger="hover">
+              <li class="nav-item active" @mouseenter="styleClass(-1,$event)">
+                <a href="#">网络与安全</a>
+              </li>
+              <div slot="content" class="np-box" v-cloak>
+                <div class="np-title">
+                  <p>云网络</p>
                 </div>
+                <ul class="np-bs">
+                  <li class="np-item">
+                    <a href="https://www.xinruiyun.cn/vpc/">虚拟私有云VPC</a>
+                  </li>
+                  <li class="np-item">
+                    <a href="https://www.xinruiyun.cn/nat/">NAT网关</a>
+                  </li>
+                  <li class="np-item">
+                    <a href="https://www.xinruiyun.cn/eip/">弹性公网IP</a>
+                    <div class="buy-box">
+                      <img class="buy-img" src="./assets/img/home/buy-icon.png" />
+                      <a class="buy-font" href="https://i.xinruiyun.cn/buy/elasticip">立即购买</a>
+                    </div>
+                  </li>
+                  <li class="np-item">
+                    <a href="https://www.xinruiyun.cn/slb/">负载均衡</a>
+                  </li>
+                  <li class="np-item">
+                    <a href="https://www.xinruiyun.cn/vpn/">虚拟专网VPN</a>
+                  </li>
+                  <li class="np-dis">CDN(敬请期待)</li>
+                </ul>
+                <div class="np-title2">
+                  <p>云安全</p>
+                </div>
+                <ul class="np-bs">
+                  <li class="np-item">
+                    <a href="https://www.xinruiyun.cn/fw/">防火墙</a>
+                  </li>
+                  <li class="np-item">
+                    <a>SSL证书</a>
+                    <div class="buy-box">
+                      <img class="buy-img" src="./assets/img/home/buy-icon.png" />
+                      <span class="buy-font">立即购买</span>
+                    </div>
+                  </li>
+                  <li class="np-item">
+                    <a href="https://www.xinruiyun.cn/ddosip/">DDoS高防IP</a>
+                    <div class="buy-box">
+                      <img class="buy-img" src="./assets/img/home/buy-icon.png" />
+                      <a class="buy-font" href="https://i.xinruiyun.cn/buy/ddosip">立即购买</a>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </Poptip>
+
+            <li class="nav-item active" @mouseenter="styleClass(3,$event)">
+              <a href="https://www.xinruiyun.cn/oss/">对象存储</a>
+            </li>
+
+            <Poptip placement="bottom-start" trigger="hover">
+              <li class="nav-item active" @mouseenter="styleClass(-1,$event)">
+                <a>域名与备案</a>
+              </li>
+              <ul slot="content" class="np-bs" v-cloak>
+                <li class="np-item">
+                  <a href="https://i.xinruiyun.cn/domain/">域名注册</a>
+                </li>
+                <li class="np-item">
+                  <a href="https://i.xinruiyun.cn/icp/">域名备案</a>
+                </li>
+              </ul>
+            </Poptip>
+
+            <Poptip placement="bottom-start" trigger="hover">
+              <li class="nav-item active" @mouseenter="styleClass(-1,$event)">
+                <a href="#">其他产品</a>
+              </li>
+              <div slot="content" class="np-box" v-cloak>
+                <div class="np-title">
+                  <p>云数据库</p>
+                </div>
+                <ul class="np-bs">
+                  <li class="np-item">
+                    <a href="https://www.xinruiyun.cn/mysql/">云数据库MySQL</a>
+                    <div class="buy-box">
+                      <img class="buy-img" src="./assets/img/home/buy-icon.png" />
+                      <a class="buy-font" href="https://i.xinruiyun.cn/buy/database">立即购买</a>
+                    </div>
+                  </li>
+                  <li class="np-item">
+                    <a href="https://www.xinruiyun.cn/postgresql/">云数据库PostgreSQL</a>
+                    <div class="buy-box">
+                      <img class="buy-img" src="./assets/img/home/buy-icon.png" />
+                      <a class="buy-font" href="https://i.xinruiyun.cn/buy/database">立即购买</a>
+                    </div>
+                  </li>
+                  <li class="np-item">
+                    <a href="https://www.xinruiyun.cn/sqlserver/">云数据库SQLServer</a>
+                    <div class="buy-box">
+                      <img class="buy-img" src="./assets/img/home/buy-icon.png" />
+                      <a class="buy-font" href="https://i.xinruiyun.cn/buy/database">立即购买</a>
+                    </div>
+                  </li>
+                  <li class="np-item">
+                    <a href="https://www.xinruiyun.cn/mongodb/">云数据库MongoDB</a>
+                    <div class="buy-box">
+                      <img class="buy-img" src="./assets/img/home/buy-icon.png" />
+                      <a class="buy-font" href="https://i.xinruiyun.cn/buy/database">立即购买</a>
+                    </div>
+                  </li>
+                  <li class="np-item">
+                    <a href="https://www.xinruiyun.cn/redis/">云数据库Redis</a>
+                    <div class="buy-box">
+                      <img class="buy-img" src="./assets/img/home/buy-icon.png" />
+                      <a class="buy-font" href="https://i.xinruiyun.cn/buy/database">立即购买</a>
+                    </div>
+                  </li>
+                </ul>
+                <div class="np-title2">
+                  <p>云运维</p>
+                </div>
+                <ul class="np-bs">
+                  <li class="np-item">
+                    <a href="https://www.xinruiyun.cn/cms/">云监控</a>
+                  </li>
+                  <li class="np-dis">访问控制(敬请期待)</li>
+                </ul>
+              </div>
+            </Poptip>
+
+            <!-- <li class="nav-item active" @mouseenter='styleClass(3,$event)'>
+                            <a href="#">解决方案</a>
+            </li>-->
+            <li class="nav-item active" @mouseenter="styleClass(4,$event)">
+              <a href="https://www.xinruiyun.cn/price/ecs/">定价</a>
+            </li>
+            <li class="nav-item active" @mouseenter="styleClass(4,$event)">
+              <a href="https://www.xinruiyun.cn/about/">关于我们</a>
+            </li>
+            <!-- <li class="nav-item active" @mouseenter='styleClass(5,$event)'>
+                            <a href="https://i.xinruiyun.cn/market">云市场</a>
+            </li>-->
+          </ul>
+          <div class="line" :style="lineStyle"></div>
+        </div>
+      </div>
+
+      <div class="m-head">
+        <div class="mobile-head">
+          <div class="mh-top">
+            <div class="mr-icon" @click="mIcon = !mIcon">
+              <Icon
+                type="navicon-round"
+                size="40"
+                color="#9B908E"
+                :class="mIcon?'mhead-icons':'mhead-icon'"
+              />
+            </div>
+            <a class="mobile-logo" href="https://www.xinruiyun.cn/" alt="新睿云">
+              <div class="mobile-limg">
+                <img src="./assets/img/home/logo.gif" />
+              </div>
+            </a>
+            <div class="m-logining" v-if="userInfo" @click="mLogin =!mLogin">
+              <img :src="userInfo.headportrait" />
+              <div class="ml-text">{{ userInfo?userInfo.realname:''}}</div>
+              <div :class="mLogin?'ml-block':'ml-blocks'"></div>
+            </div>
+
+            <div class="m-pople" v-else @click="mLogin = !mLogin">
+              <Icon type="person" size="40" />
+            </div>
           </div>
 
-          <div class="m-head">
-                <div class="mobile-head" >
-                    <div class="mh-top">
-                        <div class="mr-icon" @click="mIcon = !mIcon">
-                            <Icon type="navicon-round" size="40" color='#9B908E' :class="mIcon?'mhead-icons':'mhead-icon'" />
-                        </div>
-                        <a class="mobile-logo" href="https://www.xinruiyun.cn/" alt='新睿云'>
-                            <div class="mobile-limg">
-                                <img src='./assets/img/home/logo.gif'>
-                            </div>
-                        </a>
-                        <div class="m-logining" v-if="userInfo" @click='mLogin =!mLogin'>
-                            <img :src="userInfo.headportrait">
-                            <div class="ml-text">{{ userInfo?userInfo.realname:''}}</div>
-                            <div :class="mLogin?'ml-block':'ml-blocks'" ></div>
-                        </div>
-                        
-                        <div class="m-pople" v-else @click="mLogin = !mLogin">
-                            <Icon type="person" size='40'  />
-                        </div>
-                    </div>
+          <div class="m-login" :class="mLogin?'':'m-logins'" v-if="!userInfo">
+            <div>
+              <a
+                ref="external nofollow"
+                target="_blank"
+                href="https://m.xinruiyun.cn/console?from=xinruiyun-kongzhitai"
+                title="控制台"
+              >控制台</a>
+            </div>
+            <div>
+              <a
+                ref="external nofollow"
+                target="_blank"
+                href="https://m.xinruiyun.cn/login?from=xinruiyun-denglu"
+                title="登录"
+              >登录</a>
+            </div>
+            <div>
+              <a
+                ref="external nofollow"
+                target="_blank"
+                href="https://m.xinruiyun.cn/register?from=xinruiyun-zhuce"
+                title="注册"
+              >注册</a>
+            </div>
+          </div>
+        </div>
+        <div class="ml-right" :class="mLogin?'ml-rights':''" v-if="userInfo">
+          <ul class="m-list">
+            <li class="m-item">
+              <a href="https://i.xinruiyun.cn/usercenter">用户中心</a>
+            </li>
+            <li class="m-item">
+              <a href="https://i.xinruiyun.cn/expenses">费用中心</a>
+            </li>
+            <li class="m-item">
+              <a href="https://i.xinruiyun.cn/msgcenter">消息中心</a>
+            </li>
+            <li class="m-item">
+              <a href="https://i.xinruiyun.cn/operationlog">操作日志</a>
+            </li>
+            <li class="m-item">
+              <span @click="go('exit')" style="font-size:14px">退出登录</span>
+            </li>
+          </ul>
+        </div>
+        <div class="mhead-list" :class="mIcon?'':'mhead-lists'">
+          <div style="text-align: center;">
+            <i-input style="width:87%;margin:20px 0;">
+              <Icon type="search" size="30" slot="suffix" />
+            </i-input>
+          </div>
 
-
-                    <div class="m-login" :class='mLogin?"":"m-logins"' v-if="!userInfo">
-                        <div>
-                            <a ref="external nofollow" target="_blank" href="https://m.xinruiyun.cn/console?from=xinruiyun-kongzhitai" title="控制台">控制台</a>
-                        </div>
-                        <div>
-                            <a ref="external nofollow" target="_blank" href="https://m.xinruiyun.cn/login?from=xinruiyun-denglu" title="登录">登录</a>
-                        </div>
-                        <div>
-                            <a ref="external nofollow" target="_blank" href="https://m.xinruiyun.cn/register?from=xinruiyun-zhuce" title="注册">注册</a>
-                        </div>
-                    </div>
+          <div class="mhead-product">
+            <div style="padding: 10px 10px;">
+              <a ref="external nofollow" href="/" title="活动中心">活动中心</a>
+            </div>
+          </div>
+          <div class="mhead-product">
+            <div style="padding: 10px 10px;" @click="getSelectDown(0)">
+              <span>产品</span>
+              <span class="active mhead-arrow2"></span>
+            </div>
+            <div class="mhead-pone mhead-pones">
+              <div class="mhead-child">
+                <div class="mhead-cdd" @click="getSelectDown2(0)">
+                  <span>云计算</span>
+                  <span class="select mhead-arrow2"></span>
                 </div>
-                <div class="ml-right" :class="mLogin?'ml-rights':''" v-if="userInfo">
-                    <ul class="m-list">
-                        <li class="m-item">
-                             <a href="https://i.xinruiyun.cn/usercenter">用户中心</a>
-                        </li>
-                        <li class="m-item">
-                             <a href="https://i.xinruiyun.cn/expenses">费用中心</a>
-                        </li>
-                        <li class="m-item">
-                            <a href="https://i.xinruiyun.cn/msgcenter">消息中心</a>
-                        </li>
-                        <li class="m-item">
-                            <a href="https://i.xinruiyun.cn/operationlog">操作日志</a>
-                        </li>
-                        <li class="m-item">
-                            <span @click="go('exit')" style="font-size:14px">退出登录</span>
-                        </li>
-                    </ul>
+                <div class="mhead-box mhead-boxs">
+                  <div class="mhead-chd">
+                    <a href="https://www.xinruiyun.cn/ecs/" target="blank">弹性云服务器ECS</a>
+                  </div>
+                  <div class="mhead-chd">
+                    <a href="https://www.xinruiyun.cn/ims/" target="blank">镜像服务器</a>
+                  </div>
+                  <div class="mhead-chd">
+                    <a href="https://www.xinruiyun.cn/ecss/" target="blank">云服务器快照</a>
+                  </div>
+                  <div class="mhead-chd">
+                    <a href="https://www.xinruiyun.cn/gpu/" target="blank">GPU加速服务器</a>
+                  </div>
+                  <div class="mhead-chd">
+                    <!-- <a href="https://www.xinruiyun.cn/ddos/" target="blank"> DDoS高防云服务器</a> -->
+                    DDoS高防云服务器(敬请期待)
+                  </div>
                 </div>
-                <div class="mhead-list" :class="mIcon?'':'mhead-lists'">
-                    <div style="text-align: center;">
-                        <i-input style="width:87%;margin:20px 0;">
-                            <Icon type="search" size='30' slot="suffix" />
-                        </i-input>
-                    </div>
-
-                    <div class="mhead-product">
-                        <div style="padding: 10px 10px;">
-                            <a ref="external nofollow" href="/" title="活动中心">活动中心</a>
-                        </div>
-                    </div>
-                    <div class="mhead-product">
-                        <div style="padding: 10px 10px;" @click='getSelectDown(0)'>
-                            <span>产品</span>
-                            <span class="active mhead-arrow2"></span>
-                        </div>
-                        <div class="mhead-pone mhead-pones">
-                            <div class="mhead-child">
-                                <div class="mhead-cdd" @click="getSelectDown2(0)">
-                                    <span>云计算</span>
-                                    <span class='select mhead-arrow2'></span>
-                                </div>
-                                <div class="mhead-box mhead-boxs">
-                                    <div class="mhead-chd">
-                                        <a href="https://www.xinruiyun.cn/ecs/" target="blank">弹性云服务器ECS</a>
-                                    </div>
-                                    <div class="mhead-chd">
-                                        <a href="https://www.xinruiyun.cn/ims/" target="blank">镜像服务器</a>
-                                    </div>
-                                    <div class="mhead-chd">
-                                        <a href="https://www.xinruiyun.cn/ecss/" target="blank"> 云服务器快照</a>
-                                    </div>
-                                    <div class="mhead-chd">
-                                        <a href="https://www.xinruiyun.cn/gpu/" target="blank"> GPU加速服务器</a>
-                                    </div>
-                                    <div class="mhead-chd">
-                                        <!-- <a href="https://www.xinruiyun.cn/ddos/" target="blank"> DDoS高防云服务器</a> -->
-                                        DDoS高防云服务器(敬请期待)
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mhead-child">
-                                <div class="mhead-cdd" @click="getSelectDown2(1)">
-                                    <span>云存储</span>
-                                    <span class='select mhead-arrow2'></span>
-                                </div>
-                                <div class="mhead-box mhead-boxs">
-                                    <div class="mhead-chd">
-                                        <a href="https://www.xinruiyun.cn/oss/" target="blank"> 对象存储</a>
-                                    </div>
-                                    <div class="mhead-chd">
-                                        <a href="https://www.xinruiyun.cn/evs/" target="blank"> 云硬盘</a>
-                                    </div>
-                                    <div class="mhead-chd">
-                                        <a href="https://www.xinruiyun.cn/vbs/" target="blank">云硬盘备份</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mhead-child">
-                                <div class="mhead-cdd" @click="getSelectDown2(2)">
-                                    <span>云安全</span>
-                                    <span class='select mhead-arrow2'></span>
-                                </div>
-                                <div class="mhead-box mhead-boxs">
-                                    <div class="mhead-chd">
-                                        <a href="https://www.xinruiyun.cn/fw/" target="blank"> 防火墙</a>
-                                    </div>
-                                    <div class="mhead-chd">
-                                        <a href="#" target="blank">SSL证书</a>
-                                    </div>
-                                    <div class="mhead-chd">
-                                        <a href="https://www.xinruiyun.cn/ddosip/" target="blank">DDoS高防IP</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mhead-child">
-                                <div class="mhead-cdd" @click="getSelectDown2(3)">
-                                    <span>云网络</span>
-                                    <span class='select mhead-arrow2'></span>
-                                </div>
-                                <div class="mhead-box mhead-boxs">
-                                    <div class="mhead-chd">
-                                        <a href="https://www.xinruiyun.cn/vpc/" target="blank"> 虚拟私有云VPC</a>
-                                    </div>
-                                    <div class="mhead-chd">
-                                        <a href="https://www.xinruiyun.cn/nat/" target="blank"> NAT网关</a>
-                                    </div>
-                                    <div class="mhead-chd">
-                                        <a href="https://www.xinruiyun.cn/eip/" target="blank">弹性公网IP</a>
-                                    </div>
-                                    <div class="mhead-chd">
-                                        <a href="https://www.xinruiyun.cn/slb/" target="blank"> 负载均衡</a>
-                                    </div>
-                                    <div class="mhead-chd">
-                                        <a href="https://www.xinruiyun.cn/vpn/" target="blank">虚拟专网VPN</a>
-                                    </div>
-                                    <div class="mhead-chd">
-                                        <a href="#" target="blank"> CDN（敬请期待）</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mhead-child">
-                                <div class="mhead-cdd" @click="getSelectDown2(4)">
-                                    <span>云运维</span>
-                                    <span class='select mhead-arrow2'></span>
-                                </div>
-                                <div class="mhead-box mhead-boxs">
-                                    <div class="mhead-chd">
-                                        <a href="https://www.xinruiyun.cn/cms/" target="blank"> 云监控</a>
-                                    </div>
-                                    <div class="mhead-chd">
-                                        <a href="#" target="blank"> 访问控制（敬请期待）</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mhead-child">
-                                <div class="mhead-cdd" @click="getSelectDown2(5)">
-                                    <span>云数据库</span>
-                                    <span class='select mhead-arrow2'></span>
-                                </div>
-                                <div class="mhead-box mhead-boxs">
-                                    <div class="mhead-chd">
-                                        <a href="https://www.xinruiyun.cn/mysql/" target="blank">云数据库MySQL</a>
-                                    </div>
-                                    <div class="mhead-chd">
-                                        <a href="https://www.xinruiyun.cn/postgresql/" target="blank"> 云数据库PostgreSQL</a>
-                                    </div>
-                                    <div class="mhead-chd">
-                                        <a href="https://www.xinruiyun.cn/sqlserver/" target="blank"> 云数据库Redis</a>
-                                    </div>
-                                    <div class="mhead-chd">
-                                        <a href='https://www.xinruiyun.cn/mongodb/' target="blank">云数据库MongoDB</a>
-                                    </div>
-                                    <div class="mhead-chd">
-                                        <a href='https://www.xinruiyun.cn/redis/' target="blank">云数据库Redis</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- <div class="mhead-product">
+              </div>
+              <div class="mhead-child">
+                <div class="mhead-cdd" @click="getSelectDown2(1)">
+                  <span>云存储</span>
+                  <span class="select mhead-arrow2"></span>
+                </div>
+                <div class="mhead-box mhead-boxs">
+                  <div class="mhead-chd">
+                    <a href="https://www.xinruiyun.cn/oss/" target="blank">对象存储</a>
+                  </div>
+                  <div class="mhead-chd">
+                    <a href="https://www.xinruiyun.cn/evs/" target="blank">云硬盘</a>
+                  </div>
+                  <div class="mhead-chd">
+                    <a href="https://www.xinruiyun.cn/vbs/" target="blank">云硬盘备份</a>
+                  </div>
+                </div>
+              </div>
+              <div class="mhead-child">
+                <div class="mhead-cdd" @click="getSelectDown2(2)">
+                  <span>云安全</span>
+                  <span class="select mhead-arrow2"></span>
+                </div>
+                <div class="mhead-box mhead-boxs">
+                  <div class="mhead-chd">
+                    <a href="https://www.xinruiyun.cn/fw/" target="blank">防火墙</a>
+                  </div>
+                  <div class="mhead-chd">
+                    <a href="#" target="blank">SSL证书</a>
+                  </div>
+                  <div class="mhead-chd">
+                    <a href="https://www.xinruiyun.cn/ddosip/" target="blank">DDoS高防IP</a>
+                  </div>
+                </div>
+              </div>
+              <div class="mhead-child">
+                <div class="mhead-cdd" @click="getSelectDown2(3)">
+                  <span>云网络</span>
+                  <span class="select mhead-arrow2"></span>
+                </div>
+                <div class="mhead-box mhead-boxs">
+                  <div class="mhead-chd">
+                    <a href="https://www.xinruiyun.cn/vpc/" target="blank">虚拟私有云VPC</a>
+                  </div>
+                  <div class="mhead-chd">
+                    <a href="https://www.xinruiyun.cn/nat/" target="blank">NAT网关</a>
+                  </div>
+                  <div class="mhead-chd">
+                    <a href="https://www.xinruiyun.cn/eip/" target="blank">弹性公网IP</a>
+                  </div>
+                  <div class="mhead-chd">
+                    <a href="https://www.xinruiyun.cn/slb/" target="blank">负载均衡</a>
+                  </div>
+                  <div class="mhead-chd">
+                    <a href="https://www.xinruiyun.cn/vpn/" target="blank">虚拟专网VPN</a>
+                  </div>
+                  <div class="mhead-chd">
+                    <a href="#" target="blank">CDN（敬请期待）</a>
+                  </div>
+                </div>
+              </div>
+              <div class="mhead-child">
+                <div class="mhead-cdd" @click="getSelectDown2(4)">
+                  <span>云运维</span>
+                  <span class="select mhead-arrow2"></span>
+                </div>
+                <div class="mhead-box mhead-boxs">
+                  <div class="mhead-chd">
+                    <a href="https://www.xinruiyun.cn/cms/" target="blank">云监控</a>
+                  </div>
+                  <div class="mhead-chd">
+                    <a href="#" target="blank">访问控制（敬请期待）</a>
+                  </div>
+                </div>
+              </div>
+              <div class="mhead-child">
+                <div class="mhead-cdd" @click="getSelectDown2(5)">
+                  <span>云数据库</span>
+                  <span class="select mhead-arrow2"></span>
+                </div>
+                <div class="mhead-box mhead-boxs">
+                  <div class="mhead-chd">
+                    <a href="https://www.xinruiyun.cn/mysql/" target="blank">云数据库MySQL</a>
+                  </div>
+                  <div class="mhead-chd">
+                    <a href="https://www.xinruiyun.cn/postgresql/" target="blank">云数据库PostgreSQL</a>
+                  </div>
+                  <div class="mhead-chd">
+                    <a href="https://www.xinruiyun.cn/sqlserver/" target="blank">云数据库Redis</a>
+                  </div>
+                  <div class="mhead-chd">
+                    <a href="https://www.xinruiyun.cn/mongodb/" target="blank">云数据库MongoDB</a>
+                  </div>
+                  <div class="mhead-chd">
+                    <a href="https://www.xinruiyun.cn/redis/" target="blank">云数据库Redis</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="mhead-product">
                         <div style="padding: 10px 10px;" @click='getSelectDown(1)'>
                             <span>域名与备案</span>
                             <span class="active mhead-arrow2"></span>
@@ -487,46 +496,46 @@
                                 </div>
                             </div>
                         </div>
-                    </div> -->
-                    <!-- <div class="mhead-product">
+          </div>-->
+          <!-- <div class="mhead-product">
                         <div style="padding: 10px 10px;">
                             <span>解决方案</span>
                         </div>
-                    </div> -->
-                    <div class="mhead-product">
-                        <div style="padding: 10px 10px;">
-                            <a href="https://www.xinruiyun.cn/price/ecs/">定价</a>
-                        </div>
-                    </div>
-                    <!-- <div class="mhead-product">
+          </div>-->
+          <div class="mhead-product">
+            <div style="padding: 10px 10px;">
+              <a href="https://www.xinruiyun.cn/price/ecs/">定价</a>
+            </div>
+          </div>
+          <!-- <div class="mhead-product">
                         <div style="padding: 10px 10px;">
                             <a href="https://i.xinruiyun.cn/market">云市场</a>
                             <span :class='item.itemShow?"mhead-arrow":"mhead-arrow2"'></span>
                         </div>
-                    </div> -->
-                    <div class="mhead-product">
-                        <div style="padding: 10px 10px;">
-                            <a href="https://help.xinruiyun.cn/">帮助文档</a>
-                            <!-- <span :class='item.itemShow?"mhead-arrow":"mhead-arrow2"'></span> -->
-                        </div>
-                    </div>
-                    <div class="mhead-product">
-                        <div style="padding: 10px 10px;">
-                            <a href="https://www.xinruiyun.cn/news/">新闻动态</a>
-                            <!-- <span :class='item.itemShow?"mhead-arrow":"mhead-arrow2"'></span> -->
-                        </div>
-                    </div>
-                    <div class="mhead-product">
-                        <div style="padding: 10px 10px;">
-                            <a href="https://www.xinruiyun.cn/about/">关于我们</a>
-                            <!-- <span :class='item.itemShow?"mhead-arrow":"mhead-arrow2"'></span> -->
-                        </div>
-                    </div>
-                </div>
+          </div>-->
+          <div class="mhead-product">
+            <div style="padding: 10px 10px;">
+              <a href="https://help.xinruiyun.cn/">帮助文档</a>
+              <!-- <span :class='item.itemShow?"mhead-arrow":"mhead-arrow2"'></span> -->
+            </div>
           </div>
+          <div class="mhead-product">
+            <div style="padding: 10px 10px;">
+              <a href="https://www.xinruiyun.cn/news/">新闻动态</a>
+              <!-- <span :class='item.itemShow?"mhead-arrow":"mhead-arrow2"'></span> -->
+            </div>
+          </div>
+          <div class="mhead-product">
+            <div style="padding: 10px 10px;">
+              <a href="https://www.xinruiyun.cn/about/">关于我们</a>
+              <!-- <span :class='item.itemShow?"mhead-arrow":"mhead-arrow2"'></span> -->
+            </div>
+          </div>
+        </div>
+      </div>
     </header>
     <!-- 页面展示 -->
-    <router-view/>
+    <router-view />
     <!-- 所有前台页面共用底部导航块 -->
     <div id="app-foot">
       <!--      &lt;!&ndash; 新用户注册最大6个月免费 &ndash;&gt;
@@ -534,7 +543,7 @@
               <p>新用户注册享最大2个月免费试用</p>
               <span>零成本体验，快速认证与审核通道</span>
               <router-link to="vps" target="_blank">立即体验</router-link>
-            </div>-->
+      </div>-->
       <!-- 客服支持、意见反馈 -->
       <!-- <div id="foot-support">
         <div id="wrapper">
@@ -546,405 +555,533 @@
             </div>
           </div>
         </div>
-      </div> -->
+      </div>-->
       <!--页面尾部-->
       <div class="bottom">
         <div class="bottom-register">
-                <div class="br-bg">
-                    <div class="box">
-                        <p class="title">为您提供出众的上云实践机会和全面的尊贵服务</p>
-                        <a href="https://i.xinruiyun.cn/register/"><div class="bottom-button">立即注册</div></a>
-                    </div>
-                </div>
+          <div class="br-bg">
+            <div class="box">
+              <p class="title">为您提供出众的上云实践机会和全面的尊贵服务</p>
+              <a href="https://i.xinruiyun.cn/register/">
+                <div class="bottom-button">立即注册</div>
+              </a>
+            </div>
+          </div>
         </div>
         <div class="bottom-support">
-            <div class="bottom-box">
-                <div class="support">
-                    <div style="margin-right: 9px;">
-                        <img src="./assets/img/home/b-icon.png" alt="24小时客服">
-                    </div>
-                    <div>
-                        <p>7*24</p>
-                        <p>多渠道服务与支持</p>
-                    </div>
-                </div>
-                <div class="support">
-                    <div style="margin-right: 9px;">
-                        <img src="./assets/img/home/b-icon2.png" alt="投诉建议">
-                    </div>
-                    <div>
-                        <p>意见</p>
-                        <p>反馈与投诉建议</p>
-                    </div>
-                </div>
-                <div class="support">
-                    <div style="margin-right: 9px;">
-                        <img src="./assets/img/home/b-icon3.png" alt="专项服务">
-                    </div>
-                    <div>
-                        <p>1V1</p>
-                        <p>专项服务</p>
-                    </div>
-                </div>
-                <div class="support">
-                    <div style="margin-right: 9px;">
-                        <img src="./assets/img/home/b-icon4.png" alt="7天无理由退款">
-                    </div>
-                    <div>
-                        <p>退款</p>
-                        <p>7天无理由退款(活动产品除外)</p>
-                    </div>
-                </div>
+          <div class="bottom-box">
+            <div class="support">
+              <div style="margin-right: 9px;">
+                <img src="./assets/img/home/b-icon.png" alt="24小时客服" />
+              </div>
+              <div>
+                <p>7*24</p>
+                <p>多渠道服务与支持</p>
+              </div>
             </div>
+            <div class="support">
+              <div style="margin-right: 9px;">
+                <img src="./assets/img/home/b-icon2.png" alt="投诉建议" />
+              </div>
+              <div>
+                <p>意见</p>
+                <p>反馈与投诉建议</p>
+              </div>
+            </div>
+            <div class="support">
+              <div style="margin-right: 9px;">
+                <img src="./assets/img/home/b-icon3.png" alt="专项服务" />
+              </div>
+              <div>
+                <p>1V1</p>
+                <p>专项服务</p>
+              </div>
+            </div>
+            <div class="support">
+              <div style="margin-right: 9px;">
+                <img src="./assets/img/home/b-icon4.png" alt="7天无理由退款" />
+              </div>
+              <div>
+                <p>退款</p>
+                <p>7天无理由退款(活动产品除外)</p>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="bottom-black">
-            <div class="bottom-product">
-                <div class="cloud-product-bg">
-                    <div class="bg">
-                        <div class="bg-title">
-                            产品
-                        </div>
-                        <div class="bg-content">
-                            <div>
-                                <p class="p_true"><a href="https://www.xinruiyun.cn/ecs/">弹性云服务器ECS</a></p>
-                            </div>
-                            <div>
-                                <p class="p_true"><a href="https://www.xinruiyun.cn/ims/">镜像服务</a></p>
-                            </div>
-                            <div>
-                                <p class="p_true"><a href="https://www.xinruiyun.cn/ecss/">云服务器快照</a></p>
-                            </div>
-                            <div>
-                                <p class="p_true"><a href="https://www.xinruiyun.cn/gpu/">GPU加速云服务器</a></p>
-                            </div>
-                            <div>
-                                <p class="p_true"><a href="https://www.xinruiyun.cn/ddos/">DDoS高防IP</a></p>
-                            </div>
-                            <div>
-                                <p class="p_true"><a href="https://www.xinruiyun.cn/oss/">对象存储</a></p>
-                            </div>
-                            <div>
-                                <p class="p_true"><a href="https://www.xinruiyun.cn/evs/">云硬盘</a></p>
-                            </div>
-                            <div>
-                                <p class="p_true"><a href="https://www.xinruiyun.cn/vbs/">云硬盘备份</a></p>
-                            </div>
-                            <div>
-                                <p class="p_true"><a href="https://www.xinruiyun.cn/fw/">防火墙</a></p>
-                            </div>
-                            <!-- <div>
+          <div class="bottom-product">
+            <div class="cloud-product-bg">
+              <div class="bg">
+                <div class="bg-title">产品</div>
+                <div class="bg-content">
+                  <div>
+                    <p class="p_true">
+                      <a href="https://www.xinruiyun.cn/ecs/">弹性云服务器ECS</a>
+                    </p>
+                  </div>
+                  <div>
+                    <p class="p_true">
+                      <a href="https://www.xinruiyun.cn/ims/">镜像服务</a>
+                    </p>
+                  </div>
+                  <div>
+                    <p class="p_true">
+                      <a href="https://www.xinruiyun.cn/ecss/">云服务器快照</a>
+                    </p>
+                  </div>
+                  <div>
+                    <p class="p_true">
+                      <a href="https://www.xinruiyun.cn/gpu/">GPU加速云服务器</a>
+                    </p>
+                  </div>
+                  <div>
+                    <p class="p_true">
+                      <a href="https://www.xinruiyun.cn/ddos/">DDoS高防IP</a>
+                    </p>
+                  </div>
+                  <div>
+                    <p class="p_true">
+                      <a href="https://www.xinruiyun.cn/oss/">对象存储</a>
+                    </p>
+                  </div>
+                  <div>
+                    <p class="p_true">
+                      <a href="https://www.xinruiyun.cn/evs/">云硬盘</a>
+                    </p>
+                  </div>
+                  <div>
+                    <p class="p_true">
+                      <a href="https://www.xinruiyun.cn/vbs/">云硬盘备份</a>
+                    </p>
+                  </div>
+                  <div>
+                    <p class="p_true">
+                      <a href="https://www.xinruiyun.cn/fw/">防火墙</a>
+                    </p>
+                  </div>
+                  <!-- <div>
                                 <p class="p_true"><a href="https://www.xinruiyun.cn/ddos/">DDoS高防云服务器</a></p>
-                            </div> -->
-                            <div>
-                                <p class="p_true"><a href="https://www.xinruiyun.cn/ess/">弹性伸缩</a></p>
-                            </div>
-                            <div>
-                                <p class="p_true"><a href="https://www.xinruiyun.cn/cms/">云监控</a></p>
-                            </div>
-                            <div>
-                                <p class="p_true"><a href="https://www.xinruiyun.cn/vpc/">虚拟私有云VPC</a></p>
-                            </div>
-                            <div>
-                                <p class="p_true"><a href="https://www.xinruiyun.cn/nat/">NAT网关</a></p>
-                            </div>
-                            <div>
-                                <p class="p_true"><a href="https://www.xinruiyun.cn/eip/">弹性公网IP</a></p>
-                            </div>
-                            <div>
-                                <p class="p_true"><a href="https://www.xinruiyun.cn/slb/">负载均衡</a></p>
-                            </div>
-                            <div>
-                                <p class="p_true"><a href="https://www.xinruiyun.cn/vpn/">虚拟专网VPN</a></p>
-                            </div>
-                            <div>
-                                <p class="p_true"><a href="https://www.xinruiyun.cn/mysql/">云数据库MySQL</a></p>
-                            </div>
-                            <div>
-                                <p class="p_true"><a href="https://www.xinruiyun.cn/postgresql/">云数据库PostgreSQL</a></p>
-                            </div>
-                            <div>
-                                <p class="p_true"><a href="https://www.xinruiyun.cn/mongodb/">云数据库MongoDB</a></p>
-                            </div>
-                            <div>
-                                <p class="p_true"><a href="https://www.xinruiyun.cn/redis/">云数据库Redis</a></p>
-                            </div>
-                            <div>
-                                    <p class="p_true"><a href="https://www.xinruiyun.cn/sqlserver/">云数据库SQLServer</a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg">
-                        <div class="bg-title">
-                            快速入口
-                        </div>
-                        <div class="bg-content">
-                            <div>
-                                <p class="p_true"><a ref="external nofollow" target="_blank" href="https://i.xinruiyun.cn/brecords/">备案管理</a></p>
-                            </div>
-                            <div>
-                                <p class="p_true"><a target="_blank" href="https://www.xinruiyun.cn/price/ecs/">定价说明</a></p>
-                            </div>
-                            <div>
-                                <p class="p_true"><a target="_blank" href="https://help.xinruiyun.cn/quick/">快速入门</a></p>
-                            </div>
-                            <div>
-                                <p class="p_true"><a target="_blank" href="https://help.xinruiyun.cn/">使用文档</a></p>
-                            </div>
-                            <div>
-                                <p class="p_true"><a target="_blank" href="https://help.xinruiyun.cn/ask/">常见问题</a></p>
-                            </div>
-                            <div>
-                                <p class="p_true"><a href="https://www.xinruiyun.cn/about/">公司介绍</a></p>
-                            </div>
-                            <div>
-                                <p class="p_true"><a href="#">资质认证</a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg">
-                        <div class="bg-title">
-                            管理与支持
-                        </div>
-                        <div class="bg-content">
-                            <div>
-                                <p class="p_true"><a href="https://i.xinruiyun.cn/overview">控制台</a></p>
-                            </div>
-                            <div>
-                                <p class="p_true"><a href="https://i.xinruiyun.cn/usercenter">用户中心</a></p>
-                            </div>
-                            <div>
-                                <p class="p_true"><a href="https://i.xinruiyun.cn/expenses">费用中心</a></p>
-                            </div>
-                            <div>
-                                <p class="p_true"><a href="https://i.xinruiyun.cn/work">工单管理</a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg">
-                        <div class="bg-title">
-                            服务与公告
-                        </div>
-                        <div class="bg-content">
-                            <div>
-                                <p class="p_true"><a href="https://www.xinruiyun.cn/hdgg/">产品公告</a></p>
-                            </div>
-                            <div>
-                                <p class="p_true"><a href="https://activity.xinruiyun.cn/">最新活动</a></p>
-                            </div>
-                            <div>
-                                <p class="p_true"><a href="https://im.xrcloud.net/im/question/index.html" target="_blank">技术支持</a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg">
-                        <div class="bg-title">
-                            联系我们
-                        </div>
-                        <div class="bg-content">
-                            <div>
-                                <p>企业电话：400-0505-565</p>
-                            </div>
-                            <div>
-                                <p>企业邮箱：service@unionstech.cn</p>
-                            </div>
-                            <div>
-                                <p>总部地址：北京海淀区东升大厦B座612室、519室</p>
-                            </div>
-                            <div>
-                                <img src="./assets/img/app/QR-code.jpg" alt="新睿云二维码">
-                                <p>每周有1个神秘大奖哟！</p>
-                            </div>
-                        </div>
-                    </div>
+                  </div>-->
+                  <div>
+                    <p class="p_true">
+                      <a href="https://www.xinruiyun.cn/ess/">弹性伸缩</a>
+                    </p>
+                  </div>
+                  <div>
+                    <p class="p_true">
+                      <a href="https://www.xinruiyun.cn/cms/">云监控</a>
+                    </p>
+                  </div>
+                  <div>
+                    <p class="p_true">
+                      <a href="https://www.xinruiyun.cn/vpc/">虚拟私有云VPC</a>
+                    </p>
+                  </div>
+                  <div>
+                    <p class="p_true">
+                      <a href="https://www.xinruiyun.cn/nat/">NAT网关</a>
+                    </p>
+                  </div>
+                  <div>
+                    <p class="p_true">
+                      <a href="https://www.xinruiyun.cn/eip/">弹性公网IP</a>
+                    </p>
+                  </div>
+                  <div>
+                    <p class="p_true">
+                      <a href="https://www.xinruiyun.cn/slb/">负载均衡</a>
+                    </p>
+                  </div>
+                  <div>
+                    <p class="p_true">
+                      <a href="https://www.xinruiyun.cn/vpn/">虚拟专网VPN</a>
+                    </p>
+                  </div>
+                  <div>
+                    <p class="p_true">
+                      <a href="https://www.xinruiyun.cn/mysql/">云数据库MySQL</a>
+                    </p>
+                  </div>
+                  <div>
+                    <p class="p_true">
+                      <a href="https://www.xinruiyun.cn/postgresql/">云数据库PostgreSQL</a>
+                    </p>
+                  </div>
+                  <div>
+                    <p class="p_true">
+                      <a href="https://www.xinruiyun.cn/mongodb/">云数据库MongoDB</a>
+                    </p>
+                  </div>
+                  <div>
+                    <p class="p_true">
+                      <a href="https://www.xinruiyun.cn/redis/">云数据库Redis</a>
+                    </p>
+                  </div>
+                  <div>
+                    <p class="p_true">
+                      <a href="https://www.xinruiyun.cn/sqlserver/">云数据库SQLServer</a>
+                    </p>
+                  </div>
                 </div>
-                <div class="bc-box">
-                    <div class="friendship">
-                        <div style="width: 10%;">
-                            <span>友情链接</span>
-                        </div>
-                        <div style="width: 87%;text-align: justify;">
-                            <span v-for="(item,index) in links" :key="index"> <a :href="item.linkurl" target="_blank">{{ item.linkname }}</a></span>
-                        </div>
-                    </div>
-                    <div class="share">
-                        <span>分享给好友：</span>
-                        <div>
-                            <img src="./assets/img/home/weibo.png"  @click='share("weibo")' alt="微博">
-                            <img src="./assets/img/home/weixin.png" @click='share("weixin")' alt="微信">
-                            <img src="./assets/img/home/QQ.png" @click='share("qq")' alt="QQ">
-                            <img class="showweixinpic" v-if="isweixinShow" src="./assets/img/home/shareweixin.png"/>
-                        </div>
-                    </div>
+              </div>
+              <div class="bg">
+                <div class="bg-title">快速入口</div>
+                <div class="bg-content">
+                  <div>
+                    <p class="p_true">
+                      <a
+                        ref="external nofollow"
+                        target="_blank"
+                        href="https://i.xinruiyun.cn/brecords/"
+                      >备案管理</a>
+                    </p>
+                  </div>
+                  <div>
+                    <p class="p_true">
+                      <a target="_blank" href="https://www.xinruiyun.cn/price/ecs/">定价说明</a>
+                    </p>
+                  </div>
+                  <div>
+                    <p class="p_true">
+                      <a target="_blank" href="https://help.xinruiyun.cn/quick/">快速入门</a>
+                    </p>
+                  </div>
+                  <div>
+                    <p class="p_true">
+                      <a target="_blank" href="https://help.xinruiyun.cn/">使用文档</a>
+                    </p>
+                  </div>
+                  <div>
+                    <p class="p_true">
+                      <a target="_blank" href="https://help.xinruiyun.cn/ask/">常见问题</a>
+                    </p>
+                  </div>
+                  <div>
+                    <p class="p_true">
+                      <a href="https://www.xinruiyun.cn/about/">公司介绍</a>
+                    </p>
+                  </div>
+                  <div>
+                    <p class="p_true">
+                      <a href="#">资质认证</a>
+                    </p>
+                  </div>
                 </div>
-
+              </div>
+              <div class="bg">
+                <div class="bg-title">管理与支持</div>
+                <div class="bg-content">
+                  <div>
+                    <p class="p_true">
+                      <a href="https://i.xinruiyun.cn/overview">控制台</a>
+                    </p>
+                  </div>
+                  <div>
+                    <p class="p_true">
+                      <a href="https://i.xinruiyun.cn/usercenter">用户中心</a>
+                    </p>
+                  </div>
+                  <div>
+                    <p class="p_true">
+                      <a href="https://i.xinruiyun.cn/expenses">费用中心</a>
+                    </p>
+                  </div>
+                  <div>
+                    <p class="p_true">
+                      <a href="https://i.xinruiyun.cn/work">工单管理</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="bg">
+                <div class="bg-title">服务与公告</div>
+                <div class="bg-content">
+                  <div>
+                    <p class="p_true">
+                      <a href="https://www.xinruiyun.cn/hdgg/">产品公告</a>
+                    </p>
+                  </div>
+                  <div>
+                    <p class="p_true">
+                      <a href="https://activity.xinruiyun.cn/">最新活动</a>
+                    </p>
+                  </div>
+                  <div>
+                    <p class="p_true">
+                      <a href="https://im.xrcloud.net/im/question/index.html" target="_blank">技术支持</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="bg">
+                <div class="bg-title">联系我们</div>
+                <div class="bg-content">
+                  <div>
+                    <p>企业电话：400-0505-565</p>
+                  </div>
+                  <div>
+                    <p>企业邮箱：service@unionstech.cn</p>
+                  </div>
+                  <div>
+                    <p>总部地址：北京海淀区东升大厦B座612室、519室</p>
+                  </div>
+                  <div>
+                    <img src="./assets/img/app/QR-code.jpg" alt="新睿云二维码" />
+                    <p>每周有1个神秘大奖哟！</p>
+                  </div>
+                </div>
+              </div>
             </div>
+            <div class="bc-box">
+              <div class="friendship">
+                <div style="width: 10%;">
+                  <span>友情链接</span>
+                </div>
+                <div style="width: 87%;text-align: justify;">
+                  <span v-for="(item,index) in links" :key="index">
+                    <a :href="item.linkurl" target="_blank">{{ item.linkname }}</a>
+                  </span>
+                </div>
+              </div>
+              <div class="share">
+                <span>分享给好友：</span>
+                <div>
+                  <img src="./assets/img/home/weibo.png" @click="share("weibo")" alt="微博" />
+                  <img src="./assets/img/home/weixin.png" @click="share("weixin")" alt="微信" />
+                  <img src="./assets/img/home/QQ.png" @click="share("qq")" alt="QQ" />
+                  <img
+                    class="showweixinpic"
+                    v-if="isweixinShow"
+                    src="./assets/img/home/shareweixin.png"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="bottom-info">
-            <div class="bi-box">
-                <div class="support">
-                    <div>
-                        <p><a href="#">©2019</a></p>
-                    </div>
-                </div>
-                <div class="support">
-                    <div>
-                        <p><a href="#" target="_blank">允睿讯通科技有限公司</a></p>
-                    </div>
-                </div>
-                <div class="support">
-                    <div>
-                        <p><a href="http://www.beian.miit.gov.cn/" target="_blank" rel = "nofollow">京ICP备15035854号</a></p>
-                    </div>
-                </div>
-                <!-- <div class="support">
+          <div class="bi-box">
+            <div class="support">
+              <div>
+                <p>
+                  <a href="#">©2019</a>
+                </p>
+              </div>
+            </div>
+            <div class="support">
+              <div>
+                <p>
+                  <a href="#" target="_blank">允睿讯通科技有限公司</a>
+                </p>
+              </div>
+            </div>
+            <div class="support">
+              <div>
+                <p>
+                  <a
+                    href="http://www.beian.miit.gov.cn/"
+                    target="_blank"
+                    rel="nofollow"
+                  >京ICP备15035854号</a>
+                </p>
+              </div>
+            </div>
+            <!-- <div class="support">
                     <div>
                         <p><a href="http://www.beian.miit.gov.cn/" target="_blank" rel = "nofollow">京公网安备11010802024922号</a></p>
                     </div>
-                </div> -->
-                <div class="support">
-                    <div>
-                        <p><a href="#" rel = "nofollow">增值电信业务经营许可证 B1-20180455</a></p>
-                    </div>
-                </div>
-                <div class="support">
-                    <div>
-                        <p><a href="https://www.xinruiyun.cn/about/" target="_blank">关于我们</a></p>
-                    </div>
-                </div>
+            </div>-->
+            <div class="support">
+              <div>
+                <p>
+                  <a href="#" rel="nofollow">增值电信业务经营许可证 B1-20180455</a>
+                </p>
+              </div>
             </div>
+            <div class="support">
+              <div>
+                <p>
+                  <a href="https://www.xinruiyun.cn/about/" target="_blank">关于我们</a>
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
       <div class="m-bottom">
-          <div class="m-register">
-              <p>为您提供出众的上云实践机会和全面的尊贵服务</p>
-              <a href='https://i.xinruiyun.cn/register/' style="color:#fff"><div class="m-button">立即注册</div></a>
-          </div>
-          <div class="m-we">
-              <div class="mwe-text">
-                  <div class="mwe-left">
-                      <div class="mwe-img">
-                          <img src="./assets/img/app/QR-code.jpg" alt="新睿云二维码">
-                      </div>
-                      <p>每周有1个神秘大奖哟</p>
-                  </div>
-                  <div class="mwe-right">
-                      <p><span>联系我们</span></p>
-                      <p><span>400-0505-565</span></p>
-                      <p><span>service@unionstech.cn</span></p>
-                      <p><span>北京海淀区东升大厦B座612室、519室</span></p>
-                  </div>
+        <div class="m-register">
+          <p>为您提供出众的上云实践机会和全面的尊贵服务</p>
+          <a href="https://i.xinruiyun.cn/register/" style="color:#fff">
+            <div class="m-button">立即注册</div>
+          </a>
+        </div>
+        <div class="m-we">
+          <div class="mwe-text">
+            <div class="mwe-left">
+              <div class="mwe-img">
+                <img src="./assets/img/app/QR-code.jpg" alt="新睿云二维码" />
               </div>
+              <p>每周有1个神秘大奖哟</p>
+            </div>
+            <div class="mwe-right">
+              <p>
+                <span>联系我们</span>
+              </p>
+              <p>
+                <span>400-0505-565</span>
+              </p>
+              <p>
+                <span>service@unionstech.cn</span>
+              </p>
+              <p>
+                <span>北京海淀区东升大厦B座612室、519室</span>
+              </p>
+            </div>
           </div>
-          <div class="mb-text">
-              <div class="mb-top">
-                  <span>北京允睿讯通科技有限公司</span>
-                  <span style="margin-left: 10px;">
-                      <div class="mb-img">
-                          <img src="./assets/img/app/record.png" alt="备案号">
-                      </div>
-                      <a href="http://www.beian.miit.gov.cn/" target="_blank" rel = "nofollow"></a>京ICP备15035854号</a>
-                  </span>
+        </div>
+        <div class="mb-text">
+          <div class="mb-top">
+            <span>北京允睿讯通科技有限公司</span>
+            <span style="margin-left: 10px;">
+              <div class="mb-img">
+                <img src="./assets/img/app/record.png" alt="备案号" />
               </div>
-              <div><span>Copyright © 2019</span><span style="margin-left: 10px;">增值电信业务经营许可证B1-20180455</span>
-              </div>
+              <a href="http://www.beian.miit.gov.cn/" target="_blank" rel="nofollow">京ICP备15035854号</a>
+            </span>
           </div>
+          <div>
+            <span>Copyright © 2019</span>
+            <span style="margin-left: 10px;">增值电信业务经营许可证B1-20180455</span>
+          </div>
+        </div>
       </div>
     </div>
     <!-- 客服浮动块 -->
     <div class="ph-left">
-            <div class="ph-gg" @click="$router.push('/newyearpurchase/')">
-                <!-- <h3>免费用</h3>
-                <a class="ph-button" @click="$router.push('/free/')">立即领取</a> -->
+      <div class="ph-gg" @click="$router.push('/newyearpurchase/')">
+        <!-- <h3>免费用</h3>
+        <a class="ph-button" @click="$router.push('/free/')">立即领取</a>-->
+      </div>
+      <div class="pl-box">
+        <div class="ph-cs">
+          <!-- <img class="ke-black" src="./assets/img/home/kefu.png"> -->
+          <span>联系客服</span>
+          <div class="ph-connect">
+            <div v-if="QQInfo.length > 0">
+              <div style="padding: 20px;width: 200px;">
+                <span class="q-tile">人工客服</span>
+                <div class="info-wrapper">
+                  <div v-for="(qq,index) of QQInfo" :key="index">
+                    <Tooltip :content="qq.qqstatus?'在线咨询':'请留言'" placement="top">
+                      <a
+                        target="_blank"
+                        :href="`tencent://message/?uin=${qq.qqnumber}&amp;Site=www.xrcloud.net&amp;Menu=yes`"
+                        style="color:rgb(73, 80, 96)"
+                        rel="nofollow"
+                      >
+                        <img src="./assets/img/home/qq-blue.png" v-if="qq.qqstatus" alt="人工客服" />
+                        <img src="./assets/img/home/qq-6.png" v-else alt="人工客服" />
+                        <span
+                          style="width: 56px;display: inline-block;font-size: 12px;"
+                        >{{qq.servicename}}</span>
+                      </a>
+                    </Tooltip>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="pl-box">
-                <div class="ph-cs">
-                    <!-- <img class="ke-black" src="./assets/img/home/kefu.png"> -->
-                    <span>联系客服</span>
-                    <div class="ph-connect">
-                        <div v-if="QQInfo.length > 0">
-                            <div style="padding: 20px;width: 200px;">
-                                <span class="q-tile">人工客服</span>
-                                <div class="info-wrapper">
-                                    <div v-for="(qq,index) of QQInfo" :key="index">
-                                        <Tooltip :content="qq.qqstatus?'在线咨询':'请留言'" placement="top">
-                                            <a target="_blank"
-                                                :href="`tencent://message/?uin=${qq.qqnumber}&amp;Site=www.xrcloud.net&amp;Menu=yes`"
-                                                style="color:rgb(73, 80, 96)" rel="nofollow">
-                                                <img src="./assets/img/home/qq-blue.png" v-if="qq.qqstatus" alt="人工客服">
-                                                <img src="./assets/img/home/qq-6.png" v-else alt="人工客服">
-                                                <span
-                                                    style="width: 56px;display: inline-block;font-size: 12px;">{{qq.servicename}}</span>
-                                            </a>
-                                        </Tooltip>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="padding:0 20px;cursor:pointer;width:200px;" @click="linkService">
-                            <span class="q-tile">
-                              在线客服&nbsp&nbsp&nbsp
-                              <img style="vertical-align: bottom;"src="./assets/img/home//tubiao-.png" />
-                            </span>
-                        </div>
-                        <div v-if="xiaoshouInfo.length>0">
-                            <div style="padding: 20px;width: 200px;clear: both;">
-                                <span class="q-tile">售前咨询</span>
-                                <div class="info-wrapper">
-                                    <div v-for="(qq,index) of xiaoshouInfo" :key="index">
-                                        <Tooltip :content="qq.qqstatus?'在线咨询':'请留言'" placement="top">
-                                            <a target="_blank"
-                                                :href="`tencent://message/?uin=${qq.qqnumber}&amp;Site=www.xrcloud.net&amp;Menu=yes`"
-                                                style="color:rgb(73, 80, 96)" rel="nofollow">
-                                                <img src="./assets/img/home/qq-blue.png" v-if="qq.qqstatus" alt="售前咨询">
-                                                <img src="./assets/img/home/qq-6.png" v-else alt="售前咨询">
-                                                <span>{{qq.servicename}}</span>
-                                                <i :class="{inline:qq.qqstatus}"></i>
-                                            </a>
-                                        </Tooltip>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="ph-cs" @click="getOrderType">
-                    <!-- <img class="bo-black" src="./assets/img/home/icon-bookb.png"> -->
-                    <span>反馈意见</span>
-                </div>
-                <div class="ph-cs" @click='toTopBtn'>
-                    <!-- <img class="ke-black" src="./assets/img/home/backtop.png">  -->
-                    <span>返回顶部</span>
-                </div>
+            <div style="padding:0 20px;cursor:pointer;width:200px;" @click="linkService">
+              <span class="q-tile">
+                在线客服&nbsp&nbsp&nbsp
+                <img
+                  style="vertical-align: bottom;"
+                  src="./assets/img/home//tubiao-.png"
+                />
+              </span>
             </div>
-            
+            <div v-if="xiaoshouInfo.length>0">
+              <div style="padding: 20px;width: 200px;clear: both;">
+                <span class="q-tile">售前咨询</span>
+                <div class="info-wrapper">
+                  <div v-for="(qq,index) of xiaoshouInfo" :key="index">
+                    <Tooltip :content="qq.qqstatus?'在线咨询':'请留言'" placement="top">
+                      <a
+                        target="_blank"
+                        :href="`tencent://message/?uin=${qq.qqnumber}&amp;Site=www.xrcloud.net&amp;Menu=yes`"
+                        style="color:rgb(73, 80, 96)"
+                        rel="nofollow"
+                      >
+                        <img src="./assets/img/home/qq-blue.png" v-if="qq.qqstatus" alt="售前咨询" />
+                        <img src="./assets/img/home/qq-6.png" v-else alt="售前咨询" />
+                        <span>{{qq.servicename}}</span>
+                        <i :class="{inline:qq.qqstatus}"></i>
+                      </a>
+                    </Tooltip>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+        <div class="ph-cs" @click="getOrderType">
+          <!-- <img class="bo-black" src="./assets/img/home/icon-bookb.png"> -->
+          <span>反馈意见</span>
+        </div>
+        <div class="ph-cs" @click="toTopBtn">
+          <!-- <img class="ke-black" src="./assets/img/home/backtop.png">  -->
+          <span>返回顶部</span>
+        </div>
+      </div>
+    </div>
     <!-- 投诉框 -->
     <Modal v-model="showModal.complaintModal" width="500" :scrollable="true" :mask-closable="false">
       <p slot="header" class="modal-header-border">
         <span class="universal-modal-title">投诉与建议</span>
       </p>
       <div v-show="complaintForm.step==1">
-        <Form label-position="left" :model="complaintForm" ref="complaintForm" :rules="complaintFormRule" :label-width="80">
+        <Form
+          label-position="left"
+          :model="complaintForm"
+          ref="complaintForm"
+          :rules="complaintFormRule"
+          :label-width="80"
+        >
           <Form-item label="反馈标题" prop="complaintTitle">
-            <Input v-model="complaintForm.complaintTitle" placeholder="请以1-20个字简单描述一下问题" :maxlength="20"></Input>
+            <Input
+              v-model="complaintForm.complaintTitle"
+              placeholder="请以1-20个字简单描述一下问题"
+              :maxlength="20"
+            ></Input>
           </Form-item>
           <Form-item label="问题类型" prop="issueType">
             <Select v-model="complaintForm.issueType" placeholder="请选择">
-              <Option v-for="(item,index) in complaintForm.typeList" :value="item.id" :key="index">{{item.description}}</Option>
+              <Option
+                v-for="(item,index) in complaintForm.typeList"
+                :value="item.id"
+                :key="index"
+              >{{item.description}}</Option>
             </Select>
           </Form-item>
           <Form-item label="问题描述" prop="issueDesc">
-            <Input v-model="complaintForm.issueDesc" type="textarea" :autosize="{minRows: 5,maxRows: 7}"
-                   placeholder="请输入..."></Input>
+            <Input
+              v-model="complaintForm.issueDesc"
+              type="textarea"
+              :autosize="{minRows: 5,maxRows: 7}"
+              placeholder="请输入..."
+            ></Input>
           </Form-item>
           <Form-item label="联系电话" prop="phone">
             <Input v-model="complaintForm.phone" placeholder="请留下您的联系电话，方便我们将结果反馈给您。"></Input>
           </Form-item>
         </Form>
       </div>
-      <div v-show="complaintForm.step==2" class="complain-modal" style="text-align:center;font-size:14px;">
+      <div
+        v-show="complaintForm.step==2"
+        class="complain-modal"
+        style="text-align:center;font-size:14px;"
+      >
         <img src="./assets/img/payresult/paySuccess.png" style="width:40px;height:40px;" />
         <p style="text-align:center;line-height:1.5">—您的烦恼我们已经收到—</p>
         <p style="text-align:center;line-height:1.5">我们会将处理结果发送至您的手机</p>
@@ -952,13 +1089,18 @@
       </div>
       <div slot="footer" class="modal-footer-border">
         <Button type="ghost" @click="showModal.complaintModal = false">取消</Button>
-        <Button type="primary" @click="sumbitComplaint('complaintForm')" v-show="complaintForm.step==1">提交反馈
-        </Button>
-        <Button type="primary" @click="showModal.complaintModal = false" v-show="complaintForm.step==2">确定
-        </Button>
+        <Button
+          type="primary"
+          @click="sumbitComplaint('complaintForm')"
+          v-show="complaintForm.step==1"
+        >提交反馈</Button>
+        <Button
+          type="primary"
+          @click="showModal.complaintModal = false"
+          v-show="complaintForm.step==2"
+        >确定</Button>
       </div>
     </Modal>
-
   </div>
 </template>
 
@@ -1412,9 +1554,7 @@ export default {
     linkService() {
       if (this.userInfo) {
         window.open(
-          `https://im.xrcloud.net/im/question/index.html?companyId=${
-            this.userInfo.companyid
-          }`
+          `https://im.xrcloud.net/im/question/index.html?companyId=${this.userInfo.companyid}`
         );
       } else {
         window.open("https://im.xrcloud.net/im/question/index.html");
@@ -1442,9 +1582,9 @@ export default {
         this.isweixinShow = !this.isweixinShow;
       }
     },
-     toTopBtn: function() {
-            document.documentElement.scrollTop = 0;
-        },
+    toTopBtn: function() {
+      document.documentElement.scrollTop = 0;
+    }
   },
   computed: mapState({
     userInfo: state => state.userInfo
@@ -2011,7 +2151,6 @@ export default {
         line-height: 100%;
       }
     }
-
   }
 }
 .bottom .bottom-register {
@@ -2337,49 +2476,49 @@ span {
 
 .ph-left {
   position: fixed;
-    right: 5px;
-    bottom: 14%;
-    z-index: 999;
-    margin-right: 5px;
-    width: 97px;
+  right: 5px;
+  bottom: 14%;
+  z-index: 999;
+  margin-right: 5px;
+  width: 97px;
 }
-.ph-cs:hover > .ph-connect{
+.ph-cs:hover > .ph-connect {
   width: 210px;
 }
-.cc-title{
+.cc-title {
   font-size: 14px;
-  color: #1D1716;
+  color: #1d1716;
   line-height: normal;
 }
-.ph-connect{
+.ph-connect {
   background: #ffffff;
   width: 0;
   position: absolute;
   right: 92px;
   top: 0;
-  transition: width 0.3s ;
+  transition: width 0.3s;
   overflow: hidden;
-  border-radius:15px 0px 15px 15px;
-  box-shadow:0px 2px 16px -2px rgba(130,130,130,0.5);
+  border-radius: 15px 0px 15px 15px;
+  box-shadow: 0px 2px 16px -2px rgba(130, 130, 130, 0.5);
   color: #514644;
   font-size: 12px;
 }
 
 .ivu-tooltip-inner {
-  min-height: 22px!important;
-  padding: 2px 12px!important;
+  min-height: 22px !important;
+  padding: 2px 12px !important;
 }
 
-.info-wrapper{
+.info-wrapper {
   line-height: normal;
   clear: left;
   width: 200px;
   display: flex;
   flex-wrap: wrap;
 }
-.q-tile{
+.q-tile {
   font-size: 14px;
-  color: #1D1716;
+  color: #1d1716;
   float: left;
   margin-bottom: 6px;
   line-height: normal;
@@ -2392,18 +2531,18 @@ span {
   text-align: left;
 }
 
-.info-wrapper > div  img{
+.info-wrapper > div img {
   vertical-align: middle;
 }
-.info-wrapper > div  span{
+.info-wrapper > div span {
   vertical-align: middle;
   width: 56px;
   display: inline-block;
 }
 
-
 .ph-left .ph-gg {
-  background: url(./assets/img/active/anniversary/newanniversary-nav-right.png) center no-repeat;
+  background: url(./assets/img/active/anniversary/newanniversary-nav-right.png)
+    center no-repeat;
   cursor: pointer;
   text-align: center;
   height: 183px;
@@ -2416,7 +2555,7 @@ span {
 
 .ph-left .ph-gg h3 {
   font-size: 18px;
-  color: #FFFFFF;
+  color: #ffffff;
   font-weight: bold;
   display: inline-block;
   padding: 8px 0;
@@ -2424,25 +2563,25 @@ span {
   margin-top: 14px;
 }
 
-.ph-left .ph-gg .ph-button{
+.ph-left .ph-gg .ph-button {
   display: inline-block;
   width: 78px;
   height: 27px;
   line-height: 27px;
-  color: #FF624B;
+  color: #ff624b;
   font-size: 12px;
-  background-color: #FCECE0;
-  box-shadow:0px 11px 18px -6px rgba(161,38,20,0.75);
+  background-color: #fcece0;
+  box-shadow: 0px 11px 18px -6px rgba(161, 38, 20, 0.75);
 }
 
-.pl-box{
-    padding: 20px 5px 10px 5px;
-    margin-top: -25px;
-    border-radius: 4px;
+.pl-box {
+  padding: 20px 5px 10px 5px;
+  margin-top: -25px;
+  border-radius: 4px;
 }
 
 .ph-left .ph-cs {
-  border-radius:4px;
+  border-radius: 4px;
   height: 32px;
   text-align: center;
   cursor: pointer;
@@ -2452,21 +2591,20 @@ span {
   box-sizing: border-box;
 }
 
-.ph-left .ph-cs:last-child{
+.ph-left .ph-cs:last-child {
   margin-bottom: 0px;
 }
 
-.ph-left .ph-cs >img{
+.ph-left .ph-cs > img {
   vertical-align: middle;
   width: 13px;
   height: 13px;
 }
-.ph-left .ph-cs >span{
+.ph-left .ph-cs > span {
   vertical-align: middle;
   font-size: 12px;
-  color: #FFFFFF;
+  color: #ffffff;
 }
-
 
 @media only screen and (max-width: 1366px) {
   .m-bottom {
@@ -2485,7 +2623,7 @@ span {
   .bottom {
     display: none;
   }
-   .ph-left {
+  .ph-left {
     display: none;
   }
 
@@ -2539,7 +2677,7 @@ span {
   //   border: 1px solid rgba(96,87,86,1);
   //   background-color: rgba(29,23,22,1);
   // }
-   .ph-left {
+  .ph-left {
     display: none;
   }
   #front header .m-head {
@@ -2587,10 +2725,8 @@ span {
   .mobileq {
     display: none;
   }
-   .ph-left {
+  .ph-left {
     display: none;
   }
 }
-
-
 </style>

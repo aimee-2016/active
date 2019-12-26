@@ -12,8 +12,8 @@ import '@/assets/css/iviewOverRide.css'
 import '@/assets/css/reset.css'
 import '@/assets/css/universal.less'
 import MetaInfo from 'vue-meta-info'
-
-
+import projectUrl from '@/assets/js/projectData.js'
+Vue.prototype.$project = projectUrl
 
 //import './util/BMap'
 // import ECharts from 'vue-echarts/components/ECharts.vue'

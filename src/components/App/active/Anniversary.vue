@@ -35,11 +35,15 @@
             />
           </div>
           <div class="center-banner">
-            <img src="../../../assets/img/active/anniversary/aa-ac-banner.png" alt="banner">
+            <img src="../../../assets/img/active/anniversary/aa-ac-banner.png" alt="banner" />
           </div>
           <div class="menu">
             <div class="content">
-              <a v-for="(item,index) in bannerNavList" :key="index" @click="goAnchor('#'+item.href)">
+              <a
+                v-for="(item,index) in bannerNavList"
+                :key="index"
+                @click="goAnchor('#'+item.href)"
+              >
                 <div>
                   <p>{{item.title}}</p>
                   <span v-if="item.text">{{item.text}}</span>
@@ -404,7 +408,11 @@
     >
       <div class="content">
         <ul>
-          <li v-for="(item,index) in ruleListKill" :key="index" :style="{color:item.color}">{{item.text}}</li>
+          <li
+            v-for="(item,index) in ruleListKill"
+            :key="index"
+            :style="{color:item.color}"
+          >{{item.text}}</li>
         </ul>
       </div>
       <div slot="footer" class="footer">
@@ -621,22 +629,25 @@
 </template>
 
 <script type="text/ecmascript-6">
-import axios from 'axios'
-import VueQArt from 'vue-qart'
-import throttle from 'throttle-debounce/debounce'
-import $ from 'jquery'
+import axios from "axios";
+import VueQArt from "vue-qart";
+import throttle from "throttle-debounce/debounce";
+import $ from "jquery";
 export default {
-  data () {
+  data() {
     const validaRegisteredPhone = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error('电话号码不能为空'));
+        return callback(new Error("电话号码不能为空"));
       }
-      if (!(/^1(3|4|5|7|8|9)\d{9}$/.test(value)) && !(/^0\d{2,3}-?\d{7,8}$/.test(value))) {
-        callback(new Error('请输入正确的电话号码'));
+      if (
+        !/^1(3|4|5|7|8|9)\d{9}$/.test(value) &&
+        !/^0\d{2,3}-?\d{7,8}$/.test(value)
+      ) {
+        callback(new Error("请输入正确的电话号码"));
       } else {
-        callback()
+        callback();
       }
-    }
+    };
     return {
       showModal: {
         share: false,
@@ -649,614 +660,785 @@ export default {
         renewHint: false,
         hint: false
       },
-      hintText: '',
+      hintText: "",
       asideList: [
-        { text: '爆款秒杀', height: 850 },
-        { text: '企业限购', height: 1500 },
-        { text: '云数据库', height: 2100 },
-        { text: '域名专区', height: 3000 },
-        { text: '续费专区', height: 3500 }
+        { text: "爆款秒杀", height: 850 },
+        { text: "企业限购", height: 1500 },
+        { text: "云数据库", height: 2100 },
+        { text: "域名专区", height: 3000 },
+        { text: "续费专区", height: 3500 }
       ],
       bannerNavList: [
-        { title: '爆款云产品', text: '邀新送好礼', href: 'seckill' },
-        { title: '企业限购专区', text: '老用户享同等价购买', href: 'enterprise' },
-        { title: '云数据库限时抢购', text: '', href: 'database' },
-        { title: '域名最低8元可领', text: '', href: 'domain' },
-        { title: '老用户续费', text: '折扣享不停', href: 'renew' }
+        { title: "爆款云产品", text: "邀新送好礼", href: "seckill" },
+        {
+          title: "企业限购专区",
+          text: "老用户享同等价购买",
+          href: "enterprise"
+        },
+        { title: "云数据库限时抢购", text: "", href: "database" },
+        { title: "域名最低8元可领", text: "", href: "domain" },
+        { title: "老用户续费", text: "折扣享不停", href: "renew" }
       ],
-      valueDomain: '',
+      valueDomain: "",
       seckillList: [],
       enterpriseList: [],
       databaseList: [],
       ruleListKill: [
-        {text: '1、活动时间：2019.11.13-2019.12.18'},
-        {text: '2、活动对象：新老用户皆可参与；新用户（该产品无订单记录），老用户（邀新获取购买权)'},
-        {text: '3、活动期间同一用户（同一手机、邮箱、实名认证用户视为同一用户）可同时购买GPU服务器1次、对象存储1次'},
-        {text: '4、新用户可直接购买任意一台爆款云服务器，购买成功后再邀请1名新用户成功购买周年庆活动产品（域名除外）即可获得“爆款秒杀专区”或“企业用户限购专区”的额外购买权1次；老用户成功邀请1名新用户购买周年庆活动产品，即可获得“爆款秒杀专区”或“企业用户限购专区”的额外购买权1次，购买权可叠加；'},
-        {text: '5、参与本次活动购买的产品不能进行退款。', color: 'red'},
-        {text: '6、此次活动产品不能用于转售，如若利用资源从事违法违规行为的用户，新睿云有权收回使用资格，并且不予退款。'},
-        {text: '7、购买时不可使用任何优惠券和现金券，秒杀活动不支持会员折扣。'},
-        {text: '8、活动最终解释权为新睿云所有。'}
+        { text: "1、活动时间：2019.11.13-2019.12.18" },
+        {
+          text:
+            "2、活动对象：新老用户皆可参与；新用户（该产品无订单记录），老用户（邀新获取购买权)"
+        },
+        {
+          text:
+            "3、活动期间同一用户（同一手机、邮箱、实名认证用户视为同一用户）可同时购买GPU服务器1次、对象存储1次"
+        },
+        {
+          text:
+            "4、新用户可直接购买任意一台爆款云服务器，购买成功后再邀请1名新用户成功购买周年庆活动产品（域名除外）即可获得“爆款秒杀专区”或“企业用户限购专区”的额外购买权1次；老用户成功邀请1名新用户购买周年庆活动产品，即可获得“爆款秒杀专区”或“企业用户限购专区”的额外购买权1次，购买权可叠加；"
+        },
+        { text: "5、参与本次活动购买的产品不能进行退款。", color: "red" },
+        {
+          text:
+            "6、此次活动产品不能用于转售，如若利用资源从事违法违规行为的用户，新睿云有权收回使用资格，并且不予退款。"
+        },
+        {
+          text: "7、购买时不可使用任何优惠券和现金券，秒杀活动不支持会员折扣。"
+        },
+        { text: "8、活动最终解释权为新睿云所有。" }
       ],
       ruleListE: [
-        '1、活动时间：2019.11.13-2019.12.18',
-        '2、活动对象：活动期间企业用户限购1台，新老用户皆可参与。新用户（该产品无订单记录)',
-        '3、企业用户可直接购买任意一台爆款云服务器，购买成功后再邀请1名新用户成功购买周年庆活动产品（域名除外）即可获得“爆款秒杀专区”或“企业用户限购专区”的额外购买权1次，购买权可叠加；',
-        '4、参与本次活动购买的产品不能进行退款。',
-        '5、此次活动产品不能用于转售，如若利用资源从事违法违规行为的用户，新睿云有权收回使用资格，并且不予退款。',
-        '6、购买时不可使用任何优惠券和现金券，限购活动不支持会员折扣。',
-        '7、活动最终解释权为新睿云所有。'
+        "1、活动时间：2019.11.13-2019.12.18",
+        "2、活动对象：活动期间企业用户限购1台，新老用户皆可参与。新用户（该产品无订单记录)",
+        "3、企业用户可直接购买任意一台爆款云服务器，购买成功后再邀请1名新用户成功购买周年庆活动产品（域名除外）即可获得“爆款秒杀专区”或“企业用户限购专区”的额外购买权1次，购买权可叠加；",
+        "4、参与本次活动购买的产品不能进行退款。",
+        "5、此次活动产品不能用于转售，如若利用资源从事违法违规行为的用户，新睿云有权收回使用资格，并且不予退款。",
+        "6、购买时不可使用任何优惠券和现金券，限购活动不支持会员折扣。",
+        "7、活动最终解释权为新睿云所有。"
       ],
       ruleListDB: [
-        '1、活动时间：2019.11.13-2019.12.18，每天7点至23.17点开抢。',
-        '2、活动对象：新老用户皆可参与。新用户（该产品无订单记录）',
-        '3、数量限制：活动期间同一用户（同一手机、邮箱、实名认证用户视为同一用户）按照不同的配置进行抢购，同配置产品可以同时购买不同时长，但每款配置同一时长只能购买一次。数量有限，先到先得。',
-        '4、参与本次活动购买的产品不能进行退款。',
-        '5、此次活动产品不能用于转售，如若利用资源从事违法违规行为的用户，新睿云有权收回使用资格，并且不予退款。',
-        '6、购买时不可使用任何优惠券和现金券，限购活动不支持会员折扣。',
-        '7、活动最终解释权为新睿云所有。'
+        "1、活动时间：2019.11.13-2019.12.18，每天7点至23.17点开抢。",
+        "2、活动对象：新老用户皆可参与。新用户（该产品无订单记录）",
+        "3、数量限制：活动期间同一用户（同一手机、邮箱、实名认证用户视为同一用户）按照不同的配置进行抢购，同配置产品可以同时购买不同时长，但每款配置同一时长只能购买一次。数量有限，先到先得。",
+        "4、参与本次活动购买的产品不能进行退款。",
+        "5、此次活动产品不能用于转售，如若利用资源从事违法违规行为的用户，新睿云有权收回使用资格，并且不予退款。",
+        "6、购买时不可使用任何优惠券和现金券，限购活动不支持会员折扣。",
+        "7、活动最终解释权为新睿云所有。"
       ],
       ruleListRenew: [
-        '1、年续费券同一用户（同一手机、邮箱、实名认证用户视为同一用户）限领1张，有效期为1年',
-        '2、仅限有购买过云产品记录的用户领取',
-        '3、1.17折续费券不能与其他优惠券和现金券叠加使用，每次只能使用1张',
-        '4、1.17折续费券只能在原价的基础上进行打折，不能与其他折扣重叠',
-        '5、1.17折续费券不能用于域名、SSL证书和高防IP的续费',
-        '6、此次活动券仅用于支付新睿云平台订单支付时，抵减应支付的订单金额，不能进行兑现或其他用途'
+        "1、年续费券同一用户（同一手机、邮箱、实名认证用户视为同一用户）限领1张，有效期为1年",
+        "2、仅限有购买过云产品记录的用户领取",
+        "3、1.17折续费券不能与其他优惠券和现金券叠加使用，每次只能使用1张",
+        "4、1.17折续费券只能在原价的基础上进行打折，不能与其他折扣重叠",
+        "5、1.17折续费券不能用于域名、SSL证书和高防IP的续费",
+        "6、此次活动券仅用于支付新睿云平台订单支付时，抵减应支付的订单金额，不能进行兑现或其他用途"
       ],
       qrConfig: {
-        value: '',
-        imagePath: require('../../../assets/img/active/anniversary/qrCode.png'),
-        filter: 'black',
+        value: "",
+        imagePath: require("../../../assets/img/active/anniversary/qrCode.png"),
+        filter: "black",
         size: 500
       },
-      shareUrl: '',
+      shareUrl: "",
       domainList: [
-        { name: '.club', price: '11.00', unit: '1', bg: require('../../../assets/img/active/anniversary/anniversary-domain-1.png'), value: '', tip: '' },
-        { name: '.top', price: '9.00', unit: '1', bg: require('../../../assets/img/active/anniversary/anniversary-domain-2.png'), value: '', tip: '' },
-        { name: '.site', price: '8.00', unit: '1', bg: require('../../../assets/img/active/anniversary/anniversary-domain-3.png'), value: '', tip: '' }
+        {
+          name: ".club",
+          price: "11.00",
+          unit: "1",
+          bg: require("../../../assets/img/active/anniversary/anniversary-domain-1.png"),
+          value: "",
+          tip: ""
+        },
+        {
+          name: ".top",
+          price: "9.00",
+          unit: "1",
+          bg: require("../../../assets/img/active/anniversary/anniversary-domain-2.png"),
+          value: "",
+          tip: ""
+        },
+        {
+          name: ".site",
+          price: "8.00",
+          unit: "1",
+          bg: require("../../../assets/img/active/anniversary/anniversary-domain-3.png"),
+          value: "",
+          tip: ""
+        }
       ],
-      domainText: '',
+      domainText: "",
       domainVail: false,
       renewList: [],
-      renewStatus: '',
+      renewStatus: "",
       // 实名认证参数
       regExpObj: {
         phone: /^1[3|4|5|8|9|6|7]\d{9}$/,
         email: /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/,
         password: /(?!(^[^a-z]+$))(?!(^[^A-Z]+$))(?!(^[^\d]+$))^[\w`~!#$%_()^&*,-<>?@.+=]{8,32}$/
       },
-      codeLoseEfficacy: '',
-      tempCode: '',
+      codeLoseEfficacy: "",
+      tempCode: "",
       codeTimer: null,
       authStatus: false,
-      imgSrc: 'https://activity.xinruiyun.cn/user/getKaptchaImage.do',
+      imgSrc: "https://activity.xinruiyun.cn/user/getKaptchaImage.do",
       formCustom: {
-        VerificationPhone: '',
-        Verificationcode: '',
-        messagecode: '',
-        newCodeText: '获取验证码',
-        codeText: '获取验证码',
+        VerificationPhone: "",
+        Verificationcode: "",
+        messagecode: "",
+        newCodeText: "获取验证码",
+        codeText: "获取验证码"
       },
       ruleCustom: {
-        VerificationPhone: [{
-          required: true,
-          validator: validaRegisteredPhone,
-          trigger: 'blur'
-        }],
-        Verificationcode: [{
-          required: true,
-          message: '请输入图形验证码',
-          trigger: 'blur'
-        }],
-        messagecode: [{
-          required: true,
-          message: '请输入收到的验证码',
-          trigger: 'blur'
-        }]
+        VerificationPhone: [
+          {
+            required: true,
+            validator: validaRegisteredPhone,
+            trigger: "blur"
+          }
+        ],
+        Verificationcode: [
+          {
+            required: true,
+            message: "请输入图形验证码",
+            trigger: "blur"
+          }
+        ],
+        messagecode: [
+          {
+            required: true,
+            message: "请输入收到的验证码",
+            trigger: "blur"
+          }
+        ]
       },
       rollIndex: 0
       // 实名认证参数结束
-    }
+    };
   },
-  created () {
-    this.getSeckill()
-    this.getEnterprise()
-    this.getDatabase()
+  created() {
+    this.getSeckill();
+    this.getEnterprise();
+    this.getDatabase();
     // this.getDomain()
-    this.getRenew()
-    if (document.URL.indexOf('?') > -1) {
-      let ddd = document.URL.substring(document.URL.indexOf('?') + 1, document.URL.length);
+    this.getRenew();
+    if (document.URL.indexOf("?") > -1) {
+      let ddd = document.URL.substring(
+        document.URL.indexOf("?") + 1,
+        document.URL.length
+      );
       var date = new Date();
       date.setTime(date.getTime() + 86400000);
-      document.cookie = 'anniver=' + ddd.split('=')[1] + ';expires=' + date.toUTCString() + ';domain=.xinruiyun.cn;path=/'
+      document.cookie =
+        "anniver=" +
+        ddd.split("=")[1] +
+        ";expires=" +
+        date.toUTCString() +
+        ";domain=.xinruiyun.cn;path=/";
     }
   },
-  mounted () {
+  mounted() {
     let asideList = this.asideList;
-    window.addEventListener('scroll',()=>{
-        if (document.documentElement.scrollTop > asideList[this.rollIndex].height  && this.rollIndex != asideList.length-1) {
-          this.rollIndex ++;
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (
+          document.documentElement.scrollTop >
+            asideList[this.rollIndex].height &&
+          this.rollIndex != asideList.length - 1
+        ) {
+          this.rollIndex++;
         }
-        if(document.documentElement.scrollTop < asideList[this.rollIndex].height && this.rollIndex != 0){
-          this.rollIndex --;
+        if (
+          document.documentElement.scrollTop <
+            asideList[this.rollIndex].height &&
+          this.rollIndex != 0
+        ) {
+          this.rollIndex--;
         }
-        if(document.documentElement.scrollTop > asideList[asideList.length-1].height){
-          this.rollIndex = asideList.length-1;
-        } 
-    },true)
+        if (
+          document.documentElement.scrollTop >
+          asideList[asideList.length - 1].height
+        ) {
+          this.rollIndex = asideList.length - 1;
+        }
+      },
+      true
+    );
   },
   methods: {
     //活动编码 秒杀64 企业65 云数据库 域名
-    getSeckill () {
-      axios.get('activity/getTemActInfoById.do', {
-        params: {
-          activityNum: 64
-        }
-      }).then(response => {
-        if (response.status == 200 && response.data.status == 1) {
-          this.seckillList = response.data.result.freevmconfigs
-          this.seckillList.forEach((item, index) => {
-            switch (item.servicetype) {
-              case 'host':
-                item.zoneList = response.data.result.optionalArea
-                item.zone = item.zoneList[0].value
-                this.$set(item, 'systemList', this.formatSystem(response.data.result.mvTem))
-                this.$set(item, 'system', [item.systemList[0].label, item.systemList[0].children[0].value])
-                break;
-              case 'G5500':
-                item.zoneList = response.data.result.optionalAreaGpu
-                item.zone = item.zoneList[0].value
-                this.$set(item, 'systemList', this.formatSystem(response.data.result.gpuTem))
-                this.$set(item, 'system', [item.systemList[0].label, item.systemList[0].children[0].value])
-                break;
-              case 'oss':
-                item.zoneList = response.data.result.zoneListMapOss
-                item.zone = item.zoneList[0].value
-                break;
-              default:
-                break;
-            }
-          })
-          // console.log(this.seckillList)
-        }
-      })
+    getSeckill() {
+      axios
+        .get("activity/getTemActInfoById.do", {
+          params: {
+            activityNum: 64
+          }
+        })
+        .then(response => {
+          if (response.status == 200 && response.data.status == 1) {
+            this.seckillList = response.data.result.freevmconfigs;
+            this.seckillList.forEach((item, index) => {
+              switch (item.servicetype) {
+                case "host":
+                  item.zoneList = response.data.result.optionalArea;
+                  item.zone = item.zoneList[0].value;
+                  this.$set(
+                    item,
+                    "systemList",
+                    this.formatSystem(response.data.result.mvTem)
+                  );
+                  this.$set(item, "system", [
+                    item.systemList[0].label,
+                    item.systemList[0].children[0].value
+                  ]);
+                  break;
+                case "G5500":
+                  item.zoneList = response.data.result.optionalAreaGpu;
+                  item.zone = item.zoneList[0].value;
+                  this.$set(
+                    item,
+                    "systemList",
+                    this.formatSystem(response.data.result.gpuTem)
+                  );
+                  this.$set(item, "system", [
+                    item.systemList[0].label,
+                    item.systemList[0].children[0].value
+                  ]);
+                  break;
+                case "oss":
+                  item.zoneList = response.data.result.zoneListMapOss;
+                  item.zone = item.zoneList[0].value;
+                  break;
+                default:
+                  break;
+              }
+            });
+            // console.log(this.seckillList)
+          }
+        });
     },
-    changeZoneSeckill (item) {
-      if (item.servicetype == 'oss') {
-        this.getPriceOSS(item)
+    changeZoneSeckill(item) {
+      if (item.servicetype == "oss") {
+        this.getPriceOSS(item);
       } else {
-        this.getHostSystem(item)
-        this.getPriceHost(item)
+        this.getHostSystem(item);
+        this.getPriceHost(item);
       }
     },
-    getHostSystem (item) {
-      let params = {}
-      let url = ''
+    getHostSystem(item) {
+      let params = {};
+      let url = "";
       switch (item.servicetype) {
-        case 'host':
+        case "host":
           params = {
-            user: '0',
-            normalTemplate: '1',
-            zoneId: item.zone,
-          }
-          url = 'information/listTemplates.do'
-          break
-        case 'G5500':
+            user: "0",
+            normalTemplate: "1",
+            zoneId: item.zone
+          };
+          url = "information/listTemplates.do";
+          break;
+        case "G5500":
           params = {
-            user: '0',
-            gpu: '1',
-            normalTemplate: '0',
-            zoneId: item.zone,
-          }
-          url = 'information/listTemplateFunctionActivity.do'
-          break
+            user: "0",
+            gpu: "1",
+            normalTemplate: "0",
+            zoneId: item.zone
+          };
+          url = "information/listTemplateFunctionActivity.do";
+          break;
       }
-      axios.get(url, {
-        params: params
-      }).then(response => {
-        if (response.status == 200 && response.data.status == 1) {
-          item.systemList = this.formatSystem(response.data.result)
-          item.system = [item.systemList[0].label, item.systemList[0].children[0].value]
-        }
-      })
+      axios
+        .get(url, {
+          params: params
+        })
+        .then(response => {
+          if (response.status == 200 && response.data.status == 1) {
+            item.systemList = this.formatSystem(response.data.result);
+            item.system = [
+              item.systemList[0].label,
+              item.systemList[0].children[0].value
+            ];
+          }
+        });
     },
-    getPriceOSS (item) {
-      let url = 'activity/getOssOriginalPrice.do'
+    getPriceOSS(item) {
+      let url = "activity/getOssOriginalPrice.do";
       let params = {
         flowPackage: item.flowpackage,
         capacity: item.capacity,
-        timeType: item.days < 360 ? 'month' : 'year',
-        timeValue: item.days < 360 ? item.days / 30 : item.days / 360,
-      }
+        timeType: item.days < 360 ? "month" : "year",
+        timeValue: item.days < 360 ? item.days / 30 : item.days / 360
+      };
       axios.post(url, params).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          item.originalPrice = response.data.result.originalPrice
+          item.originalPrice = response.data.result.originalPrice;
         }
-      })
+      });
     },
-    getPriceHost (item) {
-      let url = 'activity/getOriginalPrice.do'
+    getPriceHost(item) {
+      let url = "activity/getOriginalPrice.do";
       let params = {
         vmConfigId: item.id,
         zoneId: item.zone
-      }
-      axios.get(url, {
-        params: params
-      }).then(response => {
-        if (response.status == 200 && response.data.status == 1) {
-          item.cost = response.data.result.cost
-          item.originalPrice = response.data.result.originalPrice
-        }
-      })
+      };
+      axios
+        .get(url, {
+          params: params
+        })
+        .then(response => {
+          if (response.status == 200 && response.data.status == 1) {
+            item.cost = response.data.result.cost;
+            item.originalPrice = response.data.result.originalPrice;
+          }
+        });
     },
-    orderSeckill (item, type) {
+    orderSeckill(item, type) {
       if (!this.$store.state.userInfo) {
-        if (type == 'p') {
-          this.$LR({ type: 'register' })
+        if (type == "p") {
+          this.$LR({ type: "register" });
         } else {
-          window.open('https://m.xinruiyun.cn/login', '_self')
+          window.open("https://m.xinruiyun.cn/login", "_self");
         }
-        return
+        return;
       }
-      if ((!this.authInfo) || (this.authInfo && this.authInfo.authtype == 0 && this.authInfo.checkstatus != 0) || (!this.authInfoPersion && this.authInfo && this.authInfo.authtype == 1 && this.authInfo.checkstatus != 0) || (this.authInfoPersion && this.authInfoPersion.checkstatus != 0 && this.authInfo && this.authInfo.checkstatus != 0)) {
-        if (type == 'p') {
+      if (
+        !this.authInfo ||
+        (this.authInfo &&
+          this.authInfo.authtype == 0 &&
+          this.authInfo.checkstatus != 0) ||
+        (!this.authInfoPersion &&
+          this.authInfo &&
+          this.authInfo.authtype == 1 &&
+          this.authInfo.checkstatus != 0) ||
+        (this.authInfoPersion &&
+          this.authInfoPersion.checkstatus != 0 &&
+          this.authInfo &&
+          this.authInfo.checkstatus != 0)
+      ) {
+        if (type == "p") {
           if (!this.userInfo.phone) {
-            this.showModal.cashverification = true
+            this.showModal.cashverification = true;
           } else if (item.certification == 3) {
             this.$message.confirm({
-              title: '提示',
-              content: '抱歉，只有实名认证用户才可以参加活动',
-              okText: '去实名认证',
+              title: "提示",
+              content: "抱歉，只有实名认证用户才可以参加活动",
+              okText: "去实名认证",
               onOk: () => {
-                window.open('https://i.xinruiyun.cn/usercenter', '_self')
+                window.open("https://i.xinruiyun.cn/usercenter", "_self");
               }
-            })
+            });
           } else {
-            this.refreshQRFirst()
+            this.refreshQRFirst();
           }
         } else {
           if (item.certification == 3) {
-            window.open('https://i.xinruiyun.cn/usercenter', '_self')
+            window.open("https://i.xinruiyun.cn/usercenter", "_self");
           } else {
-            window.open('https://m.xinruiyun.cn/faceindex', '_self')
+            window.open("https://m.xinruiyun.cn/faceindex", "_self");
           }
         }
-        return
+        return;
       }
-      let params = {}
-      let url = ''
+      let params = {};
+      let url = "";
       switch (item.servicetype) {
-        case 'host':
+        case "host":
           params = {
             vmConfigId: item.id,
             osType: item.system[1],
-            defzoneid: item.zone,
-          }
-          url = 'information/getDiskcountMv.do'
-          break
-        case 'G5500':
+            defzoneid: item.zone
+          };
+          url = "information/getDiskcountMv.do";
+          break;
+        case "G5500":
           params = {
             vmConfigId: item.id,
             osType: item.system[1],
-            defzoneid: item.zone,
-          }
-          url = 'activity/getDiskcountGPU.do'
-          break
-        case 'oss':
+            defzoneid: item.zone
+          };
+          url = "activity/getDiskcountGPU.do";
+          break;
+        case "oss":
           params = {
             OOSConfigId: item.id,
-            zoneId: item.zone,
-          }
-          url = 'ruiradosPrice/getDickCountOSS.do'
-          break
+            zoneId: item.zone
+          };
+          url = "ruiradosPrice/getDickCountOSS.do";
+          break;
       }
-      if (item.servicetype == 'oss') {
+      if (item.servicetype == "oss") {
         axios.post(url, params).then(response => {
           if (response.status == 200 && response.data.status == 1) {
-            this.$Message.success('创建订单成功')
-            if (type == 'p') {
-              window.open('https://i.xinruiyun.cn/order', '_self')
+            this.$Message.success("创建订单成功");
+            if (type == "p") {
+              window.open("https://i.xinruiyun.cn/order", "_self");
             } else {
-              window.open('https://m.xinruiyun.cn/orderconfirm', '_self')
+              window.open("https://m.xinruiyun.cn/orderconfirm", "_self");
             }
           } else {
-            this.hintText = response.data.message
-            this.showModal.hint = true
+            this.hintText = response.data.message;
+            this.showModal.hint = true;
           }
-        })
+        });
       } else {
-        axios.get(url, {
-          params: params
-        }).then(response => {
-          if (response.status == 200 && response.data.status == 1) {
-            this.$Message.success('创建订单成功')
-            if (type == 'p') {
-              window.open('https://i.xinruiyun.cn/order', '_self')
+        axios
+          .get(url, {
+            params: params
+          })
+          .then(response => {
+            if (response.status == 200 && response.data.status == 1) {
+              this.$Message.success("创建订单成功");
+              if (type == "p") {
+                window.open("https://i.xinruiyun.cn/order", "_self");
+              } else {
+                window.open("https://m.xinruiyun.cn/orderconfirm", "_self");
+              }
             } else {
-              window.open('https://m.xinruiyun.cn/orderconfirm', '_self')
+              this.hintText = response.data.message;
+              this.showModal.hint = true;
             }
-          } else {
-            this.hintText = response.data.message
-            this.showModal.hint = true
-          }
-        })
+          });
       }
     },
-    getEnterprise () {
-      axios.get('activity/getTemActInfoById.do', {
-        params: {
-          activityNum: 65
-        }
-      }).then(response => {
-        if (response.status == 200 && response.data.status == 1) {
-          this.enterpriseList = response.data.result.freevmconfigResultMap
-          for (let i in this.enterpriseList) {
-            this.enterpriseList[i].zoneList = response.data.result.optionalArea
-            this.enterpriseList[i].zone = this.enterpriseList[i].zoneList[0].value
-            this.$set(this.enterpriseList[i], 'systemList', this.formatSystem(response.data.result.mvTem))
-            this.enterpriseList[i].system = [this.enterpriseList[i].systemList[0].label, this.enterpriseList[i].systemList[0].children[0].value]
-            let dayList = this.enterpriseList[i].days.split(',')
-            let discountList = this.enterpriseList[i].discount.split(',')
-            this.enterpriseList[i].timeList = []
-            dayList.forEach((inner, index) => {
-              this.enterpriseList[i].timeList.push({ 'days': inner, 'discount': discountList[index] })
-            })
-            this.enterpriseList[i].days = this.enterpriseList[i].timeList[0].days
-            this.enterpriseList[i].discount = this.enterpriseList[i].timeList[0].disount
-            this.enterpriseList[i].costList = this.enterpriseList[i].cost.split(',')
-            this.enterpriseList[i].cost = this.enterpriseList[i].costList[0]
-            this.enterpriseList[i].originalPriceList = this.enterpriseList[i].originalPrice.split(',')
-            this.enterpriseList[i].originalPrice = this.enterpriseList[i].originalPriceList[0]
-            this.enterpriseList[i].idList = this.enterpriseList[i].id.split(',')
-            this.enterpriseList[i].id = this.enterpriseList[i].idList[0]
+    getEnterprise() {
+      axios
+        .get("activity/getTemActInfoById.do", {
+          params: {
+            activityNum: 65
           }
-        }
-        // console.log(this.enterpriseList)
-      })
+        })
+        .then(response => {
+          if (response.status == 200 && response.data.status == 1) {
+            this.enterpriseList = response.data.result.freevmconfigResultMap;
+            for (let i in this.enterpriseList) {
+              this.enterpriseList[i].zoneList =
+                response.data.result.optionalArea;
+              this.enterpriseList[i].zone = this.enterpriseList[
+                i
+              ].zoneList[0].value;
+              this.$set(
+                this.enterpriseList[i],
+                "systemList",
+                this.formatSystem(response.data.result.mvTem)
+              );
+              this.enterpriseList[i].system = [
+                this.enterpriseList[i].systemList[0].label,
+                this.enterpriseList[i].systemList[0].children[0].value
+              ];
+              let dayList = this.enterpriseList[i].days.split(",");
+              let discountList = this.enterpriseList[i].discount.split(",");
+              this.enterpriseList[i].timeList = [];
+              dayList.forEach((inner, index) => {
+                this.enterpriseList[i].timeList.push({
+                  days: inner,
+                  discount: discountList[index]
+                });
+              });
+              this.enterpriseList[i].days = this.enterpriseList[
+                i
+              ].timeList[0].days;
+              this.enterpriseList[i].discount = this.enterpriseList[
+                i
+              ].timeList[0].disount;
+              this.enterpriseList[i].costList = this.enterpriseList[
+                i
+              ].cost.split(",");
+              this.enterpriseList[i].cost = this.enterpriseList[i].costList[0];
+              this.enterpriseList[i].originalPriceList = this.enterpriseList[
+                i
+              ].originalPrice.split(",");
+              this.enterpriseList[i].originalPrice = this.enterpriseList[
+                i
+              ].originalPriceList[0];
+              this.enterpriseList[i].idList = this.enterpriseList[i].id.split(
+                ","
+              );
+              this.enterpriseList[i].id = this.enterpriseList[i].idList[0];
+            }
+          }
+          // console.log(this.enterpriseList)
+        });
     },
-    changeTimeE (item, inner, index) {
-      item.days = inner.days
-      item.discount = inner.discount
-      item.id = item.idList[index]
-      this.getPriceHost(item)
+    changeTimeE(item, inner, index) {
+      item.days = inner.days;
+      item.discount = inner.discount;
+      item.id = item.idList[index];
+      this.getPriceHost(item);
     },
-    getDatabase () {
-      axios.get('activity/getActivityInfo.do', {
-        params: {
-          activityNum: 66
-        }
-      }).then(response => {
-        if (response.status == 200 && response.data.status == 1) {
-          this.databaseList = response.data.result.listMap
-          this.databaseList.forEach(item => {
-            this.$set(item, 'specsList', [])
-            item.specsList = item.value.map(inner => {
-              inner.config = JSON.parse(inner.config)
-              return { 'cpu': inner.cpu, 'mem': inner.mem }
-            })
-            this.$set(item, 'specs', item.value[0].cpu + '#' + item.value[0].mem)
-            item.name = item.value[0].configdesc
-            item.rootDiskSize = item.value[0].rootDiskSize
-            item.dataDiskSize = item.value[0].dataDiskSize
-            item.disktype = item.value[0].disktype
-            this.$set(item, 'timeList', [])
-            this.$set(item, 'bandwithList', [])
-            item.zoneList = response.data.result.optionalArea
-            item.zone = item.zoneList[0].value
-            // this.changeConfig(item)
-            // 初始化数据赋值(为了一开始不调取很多接口)
-            item.value.forEach(inner => {
-              if (inner.cpu == item.specs.split('#')[0] && inner.mem == item.specs.split('#')[1]) {
-                item.sList = inner.config
-                item.id = inner.id
-                item.bandwithList = inner.config.map(sec => {
-                  return { 'bandwith': sec.bandwidth }
-                })
-              }
-            })
-            this.$set(item, 'bandwith', item.bandwithList[0].bandwith)
-            item.daysPricelist = item.sList.filter(inner => {
-              return inner.bandwidth == item.bandwith
-            })
-            item.daysPricelist[0].value = item.daysPricelist[0].value.sort((a, b) => {
-              return a.days - b.days
-            })
-            item.timeList = item.daysPricelist[0].value.map(sec => {
-              return { 'days': sec.days, 'discount': sec.discount }
-            })
-            this.$set(item, 'days', item.timeList[0].days)
-            this.$set(item, 'discount', item.timeList[0].discount)
-            //给价格赋初始值
-            this.$set(item, 'cost', item.daysPricelist[0].value[0].cost)
-            this.$set(item, 'originalPrice', item.daysPricelist[0].value[0].originalPrice)
-          })
-        }
-      })
+    getDatabase() {
+      axios
+        .get("activity/getActivityInfo.do", {
+          params: {
+            activityNum: 66
+          }
+        })
+        .then(response => {
+          if (response.status == 200 && response.data.status == 1) {
+            this.databaseList = response.data.result.listMap;
+            this.databaseList.forEach(item => {
+              this.$set(item, "specsList", []);
+              item.specsList = item.value.map(inner => {
+                inner.config = JSON.parse(inner.config);
+                return { cpu: inner.cpu, mem: inner.mem };
+              });
+              this.$set(
+                item,
+                "specs",
+                item.value[0].cpu + "#" + item.value[0].mem
+              );
+              item.name = item.value[0].configdesc;
+              item.rootDiskSize = item.value[0].rootDiskSize;
+              item.dataDiskSize = item.value[0].dataDiskSize;
+              item.disktype = item.value[0].disktype;
+              this.$set(item, "timeList", []);
+              this.$set(item, "bandwithList", []);
+              item.zoneList = response.data.result.optionalArea;
+              item.zone = item.zoneList[0].value;
+              // this.changeConfig(item)
+              // 初始化数据赋值(为了一开始不调取很多接口)
+              item.value.forEach(inner => {
+                if (
+                  inner.cpu == item.specs.split("#")[0] &&
+                  inner.mem == item.specs.split("#")[1]
+                ) {
+                  item.sList = inner.config;
+                  item.id = inner.id;
+                  item.bandwithList = inner.config.map(sec => {
+                    return { bandwith: sec.bandwidth };
+                  });
+                }
+              });
+              this.$set(item, "bandwith", item.bandwithList[0].bandwith);
+              item.daysPricelist = item.sList.filter(inner => {
+                return inner.bandwidth == item.bandwith;
+              });
+              item.daysPricelist[0].value = item.daysPricelist[0].value.sort(
+                (a, b) => {
+                  return a.days - b.days;
+                }
+              );
+              item.timeList = item.daysPricelist[0].value.map(sec => {
+                return { days: sec.days, discount: sec.discount };
+              });
+              this.$set(item, "days", item.timeList[0].days);
+              this.$set(item, "discount", item.timeList[0].discount);
+              //给价格赋初始值
+              this.$set(item, "cost", item.daysPricelist[0].value[0].cost);
+              this.$set(
+                item,
+                "originalPrice",
+                item.daysPricelist[0].value[0].originalPrice
+              );
+            });
+          }
+        });
     },
-    changeConfig (item) {
+    changeConfig(item) {
       item.value.forEach(inner => {
-        if (inner.cpu == item.specs.split('#')[0] && inner.mem == item.specs.split('#')[1]) {
-          item.sList = inner.config
-          item.id = inner.id
+        if (
+          inner.cpu == item.specs.split("#")[0] &&
+          inner.mem == item.specs.split("#")[1]
+        ) {
+          item.sList = inner.config;
+          item.id = inner.id;
           item.bandwithList = inner.config.map(sec => {
-            return { 'bandwith': sec.bandwidth }
-          })
+            return { bandwith: sec.bandwidth };
+          });
         }
-      })
-      this.$set(item, 'bandwith', item.bandwithList[0].bandwith)
-      this.changeBandwith(item)
+      });
+      this.$set(item, "bandwith", item.bandwithList[0].bandwith);
+      this.changeBandwith(item);
     },
-    changeBandwith (item) {
+    changeBandwith(item) {
       item.daysPricelist = item.sList.filter(inner => {
-        return inner.bandwidth == item.bandwith
-      })
+        return inner.bandwidth == item.bandwith;
+      });
       item.daysPricelist[0].value = item.daysPricelist[0].value.sort((a, b) => {
-        return a.days - b.days
-      })
+        return a.days - b.days;
+      });
       item.timeList = item.daysPricelist[0].value.map(sec => {
-        return { 'days': sec.days, 'discount': sec.discount }
-      })
-      item.days = item.timeList[0].days
-      item.discount = item.timeList[0].discount
-      this.getPriceDB(item)
+        return { days: sec.days, discount: sec.discount };
+      });
+      item.days = item.timeList[0].days;
+      item.discount = item.timeList[0].discount;
+      this.getPriceDB(item);
     },
-    changeTimeD (item, inner) {
-      item.days = inner.days
-      item.discount = inner.discount
-      this.getPriceDB(item)
+    changeTimeD(item, inner) {
+      item.days = inner.days;
+      item.discount = inner.discount;
+      this.getPriceDB(item);
     },
-    changeZoneDB (item) {
-      this.getPriceDB(item)
+    changeZoneDB(item) {
+      this.getPriceDB(item);
     },
-    getPriceDB (item) {
-      let url = 'activity/getHostOriginalPrice.do'
+    getPriceDB(item) {
+      let url = "activity/getHostOriginalPrice.do";
       let params = {
-        cpuNum: item.specs.split('#')[0],
-        memory: item.specs.split('#')[1],
+        cpuNum: item.specs.split("#")[0],
+        memory: item.specs.split("#")[1],
         diskSize: item.rootDiskSize + item.dataDiskSize,
         zoneId: item.zone,
-        timeType: item.days < 360 ? 'month' : 'year',
+        timeType: item.days < 360 ? "month" : "year",
         timeValue: item.days < 360 ? item.days / 30 : item.days / 360,
         diskType: item.disktype,
         resourceType: "db",
         bandwidth: item.bandwith,
         discount: item.discount
-      }
+      };
       axios.post(url, params).then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          item.cost = response.data.result.discountCost
-          item.originalPrice = response.data.result.originalPrice
+          item.cost = response.data.result.discountCost;
+          item.originalPrice = response.data.result.originalPrice;
         }
-      })
+      });
     },
-    orderDB (item, type) {
+    orderDB(item, type) {
       if (!this.$store.state.userInfo) {
-        if (type == 'p') {
-          this.$LR({ type: 'register' })
+        if (type == "p") {
+          this.$LR({ type: "register" });
         } else {
-          window.open('https://m.xinruiyun.cn/login', '_self')
+          window.open("https://m.xinruiyun.cn/login", "_self");
         }
-        return
+        return;
       }
-      if ((!this.authInfo) || (this.authInfo && this.authInfo.authtype == 0 && this.authInfo.checkstatus != 0) || (!this.authInfoPersion && this.authInfo && this.authInfo.authtype == 1 && this.authInfo.checkstatus != 0) || (this.authInfoPersion && this.authInfoPersion.checkstatus != 0 && this.authInfo && this.authInfo.checkstatus != 0)) {
-        if (type == 'p') {
+      if (
+        !this.authInfo ||
+        (this.authInfo &&
+          this.authInfo.authtype == 0 &&
+          this.authInfo.checkstatus != 0) ||
+        (!this.authInfoPersion &&
+          this.authInfo &&
+          this.authInfo.authtype == 1 &&
+          this.authInfo.checkstatus != 0) ||
+        (this.authInfoPersion &&
+          this.authInfoPersion.checkstatus != 0 &&
+          this.authInfo &&
+          this.authInfo.checkstatus != 0)
+      ) {
+        if (type == "p") {
           if (!this.userInfo.phone) {
-            this.showModal.cashverification = true
+            this.showModal.cashverification = true;
           } else if (item.certification == 3) {
             this.$message.confirm({
-              title: '提示',
-              content: '抱歉，只有实名认证用户才可以参加活动',
-              okText: '去实名认证',
+              title: "提示",
+              content: "抱歉，只有实名认证用户才可以参加活动",
+              okText: "去实名认证",
               onOk: () => {
-                window.open('https://i.xinruiyun.cn/usercenter', '_self')
+                window.open("https://i.xinruiyun.cn/usercenter", "_self");
               }
-            })
+            });
           } else {
-            this.refreshQRFirst()
+            this.refreshQRFirst();
           }
         } else {
           if (item.certification == 3) {
-            window.open('https://i.xinruiyun.cn/usercenter', '_self')
+            window.open("https://i.xinruiyun.cn/usercenter", "_self");
           } else {
-            window.open('https://m.xinruiyun.cn/faceindex', '_self')
+            window.open("https://m.xinruiyun.cn/faceindex", "_self");
           }
         }
-        return
+        return;
       }
-      axios.get('database/getDeductionsDatabase.do', {
-        params: {
-          vmConfigId: item.id,
-          defzoneid: item.zone,
-          days: item.days,
-          bandwidth: item.bandwith,
-          dbVersion: item.name
-        }
-      }).then(response => {
-        if (response.status == 200 && response.data.status == 1) {
-          this.$Message.success('创建订单成功')
-            if (type == 'p') {
-              window.open('https://i.xinruiyun.cn/order', '_self')
+      axios
+        .get("database/getDeductionsDatabase.do", {
+          params: {
+            vmConfigId: item.id,
+            defzoneid: item.zone,
+            days: item.days,
+            bandwidth: item.bandwith,
+            dbVersion: item.name
+          }
+        })
+        .then(response => {
+          if (response.status == 200 && response.data.status == 1) {
+            this.$Message.success("创建订单成功");
+            if (type == "p") {
+              window.open("https://i.xinruiyun.cn/order", "_self");
             } else {
-              window.open('https://m.xinruiyun.cn/orderconfirm', '_self')
+              window.open("https://m.xinruiyun.cn/orderconfirm", "_self");
             }
-        } else {
-          this.hintText = response.data.message
-          this.showModal.hint = true
-        }
-      })
+          } else {
+            this.hintText = response.data.message;
+            this.showModal.hint = true;
+          }
+        });
     },
-    formatSystem (system) {
-      let newSystem = []
+    formatSystem(system) {
+      let newSystem = [];
       for (let i in system) {
         if (system[i].length) {
-          let newItem = {}
-          newItem.label = newItem.value = i
+          let newItem = {};
+          newItem.label = newItem.value = i;
           newItem.children = system[i].map(inner => {
-            return { 'label': inner.templatedescript, 'value': inner.systemtemplateid }
-          })
-          newSystem.push(newItem)
+            return {
+              label: inner.templatedescript,
+              value: inner.systemtemplateid
+            };
+          });
+          newSystem.push(newItem);
         }
       }
       newSystem.sort((a, b) => {
-        return b.value.charCodeAt(0) - a.value.charCodeAt(0)
-      })
+        return b.value.charCodeAt(0) - a.value.charCodeAt(0);
+      });
       // console.log(newSystem)
-      return newSystem
+      return newSystem;
     },
-    titleType (type) {
-      let text = '弹性云服务器'
+    titleType(type) {
+      let text = "弹性云服务器";
       switch (type) {
-        case 'host':
-          text = '弹性云服务器'
-          break
-        case 'G5500':
-          text = 'GPU云服务器'
-          break
-        case 'oss':
-          text = '对象存储OSS'
-          break
+        case "host":
+          text = "弹性云服务器";
+          break;
+        case "G5500":
+          text = "GPU云服务器";
+          break;
+        case "oss":
+          text = "对象存储OSS";
+          break;
       }
-      return text
+      return text;
     },
-    formatDay (days) {
-      let text = '7天'
+    formatDay(days) {
+      let text = "7天";
       if (days >= 30 && days < 360) {
-        text = `${days / 30}月`
+        text = `${days / 30}月`;
       } else if (days >= 360) {
-        text = `${days / 360}年`
+        text = `${days / 360}年`;
       }
-      return text
+      return text;
     },
-    shareNew (type) {
+    shareNew(type) {
       if (!this.$store.state.userInfo) {
-        if (type == 'p') {
-          this.$LR({ type: 'register' })
+        if (type == "p") {
+          this.$LR({ type: "register" });
         } else {
-          window.open('https://m.xinruiyun.cn/login', '_self')
+          window.open("https://m.xinruiyun.cn/login", "_self");
         }
-        return false
+        return false;
       }
-      axios.get('activity/createTimeLink.do', {
-        params: {
-          ts: '4Y1V0J'
-        }
-      }).then(response => {
-        if (response.status == 200 && response.data.status == 1) {
-          this.shareUrl = response.data.result.url
-          this.qrConfig.value = this.shareUrl
-          this.showModal.share = true
-        } else {
-          this.hintText = response.data.message
-          this.showModal.hint = true
-        }
-      })
+      axios
+        .get("activity/createTimeLink.do", {
+          params: {
+            ts: "4Y1V0J"
+          }
+        })
+        .then(response => {
+          if (response.status == 200 && response.data.status == 1) {
+            this.shareUrl = response.data.result.url;
+            this.qrConfig.value = this.shareUrl;
+            this.showModal.share = true;
+          } else {
+            this.hintText = response.data.message;
+            this.showModal.hint = true;
+          }
+        });
     },
-    copyUrl () {
-      let dom = this.$refs.copy_content
-      dom.value = this.shareUrl
-      dom.select()
-      document.execCommand("copy")
+    copyUrl() {
+      let dom = this.$refs.copy_content;
+      dom.value = this.shareUrl;
+      dom.select();
+      document.execCommand("copy");
       try {
         if (document.execCommand("copy")) {
           this.$Message.success("链接复制成功");
@@ -1268,7 +1450,7 @@ export default {
           this.$Message.info("该浏览器暂不支持复制");
         }
       }
-      this.showModal.share = false
+      this.showModal.share = false;
     },
     // getDomain () {
     //   axios.get('activity/getTemActInfoById.do', {
@@ -1279,366 +1461,418 @@ export default {
 
     //   })
     // },
-    checkDomain (item) {
-      if (item.value == '') {
-        item.tip = '请输入域名'
-        return false
+    checkDomain(item) {
+      if (item.value == "") {
+        item.tip = "请输入域名";
+        return false;
       }
-      axios.post('domain/domainFound.do', {
-        domainName: item.value,
-        tids: item.name
-      }).then(response => {
-        if (response.status == 200 && response.data.status == 1) {
-          if (response.data.data.results.length == 0) {
-            item.tip = '暂无数据！'
-          } else if (response.data.data.results[0].status == 1) {
-            item.tip = '* 对不起，域名已被注册，换个域名试试吧！'
-          } else if (response.data.data.results[0].isRes == 'unavailable') {
-            item.tip = '* 对不起，域名不可注册！'
-          } else if (response.data.data.results[0].isRes == 'available') {
-            item.tip = '域名可注册'
+      axios
+        .post("domain/domainFound.do", {
+          domainName: item.value,
+          tids: item.name
+        })
+        .then(response => {
+          if (response.status == 200 && response.data.status == 1) {
+            if (response.data.data.results.length == 0) {
+              item.tip = "暂无数据！";
+            } else if (response.data.data.results[0].status == 1) {
+              item.tip = "* 对不起，域名已被注册，换个域名试试吧！";
+            } else if (response.data.data.results[0].isRes == "unavailable") {
+              item.tip = "* 对不起，域名不可注册！";
+            } else if (response.data.data.results[0].isRes == "available") {
+              item.tip = "域名可注册";
+            }
+          } else {
+            this.$Message.info(response.data.msg);
           }
-        } else {
-          this.$Message.info(response.data.msg);
-        }
-      })
+        });
     },
-    buyDomain (type, item) {
+    buyDomain(type, item) {
       if (!this.$store.state.userInfo) {
-        if (type == 'p') {
-          this.$LR({ type: 'register' })
+        if (type == "p") {
+          this.$LR({ type: "register" });
         } else {
-          window.open('https://m.xinruiyun.cn/login', '_self')
+          window.open("https://m.xinruiyun.cn/login", "_self");
         }
-        return false
+        return false;
       }
-      if (item.value == '') {
-        item.tip = '请输入域名'
-        return false
+      if (item.value == "") {
+        item.tip = "请输入域名";
+        return false;
       }
-      axios.post('domain/domainFound.do', {
-        domainName: item.value,
-        tids: item.name
-      }).then(response => {
-        if (response.status == 200 && response.data.status == 1) {
-          if (response.data.data.results.length == 0) {
-            item.tip = '暂无数据！'
-          } else if (response.data.data.results[0].status == 1) {
-            item.tip = '* 对不起，域名已被注册，换个域名试试吧！'
-          } else if (response.data.data.results[0].isRes == 'unavailable') {
-            item.tip = '* 对不起，域名不可注册！'
-          } else if (response.data.data.results[0].isRes == 'available') {
-            item.tip = '域名可注册'
-            window.open('https://i.xinruiyun.cn/domaininfotemplate', '_self')
-            var domNames = item.value + item.name
-            var domYear = item.unit
-            var domPrice = item.price
-            this.setCookie('domNames', domNames + ',')
-            this.setCookie('domYear', domYear + ',')
-            this.setCookie('domPrice', domPrice + ',')
+      axios
+        .post("domain/domainFound.do", {
+          domainName: item.value,
+          tids: item.name
+        })
+        .then(response => {
+          if (response.status == 200 && response.data.status == 1) {
+            if (response.data.data.results.length == 0) {
+              item.tip = "暂无数据！";
+            } else if (response.data.data.results[0].status == 1) {
+              item.tip = "* 对不起，域名已被注册，换个域名试试吧！";
+            } else if (response.data.data.results[0].isRes == "unavailable") {
+              item.tip = "* 对不起，域名不可注册！";
+            } else if (response.data.data.results[0].isRes == "available") {
+              item.tip = "域名可注册";
+              window.open("https://i.xinruiyun.cn/domaininfotemplate", "_self");
+              var domNames = item.value + item.name;
+              var domYear = item.unit;
+              var domPrice = item.price;
+              this.setCookie("domNames", domNames + ",");
+              this.setCookie("domYear", domYear + ",");
+              this.setCookie("domPrice", domPrice + ",");
+            }
+          } else {
+            this.$Message.info(response.data.msg);
           }
-        } else {
-          this.$Message.info(response.data.msg);
-        }
-      })
+        });
     },
     setCookie(name, val) {
-      document.cookie = name + '=' + val + ';domain=.xinruiyun.cn;path=/'
+      document.cookie = name + "=" + val + ";domain=.xinruiyun.cn;path=/";
     },
-    getRenew () {
-      axios.get('activity/getActTicket.do', {
-        params: {
-          activityNum: '68'
-        }
-      }).then(response => {
-        if (response.status == 200 && response.data.status == 1) {
-          this.renewList = response.data.result.freevmconfigs
-        }
-      })
+    getRenew() {
+      axios
+        .get("activity/getActTicket.do", {
+          params: {
+            activityNum: "68"
+          }
+        })
+        .then(response => {
+          if (response.status == 200 && response.data.status == 1) {
+            this.renewList = response.data.result.freevmconfigs;
+          }
+        });
     },
-    toRenew (id, type) {
+    toRenew(id, type) {
       if (!this.$store.state.userInfo) {
-        if (type == 'p') {
-          this.$LR({ type: 'register' })
+        if (type == "p") {
+          this.$LR({ type: "register" });
         } else {
-          window.open('https://m.xinruiyun.cn/login', '_self')
+          window.open("https://m.xinruiyun.cn/login", "_self");
         }
-        return false
+        return false;
       }
-      axios.get('ticket/getTicketForConfigId.do', {
-        params: {
-          vmConfigId: id
-        }
-      }).then(response => {
-        if (response.status == 200 && response.data.status == 1) {
-          this.domainText = response.data.message
-          this.renewStatus = 1
-          this.showModal.renewHint = true
-        } else {
-          this.domainText = response.data.message
-          this.renewStatus = 2
-          this.showModal.renewHint = true
-        }
-      })
+      axios
+        .get("ticket/getTicketForConfigId.do", {
+          params: {
+            vmConfigId: id
+          }
+        })
+        .then(response => {
+          if (response.status == 200 && response.data.status == 1) {
+            this.domainText = response.data.message;
+            this.renewStatus = 1;
+            this.showModal.renewHint = true;
+          } else {
+            this.domainText = response.data.message;
+            this.renewStatus = 2;
+            this.showModal.renewHint = true;
+          }
+        });
     },
-    roll (val) {
-      $('html, body').animate({ scrollTop: val }, 300);
+    roll(val) {
+      $("html, body").animate({ scrollTop: val }, 300);
     },
     goAnchor(type) {
-      var anchor = this.$el.querySelector(type)
+      var anchor = this.$el.querySelector(type);
       // chrome
       document.body.scrollTop = anchor.offsetTop;
       // firefox
       document.documentElement.scrollTop = anchor.offsetTop;
     },
     // 实名认证方法
-    init () {
-      axios.get('user/GetUserInfo.do').then(response => {
+    init() {
+      axios.get("user/GetUserInfo.do").then(response => {
         if (response.status == 200 && response.data.status == 1) {
-          this.$store.commit('setAuthInfo', { authInfo: response.data.authInfo, userInfo: response.data.result, authInfoPersion: response.data.authInfo_persion })
+          this.$store.commit("setAuthInfo", {
+            authInfo: response.data.authInfo,
+            userInfo: response.data.result,
+            authInfoPersion: response.data.authInfo_persion
+          });
         }
-      })
+      });
     },
-    refreshQRFirst () {
-      this.tempCode = this.uuid(6, 16)
-      let url = '/faceRecognition/getUserInfoByPcQRCode.do'
+    refreshQRFirst() {
+      this.tempCode = this.uuid(6, 16);
+      let url = "/faceRecognition/getUserInfoByPcQRCode.do";
       let config1 = {
-        phone: this.userInfo.phone ? this.userInfo.phone : this.formCustom.VerificationPhone,
-      }
+        phone: this.userInfo.phone
+          ? this.userInfo.phone
+          : this.formCustom.VerificationPhone
+      };
       let params = {
-        faceType: '1',
+        faceType: "1",
         tempCode: this.tempCode
-      }
-      params.config = JSON.stringify(config1)
+      };
+      params.config = JSON.stringify(config1);
       axios.post(url, params).then(res => {
         if (res.status == 200 && res.data.status == 1) {
-          this.refreshUserStatus()
-          this.showModal.qrCode = true
-          this.qrConfig.value = res.data.result.url
-          this.codeLoseEfficacy = ''
+          this.refreshUserStatus();
+          this.showModal.qrCode = true;
+          this.qrConfig.value = res.data.result.url;
+          this.codeLoseEfficacy = "";
         } else {
-          this.codeLoseEfficacy = 'lose'
+          this.codeLoseEfficacy = "lose";
         }
-      })
+      });
     },
-    refreshUserStatus () {
-      clearInterval(this.codeTimer)
+    refreshUserStatus() {
+      clearInterval(this.codeTimer);
       this.codeTimer = setInterval(() => {
-        this.$http.get('/faceRecognition/getAllStatus.do', { params: { tempCode: this.tempCode } }).then(res => {
-          if (res.status == 200 && res.data.status == 1) {
-            if (res.data.result.qrCode == 0) {
-              this.codeLoseEfficacy = 'lose'
+        this.$http
+          .get("/faceRecognition/getAllStatus.do", {
+            params: { tempCode: this.tempCode }
+          })
+          .then(res => {
+            if (res.status == 200 && res.data.status == 1) {
+              if (res.data.result.qrCode == 0) {
+                this.codeLoseEfficacy = "lose";
+              }
+              if (res.data.result.qrCode == 2) {
+                this.codeLoseEfficacy = "scanSuccess";
+              }
+              if (res.data.result.authStatus == 1) {
+                this.init();
+                this.showModal.qrCode = false;
+                clearInterval(this.codeTimer);
+              }
+              if (res.data.result.authStatus == 0) {
+                this.authStatus = true;
+              } else if (res.data.result.authStatus == 3) {
+                // this.showModal.authHint = true
+                this.$message.confirm({
+                  title: "提示",
+                  content:
+                    "抱歉，人脸识别实名认证失败！您也可以前往用户中心上传身份证照片进行实名认证。",
+                  okText: "去实名认证",
+                  onOk: () => {
+                    window.open("https://i.xinruiyun.cn/usercenter", "_self");
+                  }
+                });
+              }
             }
-            if (res.data.result.qrCode == 2) {
-              this.codeLoseEfficacy = 'scanSuccess'
-            }
-            if (res.data.result.authStatus == 1) {
-              this.init()
-              this.showModal.qrCode = false
-              clearInterval(this.codeTimer)
-            }
-            if (res.data.result.authStatus == 0) {
-              this.authStatus = true
-            } else if (res.data.result.authStatus == 3) {
-              // this.showModal.authHint = true
-              this.$message.confirm({
-                title: '提示',
-                content: '抱歉，人脸识别实名认证失败！您也可以前往用户中心上传身份证照片进行实名认证。',
-                okText: '去实名认证',
-                onOk: () => {
-                  window.open('https://i.xinruiyun.cn/usercenter', '_self')
-                }
-              })
-            }
-          }
-        })
-      }, 3000)
+          });
+      }, 3000);
     },
-    qrcodeClose () {
-      this.showModal.qrCode = false
-      clearInterval(this.codeTimer)
+    qrcodeClose() {
+      this.showModal.qrCode = false;
+      clearInterval(this.codeTimer);
     },
-    Callpresentation () {
-      this.$refs.cashverification.validateField('messagecode', (text) => {
-        if (text == '') {
-          let url = 'user/judgeCode.do'
-          let params = {}
+    Callpresentation() {
+      this.$refs.cashverification.validateField("messagecode", text => {
+        if (text == "") {
+          let url = "user/judgeCode.do";
+          let params = {};
           if (this.formCustom.VerificationPhone) {
             params = {
               aim: this.formCustom.VerificationPhone,
               isemail: 0,
               code: this.formCustom.messagecode
-            }
+            };
           }
-          axios.get(url, {
-            params
-          }).then(res => {
-            if (res.data.status == 1 && res.status == 200) {
-                this.showModal.cashverification = false
-                this.tempCode = this.uuid(6, 16)
-                let url = '/faceRecognition/getUserInfoByPcQRCode.do'
+          axios
+            .get(url, {
+              params
+            })
+            .then(res => {
+              if (res.data.status == 1 && res.status == 200) {
+                this.showModal.cashverification = false;
+                this.tempCode = this.uuid(6, 16);
+                let url = "/faceRecognition/getUserInfoByPcQRCode.do";
                 let config = {
-                  phone: this.userInfo.phone ? this.userInfo.phone : this.formCustom.VerificationPhone,
-                }
-                axios.post(url, {
-                  faceType: '1',
-                  config: JSON.stringify(config),
-                  tempCode: this.tempCode
-                }).then(res => {
-                  if (res.status == 200 && res.data.status == 1) {
-                    this.qrConfig.value = res.data.result.url
-                    this.showModal.qrCode = true
-                    this.codeLoseEfficacy = ''
-                    this.refreshUserStatus()
-                  } else {
-                    this.codeLoseEfficacy = 'lose'
-                    this.showModal.qrCode = true
-                    this.refreshUserStatus()
-                  }
-                })
-            } else {
-              this.hintText = res.data.message
-              this.showModal.hint = true
-            }
-          })
+                  phone: this.userInfo.phone
+                    ? this.userInfo.phone
+                    : this.formCustom.VerificationPhone
+                };
+                axios
+                  .post(url, {
+                    faceType: "1",
+                    config: JSON.stringify(config),
+                    tempCode: this.tempCode
+                  })
+                  .then(res => {
+                    if (res.status == 200 && res.data.status == 1) {
+                      this.qrConfig.value = res.data.result.url;
+                      this.showModal.qrCode = true;
+                      this.codeLoseEfficacy = "";
+                      this.refreshUserStatus();
+                    } else {
+                      this.codeLoseEfficacy = "lose";
+                      this.showModal.qrCode = true;
+                      this.refreshUserStatus();
+                    }
+                  });
+              } else {
+                this.hintText = res.data.message;
+                this.showModal.hint = true;
+              }
+            });
         }
-      })
+      });
     },
-    uuid (len, radix) {
-      var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
-      var uuid = [], i;
+    uuid(len, radix) {
+      var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".split(
+        ""
+      );
+      var uuid = [],
+        i;
       radix = radix || chars.length;
 
       if (len) {
         // Compact form
-        for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random() * radix];
+        for (i = 0; i < len; i++) uuid[i] = chars[0 | (Math.random() * radix)];
       } else {
         // rfc4122, version 4 form
         var r;
 
         // rfc4122 requires these characters
-        uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
-        uuid[14] = '4';
+        uuid[8] = uuid[13] = uuid[18] = uuid[23] = "-";
+        uuid[14] = "4";
 
         // Fill in random data.  At i==19 set the high bits of clock sequence as
         // per rfc4122, sec. 4.1.5
         for (i = 0; i < 36; i++) {
           if (!uuid[i]) {
-            r = 0 | Math.random() * 16;
-            uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
+            r = 0 | (Math.random() * 16);
+            uuid[i] = chars[i == 19 ? (r & 0x3) | 0x8 : r];
           }
         }
       }
-      return uuid.join('');
+      return uuid.join("");
     },
-    refreshQRCode: throttle(1000, function () {
-      this.authStatus = false
-      this.tempCode = this.uuid(6, 16)
-      let url = '/faceRecognition/getUserInfoByPcQRCode.do'
+    refreshQRCode: throttle(1000, function() {
+      this.authStatus = false;
+      this.tempCode = this.uuid(6, 16);
+      let url = "/faceRecognition/getUserInfoByPcQRCode.do";
       let config1 = {
-        phone: this.userInfo.phone ? this.userInfo.phone : this.formCustom.VerificationPhone,
-      }
+        phone: this.userInfo.phone
+          ? this.userInfo.phone
+          : this.formCustom.VerificationPhone
+      };
       let params = {
-        faceType: '1',
+        faceType: "1",
         tempCode: this.tempCode
-      }
-      params.config = JSON.stringify(config1)
+      };
+      params.config = JSON.stringify(config1);
       axios.post(url, params).then(res => {
         if (res.status == 200 && res.data.status == 1) {
-          this.$Message.success('刷新成功')
-          this.qrConfig.value = res.data.result.url
-          this.codeLoseEfficacy = ''
+          this.$Message.success("刷新成功");
+          this.qrConfig.value = res.data.result.url;
+          this.codeLoseEfficacy = "";
         } else {
-          this.codeLoseEfficacy = 'lose'
+          this.codeLoseEfficacy = "lose";
         }
-      })
+      });
     }),
-    getPhoneCode (codeType) {
-      if (!this.userInfo.phone && !this.regExpObj.phone.test(this.formCustom.VerificationPhone)) {
-        this.$Message.info('请输入正确的手机号')
-        return
+    getPhoneCode(codeType) {
+      if (
+        !this.userInfo.phone &&
+        !this.regExpObj.phone.test(this.formCustom.VerificationPhone)
+      ) {
+        this.$Message.info("请输入正确的手机号");
+        return;
       }
       if (this.formCustom.VerificationPhone) {
-        axios.get('user/isRegister.do', {
-          params: {
-            username: this.formCustom.VerificationPhone
-          }
-        }).then(res => {
-          if (res.status === 200 && res.data.status === 1) {
-            this.$refs.cashverification.validateField('Verificationcode', (text) => {
-              if (text == '') {
-                var url = ''
-                if (codeType == 'code' || codeType == 'againCode' && this.formCustom.newCodeText == '获取验证码') {
-                  url = 'user/code.do'
-                } else if (codeType == 'voice' && this.formCustom.newCodeText == '获取验证码') {
-                  url = 'user/voiceCode.do'
-                } else {
-                  return false
+        axios
+          .get("user/isRegister.do", {
+            params: {
+              username: this.formCustom.VerificationPhone
+            }
+          })
+          .then(res => {
+            if (res.status === 200 && res.data.status === 1) {
+              this.$refs.cashverification.validateField(
+                "Verificationcode",
+                text => {
+                  if (text == "") {
+                    var url = "";
+                    if (
+                      codeType == "code" ||
+                      (codeType == "againCode" &&
+                        this.formCustom.newCodeText == "获取验证码")
+                    ) {
+                      url = "user/code.do";
+                    } else if (
+                      codeType == "voice" &&
+                      this.formCustom.newCodeText == "获取验证码"
+                    ) {
+                      url = "user/voiceCode.do";
+                    } else {
+                      return false;
+                    }
+                    axios
+                      .get(url, {
+                        params: {
+                          aim: this.formCustom.VerificationPhone,
+                          isemail: 0,
+                          vailCode: this.formCustom.Verificationcode
+                        }
+                      })
+                      .then(response => {
+                        // 发送成功，进入倒计时
+                        if (
+                          response.status == 200 &&
+                          response.data.status == 1
+                        ) {
+                          var countdown = 60;
+                          this.formCustom.newCodeText = `${countdown}S`;
+                          var Interval = setInterval(() => {
+                            countdown--;
+                            this.formCustom.newCodeText = `${countdown}S`;
+                            if (countdown == 0) {
+                              clearInterval(Interval);
+                              this.formCustom.newCodeText = "获取验证码";
+                            }
+                          }, 1000);
+                        } else {
+                          this.hintText = response.data.message;
+                          this.showModal.hint = true;
+                          this.imgSrc = `https://activity.xinruiyun.cn/user/getKaptchaImage.do?t=${new Date().getTime()}`;
+                          this.formCustom.Verificationcode = "";
+                        }
+                      });
+                  }
                 }
-                axios.get(url, {
-                  params: {
-                    aim: this.formCustom.VerificationPhone,
-                    isemail: 0,
-                    vailCode: this.formCustom.Verificationcode
-                  }
-                }).then(response => {
-                  // 发送成功，进入倒计时
-                  if (response.status == 200 && response.data.status == 1) {
-                    var countdown = 60
-                    this.formCustom.newCodeText = `${countdown}S`
-                    var Interval = setInterval(() => {
-                      countdown--
-                      this.formCustom.newCodeText = `${countdown}S`
-                      if (countdown == 0) {
-                        clearInterval(Interval)
-                        this.formCustom.newCodeText = '获取验证码'
-                      }
-                    }, 1000)
-                  } else {
-                    this.hintText = response.data.message
-                    this.showModal.hint = true
-                    this.imgSrc = `https://activity.xinruiyun.cn/user/getKaptchaImage.do?t=${new Date().getTime()}`
-                    this.formCustom.Verificationcode = ''
-                  }
-                })
-              }
-            })
-          } else {
-            this.$Message.info('该手机号已被使用')
-          }
-        })
+              );
+            } else {
+              this.$Message.info("该手机号已被使用");
+            }
+          });
       }
     }
     // 实名认证方法结束
   },
   computed: {
-    authInfo () {
-      return this.$store.state.authInfo ? this.$store.state.authInfo : null
+    authInfo() {
+      return this.$store.state.authInfo ? this.$store.state.authInfo : null;
     },
-    authInfoPersion () {
-      return this.$store.state.authInfoPersion
+    authInfoPersion() {
+      return this.$store.state.authInfoPersion;
     },
-    userInfo () {
-      return this.$store.state.userInfo
+    userInfo() {
+      return this.$store.state.userInfo;
     },
-    disabled () {
-      if (this.formCustom.Verificationcode == '' || this.formCustom.messagecode == '') {
-        return true
+    disabled() {
+      if (
+        this.formCustom.Verificationcode == "" ||
+        this.formCustom.messagecode == ""
+      ) {
+        return true;
       } else {
-        return false
+        return false;
       }
     }
   },
-  watch: {
-  },
+  watch: {},
   components: {
     VueQArt
   },
-  beforeRouteLeave (to, from, next) {
-    clearInterval(this.codeTimer)
-    next()
+  beforeRouteLeave(to, from, next) {
+    clearInterval(this.codeTimer);
+    next();
   }
-}
+};
 </script>
 
 <style rel="stylesheet/less" lang="less" scoped>
@@ -1717,12 +1951,12 @@ aside {
         );
       }
     }
-    .checked{
+    .checked {
       background: linear-gradient(
-          135deg,
-          rgba(221, 203, 161, 1) 0%,
-          rgba(188, 160, 110, 1) 100%
-        );
+        135deg,
+        rgba(221, 203, 161, 1) 0%,
+        rgba(188, 160, 110, 1) 100%
+      );
     }
   }
   .to-top {
@@ -2281,7 +2515,7 @@ section:nth-of-type(4) {
   }
   .footer {
     text-align: center;
-    padding-bottom: 10px; 
+    padding-bottom: 10px;
   }
 }
 .pc-640 {
@@ -2594,24 +2828,28 @@ section:nth-of-type(4) {
     left: -100px;
     transition: all ease-out 0.3s;
   }
-  .an-sm{
-      position: fixed;
-      width: 36px;
-      height: inherit;
-      left: 0;
-      text-align: center;
-      transition: all ease-out 0.3s;
-      font-size:16px;
-      color: #333333;
-      background:linear-gradient(180deg,rgba(255,250,224,1) 0%,rgba(217,195,145,1) 100%);
-      span{
-        display: inline-block;
-        margin-top: 21px;
-        width: 17px;
-      }
+  .an-sm {
+    position: fixed;
+    width: 36px;
+    height: inherit;
+    left: 0;
+    text-align: center;
+    transition: all ease-out 0.3s;
+    font-size: 16px;
+    color: #333333;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 250, 224, 1) 0%,
+      rgba(217, 195, 145, 1) 100%
+    );
+    span {
+      display: inline-block;
+      margin-top: 21px;
+      width: 17px;
     }
+  }
 
-  .an-lf:hover > .an-aside{
+  .an-lf:hover > .an-aside {
     left: 0;
     transition: all ease-out 0.3s;
   }

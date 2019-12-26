@@ -154,7 +154,10 @@
           </div>
           <p class="lh24">
             您好，您不符合本活动的参与条件，去
-            <span style="color: #2A99F2;cursor: pointer" @click="$router.push('/')">活动中心</span>看看其他活动吧！如果有其他需要可联系我们销售或者客服。
+            <span
+              style="color: #2A99F2;cursor: pointer"
+              @click="$router.push('/')"
+            >活动中心</span>看看其他活动吧！如果有其他需要可联系我们销售或者客服。
           </p>
         </div>
       </div>
@@ -760,11 +763,13 @@ export default {
       });
     },
     getRegion() {
-        axios.get("activity/getTemActInfoById.do", {
+      axios
+        .get("activity/getTemActInfoById.do", {
           params: {
             activityNum: 24
           }
-        }).then(res => {
+        })
+        .then(res => {
           if (res.data.status == 1) {
             this.areaGroup = res.data.result.optionalArea;
             this.products.forEach(product => {
