@@ -1159,7 +1159,7 @@
                   <img :src="item.url" />
                   <div class="demo-upload-list-cover">
                     <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
-                    <Icon type="ios-trash-outline" @click.native="handleRemove(item,'upload1')"></Icon>
+                    <Icon type="ios-trash-outline" @click.native="handleRemove1(item,'upload1')"></Icon>
                   </div>
                 </template>
                 <template v-else>
@@ -1226,6 +1226,9 @@
             </div>
           </div>
         </div>
+        <div class="alarm">
+          <span v-if="uploadImgShow">请上传截图</span>
+        </div>
         <span>*上传文件支持jpg/png/gif，单个文件最大不超过4MB</span>
       </div>
       <div slot="footer" class="modal-footer-border">
@@ -1267,7 +1270,7 @@
                 <img :src="item.url" />
                 <div class="demo-upload-list-cover">
                   <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
-                  <Icon type="ios-trash-outline" @click.native="handleRemove(item,'upload2')"></Icon>
+                  <Icon type="ios-trash-outline" @click.native="handleRemove2(item,'upload2')"></Icon>
                 </div>
               </template>
               <template v-else>
@@ -1289,6 +1292,9 @@
               <div style="width: 58px;height:58px;line-height: 58px;">上传截图</div>
             </Upload>
           </div>
+        </div>
+        <div class="alarm">
+          <span v-if="baiduImgShow">请上传截图</span>
         </div>
         <span>*上传文件支持jpg/png/gif，单个文件最大不超过4MB</span>
       </div>
@@ -1337,12 +1343,12 @@
         <Button
           v-if="failType == 'wechat'"
           type="primary"
-          @click="showModal.checkfail = false;showModal.wechatShare = true;"
+          @click="showModal.checkfail = false;showModal.wechatShare = true;uploadImgShow = false"
         >重新提交</Button>
         <Button
           v-else
           type="primary"
-          @click="showModal.checkfail = false;showModal.baiducomment = true;"
+          @click="showModal.checkfail = false;showModal.baiducomment = true;baiduImgShow = false"
         >重新提交</Button>
       </div>
     </Modal>
@@ -2303,7 +2309,9 @@ export default {
       // 结束
       loading: false,
       loadingMessage: "",
-      serialNum: ""
+      serialNum: "",
+      uploadImgShow: false,
+      baiduImgShow: false
     };
   },
   created() {
@@ -2353,10 +2361,12 @@ export default {
               });
             }
           });
+          this.uploadImgShow = false
       } else {
-        this.$message.info({
-          content: "请上传截图"
-        });
+        // this.$message.info({
+        //   content: "请上传截图"
+        // });
+        this.uploadImgShow = true
       }
     },
     baidu_submit() {
@@ -2379,10 +2389,12 @@ export default {
               });
             }
           });
+          this.baiduImgShow = false
       } else {
-        this.$message.info({
-          content: "请上传截图"
-        });
+        // this.$message.info({
+        //   content: "请上传截图"
+        // });
+        this.baiduImgShow = true
       }
     },
     seeComment() {
@@ -2432,6 +2444,7 @@ export default {
                     } else {
                       if (response.data.result.reviewResult.reviewStatus == 1) {
                         this.showModal.baiducomment = true;
+                        this.baiduImgShow = false
                       }
                     }
                   } else {
@@ -2473,6 +2486,17 @@ export default {
     handleRemove(file, name) {
       const fileList = this.$refs[name].fileList;
       this.$refs[name].fileList.splice(fileList.indexOf(file), 1);
+      this.uploadImg1 = ''
+    },
+    handleRemove1(file, name) {
+      const fileList = this.$refs[name].fileList;
+      this.$refs[name].fileList.splice(fileList.indexOf(file), 1);
+      this.uploadImg1 = ''
+    },
+    handleRemove2(file, name) {
+      const fileList = this.$refs[name].fileList;
+      this.$refs[name].fileList.splice(fileList.indexOf(file), 1);
+      this.uploadImg2 = ''
     },
     handleSuccess(res, file, name) {
       if (res.status == 1) {
@@ -3380,6 +3404,7 @@ export default {
                 .then(response => {
                   if (response.status == 200 && response.data.status == 1) {
                     this.showModal.wechatShare = true;
+                    this.uploadImgShow = false;
                   } else {
                     this.$message.info({
                       content: response.data.message
@@ -3489,6 +3514,7 @@ export default {
                     } else {
                       if (response.data.result.reviewResult.reviewStatus == 1) {
                         this.showModal.baiducomment = true;
+                        this.baiduImgShow = false
                       }
                     }
                   } else {
@@ -5650,9 +5676,14 @@ export default {
       cursor: pointer;
     }
   }
+  .alarm {
+     height: 20px;
+     margin-left: 20px;
+     color:red;
+  }
   > span {
     display: inline-block;
-    margin-top: 20px;
+    // margin-top: 10px;
     margin-left: 20px;
     font-size: 12px;
     color: rgba(153, 153, 153, 1);
@@ -5704,9 +5735,14 @@ export default {
     //   }
     // }
   }
+  .alarm {
+     height: 20px;
+     margin-left: 18px;
+     color:red;
+  }
   > span {
     display: inline-block;
-    margin-top: 20px;
+    // margin-top: 20px;
     margin-left: 18px;
     font-size: 12px;
     color: rgba(153, 153, 153, 1);

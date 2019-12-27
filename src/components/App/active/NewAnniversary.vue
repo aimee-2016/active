@@ -2404,7 +2404,7 @@ section:nth-of-type(2) {
         }
         &:nth-of-type(3) {
           color: #ffffff;
-          font-size: 24px;
+          font-size: 22px;
           border-radius: 8px;
           letter-spacing: 5px;
           padding: 1px;
@@ -2413,7 +2413,7 @@ section:nth-of-type(2) {
           background-size: cover;
           width: 486px;
           height: 55px;
-          padding: 10px 17px;
+          padding: 10px 12px;
         }
       }
     }
