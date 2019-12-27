@@ -131,7 +131,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       staticDir: path.join(__dirname, '../dist'),
       // 对应自己的路由文件，比如a有参数，就需要写成 /a/param1。
       // 活动路由
-      routes: ['/free/', '/objectstorage/','/hotdatabase/','/anniversary/','/newyearpurchase/'],
+      routes: ['/free/', '/objectstorage/','/hotdatabase/','/newyearpurchase/'],
       // 八大场景路由
       //routes: ['/yundiannao','/selfhelpbuildingwebsite','/storagedisk','/softwaredevelopment','/gameservice','/graphicdesign','/ai','/supercomputing'],
       //产品路由
