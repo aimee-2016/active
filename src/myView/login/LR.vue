@@ -910,7 +910,7 @@ export default {
           username: this.loginForm.loginName,
           password: this.loginForm.password
         };
-      axios.get(url, { params }).then(res => {
+      axios.post(url, params).then(res => {
         if (res.data.status === 1 && res.status === 200) {
           localStorage.setItem("authToken", res.data.message);
           this.close();
