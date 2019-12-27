@@ -42,10 +42,10 @@ Vue.prototype.$LR = LR
 Vue.config.productionTip = false
 
 
-axios.defaults.withCredentials = true
+// axios.defaults.withCredentials = true
 
-// axios.defaults.baseURL = 'https://activity.xinruiyun.cn/'
-axios.defaults.baseURL = 'https://csactivity.xrcloud.net/'
+axios.defaults.baseURL = 'https://activity.xinruiyun.cn/'
+// axios.defaults.baseURL = 'https://csactivity.xrcloud.net/'
 
 // window.eventBus = new Vue();
 
