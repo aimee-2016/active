@@ -254,7 +254,7 @@
               <a :href="$project.before+'about/'">关于我们</a>
             </li>
             <li class="nav-item active" @mouseenter='styleClass(4,$event)'>
-                <a :href="$project.before+'mianbeianecs/'">香港/海外云服务器</a>
+                <a :href="$project.before+'mianbeianecs/'">中国香港/海外云服务器</a>
             </li>
             <!-- <li class="nav-item active" @mouseenter='styleClass(5,$event)'>
                             <a :href="$project.back+'market'">云市场</a>
@@ -536,7 +536,7 @@
           </div>
           <div class="mhead-product">
             <div style="padding: 10px 10px;">
-              <a :href="$project.before+'mianbeianecs/'">香港/海外云服务器</a>
+              <a :href="$project.before+'mianbeianecs/'">中国香港/海外云服务器</a>
               <!-- <span :class='item.itemShow?"mhead-arrow":"mhead-arrow2"'></span> -->
             </div>
           </div>

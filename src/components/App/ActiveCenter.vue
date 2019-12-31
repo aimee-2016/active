@@ -10,6 +10,22 @@
         @on-change="change"
       >
         <my-carousel-item class="carousel-item">
+          <a :href="$project.before+'mianbeianecs/'" style="cursor: pointer">
+            <div class="hongkong">
+              <div class="wrap">
+                <div class="text">
+                  <p>香港云服务器上线</p>
+                  <p>请访问XRCLOUD.com. 注册就送10美元！</p>
+                  <Button>创建账户</Button>
+                </div>
+                <div class="img">
+                  <img src="../../assets/img/active/hongkong-banner.png" />
+                </div>
+              </div>
+            </div>
+          </a>
+        </my-carousel-item>
+        <my-carousel-item class="carousel-item">
           <div @click="push('/newyearpurchase/')" style="cursor: pointer;">
             <div class="aa">
               <div class="wrap">
@@ -230,6 +246,48 @@ export default {
                   color: #000;
                 }
               }
+            }
+          }
+        }
+        .hongkong {
+          height: 400px;
+          background:linear-gradient(270deg,rgba(255,255,255,1) 0%,rgba(255,227,208,1) 100%);
+          .wrap {
+            width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            .text {
+              > p {
+                font-size: 50px;
+                font-family: "Microsoft YaHei", "微软雅黑";
+                font-weight: 600;
+                color: rgba(51, 51, 51, 1);
+              }
+              p:nth-child(1) {
+                margin-top: 80px;
+                font-size: 48px;
+                font-weight: 400;
+              }
+              p:nth-child(2) {
+                font-size: 24px;
+                margin-top: 30px;
+                font-weight: normal;
+              }
+            }
+            .img {
+              padding-top: 30px;
+              margin-right: -200px;
+            }
+            button {
+              margin-top:40px;
+              width:164px;
+              height:44px;
+              background:rgba(255,98,75,1);
+              border-radius:4px;
+              font-size:16px;
+              font-family:MicrosoftYaHei;
+              color:rgba(255,255,255,1);
             }
           }
         }
