@@ -855,9 +855,9 @@
               <div class="share">
                 <span>分享给好友：</span>
                 <div>
-                  <img src="./assets/img/home/weibo.png" @click="share("weibo")" alt="微博" />
-                  <img src="./assets/img/home/weixin.png" @click="share("weixin")" alt="微信" />
-                  <img src="./assets/img/home/QQ.png" @click="share("qq")" alt="QQ" />
+                  <img src="./assets/img/home/weibo.png" @click="share('weibo')" alt="微博" />
+                  <img src="./assets/img/home/weixin.png" @click="share('weixin')" alt="微信" />
+                  <img src="./assets/img/home/QQ.png" @click="share('qq')" alt="QQ" />
                   <img
                     class="showweixinpic"
                     v-if="isweixinShow"

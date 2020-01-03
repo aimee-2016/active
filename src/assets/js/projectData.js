@@ -6,7 +6,8 @@ let projectUrl = {
     ac: 'https://activity.xinruiyun.cn/',
     m: 'https://m.xinruiyun.cn/',
     before: 'https://www.xinruiyun.cn/',
-    domain: 'domain=.xinruiyun.cn'
+    domain: 'domain=.xinruiyun.cn',
+    i: 'https://console.xrcloud.com/'
 }
 
 
@@ -16,7 +17,8 @@ let projectUrl = {
 //     ac: 'https://csactivity.xrcloud.net/',
 //     m: 'https://csm.xrcloud.net/',
 //     before: 'https://cswww.xrcloud.net/',
-//     domain: 'domain=.xrcloud.net'
+//     domain: 'domain=.xrcloud.net',
+//     i: 'https://console.xrcloud.net/'
 // }
 
 
