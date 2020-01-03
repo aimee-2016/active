@@ -6,7 +6,7 @@
 //     ac: 'https://activity.xinruiyun.cn/',
 //     m: 'https://m.xinruiyun.cn/',
 //     before: 'https://www.xinruiyun.cn/',
-//     domain: 'domain=.xinruiyun.cn'
+//     domain: 'domain=.xinruiyun.cn',
 //     i: 'https://console.xrcloud.com/'
 // }
 
