@@ -10,7 +10,7 @@
         @on-change="change"
       >
         <my-carousel-item class="carousel-item">
-          <a :href="$project.before+'mianbeianecs/'" style="cursor: pointer">
+          <a :href="$project.i+'signup/'" style="cursor: pointer">
             <div class="hongkong">
               <div class="wrap">
                 <div class="text">
