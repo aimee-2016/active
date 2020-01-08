@@ -100,11 +100,11 @@
                 </div>
                 <div class="price">
                   <p>
-                    <i>￥</i>
+                    <i>$</i>
                     {{item.cost}}
                     <i>/{{formatDay(item.days)}}</i>
                   </p>
-                  <span>原价：￥{{item.originalPrice}}/{{formatDay(item.days)}}</span>
+                  <span>原价：${{item.originalPrice}}/{{formatDay(item.days)}}</span>
                 </div>
                 <span class="btn" :class="{disable:!item.effect}" @click="interRegister(item.effect)">立即抢购</span>
               </div>
@@ -2407,6 +2407,7 @@ section:nth-of-type(2) {
           i {
             font-size: 14px;
             font-weight: normal;
+            vertical-align: middle;
           }
         }
         span {
