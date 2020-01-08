@@ -71,7 +71,51 @@
         <div class="seckill" id="seckill">
           <div class="seckill-line pc-640"></div>
           <div class="container">
-            <div class="item" v-for="(item,index) in seckillList" :key="index">
+            <div class="item" v-for="(item,index) in hongkongList" :key="index">
+              <div class="header">
+                <header>{{item.title}}</header>
+                <ul class="configure" v-if="item.servicetype!='oss'">
+                  <li>
+                    <i>CPU</i>
+                    <span>{{item.cpu}}核</span>
+                  </li>
+                  <li>
+                    <i>内存</i>
+                    <span>{{item.men}}G</span>
+                  </li>
+                  <li>
+                    <i>带宽</i>
+                    <span>{{item.bandwith}}M</span>
+                  </li>
+                  <li>
+                    <i>系统盘</i>
+                    <span>40G SSD</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="content">
+                <div class="hongkong-content">
+                  <span>BGP多线程</span>
+                  <p>注册绑卡送$10</p>
+                </div>
+                <div class="price">
+                  <p>
+                    <i>￥</i>
+                    {{item.cost}}
+                    <i>/{{formatDay(item.days)}}</i>
+                  </p>
+                  <span>原价：￥{{item.originalPrice}}/{{formatDay(item.days)}}</span>
+                </div>
+                <span class="btn" :class="{disable:!item.effect}" @click="interRegister(item.effect)">立即抢购</span>
+              </div>
+              <img
+                src="../../../assets/img/active/anniversary/newanniversary-newuser.png"
+                v-if="index == 3"
+                class="newold-icon"
+                alt="新老用户"
+              />
+            </div>
+            <div class="item" v-for="(item,index) in seckillList" :key="index+1">
               <div class="header">
                 <header>{{titleType(item.servicetype)}}</header>
                 <ul class="configure" v-if="item.servicetype!='oss'">
@@ -905,11 +949,13 @@ export default {
           }
         ]
       },
-      rollIndex: 0
+      rollIndex: 0,
       // 实名认证参数结束
+      hongkongList: []
     };
   },
   created() {
+    this.getHongkong()
     this.getSeckill();
     this.getEnterprise();
     this.getDatabase();
@@ -965,6 +1011,13 @@ export default {
       window.location.href = "https://api.honpc.com/yrcpt/newshare";
     },
     //活动编码 秒杀64 企业65 云数据库 域名
+    getHongkong() {
+      axios
+        .get("activity/getInternationalConfig.do", {})
+        .then(response => {
+          this.hongkongList = response.data.result.info
+        })
+    },
     getSeckill() {
       axios
         .get("activity/getTemActInfoById.do", {
@@ -1097,6 +1150,11 @@ export default {
             item.originalPrice = response.data.result.originalPrice;
           }
         });
+    },
+    interRegister(val) {
+      if(val) {
+        window.open(this.$project.i+'signup/')
+      }
     },
     orderSeckill(item, type) {
       if (!this.$store.state.userInfo) {
@@ -2242,14 +2300,14 @@ section:nth-of-type(2) {
     height: 30px;
   }
   .item {
-    width: 277px;
+    width: 228px;
     background: #312b1f;
     color: rgba(255, 255, 255, 1);
     display: inline-block;
-    margin-right: 30px;
+    margin-right: 14px;
     vertical-align: middle;
     border: 1px solid #ff9d00;
-    &:nth-of-type(4) {
+    &:nth-of-type(5) {
       margin-right: 0;
       position: relative;
       .pt16 {
@@ -2318,9 +2376,26 @@ section:nth-of-type(2) {
             line-height: 1;
           }
           .w {
-            width: 195px;
+            width: 145px;
             display: inline-block;
           }
+        }
+      }
+      .hongkong-content {
+        margin-bottom: 50px;
+        text-align: center;
+        span {
+          font-size:16px;
+          color:rgba(51,51,51,1);
+          line-height:21px;
+        }
+        p {
+          margin-top: 18px;
+          font-size:24px;
+          font-family:MicrosoftYaHei-Bold,MicrosoftYaHei;
+          font-weight:bold;
+          color:rgba(255,57,42,1);
+          line-height:31px;
         }
       }
       .price {
@@ -2350,6 +2425,10 @@ section:nth-of-type(2) {
           rgba(255, 189, 118, 1) 100%
         );
         color: #ffffff;
+      }
+      .disable {
+        background: gray;
+        cursor: not-allowed;
       }
     }
   }
