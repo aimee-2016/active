@@ -564,7 +564,6 @@
                         :key="index"
                         :class="{'selected':selectConfig==item.cpu+','+item.mem}"
                         @click="changConfigHost(item.cpu+','+item.mem)"
-                        v-if="!((hideconfig&&item.cpu==64&&item.mem==256)||(hideconfig&&item.cpu==32&&item.mem==64))"
                       >{{ item.cpu+'核'+item.mem+'G'}}</li>
                     </ul>
                     <span class="tips">*以上配置皆包含40G SSD系统盘</span>
@@ -2243,7 +2242,7 @@ export default {
           gpuConfigIndex: 0
         }
       ],
-      hideconfig: false,
+      hideconfig: true,
       //结束
       // 云服务器大集合参数
       currentView: "child1",
@@ -2280,16 +2279,6 @@ export default {
       hostZoneList: [],
       gpuZoneList: [],
       selectZone: "",
-      configureList: [
-        { cpu: 1, mem: 1 },
-        { cpu: 1, mem: 2 },
-        { cpu: 2, mem: 4 },
-        { cpu: 4, mem: 8 },
-        { cpu: 8, mem: 16 },
-        { cpu: 16, mem: 32 },
-        { cpu: 32, mem: 64 },
-        { cpu: 64, mem: 256 }
-      ],
       gpuConfigList: [
         { cpu: 8, mem: 64, num: 1 },
         { cpu: 16, mem: 128, num: 2 },
@@ -4006,7 +3995,7 @@ export default {
             this.gpuZoneList = res.data.result.filter(item => {
               return item.gpuserver == 1;
             });
-            this.changzone(this.hostZoneList[0]);
+            this.changzone(this.hostZoneList[0], '北方一区');
             this.queryCustomVM();
             this.queryDiskPrice();
             this.queryIPPrice();
@@ -4492,6 +4481,29 @@ export default {
         return true;
       } else {
         return false;
+      }
+    },
+    configureList(){
+      if(this.hideconfig) {
+        return [
+          { cpu: 1, mem: 1 },
+          { cpu: 1, mem: 2 },
+          { cpu: 2, mem: 4 },
+          { cpu: 4, mem: 8 },
+          { cpu: 8, mem: 16 },
+          { cpu: 16, mem: 32 }
+        ]
+      } else {
+        return [
+          { cpu: 1, mem: 1 },
+          { cpu: 1, mem: 2 },
+          { cpu: 2, mem: 4 },
+          { cpu: 4, mem: 8 },
+          { cpu: 8, mem: 16 },
+          { cpu: 16, mem: 32 },
+          { cpu: 32, mem: 64 },
+          { cpu: 64, mem: 256 }
+        ]
       }
     }
   },
