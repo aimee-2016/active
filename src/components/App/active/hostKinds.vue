@@ -3995,7 +3995,7 @@ export default {
             this.gpuZoneList = res.data.result.filter(item => {
               return item.gpuserver == 1;
             });
-            this.changzone(this.hostZoneList[0], '北方一区');
+            this.changzone(this.hostZoneList[0], this.hostZoneList[0].zonename);
             this.queryCustomVM();
             this.queryDiskPrice();
             this.queryIPPrice();
