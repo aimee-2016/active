@@ -96,15 +96,15 @@
               <div class="content">
                 <div class="hongkong-content">
                   <span>BGP多线程</span>
-                  <p>注册绑卡送$10</p>
+                  <p>注册绑卡送￥{{item.giveCost}}</p>
                 </div>
                 <div class="price">
                   <p>
-                    <i>$</i>
+                    <i>￥</i>
                     {{item.cost}}
                     <i>/{{formatDay(item.days)}}</i>
                   </p>
-                  <span>原价：${{item.originalPrice}}/{{formatDay(item.days)}}</span>
+                  <span>原价:￥{{item.originalPrice}}/{{formatDay(item.days)}}</span>
                 </div>
                 <span class="btn" :class="{disable:!item.effect}" @click="interRegister(item.effect)">立即抢购</span>
               </div>
@@ -2382,7 +2382,7 @@ section:nth-of-type(2) {
         }
       }
       .hongkong-content {
-        margin-bottom: 50px;
+        margin-bottom: 16px;
         text-align: center;
         span {
           font-size:16px;

@@ -3976,7 +3976,6 @@ export default {
     changzone(item, name) {
       this.selectZone = item.zoneid;
       this.setTemplateHost(item);
-      console.log(name)
       if (name == "北方一区") {
         this.hideconfig = true;
       } else {
